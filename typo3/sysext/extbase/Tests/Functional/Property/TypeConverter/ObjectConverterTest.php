@@ -175,20 +175,81 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNotAccessible()
     {
-        static::expectException(Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": Property "name" had no setter or constructor argument in target object of type "');
-
         $class = new class {
         };
+
+        $className = get_class($class);
+        $propertyName = 'name';
+
+        static::expectException(Exception::class);
+        static::expectExceptionCode(1297759968);
+        static::expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as said class does not have a constructor defined.');
 
         $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
         $propertyMapper->convert(
-            ['name' => 'foo'],
-            get_class($class),
+            [$propertyName => 'foo'],
+            $className,
+            $propertyMapperConfiguration
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromNonExistingConstructorArgument()
+    {
+        $class = new class {
+            public function __construct()
+            {
+            }
+        };
+
+        $className = get_class($class);
+        $propertyName = 'name';
+
+        static::expectException(Exception::class);
+        static::expectExceptionCode(1297759968);
+        static::expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as the constructor of said class does not have a parameter with property name "' . $propertyName . '".');
+
+        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapperConfiguration = new PropertyMappingConfiguration();
+        $propertyMapperConfiguration->allowAllProperties();
+
+        $propertyMapper->convert(
+            [$propertyName => 'foo'],
+            $className,
+            $propertyMapperConfiguration
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromExistingConstructorArgument()
+    {
+        $class = new class {
+            public function __construct($name = null)
+            {
+            }
+        };
+
+        $className = get_class($class);
+        $propertyName = 'name';
+
+        static::expectException(Exception::class);
+        static::expectExceptionCode(1297759968);
+        static::expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor argument "' . $propertyName . '". This usually happens if the argument misses a type hint.');
+
+        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapperConfiguration = new PropertyMappingConfiguration();
+        $propertyMapperConfiguration->allowAllProperties();
+
+        $propertyMapper->convert(
+            [$propertyName => 'foo'],
+            $className,
             $propertyMapperConfiguration
         );
     }

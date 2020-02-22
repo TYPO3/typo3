@@ -134,12 +134,25 @@ class ObjectConverter extends AbstractTypeConverter
         }
         try {
             $parameterType = $classSchema->getMethod('__construct')->getParameter($propertyName)->getType();
-            if ($parameterType !== null) {
-                return $parameterType;
-            }
-        } catch (NoSuchMethodException|NoSuchMethodParameterException $e) {
-            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $specificTargetType . '".', 1303379126);
+        } catch (NoSuchMethodException $e) {
+            $exceptionMessage = sprintf('Type of child property "%s" of class "%s" could not be '
+                . 'derived from constructor arguments as said class does not have a constructor '
+                . 'defined.', $propertyName, $specificTargetType);
+            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException($exceptionMessage, 1582385098);
+        } catch (NoSuchMethodParameterException $e) {
+            $exceptionMessage = sprintf('Type of child property "%1$s" of class "%2$s" could not be '
+                . 'derived from constructor arguments as the constructor of said class does not '
+                . 'have a parameter with property name "%1$s".', $propertyName, $specificTargetType);
+            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException($exceptionMessage, 1303379126);
         }
+
+        if ($parameterType === null) {
+            $exceptionMessage = sprintf('Type of child property "%1$s" of class "%2$s" could not be '
+                . 'derived from constructor argument "%1$s". This usually happens if the argument '
+                . 'misses a type hint.', $propertyName, $specificTargetType);
+            throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException($exceptionMessage, 1582385619);
+        }
+        return $parameterType;
     }
 
     /**
