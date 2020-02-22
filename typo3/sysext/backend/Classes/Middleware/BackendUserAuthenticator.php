@@ -37,6 +37,10 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     protected $publicRoutes = [
         '/login',
         '/login/frame',
+        '/login/password-reset/forget',
+        '/login/password-reset/initiate-reset',
+        '/login/password-reset/validate',
+        '/login/password-reset/finish',
         '/ajax/login',
         '/ajax/logout',
         '/ajax/login/refresh',

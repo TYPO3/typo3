@@ -71,6 +71,21 @@
             </f:if>
         </div>
         <div class="btn-group" role="group">
+            <f:if condition="{backendUser.passwordResetEnabled}">
+                <f:then>
+                    <f:link.action
+                        class="btn btn-default t3js-modal-trigger"
+                        action="initiatePasswordReset"
+                        arguments="{user: backendUser.uid}"
+                        title="{f:translate(key: 'resetPassword.label')}"
+                        data="{severity: 'warning', title: '{f:translate(key: \'resetPassword.confirmation.header\')}', content: '{f:translate(key: \'resetPassword.confirmation.text\', arguments: {0: \'{backendUser.email}\'})}', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}">
+                        <core:icon identifier="actions-edit-undo" />
+                    </f:link.action>
+                </f:then>
+                <f:else>
+                    <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+                </f:else>
+            </f:if>
             <f:link.action action="show" arguments="{uid: backendUser.uid}" class="btn btn-default" title="{f:translate(key: 'details')}">
                 <core:icon identifier="actions-system-options-view" size="small"/>
             </f:link.action>

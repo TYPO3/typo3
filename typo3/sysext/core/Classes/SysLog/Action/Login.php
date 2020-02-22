@@ -24,4 +24,6 @@ class Login
     public const LOGOUT = 2;
     public const ATTEMPT = 3;
     public const SEND_FAILURE_WARNING_EMAIL = 4;
+    public const PASSWORD_RESET_REQUEST = 5;
+    public const PASSWORD_RESET_ACCOMPLISHED = 6;
 }

@@ -222,6 +222,27 @@
 			<trans-unit id="backendUser" resname="backendUser">
 				<source>Backend User</source>
 			</trans-unit>
+			<trans-unit id="flashMessage.resetPassword.error.title" resname="flashMessage.resetPassword.error.title">
+				<source>Password reset not triggered</source>
+			</trans-unit>
+			<trans-unit id="flashMessage.resetPassword.error.text" resname="flashMessage.resetPassword.error.text">
+				<source>Sorry, the password of this user cannot be reset.</source>
+			</trans-unit>
+			<trans-unit id="flashMessage.resetPassword.success.title" resname="flashMessage.resetPassword.success.title">
+				<source>Password reset triggered</source>
+			</trans-unit>
+			<trans-unit id="flashMessage.resetPassword.success.text" resname="flashMessage.resetPassword.success.text">
+				<source>Password reset for email address %s initiated.</source>
+			</trans-unit>
+			<trans-unit id="resetPassword.label" resname="resetPassword.label">
+				<source>Reset Password</source>
+			</trans-unit>
+			<trans-unit id="resetPassword.confirmation.header" resname="resetPassword.confirmation.header">
+				<source>Reset Password</source>
+			</trans-unit>
+			<trans-unit id="resetPassword.confirmation.text" resname="resetPassword.confirmation.text">
+				<source>Are you sure to reset the password for %s?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

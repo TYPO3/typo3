@@ -19,6 +19,10 @@ services:
     tags:
       - { name: 'console.command', command: 'referenceindex:update' }
 
+  TYPO3\CMS\Backend\Command\ResetPasswordCommand:
+    tags:
+      - { name: 'console.command', command: 'backend:resetpassword', schedulable: false }
+
   # Temporary workaround until testing framework loads EXT:fluid in functional tests
   # @todo: Fix typo3/testing-framework and remove this
   TYPO3\CMS\Backend\View\BackendTemplateView:

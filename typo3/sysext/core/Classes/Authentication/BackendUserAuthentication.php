@@ -2495,6 +2495,14 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
                     $this->backendSetUC();
                     if ($this->loginSessionStarted) {
+                        // Also, if there is a recovery link set, unset it now
+                        // this will be moved into its own Event at a later stage.
+                        // If a token was set previously, this is now unset, as it was now possible to log-in
+                        if ($this->user['password_reset_token'] ?? '') {
+                            GeneralUtility::makeInstance(ConnectionPool::class)
+                                ->getConnectionForTable($this->user_table)
+                                ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
+                        }
                         // Process hooks
                         $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
                         foreach ($hooks ?? [] as $_funcRef) {

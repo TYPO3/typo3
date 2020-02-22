@@ -1113,6 +1113,8 @@ return [
         'userUploadDir' => '',
         'warning_email_addr' => '',
         'warning_mode' => 0,
+        'passwordReset' => true,
+        'passwordResetForAdmins' => true,
         'lockIP' => 0,
         'lockIPv6' => 0,
         'sessionTimeout' => 28800,  // a backend user logged in for 8 hours

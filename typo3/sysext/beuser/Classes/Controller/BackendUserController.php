@@ -16,12 +16,16 @@ namespace TYPO3\CMS\Beuser\Controller;
  */
 
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
+use TYPO3\CMS\Backend\Authentication\PasswordReset;
+use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Beuser\Service\ModuleDataStorageService;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -202,6 +206,38 @@ class BackendUserController extends ActionController
             'compareUserList' => $compareData,
             'onlineBackendUsers' => $this->getOnlineBackendUsers()
         ]);
+    }
+
+    /**
+     * Starts the password reset process for a selected user.
+     *
+     * @param int $user
+     */
+    public function initiatePasswordResetAction(int $user): void
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var BackendUser $user */
+        $user = $this->backendUserRepository->findByUid($user);
+        if (!$user || !$user->isPasswordResetEnabled() || !$context->getAspect('backend.user')->isAdmin()) {
+            // Add an error message
+            $this->addFlashMessage(
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.text', 'beuser'),
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.title', 'beuser'),
+                FlashMessage::ERROR
+            );
+        } else {
+            GeneralUtility::makeInstance(PasswordReset::class)->initiateReset(
+                $GLOBALS['TYPO3_REQUEST'],
+                $context,
+                $user->getEmail()
+            );
+            $this->addFlashMessage(
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.text', 'beuser', [$user->getEmail()]),
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.title', 'beuser'),
+                FlashMessage::OK
+            );
+        }
+        $this->forward('index');
     }
 
     /**

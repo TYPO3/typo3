@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\LoginProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,5 +41,7 @@ class UsernamePasswordLoginProvider implements LoginProviderInterface
             $view->assign('presetUsername', GeneralUtility::_GP('u'));
             $view->assign('presetPassword', GeneralUtility::_GP('p'));
         }
+
+        $view->assign('enablePasswordReset', GeneralUtility::makeInstance(PasswordReset::class)->isEnabled());
     }
 }

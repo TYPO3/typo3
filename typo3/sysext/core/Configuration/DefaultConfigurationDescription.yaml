@@ -271,6 +271,12 @@ BE:
               '1': 'Send a notification-email every time a backend user logs in'
               '2': 'Send a notification-email every time an ADMIN backend user logs in'
             description: 'Send emails to <code>warning_email_addr</code> upon backend-login'
+        passwordReset:
+          type: bool
+          description: 'Enable password reset functionality for TYPO3 Backend users. Can be disabled for systems where only e.g. LDAP / OAuth login is allowed.'
+        passwordResetForAdmins:
+          type: bool
+          description: 'Enable password reset functionality on the backend login for TYPO3 Administrators as well. Disable this option for increased security.'
         lockIP:
             type: int
             allowedValues:

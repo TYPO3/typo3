@@ -58,6 +58,9 @@ Have a nice day.</source>
 			<trans-unit id="login.password" resname="login.password">
 				<source>Password</source>
 			</trans-unit>
+			<trans-unit id="login.password_forget" resname="login.password_forget">
+				<source>Forgot your password?</source>
+			</trans-unit>
 			<trans-unit id="login.error.capslock" resname="login.error.capslock">
 				<source>Attention: Caps lock enabled!</source>
 			</trans-unit>

@@ -39,6 +39,9 @@
                                                 <f:translate key="login.submit" />
                                             </button>
                                         </div>
+                                        <f:if condition="{enablePasswordReset}">
+                                            <f:render section="ResetPassword" arguments="{_all}" optional="true" />
+                                        </f:if>
                                         <ul class="list-unstyled typo3-login-links">
                                             <f:for each="{loginProviders}" as="provider" key="providerKey">
                                                 <f:if condition="{provider.label}">
@@ -51,6 +54,9 @@
                                     </form>
                                 </div>
                             </f:then>
+                            <f:else if="{enablePasswordReset}">
+                                <f:render section="ResetPassword" arguments="{_all}" />
+                            </f:else>
                             <f:else>
                                 <form action="index.php" method="post" name="loginform">
                                     <input type="hidden" name="login_status" value="logout" />

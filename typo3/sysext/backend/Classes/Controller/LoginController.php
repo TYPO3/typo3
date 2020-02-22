@@ -21,12 +21,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -123,8 +125,11 @@ class LoginController implements LoggerAwareInterface
      */
     protected $pageRenderer;
 
-    public function __construct(Typo3Information $typo3Information, EventDispatcherInterface $eventDispatcher, UriBuilder $uriBuilder)
-    {
+    public function __construct(
+        Typo3Information $typo3Information,
+        EventDispatcherInterface $eventDispatcher,
+        UriBuilder $uriBuilder
+    ) {
         $this->typo3Information = $typo3Information;
         $this->eventDispatcher = $eventDispatcher;
         $this->uriBuilder = $uriBuilder;
@@ -154,6 +159,117 @@ class LoginController implements LoggerAwareInterface
         $this->init($request);
         $this->loginRefresh = true;
         return new HtmlResponse($this->createLoginLogoutForm($request));
+    }
+
+    /**
+     * Show a form to enter an email address to request an email.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function forgetPasswordFormAction(ServerRequestInterface $request): ResponseInterface
+    {
+        // Only allow to execute this if not logged in as a user right now
+        $context = GeneralUtility::makeInstance(Context::class);
+        if ($context->getAspect('backend.user')->isLoggedIn()) {
+            return $this->formAction($request);
+        }
+        $this->init($request);
+        // Enable the switch in the template
+        $this->view->assign('enablePasswordReset', GeneralUtility::makeInstance(PasswordReset::class)->isEnabled());
+        $this->view->setTemplate('Login/ForgetPasswordForm');
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Validate the email address.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function initiatePasswordResetAction(ServerRequestInterface $request): ResponseInterface
+    {
+        // Only allow to execute this if not logged in as a user right now
+        $context = GeneralUtility::makeInstance(Context::class);
+        if ($context->getAspect('backend.user')->isLoggedIn()) {
+            return $this->formAction($request);
+        }
+        $this->init($request);
+        $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
+        $this->view->assign('enablePasswordReset', $passwordReset->isEnabled());
+        $this->view->setTemplate('Login/ForgetPasswordForm');
+
+        $emailAddress = $request->getParsedBody()['email'] ?? '';
+        $this->view->assign('email', $emailAddress);
+        if (!GeneralUtility::validEmail($emailAddress)) {
+            $this->view->assign('invalidEmail', true);
+        } else {
+            $passwordReset->initiateReset($request, $context, $emailAddress);
+            $this->view->assign('resetInitiated', true);
+        }
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Validates the link and show a form to enter the new password.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function passwordResetAction(ServerRequestInterface $request): ResponseInterface
+    {
+        // Only allow to execute this if not logged in as a user right now
+        $context = GeneralUtility::makeInstance(Context::class);
+        if ($context->getAspect('backend.user')->isLoggedIn()) {
+            return $this->formAction($request);
+        }
+        $this->init($request);
+        $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
+        $this->view->setTemplate('Login/ResetPasswordForm');
+        $this->view->assign('enablePasswordReset', $passwordReset->isEnabled());
+        if (!$passwordReset->isValidResetTokenFromRequest($request)) {
+            $this->view->assign('invalidToken', true);
+        }
+        $this->view->assign('token', $request->getQueryParams()['t'] ?? '');
+        $this->view->assign('identity', $request->getQueryParams()['i'] ?? '');
+        $this->view->assign('expirationDate', $request->getQueryParams()['e'] ?? '');
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Updates the password in the database.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function passwordResetFinishAction(ServerRequestInterface $request): ResponseInterface
+    {
+        // Only allow to execute this if not logged in as a user right now
+        $context = GeneralUtility::makeInstance(Context::class);
+        if ($context->getAspect('backend.user')->isLoggedIn()) {
+            return $this->formAction($request);
+        }
+        $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
+        // Token is invalid
+        if ($request->getMethod() !== 'POST' || !$passwordReset->isValidResetTokenFromRequest($request)) {
+            return $this->passwordResetAction($request);
+        }
+        $this->init($request);
+        $this->view->setTemplate('Login/ResetPasswordForm');
+        $this->view->assign('enablePasswordReset', $passwordReset->isEnabled());
+        $this->view->assign('token', $request->getQueryParams()['t'] ?? '');
+        $this->view->assign('identity', $request->getQueryParams()['i'] ?? '');
+        $this->view->assign('expirationDate', $request->getQueryParams()['e'] ?? '');
+        if ($passwordReset->resetPassword($request, $context)) {
+            $this->view->assign('resetExecuted', true);
+        } else {
+            $this->view->assign('error', true);
+        }
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -214,6 +330,9 @@ class LoginController implements LoggerAwareInterface
 
         $this->view = $this->moduleTemplate->getView();
         $this->view->getRequest()->setControllerExtensionName('Backend');
+        $this->provideCustomLoginStyling();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
+        $this->view->assign('loginProviderIdentifier', $this->loginProviderIdentifier);
     }
 
     protected function provideCustomLoginStyling()
@@ -287,7 +406,6 @@ class LoginController implements LoggerAwareInterface
                 'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
             ],
             'copyright' => $this->typo3Information->getCopyrightNotice(),
-            'loginNewsItems' => $this->getSystemNews(),
         ]);
     }
 
@@ -299,13 +417,9 @@ class LoginController implements LoggerAwareInterface
      */
     protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
-
         // Checking, if we should make a redirect.
         // Might set JavaScript in the header to close window.
         $this->checkRedirect($request);
-
-        $this->provideCustomLoginStyling();
 
         // Start form
         $formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'LoginForm' : 'LogoutForm';
@@ -315,8 +429,8 @@ class LoginController implements LoggerAwareInterface
             'formType' => $formType,
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
-            'loginProviderIdentifier' => $this->loginProviderIdentifier,
-            'loginProviders' => $this->loginProviders
+            'loginProviders' => $this->loginProviders,
+            'loginNewsItems' => $this->getSystemNews(),
         ]);
 
         // Initialize interface selectors:

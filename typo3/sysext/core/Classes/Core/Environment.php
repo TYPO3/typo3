@@ -264,4 +264,23 @@ class Environment
     {
         return self::$os === 'UNIX';
     }
+
+    /**
+     * Returns the currently configured Environment information as array.
+     *
+     * @return array
+     */
+    public static function toArray(): array
+    {
+        return [
+            'context' => (string)self::getContext(),
+            'cli' => self::isCli(),
+            'projectPath' => self::getProjectPath(),
+            'publicPath' => self::getPublicPath(),
+            'varPath' => self::getVarPath(),
+            'configPath' => self::getConfigPath(),
+            'currentScript' => self::getCurrentScript(),
+            'os' => self::isWindows() ? 'WINDOWS' : 'UNIX'
+        ];
+    }
 }
