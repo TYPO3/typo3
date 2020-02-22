@@ -57,16 +57,20 @@
                     <th><f:translate key="disable_compare" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.disable}">
-                                <f:then>
-                                    <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.user.uid}][disable]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.unhide')}">
-                                        <core:icon identifier="actions-edit-unhide" />
-                                    </a>
-                                </f:then>
+                            <f:if condition="{onlineBackendUsers.{compareUser.user.uid}}">
                                 <f:else>
-                                    <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.user.uid}][disable]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.hide')}">
-                                        <core:icon identifier="actions-edit-hide" />
-                                    </a>
+                                    <f:if condition="{compareUser.user.disable}">
+                                        <f:then>
+                                            <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.user.uid}][disable]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.unhide')}">
+                                                <core:icon identifier="actions-edit-unhide" />
+                                            </a>
+                                        </f:then>
+                                        <f:else>
+                                            <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.user.uid}][disable]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.hide')}">
+                                                <core:icon identifier="actions-edit-hide" />
+                                            </a>
+                                        </f:else>
+                                    </f:if>
                                 </f:else>
                             </f:if>
                         </td>

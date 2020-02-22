@@ -14,7 +14,7 @@
         <be:link.editRecord table="be_users" uid="{backendUser.uid}" title="edit">
             <b>{backendUser.userName}</b>
         </be:link.editRecord>
-        <f:if condition="{bu:arrayElement(array: onlineBackendUsers, key: backendUser.uid)}">
+        <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
             <span class="label label-success"><f:translate key="online" /></span>
         </f:if>
         <br />

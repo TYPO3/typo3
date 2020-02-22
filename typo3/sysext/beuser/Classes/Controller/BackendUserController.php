@@ -138,17 +138,8 @@ class BackendUserController extends ActionController
         }
         $compareUserList = $this->moduleData->getCompareUserList();
 
-        // Create online user list for easy parsing
-        $onlineUsers = $this->backendUserSessionRepository->findAllActive();
-        $onlineBackendUsers = [];
-        if (is_array($onlineUsers)) {
-            foreach ($onlineUsers as $onlineUser) {
-                $onlineBackendUsers[$onlineUser['ses_userid']] = true;
-            }
-        }
-
         $this->view->assignMultiple([
-            'onlineBackendUsers' => $onlineBackendUsers,
+            'onlineBackendUsers' => $this->getOnlineBackendUsers(),
             'demand' => $demand,
             'backendUsers' => $this->backendUserRepository->findDemanded($demand),
             'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
@@ -208,7 +199,8 @@ class BackendUserController extends ActionController
 
         $this->view->assignMultiple([
             'shortcutLabel' => 'compareUsers',
-            'compareUserList' => $compareData
+            'compareUserList' => $compareData,
+            'onlineBackendUsers' => $this->getOnlineBackendUsers()
         ]);
     }
 
@@ -345,5 +337,25 @@ class BackendUserController extends ActionController
     {
         $loginType = $this->getBackendUserAuthentication()->getLoginType();
         return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($loginType);
+    }
+
+    /**
+     * Create an array with the uids of online users as the keys
+     * [
+     *   1 => true,
+     *   5 => true
+     * ]
+     * @return array
+     */
+    protected function getOnlineBackendUsers(): array
+    {
+        $onlineUsers = $this->backendUserSessionRepository->findAllActive();
+        $onlineBackendUsers = [];
+        if (is_array($onlineUsers)) {
+            foreach ($onlineUsers as $onlineUser) {
+                $onlineBackendUsers[$onlineUser['ses_userid']] = true;
+            }
+        }
+        return $onlineBackendUsers;
     }
 }
