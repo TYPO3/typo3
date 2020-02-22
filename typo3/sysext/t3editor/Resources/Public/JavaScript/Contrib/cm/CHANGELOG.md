@@ -1,3 +1,71 @@
+## 5.52.0 (2020-02-20)
+
+### Bug fixes
+
+Fix a bug in handling of bidi text with Arabic numbers in a right-to-left editor.
+
+Fix a crash when combining file drop with a `"beforeChange"` filter.
+
+Prevent issue when passing negative coordinates to `scrollTo`.
+
+### New features
+
+[lint](https://codemirror.net/doc/manual.html#addon_lint) and [tern](https://codemirror.net/demo/tern.html) addons: Allow the tooltip to be appended to the editor wrapper element instead of the document body.
+
+## 5.51.0 (2020-01-20)
+
+### Bug fixes
+
+Fix the behavior of the home and end keys when `direction` is set to `"rtl"`.
+
+When dropping multiple files, don't abort the drop of the valid files when there's an invalid or binary file among them.
+
+Make sure `clearHistory` clears the history in all linked docs with a shared history.
+
+[vim bindings](https://codemirror.net/demo/vim.html): Fix behavior of `'` and `` ` `` marks, fix `R` in visual mode.
+
+### New features
+
+[vim bindings](https://codemirror.net/demo/vim.html): Support `gi`, `gI`, and `gJ`.
+
+## 5.50.2 (2020-01-01)
+
+### Bug fixes
+
+Fix bug that broke removal of line widgets.
+
+## 5.50.0 (2019-12-20)
+
+### Bug fixes
+
+Make Shift-Delete to cut work on Firefox.
+
+[closetag addon](https://codemirror.net/demo/closetag.html): Properly handle self-closing tags.
+
+[handlebars mode](https://codemirror.net/mode/handlebars/): Fix triple-brace support.
+
+[searchcursor addon](https://codemirror.net/doc/manual.html#addon_searchcursor): Support mathing `$` in reverse regexp search.
+
+[panel addon](https://codemirror.net/doc/manual.html#addon_panel): Don't get confused by changing panel sizes.
+
+[javascript-hint addon](https://codemirror.net/doc/manual.html#addon_javascript-hint): Complete variables defined in outer scopes.
+
+[sublime bindings](https://codemirror.net/demo/sublime.html): Make by-subword motion more consistent with Sublime Text.
+
+[julia mode](https://codemirror.net/mode/julia/): Don't break on zero-prefixed integers.
+
+[elm mode](https://codemirror.net/mode/elm/): Sync with upstream version.
+
+[sql mode](https://codemirror.net/mode/sql/): Support Postgres-style backslash-escaped string literals.
+
+### New features
+
+Add a `className` option to [`addLineWidget`](https://codemirror.net/doc/manual.html#addLineWidget).
+
+[foldcode addon](https://codemirror.net/doc/manual.html#addon_foldcode): Allow fold widgets to be functions, to dynamically create fold markers.
+
+New themes: [ayu-dark](https://codemirror.net/demo/theme.html#ayu-dark) and [ayu-mirage](https://codemirror.net/demo/theme.html#ayu-mirage).
+
 ## 5.49.2 (2019-10-21)
 
 ### Bug fixes
