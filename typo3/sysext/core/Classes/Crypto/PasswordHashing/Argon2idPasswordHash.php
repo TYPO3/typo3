@@ -27,13 +27,13 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
  */
 class Argon2idPasswordHash extends AbstractArgon2PasswordHash
 {
-    /**
-     * The password algorithm constant name.
-     */
-    protected const PASSWORD_ALGORITHM_NAME = 'PASSWORD_ARGON2ID';
+    public function getPasswordAlgorithmName(): string
+    {
+        return 'PASSWORD_ARGON2ID';
+    }
 
-    /**
-     * Prefix for the password hash.
-     */
-    protected const PREFIX = '$argon2id$';
+    public function getPasswordHashPrefix(): string
+    {
+        return '$argon2id$';
+    }
 }

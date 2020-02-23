@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
 /**
  * This abstract class implements the 'argon2' flavour of the php password api.
  */
-abstract class AbstractArgon2PasswordHash implements PasswordHashInterface
+abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argon2PasswordHashInterface
 {
     /**
      * The PHP defaults are rather low ('memory_cost' => 65536, 'time_cost' => 4, 'threads' => 1)
@@ -82,7 +82,7 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface
      */
     protected function getPasswordAlgorithm()
     {
-        return constant(static::PASSWORD_ALGORITHM_NAME);
+        return constant($this->getPasswordAlgorithmName());
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface
      */
     public function isAvailable(): bool
     {
-        return defined(static::PASSWORD_ALGORITHM_NAME) && $this->getPasswordAlgorithm();
+        return defined($this->getPasswordAlgorithmName()) && $this->getPasswordAlgorithm();
     }
 
     /**
@@ -152,6 +152,6 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface
         return
             isset($passwordInfo['algo'])
             && $passwordInfo['algo'] === $this->getPasswordAlgorithm()
-            && strncmp($saltedPW, static::PREFIX, strlen(static::PREFIX)) === 0;
+            && strncmp($saltedPW, $this->getPasswordHashPrefix(), strlen($this->getPasswordHashPrefix())) === 0;
     }
 }
