@@ -60,6 +60,7 @@ Tag you widget in :file:`EXT:your_extension/Configuration/Services.yaml`:
 
       # Variant 1, widget identifier as attribute
       Vendor\Extension\Widgets\MyFirstWidget:
+        arguments: ['widget-identifier-1']
         tags:
           - name: dashboard.widget
             identifier: widget-identifier-1
@@ -69,6 +70,7 @@ Tag you widget in :file:`EXT:your_extension/Configuration/Services.yaml`:
       # to share the same class
       widget.identifier:
         class: Vendor\Extension\Widgets\MySecondWidget
+        arguments: ['widget-identifier-1']
         tags:
           - name: dashboard.widget
             # If ommited, the identifier would be the service name, thus 'widget.identifier'
