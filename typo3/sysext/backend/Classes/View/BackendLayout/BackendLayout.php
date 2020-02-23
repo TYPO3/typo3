@@ -308,7 +308,8 @@ class BackendLayout
             }
             $grid->addRow($rowObject);
         }
-        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->id)['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        $pageId = $this->drawingConfiguration->getPageId();
+        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($pageId)['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
         if (!$allowInconsistentLanguageHandling && $this->getLanguageModeIdentifier() === 'connected') {
             $grid->setAllowNewContent(false);
         }

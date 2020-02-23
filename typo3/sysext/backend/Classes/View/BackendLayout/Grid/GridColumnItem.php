@@ -195,7 +195,7 @@ class GridColumnItem extends AbstractGridObject
     public function isDelible(): bool
     {
         $backendUser = $this->getBackendUser();
-        if (!$backendUser->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
+        if (!$backendUser->doesUserHaveAccess($this->backendLayout->getDrawingConfiguration()->getPageRecord(), Permission::CONTENT_EDIT)) {
             return false;
         }
         return !(bool)($backendUser->getTSConfig()['options.']['disableDelete.']['tt_content'] ?? $backendUser->getTSConfig()['options.']['disableDelete'] ?? false);

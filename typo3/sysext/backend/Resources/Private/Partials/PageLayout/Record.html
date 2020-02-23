@@ -18,10 +18,12 @@
         </div>
     </div>
     <f:if condition="{item.column.contentEditable} && {grid.allowNewContent}">
-        <a href="{item.newContentAfterUrl}" title="{item.newContentAfterLinkTitle}" data-title="{item.newContentAfterLinkTitle}" class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">
-            <core:icon identifier="actions-add" />
-            {item.newContentAfterTitle}
-        </a>
+        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.column.backendLayout.drawingConfiguration.pageId}-{item.column.uniqueId}">
+            <a href="{item.newContentAfterUrl}" title="{item.newContentAfterLinkTitle}" data-title="{item.newContentAfterLinkTitle}" class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">
+                <core:icon identifier="actions-add" />
+                {item.newContentAfterTitle}
+            </a>
+        </div>
     </f:if>
     <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
 </div>

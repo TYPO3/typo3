@@ -57,7 +57,7 @@
                 {f:if(condition: column.items, else: 't3-page-ce-empty')}">
             <f:for each="{column.items}" as="item">
                 <f:if condition="{item.deletePlaceholder} == 0">
-                    <f:render partial="PageLayout/Record" arguments="{item: item, grid: grid}" />
+                    <f:render partial="PageLayout/Record" arguments="{_all}" />
                 </f:if>
             </f:for>
         </div>
