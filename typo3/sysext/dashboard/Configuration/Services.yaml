@@ -58,9 +58,9 @@ services:
         identifier: typeOfUsers
         widgetGroups: 'systemInfo'
 
-  t3news:
-    class: TYPO3\CMS\Dashboard\Widgets\T3NewsWidget
+  TYPO3\CMS\Dashboard\Widgets\T3NewsWidget:
     arguments: ['t3news']
     tags:
       - name: dashboard.widget
+        identifier: t3news
         widgetGroups: 'typo3'
