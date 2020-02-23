@@ -71,3 +71,10 @@ services:
       - name: dashboard.widget
         identifier: t3news
         widgetGroups: 'typo3'
+
+  TYPO3\CMS\Dashboard\Widgets\T3SecurityAdvisoriesWidget:
+    arguments: ['t3securityAdvisories']
+    tags:
+      - name: dashboard.widget
+        identifier: t3securityAdvisories
+        widgetGroups: 'typo3'

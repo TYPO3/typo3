@@ -171,6 +171,16 @@
 				<source>Information about the number of failed logins during the last 24 hours.</source>
 			</trans-unit>
 
+			<trans-unit id="widgets.t3securityAdvisories.title" xml:space="preserve">
+				<source>TYPO3 security advisories</source>
+			</trans-unit>
+			<trans-unit id="widgets.t3securityAdvisories.description" xml:space="preserve">
+				<source>Add a list of security advisories from the TYPO3 project</source>
+			</trans-unit>
+			<trans-unit id="widgets.t3securityAdvisories.moreItems" xml:space="preserve">
+				<source>More TYPO3 security advisories</source>
+			</trans-unit>
+
 			<trans-unit id="widget_group.general" xml:space="preserve">
 				<source>General</source>
  			</trans-unit>
