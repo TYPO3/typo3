@@ -18,7 +18,7 @@ If "elementBrowserType" is set to "file" both values are true by default.
 
 Example
 
-.. codeblock:: php
+.. code-block:: php
 
    $GLOBALS['TCA']['pages']['columns']['media']['config']['appearance'] = [
       'fileUploadAllowed' => false,

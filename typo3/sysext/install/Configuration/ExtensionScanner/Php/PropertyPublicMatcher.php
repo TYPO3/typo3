@@ -648,12 +648,12 @@ return [
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions' => [
         'restFiles' => [
-            'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
+            'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->pMap' => [
         'restFiles' => [
-            'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
+            'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
         ],
     ],
 ];

@@ -4382,14 +4382,14 @@ return [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
+            'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
+            'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\File\BasicFileUtility->setFileExtensionPermissions' => [
@@ -4425,7 +4425,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Feature-89139-AddDependencyInjectionSupportForConsoleCommands.rst',
-            'Deprecation-89139-ConsoleCommandsConfigurationMigratedToSymfonyServiceTags.rst',
+            'Deprecation-89139-ConsoleCommandsConfigurationFormatCommandsPhp.rst',
         ],
     ],
 ];
