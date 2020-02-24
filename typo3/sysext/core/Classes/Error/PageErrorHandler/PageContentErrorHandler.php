@@ -18,19 +18,14 @@ namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
-use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Http\RequestHandler;
 
 /**
  * Renders the content of a page to be displayed (also in relation to language etc)
@@ -73,20 +68,8 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $urlParams = $linkService->resolve((string)$this->errorHandlerConfiguration['errorContentSource']);
-
-        if ($urlParams['type'] !== 'page' && $urlParams['type'] !== 'url') {
-            throw new \InvalidArgumentException('PageContentErrorHandler can only handle TYPO3 urls of types "page" or "url"', 1522826609);
-        }
-
-        if ($urlParams['type'] === 'page') {
-            $response = $this->buildSubRequest($request, (int)$urlParams['pageuid']);
-            return $response->withStatus($this->statusCode);
-        }
-
-        $resolvedUrl = $urlParams['url'];
         try {
+            $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
             $content = null;
             $report = [];
 
@@ -99,67 +82,59 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
             $content = 'Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource'];
         }
-
         return new HtmlResponse($content, $this->statusCode);
     }
 
     /**
+     * Resolve the URL (currently only page and external URL are supported)
+     *
      * @param ServerRequestInterface $request
-     * @param int $pageId
-     * @return ResponseInterface
+     * @param string $typoLinkUrl
+     * @return string
      * @throws SiteNotFoundException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     * @throws \TYPO3\CMS\Core\Exception
-     * @throws \RuntimeException
+     * @throws InvalidRouteArgumentsException
      */
-    protected function buildSubRequest(ServerRequestInterface $request, int $pageId): ResponseInterface
+    protected function resolveUrl(ServerRequestInterface $request, string $typoLinkUrl): string
     {
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        $urlParams = $linkService->resolve($typoLinkUrl);
+        if ($urlParams['type'] !== 'page' && $urlParams['type'] !== 'url') {
+            throw new \InvalidArgumentException('PageContentErrorHandler can only handle TYPO3 urls of types "page" or "url"', 1522826609);
+        }
+        if ($urlParams['type'] === 'url') {
+            return $urlParams['url'];
+        }
+
         $site = $request->getAttribute('site', null);
         if (!$site instanceof Site) {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
-            $request = $request->withAttribute('site', $site);
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$urlParams['pageuid']);
+        }
+        $language = $request->getAttribute('language', null);
+        if (!$language instanceof SiteLanguage || !$language->isEnabled()) {
+            $language = $site->getDefaultLanguage();
         }
 
-        if (!$this->pageExistsAndInRootline($pageId, $site->getRootPageId())) {
-            throw new \RuntimeException('Page does not exist or is not in rootline.', 1582448967);
-        }
-
-        $request = $request->withQueryParams(['id' => $pageId]);
-        $dispatcher = $this->buildDispatcher();
-        return $dispatcher->handle($request);
-    }
-
-    /**
-     * @return MiddlewareDispatcher
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     * @throws \TYPO3\CMS\Core\Exception
-     */
-    protected function buildDispatcher()
-    {
-        $requestHandler = GeneralUtility::makeInstance(RequestHandler::class);
-        $resolver = new MiddlewareStackResolver(
-            GeneralUtility::makeInstance(FailsafeContainer::class),
-            GeneralUtility::makeInstance(DependencyOrderingService::class),
-            GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core')
+        // Build Url
+        $uri = $site->getRouter()->generateUri(
+            (int)$urlParams['pageuid'],
+            ['_language' => $language]
         );
 
-        $middlewares = $resolver->resolve('frontend');
-        return new MiddlewareDispatcher($requestHandler, $middlewares);
-    }
-
-    /**
-     * @param int $pageId
-     * @param int $rootPageId
-     * @return bool
-     */
-    protected function pageExistsAndInRootline(int $pageId, int $rootPageId): bool
-    {
-        try {
-            return GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId)->getRootPageId() === $rootPageId;
-        } catch (SiteNotFoundException $e) {
-            return false;
+        // Fallback to the current URL if the site is not having a proper scheme and host
+        $currentUri = $request->getUri();
+        if (empty($uri->getScheme())) {
+            $uri = $uri->withScheme($currentUri->getScheme());
         }
+        if (empty($uri->getUserInfo())) {
+            $uri = $uri->withUserInfo($currentUri->getUserInfo());
+        }
+        if (empty($uri->getHost())) {
+            $uri = $uri->withHost($currentUri->getHost());
+        }
+        if ($uri->getPort() === null) {
+            $uri = $uri->withPort($currentUri->getPort());
+        }
+
+        return (string)$uri;
     }
 }
