@@ -111,7 +111,7 @@ class ContentFetcher
         $rememberer = $this->backendLayout->getRecordRememberer();
         foreach ($this->fetchedContentRecords[$this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer()] ?? [] as $contentRecordsInColumn) {
             foreach ($contentRecordsInColumn as $contentRecord) {
-                if (!$rememberer->isRemembered($contentRecord['uid']) && !in_array($contentRecord['colPos'], $knownColumnPositionNumbers)) {
+                if (!$rememberer->isRemembered((int)$contentRecord['uid']) && !in_array($contentRecord['colPos'], $knownColumnPositionNumbers)) {
                     $unrendered[] = $contentRecord;
                 }
             }

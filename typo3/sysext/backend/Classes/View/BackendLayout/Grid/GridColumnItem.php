@@ -49,8 +49,8 @@ class GridColumnItem extends AbstractGridObject
         parent::__construct($backendLayout);
         $this->column = $column;
         $this->record = $record;
-        $backendLayout->getRecordRememberer()->rememberRecordUid($record['uid']);
-        $backendLayout->getRecordRememberer()->rememberRecordUid($record['l18n_parent']);
+        $backendLayout->getRecordRememberer()->rememberRecordUid((int)$record['uid']);
+        $backendLayout->getRecordRememberer()->rememberRecordUid((int)$record['l18n_parent']);
     }
 
     public function isVersioned(): bool
