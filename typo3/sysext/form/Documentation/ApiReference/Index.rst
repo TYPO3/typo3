@@ -268,6 +268,12 @@ Implement a ``FormFactory`` and build the form::
            $message->setLabel('Message');
            $message->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(StringLengthValidator::class, ['minimum' => 5, 'maximum' => 20]));
 
+           // Creating a RadioButton/MultiCheckbox
+           $page3 = $form->createPage('page3');
+           $radio = $page3->createElement('checkbox', 'RadioButton');
+           $radio->setProperty('options', ['value1' => 'Label1', 'value2' => 'Label2']);
+           $radio->setLabel('My Radio ...');
+
            $form->createFinisher('EmailToSender', [
                'subject' => 'Hello',
                'recipientAddress' => 'foo@example.com',
