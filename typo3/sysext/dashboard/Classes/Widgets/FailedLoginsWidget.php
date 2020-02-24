@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Dashboard\Widgets;
 
 /*
@@ -23,6 +22,9 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * This widget will show the number of failed logins during a given period
+ */
 class FailedLoginsWidget extends AbstractNumberWithIconWidget
 {
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title';
@@ -36,39 +38,32 @@ class FailedLoginsWidget extends AbstractNumberWithIconWidget
         parent::initializeView();
     }
 
-    /**
-     * Get number of failed logins during a period
-     *
-     * @param int $secondsBack
-     *
-     * @return int
-     */
     public function getNumberOfFailedLogins(int $secondsBack = 86400): int
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');
 
         return (int)$queryBuilder->count('uid')
-                ->from('sys_log')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'type',
-                        $queryBuilder->createNamedParameter(SystemLogType::LOGIN, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'action',
-                        $queryBuilder->createNamedParameter(SystemLogLoginAction::ATTEMPT, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->neq(
-                        'error',
-                        $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->gt(
-                        'tstamp',
-                        $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'] - $secondsBack, Connection::PARAM_INT)
-                    )
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'type',
+                    $queryBuilder->createNamedParameter(SystemLogType::LOGIN, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'action',
+                    $queryBuilder->createNamedParameter(SystemLogLoginAction::ATTEMPT, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'error',
+                    $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->gt(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'] - $secondsBack, Connection::PARAM_INT)
                 )
-                ->execute()
-                ->fetchColumn();
+            )
+            ->execute()
+            ->fetchColumn();
     }
 }

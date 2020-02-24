@@ -16,24 +16,23 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * This widget will show the number of system log errors in a bar chart
+ */
 class SysLogErrorsWidget extends AbstractBarChartWidget
 {
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title';
-
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description';
-
     protected $buttonText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.buttonText';
-
     protected $width = 4;
-
     protected $height = 4;
-
     protected $data = [];
-
     protected $labels = [];
 
     protected function initializeView(): void
@@ -75,9 +74,18 @@ class SysLogErrorsWidget extends AbstractBarChartWidget
             ->count('*')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('type', 5),
-                $queryBuilder->expr()->gte('tstamp', $start),
-                $queryBuilder->expr()->lte('tstamp', $end)
+                $queryBuilder->expr()->eq(
+                    'type',
+                    $queryBuilder->createNamedParameter(SystemLogType::ERROR, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->gte(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($start, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->lte(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($end, Connection::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn();

@@ -18,15 +18,24 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 /**
  * The AbstractBarChartWidget class is the basic widget class for bar charts.
  * It is possible to extend this class for custom widgets.
- * In your class you have to store the data to display in $this->chartData
+ * In your class you have to store the data to display in $this->chartData.
  * More information can be found in the documentation.
  */
 abstract class AbstractBarChartWidget extends AbstractChartWidget
 {
+    /**
+     * @inheritDoc
+     */
     protected $iconIdentifier = 'content-widget-chart-bar';
 
+    /**
+     * @inheritDoc
+     */
     protected $chartType = 'bar';
 
+    /**
+     * @inheritDoc
+     */
     protected $chartOptions = [
         'maintainAspectRatio' => false,
         'legend' => [

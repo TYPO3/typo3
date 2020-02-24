@@ -22,11 +22,42 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 abstract class AbstractCtaButtonWidget extends AbstractWidget
 {
+    /**
+     * This link will be the main data in the widget
+     *
+     * @var string
+     */
     protected $link = '';
+
+    /**
+     * When filled, this is used as the button label
+     *
+     * @var string
+     */
     protected $label = '';
+
+    /**
+     * When filled, a text is shown above the link
+     *
+     * @var string
+     */
     protected $text = '';
+
+    /**
+     * This property contains the identifier of the icon that should be shown in the widget
+     *
+     * @var string
+     */
     protected $icon;
+
+    /**
+     * @inheritDoc
+     */
     protected $iconIdentifier = 'content-widget-calltoaction';
+
+    /**
+     * @inheritDoc
+     */
     protected $templateName = 'CtaWidget';
 
     public function __construct(string $identifier)

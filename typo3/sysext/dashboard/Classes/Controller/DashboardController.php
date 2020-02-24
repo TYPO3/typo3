@@ -30,7 +30,6 @@ use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\CMS\Dashboard\DashboardRepository;
-use TYPO3\CMS\Dashboard\Exception\NoDashboardAvailableException;
 use TYPO3\CMS\Dashboard\WidgetGroupRegistry;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalCssInterface;
@@ -69,13 +68,19 @@ class DashboardController extends AbstractController
 
     protected $requireJsModules = [];
 
-    /** @var Dashboard */
+    /**
+     * @var Dashboard
+     */
     protected $currentDashboard;
 
-    /** @var Dashboard[] */
+    /**
+     * @var Dashboard[]
+     */
     protected $dashboardsForCurrentUser;
 
-    /** @var DashboardPreset[] */
+    /**
+     * @var DashboardPreset[]
+     */
     protected $availableDashboardPresets;
 
     /**
@@ -121,9 +126,6 @@ class DashboardController extends AbstractController
         $this->initializeDashboardsForCurrentUser();
     }
 
-    /**
-     * @throws NoDashboardAvailableException
-     */
     protected function initializeDashboardsForCurrentUser(): void
     {
         $this->dashboardsForCurrentUser = $this->getDashboardsForCurrentUser();

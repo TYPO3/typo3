@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Dashboard\Widgets;
 
 /*
@@ -28,16 +27,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractRssWidget extends AbstractListWidget
 {
+    /**
+     * The rss file (resource) the data should be fetched from
+     *
+     * @var string
+     */
     protected $rssFile = '';
 
+    /**
+     * Lifetime of the items cache
+     *
+     * @var int
+     */
     protected $lifeTime = 900;
 
-    protected $iconIdentifier = 'dashboard-rss';
-
-    protected $templateName = 'RssWidget';
-
+    /**
+     * @inheritDoc
+     */
     protected $height = 6;
+
+    /**
+     * @inheritDoc
+     */
     protected $width = 4;
+
+    /**
+     * @inheritDoc
+     */
+    protected $iconIdentifier = 'content-widget-rss';
+
+    /**
+     * @inheritDoc
+     */
+    protected $templateName = 'RssWidget';
 
     /**
      * @var FrontendInterface
@@ -52,11 +74,6 @@ abstract class AbstractRssWidget extends AbstractListWidget
         $this->loadRssFeed();
     }
 
-    public function setRssFile(string $rssFile): void
-    {
-        $this->rssFile = $rssFile;
-    }
-
     protected function loadRssFeed(): void
     {
         $cacheHash = md5($this->rssFile);
@@ -64,7 +81,6 @@ abstract class AbstractRssWidget extends AbstractListWidget
             return;
         }
 
-        /** @var \SimpleXMLElement $rssFeed */
         $rssContent = GeneralUtility::getUrl($this->rssFile);
         if ($rssContent === false) {
             throw new RuntimeException('RSS URL could not be fetched', 1573385431);

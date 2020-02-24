@@ -27,7 +27,7 @@ class DashboardRepository
     private const TABLE = 'be_dashboards';
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $allowedFields = ['title'];
 

@@ -18,15 +18,24 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 /**
  * The AbstractDoughnutChartWidget class is the basic widget class for doughnut charts.
  * It is possible to extend this class for custom widgets.
- * In your class you have to store the data to display in $this->chartData
+ * In your class you have to store the data to display in $this->chartData.
  * More information can be found in the documentation.
  */
 abstract class AbstractDoughnutChartWidget extends AbstractChartWidget
 {
+    /**
+     * @inheritDoc
+     */
     protected $iconIdentifier = 'content-widget-chart-pie';
 
+    /**
+     * @inheritDoc
+     */
     protected $chartType = 'doughnut';
 
+    /**
+     * @inheritDoc
+     */
     protected $chartOptions = [
         'maintainAspectRatio' => false,
         'legend' => [
@@ -35,8 +44,6 @@ abstract class AbstractDoughnutChartWidget extends AbstractChartWidget
         ],
         'cutoutPercentage' => 60
     ];
-
-    protected $width = 2;
 
     protected $height = 4;
 }

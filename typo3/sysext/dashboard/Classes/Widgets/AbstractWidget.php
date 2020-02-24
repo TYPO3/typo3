@@ -25,53 +25,77 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  * The AbstractWidget class is the basic widget class for all widgets.
  * It is possible to extend this class for custom widgets, but EXT:dashboard provides
  * some more specific types of widgets to extend from. For more details, please check:
+ *
+ * @see AbstractBarChartWidget
+ * @see AbstractChartWidget
  * @see AbstractCtaButtonWidget
+ * @see AbstractDoughnutChartWidget
  * @see AbstractListWidget
+ * @see AbstractNumberWithIconWidget
  * @see AbstractRssWidget
  */
 abstract class AbstractWidget implements WidgetInterface
 {
     /**
+     * The unique identifier of the widget
+     *
      * @var string
      */
     protected $identifier;
 
     /**
+     * The title is used for the widget selector
+     *
      * @var string
      */
     protected $title;
 
     /**
+     * The description is used for the widget selector
+     *
      * @var string
      */
     protected $description = '';
 
     /**
+     * The height of the widget in rows (1-6)
+     *
      * @var int
      */
     protected $height = 2;
 
     /**
+     * The width of the widget in rows (1-4)
+     *
      * @var int
      */
     protected $width = 2;
 
     /**
+     * The icon identifier is used for the widget selector
+     *
      * @var string
      */
     protected $iconIdentifier = '';
 
     /**
+     * The template name of the widget
+     *
      * @var string
      */
     protected $templateName = 'Widget';
 
     /**
+     * Additional CSS classes which should be added to the rendered widget
+     *
+     * @var string
+     */
+    protected $additionalClasses = '';
+
+    /**
      * @var ViewInterface
      */
     protected $view;
-
-    protected $additionalClasses = '';
 
     public function __construct(string $identifier)
     {

@@ -25,7 +25,6 @@ class T3SecurityAdvisoriesWidget extends AbstractRssWidget
     protected $lifeTime = 43200; // 12 hours cache
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.title';
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.description';
-    protected $iconIdentifier = 'content-widget-rss';
     protected $moreItemsLink = 'https://typo3.org/help/security-advisories';
     protected $moreItemsText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.moreItems';
 }

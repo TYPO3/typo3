@@ -45,14 +45,14 @@ Creating your own widget
 Besides the widgets shipped with TYPO3 core, you can also write your own widget. To
 do so, you can extend one of the WidgetAbstracts available in EXT:dashboard.
 
-* AbstractWidget: a basic abstract that can be used as the start of simple widgets
-* AbstractRssWidget: with this abstract it is easy to create a widget showing a RSS feed
-* AbstractListWidget: this abstract will give you an easy start to show a list of items
-* AbstractCtaButtonWidget: when you want to show a Call-To-Action button, this is the right abstract
-* AbstractChartWidget: the base of all chart widgets
-* AbstractBarChartWidget: when you want to show a widget with a bar-chart you can extend this class
-* AbstractDoughnutChartWidget: this abstract gives you the possibility to create a doughnut-chart widget
-* AbstractNumberWithIconWidget: this abstract will give you the possibility to show a title, number and an icon
+* `AbstractWidget`: a basic abstract that can be used as the start of simple widgets
+* `AbstractRssWidget`: with this abstract it is easy to create a widget showing a RSS feed
+* `AbstractListWidget`: this abstract will give you an easy start to show a list of items
+* `AbstractCtaButtonWidget`: when you want to show a Call-To-Action button, this is the right abstract
+* `AbstractChartWidget`: the base of all chart widgets
+* `AbstractBarChartWidget`: when you want to show a widget with a bar-chart you can extend this class
+* `AbstractDoughnutChartWidget`: this abstract gives you the possibility to create a doughnut-chart widget
+* `AbstractNumberWithIconWidget`: this abstract will give you the possibility to show a title, number and an icon
 
 By extending one of those abstracts, and provide it with the right data, you are able to
 have a new widget quite fast. The only thing that is left is to register the widget.
@@ -91,8 +91,10 @@ modal when adding a new widget to your dashboard. In this way you can group the 
 widgets to get a clear overview for your users. By default the following widget groups are
 available:
 
-* widgetGroup-general: Widgets with a more generic purpose
-* widgetGroup-typo3: Widgets with information regarding the TYPO3 product or community
+* `widgetGroup-general`: Widgets with a more generic purpose
+* `widgetGroup-systemInfo`: Widgets which provide system related information
+* `widgetGroup-typo3`: Widgets with information regarding the TYPO3 product or community
+* `widgetGroup-documentation`: Widgets with links to TYPO3 documentation
 
 You can also configure your own widget groups. To do so, you create a file :file:`EXT:your_extension/Configuration/Backend/DashboardWidgetGroups.php`.
 In that file you specify the information of the groups.

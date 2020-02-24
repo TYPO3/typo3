@@ -15,13 +15,16 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * This widget will show the type of users (admin / non-admin) in a doughnut chart
+ */
 class TypeOfUsersWidget extends AbstractDoughnutChartWidget
 {
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title';
-
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description';
 
     /**
@@ -53,7 +56,10 @@ class TypeOfUsersWidget extends AbstractDoughnutChartWidget
             ->count('*')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->eq('admin', $admin ? 1 : 0)
+                $queryBuilder->expr()->eq(
+                    'admin',
+                    $queryBuilder->createNamedParameter($admin ? 1 : 0, Connection::PARAM_INT)
+                )
             )
             ->execute()
             ->fetchColumn();

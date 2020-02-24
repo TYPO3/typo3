@@ -20,7 +20,7 @@ use TYPO3\CMS\Dashboard\Widgets\Interfaces\EventDataInterface;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\RequireJsModuleInterface;
 
 /**
- * The AbstractChartWidget class is the basic widget class for all chart widgets
+ * The AbstractChartWidget class is the basic widget class for all chart widgets.
  * It is possible to extend this class for custom widgets. EXT:dashboard also provides
  * more special chart types for widgets (bar chart and doughnut chart).
  */
@@ -41,7 +41,7 @@ abstract class AbstractChartWidget extends AbstractWidget implements AdditionalC
     protected $chartType = '';
 
     /**
-     * This array should contain the data for the graph. The data and options you have depend on the type
+     * This property should contain the data for the graph. The data and options you have depend on the type
      * of chart. More information can be found in the documentation of the specific type.
      *
      * @link https://www.chartjs.org/docs/latest/charts/bar.html#data-structure
@@ -65,7 +65,7 @@ abstract class AbstractChartWidget extends AbstractWidget implements AdditionalC
     /**
      * This property can be used to pass data to the JavaScript that will handle the content rendering. For
      * charts, the only property necessary for charts is the graphConfig element. This will be set in the
-     * getEventData method of this class. Setting this property manual is therefore not needed.
+     * getEventData method of this class. Setting this property manually is therefore not needed.
      *
      * @see getEventData
      *
@@ -76,13 +76,13 @@ abstract class AbstractChartWidget extends AbstractWidget implements AdditionalC
     /**
      * The default colors that will be used for the graphs.
      *
-     * @var array
+     * @var string[]
      */
     protected $chartColors = ['#ff8700', '#a4276a', '#1a568f', '#4c7e3a', '#69bbb5'];
 
     /**
-     * If you want to show a button below the graph, you need to set the title and the link to the button. This text
-     * can be a fixed string or can contain a translatable string.
+     * If you want to show a button below the graph, you need to set the title and the link to the button.
+     * This text can be a fixed string or can contain a translatable string.
      *
      * @var string
      */
@@ -105,7 +105,7 @@ abstract class AbstractChartWidget extends AbstractWidget implements AdditionalC
     protected $buttonTarget = '';
 
     /**
-     * This CSS-class is used so the JavaScript can identify the widgets containing graphs. Overriding this
+     * This CSS class is used so the JavaScript can identify the widgets containing graphs. Overriding this
      * property could lead to the widget not working.
      *
      * @internal
@@ -125,8 +125,8 @@ abstract class AbstractChartWidget extends AbstractWidget implements AdditionalC
     protected $templateName = 'ChartWidget';
 
     /**
-     * This method is used to define the data that will be shown in the graph. This method should be implemented and
-     * should set the data in the chartData property
+     * This method is used to define the data that will be shown in the graph. This method should be implemented
+     * and should set the data in the chartData property.
      *
      * @see chartData
      */

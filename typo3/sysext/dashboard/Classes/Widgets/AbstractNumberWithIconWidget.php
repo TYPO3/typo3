@@ -1,6 +1,5 @@
 <?php
 declare(strict_types = 1);
-
 namespace TYPO3\CMS\Dashboard\Widgets;
 
 /*
@@ -17,22 +16,12 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 
 /**
- * The AbstractTextWidget class is the basic widget class for simple text content.
+ * The AbstractNumberWithIconWidget class is the basic widget class to display a number next to an icon.
  * It is possible to extend this class for own widgets.
- * In your class you have to set $this->text with the text to display.
+ * Simply overwrite $this->subtitle, $this->number and $this->icon to make use of this widget type.
  */
 abstract class AbstractNumberWithIconWidget extends AbstractWidget
 {
-    /**
-     * @inheritDoc
-     */
-    protected $iconIdentifier = 'content-widget-number';
-
-    /**
-     * @inheritDoc
-     */
-    protected $templateName = 'NumberWithIconWidget';
-
     /**
      * When filled, a subtitle is shown below the title
      *
@@ -53,6 +42,16 @@ abstract class AbstractNumberWithIconWidget extends AbstractWidget
      * @var string
      */
     protected $icon;
+
+    /**
+     * @inheritDoc
+     */
+    protected $iconIdentifier = 'content-widget-number';
+
+    /**
+     * @inheritDoc
+     */
+    protected $templateName = 'NumberWithIconWidget';
 
     protected function initializeView(): void
     {

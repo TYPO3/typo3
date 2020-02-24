@@ -22,22 +22,54 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 abstract class AbstractListWidget extends AbstractWidget
 {
+    /**
+     * This property should contain the items to be displayed
+     *
+     * @var array
+     */
     protected $items = [];
-    protected $iconIdentifier = 'dashboard-bars';
+
+    /**
+     * Limit the amount of items to be displayed
+     *
+     * @var int
+     */
     protected $limit = 5;
-    protected $totalItems = 0;
-    protected $templateName = 'ListWidget';
-    protected $height = 4;
-    protected $width = 2;
+
+    /**
+     * Link to e.g. an external resource with the full items list
+     *
+     * @var string
+     */
     protected $moreItemsLink = '';
+
+    /**
+     * This should be the text for the more items link
+     *
+     * @var string
+     */
     protected $moreItemsText = '';
+
+    /**
+     * @inheritDoc
+     */
+    protected $height = 4;
+
+    /**
+     * @inheritDoc
+     */
+    protected $iconIdentifier = 'content-widget-list';
+
+    /**
+     * @inheritDoc
+     */
+    protected $templateName = 'ListWidget';
 
     public function renderWidgetContent(): string
     {
         $this->view->assign('items', $this->items);
         $this->view->assign('moreItemsLink', $this->moreItemsLink);
         $this->view->assign('moreItemsText', $this->moreItemsText);
-        $this->view->assign('totalNumberOfItems', $this->totalItems);
         return $this->view->render();
     }
 }
