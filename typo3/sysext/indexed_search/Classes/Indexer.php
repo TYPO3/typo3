@@ -1393,7 +1393,7 @@ class Indexer
         $fields = [
             'phash' => $this->hash['phash'],
             'phash_grouping' => $this->hash['phash_grouping'],
-            'static_page_arguments' => json_encode($this->conf['staticPageArguments']),
+            'static_page_arguments' => is_array($this->conf['staticPageArguments']) ? json_encode($this->conf['staticPageArguments']) : null,
             'contentHash' => $this->content_md5h,
             'data_page_id' => $this->conf['id'],
             'data_page_type' => $this->conf['type'],
@@ -2171,7 +2171,7 @@ class Indexer
             'type' => (int)$this->conf['type'],
             'sys_lang' => (int)$this->conf['sys_language_uid'],
             'MP' => (string)$this->conf['MP'],
-            'staticPageArguments' => $this->conf['staticPageArguments'],
+            'staticPageArguments' => is_array($this->conf['staticPageArguments']) ? json_encode($this->conf['staticPageArguments']) : null,
         ];
         // Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):
         $this->hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));
