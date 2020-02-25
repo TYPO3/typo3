@@ -15,16 +15,16 @@
 	"require": {
 		"nikic/php-parser": "^4.3",
 		"symfony/finder": "^4.4 || ^5.0",
-		"typo3/cms-core": "10.3.0",
-		"typo3/cms-extbase": "10.3.0",
-		"typo3/cms-fluid": "10.3.0"
+		"typo3/cms-core": "10.4.*@dev",
+		"typo3/cms-extbase": "10.4.*@dev",
+		"typo3/cms-fluid": "10.4.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "10.3.x-dev"
+			"dev-master": "10.4.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {

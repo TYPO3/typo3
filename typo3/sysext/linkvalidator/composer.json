@@ -13,8 +13,8 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "10.3.0",
-		"typo3/cms-info": "10.3.0"
+		"typo3/cms-core": "10.4.*@dev",
+		"typo3/cms-info": "10.4.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Regular checks of links"
@@ -24,7 +24,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "10.3.x-dev"
+			"dev-master": "10.4.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "linkvalidator"
