@@ -419,6 +419,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     protected function createEmulatedPageLayoutViewFromDrawingConfiguration(DrawingConfiguration $drawingConfiguration): PageLayoutView
     {
         $pageLayoutView = GeneralUtility::makeInstance(PageLayoutView::class);
+        $pageLayoutView->id = $drawingConfiguration->getPageId();
+        $pageLayoutView->pageRecord = $drawingConfiguration->getPageRecord();
         $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
         $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
         $pageLayoutView->tt_contentConfig['cols'] = implode(',', $drawingConfiguration->getActiveColumns());
