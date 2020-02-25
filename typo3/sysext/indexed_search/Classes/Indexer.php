@@ -1475,7 +1475,7 @@ class Indexer
             'phash' => $this->hash['phash'],
             'phash_grouping' => $this->hash['phash_grouping'],
             'cHashParams' => serialize($this->cHashParams),
-            'static_page_arguments' => json_encode($this->conf['staticPageArguments']),
+            'static_page_arguments' => is_array($this->conf['staticPageArguments']) ? json_encode($this->conf['staticPageArguments']) : null,
             'contentHash' => $this->content_md5h,
             'data_page_id' => $this->conf['id'],
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove along with database field data_page_reg1
@@ -2259,7 +2259,7 @@ class Indexer
             'sys_lang' => (int)$this->conf['sys_language_uid'],
             'MP' => (string)$this->conf['MP'],
             'cHash' => $this->cHashParams,
-            'staticPageArguments' => $this->conf['staticPageArguments'],
+            'staticPageArguments' => is_array($this->conf['staticPageArguments']) ? json_encode($this->conf['staticPageArguments']) : null,
         ];
         // Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):
         $this->hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));
