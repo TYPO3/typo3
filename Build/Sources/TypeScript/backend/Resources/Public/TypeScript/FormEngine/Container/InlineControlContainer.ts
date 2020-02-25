@@ -310,7 +310,7 @@ class InlineControlContainer {
       throw 'Denied message sent by ' + e.origin;
     }
 
-    if (e.data.actionName === 'typo3:elementBrowser:elementInserted') {
+    if (e.data.actionName === 'typo3:foreignRelation:inserted') {
       if (typeof e.data.objectGroup === 'undefined') {
         throw 'No object group defined for message';
       }
@@ -326,6 +326,8 @@ class InlineControlContainer {
       }
 
       this.importRecord([e.data.objectGroup, e.data.uid]);
+    } else {
+      console.warn(`Unhandled action "${e.data.actionName}"`);
     }
   }
 

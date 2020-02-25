@@ -141,7 +141,7 @@ class ElementBrowser {
     if (this.irre.objectId) {
       if (this.getParent()) {
         const message = {
-          actionName: 'typo3:elementBrowser:elementInserted',
+          actionName: 'typo3:foreignRelation:inserted',
           objectGroup: this.irre.objectId,
           table: table,
           uid: uid,
