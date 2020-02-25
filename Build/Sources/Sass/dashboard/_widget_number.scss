@@ -1,6 +1,11 @@
+.widget-number {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .widget-number-icon {
     display: flex;
-    justify-content: center;
     align-items: center;
     width: 42px;
     margin-right: 20px;

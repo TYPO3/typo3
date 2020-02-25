@@ -1,22 +1,26 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Widget/Widget"/>
 <f:section name="main">
+
     <f:if condition="{text}">
         {text}
     </f:if>
+
 </f:section>
 <f:section name="footer">
 
-    <f:link.external uri="{link}" target="_blank" class="widget-cta">
-        <f:if condition="{icon}">
-            <div class="widget-cta-icon">
-                <core:icon identifier="{icon}" size="large" alternativeMarkupIdentifier="inline" />
-            </div>
-        </f:if>
-        <f:if condition="{label}">
-            <f:translate key="{label}" default="{label}"/>
-        </f:if>
-    </f:link.external>
+    <f:if condition="{link}">
+        <f:link.external uri="{link}" target="_blank" class="widget-cta">
+            <f:if condition="{icon}">
+                <div class="widget-cta-icon">
+                    <core:icon identifier="{icon}" size="large" alternativeMarkupIdentifier="inline" />
+                </div>
+            </f:if>
+            <f:if condition="{label}">
+                <f:translate key="{label}" default="{label}"/>
+            </f:if>
+        </f:link.external>
+    </f:if>
 
 </f:section>
 </html>

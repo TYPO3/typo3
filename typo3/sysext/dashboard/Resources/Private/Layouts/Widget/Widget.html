@@ -3,7 +3,10 @@
     <div class="widget-content-main">
         <f:render section="main" optional="true" />
     </div>
-    <div class="widget-content-footer">
-        <f:render section="footer" optional="true" />
-    </div>
+    <f:variable name="footer" value="{f:render(section:'footer', optional: 'true')}" />
+    <f:if condition="{footer -> f:spaceless()}">
+        <div class="widget-content-footer">
+            {footer -> f:format.raw()}
+        </div>
+    </f:if>
 </html>

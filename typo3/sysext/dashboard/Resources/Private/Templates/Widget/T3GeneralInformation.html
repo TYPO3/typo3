@@ -4,14 +4,16 @@
 
     <div class="row">
         <div class="col-sm-8">
-            <p>
-                {f:translate(key: 'LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:cms_description',
-                arguments: '{
-                0: currentVersion,
-                1: "&copy; {copyrightYear}",
-                2: "Kasper Sk&aring;rh&oslash;j"
-                }') -> f:format.raw()}
-            </p>
+            <f:if condition="{currentVersion} && {copyrightYear}">
+                <p>
+                    {f:translate(key: 'LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:cms_description',
+                    arguments: '{
+                    0: currentVersion,
+                    1: "&copy; {copyrightYear}",
+                    2: "Kasper Sk&aring;rh&oslash;j"
+                    }') -> f:format.raw()}
+                </p>
+            </f:if>
         </div>
         <div class="col-sm-4">
             <img src="{f:uri.resource(path: 'Images/typo3_orange.svg', extensionName: 'backend')}"
