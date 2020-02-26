@@ -90,7 +90,10 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
         if ($src !== null) {
             $this->assetCollector->addJavaScript($identifier, $src, $attributes, $options);
         } else {
-            $this->assetCollector->addInlineJavaScript($identifier, $this->renderChildren(), $attributes, $options);
+            $content = (string)$this->renderChildren();
+            if ($content !== '') {
+                $this->assetCollector->addInlineJavaScript($identifier, $content, $attributes, $options);
+            }
         }
         return '';
     }

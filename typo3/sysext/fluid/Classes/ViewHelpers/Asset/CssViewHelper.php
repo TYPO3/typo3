@@ -94,7 +94,10 @@ class CssViewHelper extends AbstractTagBasedViewHelper
         if ($file !== null) {
             $this->assetCollector->addStyleSheet($identifier, $file, $attributes, $options);
         } else {
-            $this->assetCollector->addInlineStyleSheet($identifier, $this->renderChildren(), $attributes, $options);
+            $content = (string)$this->renderChildren();
+            if ($content !== '') {
+                $this->assetCollector->addInlineStyleSheet($identifier, $content, $attributes, $options);
+            }
         }
         return '';
     }
