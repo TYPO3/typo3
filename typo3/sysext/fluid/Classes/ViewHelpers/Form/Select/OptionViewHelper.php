@@ -42,12 +42,12 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      */
     public function render()
     {
-        if ($this->arguments['selected'] ?? $this->isValueSelected($this->arguments['value'])) {
-            $this->tag->addAttribute('selected', 'selected');
-        }
         $childContent = $this->renderChildren();
         $this->tag->setContent($childContent);
         $value = $this->arguments['value'] ?? $childContent;
+        if ($this->arguments['selected'] ?? $this->isValueSelected((string)$value)) {
+            $this->tag->addAttribute('selected', 'selected');
+        }
         $this->tag->addAttribute('value', $value);
         $parentRequestedFormTokenFieldName = $this->renderingContext->getViewHelperVariableContainer()->get(
             SelectViewHelper::class,
@@ -63,18 +63,18 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      * @return bool
      */
-    protected function isValueSelected($value)
+    protected function isValueSelected(string $value): bool
     {
         $selectedValue = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'selectedValue');
         if (is_array($selectedValue)) {
-            return in_array($value, $selectedValue);
+            return in_array($value, $selectedValue, true);
         }
         if ($selectedValue instanceof \Iterator) {
-            return in_array($value, iterator_to_array($selectedValue));
+            return in_array($value, iterator_to_array($selectedValue), true);
         }
-        return $value == $selectedValue;
+        return $value === $selectedValue;
     }
 }

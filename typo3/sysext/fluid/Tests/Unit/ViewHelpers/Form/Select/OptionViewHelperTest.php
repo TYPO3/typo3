@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Select;
  */
 
 use TYPO3\CMS\Fluid\ViewHelpers\Form\Select\OptionViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -34,8 +35,9 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         $this->viewHelper = $this->getMockBuilder(OptionViewHelper::class)
-            ->setMethods(['isValueSelected', 'registerFieldNameForFormTokenGeneration', 'renderChildren'])
+            ->onlyMethods(['registerFieldNameForFormTokenGeneration', 'renderChildren'])
             ->getMock();
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'registerFieldNameForFormTokenGeneration')->willReturn('');
         $this->arguments['selected'] = null;
         $this->arguments['value'] = null;
         $this->tagBuilder = new TagBuilder();
@@ -49,6 +51,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     public function optionTagNameIsSet(): void
     {
         $tagBuilder = $this->createMock(TagBuilder::class);
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn('');
         $tagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('option');
         $this->viewHelper->setTagBuilder($tagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
@@ -60,6 +63,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     public function childrenContentIsUsedAsValueAndLabelByDefault(): void
     {
         $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn('');
         $expected = '<option value="Option Label">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
     }
@@ -71,6 +75,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->arguments['value'] = 'value';
         $this->viewHelper->setArguments($this->arguments);
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn('');
         $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
         $expected = '<option value="value">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
@@ -83,11 +88,46 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->arguments['selected'] = null;
         $this->viewHelper->setArguments($this->arguments);
-
-        $this->viewHelper->expects(self::once())->method('isValueSelected')->willReturn(true);
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn('Option Label');
         $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
 
         $expected = '<option selected="selected" value="Option Label">Option Label</option>';
+        self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
+    }
+
+    public function selectedIsAddedToSelectedOptionForProvidedValueDataProvider(): array
+    {
+        return [
+            'string value, string selection' => [
+                'val1', 'val1'
+            ],
+            'string value, array selection' => [
+                'val1', ['val1']
+            ],
+            'string value, iterable selection' => [
+                'val1', (new \ArrayObject(['val1']))->getIterator()
+            ],
+            'int value, array selection' => [
+                1, ['1']
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider selectedIsAddedToSelectedOptionForProvidedValueDataProvider
+     * @param string $value
+     * @param mixed $selected
+     */
+    public function selectedIsAddedToSelectedOptionForProvidedValue($value, $selected): void
+    {
+        $this->arguments['selected'] = null;
+        $this->arguments['value'] = $value;
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
+        $this->viewHelper->setArguments($this->arguments);
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn($selected);
+
+        $expected = '<option value="' . $value . '" selected="selected">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
     }
 
@@ -98,11 +138,50 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->arguments['selected'] = null;
         $this->viewHelper->setArguments($this->arguments);
-
-        $this->viewHelper->expects(self::once())->method('isValueSelected')->willReturn(false);
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn('');
         $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
 
         $expected = '<option value="Option Label">Option Label</option>';
+        self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
+    }
+
+    public function selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider(): array
+    {
+        return [
+            'string value, string selection' => [
+                '1',
+                '1-2'
+            ],
+            'string value, array selection' => [
+                'val1',
+                ['val3']
+            ],
+            'string value, iterable selection' => [
+                'val1',
+                (new \ArrayObject(['val3']))->getIterator()
+            ],
+            'int value, array selection' => [
+                1,
+                ['1-2']
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider
+     * @param string $value
+     * @param mixed $selected
+     */
+    public function selectedIsNotAddedToSelectedOptionForProvidedValue($value, $selected): void
+    {
+        $this->arguments['selected'] = null;
+        $this->arguments['value'] = $value;
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
+        $this->viewHelper->setArguments($this->arguments);
+        $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue')->willReturn($selected);
+
+        $expected = '<option value="' . $value . '">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
     }
 
