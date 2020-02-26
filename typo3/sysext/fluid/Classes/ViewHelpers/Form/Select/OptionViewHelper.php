@@ -70,10 +70,13 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     {
         $selectedValue = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'selectedValue');
         if (is_array($selectedValue)) {
-            return in_array($value, $selectedValue);
+            return in_array((string)$value, $selectedValue, true);
         }
         if ($selectedValue instanceof \Iterator) {
-            return in_array($value, iterator_to_array($selectedValue));
+            return in_array((string)$value, iterator_to_array($selectedValue), true);
+        }
+        if ($selectedValue instanceof \IteratorAggregate) {
+            return in_array((string)$value, iterator_to_array($selectedValue->getIterator()), true);
         }
         return $value == $selectedValue;
     }
