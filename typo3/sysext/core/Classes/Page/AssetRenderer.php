@@ -75,13 +75,12 @@ class AssetRenderer
     {
         $results = [];
         foreach ($assets as $assetData) {
+            if (($assetData['options']['priority'] ?? false) !== $priority) {
+                continue;
+            }
             $attributes = $assetData['attributes'];
             $attributesString = count($attributes) ? ' ' . GeneralUtility::implodeAttributes($attributes, true) : '';
-            $code = str_replace(['%attributes%', '%source%'], [$attributesString, $assetData['source']], $template);
-            $hasPriority = $assetData['options']['priority'] ?? false;
-            if ($hasPriority === $priority) {
-                $results[] = $code;
-            }
+            $results[] = str_replace(['%attributes%', '%source%'], [$attributesString, $assetData['source']], $template);
         }
         return implode(LF, $results);
     }

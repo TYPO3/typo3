@@ -1801,6 +1801,7 @@ class PageRenderer implements SingletonInterface
         $jsFiles .= $assetRenderer->renderJavaScript(true);
         $jsFooterFiles .= $assetRenderer->renderJavaScript();
         $cssInline .= $assetRenderer->renderInlineStyleSheets(true);
+        // append inline CSS to footer (as there is no cssFooterInline)
         $jsFooterFiles .= $assetRenderer->renderInlineStyleSheets();
         $cssLibs .= $assetRenderer->renderStyleSheets(true, $this->endingSlash);
         $cssFiles .= $assetRenderer->renderStyleSheets(false, $this->endingSlash);
