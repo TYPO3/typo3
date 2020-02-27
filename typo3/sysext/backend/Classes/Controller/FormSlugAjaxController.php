@@ -87,6 +87,9 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         $hasConflict = false;
 
         $recordData = $values;
+        if (!isset($recordData['uid'])) {
+            $recordData['uid'] = $recordId;
+        }
         $recordData['pid'] = $pid;
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
             $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
