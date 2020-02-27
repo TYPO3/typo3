@@ -828,7 +828,7 @@ class PageRepository implements LoggerAwareInterface
      * @param int|int[] $pageId The page id (or array of page ids) for which to fetch subpages (PID)
      * @param string $fields List of fields to select. Default is "*" = all
      * @param string $sortField The field to sort by. Default is "sorting
-     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%some text%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
      * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
      * @see self::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
@@ -847,7 +847,7 @@ class PageRepository implements LoggerAwareInterface
      * @param int[] $pageIds Array of page ids to fetch
      * @param string $fields List of fields to select. Default is "*" = all
      * @param string $sortField The field to sort by. Default is "sorting"
-     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%some text%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
      * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
      */
@@ -874,7 +874,7 @@ class PageRepository implements LoggerAwareInterface
      * point.
      *
      * The query can be customized by setting fields, sorting and additional WHERE clauses. If additional WHERE
-     * clauses are given, the clause must start with an operator, i.e: "AND title like '%blabla%'".
+     * clauses are given, the clause must start with an operator, i.e: "AND title like '%some text%'".
      *
      * The keys of the returned page records are the page UIDs.
      *
@@ -1002,7 +1002,7 @@ class PageRepository implements LoggerAwareInterface
      * If shortcut, look up if the target exists and is currently visible
      *
      * @param array $page The page to check
-     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+     * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%some text%'" for instance.
      * @return array
      */
     protected function checkValidShortcutOfPage(array $page, $additionalWhereClause)

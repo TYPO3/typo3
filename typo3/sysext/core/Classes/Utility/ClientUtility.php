@@ -171,8 +171,8 @@ class ClientUtility
      * Returns the version of a browser; Basically getting float value of the input string,
      * stripping of any non-numeric values in the beginning of the string first.
      *
-     * @param string $version A string with version number, eg. "/7.32 blablabla
-     * @return float Returns double value, eg. "7.32
+     * @param string $version A string with version number, eg. '/7.32 some text'
+     * @return float Returns double value, eg. 7.32
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
      */
     public static function getVersion($version)

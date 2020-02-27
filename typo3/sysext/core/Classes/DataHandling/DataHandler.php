@@ -256,7 +256,7 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * [filename]=alternative_filename: Use this array to force another name onto a file.
-     * Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field,
+     * Eg. if you set ['/tmp/filename'] = 'my_file.txt' and '/tmp/filename' is set for a certain file-field,
      * then 'my_file.txt' will be used as the name instead.
      *
      * @var array

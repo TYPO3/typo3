@@ -701,7 +701,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($timeTracker->LR) {
                 $timeTracker->push($TSkey, $name);
             }
-            // Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
+            // Checking if the COBJ is a reference to another object. (eg. name of 'some.object =< styles.something')
             if (isset($name[0]) && $name[0] === '<') {
                 $key = trim(substr($name, 1));
                 $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
@@ -5590,7 +5590,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Optionally you can supply $urlParameters which is an array with key/value pairs that are rawurlencoded and appended to the resulting url.
      *
      * @param string $label Text string being wrapped by the link.
-     * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
+     * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/example.txt" for file.
      * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
      * @param string $target Specific target set, if any. (Default is using the current)
      * @return string The wrapped $label-text string
@@ -5643,7 +5643,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Returns the URL of a "typolink" create from the input parameter string, url-parameters and target
      *
-     * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
+     * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/example.txt" for file.
      * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
      * @param string $target Specific target set, if any. (Default is using the current)
      * @return string The URL
@@ -5771,7 +5771,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
      *
-     * @param string $string Input string to en/decode: "mailto:blabla@bla.com
+     * @param string $string Input string to en/decode: "mailto:some@example.com
      * @param mixed  $type - either "ascii" or a number between -10 and 10, taken from config.spamProtectEmailAddresses
      * @return string encoded version of $string
      */
@@ -5809,7 +5809,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Decryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
      *
-     * @param string $string Input string to en/decode: "mailto:blabla@bla.com
+     * @param string $string Input string to en/decode: "mailto:some@example.com
      * @param mixed  $type - either "ascii" or a number between -10 and 10 taken from config.spamProtectEmailAddresses
      * @return string decoded version of $string
      */
