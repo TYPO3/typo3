@@ -129,6 +129,7 @@ class FlexFormSectionContainer extends AbstractContainer
         $html[] =                 '</a>';
         $html[] =             '</div>';
         $html[] =             '<div';
+        $html[] =                 'id="flexform-container-' . htmlspecialchars($flexFormFieldName) . '"';
         $html[] =                 'class="panel-group panel-hover t3-form-field-container-flexsection t3-flex-container"';
         $html[] =                 'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
         $html[] =             '>';

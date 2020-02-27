@@ -22,7 +22,7 @@
  */
 
 import * as $ from 'jquery';
-import 'jquery-ui/sortable';
+import Sortable = require('Sortable');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {FlexFormElementOptions} from './FormEngine/FlexForm/FlexFormElementOptions';
@@ -146,12 +146,10 @@ class FlexFormElement {
    * Allow flexform sections to be sorted
    */
   public createSortable(): void {
-    this.$el.sortable({
-      containment: 'parent',
+    new Sortable(this.el, {
+      group: this.el.id,
       handle: '.t3js-sortable-handle',
-      axis: 'y',
-      tolerance: 'pointer',
-      stop: () => {
+      onSort: (): void => {
         this.setActionStatus();
         $(document).trigger('flexform:sorting-changed');
       },
