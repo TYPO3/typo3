@@ -2133,7 +2133,7 @@ If the value is < 0, entryLevel is chosen from "behind" in the rootLine. Thus "-
 		</property>
 		<property name="excludeDoktypes" type="intList">
 			<description><![CDATA[list of integers
-			Enter the list of page document types (doktype) to exclude from menus. By default pages that are "not in menu" (5) are excluded and those marked for backend user access only (6). ]]></description>
+			Enter the list of page document types (doktype) to exclude from menus. By default pages that are marked for backend user access only (6) are excluded. ]]></description>
 			<default><![CDATA[5,6]]></default>
 		</property>
 		<property name="excludeUidList" type="int">
@@ -2152,8 +2152,8 @@ The pages with these uid-number will NOT be within the menu!! Additionally the c
 ]]></default>
 		</property>
 		<property name="includeNotInMenu" type="boolean">
-			<description><![CDATA[If set, pages with type "Not in menu" will be included in menus.
-The number "5" will simply be removed from the current dok-type list (which is by default "5,6" but can be changed by "excludeDoktypes", see above).]]></description>
+			<description><![CDATA[If set, pages with "Not in menu" will be included in menus.
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
