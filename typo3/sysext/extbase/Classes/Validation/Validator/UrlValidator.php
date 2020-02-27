@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UrlValidator extends AbstractValidator
 {
     /**
-     * Checks if the given value is a string.
+     * Checks if the given value is a valid url.
      *
      * @param mixed $value The value that should be validated
      */
