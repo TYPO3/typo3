@@ -227,7 +227,7 @@ Aspects are registered within one single enhancer configuration with the option 
 enhancer.
 
 .. note::
-   Values in `defaults` and `requirements` always focus on corresponding internal raw values and not and
+   Values in `defaults` and `requirements` always focus on corresponding internal raw values and not on
    generated route values.
 
 .. note::
