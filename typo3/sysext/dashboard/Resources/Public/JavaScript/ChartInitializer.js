@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","TYPO3/CMS/Dashboard/Contrib/chartjs"],(function(e,t,n,r){"use strict";return new class{constructor(){this.selector=".dashboard-item--chart",n(()=>{this.initialize()})}initialize(){n(document).on("widgetContentRendered",this.selector,(e,t)=>{e.preventDefault();const i=n(e.currentTarget);if("undefined"===t.graphConfig)return;let s,o=i.find("canvas:first");o.length>0&&(s=o[0].getContext("2d")),"undefined"!==s&&new r(s,t.graphConfig)})}}}));
+define(["require","exports","TYPO3/CMS/Dashboard/Contrib/chartjs","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,n,i){"use strict";return new class{constructor(){this.selector=".dashboard-item--chart",this.initialize()}initialize(){new i("widgetContentRendered",(function(e){e.preventDefault();const t=e.detail;if("undefined"===t.graphConfig)return;let i,r=this.querySelector("canvas");null!==r&&(i=r.getContext("2d")),"undefined"!==i&&new n(i,t.graphConfig)})).delegateTo(document,this.selector)}}}));

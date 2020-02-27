@@ -11,18 +11,16 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as $ from 'jquery';
 import * as Muuri from 'muuri';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class Grid {
-  private selector: string = '.dashboard-grid';
+  private readonly selector: string = '.dashboard-grid';
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
+    this.initialize();
   }
 
   public initialize(): void {
@@ -57,19 +55,23 @@ class Grid {
       }
     };
 
-    if ($(this.selector).length) {
+    if (document.querySelector(this.selector) !== null) {
       const dashboard = new Muuri(this.selector, options);
       dashboard.on('dragStart', (): void => {
-        $('.dashboard-item').removeClass('dashboard-item--enableSelect');
-      })
-      dashboard.on('dragReleaseEnd', (): void => {
-        $('.dashboard-item').addClass('dashboard-item--enableSelect');
-        this.saveItems(dashboard);
-      })
-
-      $('.dashboard-item').on('widgetContentRendered', (): void => {
-        dashboard.refreshItems().layout();
+        document.querySelectorAll('.dashboard-item').forEach((dashboardItem: HTMLDivElement): void => {
+          dashboardItem.classList.remove('dashboard-item--enableSelect');
+        });
       });
+      dashboard.on('dragReleaseEnd', (): void => {
+        document.querySelectorAll('.dashboard-item').forEach((dashboardItem: HTMLDivElement): void => {
+          dashboardItem.classList.add('dashboard-item--enableSelect');
+        });
+        this.saveItems(dashboard);
+      });
+
+      new RegularEvent('widgetContentRendered', (): void => {
+        dashboard.refreshItems().layout();
+      }).delegateTo(document, '.dashboard-item');
     }
   }
 

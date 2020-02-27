@@ -11,34 +11,31 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as $ from 'jquery';
 import * as Chart from 'TYPO3/CMS/Dashboard/Contrib/chartjs';
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class ChartInitializer {
 
-  private selector: string = '.dashboard-item--chart';
+  private readonly selector: string = '.dashboard-item--chart';
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
+    this.initialize();
   }
 
   public initialize(): void {
-    const me = this;
-    $(document).on('widgetContentRendered', me.selector, (e: JQueryEventObject, config: any): void => {
+    new RegularEvent('widgetContentRendered', function (this: HTMLElement, e: CustomEvent): void {
       e.preventDefault();
-      const $me = $(e.currentTarget);
+      const config: any = e.detail;
 
       if (typeof undefined === config.graphConfig) {
         return;
       }
 
-      let _canvas: any = $me.find('canvas:first');
+      let _canvas: any = this.querySelector('canvas');
       let context;
 
-      if (_canvas.length > 0) {
-        context = _canvas[0].getContext('2d');
+      if (_canvas !== null) {
+        context = _canvas.getContext('2d');
       }
 
       if (typeof undefined === context) {
@@ -46,7 +43,7 @@ class ChartInitializer {
       }
 
       new Chart(context, config.graphConfig)
-    });
+    }).delegateTo(document, this.selector)
   }
 }
 

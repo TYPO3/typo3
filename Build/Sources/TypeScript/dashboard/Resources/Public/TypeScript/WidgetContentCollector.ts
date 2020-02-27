@@ -11,45 +11,59 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 class WidgetContentCollector {
 
-  private selector: string = '.dashboard-item';
+  private readonly selector: string = '.dashboard-item';
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
+    this.initialize();
   }
 
   public initialize(): void {
-    $(this.selector).each((index: number, triggerElement: Element): void => {
+    const items = document.querySelectorAll(this.selector);
+    items.forEach((triggerElement: HTMLElement): void => {
+      const widgetWaitingElement = triggerElement.querySelector('.widget-waiting');
+      const widgetContentElement = triggerElement.querySelector('.widget-content');
+      const widgetErrorElement = triggerElement.querySelector('.widget-error');
+
       const sentRequest = (new AjaxRequest(TYPO3.settings.ajaxUrls['ext-dashboard-get-widget-content']))
         .withQueryArguments({
-          widget: $(triggerElement).data('widget-key'),
+          widget: triggerElement.dataset.widgetKey,
         })
         .get()
         .then(async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
-          $(triggerElement).find('.widget-content').html(data.content);
-          $(triggerElement).find('.widget-content').removeClass('hide');
-          $(triggerElement).find('.widget-waiting').addClass('hide');
-
-          if (Object.keys(data.eventdata).length > 0) {
-            $(triggerElement).trigger('widgetContentRendered', data.eventdata);
-          } else {
-            $(triggerElement).trigger('widgetContentRendered');
+          if (widgetContentElement !== null) {
+            widgetContentElement.innerHTML = data.content;
+            widgetContentElement.classList.remove('hide');
           }
-        }
-        );
+          if (widgetWaitingElement !== null) {
+            widgetWaitingElement.classList.add('hide');
+          }
+
+          let event: Event;
+          const eventInitDict: EventInit = {
+            bubbles: true,
+          };
+          if (Object.keys(data.eventdata).length > 0) {
+            event = new CustomEvent('widgetContentRendered', {...eventInitDict, detail: data.eventdata});
+          } else {
+            event = new Event('widgetContentRendered', eventInitDict);
+          }
+          triggerElement.dispatchEvent(event);
+        });
 
       sentRequest.catch((reason: Error): void => {
-        $(triggerElement).find('.widget-error').removeClass('hide');
-        $(triggerElement).find('.widget-waiting').addClass('hide');
-        console.warn('Error while retrieving widget [' + $(triggerElement).data('widget-key') + '] content: ' + reason.message)
+        if (widgetErrorElement !== null) {
+          widgetErrorElement.classList.remove('hide');
+        }
+        if (widgetWaitingElement !== null) {
+          widgetWaitingElement.classList.add('hide');
+        }
+        console.warn(`Error while retrieving widget [${triggerElement.dataset.widgetKey}] content: ${reason.message}`);
       });
     });
   }

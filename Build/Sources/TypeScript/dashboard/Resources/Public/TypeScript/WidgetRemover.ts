@@ -11,38 +11,33 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class WidgetRemover {
 
-  private selector: string = '.js-dashboard-remove-widget';
+  private readonly selector: string = '.js-dashboard-remove-widget';
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
+    this.initialize();
   }
 
   public initialize(): void {
-    const me = this;
-    $(document).on('click', me.selector, (e: JQueryEventObject): void => {
+    new RegularEvent('click', function (this: HTMLElement, e: Event): void {
       e.preventDefault();
-      const $me = $(e.currentTarget);
-
       const $modal = Modal.confirm(
-        $me.data('modal-title'),
-        $me.data('modal-question'),
+        this.dataset.modalTitle,
+        this.dataset.modalQuestion,
         SeverityEnum.warning, [
           {
-            text: $me.data('modal-cancel'),
+            text: this.dataset.modalCancel,
             active: true,
             btnClass: 'btn-default',
             name: 'cancel',
           },
           {
-            text: $me.data('modal-ok'),
+            text: this.dataset.modalOk,
             btnClass: 'btn-warning',
             name: 'delete',
           },
@@ -51,11 +46,11 @@ class WidgetRemover {
 
       $modal.on('button.clicked', (e: JQueryEventObject): void => {
         if (e.target.getAttribute('name') === 'delete') {
-          window.location.href = $me.attr('href');
+          window.location.href = this.getAttribute('href');
         }
         Modal.dismiss();
       });
-    });
+    }).delegateTo(document, this.selector);
   }
 }
 

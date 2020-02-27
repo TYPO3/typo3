@@ -14,38 +14,34 @@
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class WidgetSelector {
 
-  private selector: string = '.js-dashboard-addWidget';
+  private readonly selector: string = '.js-dashboard-addWidget';
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
+    this.initialize();
   }
 
   public initialize(): void {
-    const me = this;
-    $(document).on('click', me.selector, (e: JQueryEventObject): void => {
+    new RegularEvent('click', function (this: HTMLElement, e: Event): void {
       e.preventDefault();
-      const $me = $(e.currentTarget);
-
       const configuration = {
         type: Modal.types.default,
-        title: $me.data('modal-title'),
+        title: this.dataset.modalTitle,
         size: Modal.sizes.medium,
         severity: SeverityEnum.notice,
-        content: $($('#widgetSelector').html()),
+        content: $(document.getElementById('widgetSelector').innerHTML),
         additionalCssClasses: ['dashboard-modal'],
-        callback: (currentModal: any): void => {
+        callback: (currentModal: JQuery): void => {
           currentModal.on('click', 'a.dashboard-modal-item-block', (e: JQueryEventObject): void => {
             currentModal.trigger('modal-dismiss');
           });
         },
       };
       Modal.advanced(configuration);
-    });
+    }).delegateTo(document, this.selector);
   }
 }
 
