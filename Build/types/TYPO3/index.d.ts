@@ -105,19 +105,11 @@ declare module 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree' {
   export = _exported;
 }
 
-declare module 'TYPO3/CMS/Backend/MultiStepWizard' {
-  const _exported: TYPO3.CMS.Backend.MultiStepWizard;
-  export = _exported;
-}
-
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
-  $: any;
+  $: any; // only required in ImageManipulation.ts
   startInModule: Array<string>;
-  inline: {
-    delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void,
-  };
   loadEditId: (id: number, addGetVars?: string) => void;
   require: Function;
   list_frame: Window;
@@ -141,14 +133,12 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
   export = imagesloaded;
 }
 
-
-declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
-declare module 'TYPO3/CMS/Backend/LegacyTree';
-
 declare module 'muuri';
 declare module 'cm/lib/codemirror';
 declare module 'moment';
 declare module 'Sortable';
+declare module 'TYPO3/CMS/Backend/LegacyTree';
+declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
 declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';
 
 interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
@@ -164,8 +154,6 @@ interface JQuery {
   search(term?: string): JQuery;
 
   draw(): JQuery;
-
-  clearable(options?: any): JQuery;
 
   datetimepicker(options?: any): JQuery;
 
