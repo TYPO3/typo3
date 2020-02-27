@@ -78,14 +78,14 @@ class BackendUtility
     /**
      * Gets record with uid = $uid from $table
      * You can set $field to a list of fields (default is '*')
-     * Additional WHERE clauses can be added by $where (fx. ' AND blabla = 1')
+     * Additional WHERE clauses can be added by $where (fx. ' AND some_field = 1')
      * Will automatically check if records has been deleted and if so, not return anything.
      * $table must be found in $GLOBALS['TCA']
      *
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param int $uid UID of record
      * @param string $fields List of fields to select
-     * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
+     * @param string $where Additional WHERE clause, eg. ' AND some_field = 0'
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array|null Returns the row if found, otherwise NULL
      */
@@ -128,7 +128,7 @@ class BackendUtility
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param int $uid UID of record
      * @param string $fields List of fields to select
-     * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
+     * @param string $where Additional WHERE clause, eg. ' AND some_field = 0'
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
      * @return array Returns the row if found, otherwise nothing

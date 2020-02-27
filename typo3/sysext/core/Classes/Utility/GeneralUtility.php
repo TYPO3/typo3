@@ -2627,7 +2627,7 @@ class GeneralUtility
         REMOTE_HOST		=	(client host)
         HTTP_USER_AGENT	=	(client user agent)
         HTTP_ACCEPT_LANGUAGE	= (client accept language)SERVER____:
-        SCRIPT_FILENAME	=	Absolute filename of script		(Differs between windows/unix). On windows 'C:\\blabla\\blabl\\' will be converted to 'C:/blabla/blabl/'Special extras:
+        SCRIPT_FILENAME	=	Absolute filename of script		(Differs between windows/unix). On windows 'C:\\some\\path\\' will be converted to 'C:/some/path/'Special extras:
         TYPO3_HOST_ONLY =		[host] = 192.168.1.4
         TYPO3_PORT =			[port] = 8080 (blank if 80, taken from host value)
         TYPO3_REQUEST_HOST = 		[scheme]://[host][:[port]]

@@ -346,7 +346,7 @@ class Site implements SiteInterface
     protected function sanitizeBaseUrl(string $base): string
     {
         // no protocol ("//") and the first part is no "/" (path), means that this is a domain like
-        // "www.domain.com/blabla", and we want to ensure that this one then gets a "no-scheme agnostic" part
+        // "www.domain.com/subpage", and we want to ensure that this one then gets a "no-scheme agnostic" part
         if (!empty($base) && strpos($base, '//') === false && $base[0] !== '/') {
             // either a scheme is added, or no scheme but with domain, or a path which is not absolute
             // make the base prefixed with a slash, so it is recognized as path, not as domain

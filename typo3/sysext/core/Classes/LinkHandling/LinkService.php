@@ -84,7 +84,7 @@ class LinkService implements SingletonInterface
     }
 
     /**
-     * Returns an array with data interpretation of the link target, something like t3:blabla.
+     * Returns an array with data interpretation of the link target, something like t3://page?uid=23.
      *
      * @param string $urn
      * @return array
