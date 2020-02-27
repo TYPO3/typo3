@@ -215,8 +215,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $record = $item->getRecord();
         $this->getProcessedValue($item, 'starttime,endtime,fe_group,space_before_class,space_after_class', $info);
 
-        if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']) && !empty($this->record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']])) {
-            $info[] = $this->record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']];
+        if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']) && !empty($record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']])) {
+            $info[] = $record[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']];
         }
 
         // Call drawFooter hooks
