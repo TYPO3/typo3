@@ -164,7 +164,7 @@ class RootlineUtility
     /**
      * Purges all rootline caches.
      *
-     * Note: This function is intended to be used in unit tests only.
+     * @internal only used in EXT:core, no public API
      */
     public static function purgeCaches()
     {
