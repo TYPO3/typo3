@@ -12,7 +12,7 @@
 */
 
 import * as $ from 'jquery';
-let Chart: any = require('TYPO3/CMS/Dashboard/Contrib/chartjs');
+import * as Chart from 'TYPO3/CMS/Dashboard/Contrib/chartjs';
 
 class ChartInitializer {
 

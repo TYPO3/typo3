@@ -145,9 +145,11 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
 
+declare module 'muuri';
 declare module 'cm/lib/codemirror';
 declare module 'moment';
 declare module 'Sortable';
+declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';
 
 interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
   originalEvent: T;

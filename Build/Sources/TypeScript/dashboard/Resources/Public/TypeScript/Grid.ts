@@ -12,7 +12,7 @@
 */
 
 import * as $ from 'jquery';
-let Muuri: any = require('muuri');
+import * as Muuri from 'muuri';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
