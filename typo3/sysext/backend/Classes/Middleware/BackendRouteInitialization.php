@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
  * Loads ext_tables.php from all extensions, as this is the place
  * where all modules register their routes to the router
  * (additionally to those routes which are loaded in dependency
- * inejction factories from Configuration/Backend/{,Ajax}Routes.php).
+ * injection factories from Configuration/Backend/{,Ajax}Routes.php).
  *
  * The route path is added to the request as attribute "routePath".
  *

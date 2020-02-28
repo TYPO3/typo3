@@ -29,7 +29,7 @@ define([
 
   /**
    * Creates a new drag instance and initializes the clickDistance setting to
-   * prevent clicks from beeing wrongly detected as drag attempts.
+   * prevent clicks from being wrongly detected as drag attempts.
    */
   var createD3 = function() {
     return d3.drag()

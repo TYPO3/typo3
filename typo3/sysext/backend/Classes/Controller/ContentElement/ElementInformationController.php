@@ -314,14 +314,14 @@ class ElementInformationController
             $preview['url'] = $this->fileObject->getPublicUrl(true);
 
             $width = '590m';
-            $heigth = '400m';
+            $height = '400m';
 
             // Check if there is a FileRenderer
             if ($fileRenderer !== null) {
                 $preview['fileRenderer'] = $fileRenderer->render(
                     $this->fileObject,
                     $width,
-                    $heigth,
+                    $height,
                     [],
                     true
                 );
@@ -330,7 +330,7 @@ class ElementInformationController
             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
                 $preview['fileObject'] = $this->fileObject;
                 $preview['width'] = $width;
-                $preview['heigth'] = $heigth;
+                $preview['height'] = $height;
             }
         }
         return $preview;

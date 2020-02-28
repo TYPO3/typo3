@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - Performs workspace overlay on records
  * - Capable of returning all records in active language as flat array
  * - Capable of returning records for a given column in a given (optional) language
- * - Capable of returning translation data (brief info about translation consistenty)
+ * - Capable of returning translation data (brief info about translation consistency)
  */
 class ContentFetcher
 {

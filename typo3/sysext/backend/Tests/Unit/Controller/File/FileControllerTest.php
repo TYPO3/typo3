@@ -155,7 +155,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function processAjaxRequestReturnsStatus200IfNoErrorOccures()
+    public function processAjaxRequestReturnsStatus200IfNoErrorOccurs()
     {
         $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
 
@@ -174,7 +174,7 @@ class FileControllerTest extends UnitTestCase
     public function processAjaxRequestReturnsStatus500IfErrorOccurs()
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
-        $this->mockFileProcessor->expects(self::any())->method('getErrorMessages')->willReturn(['error occured']);
+        $this->mockFileProcessor->expects(self::any())->method('getErrorMessages')->willReturn(['error occurred']);
         $subject->_set('fileProcessor', $this->mockFileProcessor);
         $result = $subject->processAjaxRequest($this->request, $this->response);
         self::assertEquals(500, $result->getStatusCode());

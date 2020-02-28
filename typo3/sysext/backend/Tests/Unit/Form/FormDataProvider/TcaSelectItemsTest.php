@@ -1980,7 +1980,7 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesItemsThatAreRestictedByUserStorageAddedByForeignTable(): void
+    public function addDataRemovesItemsThatAreRestrictedByUserStorageAddedByForeignTable(): void
     {
         $input = [
             'databaseRow' => [

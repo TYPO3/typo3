@@ -81,7 +81,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUniqeId()
+    public function addDataSetsUniqueId()
     {
         $input = [
             'command' => 'new',

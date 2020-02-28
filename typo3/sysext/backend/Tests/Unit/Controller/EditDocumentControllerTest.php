@@ -64,9 +64,9 @@ class EditDocumentControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider slugDependendFieldsAreAddedToColumnsOnlyDataProvider
+     * @dataProvider slugDependentFieldsAreAddedToColumnsOnlyDataProvider
      */
-    public function slugDependendFieldsAreAddedToColumnsOnly(string $result, string $selectedFields, string $tableName, array $configuration): void
+    public function slugDependentFieldsAreAddedToColumnsOnly(string $result, string $selectedFields, string $tableName, array $configuration): void
     {
         $GLOBALS['TCA'][$tableName]['columns'] = $configuration;
 
@@ -84,7 +84,7 @@ class EditDocumentControllerTest extends UnitTestCase
         self::assertEquals($result, $editDocumentControllerMock->_get('columnsOnly'));
     }
 
-    public function slugDependendFieldsAreAddedToColumnsOnlyDataProvider(): array
+    public function slugDependentFieldsAreAddedToColumnsOnlyDataProvider(): array
     {
         return [
             'fields in string' => [

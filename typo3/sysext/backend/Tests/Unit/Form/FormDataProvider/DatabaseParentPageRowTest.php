@@ -67,14 +67,14 @@ class DatabaseParentPageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsNeigborRowIfNegativeUidGiven()
+    public function addDataSetsNeighborRowIfNegativeUidGiven()
     {
         $input = [
             'tableName' => 'tt_content',
             'command' => 'new',
             'vanillaUid' => -10,
         ];
-        $neigborRow = [
+        $neighborRow = [
             'uid' => 10,
             'pid' => 321
         ];
@@ -85,7 +85,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
         $this->subject->expects(self::at(0))
             ->method('getDatabaseRow')
             ->with($input['tableName'], 10)
-            ->willReturn($neigborRow);
+            ->willReturn($neighborRow);
 
         $this->subject->expects(self::at(1))
             ->method('getDatabaseRow')
@@ -94,7 +94,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
 
         $result = $this->subject->addData($input);
 
-        self::assertSame($neigborRow, $result['neighborRow']);
+        self::assertSame($neighborRow, $result['neighborRow']);
     }
 
     /**

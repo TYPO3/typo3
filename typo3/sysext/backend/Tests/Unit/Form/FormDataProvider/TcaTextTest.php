@@ -74,8 +74,8 @@ class TcaTextTest extends UnitTestCase
 
         $richtextConfigurationProphecy = $this->prophesize(Richtext::class);
         GeneralUtility::addInstance(Richtext::class, $richtextConfigurationProphecy->reveal());
-        $rteHtmlParserPropehy = $this->prophesize(RteHtmlParser::class);
-        GeneralUtility::addInstance(RteHtmlParser::class, $rteHtmlParserPropehy->reveal());
+        $rteHtmlParserProphecy = $this->prophesize(RteHtmlParser::class);
+        GeneralUtility::addInstance(RteHtmlParser::class, $rteHtmlParserProphecy->reveal());
 
         $richtextConfigurationProphecy
             ->getConfiguration(
@@ -89,7 +89,7 @@ class TcaTextTest extends UnitTestCase
                 ]
             )
             ->willReturn([ 'aConfig' => 'option']);
-        $rteHtmlParserPropehy
+        $rteHtmlParserProphecy
             ->transformTextForRichTextEditor(
                 'notProcessedContent',
                 []

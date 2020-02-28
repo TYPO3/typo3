@@ -22,7 +22,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * ViewHelper for the backend which generates a :html:`<img>` tag with the special URI to render thumbnails deffered.
+ * ViewHelper for the backend which generates an :html:`<img>` tag with the special URI to render thumbnails deferred.
  *
  * Examples
  * ========

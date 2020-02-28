@@ -881,7 +881,7 @@ class Clipboard
 
     /**
      * Verifies if the item $table/$uid is on the current pad.
-     * If the pad is "normal", the mode value is returned if the element existed. Thus you'll know if the item was copy or cut moded...
+     * If the pad is "normal" and the element exists, the mode value is returned. Thus you'll know if the item was copied or cut.
      *
      * @param string $table Table name, (_FILE for files...)
      * @param int $uid Element uid (path for files)

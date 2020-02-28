@@ -37,7 +37,7 @@ class ThumbnailControllerTest extends UnitTestCase
         'fileId' => 123,
         'configuration' => [
             'width' => 64,
-            'heigth' => 64,
+            'height' => 64,
         ],
     ];
 

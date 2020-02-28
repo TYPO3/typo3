@@ -20,8 +20,8 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 /**
  * Interface PreviewRendererInterface
  *
- * Conctract for classes capable of rendering previews of a given record
- * from a table. Responsible for rendering preview heeader, preview content
+ * Contract for classes capable of rendering previews of a given record
+ * from a table. Responsible for rendering preview header, preview content
  * and wrapping of those two values.
  *
  * Responsibilities are segmented into three methods, one for each responsibility,

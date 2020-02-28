@@ -68,7 +68,7 @@ class MenuTest extends UnitTestCase
      *
      * @test
      */
-    public function getMenusremovedEmptyMenusExpectsEquals()
+    public function getMenusRemovedEmptyMenusExpectsEquals()
     {
         $menuRegistry = new MenuRegistry();
 

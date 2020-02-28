@@ -46,7 +46,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersAlternativeLabelColumnn()
+    public function addDataRegistersAlternativeLabelColumn()
     {
         $input = [
             'columnsToProcess' => [],

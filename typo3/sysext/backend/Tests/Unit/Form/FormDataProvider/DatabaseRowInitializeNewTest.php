@@ -401,7 +401,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataOverrulesOtherDefauls()
+    public function addDataSetsDefaultDataOverrulesOtherDefaults()
     {
         $input = [
             'command' => 'new',
