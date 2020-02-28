@@ -46,7 +46,7 @@ class DisjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateReturnsAllErrorsIfAllValidatorsReturnErrrors()
+    public function validateReturnsAllErrorsIfAllValidatorsReturnErrors()
     {
         $validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator([]);
         $error1 = new \TYPO3\CMS\Extbase\Error\Error('Error', 123);

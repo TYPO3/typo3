@@ -321,7 +321,7 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
     public function addAdditionalHeaderData($additionalHeaderData)
     {
         if (!is_string($additionalHeaderData)) {
-            throw new \InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
+            throw new \InvalidArgumentException('The additional header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
         }
         if ($this->request->isCached()) {
             /** @var PageRenderer $pageRenderer */

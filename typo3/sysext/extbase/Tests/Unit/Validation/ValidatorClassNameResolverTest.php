@@ -76,7 +76,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveThrowsNoSuchValidatorExceptionDueToClassInheritence(): void
+    public function resolveThrowsNoSuchValidatorExceptionDueToClassInheritance(): void
     {
         $this->expectExceptionCode(1365776838);
         $this->expectExceptionMessage(sprintf(

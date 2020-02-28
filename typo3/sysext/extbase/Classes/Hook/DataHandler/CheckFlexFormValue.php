@@ -25,11 +25,11 @@ class CheckFlexFormValue
     /**
      * Check flexform value before merge
      *
-     * @param DataHandler $dataHander
+     * @param DataHandler $dataHandler
      * @param array $currentValue
      * @param array $newValue
      */
-    public function checkFlexFormValue_beforeMerge(DataHandler $dataHander, array &$currentValue, array &$newValue)
+    public function checkFlexFormValue_beforeMerge(DataHandler $dataHandler, array &$currentValue, array &$newValue)
     {
         $currentValue = $this->removeSwitchableControllerActionsRecursive($currentValue);
     }

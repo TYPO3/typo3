@@ -162,7 +162,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function findByidentifierReturnsResultOfGetObjectByIdentifierCallFromBackend()
+    public function findByIdentifierReturnsResultOfGetObjectByIdentifierCallFromBackend()
     {
         $identifier = '42';
         $object = new \stdClass();

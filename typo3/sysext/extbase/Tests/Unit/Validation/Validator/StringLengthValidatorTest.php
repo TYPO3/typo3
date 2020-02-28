@@ -131,7 +131,7 @@ class StringLengthValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function stringLengthValidatorReturnsNoErrorsfTheStringLengthIsEqualToMaxLength()
+    public function stringLengthValidatorReturnsNoErrorsIfTheStringLengthIsEqualToMaxLength()
     {
         $validator = new StringLengthValidator(['minimum' => 1, 'maximum' => 10]);
 

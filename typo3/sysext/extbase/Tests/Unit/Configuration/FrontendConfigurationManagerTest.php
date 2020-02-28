@@ -180,7 +180,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $testPluginSettings = [
             'settings.' => [
                 'some.' => [
-                    'nested' => 'valueOverridde',
+                    'nested' => 'valueOverride',
                     'new' => 'value'
                 ]
             ]
@@ -188,7 +188,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $testPluginSettingsConverted = [
             'settings' => [
                 'some' => [
-                    'nested' => 'valueOverridde',
+                    'nested' => 'valueOverride',
                     'new' => 'value'
                 ]
             ]
@@ -206,7 +206,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'settings' => [
                 'foo' => 'bar',
                 'some' => [
-                    'nested' => 'valueOverridde',
+                    'nested' => 'valueOverride',
                     'new' => 'value'
                 ]
             ]

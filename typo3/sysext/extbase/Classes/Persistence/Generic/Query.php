@@ -189,7 +189,7 @@ class Query implements QueryInterface
     public function getQuerySettings()
     {
         if (!$this->querySettings instanceof QuerySettingsInterface) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Tried to get the query settings without seting them before.', 1248689115);
+            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Tried to get the query settings without setting them before.', 1248689115);
         }
         return $this->querySettings;
     }

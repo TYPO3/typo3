@@ -285,15 +285,15 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     ): void {
         $this->abstractConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($this->testTypoScriptSetup);
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->with()->willReturn($this->testPluginConfiguration);
-        $contextSpecifixFrameworkConfiguration = [
+        $contextSpecificFrameworkConfiguration = [
             'context' => [
-                'specific' => 'framwork',
+                'specific' => 'framework',
                 'conf' => 'iguration'
             ]
         ];
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturn($contextSpecifixFrameworkConfiguration);
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturn($contextSpecificFrameworkConfiguration);
         $actualResult = $this->abstractConfigurationManager->getConfiguration();
-        self::assertEquals($contextSpecifixFrameworkConfiguration, $actualResult);
+        self::assertEquals($contextSpecificFrameworkConfiguration, $actualResult);
     }
 
     /**
@@ -308,18 +308,18 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->willReturn($this->testPluginConfiguration);
-        $contextSpecifixFrameworkConfiguration = [
+        $contextSpecificFrameworkConfiguration = [
             'context' => [
-                'specific' => 'framwork',
+                'specific' => 'framework',
                 'conf' => 'iguration'
             ]
         ];
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturn($contextSpecifixFrameworkConfiguration);
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturn($contextSpecificFrameworkConfiguration);
         $actualResult = $this->abstractConfigurationManager->getConfiguration(
             'CurrentExtensionName',
             'CurrentPluginName'
         );
-        self::assertEquals($contextSpecifixFrameworkConfiguration, $actualResult);
+        self::assertEquals($contextSpecificFrameworkConfiguration, $actualResult);
     }
 
     /**

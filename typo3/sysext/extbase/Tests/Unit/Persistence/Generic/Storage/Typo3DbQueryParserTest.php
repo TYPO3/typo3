@@ -311,10 +311,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
-        $querBuilderProphet = $this->prophesize(QueryBuilder::class, $connectionProphet->reveal());
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class, $connectionProphet->reveal());
         $expr = GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal());
-        $querBuilderProphet->expr()->willReturn($expr);
-        return $querBuilderProphet;
+        $queryBuilderProphet->expr()->willReturn($expr);
+        return $queryBuilderProphet;
     }
 
     /**

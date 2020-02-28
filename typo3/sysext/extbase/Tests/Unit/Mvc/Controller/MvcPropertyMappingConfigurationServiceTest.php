@@ -30,7 +30,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function dataProviderForgenerateTrustedPropertiesToken()
+    public function dataProviderForGenerateTrustedPropertiesToken()
     {
         return [
             'Simple Case - Empty' => [
@@ -90,7 +90,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues()
+    public function dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues()
     {
         return [
             'Overriding form fields (string overridden by array) - 1' => [
@@ -119,7 +119,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider dataProviderForgenerateTrustedPropertiesToken
+     * @dataProvider dataProviderForGenerateTrustedPropertiesToken
      */
     public function generateTrustedPropertiesTokenGeneratesTheCorrectHashesInNormalOperation($input, $expected)
     {
@@ -134,7 +134,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      * @param $input
      * @param $expectExceptionCode
      * @test
-     * @dataProvider dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues
+     * @dataProvider dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues
      */
     public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input, $expectExceptionCode)
     {

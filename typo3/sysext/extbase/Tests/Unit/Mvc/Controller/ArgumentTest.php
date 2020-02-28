@@ -46,9 +46,9 @@ class ArgumentTest extends UnitTestCase
         $this->simpleValueArgument->injectPropertyMapper($this->mockPropertyMapper);
         $this->objectArgument->injectPropertyMapper($this->mockPropertyMapper);
         $this->mockConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
-        $propertyMappingConfiguranion = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
-        $this->simpleValueArgument->injectPropertyMappingConfiguration($propertyMappingConfiguranion);
-        $this->objectArgument->injectPropertyMappingConfiguration($propertyMappingConfiguranion);
+        $propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
+        $this->simpleValueArgument->injectPropertyMappingConfiguration($propertyMappingConfiguration);
+        $this->objectArgument->injectPropertyMappingConfiguration($propertyMappingConfiguration);
     }
 
     /**

@@ -262,7 +262,7 @@ class RequestTest extends UnitTestCase
                 ],
                 'TYPO3\\CMS\\Ext\\Controller\\FooController',
             ],
-            'Vendor TYPO3\CMS, extension, subpackage, controlle given' => [
+            'Vendor TYPO3\CMS, extension, subpackage, controller given' => [
                 [
                     'extensionName' => 'Fluid',
                     'subpackageKey' => 'ViewHelpers\\Widget',

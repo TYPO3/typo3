@@ -172,7 +172,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromthrowsInvalidTargetExceptionIfSourceContainsANonSettableProperty()
+    public function convertFromThrowsInvalidTargetExceptionIfSourceContainsANonSettableProperty()
     {
         static::expectException(Exception::class);
         static::expectExceptionCode(1297759968);

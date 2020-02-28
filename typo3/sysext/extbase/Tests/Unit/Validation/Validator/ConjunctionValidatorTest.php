@@ -131,7 +131,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function countReturnesTheNumberOfValidatorsContainedInTheConjunction()
+    public function countReturnsTheNumberOfValidatorsContainedInTheConjunction()
     {
         $validatorConjunction = new ConjunctionValidator();
         $validator1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)

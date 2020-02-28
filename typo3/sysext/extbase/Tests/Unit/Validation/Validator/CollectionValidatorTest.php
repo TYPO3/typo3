@@ -156,7 +156,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorIsValidEarlyReturnsOnUnitializedLazyObjectStorages()
+    public function collectionValidatorIsValidEarlyReturnsOnUninitializedLazyObjectStorages()
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 

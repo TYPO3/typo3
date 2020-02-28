@@ -28,10 +28,10 @@ class TestController extends ActionController
 {
     public function initializeFooAction()
     {
-        /** @var MvcPropertyMappingConfiguration $propertMappingConfiguration */
-        $propertMappingConfiguration = $this->arguments['fooParam']->getPropertyMappingConfiguration();
-        $propertMappingConfiguration->allowAllProperties();
-        $propertMappingConfiguration->setTypeConverterOption(
+        /** @var MvcPropertyMappingConfiguration $propertyMappingConfiguration */
+        $propertyMappingConfiguration = $this->arguments['fooParam']->getPropertyMappingConfiguration();
+        $propertyMappingConfiguration->allowAllProperties();
+        $propertyMappingConfiguration->setTypeConverterOption(
             PersistentObjectConverter::class,
             PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
             true

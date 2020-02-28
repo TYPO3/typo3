@@ -133,7 +133,7 @@ tt_content.' . $pluginSignature . ' {
 }');
                 break;
             default:
-                throw new \InvalidArgumentException('The pluginType "' . $pluginType . '" is not suported', 1289858856);
+                throw new \InvalidArgumentException('The pluginType "' . $pluginType . '" is not supported', 1289858856);
         }
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '

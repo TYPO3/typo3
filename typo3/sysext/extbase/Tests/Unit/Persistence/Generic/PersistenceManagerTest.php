@@ -335,7 +335,7 @@ class PersistenceManagerTest extends UnitTestCase
 			class  ' . $className . 'Repository extends \\TYPO3\\CMS\\Extbase\\Persistence\\Repository {}
 		');
         $classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
-        $repositorClassNameWithNamespace = __NAMESPACE__ . '\\Domain\\Repository\\' . $className . 'Repository';
+        $repositoryClassNameWithNamespace = __NAMESPACE__ . '\\Domain\\Repository\\' . $className . 'Repository';
 
         $psrContainer = $this->getMockBuilder(\Psr\Container\ContainerInterface::class)
             ->setMethods(['has', 'get'])
@@ -346,7 +346,7 @@ class PersistenceManagerTest extends UnitTestCase
         $changedEntities = new ObjectStorage();
         $entity1 = new $classNameWithNamespace();
         /** @var RepositoryInterface|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $repository */
-        $repository = $this->getAccessibleMock($repositorClassNameWithNamespace, ['dummy'], [$this->mockObjectManager]);
+        $repository = $this->getAccessibleMock($repositoryClassNameWithNamespace, ['dummy'], [$this->mockObjectManager]);
         $repository->_set('objectType', get_class($entity1));
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
         $mockBackend = $this->getMockBuilder(Backend::class)
