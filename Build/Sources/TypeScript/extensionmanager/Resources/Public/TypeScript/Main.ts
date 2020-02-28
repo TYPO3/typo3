@@ -22,6 +22,8 @@ import ExtensionManagerUpdate = require('./Update');
 import ExtensionManagerUploadForm = require('./UploadForm');
 import 'datatables';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 const securityUtility = new SecurityUtility();
 
@@ -134,14 +136,9 @@ class ExtensionManager {
         NProgress.start();
       }).on('click', 'a[data-action=update-extension]', (e: JQueryEventObject): void => {
         e.preventDefault();
-        $.ajax({
-          url: $(e.currentTarget).attr('href'),
-          dataType: 'json',
-          beforeSend: (): void => {
-            NProgress.start();
-          },
-          success: this.updateExtension,
-        });
+
+        NProgress.start();
+        new AjaxRequest($(e.currentTarget).attr('href')).get().then(this.updateExtension);
       }).on('change', 'input[name=unlockDependencyIgnoreButton]', (e: JQueryEventObject): void => {
         const $actionButton = $('.t3js-dependencies');
         $actionButton.toggleClass('disabled', !$(e.currentTarget).prop('checked'));
@@ -248,22 +245,17 @@ class ExtensionManager {
   }
 
   private removeExtensionFromDisk($extension: JQuery): void {
-    $.ajax({
-      url: $extension.data('href'),
-      beforeSend: (): void => {
-        NProgress.start();
-      },
-      success: (): void => {
-        location.reload();
-      },
-      complete: (): void => {
-        NProgress.done();
-      },
+    NProgress.start();
+    new AjaxRequest($extension.data('href')).get().then((): void => {
+      location.reload();
+    }).finally((): void => {
+      NProgress.done();
     });
   }
 
-  private updateExtension(data: any): void {
+  private async updateExtension(response: AjaxResponse): Promise<void> {
     let i = 0;
+    const data = await response.resolve();
     const $form = $('<form>');
     $.each(data.updateComments, (version: string, comment: string): void => {
       const $input = $('<input>').attr({type: 'radio', name: 'version'}).val(version);
@@ -311,20 +303,13 @@ class ExtensionManager {
           text: TYPO3.lang['button.updateExtension'],
           btnClass: 'btn-warning',
           trigger: (): void => {
-            $.ajax({
-              url: data.url,
-              data: {
-                tx_extensionmanager_tools_extensionmanagerextensionmanager: {
-                  version: $('input:radio[name=version]:checked', Modal.currentModal).val(),
-                },
-              },
-              dataType: 'json',
-              beforeSend: (): void => {
-                NProgress.start();
-              },
-              complete: (): void => {
-                location.reload();
-              },
+            NProgress.start();
+            new AjaxRequest(data.url).withQueryArguments({
+              tx_extensionmanager_tools_extensionmanagerextensionmanager: {
+                version: $('input:radio[name=version]:checked', Modal.currentModal).val(),
+              }
+            }).get().finally((): void => {
+              location.reload();
             });
             Modal.dismiss();
           },

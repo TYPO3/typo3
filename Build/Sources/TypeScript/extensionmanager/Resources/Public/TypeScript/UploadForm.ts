@@ -13,6 +13,8 @@
 
 import * as $ from 'jquery';
 import 'datatables';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 class UploadForm {
   public expandedUploadFormClass: string = 'transformed';
@@ -31,12 +33,8 @@ class UploadForm {
         $me.addClass(this.expandedUploadFormClass);
         $uploadForm.stop().slideDown();
 
-        $.ajax({
-          url: $me.attr('href'),
-          dataType: 'html',
-          success: (data: any): void => {
-            $uploadForm.find('.t3js-upload-form-target').html(data);
-          },
+        new AjaxRequest($me.attr('href')).get().then(async (response: AjaxResponse): Promise<void> => {
+          $uploadForm.find('.t3js-upload-form-target').html(await response.resolve());
         });
       }
     });
