@@ -186,7 +186,7 @@ class LocallangXmlParser extends AbstractXmlParser
             $rootXmlNode = simplexml_load_string($xmlContent, \SimpleXMLElement::class, LIBXML_NOWARNING);
             libxml_disable_entity_loader($previousValueOfEntityLoader);
         }
-        if (!isset($rootXmlNode) || $rootXmlNode === false) {
+        if ($rootXmlNode === false) {
             $xmlError = libxml_get_last_error();
             throw new InvalidXmlFileException(
                 'The path provided does not point to existing and accessible well-formed XML file. Reason: ' . $xmlError->message . ' in ' . $targetPath . ', line ' . $xmlError->line,

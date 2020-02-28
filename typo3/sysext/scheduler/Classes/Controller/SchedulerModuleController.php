@@ -687,7 +687,7 @@ class SchedulerModuleController
                 $additionalFieldsStyle = ' style="display: none"';
             }
             // Add each field to the display, if there are indeed any
-            if (isset($fields) && is_array($fields)) {
+            if (is_array($fields)) {
                 foreach ($fields as $fieldID => $fieldInfo) {
                     $htmlClassName = strtolower(str_replace('\\', '-', $class));
                     $field = [];

@@ -1010,6 +1010,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getSlidePids($pidList, $pidConf)
     {
+        // todo: phpstan states that $pidConf always exists and is not nullable. At the moment, this is a false positive
+        //       as null can be passed into this method via $pidConf. As soon as more strict types are used, this isset
+        //       check must be replaced with a more appropriate check like empty or count.
         $pidList = isset($pidConf) ? trim($this->stdWrap($pidList, $pidConf)) : trim($pidList);
         if ($pidList === '') {
             $pidList = 'this';

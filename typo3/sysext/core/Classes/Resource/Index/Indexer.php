@@ -70,7 +70,7 @@ class Indexer implements LoggerAwareInterface
      */
     public function createIndexEntry($identifier): File
     {
-        if (!isset($identifier) || !is_string($identifier) || $identifier === '') {
+        if (!is_string($identifier) || $identifier === '') {
             throw new \InvalidArgumentException(
                 'Invalid file identifier given. It must be of type string and not empty. "' . gettype($identifier) . '" given.',
                 1401732565

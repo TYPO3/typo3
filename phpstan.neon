@@ -19,6 +19,7 @@ parameters:
     - %currentWorkingDirectory%/typo3/sysext/*/Configuration/*
 
   ignoreErrors:
+    # ignored errors for level 0
     - '#Undefined variable: \$_EXTKEY#'
     -
       message: '#Instantiated class Composer\\Util\\Filesystem not found\.#'
@@ -66,3 +67,17 @@ parameters:
       message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContext\\:\\:getParserConfiguration\\(\\)\\.$#"
       count: 1
       path: typo3/sysext/fluid/Classes/Core/Rendering/RenderingContext.php
+
+    # ignored errors for level 1
+    -
+      message: "#^Variable \\$value in isset\\(\\) always exists and is not nullable\\.$#"
+      count: 1
+      path: typo3/sysext/backend/Classes/Utility/BackendUtility.php
+    -
+      message: "#^Variable \\$pidConf in isset\\(\\) always exists and is not nullable\\.$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+    -
+      message: "#^Variable \\$column in isset\\(\\) always exists and is not nullable\\.$#"
+      count: 1
+      path: typo3/sysext/workspaces/Classes/Service/GridDataService.php

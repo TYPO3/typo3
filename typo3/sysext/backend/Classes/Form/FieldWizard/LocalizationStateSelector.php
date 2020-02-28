@@ -36,10 +36,7 @@ class LocalizationStateSelector extends AbstractNode
         $result = $this->initializeResultArray();
 
         $fieldName = $this->data['fieldName'];
-        $l10nStateFieldName = '';
-        if (isset($l10nStateFieldName)) {
-            $l10nStateFieldName = 'l10n_state';
-        }
+        $l10nStateFieldName = 'l10n_state';
         if (
             !$l10nStateFieldName
             || !isset($this->data['defaultLanguageRow'])
