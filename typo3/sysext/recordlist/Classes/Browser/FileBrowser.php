@@ -152,7 +152,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->expandFolder);
             } catch (Exception $accessException) {
                 // We're just catching the exception here, nothing to be done if folder does not exist or is not accessible.
-            } catch (\InvalidArgumentException $driverMissingExecption) {
+            } catch (\InvalidArgumentException $driverMissingException) {
                 // We're just catching the exception here, nothing to be done if the driver does not exist anymore.
             }
 

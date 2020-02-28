@@ -38,7 +38,7 @@ The Indexed Search Engine provides two major elements to TYPO3:
 This is an example of how the search interface on a website looks:
 
 .. figure:: ../Images/FrontendSearchResults.png
-   :alt: Frontend search sesults
+   :alt: Frontend search results
 
    Search results in the frontend
 

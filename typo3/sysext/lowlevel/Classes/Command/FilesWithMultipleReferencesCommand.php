@@ -50,7 +50,7 @@ Assumptions:
 Files attached to records in TYPO3 using a "group" type configuration in TCA or FlexForm DataStructure are managed exclusively by the system and there must always exist a 1-1 reference between the file and the reference in the record.
 This tool will expose when such files are referenced from multiple locations which is considered an integrity error.
 If a multi-reference is found it was typically created because the record was copied or modified outside of DataHandler which will otherwise maintain the relations correctly.
-Multi-references should be resolved to 1-1 references as soon as possible. The danger of keeping multi-references is that if the file is removed from one of the referring records it will actually be deleted in the file system, leaving missing files for the remaining referers!
+Multi-references should be resolved to 1-1 references as soon as possible. The danger of keeping multi-references is that if the file is removed from one of the referring records it will actually be deleted in the file system, leaving missing files for the remaining referrers!
 
 If the option "--dry-run" is not set, the files that are referenced multiple times are copied with a new name
 and the references are updated accordingly.

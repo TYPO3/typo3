@@ -42,7 +42,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowsWithMissingConfiration()
+    public function createAllThrowsWithMissingConfiguration()
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);

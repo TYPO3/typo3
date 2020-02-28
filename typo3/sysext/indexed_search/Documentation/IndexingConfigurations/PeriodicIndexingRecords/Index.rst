@@ -34,7 +34,7 @@ The configuration record looks like this:
 
 
 If the records you want to index are not located on the page where the
-indexing configuration and fronend plugin is, then you can point to
+indexing configuration and frontend plugin is, then you can point to
 the location. Notice how the field with "GET parameters" is used to
 define how the search results are shown - this must correspond with
 what the plugin takes of parameters.

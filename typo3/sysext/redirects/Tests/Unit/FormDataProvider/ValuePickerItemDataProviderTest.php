@@ -77,7 +77,7 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotChangeResultSetIfNoSitessAreFound()
+    public function addDataDoesNotChangeResultSetIfNoSitesAreFound()
     {
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         $siteFinderProphecy->getAllSites()->willReturn([]);

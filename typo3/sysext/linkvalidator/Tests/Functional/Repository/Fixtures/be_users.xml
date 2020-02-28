@@ -28,7 +28,7 @@
         <workspace_id>0</workspace_id>
     </be_users>
 
-    <!-- editor with access to tables and excludefiels via group -->
+    <!-- editor with access to tables and excludefields via group -->
     <be_users>
         <uid>4</uid>
         <pid>0</pid>

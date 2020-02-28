@@ -86,7 +86,7 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
     public function getDescription(): string
     {
         return 'The extension "redirects" includes functionality to handle any kind of redirects. '
-               . 'The functionality superseds sys_domain entries with the only purpose of redirecting to a different domain or entry. '
+               . 'The functionality supersedes sys_domain entries with the only purpose of redirecting to a different domain or entry. '
                . 'This upgrade wizard installs the redirect extension if necessary and migrates the sys_domain entries to standard redirects.';
     }
 

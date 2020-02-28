@@ -789,9 +789,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $postPreLgd = $this->settings['results.']['markupSW_postPreLgd'];
         $postPreLgd_offset = $this->settings['results.']['markupSW_postPreLgd_offset'];
         $divider = $this->settings['results.']['markupSW_divider'];
-        $occurencies = (count($parts) - 1) / 2;
-        if ($occurencies) {
-            $postPreLgd = MathUtility::forceIntegerInRange($summaryMax / $occurencies, $postPreLgd, $summaryMax / 2);
+        $occurrences = (count($parts) - 1) / 2;
+        if ($occurrences) {
+            $postPreLgd = MathUtility::forceIntegerInRange($summaryMax / $occurrences, $postPreLgd, $summaryMax / 2);
         }
         // Variable:
         $summaryLgd = 0;
@@ -971,7 +971,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->lexerObj = GeneralUtility::makeInstance($lexerObjectClassName);
         // Traverse the search word array
         foreach ($searchWords as $wordDef) {
-            // No space in word (otherwise it might be a sentense in quotes like "there is").
+            // No space in word (otherwise it might be a sentence in quotes like "there is").
             if (strpos($wordDef['sword'], ' ') === false) {
                 // Split the search word by lexer:
                 $res = $this->lexerObj->split2Words($wordDef['sword']);
