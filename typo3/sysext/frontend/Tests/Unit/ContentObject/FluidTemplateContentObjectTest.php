@@ -758,7 +758,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsRenderOnStandaloneViewie(): void
+    public function renderCallsRenderOnStandaloneView(): void
     {
         $this->addMockViewToSubject();
         $this->standaloneView

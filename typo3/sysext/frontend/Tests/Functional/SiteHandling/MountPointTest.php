@@ -519,7 +519,7 @@ class MountPointTest extends AbstractTestCase
      * @dataProvider mountPointPagesShowContentAsConfiguredDataProvider
      * @test
      * @group not-postgres
-     * Does not work on postres currenly due to setUpFrontendRootPage which does not work with the database snapshotting
+     * Does not work on postgres currently due to setUpFrontendRootPage which does not work with the database snapshotting
      */
     public function mountPointPagesShowContentAsConfigured(string $uri, string $expected)
     {

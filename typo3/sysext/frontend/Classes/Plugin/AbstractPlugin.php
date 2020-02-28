@@ -85,9 +85,9 @@ class AbstractPlugin
     ];
 
     /**
-     * Local pointer variabe array.
+     * Local pointer variable array.
      * Holds pointer information for the MVC like approach Kasper
-     * initially proposed
+     * initially proposed.
      *
      * @var array
      */

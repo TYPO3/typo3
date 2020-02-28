@@ -67,7 +67,7 @@ Displays a login box for website users. This is only useful if you have already 
 Offers a selection of menus and a sitemap you can insert on a page.
 
 &lt;strong&gt;Insert records&lt;/strong&gt;
-This acts as placeholder for other records. With this Content Element, you can resuse multiple content elements from other pages.
+This acts as placeholder for other records. With this content element, you can reuse multiple content elements from other pages.
 
 &lt;strong&gt;Insert plugin&lt;/strong&gt;
 This will allows you to insert news, forums, guestbooks, lists of addresses, and other functionality. Plugins are typically provided by TYPO3 extensions. The available fields and required configuration depend on the extension.
@@ -267,7 +267,7 @@ xMOD_csh_corebe:wizard_table_wiz</source>
 				<source>You can attach multiple images to the Content Element.
 Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
 
-When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Aligment selector. See link to "Page Content / Position" below.
+When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Alignment selector. See link to "Page Content / Position" below.
 You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.</source>
 			</trans-unit>
 			<trans-unit id="_image.seeAlso" resname="_image.seeAlso" xml:space="preserve">

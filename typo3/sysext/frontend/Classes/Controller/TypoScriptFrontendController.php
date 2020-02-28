@@ -1494,7 +1494,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Checks if visibility of the page is blocked upwards in the root line.
      *
-     * If any page in the root line is blocking visibility, true is returend.
+     * If any page in the root line is blocking visibility, true is returned.
      *
      * All pages from the blocking page downwards are removed from the root
      * line, so that the remaining pages can be used to relocate the page up

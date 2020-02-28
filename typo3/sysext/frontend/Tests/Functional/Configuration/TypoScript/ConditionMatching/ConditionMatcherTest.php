@@ -83,7 +83,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      *
      * @test
      */
-    public function usergroupConditionDoesNotMatchDefaulUserGroupIds(): void
+    public function usergroupConditionDoesNotMatchDefaultUserGroupIds(): void
     {
         $this->setupFrontendUserContext([0, -1]);
         $subject = $this->getConditionMatcher();
