@@ -60,7 +60,7 @@ class ServerRequestHandler
     }
 
     /**
-     * Returns validated redirect url cointained in request param return_url or redirect_url
+     * Returns validated redirect url contained in request param return_url or redirect_url
      *
      * @return string
      */

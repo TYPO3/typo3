@@ -165,7 +165,7 @@ class RedirectHandler
     }
 
     /**
-     * Generate redirect_url for case that the user was successfuly logged in
+     * Generate redirect_url for case that the user was successfully logged in
      *
      * @param string $redirectMode
      * @param int $redirectPageLogin
