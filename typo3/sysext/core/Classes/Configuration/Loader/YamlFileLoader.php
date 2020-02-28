@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Core\Configuration\Loader;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlFileLoadingException;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlParseException;
 use TYPO3\CMS\Core\Configuration\Processor\PlaceholderProcessorList;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,8 +42,10 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * - Environment placeholder values set via %env(option)% will be replaced by env variables of the same name
  */
-class YamlFileLoader
+class YamlFileLoader implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public const PROCESS_PLACEHOLDERS = 1;
     public const PROCESS_IMPORTS = 2;
 
@@ -74,7 +81,7 @@ class YamlFileLoader
         $content = Yaml::parse($content);
 
         if (!is_array($content)) {
-            throw new \RuntimeException(
+            throw new YamlParseException(
                 'YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?',
                 1497332874
             );
@@ -107,7 +114,7 @@ class YamlFileLoader
      * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
      * @param string|null $currentFileName when called recursively this contains the absolute file name of the file that included this file
      * @return string the contents of the file
-     * @throws \RuntimeException when the file was not accessible
+     * @throws YamlFileLoadingException when the file was not accessible
      */
     protected function getStreamlinedFileName(string $fileName, ?string $currentFileName): string
     {
@@ -121,7 +128,7 @@ class YamlFileLoader
                     $fileName
                 );
                 if (!GeneralUtility::isAllowedAbsPath($streamlinedFileName)) {
-                    throw new \RuntimeException(
+                    throw new YamlFileLoadingException(
                         'Referencing a file which is outside of TYPO3s main folder',
                         1560319866
                     );
@@ -131,7 +138,7 @@ class YamlFileLoader
             $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
         }
         if (!$streamlinedFileName) {
-            throw new \RuntimeException('YAML File "' . $fileName . '" could not be loaded', 1485784246);
+            throw new YamlFileLoadingException('YAML File "' . $fileName . '" could not be loaded', 1485784246);
         }
         return $streamlinedFileName;
     }
@@ -147,10 +154,14 @@ class YamlFileLoader
     {
         if (isset($content['imports']) && is_array($content['imports'])) {
             foreach ($content['imports'] as $import) {
-                $import = $this->processPlaceholders($import, $import);
-                $importedContent = $this->loadAndParse($import['resource'], $fileName);
-                // override the imported content with the one from the current file
-                $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
+                try {
+                    $import = $this->processPlaceholders($import, $import);
+                    $importedContent = $this->loadAndParse($import['resource'], $fileName);
+                    // override the imported content with the one from the current file
+                    $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
+                } catch (ParseException|YamlParseException|YamlFileLoadingException $exception) {
+                    $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+                }
             }
             unset($content['imports']);
         }
