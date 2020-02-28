@@ -53,7 +53,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function canHandleRequestReturnsFalsefGetParameterIsNotSet()
+    public function canHandleRequestReturnsFalseIfGetParameterIsNotSet()
     {
         $_GET['some-other-id'] = 123;
         self::assertFalse($this->widgetRequestHandler->canHandleRequest());

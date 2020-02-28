@@ -74,8 +74,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *        20.current = 1
  *    }
  *
- * When passing an object with ``{data}`` the properties of the object are accessable with :ts:`.field` in
- * TypoScript. If only a single value is passed or the ``currentValueKey`` is specified :ts:`.current = 1`
+ * When passing an object with ``{data}``, the properties of the object are accessible with :ts:`.field` in
+ * TypoScript. If only a single value is passed or the ``currentValueKey`` is specified, :ts:`.current = 1`
  * can be used in the TypoScript.
  */
 class CObjectViewHelper extends AbstractViewHelper

@@ -135,7 +135,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                     'title' => '',
                     'additionalParams' => '',
                 ],
-                [   // expecation
+                [   // expectation
                     'url' => '',
                     'target' => '',
                     'class' => '',
