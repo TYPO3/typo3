@@ -5655,6 +5655,7 @@ class DataHandler implements LoggerAwareInterface
             $remapFlexForms = [];
             $hookPayload = [];
 
+            $newValue = null;
             foreach ($this->remapStack as $remapAction) {
                 // If no position index for the arguments was set, skip this remap action:
                 if (!is_array($remapAction['pos'])) {

@@ -375,6 +375,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin()) {
             return 1;
         }
+        $checkRec = [];
         $fetchPageFromDatabase = true;
         if (is_array($idOrRow)) {
             if (empty($idOrRow['uid'])) {

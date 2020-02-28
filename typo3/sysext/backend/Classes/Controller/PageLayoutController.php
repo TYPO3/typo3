@@ -703,8 +703,8 @@ class PageLayoutController
         }
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+        $h_func_b = '';
         if ($this->getBackendUser()->check('tables_select', 'tt_content')) {
-            $h_func_b = '';
             // Toggle hidden ContentElements
 
             if ($numberOfHiddenElements > 0) {

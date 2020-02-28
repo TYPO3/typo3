@@ -83,6 +83,7 @@ class TcaFlexPrepare implements FormDataProviderInterface
                 );
                 $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
             } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException $e) {
+                $dataStructureIdentifier = null;
             } finally {
                 // Add the identifier to TCA to use it later during rendering
                 $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;

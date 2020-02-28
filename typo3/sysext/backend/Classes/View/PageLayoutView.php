@@ -521,6 +521,8 @@ class PageLayoutView implements LoggerAwareInterface
                 // Add colgroups
                 $colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
                 $rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
+                $colSpan = 0;
+                $rowSpan = 0;
                 $grid .= '<colgroup>';
                 for ($i = 0; $i < $colCount; $i++) {
                     $grid .= '<col />';

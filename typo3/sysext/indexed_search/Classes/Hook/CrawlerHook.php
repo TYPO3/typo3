@@ -668,6 +668,7 @@ class CrawlerHook
         $indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
         $indexerObj->forceIndexing = true;
         $theContent = '';
+        $theTitle = '';
         foreach ($fieldList as $k => $v) {
             if (!$k) {
                 $theTitle = $r[$v];

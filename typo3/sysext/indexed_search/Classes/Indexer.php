@@ -706,6 +706,7 @@ class Indexer
         $expBody = preg_split('/\\<\\!\\-\\-[\\s]?TYPO3SEARCH_/', $body);
         if (count($expBody) > 1) {
             $body = '';
+            $prev = '';
             foreach ($expBody as $val) {
                 $part = explode('-->', $val, 2);
                 if (trim($part[0]) === 'begin') {
