@@ -25,6 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class YamlSourceTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
 
     /**
      * @test
