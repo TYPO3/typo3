@@ -212,7 +212,7 @@ prototypeName
 +++++++++++++
 
 The name of the prototype, on which basis the ``factoryClass`` should create the form.
-If nothing is specified, the configuration (``form definition`` or ``overrideConfiguration``) is searched for the prototy name.
+If nothing is specified, the configuration (``form definition`` or ``overrideConfiguration``) is searched for the prototype's name.
 If no specification exists, the standard prototype ``standard`` is used.
 
 

@@ -142,7 +142,7 @@ define(['jquery',
     var _stageComponent = null;
 
     /* *************************************************************
-     * Private Methodes
+     * Private Methods
      * ************************************************************/
 
     /**
@@ -523,7 +523,7 @@ define(['jquery',
     };
 
     /* *************************************************************
-     * Public Methodes
+     * Public Methods
      * ************************************************************/
 
     /**
@@ -562,7 +562,7 @@ define(['jquery',
     /**
      * @public
      *
-     * @return object (derefernced)
+     * @return object (dereferenced)
      */
     function getConfiguration() {
       return $.extend(true, {}, _configuration);
@@ -1333,7 +1333,7 @@ define(['jquery',
     };
 
     /* *************************************************************
-     * Batch methodes
+     * Batch methods
      * ************************************************************/
 
     /**

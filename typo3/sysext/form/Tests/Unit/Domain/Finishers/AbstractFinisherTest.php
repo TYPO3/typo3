@@ -447,7 +447,7 @@ class AbstractFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function substituteRuntimeReferencesReturnsResolvesElementIdentiiersInArrayKeys(): void
+    public function substituteRuntimeReferencesReturnsResolvesElementIdentifiersInArrayKeys(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,

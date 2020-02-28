@@ -112,7 +112,7 @@ define(['jquery',
     var _stageDomElement = null;
 
     /* *************************************************************
-     * Private Methodes
+     * Private Methods
      * ************************************************************/
 
     /**
@@ -418,7 +418,7 @@ define(['jquery',
     };
 
     /* *************************************************************
-     * Public Methodes
+     * Public Methods
      * ************************************************************/
 
     /**
@@ -826,7 +826,7 @@ define(['jquery',
         ) {
           $(this).tooltip({
             title: 'identifier: ' + formElement.get('identifier') + ' (type: ' + formElement.get('type') + ')',
-            placement: 'rigth'
+            placement: 'right'
           });
         } else if (
           !getFormElementDefinition(formElement, '_isTopLevelFormElement')

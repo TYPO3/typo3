@@ -428,17 +428,17 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
      * @param string $persistenceIdentifier
      * @param array $formDefinition
      * @param File $file
-     * @param string $localtion
+     * @param string $location
      * @return array
      */
     protected function setFormDefinitionInformationData(
         string $persistenceIdentifier,
         array $formDefinition,
         File $file,
-        string $localtion
+        string $location
     ): array {
         return [
-            'location' => $localtion,
+            'location' => $location,
             'persistenceIdentifier' => $persistenceIdentifier,
             'prototypeName' => $formDefinition['prototypeName'],
             'formIdentifier' => $formDefinition['identifier'],

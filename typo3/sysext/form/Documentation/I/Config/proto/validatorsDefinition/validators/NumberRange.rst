@@ -76,7 +76,7 @@ options.minimum
       undefined
 
 :aspect:`Description`
-      The minimum value to accep.
+      The minimum value to accept.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.maximum:
@@ -100,7 +100,7 @@ options.maximum
       undefined
 
 :aspect:`Description`
-      The maximum value to accep.
+      The maximum value to accept.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.iconidentifier:

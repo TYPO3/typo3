@@ -864,7 +864,7 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementFromFormRumtimeTranslationFilesIfElementRenderingOptionsContainsNoTranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
+    public function translateFormElementValueTranslateLabelForConcreteFormAndConcreteElementFromFormRuntimeTranslationFilesIfElementRenderingOptionsContainsNoTranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
         $textElementXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf'];
@@ -1011,7 +1011,7 @@ class TranslationServiceTest extends UnitTestCase
     public function translateFormElementValueTranslateLabelFromAdditionalTranslationForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFilesAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists(): void
     {
         $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
-        $textElementXlfPathss = [
+        $textElementXlfPaths = [
             10 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf',
             20 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf'
          ];
@@ -1028,7 +1028,7 @@ class TranslationServiceTest extends UnitTestCase
 
         $formElementRenderingOptions = [
             'translation' => [
-                'translationFiles' => $textElementXlfPathss,
+                'translationFiles' => $textElementXlfPaths,
                 'translatePropertyValueIfEmpty' => true
             ],
         ];
@@ -1037,7 +1037,7 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->store->flushData($formRuntimeXlfPaths);
 
-        foreach ($textElementXlfPathss as $textElementXlfPaths) {
+        foreach ($textElementXlfPaths as $textElementXlfPaths) {
             $this->store->flushData($textElementXlfPaths);
         }
 

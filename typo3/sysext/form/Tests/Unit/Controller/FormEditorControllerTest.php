@@ -371,7 +371,7 @@ class FormEditorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderFormEditorTemplatesThrowsExceptionIftemplatePathAndFilenameNotSet(): void
+    public function renderFormEditorTemplatesThrowsExceptionIfTemplatePathAndFilenameNotSet(): void
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1485636499);

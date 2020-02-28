@@ -53,4 +53,4 @@ renderingOptions.skipUnknownElements
       ToDo
 
 :aspect:`Description`
-      If set, every unknown ``<formElementIdentifier>`` will not be rendered. If set to false an exeption will be thrown.
+      If set, every unknown ``<formElementIdentifier>`` will not be rendered. If set to false an exception will be thrown.

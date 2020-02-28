@@ -576,7 +576,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * Check if an identifier is already used by a formDefintion.
+     * Check if an identifier is already used by a formDefinition.
      *
      * @param string $identifier
      * @return bool

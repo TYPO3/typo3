@@ -500,7 +500,7 @@ formEditorPartials
       - :ref:`"view/inspector/editor/insert/perform"<apireference-formeditor-basicjavascriptconcepts-events-view-inspector-editor-insert-perform>`
 
 :aspect:`Description`
-      Array with mappings for the inline HTML templates. The keys are identifierts which could be used within the JavaScript code. The values are partial paths, relative to :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths"<typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths>`.
+      Array with mappings for the inline HTML templates. The keys are identifiers which could be used within the JavaScript code. The values are partial paths, relative to :ref:`"TYPO3.CMS.Form.prototypes.\<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths"<typo3.cms.form.prototypes.\<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths>`.
       The partials content will be rendered as inline HTML. This inline HTML templates can be identified and used by such a key (e.g. "Inspector-TextEditor") within the JavaScript code.
 
 

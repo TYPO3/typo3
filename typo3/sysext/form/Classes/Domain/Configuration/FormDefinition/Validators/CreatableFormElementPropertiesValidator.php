@@ -42,7 +42,7 @@ class CreatableFormElementPropertiesValidator extends ElementBasedValidator
                 $this->getConfigurationService()->isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup($dto)
                 && !ArrayUtility::isValidPath($this->currentElement, $this->buildHmacDataPath($dto->getPropertyPath()), '.')
             ) {
-                // If the form element is newely created, we have to compare the $value (form definition) with $predefinedDefaultValue (form setup)
+                // If the form element is newly created, we have to compare the $value (form definition) with $predefinedDefaultValue (form setup)
                 // to check the integrity (at this time we don't have a hmac for the $value to check the integrity)
                 $predefinedDefaultValue = $this->getConfigurationService()->getFormElementPredefinedDefaultValueFromFormEditorSetup($dto);
                 if ($value !== $predefinedDefaultValue) {
@@ -55,7 +55,7 @@ class CreatableFormElementPropertiesValidator extends ElementBasedValidator
                         // translations from $predefinedDefaultValue.
                         // Usecase:
                         //   * backend language is EN
-                        //   * open the form edtior and add a ContentElement form element
+                        //   * open the form editor and add a ContentElement form element
                         //   * switch to another browser tab and change the backend language to DE
                         //   * clear the cache
                         //   * go back to the form editor and click the save button

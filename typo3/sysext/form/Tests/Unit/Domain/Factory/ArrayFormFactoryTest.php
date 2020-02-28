@@ -45,7 +45,7 @@ class ArrayFormFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addNestedRenderableSkipChildElementRenderingIfCompositElementIsUnknown()
+    public function addNestedRenderableSkipChildElementRenderingIfCompositeElementIsUnknown()
     {
         $unknownElement = new UnknownFormElement('test-2', 'test');
 

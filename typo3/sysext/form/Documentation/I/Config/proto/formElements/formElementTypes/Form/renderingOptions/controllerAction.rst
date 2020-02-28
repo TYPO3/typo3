@@ -53,4 +53,4 @@ renderingOptions.controllerAction
       - :ref:`"Render within your own Extbase extension"<concepts-frontendrendering-extbase>`
 
 :aspect:`Description`
-      Fluid f:form viewHelper option ``action``. This is usefull if you want to render your form within your own extbase extension.
+      Fluid f:form ViewHelper option ``action``. This is useful if you want to render your form within your own extbase extension.

@@ -76,7 +76,7 @@ options.minimum
       undefined
 
 :aspect:`Description`
-      The minimum count to accep.
+      The minimum count to accept.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.options.maximum:
@@ -100,7 +100,7 @@ options.maximum
       undefined
 
 :aspect:`Description`
-      The maximum count to accep.
+      The maximum count to accept.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.iconidentifier:

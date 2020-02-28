@@ -67,7 +67,7 @@ class CreatablePropertyCollectionElementPropertiesValidator extends CollectionBa
         $value,
         ValidationDto $dto
     ): void {
-        // If the property collection element is newely created, we have to compare the $value (form definition) with $predefinedDefaultValue (form setup)
+        // If the property collection element is newly created, we have to compare the $value (form definition) with $predefinedDefaultValue (form setup)
         // to check the integrity (at this time we don't have a hmac on the value to check the integrity)
         $predefinedDefaultValue = $this->getConfigurationService()->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($dto);
         if ($value !== $predefinedDefaultValue) {

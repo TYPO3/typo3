@@ -51,7 +51,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
     /**
      * @test
      */
-    public function validatePropertyCollectionElementPredefinedDefaultValueThrowsNoExceptionIfValueMatchs()
+    public function validatePropertyCollectionElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches()
     {
         $validationDto = new ValidationDto(null, null, 'test-1', 'label', 'validators', 'StringLength');
         $typeConverter = $this->getAccessibleMock(

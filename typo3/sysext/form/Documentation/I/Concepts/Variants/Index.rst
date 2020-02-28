@@ -570,7 +570,7 @@ In this example a select option is removed for a specific locale.
        label: Step
        renderables:
          -
-           identifier: salulation
+           identifier: salutation
            type: SingleSelect
            label: Salutation
            properties:
@@ -582,7 +582,7 @@ In this example a select option is removed for a specific locale.
            defaultValue: ''
            variants:
              -
-               identifier: salulation-variant
+               identifier: salutation-variant
                condition: 'siteLanguage("locale") == "zh_CN.utf-8"'
                properties:
                  options:

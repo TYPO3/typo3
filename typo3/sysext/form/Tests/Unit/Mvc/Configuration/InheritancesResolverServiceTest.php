@@ -354,7 +354,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnSameLevelIsFound(): void
+    public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnSameLevelIsFound(): void
     {
         $input = [
             'TYPO3' => [
@@ -384,7 +384,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnSameLevelWithGapIsFound(): void
+    public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnSameLevelWithGapIsFound(): void
     {
         $input = [
             'TYPO3' => [
@@ -424,7 +424,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getResolvedConfigurationThrowsExceptionIfCycleDepenciesOnHigherLevelIsFound(): void
+    public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnHigherLevelIsFound(): void
     {
         $input = [
             'TYPO3' => [

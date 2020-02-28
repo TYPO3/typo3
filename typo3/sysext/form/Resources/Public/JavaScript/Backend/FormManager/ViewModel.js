@@ -88,7 +88,7 @@ define(['jquery',
         MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, null, function(slide) {
           Icons.getIcon('actions-document-duplicates-select', Icons.sizes.large).then(function (duplicateIconMarkup) {
             Icons.getIcon('actions-document-new', Icons.sizes.large).then(function (blankIconMarkup) {
-              var advandecWizardHasOptions, folders, html, modal, cancelButton, nextButton, prototypes,
+              var advancedWizardHasOptions, folders, html, modal, cancelButton, nextButton, prototypes,
                 templates;
 
               modal = MultiStepWizard.setup.$carousel.closest('.modal');

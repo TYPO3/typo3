@@ -93,7 +93,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
                 1471473377
             );
         }
-        $ucFirstExtensioName = ucfirst($extensionName);
+        $ucFirstExtensionName = ucfirst($extensionName);
 
         $typoscriptSettings = $this->getTypoScriptSettings($extensionName);
 
@@ -112,8 +112,8 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             ->getResolvedConfiguration();
 
         $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
-        $yamlSettings = is_array($yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName])
-            ? $yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName]
+        $yamlSettings = is_array($yamlSettings['TYPO3']['CMS'][$ucFirstExtensionName])
+            ? $yamlSettings['TYPO3']['CMS'][$ucFirstExtensionName]
             : [];
         $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
         $this->setYamlSettingsIntoCache($cacheKeySuffix, $yamlSettings);

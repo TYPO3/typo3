@@ -63,7 +63,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorHasErrosIfFileResourceSizeIsToSmall()
+    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall()
     {
         $options = ['minimum' => '1M', 'maximum' => '10M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
@@ -82,7 +82,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorHasErrosIfFileResourceSizeIsToBig()
+    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToBig()
     {
         $options = ['minimum' => '1M', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)

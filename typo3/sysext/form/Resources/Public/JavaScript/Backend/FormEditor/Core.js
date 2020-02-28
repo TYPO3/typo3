@@ -1458,7 +1458,7 @@ define(['jquery'], function($) {
 
       /**
        * @param string identifier
-       * @returl bool
+       * @return bool
        * @throws 1475364966
        */
       function isFormElementIdentifierUsed(identifier) {

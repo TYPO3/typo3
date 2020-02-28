@@ -355,7 +355,7 @@ properties.fluidAdditionalAttributes
       - :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
 
 :aspect:`Description`
-      The values within this array goes directely into the fluid form element viewhelpers property ``additionalAttributes``.
+      The values within this array are directly used within the form element ViewHelper's property ``additionalAttributes``.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration:

@@ -76,7 +76,7 @@ options.minimum
       undefined
 
 :aspect:`Description`
-      The minimum filesize to accep. Use the format <size>B|K|M|G. For exmaple: 10M means 10 Megabytes.
+      The minimum filesize to accept. Use the format <size>B|K|M|G. For example: 10M means 10 Megabytes.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.maximum:
@@ -100,7 +100,7 @@ options.maximum
       undefined
 
 :aspect:`Description`
-      The maximum filesize to accep. Use the format <size>B|K|M|G. For exmaple: 10M means 10 Megabytes.
+      The maximum filesize to accept. Use the format <size>B|K|M|G. For example: 10M means 10 Megabytes.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.iconidentifier:

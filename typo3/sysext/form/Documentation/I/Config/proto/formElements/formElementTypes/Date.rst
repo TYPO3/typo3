@@ -15,13 +15,13 @@ form element within the form editor, the ``min`` and ``max`` HTML attributes are
 
 Browsers which do not support the HTML5 date element gracefully degrade to a text input. The HTML5 date element always
 normalizes the value to the format Y-m-d (RFC 3339 'full-date'). With a text input, by default the browser has no
-recognition of which format the date should be in. A workaroung could be to put a pattern attribute on the date input.
+recognition of which format the date should be in. A workaround could be to put a pattern attribute on the date input.
 Even though the date input does not use it, the text input fallback will.
 
 By default, the HTML attribute ``pattern="([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"`` is rendered on the
 date form element. Note that this basic regular expression does not support leap years and does not check for the
 correct number of days in a month. But as a start, this should be sufficient. The same pattern is used by the form
-editor to validate the properties ``defaultValue`` and the ``DateRange`` valiator options ``minimum`` and ``maximum``.
+editor to validate the properties ``defaultValue`` and the ``DateRange`` validator options ``minimum`` and ``maximum``.
 
 Read more: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#Handling_browser_support
 

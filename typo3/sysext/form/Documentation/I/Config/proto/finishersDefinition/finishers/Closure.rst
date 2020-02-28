@@ -72,7 +72,7 @@ options.closure
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      The closure which are invoked if the finisher is treggered.
+      The closure which is invoked if the finisher is triggered.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.iconidentifier:
