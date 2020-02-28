@@ -1991,7 +1991,7 @@ class EditDocumentController
      *
      * @param string $table Table name
      * @param int $uid Uid for which to create a new language
-     * @param int $pid|null Pid of the record
+     * @param int|null $pid Pid of the record
      */
     protected function languageSwitch(string $table, int $uid, $pid = null)
     {

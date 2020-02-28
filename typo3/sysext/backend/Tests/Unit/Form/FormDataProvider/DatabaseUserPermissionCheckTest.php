@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
     /**
-     * @var BackendUserAuthentication | ObjectProphecy
+     * @var BackendUserAuthentication|ObjectProphecy
      */
     protected $beUserProphecy;
 

@@ -60,7 +60,7 @@ class InternalLinktype extends AbstractLinktype
      * Checks a given URL + /path/filename.ext for validity
      *
      * @param string $url Url to check as page-id or page-id#anchor (if anchor is present)
-     * @param array $softRefEntry: The soft reference entry which builds the context of that url
+     * @param array $softRefEntry The soft reference entry which builds the context of that url
      * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
      * @return bool TRUE on success or FALSE on error
      */

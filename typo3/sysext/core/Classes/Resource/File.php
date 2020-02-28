@@ -224,7 +224,7 @@ class File extends AbstractFile
     /**
      * Check if a file operation (= action) is allowed for this file
      *
-     * @param 	string	$action, can be read, write, delete
+     * @param string $action can be read, write, delete
      * @return bool
      */
     public function checkActionPermission($action)

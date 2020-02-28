@@ -1501,7 +1501,7 @@ class PageLayoutView implements LoggerAwareInterface
      * that are not disabled with page TS.
      *
      * @param int $id Page id for which to create a new translation record of pages
-     * @return string <select> HTML element (if there were items for the box anyways...)
+     * @return string HTML <select> element (if there were items for the box anyways...)
      * @see getTable_tt_content()
      */
     public function languageSelector($id)

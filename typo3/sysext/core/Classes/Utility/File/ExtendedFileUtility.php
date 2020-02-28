@@ -1051,7 +1051,7 @@ class ExtendedFileUtility extends BasicFileUtility
      * @param array $cmds $cmds['data'] is the ID-number (points to the global var that holds the filename-ref
      *                    ($_FILES['upload_' . $id]['name']) . $cmds['target'] is the target directory, $cmds['charset']
      *                    is the the character set of the file name (utf-8 is needed for JS-interaction)
-     * @return File[] | FALSE Returns an array of new file objects upon success. False otherwise
+     * @return File[]|bool Returns an array of new file objects upon success. False otherwise
      */
     public function func_upload($cmds)
     {

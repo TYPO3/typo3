@@ -5779,7 +5779,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Updates FlexForm data.
      *
-     * @param string $flexFormId, e.g. <table>:<uid>:<field>
+     * @param string $flexFormId e.g. <table>:<uid>:<field>
      * @param array $modifications Modifications with paths and values (e.g. 'sDEF/lDEV/field/vDEF' => 'TYPO3')
      */
     protected function updateFlexFormData($flexFormId, array $modifications)

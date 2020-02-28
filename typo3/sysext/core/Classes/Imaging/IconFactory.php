@@ -248,9 +248,9 @@ class IconFactory
     /**
      * Returns recordType for icon based on a typeName and a suffix.
      * Fallback to page as typeName if resulting type is not configured.
-     * @param  string  $typeName
-     * @param  string  $suffix
-     * @param  string  $table
+     * @param string $typeName
+     * @param string $suffix
+     * @param string $table
      * @return string
      */
     protected function getRecordTypeForPageType(string $typeName, string $suffix, string $table): string

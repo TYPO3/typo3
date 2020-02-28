@@ -672,7 +672,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $imageType File extension / item type
      * @param string $alt Title attribute value in icon.
      * @param array $specRowConf TypoScript configuration specifically for search result.
-     * @return string <img> tag for icon
+     * @return string HTML <img> tag for icon
      */
     public function makeItemTypeIcon($imageType, $alt, $specRowConf)
     {
@@ -1633,7 +1633,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param string $linkText Link text (nodeValue)
      * @param array $linkData
-     * @return string <A> tag wrapped title string.
+     * @return string HTML <A> tag wrapped title string.
      */
     protected function linkPageATagWrap(string $linkText, array $linkData): string
     {

@@ -2456,7 +2456,7 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject | AbstractContentObject
+     * @return \PHPUnit\Framework\MockObject\MockObject|AbstractContentObject
      */
     protected function createContentObjectThrowingExceptionFixture()
     {
@@ -5445,7 +5445,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * Data provider for stdWrap_encodeForJavaScriptValue.
      *
-     * @return array []
+     * @return array[]
      */
     public function stdWrap_encodeForJavaScriptValueDataProvider(): array
     {

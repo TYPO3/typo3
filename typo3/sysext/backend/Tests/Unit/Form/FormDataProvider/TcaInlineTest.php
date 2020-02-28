@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TcaInlineTest extends UnitTestCase
 {
     /**
-     * @var BackendUserAuthentication | ObjectProphecy
+     * @var BackendUserAuthentication|ObjectProphecy
      */
     protected $beUserProphecy;
 

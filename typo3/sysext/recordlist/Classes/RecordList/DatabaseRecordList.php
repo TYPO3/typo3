@@ -2475,7 +2475,7 @@ class DatabaseRecordList
      * @param string $cmd Clipboard command (eg. "setCB" or "delete")
      * @param string $warning Warning text, if any ("delete" uses this for confirmation
      * @param string $title title attribute for the anchor
-     * @return string <a> tag wrapped link.
+     * @return string HTML <a> tag wrapped link.
      */
     public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '', $title = '')
     {

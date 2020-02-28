@@ -177,8 +177,8 @@ class CronCommand
      * Determine if a given number validates a cron command section. The given cron
      * command must be a 'normalized' list with only comma separated integers or '*'
      *
-     * @param string $commandExpression: cron command
-     * @param int $numberToMatch: number to look up
+     * @param string $commandExpression cron command
+     * @param int $numberToMatch number to look up
      * @return bool TRUE if number is in list
      */
     protected function isInCommandList($commandExpression, $numberToMatch)

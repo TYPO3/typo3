@@ -136,11 +136,11 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         $this->mockDatabaseConnection();
 
-        /** @var  DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
+        /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
         GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
 
-        /** @var  TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
+        /** @var TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
         $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
         GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
         $tableConfigurationTreeProphecy->setDataProvider(Argument::cetera())->shouldBeCalled();
@@ -210,7 +210,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
         GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
 
-        /** @var  TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
+        /** @var TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
         $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
         GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
         $tableConfigurationTreeProphecy->render()->willReturn([]);

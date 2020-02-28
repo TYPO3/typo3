@@ -51,9 +51,9 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  *     - News of Canada - MountPoint within the same site
  *     - Archived news - MountPoint to another site
  *
- * @todo: add Tests for having a PageFolder as mounted page (e.g. id 10000)
+ * @todo add Tests for having a PageFolder as mounted page (e.g. id 10000)
  * @todo Add tests for multilingual setups
- * @todo: Add tests with various TypoScript settings activated
+ * @todo Add tests with various TypoScript settings activated
  */
 class MountPointTest extends AbstractTestCase
 {

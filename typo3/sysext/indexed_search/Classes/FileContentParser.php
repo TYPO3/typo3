@@ -435,7 +435,7 @@ class FileContentParser
     /**
      * Wraps the "splitLabel function" of the language object.
      *
-     * @param string $reference: Reference/key of the label
+     * @param string $reference Reference/key of the label
      * @return string The label of the reference/key to be fetched
      */
     protected function sL($reference)

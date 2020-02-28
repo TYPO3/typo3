@@ -276,7 +276,7 @@ class LanguageService
      *
      * @param string $fileRef $fileRef is a file-reference
      * @param bool $setGlobal Setting in global variable $LOCAL_LANG (or returning the variable), do not set this, will be dropped in TYPO3 v11.0
-     * @param bool $mergeLocalOntoDefault, do not set this, will be dropped in TYPO3 v11.0
+     * @param bool $mergeLocalOntoDefault do not set this, will be dropped in TYPO3 v11.0
      * @return array returns the loaded label file
      */
     public function includeLLFile($fileRef, $setGlobal = null, $mergeLocalOntoDefault = null)

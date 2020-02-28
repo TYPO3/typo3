@@ -142,7 +142,7 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
     /**
      * Method is invoked when parser accesses end tag of an element.
      *
-     * @param string $elementName: element name at parser's current position
+     * @param string $elementName element name at parser's current position
      */
     protected function endElement($elementName)
     {
@@ -164,8 +164,8 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
      * Method will read until it finds the end of the given element.
      * If element has no value, method returns NULL.
      *
-     * @param string  $elementName: name of element to retrieve it's value from
-     * @return string  an element's value if it has a value, otherwise NULL
+     * @param string $elementName name of element to retrieve it's value from
+     * @return string an element's value if it has a value, otherwise NULL
      */
     protected function getElementValue(&$elementName)
     {

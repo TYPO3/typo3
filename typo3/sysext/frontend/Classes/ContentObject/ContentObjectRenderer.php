@@ -1039,7 +1039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $file File TypoScript resource
      * @param array $conf TypoScript configuration properties
-     * @return string <img> tag, (possibly wrapped in links and other HTML) if any image found.
+     * @return string HTML <img> tag, (possibly wrapped in links and other HTML) if any image found.
      * @internal
      * @see IMAGE()
      */

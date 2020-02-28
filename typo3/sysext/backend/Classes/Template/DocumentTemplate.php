@@ -630,7 +630,7 @@ function jumpToUrl(URL) {
     /**
      * Returns generator meta tag
      *
-     * @return string <meta> tag with name "generator
+     * @return string HTML <meta> tag with name "generator"
      */
     public function generator()
     {

@@ -33,7 +33,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var BackendUserAuthentication | ObjectProphecy
+     * @var BackendUserAuthentication|ObjectProphecy
      */
     protected $beUserProphecy;
 

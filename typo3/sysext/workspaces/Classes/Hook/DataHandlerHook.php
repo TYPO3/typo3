@@ -862,8 +862,8 @@ class DataHandlerHook
      *
      * @param string $tableName Table name
      * @param array $configuration TCA field configuration
-     * @param array $liveData: Live record data
-     * @param array $versionData: Version record data
+     * @param array $liveData Live record data
+     * @param array $versionData Version record data
      * @param DataHandler $dataHandler Calling data-handler object
      */
     protected function version_swap_processFields($tableName, array $configuration, array $liveData, array $versionData, DataHandler $dataHandler)

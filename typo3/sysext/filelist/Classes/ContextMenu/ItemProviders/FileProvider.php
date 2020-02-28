@@ -258,7 +258,7 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
      * Checks if folder and record are in the same filemount
      * Cannot copy folders between filemounts
      *
-     * @param  File|Folder $fileOrFolderInClipBoard
+     * @param File|Folder $fileOrFolderInClipBoard
      * @return bool
      */
     protected function isFoldersAreInTheSameRoot($fileOrFolderInClipBoard): bool

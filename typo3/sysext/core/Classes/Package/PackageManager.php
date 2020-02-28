@@ -140,7 +140,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * @internal
-     * @return string | null
+     * @return string|null
      */
     public function getCacheIdentifier()
     {
