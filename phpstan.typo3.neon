@@ -1,0 +1,3 @@
+parameters:
+  autoload_files:
+    - %currentWorkingDirectory%/phpstan.bootstrap.php

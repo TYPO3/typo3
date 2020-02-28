@@ -1,4 +1,5 @@
 includes:
+    - phpstan.typo3.neon
 # Include bleeding edge rules if necessary but do not commit
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
