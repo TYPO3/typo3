@@ -21,7 +21,7 @@
 		<property name="pl" type="string"/>
 		<property name="si" type="string"/>
 		<property name="fi" type="string"/>
-		<property name="tr" type="string"/>
+		<property name="tr" type="string"/>jq
 		<property name="se" type="string"/>
 		<property name="pt" type="string"/>
 		<property name="ru" type="string"/>
@@ -193,7 +193,7 @@ The order of IDs specified may have a significance; Any ID in a branch which is 
 		<property name="absRefPrefix" type="string">
 			<description><![CDATA[If this value is set, then all relative links in TypoScript are prepended with this string. Used to convert relative paths to absolute paths.
 
-Note: If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. http://www.typo3.org/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
+Note: If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. https://www.typo3.org/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -480,12 +480,12 @@ If metaCharset is different than utf-8 the output content is automatically conve
 			<description><![CDATA[array of strings
 			This property enables you to add xml namespaces (xmlns) to the html tag. The configuration
 
-namespaces.dc = http://purl.org/dc/elements/1.1/
+namespaces.dc = https://purl.org/dc/elements/1.1/
 namespaces.foaf = http://xmlns.com/foaf/0.1/
 
 will result in a html tag like
 
-<html xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<html xmlns:dc="https://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/">
 
 This is especially useful if you want to add RDFa or microformats to your html.
 ]]></description>
@@ -1293,7 +1293,7 @@ You can also use the marker ###COMMENT### which is ALSO the label value inserted
 [page id]:[current record table]:[current record id]
 For example, if a formfield is inserted on page with uid = "100", as a page-content item from the table "tt_content" with id "120", then the value would be "100:tt_content:120".
 The value is use by eg. the cObject SEARCHRESULT. If the value $GLOBALS["HTTP_POST_VARS"]["locationData"] is detected here, the search is done as if it was performed on this page! This is very useful if you want a search functionality implemented on a page with the "stype" field set to "L1" which means that the search is carried out from the first level in the rootline.
-Suppose you want the search to submit to a dedicated searchpage where ever. This page will then know - because of locationData - that the search was submittet from another place on the website.
+Suppose you want the search to submit to a dedicated searchpage where ever. This page will then know - because of locationData - that the search was submitted from another place on the website.
 If "locationData" is not only true but also set to "HTTP_POST_VARS" then the value will insert the content of $GLOBALS["HTTP_POST_VARS"]["locationData"] instead of the true location data of the page. This should be done with search-fields as this will carry the initial searching start point with.
 NOTE: May be overridden by the property override feature of the formdata (see above)]]></description>
 			<default><![CDATA[
@@ -1410,41 +1410,41 @@ If value is tx_myextension[input][  |  ]  then the fieldname "email" would be
 	</type>
 	<type id="REQ">
 		<property name="fieldWrap" type="stdWrap">
-			<description><![CDATA[Field: Wraps the fields, but for reuired fields]]></description>
+			<description><![CDATA[Field: Wraps the fields, but for required fields]]></description>
 			<default><![CDATA[the "fieldWrap"-property]]></default>
 		</property>
 		<property name="labelWrap" type="stdWrap">
-			<description><![CDATA[Labels: Wraps the label, but for reuired fields]]></description>
+			<description><![CDATA[Labels: Wraps the label, but for required fields]]></description>
 			<default><![CDATA[the "labelWrap"-property]]></default>
 		</property>
 		<property name="layout" type="string">
-			<description><![CDATA[The same as "layout" above, but for reuired fields]]></description>
+			<description><![CDATA[The same as "layout" above, but for required fields]]></description>
 			<default><![CDATA[the "layout"-property]]></default>
 		</property>
 	</type>
 	<type id="GifBuilderObj">
 		<property name="if" type="if">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionality of ".if" of the stdWrap-function.]]></description>
 		</property>
 	</type>
 	<type id="GIFBUILDER">
 		<property name="1" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionality of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="2" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionality of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="3" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionality of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="4" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionality of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1466,7 +1466,7 @@ If value is tx_myextension[input][  |  ]  then the fieldname "email" would be
 		</property>
 		<property name="maxHeight" type="int">
 			<description><![CDATA[pixels
-			Maximal heigth of gif-file]]></description>
+			Maximal height of gif-file]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1525,7 +1525,7 @@ NOTE: You may experience that this doesn't work if you use reduceColors-option o
 	</type>
 	<type id="ADJUST" extends="GifBuilderObj">
 		<property name="value" type="string">
-			<description><![CDATA[This lets you adjust the input-levels like in Photoshops "levels"-dialog. If you need to adjust gamma, look at the EFFECT-object.
+			<description><![CDATA[This lets you adjust the input-levels like in Photoshop's "levels"-dialog. If you need to adjust gamma, look at the EFFECT-object.
 Example:
 
 20 = ADJUST
@@ -1909,7 +1909,7 @@ Does not support setting alternative fontSizes in splitRendering options.
 		<property name="niceText" type="boolean">
 			<description><![CDATA[This is a very popular feature that helps to render small letters much nicer than the freetype library can normally do. But it also loads the system very much!
 The principle of this function is to create a black/white giffile in twice or more times the size of the actual gif-file and then print the text onto this is a scaled dimension. Afterwards ImageMagick (IM) scales down the mask and masks the font color down on the original gif-file through the temporary mask.
-The fact that the font  is  actually rendered in the double size and scaled down adds a more homogenous shape to the lettes. Some fonts are more critical than others though.  If you do not need the quality, then don't use the function.
+The fact that the font  is  actually rendered in the double size and scaled down adds a more homogeneous shape to the letters. Some fonts are more critical than others though.  If you do not need the quality, then don't use the function.
 
 Some properties:
 .before = IM-params before scale
@@ -3512,12 +3512,12 @@ NOTE: Works ONLY if IMAGE-obj is NOT GIFBUILDER]]></description>
 ]]></default>
 		</property>
 		<property name="rows" type="stdWrap">
-			<description><![CDATA[Rows (higher priority thab "cols")]]></description>
+			<description><![CDATA[Rows (higher priority than "cols")]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="spaceBelowAbove" type="stdWrap">
-			<description><![CDATA[Pixelsspace between content an images when position of image is above or belox text (but not in text)]]></description>
+			<description><![CDATA[Pixel space between content and images when position of image is above or below text (but not in text)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3595,17 +3595,17 @@ page.27 {
 	</type>
 	<type id="META" extends="array">
 		<property name="REFRESH" type="stdWrap">
-			<description><![CDATA[Metatag
-If value is empty (after trimming) the metatag is not generated.
+			<description><![CDATA[Meta tag
+If value is empty (after trimming) the meta tag is not generated.
 [seconds]; [url, leave blank for same page]
 ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="DESCRIPTION" type="stdWrap">
-			<description><![CDATA[Metatag
-If value is empty (after trimming) the metatag is not generated.
-If the "key" (eg. "REFRESH" or "DESCRIPTION") is "REFRESH" (caseinsensitive), then the "http-equiv"-attribute is used in the metatag instead of "name".
+			<description><![CDATA[Meta tag
+If value is empty (after trimming) the meta tag is not generated.
+If the "key" (eg. "REFRESH" or "DESCRIPTION") is "REFRESH" (caseinsensitive), then the "http-equiv"-attribute is used in the meta tag instead of "name".
 
 Examples:
 .REFRESH =  [seconds]; [url, leave blank for same page]
@@ -3615,17 +3615,17 @@ Examples:
 ]]></default>
 		</property>
 		<property name="KEYWORDS" type="stdWrap">
-			<description><![CDATA[Metatag
-If value is empty (after trimming) the metatag is not generated.
+			<description><![CDATA[Meta tag
+If value is empty (after trimming) the meta tag is not generated.
 Examples:
 .KEYWORDS = This, is, the, list, of, keywords]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="[myMetaTag]" type="stdWrap">
-			<description><![CDATA[Metatag
-If value is empty (after trimming) the metatag is not generated.
-ofcause you can specify your own meta tags too...]]></description>
+			<description><![CDATA[Meta tag
+If value is empty (after trimming) the meta tag is not generated.
+Of course you can specify your own meta tags too...]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3766,7 +3766,7 @@ This substitutes the following fields:
 		<property name="renderObj" type="cObj">
 			<description><![CDATA[the cObject to render the searchresults
 $cObj->data array is set to the resulting record from the search.
-Please note, that in all fields are named [tablename]_[fieldnam]. Thus the pagetitle is in the field "pages_title".
+Please note, that in all fields are named [tablename]_[fieldname]. Thus the page title is in the field "pages_title".
 Apart from this, these fields from the pages-table are also present:
 uid]]></description>
 			<default><![CDATA[
@@ -3828,7 +3828,7 @@ Example:
 page.10 = TEMPLATEpage.10 {  template = FILE  template.file = fileadmin/template.html  relPathPrefix = fileadmin/
   relPathPrefix.IMG = fileadmin/img/}
 
-Inthis example all relative paths found are prefixed "fileadmin/" unless it was the src attribute of an img tag in which case the path prefixed is "fileadmin/img/"]]></description>
+In this example all relative paths found are prefixed "fileadmin/" unless it was the src attribute of an img tag in which case the path prefixed is "fileadmin/img/"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3899,7 +3899,7 @@ In this example the MYLINK subpart will be substituted by the wrap which is the 
 	</type>
 	<type id="USER">
 		<property name="userFunc" type="string">
-			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's intepreted as a call to a method in a class.
+			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's interpreted as a call to a method in a class.
 Two parameters are sent: A content variable (which is empty in this case, but not when used from stdWrap function .postUserFunc and .preUserFunc) and the second parameter is an array with the properties of this cObject if any.
 
 Example:
@@ -3920,7 +3920,7 @@ page.30 {
 	</type>
 	<type id="USER_INT">
 		<property name="userFunc" type="string">
-			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's intepreted as a call to a method in a class.
+			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's interpreted as a call to a method in a class.
 Two parameters are sent: A content variable (which is empty in this case, but not when used from stdWrap function .postUserFunc and .preUserFunc) and the second parameter is an array with the properties of this cObject if any.
 
 Example:
@@ -4120,8 +4120,8 @@ includeCSS {
   ie6Style = fileadmin/css/style3.css
   ie6Style.allWrap = <!--[if lte IE 7]>|<![endif]-->
 
-  cooliris = http://www.cooliris.com/shared/resources/css/global.css
-  cooliris.external = 1
+  bootstrap = https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css
+  bootstrap.external = 1
 }
 ]]></description>
 			<default><![CDATA[
@@ -4169,7 +4169,7 @@ Each file has optional properties:
 
 Example:
 
-includeJSLibs.twitter = http://twitter.com/javascripts/blogger.js
+includeJSLibs.twitter = https://twitter.com/javascripts/blogger.js
 
 includeJSLibs.twitter.external = 1
 ]]></description>
@@ -4445,7 +4445,7 @@ If this is set, it'll substitute the use of the thumbs-script for display of thu
 ]]></default>
 		</property>
 		<property name="icon_image_ext_list" type="stringList">
-			<description><![CDATA[This is the extensions that should render as thumbsnails instead of icons.]]></description>
+			<description><![CDATA[These are the extensions that should render as thumbnails instead of icons.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4741,9 +4741,9 @@ Example:
 ]]></default>
 		</property>
 		<property name="width" type="stdWrap">
-			<description><![CDATA[If both the width and the heigth are set and one of the numbers is appended by an "m", the proportions will be preserved and thus width/height are treated as maximum dimensions for the image. The image will be scaled to fit into width/height rectangle.
+			<description><![CDATA[If both the width and the height are set and one of the numbers is appended by an "m", the proportions will be preserved and thus width/height are treated as maximum dimensions for the image. The image will be scaled to fit into width/height rectangle.
 
-If both the width and the heigth are set and at least one of the numbers is appended by a "c", cropscaling will be enabled. This means that the proportions will be preserved and the image will be scaled to fit around a rectangle with width/height dimensions. Then, a centered portion from inside of the image (size defined by width/height) will be cut out.
+If both the width and the height are set and at least one of the numbers is appended by a "c", cropscaling will be enabled. This means that the proportions will be preserved and the image will be scaled to fit around a rectangle with width/height dimensions. Then, a centered portion from inside of the image (size defined by width/height) will be cut out.
 The "c" can have a percentage value (-100 ... +100) after it, which defines how much the cropping will be moved off the center to the border.
 
 Notice that you can only use "m" or "c" at the same time!
@@ -4776,7 +4776,7 @@ results in
 
 Usage:
 
- For creating PDFs or printing of pages the original file could provide much better quality as a recaled one
+ For creating PDFs or printing of pages the original file could provide much better quality as a rescaled one
 			]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -4901,13 +4901,13 @@ Number of decimals the formatted number will have. Defaults to 0, so that your i
 		</property>
 		<property name="dec_point" type="stdWrap">
 			<description><![CDATA[string / stdWrap
-Character that devides the decimals from the rest. Defaults to "."
+Character that divides the decimals from the rest. Defaults to "."
 ]]></description>
 			<default><![CDATA[.]]></default>
 		</property>
 		<property name="thousands_sep" type="stdWrap">
 			<description><![CDATA[string / stdWrap
-Character that devides the thousands of the number. Defaults to ",", set an empty value to have no thousands separator.
+Character that divides the thousands of the number. Defaults to ",", set an empty value to have no thousands separator.
 ]]></description>
 			<default><![CDATA[,]]></default>
 		</property>
@@ -4994,7 +4994,7 @@ tt_content.text.20.parseFunc.externalBlocks {
 		</property>
 		<property name="makelinks" type="makelinks">
 			<description><![CDATA[Set it to 1 for conversion
-Convert webadresses prefixed with "http://" and mail-adresses prefixed with "mailto:"
+Convert web-addresses prefixed with "http://" and mail-addresses prefixed with "mailto:"
 to links.
 Example:
 makelinks = 1
@@ -5024,7 +5024,7 @@ makelinks.mailto.keep = path]]></description>
 			<description><![CDATA[Like constants above, but local.
 
 Example:
-This substitutes all occurencies of "T3" with "TYPO3 CMS" and "T3web" with a link to typo3.org.
+This substitutes all occurrences of "T3" with "TYPO3 CMS" and "T3web" with a link to typo3.org.
 short {
   T3 = TYPO3 CMS
   T3web = <a href="https://typo3.org">typo3</a>
@@ -5380,7 +5380,7 @@ Set to value "2" the content will be printed in a table - looks nicer.]]></descr
 		<property name="editIcons" type="string">
 			<description><![CDATA[If not empty, then insert an icon linking to the FormEngine with some parameters to build and backend user edit form for certain fields.
 The value of this property is a list of fields from a table to edit. It's assumed that the current record of the cObj is the record to be edited.
-Syntax: optional tablename : comma list of fieldnames[list of pallette-field names separated by | ]
+Syntax: optional tablename : comma list of fieldnames[list of palette-field names separated by | ]
 
 .beforeLastTag (1,0,-1): If set (1), the icon will be inserted before the last HTML tag in the content. If -1 the icon will be prepended to the content. If zero (0) the icon is appended in the end of the content.
 
@@ -5426,7 +5426,7 @@ Note: You can also divide fieldnames by "//". Say, you set "nav_title // title" 
 ]]></default>
 		</property>
 		<property name="hash" type="stdWrap">
-			<description><![CDATA[Returns a hashed value of the current content. Use one of the alogrithms which are available in PHP. For a list of supported algorithms see http://www.php.net/manual/en/function.hash-algos.php
+			<description><![CDATA[Returns a hashed value of the current content. Use one of the algorithms which are available in PHP. For a list of supported algorithms see https://www.php.net/manual/en/function.hash-algos.php
 
 Example:
 
@@ -5515,7 +5515,7 @@ Defines the string used to explode the value. If splitChar is an integer, the ch
 Default: "," (comma)
 
 .listNum = rand:
-Returns a random item out of th elist
+Returns a random item out of the list
 
 .stdWrap (stdWrap properties):
 stdWrap properties of the listNum...
@@ -5990,7 +5990,7 @@ filerefs (fileadmin/somedir/thedoc.html): creates a link to the file on the loca
 strings (some_alias):  creates a link to the page with alias = "some_alias"
 
 External links:
-email-adresses (name@email.com): creates a link to the email-addr.
+email-addresses (name@email.com): creates a link to the email-addr.
 domains (www.domain.com): creates link to http://-page
 
 The input is parsed like this:
