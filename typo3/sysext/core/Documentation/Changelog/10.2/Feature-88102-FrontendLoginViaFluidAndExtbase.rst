@@ -27,4 +27,24 @@ for customization. All existing templates are found in
 
 EXT:felogin/Resources/Private/Templates/{Login,PasswordRecovery}
 
+Examples
+========
+
+Overriding Templates:
+All templates are now fluid based, which means they can be overridden by other extensions via typoscript. For example:
+
+To overwrite the :php:`\TYPO3\CMS\FrontendLogin\Controller\LoginController::loginAction()` template with an own one
+located in :file:`EXT:my_extension/Resources/Private/Templates/Felogin/Login/Login.html`, the following config will do
+the trick.
+
+.. code-block:: typoscript
+
+   plugin.tx_felogin_login {
+     view {
+       templateRootPaths {
+         10 = EXT:my_extension/Resources/Private/Templates/Felogin/
+       }
+     }
+   }
+
 .. index:: Frontend, LocalConfiguration, ext:felogin
