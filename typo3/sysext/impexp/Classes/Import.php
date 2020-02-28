@@ -979,7 +979,7 @@ class Import extends ImportExport
     public function setRelations()
     {
         $updateData = [];
-        // import_newId contains a register of all records that was in the import memorys "records" key
+        // import_newId contains a register of all records that was in the import memory's "records" key
         foreach ($this->import_newId as $nId => $dat) {
             $table = $dat['table'];
             $uid = $dat['uid'];
@@ -1119,7 +1119,7 @@ class Import extends ImportExport
     public function setFlexFormRelations()
     {
         $updateData = [];
-        // import_newId contains a register of all records that was in the import memorys "records" key
+        // import_newId contains a register of all records that were in the import memory's "records" key
         foreach ($this->import_newId as $nId => $dat) {
             $table = $dat['table'];
             $uid = $dat['uid'];

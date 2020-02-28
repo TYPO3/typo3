@@ -1113,7 +1113,7 @@ abstract class ImportExport
      * Will return HTML code to show any differences between them!
      *
      * @param array $databaseRecord Database record, all fields (new values)
-     * @param array $importRecord Import memorys record for the same table/uid, all fields (old values)
+     * @param array $importRecord Import memory records for the same table/uid, all fields (old values)
      * @param string $table The table name of the record
      * @param bool $inverseDiff Inverse the diff view (switch red/green, needed for pre-update difference view)
      * @return string HTML

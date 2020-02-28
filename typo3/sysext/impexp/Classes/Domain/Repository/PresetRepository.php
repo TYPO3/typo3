@@ -195,7 +195,7 @@ class PresetRepository
                         $inData = $inData_temp;
                     }
                 } else {
-                    $msg = 'ERROR: No configuratio data found in preset record!';
+                    $msg = 'ERROR: No configuration data found in preset record!';
                     $err = true;
                 }
             } else {
