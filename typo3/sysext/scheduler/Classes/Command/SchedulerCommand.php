@@ -52,7 +52,7 @@ class SchedulerCommand extends Command
     protected $overwrittenTaskList;
 
     /**
-     * This is true when the tasks should be marked as stopped instead of beeing executed.
+     * This is true when the tasks should be marked as stopped instead of being executed.
      *
      * @var bool
      */
@@ -120,7 +120,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     }
 
     /**
-     * Checks if the tasks should be stopped instead of beeing executed.
+     * Checks if the tasks should be stopped instead of being executed.
      *
      * Stopping is only performed when the --stop option is provided together with the --task option.
      *
@@ -214,7 +214,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
     /**
      * When the --task option is provided, the next task is fetched from the provided task UIDs. Depending
-     * on the --force option the task is fechted even if it is not marked for execution.
+     * on the --force option the task is fetched even if it is not marked for execution.
      *
      * Without the --task option we ask the scheduler for the next task with pending execution.
      *

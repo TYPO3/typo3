@@ -211,7 +211,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
                 $optionValue = $submittedData['task_executeschedulablecommand']['option_values'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
                 if ($optionDefinition->isArray() && !is_array($optionValue)) {
                     // Do not remove empty array values.
-                    // One empty array element indicates the existence of one occurence of an array option (InputOption::VALUE_IS_ARRAY) without a value.
+                    // One empty array element indicates the existence of one occurrence of an array option (InputOption::VALUE_IS_ARRAY) without a value.
                     // Empty array elements are also required for command options like "-vvv" (can be entered as ",,").
                     $optionValue = GeneralUtility::trimExplode(',', $optionValue, false);
                 }

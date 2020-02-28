@@ -522,7 +522,7 @@ class SchedulerModuleController
                 // If there's a registered execution, the task should not be edited
                 if (!empty($taskRecord['serialized_executions'])) {
                     $this->addMessage($this->getLanguageService()->getLL('msg.maynotEditRunningTask'), FlashMessage::ERROR);
-                    throw new \LogicException('Runnings tasks cannot not be edited', 1251232849);
+                    throw new \LogicException('Running tasks cannot not be edited', 1251232849);
                 }
 
                 // Get the task object
