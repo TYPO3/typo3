@@ -121,12 +121,23 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
+    /**
+     * @param string $fileName
+     * @param array $additionalInformation One dimensional hash map (array with non numerical keys) with scalar values
+     * @return AssetCollector
+     */
     public function addMedia(string $fileName, array $additionalInformation): self
     {
         $existingAdditionalInformation = $this->media[$fileName] ?? [];
-        ArrayUtility::mergeRecursiveWithOverrule($existingAdditionalInformation, $additionalInformation);
+        ArrayUtility::mergeRecursiveWithOverrule($existingAdditionalInformation, $this->ensureAllValuesAreSerializable($additionalInformation));
         $this->media[$fileName] = $existingAdditionalInformation;
         return $this;
+    }
+
+    private function ensureAllValuesAreSerializable(array $additionalInformation): array
+    {
+        // Currently just filtering all non scalar values
+        return array_filter($additionalInformation, 'is_scalar');
     }
 
     public function removeJavaScript(string $identifier): self

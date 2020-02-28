@@ -177,16 +177,22 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
+        $imageInfoValues = $this->getCompatibilityImageResourceValues($processedImage);
         if (
             $this->environmentService->isEnvironmentInFrontendMode()
             && is_object($GLOBALS['TSFE'])
         ) {
-            $GLOBALS['TSFE']->lastImageInfo = $this->getCompatibilityImageResourceValues($processedImage);
+            // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
+            // but was never needed to be set in lastImageInfo.
+            // We set it for BC here anyway, as this TSFE property is deprecated anyway.
+            $imageInfoValues['originalFile'] = $processedImage->getOriginalFile();
+            $imageInfoValues['processedFile'] = $processedImage;
+            $GLOBALS['TSFE']->lastImageInfo = $imageInfoValues;
             $GLOBALS['TSFE']->imagesOnPage[] = $processedImage->getPublicUrl();
         }
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $processedImage->getPublicUrl(),
-            $this->getCompatibilityImageResourceValues($processedImage)
+            $imageInfoValues
         );
     }
 
@@ -208,10 +214,6 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
             3 => $processedImage->getPublicUrl(),
             'origFile' => $originalFile->getPublicUrl(),
             'origFile_mtime' => $originalFile->getModificationTime(),
-            // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
-            // in order for the setup-array to create a unique filename hash.
-            'originalFile' => $originalFile,
-            'processedFile' => $processedImage
         ];
     }
 }

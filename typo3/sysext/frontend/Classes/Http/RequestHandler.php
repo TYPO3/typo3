@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -197,6 +198,8 @@ class RequestHandler implements RequestHandlerInterface
         if ($controller->isINTincScript()) {
             // Store the serialized pageRenderer in configuration
             $controller->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
+            // Store the serialized AssetCollector in configuration
+            $controller->config['INTincScript_ext']['assetCollector'] = serialize(GeneralUtility::makeInstance(AssetCollector::class));
             // Render complete page, keep placeholders for JavaScript and CSS
             return $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey']);
         }

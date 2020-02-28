@@ -324,11 +324,6 @@ class PageRenderer implements SingletonInterface
     protected $metaTagRegistry;
 
     /**
-     * @var AssetCollector
-     */
-    protected $assetCollector;
-
-    /**
      * @var FrontendInterface
      */
     protected static $cache = null;
@@ -353,18 +348,16 @@ class PageRenderer implements SingletonInterface
         ];
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
-        $this->assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
     /**
-     * Set restored meta tag managers as singletons and asset collector
+     * Set restored meta tag managers as singletons
      * so that uncached plugins can use them to add or remove meta tags
      */
     public function __wakeup()
     {
         GeneralUtility::setSingletonInstance(get_class($this->metaTagRegistry), $this->metaTagRegistry);
-        GeneralUtility::setSingletonInstance(get_class($this->assetCollector), $this->assetCollector);
     }
 
     /**
@@ -1795,7 +1788,7 @@ class PageRenderer implements SingletonInterface
             $jsInline = '';
         }
         // Use AssetRenderer to inject all JavaScripts and CSS files
-        $assetRenderer = GeneralUtility::makeInstance(AssetRenderer::class, $this->assetCollector);
+        $assetRenderer = GeneralUtility::makeInstance(AssetRenderer::class);
         $jsInline .= $assetRenderer->renderInlineJavaScript(true);
         $jsFooterInline .= $assetRenderer->renderInlineJavaScript();
         $jsFiles .= $assetRenderer->renderJavaScript(true);

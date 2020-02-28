@@ -1056,9 +1056,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             $source = $info[3];
         }
+        // Remove file objects for AssetCollector, as it only allows to store scalar values
+        unset($info['originalFile'], $info['processedFile']);
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $source,
-            $info ?? []
+            $info
         );
 
         $layoutKey = $this->stdWrap($conf['layoutKey'], $conf['layoutKey.']);

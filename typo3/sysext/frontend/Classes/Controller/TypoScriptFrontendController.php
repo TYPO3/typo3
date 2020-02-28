@@ -2992,7 +2992,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         if (!empty($this->config['INTincScript_ext']['assetCollector'])) {
             /** @var AssetCollector $assetCollectorr */
-            $assetCollector = unserialize($this->config['INTincScript_ext']['assetCollector'], ['allowed_classes' => false]);
+            $assetCollector = unserialize($this->config['INTincScript_ext']['assetCollector'], ['allowed_classes' => [AssetCollector::class]]);
             GeneralUtility::setSingletonInstance(AssetCollector::class, $assetCollector);
         }
 
