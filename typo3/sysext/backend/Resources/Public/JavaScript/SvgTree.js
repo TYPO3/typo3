@@ -261,7 +261,7 @@ define(
        * Set svg wrapper height
        */
       setWrapperHeight: function() {
-        var treeWrapperHeight = ($('#typo3-pagetree').height() - $('#svg-toolbar').height());
+        var treeWrapperHeight = ($('body').height() - $('#svg-toolbar').outerHeight() - $('.scaffold-topbar').height());
         $('#typo3-pagetree-tree').height(treeWrapperHeight);
       },
 
