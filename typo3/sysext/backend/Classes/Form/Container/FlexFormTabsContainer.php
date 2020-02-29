@@ -96,14 +96,16 @@ class FlexFormTabsContainer extends AbstractContainer
             $options['renderType'] = 'flexFormElementContainer';
             $childReturn = $this->nodeFactory->create($options)->render();
 
-            $tabElements[] = [
-                'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'])) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
-                'content' => $childReturn['html'],
-                'description' => trim($sheetDataStructure['ROOT']['sheetDescription']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
-                'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
-            ];
+            if ($childReturn['html'] !== '') {
+                $tabElements[] = [
+                    'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'])) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
+                    'content' => $childReturn['html'],
+                    'description' => trim($sheetDataStructure['ROOT']['sheetDescription']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
+                    'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
+                ];
 
-            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);
+                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);
+            }
         }
 
         $fieldInformationResult = $this->renderFieldInformation();
