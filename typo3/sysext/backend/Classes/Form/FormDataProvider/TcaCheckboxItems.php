@@ -128,7 +128,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     private function sanitizeToggleCheckbox(array $item, int $itemKey, array $newItems)
     {
         if (array_key_exists('invertStateDisplay', $item)) {
-            $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
+            $newItems[$itemKey]['invertStateDisplay'] = (bool)$item['invertStateDisplay'];
         } else {
             $newItems[$itemKey]['invertStateDisplay'] = false;
         }
@@ -150,7 +150,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
             $newItems[$itemKey]['labelUnchecked'] = $this->getLanguageService()->sL($item['labelUnchecked']);
         }
         if (array_key_exists('invertStateDisplay', $item)) {
-            $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
+            $newItems[$itemKey]['invertStateDisplay'] = (bool)$item['invertStateDisplay'];
         } else {
             $newItems[$itemKey]['invertStateDisplay'] = false;
         }
@@ -172,7 +172,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
             $newItems[$itemKey]['iconIdentifierUnchecked'] = $item['iconIdentifierUnchecked'];
         }
         if (array_key_exists('invertStateDisplay', $item)) {
-            $newItems[$itemKey]['invertStateDisplay'] = $item['invertStateDisplay'];
+            $newItems[$itemKey]['invertStateDisplay'] = (bool)$item['invertStateDisplay'];
         } else {
             $newItems[$itemKey]['invertStateDisplay'] = false;
         }
