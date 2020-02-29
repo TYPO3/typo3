@@ -116,6 +116,7 @@ class TreeController
     {
         $configuration = [
             'allowRecursiveDelete' => !empty($this->getBackendUser()->uc['recursiveDelete']),
+            'allowDragMove' => $this->isDragMoveAllowed(),
             'doktypes' => $this->getDokTypes(),
             'displayDeleteConfirmation' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE),
             'temporaryMountPoint' => $this->getMountPointPath((int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0)),
@@ -505,6 +506,18 @@ class TreeController
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Check if drag-move in the svg tree is allowed for the user
+     *
+     * @return bool
+     */
+    protected function isDragMoveAllowed(): bool
+    {
+        $backendUser = $this->getBackendUser();
+        return $backendUser->isAdmin()
+            || ($backendUser->check('tables_modify', 'pages') && $backendUser->checkLanguageAccess(0));
     }
 
     /**
