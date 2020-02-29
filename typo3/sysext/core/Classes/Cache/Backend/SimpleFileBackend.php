@@ -113,7 +113,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      */
     public function setCacheDirectory($cacheDirectory)
     {
-        // Skip handling if directory is a stream ressource
+        // Skip handling if directory is a stream resource
         // This is used by unit tests with vfs:// directories
         if (strpos($cacheDirectory, '://')) {
             $this->temporaryCacheDirectory = $cacheDirectory;

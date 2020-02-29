@@ -226,11 +226,11 @@ class HtmlParserTest extends UnitTestCase
                 'testa<B>test1<I>test2</B>test3</I>testb',
                 'testa<B>test1<I>test2</B>test3</I>testb'
             ],
-            'Superflous tags are removed' => [
+            'Superfluous tags are removed' => [
                 '</B><B><I></B></I></B>',
                 '<B><I></B></I>'
             ],
-            'Superflous tags with content are removed' => [
+            'Superfluous tags with content are removed' => [
                 'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
                 'test1test2<B>test3<I>test4</B>test5</I>test6test7'
             ],

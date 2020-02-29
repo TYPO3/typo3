@@ -238,7 +238,7 @@ class ResourceCompressor
         if (empty($type)) {
             throw new \InvalidArgumentException('No valid file type given for files to be merged.', 1308957498);
         }
-        // we add up the filenames, filemtimes and filsizes to later build a checksum over
+        // we add up the filenames, filemtimes and filesizes to later build a checksum over
         // it and include it in the temporary file name
         $unique = '';
         foreach ($filesToInclude as $key => $filename) {

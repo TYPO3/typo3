@@ -753,7 +753,7 @@ class FlexFormToolsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDataStructureIdentifierThrowsExceptionIfResorvedPointerValueIsIntegerButDsFieldNameIsNotConfigured(): void
+    public function getDataStructureIdentifierThrowsExceptionIfReservedPointerValueIsIntegerButDsFieldNameIsNotConfigured(): void
     {
         $fieldTca = [
             'config' => [

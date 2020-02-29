@@ -24,7 +24,7 @@ class MemoryPeakUsageProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function memoryPeakUsagePRocessorAddsMemoryPeakUsageDataToLogRecord()
+    public function memoryPeakUsageProcessorAddsMemoryPeakUsageDataToLogRecord()
     {
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $processor = new \TYPO3\CMS\Core\Log\Processor\MemoryPeakUsageProcessor();

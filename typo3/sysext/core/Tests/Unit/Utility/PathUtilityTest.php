@@ -334,7 +334,7 @@ class PathUtilityTest extends UnitTestCase
                 '/def/../text.txt',
                 '/text.txt'
             ],
-            'absolute windwos path' => [
+            'absolute windows path' => [
                 'C:\def\..\..\test.txt',
                 'C:/test.txt'
             ],

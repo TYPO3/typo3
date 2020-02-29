@@ -21,7 +21,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class Pbkdf2PaswordHashTest extends UnitTestCase
+class Pbkdf2PasswordHashTest extends UnitTestCase
 {
     /**
      * @test

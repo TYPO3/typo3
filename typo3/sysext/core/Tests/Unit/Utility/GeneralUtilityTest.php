@@ -437,7 +437,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider normalizeCompressIPv6DataProviderCorrect
      */
-    public function compressIPv6CorrectlyCompressesAdresses($compressed, $normalized)
+    public function compressIPv6CorrectlyCompressesAddresses($compressed, $normalized)
     {
         self::assertEquals($compressed, GeneralUtility::compressIPv6($normalized));
     }
@@ -445,7 +445,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function compressIPv6CorrectlyCompressesAdressWithSomeAddressOnRightSide()
+    public function compressIPv6CorrectlyCompressesAddressWithSomeAddressOnRightSide()
     {
         if (strtolower(PHP_OS) === 'darwin') {
             self::markTestSkipped('This test does not work on OSX / Darwin OS.');
@@ -835,11 +835,11 @@ class GeneralUtilityTest extends UnitTestCase
             'SI Decimal is omitted for large gigabytes' => [30000000000, 'si', 0, '30 G'],
             'Label for bytes can be exchanged (binary unit)' => [1, ' Foo|||', 0, '1 Foo'],
             'Label for kilobytes can be exchanged (binary unit)' => [1024, '| Foo||', 0, '1.00 Foo'],
-            'Label for megabyes can be exchanged (binary unit)' => [1048576, '|| Foo|', 0, '1.00 Foo'],
+            'Label for megabytes can be exchanged (binary unit)' => [1048576, '|| Foo|', 0, '1.00 Foo'],
             'Label for gigabytes can be exchanged (binary unit)' => [1073741824, '||| Foo', 0, '1.00 Foo'],
             'Label for bytes can be exchanged (decimal unit)' => [1, ' Foo|||', 1000, '1 Foo'],
             'Label for kilobytes can be exchanged (decimal unit)' => [1000, '| Foo||', 1000, '1.00 Foo'],
-            'Label for megabyes can be exchanged (decimal unit)' => [1000000, '|| Foo|', 1000, '1.00 Foo'],
+            'Label for megabytes can be exchanged (decimal unit)' => [1000000, '|| Foo|', 1000, '1.00 Foo'],
             'Label for gigabytes can be exchanged (decimal unit)' => [1000000000, '||| Foo', 1000, '1.00 Foo'],
             'IEC Base is ignored' => [1024, 'iec', 1000, '1.00 Ki'],
             'SI Base is ignored' => [1000, 'si', 1024, '1.00 k'],
@@ -1523,7 +1523,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider hostnameAndPortDataProvider
      */
-    public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAdresses($httpHost, $expectedIp)
+    public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAddresses($httpHost, $expectedIp)
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
         self::assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
@@ -1532,7 +1532,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isAllowedHostHeaderValueReturnsFalseIfTrusedHostsIsNotConfigured()
+    public function isAllowedHostHeaderValueReturnsFalseIfTrustedHostsIsNotConfigured()
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern']);
         self::assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue('evil.foo.bar'));
@@ -1738,7 +1738,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider hostnameAndPortDataProvider
      */
-    public function getIndpEnvTypo3PortParsesHostnamesAndIpAdresses($httpHost, $dummy, $expectedPort)
+    public function getIndpEnvTypo3PortParsesHostnamesAndIpAddresses($httpHost, $dummy, $expectedPort)
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
         self::assertEquals($expectedPort, GeneralUtility::getIndpEnv('TYPO3_PORT'));
@@ -1839,7 +1839,7 @@ class GeneralUtilityTest extends UnitTestCase
             'http index.html' => ['http://example.com/index.html'],
             'http index.php' => ['http://www.example.com/index.php'],
             'http test.png' => ['http://www.example/img/test.png'],
-            'http username password querystring and ancher' => ['https://user:pw@www.example.org:80/path?arg=value#fragment'],
+            'http username password querystring and anchor' => ['https://user:pw@www.example.org:80/path?arg=value#fragment'],
             'file' => ['file:///tmp/test.c'],
             'file directory' => ['file://foo/bar'],
             'ftp directory' => ['ftp://ftp.example.com/tmp/'],
@@ -1866,9 +1866,9 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for invalid isValidUrl's
      *
-     * @return array Invalid ressource
+     * @return array Invalid resource
      */
-    public function isValidUrlInvalidRessourceDataProvider()
+    public function isValidUrlInvalidResourceDataProvider()
     {
         return [
             'http missing colon' => ['http//www.example/wrong/url/'],
@@ -1891,9 +1891,9 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider isValidUrlInvalidRessourceDataProvider
+     * @dataProvider isValidUrlInvalidResourceDataProvider
      */
-    public function validURLReturnsFalseForInvalidRessoure($url)
+    public function validURLReturnsFalseForInvalidResource($url)
     {
         self::assertFalse(GeneralUtility::isValidUrl($url));
     }
@@ -3484,7 +3484,7 @@ class GeneralUtilityTest extends UnitTestCase
             'one times ../ in relative path' => ['dir1/../dir2/script.php', 'dir2/script.php'],
             'one times ../ in absolute path' => ['/dir1/../dir2/script.php', '/dir2/script.php'],
             'consecutive ../' => ['dir1/dir2/dir3/../../../dir4', 'dir4'],
-            'distrubuted ../ with trailing /' => ['dir1/../dir2/dir3/../', 'dir2/'],
+            'distributed ../ with trailing /' => ['dir1/../dir2/dir3/../', 'dir2/'],
             'distributed ../ without trailing /' => ['dir1/../dir2/dir3/..', 'dir2'],
             'multiple distributed and consecutive ../ together' => ['dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/', 'dir1/dir2/dir5/dir6/dir8/'],
             'dirname with leading ..' => ['dir1/..dir2/dir3/', 'dir1/..dir2/dir3/'],
@@ -4573,7 +4573,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @todo: The parser run into a memory issue with files bigger 10 MB
      * @todo: This special tests documents the issue. If fixed, this test
      * @todo: should become a data set of xml2ArrayHandlesBigXmlFilesDataProvider()
-     * @todo: This test does not pass in all environmnents. It should be evaluated whether this test is really needed or should be removed.
+     * @todo: This test does not pass in all environments. It should be evaluated whether this test is really needed or should be removed.
      *
      * @see https://forge.typo3.org/issues/83580
      *
@@ -4581,7 +4581,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function xml2ArrayFailsWithXmlContentBiggerThanTenMegabytes()
     {
-        self::markTestSkipped('This test does not pass in all environmnents. It should be evaluated whether this test is really needed or should be removed.');
+        self::markTestSkipped('This test does not pass in all environments. It should be evaluated whether this test is really needed or should be removed.');
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());

@@ -33,7 +33,7 @@ class ModuleMenuButtonCest
     /**
      * @param BackendTester $I
      */
-    public function checkModelMenuButtomFromBigToSmallScreen(BackendTester $I)
+    public function checkModelMenuButtonFromBigToSmallScreen(BackendTester $I)
     {
         $I->wantTo('see the module menu button behavior when shrinking the window');
 
@@ -64,7 +64,7 @@ class ModuleMenuButtonCest
     /**
      * @param BackendTester $I
      */
-    public function checkModelMenuButtomFromSmallToBigScreen(BackendTester $I)
+    public function checkModelMenuButtonFromSmallToBigScreen(BackendTester $I)
     {
         $I->wantTo('see the module menu button behavior when enlarging the window');
 

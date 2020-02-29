@@ -48,7 +48,7 @@ class StreamTest extends UnitTestCase
     /**
      * @test
      */
-    public function canInstantiteWithStreamResource()
+    public function canInstantiateWithStreamResource()
     {
         $resource = fopen('php://memory', 'wb+');
         $stream = new Stream($resource);

@@ -147,7 +147,7 @@ class VimeoRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
+    public function renderOutputWithAutoplayAndWithoutControlsIsCorrect()
     {
         /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);

@@ -181,7 +181,7 @@ class ResponseTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorIgonoresInvalidHeaders()
+    public function constructorIgnoresInvalidHeaders()
     {
         $headers = [
             ['INVALID'],

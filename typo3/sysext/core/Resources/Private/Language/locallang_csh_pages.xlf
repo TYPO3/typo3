@@ -24,9 +24,9 @@
 &lt;b&gt;Special&lt;/b&gt;
 'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
 'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
-'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+'Menu Separator' is only useful if your Frontend menus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
 
-&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particular record types may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
 			</trans-unit>
 			<trans-unit id="_doktype.seeAlso" resname="_doktype.seeAlso" xml:space="preserve">
 				<source>pages:shortcut,

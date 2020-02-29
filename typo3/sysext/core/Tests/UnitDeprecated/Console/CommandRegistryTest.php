@@ -168,7 +168,7 @@ class CommandRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function throwsUnknowCommandExceptionIfUnregisteredCommandIsRequested()
+    public function throwsUnknownCommandExceptionIfUnregisteredCommandIsRequested()
     {
         $this->packageManagerProphecy->getActivePackages()->willReturn([]);
 

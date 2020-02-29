@@ -317,7 +317,7 @@ class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1><p></p><h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . CRLF . '<h1>block2</h1>',
             ],
-            'Block followed by empty paragraph aand block, linebreak-separated' => [
+            'Block followed by empty paragraph and block, linebreak-separated' => [
                 '<h1>block1</h1>' . CRLF . '<p></p>' . CRLF . '<h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . CRLF . '<h1>block2</h1>',
             ],

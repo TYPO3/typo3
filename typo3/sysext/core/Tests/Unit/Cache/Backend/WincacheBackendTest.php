@@ -62,7 +62,7 @@ class WincacheBackendTest extends UnitTestCase
         $identifier = StringUtility::getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
         $fetchedData = $backend->get($identifier);
-        self::assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
+        self::assertEquals($data, $fetchedData, 'Wincache backend failed to set and retrieve data');
     }
 
     /**

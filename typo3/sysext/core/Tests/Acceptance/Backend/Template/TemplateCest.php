@@ -103,7 +103,7 @@ class TemplateCest
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->wantTo('change the setup, save the template and close the form');
-        // grap and fill setup textarea
+        // grab and fill setup textarea
         $config = $I->grabTextFrom('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]');
         $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
         $I->fillField('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]', $config);

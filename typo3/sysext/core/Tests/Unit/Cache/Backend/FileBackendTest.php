@@ -501,8 +501,8 @@ class FileBackendTest extends UnitTestCase
     public function invalidEntryIdentifiers(): array
     {
         return [
-            'trailing slash' => ['/myIdentifer'],
-            'trailing dot and slash' => ['./myIdentifer'],
+            'trailing slash' => ['/myIdentifier'],
+            'trailing dot and slash' => ['./myIdentifier'],
             'trailing two dots and slash' => ['../myIdentifier'],
             'trailing with multiple dots and slashes' => ['.././../myIdentifier'],
             'slash in middle part' => ['my/Identifier'],

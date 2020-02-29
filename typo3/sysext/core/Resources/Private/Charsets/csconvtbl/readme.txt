@@ -16,7 +16,7 @@ http://www.unicode.org/Public/MAPPINGS/
 
 
 PARSING:
-The conversion table files are parsed line by line, extracting by either of these formulars:
+The conversion table files are parsed line by line, extracting by either of these formulas:
 
 Syntax 1:
 [Local charset value, hex] = U+[UNICODE hex number] : [descriptive text, ignored]

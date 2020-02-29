@@ -199,7 +199,7 @@ class ProcessedFile extends AbstractFile
     }
 
     /*****************************************
-     * STORAGE AND MANAGEMENT RELATED METHDOS
+     * STORAGE AND MANAGEMENT RELATED METHODS
      *****************************************/
     /**
      * Returns TRUE if this file is indexed

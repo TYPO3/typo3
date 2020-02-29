@@ -176,7 +176,7 @@ If you click the folder title in the Folder Tree you will see the sub-module loa
 The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
 
 &lt;b&gt;Single-table mode&lt;/b&gt;
-If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
+If you click the table title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
 			</trans-unit>
 			<trans-unit id="_list_module.seeAlso" resname="_list_module.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:pagetree,
@@ -626,7 +626,7 @@ If you click the icon of a file you will see a menu pop up with menu items relat
 
 &lt;b&gt;The "TEMP" folder&lt;/b&gt;
 There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
-The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The actual folder name is actually "_temp_". The interface will just interpret this with "TEMP" in bold.
 The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</source>
 			</trans-unit>
 			<trans-unit id="_filelist_module.seeAlso" resname="_filelist_module.seeAlso" xml:space="preserve">

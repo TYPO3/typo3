@@ -32,7 +32,7 @@ class StringUtilityTest extends UnitTestCase
     {
         return [
             'match last part of string' => ['hello world', 'world'],
-            'match last char of string' => ['hellod world', 'd'],
+            'match last char of string' => ['hello world', 'd'],
             'match whole string' => ['hello', 'hello'],
             'integer is part of string with same number' => ['24', 24],
             'string is part of integer with same number' => [24, '24'],
@@ -292,32 +292,32 @@ class StringUtilityTest extends UnitTestCase
     public function searchStringWildcardDataProvider(): array
     {
         return [
-            'Simple wildard single character with *' => [
+            'Simple wildcard single character with *' => [
                 'TYPO3',
                 'TY*O3',
                 true
             ],
-            'Simple wildard multiple character with *' => [
+            'Simple wildcard multiple character with *' => [
                 'TYPO3',
                 'T*P*3',
                 true
             ],
-            'Simple wildard multiple character for one placeholder with *' => [
+            'Simple wildcard multiple character for one placeholder with *' => [
                 'TYPO3',
                 'T*3',
                 true
             ],
-            'Simple wildard single character with ?' => [
+            'Simple wildcard single character with ?' => [
                 'TYPO3',
                 'TY?O3',
                 true
             ],
-            'Simple wildard multiple character with ?' => [
+            'Simple wildcard multiple character with ?' => [
                 'TYPO3',
                 'T?P?3',
                 true
             ],
-            'Simple wildard multiple character for one placeholder with ?' => [
+            'Simple wildcard multiple character for one placeholder with ?' => [
                 'TYPO3',
                 'T?3',
                 false

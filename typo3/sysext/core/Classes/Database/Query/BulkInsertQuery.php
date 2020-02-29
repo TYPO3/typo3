@@ -21,10 +21,10 @@ use Doctrine\DBAL\Connection;
  * Provides functionality to generate and execute row based bulk INSERT statements.
  *
  * Based on work by Steve Müller <st.mueller@dzh-online.de> for the Doctrine project,
- * licensend under the MIT license.
+ * licensed under the MIT license.
  *
  * This class will be removed from core and the functionality will be provided by
- * the upstream implemention once the pull request has been merged into Doctrine DBAL.
+ * the upstream implementation once the pull request has been merged into Doctrine DBAL.
  *
  * @see https://github.com/doctrine/dbal/pull/682
  * @internal

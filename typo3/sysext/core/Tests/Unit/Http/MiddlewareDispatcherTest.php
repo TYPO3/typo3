@@ -144,7 +144,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function canBeExcutedMultipleTimes()
+    public function canBeExecutedMultipleTimes()
     {
         $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface

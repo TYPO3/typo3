@@ -240,7 +240,7 @@ class YamlFileLoader
      */
     protected function getParts(string $placeholders): array
     {
-        // find occurences of placeholders like %some()% and %array.access%.
+        // find occurrences of placeholders like %some()% and %array.access%.
         // Only find the innermost ones, so we can nest them.
         preg_match_all(
             '/%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%/',

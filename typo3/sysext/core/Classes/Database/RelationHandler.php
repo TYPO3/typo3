@@ -389,7 +389,7 @@ class RelationHandler
             foreach ($tempItemArray as $key => $val) {
                 // Will be set to "true" if the entry was a real table/id
                 $isSet = false;
-                // Extract table name and id. This is un the formular [tablename]_[id]
+                // Extract table name and id. This is in the formula [tablename]_[id]
                 // where table name MIGHT contain "_", hence the reversion of the string!
                 $val = strrev($val);
                 $parts = explode('_', $val, 2);

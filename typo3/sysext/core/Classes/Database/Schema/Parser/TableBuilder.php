@@ -269,7 +269,7 @@ class TableBuilder
         string $indexName = null
     ) {
         $foreignTableName = $referenceDefinition->tableName->getQuotedName();
-        $foreignColumNames = array_map(
+        $foreignColumnNames = array_map(
             function (IndexColumnName $columnName) {
                 return $columnName->columnName->getQuotedName();
             },
@@ -284,7 +284,7 @@ class TableBuilder
         $this->table->addForeignKeyConstraint(
             $foreignTableName,
             $localColumnNames,
-            $foreignColumNames,
+            $foreignColumnNames,
             $options,
             $indexName
         );

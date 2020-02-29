@@ -31,7 +31,7 @@ If this is not possible when building custom queries without restrictions, it is
 
 - t3ver_oid>0 = identifying a versioned record that has a counterpart in the live workspace
 - t3ver_wsid=13 - identifying a versioned record or placeholder that resides in a specific workspace (in this case "13")
-- t3ver_state IN (0,-1) AND t3ver_wisd IN (0,13) - to fetch records including "new record" placeholders
+- t3ver_state IN (0,-1) AND t3ver_wsid IN (0,13) - to fetch records including "new record" placeholders
 
 Checking for "pid = -1" is not recommended anymore - using the restrictions and custom query information can be
 used in previous TYPO3 versions already.

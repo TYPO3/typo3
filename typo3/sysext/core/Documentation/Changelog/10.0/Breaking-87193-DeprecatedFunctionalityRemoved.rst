@@ -1513,6 +1513,6 @@ The following global instances have been removed:
 Impact
 ======
 
-Instantiating or requiring the PHP classes or calling the PHP methods directly will trigger PHP :php:`E_ERRER` errors.
+Instantiating or requiring the PHP classes or calling the PHP methods directly will trigger PHP :php:`E_ERROR` errors.
 
 .. index:: Backend, CLI, FlexForm, Fluid, Frontend, JavaScript, LocalConfiguration, PHP-API, TCA, TSConfig, TypoScript, PartiallyScanned

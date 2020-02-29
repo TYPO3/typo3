@@ -372,7 +372,7 @@ class FileReference implements FileInterface
     }
 
     /****************************************
-     * STORAGE AND MANAGEMENT RELATED METHDOS
+     * STORAGE AND MANAGEMENT RELATED METHODS
      ****************************************/
     /**
      * Get the storage the original file is located in

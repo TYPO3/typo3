@@ -256,7 +256,7 @@ class MathUtilityTest extends UnitTestCase
             'power' => [8, '2 ^ 3'],
             'three operands with non integer result' => [6.5, '5 + 3 / 2'],
             'three operands with power' => [14, '5 + 3 ^ 2'],
-            'three operads with modulus' => [4, '5 % 2 + 3'],
+            'three operands with modulus' => [4, '5 % 2 + 3'],
             'four operands' => [3, '2 + 6 / 2 - 2'],
             'division by zero when dividing' => ['ERROR: dividing by zero', '2 / 0'],
             'division by zero with modulus' => ['ERROR: dividing by zero', '2 % 0']

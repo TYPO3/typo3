@@ -494,12 +494,12 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = StringUtility::getUniqueId('identifier');
         $data = 'some data ' . microtime();
         $subject->set($identifier, $data);
-        $uncompresedStoredData = '';
+        $uncompressedStoredData = '';
         try {
-            $uncompresedStoredData = @gzuncompress($redis->get('identData:' . $identifier));
+            $uncompressedStoredData = @gzuncompress($redis->get('identData:' . $identifier));
         } catch (\Exception $e) {
         }
-        self::assertEquals($data, $uncompresedStoredData, 'Original and compressed data don\'t match');
+        self::assertEquals($data, $uncompressedStoredData, 'Original and compressed data don\'t match');
     }
 
     /**

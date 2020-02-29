@@ -1073,7 +1073,7 @@ class ReferenceIndex implements LoggerAwareInterface
             $cli_echo = null;
         }
         if ($cli_echo !== null) {
-            trigger_error('The second argument of ReferenceIndex->updateIndex() will not work in TYPO3 v11 anymore. Use the ProgressListener to show detailled results', E_USER_DEPRECATED);
+            trigger_error('The second argument of ReferenceIndex->updateIndex() will not work in TYPO3 v11 anymore. Use the ProgressListener to show detailed results', E_USER_DEPRECATED);
         } else {
             // default value for now
             $cli_echo = false;

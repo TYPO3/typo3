@@ -95,7 +95,7 @@ class IconTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSizedentifierReturnsCorrectIdentifier()
+    public function getSizeIdentifierReturnsCorrectIdentifier()
     {
         self::assertEquals(Icon::SIZE_SMALL, $this->subject->getSize());
     }

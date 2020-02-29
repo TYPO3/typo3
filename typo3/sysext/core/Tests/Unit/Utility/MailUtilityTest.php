@@ -30,7 +30,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function breakLinesForEmailReturnsEmptyStringIfEmptryStringIsGiven()
+    public function breakLinesForEmailReturnsEmptyStringIfEmptyStringIsGiven()
     {
         self::assertEmpty(MailUtility::breakLinesForEmail(''));
     }

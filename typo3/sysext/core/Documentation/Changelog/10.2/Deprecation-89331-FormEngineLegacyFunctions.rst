@@ -45,7 +45,7 @@ use the according replacements:
 * :js:`setFormValueOpenBrowser()` - use :js:`FormEngine.openPopupWindow()` instead
 * :js:`setFormValueFromBrowseWin()` - use :js:`FormEngine.setSelectOptionFromExternalSource()` instead
 * :js:`setHiddenFromList()` - use :js:`FormEngine.updateHiddenFieldValueFromSelect()` instead
-* :js:`setFormValueManipulate()` - no replacement, this is interal logic for form controls separated into according modules
+* :js:`setFormValueManipulate()` - no replacement, this is internal logic for form controls separated into according modules
 * :js:`setFormValue_getFObj()` - use :js:`FormEngine.getFormElement()` instead
 
 If :js:`setFormValueFromBrowseWin()` is not used within a FormEngine context, it is possible to listen to the

@@ -17,7 +17,7 @@ Affected dependency injection services are the following boolean services:
 - env.is_unix
 - env.is_windows
 - env.is_cli
-- env.is_compoer_mode
+- env.is_composer_mode
 
 The services variables can be substituted by using dynamic Symfony
 environment parameters:

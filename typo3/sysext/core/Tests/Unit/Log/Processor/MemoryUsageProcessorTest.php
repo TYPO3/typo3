@@ -24,7 +24,7 @@ class MemoryUsageProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function memoryUsagePRocessorAddsMemoryUsageDataToLogRecord()
+    public function memoryUsageProcessorAddsMemoryUsageDataToLogRecord()
     {
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();

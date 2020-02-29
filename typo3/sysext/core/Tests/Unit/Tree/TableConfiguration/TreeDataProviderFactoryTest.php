@@ -73,7 +73,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
                 ],
                 1288215890
             ],
-            'Tree configuration missing childer and parent field' => [
+            'Tree configuration missing children and parent field' => [
                 [
                     'internal_type' => 'db',
                     'foreign_table' => 'foo',

@@ -30,7 +30,7 @@ class ExtractorServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function isFileTypeSupportedByExtractorReturnsFalesForFileTypeTextAndExtractorLimitedToFileTypeImage(): void
+    public function isFileTypeSupportedByExtractorReturnsFalseForFileTypeTextAndExtractorLimitedToFileTypeImage(): void
     {
         $fileMock = $this->createMock(File::class);
         $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_TEXT);

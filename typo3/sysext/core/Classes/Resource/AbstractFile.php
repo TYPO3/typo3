@@ -354,7 +354,7 @@ abstract class AbstractFile implements FileInterface
     }
 
     /****************************************
-     * STORAGE AND MANAGEMENT RELATED METHDOS
+     * STORAGE AND MANAGEMENT RELATED METHODS
      ****************************************/
 
     /**

@@ -733,7 +733,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function setValueWithoudNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
+    public function setValueWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->quoteIdentifier('aField')
             ->shouldBeCalled()

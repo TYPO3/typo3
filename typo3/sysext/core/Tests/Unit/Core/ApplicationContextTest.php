@@ -58,7 +58,7 @@ class ApplicationContextTest extends UnitTestCase
     public function forbiddenContexts()
     {
         return [
-            ['MySpecialContexz'],
+            ['MySpecialContext'],
             ['Testing123'],
             ['DevelopmentStuff'],
             ['DevelopmentStuff/FooBar'],

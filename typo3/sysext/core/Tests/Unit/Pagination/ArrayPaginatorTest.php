@@ -124,7 +124,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function paginatorProperlyCalulatesOnlyOnePage()
+    public function paginatorProperlyCalculatesOnlyOnePage()
     {
         $paginator = new ArrayPaginator(
             $this->fixture,

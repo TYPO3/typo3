@@ -317,7 +317,7 @@ class RichtextTest extends UnitTestCase
                         'types.' => [
                             'textmedia.' => [
                                 'classes.' => [
-                                    'aClass' => 'aTypeSpecifcConfig',
+                                    'aClass' => 'aTypeSpecificConfig',
                                 ],
                                 'editor.' => [
                                     'config.' => [
@@ -333,7 +333,7 @@ class RichtextTest extends UnitTestCase
         $expected = [
             // Config with pagets dots
             'classes.' => [
-                'aClass' => 'aTypeSpecifcConfig',
+                'aClass' => 'aTypeSpecificConfig',
             ],
             'editor.' => [
                 'config.' => [
@@ -343,7 +343,7 @@ class RichtextTest extends UnitTestCase
             'preset' => 'default',
             // Config without pagets dots
             'classes' => [
-                'aClass' => 'aTypeSpecifcConfig',
+                'aClass' => 'aTypeSpecificConfig',
             ],
             'editor' => [
                 'config' => [
@@ -575,7 +575,7 @@ class RichtextTest extends UnitTestCase
                         'overruleMode' => 'default',
                     ],
                 ],
-                'message' => 'single Preset of testRteConfig* defined in Pagetesconfig for default of RTE',
+                'message' => 'single Preset of testRteConfig* defined in PageTSconfig for default of RTE',
             ],
             [
                 'fieldConfig' => [
@@ -607,7 +607,7 @@ class RichtextTest extends UnitTestCase
                         'overruleMode' => 'default',
                     ],
                 ],
-                'message' => 'single Preset of testRteConfig* defined in Pagetesconfig for field of table ',
+                'message' => 'single Preset of testRteConfig* defined in PageTSconfig for field of table ',
             ],
             [
                 'fieldConfig' => [

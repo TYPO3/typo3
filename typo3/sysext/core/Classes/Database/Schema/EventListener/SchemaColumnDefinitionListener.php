@@ -88,24 +88,24 @@ class SchemaColumnDefinitionListener
     /**
      * Extract the field type from the definition string
      *
-     * @param string $typeDefiniton
+     * @param string $typeDefinition
      * @return string
      */
-    protected function getDatabaseType(string $typeDefiniton): string
+    protected function getDatabaseType(string $typeDefinition): string
     {
-        $dbType = strtolower($typeDefiniton);
+        $dbType = strtolower($typeDefinition);
         $dbType = strtok($dbType, '(), ');
 
         return $dbType;
     }
 
     /**
-     * @param string $typeDefiniton
+     * @param string $typeDefinition
      * @return array
      */
-    protected function getUnquotedEnumerationValues(string $typeDefiniton): array
+    protected function getUnquotedEnumerationValues(string $typeDefinition): array
     {
-        $valuesDefinition = preg_replace('#^(enum|set)\((.*)\)\s*$#i', '$2', $typeDefiniton);
+        $valuesDefinition = preg_replace('#^(enum|set)\((.*)\)\s*$#i', '$2', $typeDefinition);
         $quoteChar = $valuesDefinition[0];
         $separator = $quoteChar . ',' . $quoteChar;
 

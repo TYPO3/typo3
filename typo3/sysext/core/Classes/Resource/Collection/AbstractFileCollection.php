@@ -196,7 +196,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     }
 
     /**
-     * Adds all files of another collection to the corrent one.
+     * Adds all files of another collection to the current one.
      *
      * @param CollectionInterface $other
      */

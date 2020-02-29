@@ -185,7 +185,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8EncodeAlredyUtf8EncodedSign()
+    public function utf8EncodeAlreadyUtf8EncodedSign()
     {
         self::assertSame(
             "\xF0\x9F\x98\x82",

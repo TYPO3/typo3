@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'DataHander Test Element',
+        'title' => 'DataHandler Test Element',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',

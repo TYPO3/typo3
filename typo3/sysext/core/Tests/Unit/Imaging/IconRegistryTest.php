@@ -84,14 +84,14 @@ class IconRegistryTest extends UnitTestCase
      */
     public function registerIconAddNewIconToRegistry()
     {
-        $unregisterdIcon = 'foo-bar-unregistered';
+        $unregisteredIcon = 'foo-bar-unregistered';
         $subject = new IconRegistry();
-        self::assertFalse($subject->isRegistered($unregisterdIcon));
-        $subject->registerIcon($unregisterdIcon, FontawesomeIconProvider::class, [
+        self::assertFalse($subject->isRegistered($unregisteredIcon));
+        $subject->registerIcon($unregisteredIcon, FontawesomeIconProvider::class, [
             'name' => 'pencil',
             'additionalClasses' => 'fa-fw'
         ]);
-        self::assertTrue($subject->isRegistered($unregisterdIcon));
+        self::assertTrue($subject->isRegistered($unregisteredIcon));
     }
 
     /**
@@ -132,7 +132,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentiefiers()
+    public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentifiers()
     {
         self::assertIsArray((new IconRegistry)->getAllRegisteredIconIdentifiers());
     }
@@ -221,7 +221,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconIdentifierForMimeTypeWithUnknowMimeTypeReturnNull()
+    public function getIconIdentifierForMimeTypeWithUnknownMimeTypeReturnNull()
     {
         $result = (new IconRegistry)->getIconIdentifierForMimeType('bar/foo');
         self::assertNull($result);
