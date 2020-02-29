@@ -159,6 +159,7 @@ define(['jquery',
 
         Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small).then(function(icon) {
           $this.append(icon);
+          _this.tree.setWrapperHeight();
         });
       });
 
