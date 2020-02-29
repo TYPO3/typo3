@@ -437,24 +437,9 @@ return [
                 'size' => 2,
             ],
         ],
-        'select_multiplesidebyside_4' => [
-            'exclude' => 1,
-            'label' => 'select_multiplesidebyside_4 enableMultiSelectFilterTextfield=true',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
-                    ['bar', 4],
-                ],
-                'enableMultiSelectFilterTextfield' => true,
-            ],
-        ],
         'select_multiplesidebyside_5' => [
             'exclude' => 1,
-            'label' => 'select_multiplesidebyside_5 multiSelectFilterItems, enableMultiSelectFilterTextfield=true',
+            'label' => 'select_multiplesidebyside_5 multiSelectFilterItems',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -464,7 +449,6 @@ return [
                     ['foo 3', 3],
                     ['bar', 4],
                 ],
-                'enableMultiSelectFilterTextfield' => true,
                 'multiSelectFilterItems' => [
                     ['', ''],
                     ['foo', 'foo'],
@@ -836,7 +820,6 @@ return [
                                                         <size>5</size>
                                                         <autoSizeMax>5</autoSizeMax>
                                                         <minitems>0</minitems>
-                                                        <enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
                                                         <multiSelectFilterItems>
                                                             <numIndex index="0">
                                                                 <numIndex index="0"></numIndex>
@@ -922,7 +905,6 @@ return [
                                                                         <size>5</size>
                                                                         <autoSizeMax>5</autoSizeMax>
                                                                         <minitems>0</minitems>
-                                                                        <enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
                                                                         <multiSelectFilterItems>
                                                                             <numIndex index="0">
                                                                                 <numIndex index="0"></numIndex>
@@ -986,7 +968,7 @@ return [
                     select_checkbox_1, select_checkbox_2, select_checkbox_3, select_checkbox_4,
                 --div--;renderType=selectMultipleSideBySide,
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
-                    select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
+                    select_multiplesidebyside_5, select_multiplesidebyside_6,
                     select_multiplesidebyside_7, select_multiplesidebyside_8, select_multiplesidebyside_9,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
