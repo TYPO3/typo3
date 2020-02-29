@@ -432,6 +432,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $pageLayoutView->tt_contentConfig['languageCols'] = $drawingConfiguration->getLanguageColumns();
             $pageLayoutView->tt_contentConfig['languageColsPointer'] = $drawingConfiguration->getLanguageColumnsPointer();
         }
+        $pageLayoutView->CType_labels = $drawingConfiguration->getContentTypeLabels();
+        $pageLayoutView->itemLabels = $drawingConfiguration->getItemLabels();
         return $pageLayoutView;
     }
 
