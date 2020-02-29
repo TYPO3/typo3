@@ -469,6 +469,7 @@ module.exports = function (grunt) {
            * for now the file is manually patched by us, thus can't be automatically updated
            */
           // 'd3/d3.js': 'd3/build/d3.min.js',
+          'intersection-observer.js': 'intersection-observer/intersection-observer.js',
           /**
            * copy needed parts of jquery
            */
@@ -496,6 +497,7 @@ module.exports = function (grunt) {
     uglify: {
       thirdparty: {
         files: {
+          "<%= paths.core %>Public/JavaScript/Contrib/intersection-observer.js": ["<%= paths.core %>Public/JavaScript/Contrib/intersection-observer.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],

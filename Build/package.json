@@ -88,5 +88,7 @@
     "lint": "./node_modules/.bin/grunt lint",
     "postinstall": "patch-package"
   },
-  "dependencies": {}
+  "dependencies": {
+    "intersection-observer": "^0.7.0"
+  }
 }

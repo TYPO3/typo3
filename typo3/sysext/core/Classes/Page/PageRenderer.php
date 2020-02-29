@@ -1497,7 +1497,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             'taboverride' => $corePath . 'taboverride.min',
             'twbs/bootstrap-slider' => $corePath . 'bootstrap-slider.min',
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
-            'd3' => $corePath . 'd3/d3'
+            'd3' => $corePath . 'd3/d3',
+            'intersection-observer' => $corePath . '/intersection-observer',
         ];
         $requireJsConfig['public']['waitSeconds'] = 30;
         $requireJsConfig['public']['typo3BaseUrl'] = false;
