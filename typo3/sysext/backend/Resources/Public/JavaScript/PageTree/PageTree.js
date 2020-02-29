@@ -66,7 +66,7 @@ define(['jquery',
         return false;
       }
 
-      _this.settings.isDragAnDrop = true;
+      _this.settings.isDragAnDrop = settings.allowDragMove;
       _this.dispatch.on('nodeSelectedAfter.pageTree', _this.nodeSelectedAfter);
       _this.dispatch.on('nodeRightClick.pageTree', _this.nodeRightClick);
       _this.dispatch.on('contextmenu.pageTree', _this.contextmenu);
