@@ -12,7 +12,9 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import Typo3Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
@@ -157,14 +159,10 @@ class LoginRefresh {
    */
   public showLoginForm(): void {
     // log off for sure
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.logout,
-      method: 'GET',
-      success: () => {
-        TYPO3.configuration.showRefreshLoginPopup
-          ? this.showLoginPopup()
-          : this.$loginForm.modal(this.options.modalConfig);
-      },
+    new AjaxRequest(TYPO3.settings.ajaxUrls.logout).get().then((): void => {
+      TYPO3.configuration.showRefreshLoginPopup
+        ? this.showLoginPopup()
+        : this.$loginForm.modal(this.options.modalConfig);
     });
   }
 
@@ -234,12 +232,8 @@ class LoginRefresh {
         class: 'btn btn-primary t3js-active',
         'data-action': 'refreshSession',
       }).text(TYPO3.lang['mess.refresh_login_refresh_button']).on('click', () => {
-        $.ajax({
-          url: TYPO3.settings.ajaxUrls.login_timedout,
-          method: 'GET',
-          success: () => {
-            this.hideTimeoutModal();
-          },
+        new AjaxRequest(TYPO3.settings.ajaxUrls.login_timedout).get().then((): void => {
+          this.hideTimeoutModal();
         });
       }),
     );
@@ -389,22 +383,18 @@ class LoginRefresh {
     const postData: any = {
       login_status: 'login',
     };
-    $.each($form.serializeArray(), function(i: number, field: any): void {
+    $.each($form.serializeArray(), function (i: number, field: any): void {
       postData[field.name] = field.value;
     });
-    $.ajax({
-      url: $form.attr('action'),
-      method: 'POST',
-      data: postData,
-      success: (response: { [key: string ]: any }) => {
-        if (response.login.success) {
-          // User is logged in
-          this.hideLoginForm();
-        } else {
-          Typo3Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
-          $passwordField.focus();
-        }
-      },
+    new AjaxRequest($form.attr('action')).post(postData).then(async (response: AjaxResponse): Promise<void> => {
+      const data = await response.resolve();
+      if (data.login.success) {
+        // User is logged in
+        this.hideLoginForm();
+      } else {
+        Typo3Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
+        $passwordField.focus();
+      }
     });
   }
 

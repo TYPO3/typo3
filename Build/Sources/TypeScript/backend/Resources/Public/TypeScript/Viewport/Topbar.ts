@@ -11,9 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
-import * as $ from 'jquery';
 import Toolbar = require('./Toolbar');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 class Topbar {
   public static readonly topbarSelector: string = ScaffoldIdentifierEnum.header;
@@ -24,9 +25,13 @@ class Topbar {
   }
 
   public refresh(): void {
-    $.ajax(TYPO3.settings.ajaxUrls.topbar).done((data: { [key: string]: string }): void => {
-      $(Topbar.topbarSelector).html(data.topbar);
-      $(Topbar.topbarSelector).trigger('t3-topbar-update');
+    new AjaxRequest(TYPO3.settings.ajaxUrls.topbar).get().then(async (response: AjaxResponse): Promise<void> => {
+      const data = await response.resolve();
+      const topbar = document.querySelector(Topbar.topbarSelector);
+      if (topbar !== null) {
+        topbar.innerHTML = data.topbar;
+        topbar.dispatchEvent(new Event('t3-topbar-update'));
+      }
     });
   }
 }

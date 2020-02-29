@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {NavigationComponentInterface} from './Viewport/NavigationComponentInterface';
 import {ScaffoldIdentifierEnum} from './Enum/Viewport/ScaffoldIdentifier';
 import * as $ from 'jquery';
@@ -19,6 +20,7 @@ import Viewport = require('./Viewport');
 import ClientRequest = require('./Event/ClientRequest');
 import TriggerRequest = require('./Event/TriggerRequest');
 import InteractionRequest = require('./Event/InteractionRequest');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 interface Module {
   name: string;
@@ -158,8 +160,9 @@ class ModuleMenu {
    * Refresh the HTML by fetching the menu again
    */
   public refreshMenu(): void {
-    $.ajax(TYPO3.settings.ajaxUrls.modulemenu).done((result: { [key: string]: string }): void => {
-      $('#menu').replaceWith(result.menu);
+    new AjaxRequest(TYPO3.settings.ajaxUrls.modulemenu).get().then(async (response: AjaxResponse): Promise<void> => {
+      const result = await response.resolve();
+      document.getElementById('menu').outerHTML = result.menu;
       if (top.currentModuleLoaded) {
         ModuleMenu.highlightModuleMenuItem(top.currentModuleLoaded);
       }
