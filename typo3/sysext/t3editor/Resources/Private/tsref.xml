@@ -21,7 +21,7 @@
 		<property name="pl" type="string"/>
 		<property name="si" type="string"/>
 		<property name="fi" type="string"/>
-		<property name="tr" type="string"/>jq
+		<property name="tr" type="string"/>
 		<property name="se" type="string"/>
 		<property name="pt" type="string"/>
 		<property name="ru" type="string"/>
