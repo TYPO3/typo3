@@ -10,7 +10,7 @@ Motivation and goals
 
 .. sidebar:: Forger
 
-   If you want to save yourself some time you can use the ReST-File-Generator at https://forger.typo3.org/utility/rst
+   If you want to save yourself some time you can use the ReST-File-Generator at https://forger.typo3.com/utilities/rst
 
    Select the type of ReST snippet you want to create, enter your issue number and click the search button.
 
@@ -69,11 +69,11 @@ patch level release.
 Example scenarios:
 
 * **A patch is only added to master:** Put the :file:`.rst` file into the :file:`typo3/sysext/core/Documentation/Changelog/master`
-  directory in the `master` branch. The core team will re-review files in this directory 
+  directory in the `master` branch. The core team will re-review files in this directory
   shortly before the 9.1.0 release and will move all files from the :file:`master` into the :file:`9.1` directory.
 
 * **A patch is not only added to master, but also backported to v8:** Put the :file:`.rst` file into the
-  :file:`typo3/sysext/core/Documentation/Changelog/8.7.x` directory in the `master` branch. 
+  :file:`typo3/sysext/core/Documentation/Changelog/8.7.x` directory in the `master` branch.
   The backport to `TYPO3_8-7` branch includes the changelog file into :file:`8.7.x` directory, too.
   Users upgrading to latest patch level release of 8.7 will then see the new file in the :file:`8.7.x` directory.
 
@@ -86,9 +86,9 @@ Example scenarios:
   Users upgrading to latest 7.6 patch level or the latest 8.7 patch level will then see
   the new file in :file:`7.6.x` directory or in :file:`8.7.x` directory, respectively.
 
-The main goal of this approach is to have a consistent state of changelog file across branches. 
-Changelog files are added to the oldest release branch where a change has been backported to, thus basically 
-the first TYPO3 version where a change is visible. Changelog files from older releases are never deleted in younger branches. 
+The main goal of this approach is to have a consistent state of changelog file across branches.
+Changelog files are added to the oldest release branch where a change has been backported to, thus basically
+the first TYPO3 version where a change is visible. Changelog files from older releases are never deleted in younger branches.
 They are still rendered in the install tool
 "View Upgrade Documentation" and are connected to the "Extension scanner". In our example above, the `master`branch contains
 all changelog files for TYPO3 v9, v8 and v7, the branch `TYPO3_8-7` contains all files for TYPO3 v8 and v7, and the branch
