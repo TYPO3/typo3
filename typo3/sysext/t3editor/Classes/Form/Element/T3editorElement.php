@@ -100,7 +100,7 @@ class T3editorElement extends AbstractFormElement
         $this->resultArray['stylesheetFiles'][] = $codeMirrorPath . '/lib/codemirror.css';
         $this->resultArray['stylesheetFiles'][] = $this->extPath . '/Resources/Public/Css/t3editor.css';
         $this->resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/T3editor/T3editor' => 'function(T3editor) {T3editor.findAndInitializeEditors()}'
+            'TYPO3/CMS/T3editor/T3editor' => 'function(T3editor) {T3editor.observeEditorCandidates()}'
         ];
 
         // Compile and register t3editor configuration
