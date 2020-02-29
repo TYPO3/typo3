@@ -157,7 +157,7 @@ class GridColumn extends AbstractGridObject
         }
         $pageRecord = $this->backendLayout->getDrawingConfiguration()->getPageRecord();
         if (!$this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && !$this->getBackendUser()->checkLanguageAccess(0)) {
+            || !$this->getBackendUser()->checkLanguageAccess($this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer())) {
             return null;
         }
         $pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(
