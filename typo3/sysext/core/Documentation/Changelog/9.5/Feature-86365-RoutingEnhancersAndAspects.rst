@@ -60,7 +60,7 @@ Custom enhancers can be registered by adding an entry to an extensions :file:`ex
 Within a configuration, an enhancer always evaluates the following properties:
 
 * `type` - the short name of the enhancer as registered within :php:`$TYPO3_CONF_VARS`. This is mandatory.
-* `limitToPages` - an array of page IDs where this enhancer should be called. This is **optional**. This property (array)
+* `limitToPages` - an array or comma separated list (without spaces) of page IDs where this enhancer will be called. This is **optional**. This property (array)
   evaluates to only trigger an enhancer for specific pages. In case of special plugin pages it is
   useful to only enhance pages with IDs, to speed up performance for building page routes of all other pages.
 
@@ -81,7 +81,7 @@ The configuration looks like this:
      # Unique name for the enhancers, used internally for referencing
      CategoryListing:
        type: Simple
-       limitToPages: [13]
+       limitToPages: [12,13]
        routePath: '/show-by-category/{category_id}/{tag}'
        defaults:
          tag: ''
