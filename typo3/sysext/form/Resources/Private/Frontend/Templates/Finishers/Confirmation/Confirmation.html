@@ -5,7 +5,7 @@
             {message -> f:format.raw()}
         </f:then>
         <f:else>
-            {message}
+            {message -> f:format.nl2br()}
         </f:else>
     </f:if>
 </div>
