@@ -10,7 +10,7 @@ Description
 ===========
 
 AssetCollector is a concept to allow custom CSS/JS code, inline or external, to be added multiple
-times in e.g. a Fluid template (via :html:`<f:script>` or :html:`<f:css>` ViewHelpers) but only rendered once
+times in e.g. a Fluid template (via :html:`<f:asset.script>` or :html:`<f:asset.css>` ViewHelpers) but only rendered once
 in the output.
 
 It supports best practices for optimizing page performance by having a "priority" flag to either
