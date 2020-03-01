@@ -1218,11 +1218,11 @@ class ExtendedTemplateService extends TemplateService
                                 . '</label>';
                             break;
                         case 'comment':
-                            $sel = $fV ? 'checked' : '';
+                            $sel = $fV ? '' : 'checked';
                             $p_field =
-                                '<input type="hidden" name="' . $fN . '" value="#" />'
+                                '<input type="hidden" name="' . $fN . '" value="" />'
                                 . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="1" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
                                 . '<span class="t3-icon fa"></span>'
                                 . '</label>';
                             break;
@@ -1507,9 +1507,9 @@ class ExtendedTemplateService extends TemplateService
                                 break;
                             case 'comment':
                                 if ($var) {
-                                    $var = '#';
-                                } else {
                                     $var = '';
+                                } else {
+                                    $var = '#';
                                 }
                                 break;
                             case 'wrap':
