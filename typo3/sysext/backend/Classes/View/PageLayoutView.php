@@ -397,7 +397,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 0,
                                 $disableMoveAndNewButtons,
                                 true,
-                                $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                                $this->hasContentModificationAndAccessPermissions()
                             );
                             $innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
                                 . $this->tt_content_drawItem($row) . '</div>';
@@ -890,7 +890,7 @@ class PageLayoutView implements LoggerAwareInterface
     {
         $icons = '';
         // Edit whole of column:
-        if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT) && $this->getBackendUser()->checkLanguageAccess(0)) {
+        if ($editParams && $this->hasContentModificationAndAccessPermissions() && $this->getBackendUser()->checkLanguageAccess(0)) {
             $link = $this->uriBuilder->buildUriFromRoute('record_edit') . $editParams . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
             $icons = '<a href="' . htmlspecialchars($link) . '"  title="'
                 . htmlspecialchars($this->getLanguageService()->getLL('editColumn')) . '">'
@@ -1044,7 +1044,7 @@ class PageLayoutView implements LoggerAwareInterface
                     . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-                if ($out && $backendUser->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
+                if ($out && $this->hasContentModificationAndAccessPermissions()) {
                     $out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
                 } else {
                     $out = '';
@@ -1140,7 +1140,7 @@ class PageLayoutView implements LoggerAwareInterface
             (
                 $this->getBackendUser()->isAdmin()
                 || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
-                && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                && $this->hasContentModificationAndAccessPermissions()
                 && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
             )
         ) {
@@ -1480,7 +1480,10 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function linkEditContent($str, $row)
     {
-        if ($this->doEdit && $this->getBackendUser()->recordEditAccessInternals('tt_content', $row)) {
+        if ($this->doEdit
+            && $this->hasContentModificationAndAccessPermissions()
+            && $this->getBackendUser()->recordEditAccessInternals('tt_content', $row)
+        ) {
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
@@ -1998,8 +2001,19 @@ class PageLayoutView implements LoggerAwareInterface
             return true;
         }
         return !$this->pageinfo['editlock']
-            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+            && $this->hasContentModificationAndAccessPermissions()
             && ($languageId === null || $this->getBackendUser()->checkLanguageAccess($languageId));
+    }
+
+    /**
+     * Check if current user has modification and access permissons for content set
+     *
+     * @return bool
+     */
+    protected function hasContentModificationAndAccessPermissions(): bool
+    {
+        return $this->getBackendUser()->check('tables_modify', 'tt_content')
+            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
     }
 
     /**
