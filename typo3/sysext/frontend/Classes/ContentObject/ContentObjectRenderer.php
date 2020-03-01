@@ -3590,7 +3590,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                 $replaceCount = 0;
 
-                $replaceCallback = function () use ($replaceArray, $search, &$replaceCount) {
+                $replaceCallback = function () use ($replaceArray, &$replaceCount) {
                     $replaceCount++;
                     return $replaceArray[$replaceCount - 1][0];
                 };
