@@ -13,11 +13,11 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import 'twbs/bootstrap-slider';
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Utility = require('TYPO3/CMS/Backend/Utility');
 import Workspaces from './Workspaces';
+import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 
 enum Identifiers {
   topbar = '#typo3-topbar',
@@ -59,7 +59,6 @@ class Preview extends Workspaces {
       this.getElements();
       this.resizeViews();
       this.adjustPreviewModeSelectorWidth();
-      this.elements.$stageSlider.slider();
       this.registerEvents();
     });
   }
@@ -96,7 +95,7 @@ class Preview extends Workspaces {
     this.elements.$workspaceTabs.on('show.bs.tab', (e: JQueryEventObject): void => {
       this.elements.$workspaceActions.toggle((<HTMLElement>e.currentTarget).dataset.actions);
     });
-    this.elements.$stageSlider.on('change', this.updateSlidePosition);
+    new ThrottleEvent('input', this.updateSlidePosition, 25).bindTo(document.querySelector(Identifiers.stageSlider));
     this.elements.$previewModeContainer.find('[data-preview-mode]').on('click', this.changePreviewMode);
   }
 
@@ -114,8 +113,8 @@ class Preview extends Workspaces {
    *
    * @param {Event} e
    */
-  private updateSlidePosition = (e: any): void => {
-    this.currentSlidePosition = e.value.newValue;
+  private updateSlidePosition = (e: Event): void => {
+    this.currentSlidePosition = parseInt((e.target as HTMLInputElement).value, 10);
     this.resizeViews();
   }
 

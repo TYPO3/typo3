@@ -17,14 +17,8 @@
             <f:if condition="{liveUrl}">
                 <div class="workspace-action">
                     <div class="slider-wrapper">
-                        <span>Published Version</span><div
-                        id="workspace-stage-slider"
-                        data-slider-min="0"
-                        data-slider-max="100"
-                        data-slider-value="100"
-                        data-slider-tooltip="hide"
-                        style="width: 150px;"
-                    ></div>
+                        <span>Published Version</span>
+                        <input type="range" class="slider" id="workspace-stage-slider" min="0" max="100" value="100" step="1" style="width: 150px;">
                         <span>Staged Version</span>
                     </div>
                 </div>

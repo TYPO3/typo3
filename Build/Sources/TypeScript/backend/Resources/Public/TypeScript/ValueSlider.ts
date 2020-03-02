@@ -11,62 +11,31 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
-import 'twbs/bootstrap-slider';
-
-interface UpdatedValue {
-  oldValue: number;
-  newValue: number;
-}
-
-interface ValueSliderUpdateEvent extends JQueryEventObject {
-  value: UpdatedValue;
-}
+import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 
 class ValueSlider {
-  private id: string; // internally set by the renderTooltipValue callback
-  private selector: string = '[data-slider-id]';
+  private readonly selector: string = '[data-slider-id]';
 
   /**
    * Update value of slider element
    *
-   * @param {ValueSliderUpdateEvent} e
+   * @param {HTMLInputElement} element
    */
-  private static updateValue(e: ValueSliderUpdateEvent): void {
-    const $slider = $(e.currentTarget);
-    const $foreignField = $('[data-formengine-input-name="' + $slider.data('sliderItemName') + '"]');
-    const sliderCallbackParams = $slider.data('sliderCallbackParams');
+  private static updateValue(element: HTMLInputElement): void {
+    const foreignField = document.querySelector(`[data-formengine-input-name="${element.dataset.sliderItemName}"]`) as HTMLInputElement;
+    const sliderCallbackParams = JSON.parse(element.dataset.sliderCallbackParams);
 
-    $foreignField.val(e.value.newValue);
+    foreignField.value = element.value;
     TBE_EDITOR.fieldChanged.apply(TBE_EDITOR, sliderCallbackParams);
   }
 
-  constructor() {
-    this.initializeSlider();
-  }
-
   /**
-   * Initialize all slider elements
+   * @param {HTMLInputElement} element
    */
-  private initializeSlider(): void {
-    const $sliders = $(this.selector);
-    if ($sliders.length > 0) {
-      $sliders.slider({
-        formatter: this.renderTooltipValue,
-      });
-      $sliders.on('change', ValueSlider.updateValue);
-    }
-  }
-
-  /**
-   * @param {string} value
-   * @returns {string | number}
-   */
-  private renderTooltipValue(value: string): any {
+  private static updateTooltipValue(element: HTMLInputElement): void {
     let renderedValue;
-    const $slider = $('[data-slider-id="' + this.id + '"]');
-    const data = $slider.data();
-    switch (data.sliderValueType) {
+    const value = element.value;
+    switch (element.dataset.sliderValueType) {
       case 'double':
         renderedValue = parseFloat(value).toFixed(2);
         break;
@@ -75,7 +44,14 @@ class ValueSlider {
         renderedValue = parseInt(value, 10);
     }
 
-    return renderedValue;
+    element.title = renderedValue.toString();
+  }
+
+  constructor() {
+    new ThrottleEvent('input', function (this: HTMLInputElement): void {
+      ValueSlider.updateValue(this);
+      ValueSlider.updateTooltipValue(this);
+    }, 25).delegateTo(document, this.selector);
   }
 }
 

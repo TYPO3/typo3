@@ -181,21 +181,8 @@ $workspace-topbar-logo-width: 22px;
     }
 
     .slider-wrapper {
-        display: block;
-
         .slider {
-            float: left;
-        }
-
-        .slider-horizontal {
-            margin-left: 1.5em;
-            margin-right: 1.5em;
             height: $workspace-topbar-line-height;
-        }
-
-        span {
-            display: block;
-            float: left;
         }
     }
 }
