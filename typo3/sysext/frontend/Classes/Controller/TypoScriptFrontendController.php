@@ -2593,6 +2593,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
+        // Respect the page cache when content of pid is shown
+        if ($this->id !== $this->contentPid) {
+            $this->pageCacheTags[] = 'pageId_' . $this->contentPid;
+        }
         if (!empty($this->page['cache_tags'])) {
             $tags = GeneralUtility::trimExplode(',', $this->page['cache_tags'], true);
             $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
