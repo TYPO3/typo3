@@ -26,16 +26,19 @@ class ThrottleEvent extends RegularEvent {
   private throttle(callback: Listener, limit: number): Listener {
     let wait: boolean = false;
 
-    return () => {
+    return function (this: Node, ...args: any[]): void {
       if (wait) {
         return;
       }
 
-      callback.apply(null, arguments);
+      callback.apply(this, args);
       wait = true;
 
-      setTimeout(function () {
+      setTimeout((): void => {
         wait = false;
+
+        // Wait time is over, execute callback again to have final state
+        callback.apply(this, args);
       }, limit);
     };
   }

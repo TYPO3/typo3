@@ -27,24 +27,20 @@ class DebounceEvent extends RegularEvent {
   private debounce(callback: Listener, wait: number, immediate: boolean): Listener {
     let timeout: number = null;
 
-    return () => {
-      const context: any = this;
-      const args = arguments;
-      const later = function() {
-        timeout = null;
-        if (!immediate) {
-          callback.apply(context, args);
-        }
-      };
-
+    return function (this: Node, ...args: any[]): void {
       const callNow = immediate && !timeout;
 
       // Reset timeout handler to make sure the callback is executed once
       clearTimeout(timeout);
       if (callNow) {
-        callback.apply(context, args);
+        callback.apply(this, args);
       } else {
-        timeout = setTimeout(later, wait);
+        timeout = setTimeout((): void => {
+          timeout = null;
+          if (!immediate) {
+            callback.apply(this, args);
+          }
+        }, wait);
       }
     };
   }
