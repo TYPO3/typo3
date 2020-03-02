@@ -60,11 +60,23 @@ abstract class AbstractEnhancer implements EnhancerInterface
         if (empty($requirements)) {
             return;
         }
+
         $requirements = $this->getVariableProcessor()
             ->deflateKeys($requirements, $namespace, $route->getArguments());
-
+        // only keep requirements that are actually part of the current route path
         $requirements = $this->filterValuesByPathVariables($route, $requirements);
-        $requirements = $this->purgeValuesByAspects($route, $requirements);
+        // In general requirements are not considered when having aspects defined for a
+        // given variable name and thus aspects are more specific and take precedence:
+        // + since requirements in classic Symfony focus on internal arguments
+        //   and aspects define a mapping between URL part (e.g. 'some-example-news')
+        //   and the corresponding internal argument (e.g. 'tx_news_pi1[news]=123')
+        // + thus, the requirement definition cannot be used for resolving and generating
+        //   a route at the same time (it would have to be e.g. `[\w_._]+` AND `\d+`)
+        // This call overrides default Symfony regular expression pattern `[^/]+` (see
+        // `RouteCompiler::compilePattern()`) with `.+` to allow URI parameters like
+        // `some-example-news/january` as well.
+        $requirements = $this->overrideValuesByAspect($route, $requirements, '.+');
+
         if (!empty($requirements)) {
             $route->setRequirements($requirements);
         }
@@ -90,22 +102,20 @@ abstract class AbstractEnhancer implements EnhancerInterface
     }
 
     /**
-     * Purges values that have an aspect definition.
-     *
-     * + aspects: ['page' => StaticRangeMapper()]
-     * + values: ['entity' => 'entity...', 'page' => 'page...', 'other' => 'other...']
-     * + result: ['entity' => 'entity...', 'other' => 'other...']
+     * Overrides items having an aspect definition with a given
+     * $overrideValue in target $values array.
      *
      * @param Route $route
      * @param array $values
+     * @param string $overrideValue
      * @return array
      */
-    protected function purgeValuesByAspects(Route $route, array $values): array
+    protected function overrideValuesByAspect(Route $route, array $values, string $overrideValue): array
     {
-        return array_diff_key(
-            $values,
-            $route->getAspects()
-        );
+        foreach (array_keys($route->getAspects()) as $variableName) {
+            $values[$variableName] = $overrideValue;
+        }
+        return $values;
     }
 
     /**

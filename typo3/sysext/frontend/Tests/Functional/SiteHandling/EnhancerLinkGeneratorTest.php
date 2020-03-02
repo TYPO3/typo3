@@ -898,6 +898,71 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         $this->assertGeneratedUriEquals($testSet);
     }
 
+    public function routeRequirementsAreSkippedHavingAspectsDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+        ]);
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance/[[value]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    )
+            )
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'value' => 'hundred',
+                    'resolveValue' => 100,
+                ])),
+                VariablesContext::create(Variables::create([
+                    'value' => 'hundred/binary',
+                    'resolveValue' => 1100100,
+                ]))
+            )
+            ->withApplicableItems($builder->declareEnhancers())
+            ->withApplicableSet(
+                AspectDeclaration::create('StaticValueMapper')->withConfiguration([
+                    VariableItem::create('aspectName', [
+                        'type' => 'StaticValueMapper',
+                        'map' => [
+                            'hundred' => 100,
+                            'hundred/binary' => 1100100,
+                        ],
+                    ])
+                ])
+            )
+            ->withApplicableSet(
+                EnhancerDeclaration::create('requirements.value=not-match-when-having-aspect')->withConfiguration([
+                    'requirements' => [
+                        'value' => 'not-match-when-having-aspect',
+                    ]
+                ])
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider routeRequirementsAreSkippedHavingAspectsDataProvider
+     */
+    public function routeRequirementsAreSkippedHavingAspects(TestSet $testSet): void
+    {
+        $this->assertGeneratedUriEquals($testSet);
+    }
+
     private function assertGeneratedUriEquals(TestSet $testSet): void
     {
         $builder = Builder::create();
