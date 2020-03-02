@@ -691,7 +691,6 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $builder = Builder::create();
         // variables (applied when invoking expectations)
         $variables = Variables::create()->define([
-            'resolveValue' => 100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
             'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
@@ -703,10 +702,20 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                     ->withTargetPageId(1100)
                     ->withUrl(
                         VariableValue::create(
-                            'https://acme.us/welcome/enhance/hundred[[pathSuffix]]',
+                            'https://acme.us/welcome/enhance/[[value]][[pathSuffix]]',
                             Variables::create(['pathSuffix' => ''])
                         )
                     )
+            )
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'value' => 'hundred',
+                    'resolveValue' => 100,
+                ])),
+                VariablesContext::create(Variables::create([
+                    'value' => 'hundred/binary',
+                    'resolveValue' => 1100100,
+                ]))
             )
             ->withApplicableItems($builder->declareEnhancers())
             ->withApplicableSet(
@@ -715,6 +724,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                         'type' => 'StaticValueMapper',
                         'map' => [
                             'hundred' => 100,
+                            'hundred/binary' => 1100100,
                         ],
                     ])
                 ])
