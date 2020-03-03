@@ -14,7 +14,7 @@ Getting Started
 TYPO3 requires a web server with PHP and a database (e.g. MySQL).
 Accessing the backend through a supported browser.
 
-Please see the [Installation Guide](https://docs.typo3.org/typo3cms/InstallationGuide/)
+Please see the [Installation Guide](https://docs.typo3.org/installation)
 in order to set up a basic TYPO3 installation on your web server.
 
 What is TYPO3?
@@ -62,8 +62,7 @@ get started:
 ### Get more information
 
 * https://typo3.org is the main project website. It provides up to date
-  official news, information about events, access to downloading the
-  products and extensions.
+  official news, information about events and the TYPO3 community.
 
 * https://docs.typo3.org/: TYPO3 is one of the most thoroughly
   documented OpenSource products around, with manuals covering basic
@@ -84,7 +83,7 @@ with each other and with the public. Several TYPO3 teams use Slack as a
 way to communicate internally and most channels are a welcome place for
 you to join and get yourself involved.
 
-* Register: https://forger.typo3.org/slack/
+* Register: https://my.typo3.org/about-mytypo3org/slack
 * Slack: https://typo3.slack.com/
 
 ### Exchange information, ask questions, get help
@@ -112,7 +111,7 @@ Contributing
 If you want to contribute to the TYPO3 source code, take a look at our
 Contributors Walkthrough and Review System:
 
-* https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/
+* https://docs.typo3.org/core-contribution
 * https://review.typo3.org/
 
 > Please use the [TYPO3 Slack chat](#chat-with-us), if you need help in

@@ -8,13 +8,13 @@ Official Installation and Upgrade Guide
 ---------------------------------------
 
 You can find instructions regarding installation and upgrade at
-https://docs.typo3.org/typo3cms/InstallationGuide/
+https://docs.typo3.org/installation
 
 
 Server system requirements
 --------------------------
 
-Find the official system requirements at [get.typo3.org](https://get.typo3.org/version/9#system-requirements).
+Find the official system requirements in TYPO3's [documentation](https://docs.typo3.org/system-requirements).
 
 TYPO3 Security
 --------------
