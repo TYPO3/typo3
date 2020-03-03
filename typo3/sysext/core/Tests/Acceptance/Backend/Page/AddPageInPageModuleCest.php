@@ -81,7 +81,7 @@ class AddPageInPageModuleCest
         $classString = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $generalTab
         ) {
-            return $webdriver->findElement(\WebDriverBy::cssSelector($generalTab))->getAttribute('class');
+            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($generalTab))->getAttribute('class');
         });
         $I->assertContains('has-validation-error', $classString);
 

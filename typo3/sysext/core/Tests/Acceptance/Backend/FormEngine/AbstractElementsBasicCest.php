@@ -87,7 +87,7 @@ abstract class AbstractElementsBasicCest
      */
     protected function getInputField(RemoteWebElement $formSection)
     {
-        return $formSection->findElement(\WebDriverBy::xpath('.//*/input[@data-formengine-input-name]'));
+        return $formSection->findElement(\Facebook\WebDriver\WebDriverBy::xpath('.//*/input[@data-formengine-input-name]'));
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class AbstractElementsBasicCest
     protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField)
     {
         $hiddenFieldXPath = './/*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]';
-        return $formSection->findElement(\WebDriverBy::xpath($hiddenFieldXPath));
+        return $formSection->findElement(\Facebook\WebDriver\WebDriverBy::xpath($hiddenFieldXPath));
     }
 
     /**
@@ -116,7 +116,7 @@ abstract class AbstractElementsBasicCest
         return $I->executeInSelenium(
             function (RemoteWebDriver $webDriver) use ($fieldLabel) {
                 return $webDriver->findElement(
-                    \WebDriverBy::xpath(
+                    \Facebook\WebDriver\WebDriverBy::xpath(
                         '(//label[contains(text(),"' . $fieldLabel . '")])[1]/ancestor::fieldset[@class="form-section"][1]'
                     )
                 );

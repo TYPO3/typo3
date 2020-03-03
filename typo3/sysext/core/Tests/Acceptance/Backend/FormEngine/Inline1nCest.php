@@ -186,7 +186,7 @@ class Inline1nCest
         $clearButtonXpath = '(//label[contains(text(),"' . $fieldLabel . '")])[1]/parent::*//*/button[@class="close"]';
         $initializedInputFieldXpath = '(//label[contains(text(),"' . $fieldLabel . '")])[1]/parent::*//*/input[@data-formengine-input-name][@data-formengine-input-initialized]';
         $I->waitForElement($initializedInputFieldXpath, 30);
-        $inputField = $fieldContext->findElement(\WebDriverBy::xpath($visibleFieldXpath));
+        $inputField = $fieldContext->findElement(\Facebook\WebDriver\WebDriverBy::xpath($visibleFieldXpath));
         $internalInputFieldXpath = '(//label[contains(text(),"' . $fieldLabel . '")])[1]/parent::*//*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]';
 
         $I->waitForElement($internalInputFieldXpath, 30);
