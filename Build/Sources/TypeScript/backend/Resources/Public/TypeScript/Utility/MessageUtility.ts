@@ -11,6 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+interface Message {
+  actionName: string;
+  [key: string]: any;
+}
+
 export class MessageUtility {
   /**
    * Generates an URL for usage in postMessage
@@ -34,7 +39,7 @@ export class MessageUtility {
    * @param {*} message
    * @param {Window} windowObject
    */
-  public static send(message: any, windowObject: Window = window): void {
+  public static send(message: Message, windowObject: Window = window): void {
     windowObject.postMessage(message, MessageUtility.getOrigin());
   }
 }
