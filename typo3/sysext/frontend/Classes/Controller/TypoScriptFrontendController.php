@@ -3371,6 +3371,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
+        // Respect the page cache when content of pid is shown
+        if ($this->id !== $this->contentPid) {
+            $this->pageCacheTags[] = 'pageId_' . $this->contentPid;
+        }
         if ($this->page_cache_reg1) {
             // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0. Remove this "if" along with property page_cache_reg1
             trigger_error('$TSFE->page_cache_reg1 will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
