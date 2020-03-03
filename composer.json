@@ -18,10 +18,10 @@
 		}
 	],
 	"support": {
-		"general": "https://typo3.org/support/",
+		"chat": "https://typo3.org/help",
+		"docs": "https://docs.typo3.org",
 		"issues": "https://forge.typo3.org",
-		"slack": "https://typo3.slack.com",
-		"news": "nntp://lists.typo3.org"
+		"source": "https://github.com/TYPO3/TYPO3.CMS"
 	},
 	"config": {
 		"bin-dir": "bin",
