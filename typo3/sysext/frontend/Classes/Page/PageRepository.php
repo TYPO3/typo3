@@ -1510,7 +1510,7 @@ class PageRepository implements LoggerAwareInterface
 
             if ($orderBy !== '') {
                 foreach (QueryHelper::parseOrderBy($orderBy) as $orderPair) {
-                    list($fieldName, $order) = $orderPair;
+                    [$fieldName, $order] = $orderPair;
                     $queryBuilder->addOrderBy($fieldName, $order);
                 }
             }
@@ -1623,13 +1623,19 @@ class PageRepository implements LoggerAwareInterface
                     }
                     if (($ctrl['enablecolumns']['starttime'] ?? false) && !($ignore_array['starttime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
-                        $constraints[] = $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']);
+                        $constraints[] = $expressionBuilder->lte(
+                            $field,
+                            $this->context->getPropertyFromAspect('date', 'accessTime', 0)
+                        );
                     }
                     if (($ctrl['enablecolumns']['endtime'] ?? false) && !($ignore_array['endtime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
                         $constraints[] = $expressionBuilder->orX(
                             $expressionBuilder->eq($field, 0),
-                            $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                            $expressionBuilder->gt(
+                                $field,
+                                $this->context->getPropertyFromAspect('date', 'accessTime', 0)
+                            )
                         );
                     }
                     if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($ignore_array['fe_group'] ?? false)) {

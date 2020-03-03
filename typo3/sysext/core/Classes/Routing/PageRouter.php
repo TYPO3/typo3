@@ -94,16 +94,24 @@ class PageRouter implements RouterInterface
     protected $cacheHashCalculator;
 
     /**
-     * A page router is always bound to a specific site.
-     * @param Site $site
+     * @var \TYPO3\CMS\Core\Context\Context|null
      */
-    public function __construct(Site $site)
+    protected $context;
+
+    /**
+     * A page router is always bound to a specific site.
+     *
+     * @param Site $site
+     * @param \TYPO3\CMS\Core\Context\Context|null $context
+     */
+    public function __construct(Site $site, Context $context = null)
     {
         $this->site = $site;
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->enhancerFactory = GeneralUtility::makeInstance(EnhancerFactory::class);
         $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class, $this->context);
         $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
     }
 
     /**
@@ -237,7 +245,7 @@ class PageRouter implements RouterInterface
             $pageId = (int)$route;
         }
 
-        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context = clone $this->context;
         $context->setAspect('language', LanguageAspectFactory::createFromSiteLanguage($language));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $page = $pageRepository->getPage($pageId, true);

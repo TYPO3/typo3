@@ -66,7 +66,7 @@ class PageRouterTest extends UnitTestCase
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
-        $subject = $this->getAccessibleMock(PageRouter::class, ['getCandidateSlugsFromRoutePath', 'getPagesFromDatabaseForCandidates'], [$site, []]);
+        $subject = $this->getAccessibleMock(PageRouter::class, ['getCandidateSlugsFromRoutePath', 'getPagesFromDatabaseForCandidates'], [$site]);
         $subject->expects($this->once())->method('getCandidateSlugsFromRoutePath')->willReturn($slugCandidates);
         $subject->expects($this->once())->method('getPagesFromDatabaseForCandidates')->willReturn([$pageRecord]);
         $routeResult = $subject->matchRequest($request, $previousResult);

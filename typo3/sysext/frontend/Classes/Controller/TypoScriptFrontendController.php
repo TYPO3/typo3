@@ -1259,7 +1259,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $originalFrontendUserGroup = null;
         if ($this->fe_user->user) {
-            $originalFrontendUserGroup = $this->fe_user->user[$this->fe_user->usergroup_column];
+            $originalFrontendUserGroup = $this->context->getPropertyFromAspect('frontend.user', 'groupIds');
         }
 
         // The preview flag is set if the current page turns out to be hidden
@@ -1274,7 +1274,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->whichWorkspace() > 0) {
             $this->fePreview = 1;
         }
-        return $this->simUserGroup ? $originalFrontendUserGroup : null;
+        return $this->fePreview ? $originalFrontendUserGroup : null;
     }
 
     /**

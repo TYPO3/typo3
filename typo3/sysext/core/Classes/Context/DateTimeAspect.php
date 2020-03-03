@@ -62,6 +62,8 @@ class DateTimeAspect implements AspectInterface
                 return $this->dateTimeObject->format('e');
             case 'full':
                 return $this->dateTimeObject;
+            case 'accessTime':
+                return $this->dateTimeObject->format('U') - ($this->dateTimeObject->format('U') % 60);
         }
         throw new AspectPropertyNotFoundException('Property "' . $name . '" not found in Aspect "' . __CLASS__ . '".', 1527778767);
     }

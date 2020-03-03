@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -353,13 +354,13 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function initSetsPublicPropertyCorrectlyForLive()
     {
-        $GLOBALS['SIM_ACCESS_TIME'] = 123;
-
-        $subject = new PageRepository(new Context());
+        $subject = new PageRepository(new Context([
+            'date' => new DateTimeAspect(new \DateTimeImmutable('@1451779200'))
+        ]));
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $expectedSQL = sprintf(
-            ' AND ((%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s <= 123) AND ((%s = 0) OR (%s > 123))) AND (%s < 200)',
+            ' AND ((%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s <= 1451779200) AND ((%s = 0) OR (%s > 1451779200))) AND (%s < 200)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_state'),
             $connection->quoteIdentifier('pages.hidden'),

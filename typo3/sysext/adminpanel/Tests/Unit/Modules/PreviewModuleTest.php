@@ -15,14 +15,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PreviewModuleTest extends UnitTestCase
 {
-    public function simulateDateDataProvider()
+    public function simulateDateDataProvider(): array
     {
         return [
-            'datetime' => [
-                '2018-01-01T12:00:15Z',
-                (int)(new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
-                (new \DateTime('2018-01-01 12:00:00 UTC'))->getTimestamp(),
-            ],
             'timestamp' => [
                 (new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
                 (int)(new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
