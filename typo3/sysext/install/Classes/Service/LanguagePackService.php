@@ -60,9 +60,12 @@ class LanguagePackService implements LoggerAwareInterface
      */
     protected $requestFactory;
 
-    private const OLD_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
-    private const OLD_BETA_LANGUAGE_PACK_URL = 'https://beta-translation.typo3.org/fileadmin/ter/';
-    private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/fileadmin/ter/';
+    private const OLD_LANGUAGE_PACK_URLS = [
+        'https://typo3.org/fileadmin/ter/',
+        'https://beta-translation.typo3.org/fileadmin/ter/',
+        'https://localize.typo3.org/fileadmin/ter/'
+    ];
+    private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
     public function __construct(EventDispatcherInterface $eventDispatcher = null, RequestFactory $requestFactory = null)
     {
@@ -263,7 +266,7 @@ class LanguagePackService implements LoggerAwareInterface
             throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
         }
 
-        if ($languagePackBaseUrl === self::OLD_LANGUAGE_PACK_URL || $languagePackBaseUrl === self::OLD_BETA_LANGUAGE_PACK_URL) {
+        if (in_array($languagePackBaseUrl, self::OLD_LANGUAGE_PACK_URLS, true)) {
             $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
         }
 
@@ -274,11 +277,11 @@ class LanguagePackService implements LoggerAwareInterface
         $majorVersion = explode('.', TYPO3_branch)[0];
         if (strpos($path, '/sysext/') !== false) {
             // This is a system extension and the package URL should be adapted to have different packs per core major version
-            // https://typo3.org/fileadmin/ter/b/a/backend-l10n/backend-l10n-fr.v9.zip
+            // https://localize.typo3.org/xliff/b/a/backend-l10n/backend-l10n-fr.v9.zip
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.v' . $majorVersion . '.zip';
         } else {
             // Typical non sysext path, Hungarian:
-            // https://typo3.org/fileadmin/ter/a/n/anextension-l10n/anextension-l10n-hu.zip
+            // https://localize.typo3.org/xliff/a/n/anextension-l10n/anextension-l10n-hu.zip
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.zip';
         }
 
