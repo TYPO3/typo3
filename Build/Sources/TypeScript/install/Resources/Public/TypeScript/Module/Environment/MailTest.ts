@@ -37,6 +37,10 @@ class MailTest extends AbstractInteractableModule {
       e.preventDefault();
       this.send();
     });
+    currentModal.on('submit', 'form', (e: JQueryEventObject): void => {
+      e.preventDefault();
+      this.send();
+    });
   }
 
   private getData(): void {
