@@ -17,9 +17,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Page browser for indexed search, and only useful here, as the
@@ -28,21 +26,17 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * functionality
  * @internal
  */
-class PageBrowsingViewHelper extends AbstractViewHelper
+class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
 {
-    use CompileWithRenderStatic;
-
-    /**
-     * As this ViewHelper renders HTML, the output must not be escaped.
-     *
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
     /**
      * @var string
      */
     protected static $prefixId = 'tx_indexedsearch';
+
+    /**
+     * @var string
+     */
+    protected $tagName = 'ul';
 
     /**
      * Initialize arguments
@@ -54,22 +48,19 @@ class PageBrowsingViewHelper extends AbstractViewHelper
         $this->registerArgument('resultsPerPage', 'int', '', true);
         $this->registerArgument('currentPage', 'int', '', false, 0);
         $this->registerArgument('freeIndexUid', 'int', '');
+        $this->registerUniversalTagAttributes();
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
+     * @inheritDoc
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $maximumNumberOfResultPages = $arguments['maximumNumberOfResultPages'];
-        $numberOfResults = $arguments['numberOfResults'];
-        $resultsPerPage = $arguments['resultsPerPage'];
-        $currentPage = $arguments['currentPage'];
-        $freeIndexUid = $arguments['freeIndexUid'];
+        $maximumNumberOfResultPages = $this->arguments['maximumNumberOfResultPages'];
+        $numberOfResults = $this->arguments['numberOfResults'];
+        $resultsPerPage = $this->arguments['resultsPerPage'];
+        $currentPage = $this->arguments['currentPage'];
+        $freeIndexUid = $this->arguments['freeIndexUid'];
 
         if ($resultsPerPage <= 0) {
             $resultsPerPage = 10;
@@ -88,7 +79,7 @@ class PageBrowsingViewHelper extends AbstractViewHelper
         // show on all pages after the 1st one
         if ($currentPage > 0) {
             $label = LocalizationUtility::translate('displayResults.previous', 'IndexedSearch');
-            $content .= '<li>' . self::makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
+            $content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
         }
         // Check if $maximumNumberOfResultPages is in range
         $maximumNumberOfResultPages = MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, $pageCount, 10);
@@ -118,7 +109,12 @@ class PageBrowsingViewHelper extends AbstractViewHelper
             $label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch');
             $content .= '<li>' . self::makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
         }
-        return '<ul class="tx-indexedsearch-browsebox">' . $content . '</ul>';
+
+        if (!$this->tag->hasAttribute('class')) {
+            $this->tag->addAttribute('class', 'tx-indexedsearch-browsebox');
+        }
+        $this->tag->setContent($content);
+        return $this->tag->render();
     }
 
     /**
@@ -130,7 +126,7 @@ class PageBrowsingViewHelper extends AbstractViewHelper
      * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
      * @return string Input string wrapped in <a> tag with onclick event attribute set.
      */
-    protected static function makecurrentPageSelector_link($str, $p, $freeIndexUid)
+    protected function makecurrentPageSelector_link($str, $p, $freeIndexUid)
     {
         $onclick = 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_pointer') . ').value=' . GeneralUtility::quoteJSvalue($p) . ';';
         if ($freeIndexUid !== null) {
