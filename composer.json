@@ -100,7 +100,7 @@
 	},
 	"conflict": {
 		"hoa/core": "*",
-		"guzzlehttp/guzzle": ">= 6.5.0"
+		"guzzlehttp/guzzle": "6.5.0"
 	},
 	"provide": {
 		"psr/http-client-implementation": "1.0",

@@ -82,7 +82,7 @@
 	},
 	"conflict": {
 		"hoa/core": "*",
-		"guzzlehttp/guzzle": ">= 6.5.0",
+		"guzzlehttp/guzzle": "6.5.0",
 		"typo3/cms": "*"
 	},
 	"replace": {
