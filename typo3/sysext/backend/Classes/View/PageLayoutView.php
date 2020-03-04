@@ -1418,7 +1418,7 @@ class PageLayoutView implements LoggerAwareInterface
     public function newLanguageButton($defaultLanguageUids, $lP)
     {
         $lP = (int)$lP;
-        if (!$this->doEdit || !$lP) {
+        if (!$this->doEdit || !$lP || !$this->hasContentModificationAndAccessPermissions()) {
             return '';
         }
         $theNewButton = '';
