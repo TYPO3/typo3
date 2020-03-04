@@ -38,6 +38,7 @@ namespace TYPO3 {
     private readonly trigger: HTMLElement;
 
     constructor() {
+      this.installPolyfills();
       this.adminPanel = document.querySelector(AdminPanelSelectors.adminPanelRole) as HTMLFormElement;
       this.modules = (this.querySelectorAll(AdminPanelSelectors.moduleTriggerRole) as Element[]).map(
         (moduleTrigger: HTMLElement) => {
@@ -91,15 +92,38 @@ namespace TYPO3 {
       const body = document.querySelector('body');
       body.classList.remove(AdminPanelClasses.noScroll);
       if (backdrop !== null) {
-        backdrop.remove();
+        backdrop.parentNode.removeChild(backdrop);
       }
     }
 
-    private querySelectorAll(selectors: string, subject: Element = null): Node[] {
-      if (subject === null) {
-        return Array.from(document.querySelectorAll(selectors));
+    private installPolyfills(): void {
+      if (!Element.prototype.matches) {
+        // @ts-ignore
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
       }
-      return Array.from(subject.querySelectorAll(selectors));
+
+      if (!Element.prototype.closest) {
+        Element.prototype.closest = function(this: Element, s: string): Element {
+          let el = this;
+
+          do {
+            if (el.matches(s)) {
+              return el;
+            }
+            el = el.parentElement;
+          } while (el !== null && el.nodeType === 1);
+          return null;
+        };
+      }
+    }
+
+    private querySelectorAll(selectors: string, subject: Element | Document = document): Node[] {
+      const collection: Node[] = [];
+      let elements = subject.querySelectorAll(selectors);
+      for (let i = 0; i < elements.length; i++) {
+        collection.push(elements[i]);
+      }
+      return collection;
     }
 
     private initializeEvents(): void {
