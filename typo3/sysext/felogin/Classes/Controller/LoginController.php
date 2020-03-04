@@ -132,22 +132,16 @@ class LoginController extends AbstractLoginFormController
     }
 
     /**
-     * Dispatch events if necessary
+     * Show login form
      */
-    public function initializeLoginAction(): void
+    public function loginAction(): void
     {
         if ($this->isLogoutSuccessful()) {
             $this->eventDispatcher->dispatch(new LogoutConfirmedEvent($this, $this->view));
         } elseif ($this->hasLoginErrorOccurred()) {
             $this->eventDispatcher->dispatch(new LoginErrorOccurredEvent());
         }
-    }
 
-    /**
-     * Show login form
-     */
-    public function loginAction(): void
-    {
         $this->handleLoginForwards();
 
         $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view));
