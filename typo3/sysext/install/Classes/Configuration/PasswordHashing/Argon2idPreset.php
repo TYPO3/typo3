@@ -33,7 +33,7 @@ class Argon2idPreset extends AbstractPreset
     /**
      * @var int Priority of preset
      */
-    protected $priority = 80;
+    protected $priority = 65;
 
     /**
      * @var array Configuration values handled by this preset
