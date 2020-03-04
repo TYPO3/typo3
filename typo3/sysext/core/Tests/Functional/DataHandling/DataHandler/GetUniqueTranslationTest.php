@@ -66,9 +66,9 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         ]);
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
 
-        $this->assertEquals('DataHandlerTest changed', $originalLanguageRecord['title']);
-        $this->assertEquals('datahandler', $originalLanguageRecord['nav_title']);
-        $this->assertEquals('datahandler', $translatedRecord['nav_title']);
+        self::assertEquals('DataHandlerTest changed', $originalLanguageRecord['title']);
+        self::assertEquals('datahandler', $originalLanguageRecord['nav_title']);
+        self::assertEquals('datahandler', $translatedRecord['nav_title']);
     }
 
     /**
@@ -92,8 +92,8 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         ]);
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
         $newRecord = BackendUtility::getRecord('pages', $newPageId);
-        $this->assertEquals('datahandler', $originalLanguageRecord['nav_title']);
-        $this->assertEquals('datahandler0', $newRecord['nav_title']);
+        self::assertEquals('datahandler', $originalLanguageRecord['nav_title']);
+        self::assertEquals('datahandler0', $newRecord['nav_title']);
     }
 
     /**
@@ -116,7 +116,7 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
 
         $defaultLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
         $newRecord = BackendUtility::getRecord('pages', $newPageId);
-        $this->assertEquals('datahandler', $defaultLanguageRecord['nav_title']);
-        $this->assertEquals('datahandler0', $newRecord['nav_title']);
+        self::assertEquals('datahandler', $defaultLanguageRecord['nav_title']);
+        self::assertEquals('datahandler0', $newRecord['nav_title']);
     }
 }
