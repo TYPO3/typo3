@@ -446,7 +446,7 @@ class InputLinkElement extends AbstractFormElement
     protected function getDomainByUrl(string $uriString): string
     {
         $data = parse_url($uriString);
-        return $data['host'] ?? '';
+        return $data['host'] ?? $uriString;
     }
 
     /**

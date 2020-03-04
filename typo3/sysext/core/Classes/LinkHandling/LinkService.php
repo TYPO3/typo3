@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\LinkHandling;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class LinkService, responsible to find what kind of resource (type) is used
@@ -115,7 +116,7 @@ class LinkService implements SingletonInterface
             if ($fragment) {
                 $result['fragment'] = $fragment;
             }
-        } elseif (strpos($urn, '://') && $this->handlers[self::TYPE_URL]) {
+        } elseif ((strpos($urn, '://') || StringUtility::beginsWith($urn, '//')) && $this->handlers[self::TYPE_URL]) {
             $result = $this->handlers[self::TYPE_URL]->resolveHandlerData(['url' => $urn]);
             $result['type'] = self::TYPE_URL;
         } elseif (stripos($urn, 'mailto:') === 0 && $this->handlers[self::TYPE_EMAIL]) {
