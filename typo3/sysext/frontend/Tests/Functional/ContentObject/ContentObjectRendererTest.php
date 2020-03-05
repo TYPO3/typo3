@@ -146,6 +146,15 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                 [
                     'SELECT' => 'avg(crdate)'
                 ]
+            ],
+            'single distinct, add nothing' => [
+                'tt_content',
+                [
+                    'selectFields' => 'DISTINCT crdate'
+                ],
+                [
+                    'SELECT' => 'DISTINCT crdate'
+                ]
             ]
         ];
 
