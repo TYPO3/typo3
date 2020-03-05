@@ -65,6 +65,7 @@ class Check implements CheckInterface
         'gd',
         'hash',
         'json',
+        'PDO',
         'session',
         'SPL',
         'standard',
