@@ -47,6 +47,7 @@ class AutoPublishCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -88,6 +89,7 @@ class AutoPublishCommand extends Command
         } else {
             $io->note('Nothing to do.');
         }
+        return 0;
     }
 
     /**

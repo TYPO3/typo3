@@ -114,5 +114,6 @@ class ExtensionListCommand extends Command
             }
         }
         $table->render();
+        return 0;
     }
 }

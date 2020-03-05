@@ -79,6 +79,7 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -108,6 +109,7 @@ If you want to get more detailed information, use the --verbose option.')
         } else {
             $io->success('Nothing to do, no files found which are referenced more than once.');
         }
+        return 0;
     }
 
     /**

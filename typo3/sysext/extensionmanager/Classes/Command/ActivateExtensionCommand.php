@@ -70,5 +70,6 @@ class ActivateExtensionCommand extends Command
         $objectManager->get(InstallUtility::class)->install($extensionKey);
 
         $io->success('Activated extension ' . $extensionKey . ' successfully.');
+        return 0;
     }
 }

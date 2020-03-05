@@ -60,5 +60,6 @@ class DumpAutoloadCommand extends Command
         $io = new SymfonyStyle($input, $output);
         ClassLoadingInformation::dumpClassLoadingInformation();
         $io->success('Class loading information has been updated.');
+        return 0;
     }
 }

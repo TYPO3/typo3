@@ -44,8 +44,9 @@ class CheckIntegrityCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->remove(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY);
@@ -62,5 +63,6 @@ class CheckIntegrityCommand extends Command
             ));
         }
         $registry->set(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY, $list);
+        return 0;
     }
 }

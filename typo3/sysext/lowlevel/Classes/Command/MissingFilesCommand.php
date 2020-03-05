@@ -80,6 +80,7 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -113,6 +114,7 @@ If you want to get more detailed information, use the --verbose option.')
         if (!count($missingSoftReferencedFiles) && !count($missingReferencedFiles)) {
             $io->success('Nothing to do, no missing files found. Everything is in place.');
         }
+        return 0;
     }
 
     /**

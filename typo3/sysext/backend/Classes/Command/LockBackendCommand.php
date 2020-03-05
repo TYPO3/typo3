@@ -45,6 +45,7 @@ class LockBackendCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -64,6 +65,7 @@ class LockBackendCommand extends Command
         }
         GeneralUtility::writeFile($lockFile, $lockFileContent);
         $io->success($output);
+        return 0;
     }
 
     /**

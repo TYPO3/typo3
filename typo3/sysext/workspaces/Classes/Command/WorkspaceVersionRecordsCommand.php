@@ -100,6 +100,7 @@ class WorkspaceVersionRecordsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -255,6 +256,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 break;
         }
         $io->success('All done!');
+        return 0;
     }
 
     /**

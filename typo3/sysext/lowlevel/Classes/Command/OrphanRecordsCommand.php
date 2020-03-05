@@ -65,6 +65,7 @@ Manual repair suggestions:
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -136,6 +137,7 @@ Manual repair suggestions:
         } else {
             $io->success('No orphan records found.');
         }
+        return 0;
     }
 
     /**

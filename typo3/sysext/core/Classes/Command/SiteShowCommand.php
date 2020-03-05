@@ -54,5 +54,6 @@ class SiteShowCommand extends Command
         $site = $siteFinder->getSiteByIdentifier($input->getArgument('identifier'));
         $io->title('Site configuration for ' . $input->getArgument('identifier'));
         $io->block(Yaml::dump($site->getConfiguration(), 4));
+        return 0;
     }
 }

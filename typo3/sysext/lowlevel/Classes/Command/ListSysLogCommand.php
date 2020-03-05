@@ -43,6 +43,7 @@ class ListSysLogCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -112,6 +113,7 @@ class ListSysLogCommand extends Command
             $content[] = $result;
         }
         $io->table($tableHeaders, $content);
+        return 0;
     }
 
     /**

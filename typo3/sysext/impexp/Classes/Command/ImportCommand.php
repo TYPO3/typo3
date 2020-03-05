@@ -73,6 +73,7 @@ class ImportCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -117,5 +118,6 @@ class ImportCommand extends Command
         }
 
         $io->success('Imported ' . $input->getArgument('file') . ' to page ' . $pageId . ' successfully');
+        return 0;
     }
 }

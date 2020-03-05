@@ -37,6 +37,7 @@ class UnlockBackendCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -47,12 +48,13 @@ class UnlockBackendCommand extends Command
             unlink($lockFile);
             if (@is_file($lockFile)) {
                 $io->caution('Could not remove lock file "' . $lockFile . '"!');
-            } else {
-                $io->success('Removed lock file "' . $lockFile . '".');
+                return 1;
             }
+            $io->success('Removed lock file "' . $lockFile . '".');
         } else {
             $io->note('No lock file "' . $lockFile . '" was found.' . LF . 'Hence no lock can be removed.');
         }
+        return 0;
     }
 
     /**

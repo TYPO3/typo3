@@ -67,6 +67,7 @@ class CleanFlexFormsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -110,6 +111,7 @@ class CleanFlexFormsCommand extends Command
         } else {
             $io->success('Nothing to do - You\'re all set!');
         }
+        return 0;
     }
 
     /**

@@ -43,6 +43,7 @@ class CleanupPreviewLinksCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -64,5 +65,6 @@ class CleanupPreviewLinksCommand extends Command
         } else {
             $io->note('No expired preview links found. All done.');
         }
+        return 0;
     }
 }

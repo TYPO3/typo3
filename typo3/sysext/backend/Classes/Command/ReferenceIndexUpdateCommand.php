@@ -48,6 +48,7 @@ class ReferenceIndexUpdateCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -66,5 +67,6 @@ class ReferenceIndexUpdateCommand extends Command
             $io->section('Reference Index is now being updated');
         }
         $referenceIndex->updateIndex($isTestOnly, $progressListener);
+        return 0;
     }
 }

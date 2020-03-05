@@ -67,6 +67,7 @@ class DeletedRecordsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -115,6 +116,7 @@ class DeletedRecordsCommand extends Command
         $this->deleteRecords($deletedRecords, $dryRun, $io);
 
         $io->success('All done!');
+        return 0;
     }
 
     /**
