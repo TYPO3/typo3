@@ -86,7 +86,7 @@ class FalMetadataInheritanceCest
         $I->amGoingTo('Change default metadata');
         $I->switchToMainFrame();
         $I->click('Filelist');
-        $I->switchToIFrame('typo3-navigationContainerIframe');
+        $I->switchToIFrame('nav_frame');
         $I->waitForText('fileadmin/ (auto-created)');
         $I->click('styleguide');
 
