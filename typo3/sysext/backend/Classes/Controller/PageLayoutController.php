@@ -766,7 +766,26 @@ class PageLayoutController
         $this->buttonBar->addButton($contextSensitiveHelpButton);
         $lang = $this->getLanguageService();
         // View page
-        if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+        $pageTsConfig = BackendUtility::getPagesTSconfig($this->id);
+        // Exclude sysfolders, spacers and recycler by default
+        $excludeDokTypes = [
+            PageRepository::DOKTYPE_RECYCLER,
+            PageRepository::DOKTYPE_SYSFOLDER,
+            PageRepository::DOKTYPE_SPACER
+        ];
+        // Custom override of values
+        if (isset($pageTsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
+            $excludeDokTypes = GeneralUtility::intExplode(
+                ',',
+                $pageTsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
+                true
+            );
+        }
+
+        if (
+            !in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
+            && !VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+        ) {
             $languageParameter = $this->current_sys_language ? ('&L=' . $this->current_sys_language) : '';
             $onClick = BackendUtility::viewOnClick(
                 $this->pageinfo['uid'],
