@@ -52,7 +52,7 @@ class SendEmailCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|void|null
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -74,9 +74,11 @@ class SendEmailCommand extends Command
             }
             $sent = $transport->flushQueue($mailer->getRealTransport());
             $io->comment($sent . ' emails sent');
-        } else {
-            $io->error('The Mailer Transport is not set to "spool".');
+            return 0;
         }
+        $io->error('The Mailer Transport is not set to "spool".');
+
+        return 1;
     }
 
     /**
