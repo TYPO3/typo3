@@ -180,6 +180,15 @@ class ContentObjectRendererTest extends FunctionalTestCase
                 [
                     'SELECT' => 'avg(crdate)'
                 ]
+            ],
+            'single distinct, add nothing' => [
+                'tt_content',
+                [
+                    'selectFields' => 'DISTINCT crdate'
+                ],
+                [
+                    'SELECT' => 'DISTINCT crdate'
+                ]
             ]
         ];
 
