@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcdf2b794c45f9996ca60ddede572188",
+    "content-hash": "c41f145b29e80da05ea4c48710117d18",
     "packages": [
         {
             "name": "cogpowered/finediff",

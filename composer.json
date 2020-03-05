@@ -78,6 +78,7 @@
 	},
 	"require-dev": {
 		"codeception/codeception": "^4.0",
+		"codeception/lib-asserts": "^1.1",
 		"codeception/module-asserts": "^1.1",
 		"codeception/module-filesystem": "^1.0",
 		"codeception/module-webdriver": "^1.0",
