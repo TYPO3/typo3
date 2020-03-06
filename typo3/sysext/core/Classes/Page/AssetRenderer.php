@@ -24,6 +24,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class AssetRenderer
 {
+    /**
+     * @var AssetCollector
+     */
     protected $assetCollector;
 
     public function __construct(AssetCollector $assetCollector = null)

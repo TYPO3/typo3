@@ -51,17 +51,17 @@ abstract class AbstractListWidget extends AbstractWidget
     protected $moreItemsText = '';
 
     /**
-     * @inheritDoc
+     * @var int
      */
     protected $height = 4;
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $iconIdentifier = 'content-widget-list';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $templateName = 'ListWidget';
 

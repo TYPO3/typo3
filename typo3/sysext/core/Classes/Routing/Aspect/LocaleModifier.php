@@ -60,7 +60,7 @@ class LocaleModifier implements ModifiableAspectInterface, SiteLanguageAwareInte
     protected $localeMap;
 
     /**
-     * @var ?string
+     * @var string|null
      */
     protected $default;
 

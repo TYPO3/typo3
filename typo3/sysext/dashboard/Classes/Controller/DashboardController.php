@@ -66,6 +66,9 @@ class DashboardController extends AbstractController
      */
     protected $jsFiles = [];
 
+    /**
+     * @var mixed[]
+     */
     protected $requireJsModules = [];
 
     /**

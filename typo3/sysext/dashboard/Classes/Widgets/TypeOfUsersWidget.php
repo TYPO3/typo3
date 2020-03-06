@@ -24,7 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TypeOfUsersWidget extends AbstractDoughnutChartWidget
 {
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description';
 
     /**

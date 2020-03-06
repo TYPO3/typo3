@@ -28,8 +28,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class InMemoryLogWriter extends AbstractWriter
 {
+    /**
+     * @var LogRecord[]
+     */
     public static $log = [];
 
+    /**
+     * @var bool
+     */
     private static $memoryLock = false;
 
     /**

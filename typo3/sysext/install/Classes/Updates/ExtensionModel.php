@@ -23,10 +23,29 @@ namespace TYPO3\CMS\Install\Updates;
  */
 class ExtensionModel
 {
+    /**
+     * @var string
+     */
     protected $key = '';
+
+    /**
+     * @var string
+     */
     protected $title = '';
+
+    /**
+     * @var string
+     */
     protected $versionString = '';
+
+    /**
+     * @var string
+     */
     protected $composerName = '';
+
+    /**
+     * @var string
+     */
     protected $description = '';
 
     public function __construct(

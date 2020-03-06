@@ -33,11 +33,17 @@ class RecordHistory
     use PublicMethodDeprecationTrait;
     use PublicPropertyDeprecationTrait;
 
+    /**
+     * @var string[]
+     */
     private $deprecatedPublicMethods = [
         'getHistoryEntry' => 'Using RecordHistory::getHistoryEntry() is deprecated and will not be possible anymore in TYPO3 v11.0.',
         'getHistoryData' => 'Using RecordHistory::getHistoryData() is deprecated and will not be possible anymore in TYPO3 v11.0.',
     ];
 
+    /**
+     * @var string[]
+     */
     private $deprecatedPublicProperties = [
         'changeLog' => 'Using changeLog is deprecated and will not be possible anymore in TYPO3 v11.0. Use getChangeLog() instead.',
         'lastHistoryEntry' => 'Using lastHistoryEntry is deprecated and will not be possible anymore in TYPO3 v11.0. Use getLastHistoryEntryNumber() instead.',

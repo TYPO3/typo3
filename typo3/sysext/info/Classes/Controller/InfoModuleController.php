@@ -153,7 +153,7 @@ class InfoModuleController
     /**
      * May contain an instance of a 'Function menu module' which connects to this backend module.
      *
-     * @var \object
+     * @var object
      */
     protected $extObj;
 

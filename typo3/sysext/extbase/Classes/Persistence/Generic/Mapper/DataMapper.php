@@ -68,7 +68,7 @@ class DataMapper
     protected $eventDispatcher;
 
     /**
-     * @var ?QueryInterface
+     * @var QueryInterface|null
      */
     protected $query;
 

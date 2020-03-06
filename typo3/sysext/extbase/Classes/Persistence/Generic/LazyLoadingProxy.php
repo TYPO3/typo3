@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 {
     /**
-     * @var ?DataMapper
+     * @var DataMapper|null
      */
     protected $dataMapper;
 

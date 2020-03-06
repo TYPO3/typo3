@@ -63,7 +63,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     protected $configurationManager;
 
     /**
-     * @var PersistenceManager
+     * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
 

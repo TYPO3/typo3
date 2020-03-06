@@ -64,7 +64,7 @@ class Argument
     /**
      * Actual value of this argument
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $value;
 

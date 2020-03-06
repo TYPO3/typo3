@@ -18,6 +18,9 @@ namespace TYPO3\CMS\Core\MetaTag;
 
 class EdgeMetaTagManager extends AbstractMetaTagManager
 {
+    /**
+     * @var string[][]
+     */
     protected $handledProperties = [
         'x-ua-compatible' => ['nameAttribute' => 'http-equiv']
     ];

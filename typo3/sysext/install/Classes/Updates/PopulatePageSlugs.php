@@ -34,8 +34,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PopulatePageSlugs implements UpgradeWizardInterface
 {
+    /**
+     * @var string
+     */
     protected $table = 'pages';
 
+    /**
+     * @var string
+     */
     protected $fieldName = 'slug';
 
     /**

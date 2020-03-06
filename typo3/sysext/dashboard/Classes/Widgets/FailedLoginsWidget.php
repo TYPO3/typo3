@@ -27,9 +27,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FailedLoginsWidget extends AbstractNumberWithIconWidget
 {
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description';
+
+    /**
+     * @var string
+     */
     protected $subtitle = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle';
+
+    /**
+     * @var string
+     */
     protected $icon = 'content-elements-login';
 
     protected function initializeView(): void

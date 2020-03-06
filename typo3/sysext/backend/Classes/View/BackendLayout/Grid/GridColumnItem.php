@@ -38,6 +38,9 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class GridColumnItem extends AbstractGridObject
 {
+    /**
+     * @var mixed[]
+     */
     protected $record = [];
 
     /**

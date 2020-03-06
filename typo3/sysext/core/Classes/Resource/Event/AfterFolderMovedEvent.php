@@ -37,7 +37,7 @@ final class AfterFolderMovedEvent
     private $targetParentFolder;
 
     /**
-     * @var ?FolderInterface
+     * @var FolderInterface|null
      */
     private $targetFolder;
 

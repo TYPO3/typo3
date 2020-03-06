@@ -24,17 +24,17 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 abstract class AbstractBarChartWidget extends AbstractChartWidget
 {
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $iconIdentifier = 'content-widget-chart-bar';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $chartType = 'bar';
 
     /**
-     * @inheritDoc
+     * @var mixed[]
      */
     protected $chartOptions = [
         'maintainAspectRatio' => false,

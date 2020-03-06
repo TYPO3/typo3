@@ -13,6 +13,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ProviderConfigurationLoader
 {
+    /**
+     * @var string
+     */
     protected $cacheIdentifier = 'expressionLanguageProviders';
 
     /**

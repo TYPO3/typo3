@@ -42,22 +42,22 @@ abstract class AbstractRssWidget extends AbstractListWidget
     protected $lifeTime = 900;
 
     /**
-     * @inheritDoc
+     * @var int
      */
     protected $height = 6;
 
     /**
-     * @inheritDoc
+     * @var int
      */
     protected $width = 4;
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $iconIdentifier = 'content-widget-rss';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $templateName = 'RssWidget';
 

@@ -64,6 +64,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 
     /**
      * Contains all ids which are not allowed to be selected
+     * @var mixed[]
      */
     protected $itemUnselectableList = [];
 

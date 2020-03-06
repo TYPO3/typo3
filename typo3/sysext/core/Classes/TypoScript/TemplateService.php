@@ -41,6 +41,9 @@ class TemplateService
 {
     use PublicPropertyDeprecationTrait;
 
+    /**
+     * @var string[]
+     */
     private $deprecatedPublicProperties = [
         'forceTemplateParsing' => 'Using tmpl->forceTemplateParsing is deprecated and will no longer work with TYPO3 v11.0. Use TypoScriptAspect from Context instead.'
     ];
@@ -220,6 +223,7 @@ class TemplateService
 
     /**
      * Used by Backend only (Typoscript Template Analyzer)
+     * @var string[]
      */
     public $clearList_const = [];
 

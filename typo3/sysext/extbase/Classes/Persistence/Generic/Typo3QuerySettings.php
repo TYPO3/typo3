@@ -74,7 +74,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * Representing sys_language_overlay only valid for current context
      *
-     * @var mixed
+     * @var bool
      */
     protected $languageOverlayMode = true;
 

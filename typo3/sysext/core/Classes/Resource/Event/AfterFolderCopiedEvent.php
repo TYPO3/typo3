@@ -37,7 +37,7 @@ final class AfterFolderCopiedEvent
     private $targetParentFolder;
 
     /**
-     * @var ?FolderInterface
+     * @var FolderInterface|null
      */
     private $targetFolder;
 

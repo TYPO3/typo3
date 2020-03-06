@@ -29,7 +29,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
     const DEFAULT_PRIORITY = 25;
 
     /**
-     * @var mixed Identifier used for this lock
+     * @var int Identifier used for this lock
      */
     protected $id;
 

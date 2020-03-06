@@ -24,17 +24,17 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 abstract class AbstractDoughnutChartWidget extends AbstractChartWidget
 {
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $iconIdentifier = 'content-widget-chart-pie';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $chartType = 'doughnut';
 
     /**
-     * @inheritDoc
+     * @var mixed[]
      */
     protected $chartOptions = [
         'maintainAspectRatio' => false,
@@ -45,5 +45,8 @@ abstract class AbstractDoughnutChartWidget extends AbstractChartWidget
         'cutoutPercentage' => 60
     ];
 
+    /**
+     * @var int
+     */
     protected $height = 4;
 }

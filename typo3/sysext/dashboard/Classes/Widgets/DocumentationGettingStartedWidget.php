@@ -21,10 +21,33 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 class DocumentationGettingStartedWidget extends AbstractCtaButtonWidget
 {
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.title';
+
+    /**
+     * @var string
+     */
     protected $text = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.text';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.description';
+
+    /**
+     * @var string
+     */
     protected $label = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.content.label';
+
+    /**
+     * @var string
+     */
     protected $link = 'https://docs.typo3.org/m/typo3/tutorial-getting-started/master/en-us/Index.html';
+
+    /**
+     * @var string
+     */
     protected $iconIdentifier = 'content-widget-text';
 }

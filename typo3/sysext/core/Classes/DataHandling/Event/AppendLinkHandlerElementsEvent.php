@@ -46,6 +46,9 @@ final class AppendLinkHandlerElementsEvent
      */
     private $tokenId;
 
+    /**
+     * @var bool
+     */
     private $isResolved = false;
 
     public function __construct(array $linkParts, string $content, array $elements, int $idx, string $tokenID)

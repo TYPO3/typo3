@@ -21,6 +21,9 @@ namespace TYPO3\CMS\Adminpanel\Service;
  */
 class EventDispatcher extends \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
 {
+    /**
+     * @var object[]
+     */
     protected $dispatchedEvents = [];
 
     public function getDispatchedEvents(): array

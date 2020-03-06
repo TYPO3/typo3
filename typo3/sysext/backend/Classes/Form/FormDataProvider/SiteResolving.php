@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SiteResolving implements FormDataProviderInterface
 {
+    /**
+     * @var SiteFinder
+     */
     protected $siteFinder;
 
     public function __construct(SiteFinder $siteFinder = null)

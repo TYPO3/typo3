@@ -25,8 +25,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MetaTagManagerRegistry implements SingletonInterface
 {
+    /**
+     * @var mixed[]
+     */
     protected $registry = [];
+
+    /**
+     * @var mixed[]
+     */
     private $instances = [];
+
+    /**
+     * @var MetaTagManagerInterface[]|null
+     */
     private $managers;
 
     public function __construct()

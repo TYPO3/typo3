@@ -23,11 +23,34 @@ use TYPO3\CMS\Core\Information\Typo3Version;
  */
 class T3GeneralInformation extends AbstractWidget
 {
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.title';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.description';
+
+    /**
+     * @var string
+     */
     protected $templateName = 'T3GeneralInformation';
+
+    /**
+     * @var string
+     */
     protected $iconIdentifier = 'content-widget-text';
+
+    /**
+     * @var int
+     */
     protected $height = 4;
+
+    /**
+     * @var int
+     */
     protected $width = 4;
 
     public function renderWidgetContent(): string

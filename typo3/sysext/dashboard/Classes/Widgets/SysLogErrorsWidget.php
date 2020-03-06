@@ -27,12 +27,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysLogErrorsWidget extends AbstractBarChartWidget
 {
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description';
+
+    /**
+     * @var string
+     */
     protected $buttonText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.buttonText';
+
+    /**
+     * @var int
+     */
     protected $width = 4;
+
+    /**
+     * @var int
+     */
     protected $height = 4;
+
+    /**
+     * @var mixed[]
+     */
     protected $data = [];
+
+    /**
+     * @var mixed[]
+     */
     protected $labels = [];
 
     protected function initializeView(): void

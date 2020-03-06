@@ -40,6 +40,7 @@ class CronCommand
      * This value starts with 'now + 1 minute' if not set externally
      * by unit tests. After a call to calculateNextValue() it holds the timestamp of
      * the next execution date which matches the cron command restrictions.
+     * @var int
      */
     protected $timestamp;
 

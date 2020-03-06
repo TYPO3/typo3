@@ -48,14 +48,49 @@ class Environment
         'srv', // HHVM with fastcgi
     ];
 
+    /**
+     * @var bool
+     */
     protected static $cli;
+
+    /**
+     * @var bool
+     */
     protected static $composerMode;
+
+    /**
+     * @var ApplicationContext
+     */
     protected static $context;
+
+    /**
+     * @var string
+     */
     protected static $projectPath;
+
+    /**
+     * @var string
+     */
     protected static $publicPath;
+
+    /**
+     * @var string
+     */
     protected static $currentScript;
+
+    /**
+     * @var string
+     */
     protected static $os;
+
+    /**
+     * @var string
+     */
     protected static $varPath;
+
+    /**
+     * @var string
+     */
     protected static $configPath;
 
     /**

@@ -21,10 +21,33 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 class T3NewsWidget extends AbstractRssWidget
 {
+    /**
+     * @var string
+     */
     protected $rssFile = 'https://www.typo3.org/rss';
+
+    /**
+     * @var int
+     */
     protected $lifeTime = 43200; // 12 hours cache
+
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description';
+
+    /**
+     * @var string
+     */
     protected $moreItemsLink = 'https://typo3.org/project/news';
+
+    /**
+     * @var string
+     */
     protected $moreItemsText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems';
 }

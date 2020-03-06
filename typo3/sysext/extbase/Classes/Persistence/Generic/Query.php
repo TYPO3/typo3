@@ -104,7 +104,7 @@ class Query implements QueryInterface
     protected $querySettings;
 
     /**
-     * @var ?QueryInterface
+     * @var QueryInterface|null
      * @internal
      */
     protected $parentQuery;

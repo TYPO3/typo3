@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 class RecordRememberer implements SingletonInterface
 {
+    /**
+     * @var int[]
+     */
     protected $rememberedUids = [];
 
     public function rememberRecordUid(int $uid): void

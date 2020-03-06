@@ -34,6 +34,9 @@ class FluidEmail extends Email
     public const FORMAT_PLAIN = 'plain';
     public const FORMAT_BOTH = 'both';
 
+    /**
+     * @var string[]
+     */
     protected $format = ['html', 'plain'];
 
     /**

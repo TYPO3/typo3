@@ -99,7 +99,13 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     {
         $next = $this->tip;
         $this->tip = new class($middleware, $next) implements RequestHandlerInterface {
+            /**
+             * @var MiddlewareInterface
+             */
             private $middleware;
+            /**
+             * @var RequestHandlerInterface
+             */
             private $next;
 
             public function __construct(MiddlewareInterface $middleware, RequestHandlerInterface $next)
@@ -128,8 +134,19 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     {
         $next = $this->tip;
         $this->tip = new class($middleware, $next, $this->container) implements RequestHandlerInterface {
+            /**
+             * @var string
+             */
             private $middleware;
+
+            /**
+             * @var RequestHandlerInterface
+             */
             private $next;
+
+            /**
+             * @var ContainerInterface|null
+             */
             private $container;
 
             public function __construct(string $middleware, RequestHandlerInterface $next, ContainerInterface $container = null)

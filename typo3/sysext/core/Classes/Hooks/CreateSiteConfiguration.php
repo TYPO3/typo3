@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CreateSiteConfiguration
 {
+    /**
+     * @var int[]
+     */
     protected $allowedPageTypes = [
         PageRepository::DOKTYPE_DEFAULT,
         PageRepository::DOKTYPE_LINK,

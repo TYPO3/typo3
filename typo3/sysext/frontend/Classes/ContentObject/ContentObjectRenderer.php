@@ -108,6 +108,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * stdWrap functions in their correct order
      *
      * @see stdWrap()
+     * @var string[]
      */
     public $stdWrapOrder = [
         'stdWrapPreProcess' => 'hook',
@@ -420,6 +421,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * Set to TRUE by doConvertToUserIntObject() if USER object wants to become USER_INT
+     * @var bool
      */
     public $doConvertToUserIntObject = false;
 
@@ -427,6 +429,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Indicates current object type. Can hold one of OBJECTTYPE_ constants or FALSE.
      * The value is set and reset inside USER() function. Any time outside of
      * USER() it is FALSE.
+     * @var bool
      */
     protected $userObjectType = false;
 

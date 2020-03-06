@@ -27,6 +27,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Argon2iPasswordHashes implements UpgradeWizardInterface, ConfirmableInterface
 {
+    /**
+     * @var Confirmation
+     */
     protected $confirmation;
 
     public function __construct()
@@ -107,7 +110,7 @@ class Argon2iPasswordHashes implements UpgradeWizardInterface, ConfirmableInterf
     /**
      * Return a confirmation message instance
      *
-     * @return \TYPO3\CMS\Install\Updates\Confirmation
+     * @return Confirmation
      */
     public function getConfirmation(): Confirmation
     {

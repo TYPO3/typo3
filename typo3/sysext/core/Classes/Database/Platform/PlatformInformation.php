@@ -50,6 +50,9 @@ class PlatformInformation
         'sqlite' => 999,
     ];
 
+    /**
+     * @var string[]
+     */
     protected static $charSetMap = [
         'mysql' => 'utf8mb4',
         'postgresql' => 'UTF8',
@@ -57,6 +60,9 @@ class PlatformInformation
         'sqlite' => 'utf8',
     ];
 
+    /**
+     * @var string[]
+     */
     protected static $databaseCreateWithCharsetMap = [
         'mysql' => 'CHARACTER SET %s',
         'postgresql' => "ENCODING '%s'",

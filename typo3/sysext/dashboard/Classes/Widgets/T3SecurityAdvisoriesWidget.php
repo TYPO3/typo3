@@ -21,10 +21,33 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 class T3SecurityAdvisoriesWidget extends AbstractRssWidget
 {
+    /**
+     * @var string
+     */
     protected $rssFile = 'https://typo3.org/?type=101';
+
+    /**
+     * @var int
+     */
     protected $lifeTime = 43200; // 12 hours cache
+
+    /**
+     * @var string
+     */
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.title';
+
+    /**
+     * @var string
+     */
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.description';
+
+    /**
+     * @var string
+     */
     protected $moreItemsLink = 'https://typo3.org/help/security-advisories';
+
+    /**
+     * @var string
+     */
     protected $moreItemsText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.moreItems';
 }

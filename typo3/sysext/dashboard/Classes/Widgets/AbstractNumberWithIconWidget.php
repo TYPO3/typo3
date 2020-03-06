@@ -44,12 +44,12 @@ abstract class AbstractNumberWithIconWidget extends AbstractWidget
     protected $icon;
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $iconIdentifier = 'content-widget-number';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $templateName = 'NumberWithIconWidget';
 

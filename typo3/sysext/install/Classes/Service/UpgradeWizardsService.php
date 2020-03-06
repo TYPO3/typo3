@@ -40,6 +40,9 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
  */
 class UpgradeWizardsService
 {
+    /**
+     * @var StreamOutput
+     */
     private $output;
 
     public function __construct()

@@ -97,6 +97,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     use LoggerAwareTrait;
     use PublicPropertyDeprecationTrait;
 
+    /**
+     * @var string[]
+     */
     private $deprecatedPublicProperties = [
         'imagesOnPage' => 'Using TSFE->imagesOnPage is deprecated and will no longer work with TYPO3 v11.0. Use AssetCollector()->getMedia() instead.',
         'lastImageInfo' => 'Using TSFE->lastImageInfo is deprecated and will no longer work with TYPO3 v11.0.'

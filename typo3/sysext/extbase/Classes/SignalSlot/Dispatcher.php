@@ -139,6 +139,9 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected $logger;
 
+    /**
+     * @var string[][]
+     */
     protected $deprecatedSlots = [
         FileIndexRepository::class => [
             'recordUpdated' => AfterFileUpdatedInIndexEvent::class,

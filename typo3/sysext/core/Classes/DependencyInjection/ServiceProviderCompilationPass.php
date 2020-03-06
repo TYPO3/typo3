@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class ServiceProviderCompilationPass implements CompilerPassInterface
 {
     /**
-     * @var Registry
+     * @var ServiceProviderRegistry
      */
     private $registry;
 

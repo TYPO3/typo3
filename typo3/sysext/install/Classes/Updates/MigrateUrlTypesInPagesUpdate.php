@@ -24,7 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MigrateUrlTypesInPagesUpdate implements UpgradeWizardInterface
 {
+    /**
+     * @var string[]
+     */
     private $databaseTables = ['pages', 'pages_language_overlay'];
+
+    /**
+     * @var string[]
+     */
     private $urltypes = ['', 'http://', 'ftp://', 'mailto:', 'https://'];
 
     /**

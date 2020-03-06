@@ -115,12 +115,12 @@ abstract class AbstractChartWidget extends AbstractWidget implements AdditionalC
     protected $additionalClasses = 'dashboard-item--chart';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $iconIdentifier = 'content-widget-chart';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $templateName = 'ChartWidget';
 
