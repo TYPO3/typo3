@@ -133,7 +133,7 @@ class DashboardRepository
     }
 
     /**
-     * @param $values
+     * @param array $values
      * @return array
      */
     protected function checkAllowedFields($values): array

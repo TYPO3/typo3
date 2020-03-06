@@ -107,7 +107,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns the list of available, but not necessarily loaded extensions
      *
-     * @param string
+     * @param string $filter
      * @return array[] All extensions with info
      */
     public function getAvailableExtensions(string $filter = ''): array
@@ -262,7 +262,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Gets all available and installed extension with additional information
      * from em_conf and TER (if available)
      *
-     * @param string
+     * @param string $filter
      * @return array
      */
     public function getAvailableAndInstalledExtensionsWithAdditionalInformation(string $filter = ''): array

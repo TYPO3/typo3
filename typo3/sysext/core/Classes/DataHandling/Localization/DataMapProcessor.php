@@ -1317,7 +1317,7 @@ class DataMapProcessor
      * Prefixes language title if applicable for the accordant field name in raw data-map item.
      *
      * @param string $tableName
-     * @param $fromId
+     * @param string|int $fromId
      * @param int $language
      * @param array $data
      * @return array

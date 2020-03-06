@@ -383,7 +383,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * Renders a field for defining an argument's value
      *
      * @param InputArgument $argument
-     * @param mixed $currentValue
+     * @param string $currentValue
      * @return string
      */
     protected function renderArgumentField(InputArgument $argument, string $currentValue): string
@@ -405,7 +405,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * Renders a field for defining an option's value
      *
      * @param InputOption $option
-     * @param mixed $currentValue
+     * @param string $currentValue
      * @return string
      */
     protected function renderOptionField(InputOption $option, bool $enabled, string $currentValue): string

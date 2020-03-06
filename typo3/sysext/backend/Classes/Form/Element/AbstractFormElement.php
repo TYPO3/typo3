@@ -335,7 +335,7 @@ abstract class AbstractFormElement extends AbstractNode
      * Calculates the bootstrap grid classes based on the amount of columns
      * defined in the checkbox item TCA
      *
-     * @param $cols
+     * @param int $cols
      * @return array
      * @internal
      */

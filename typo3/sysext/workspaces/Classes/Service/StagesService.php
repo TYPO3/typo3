@@ -553,7 +553,7 @@ class StagesService implements SingletonInterface
     }
 
     /**
-     * @param $grList
+     * @param string $grList
      * @param string $idList
      * @return array
      */
@@ -599,7 +599,7 @@ class StagesService implements SingletonInterface
     /**
      * Fetches particular groups recursively.
      *
-     * @param $grList
+     * @param string $grList
      * @param string $idList
      * @return array
      */
@@ -735,7 +735,7 @@ class StagesService implements SingletonInterface
     }
 
     /**
-     * @param $stageId
+     * @param int $stageId
      * @return bool
      */
     protected function isStageAllowedForUser($stageId)

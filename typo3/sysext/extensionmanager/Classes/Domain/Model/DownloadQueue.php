@@ -124,7 +124,7 @@ class DownloadQueue implements SingletonInterface
     /**
      * Remove an extension from extension copy storage
      *
-     * @param $extensionKey
+     * @param string $extensionKey
      */
     public function removeExtensionFromCopyQueue($extensionKey)
     {

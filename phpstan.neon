@@ -3,6 +3,15 @@ includes:
 # Include bleeding edge rules if necessary but do not commit
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
+rules:
+  # those are level 2 rules, will be removed once level 2 is completely active
+  - PHPStan\Rules\PhpDoc\IncompatiblePhpDocTypeRule
+  - PHPStan\Rules\PhpDoc\IncompatiblePropertyPhpDocTypeRule
+  - PHPStan\Rules\PhpDoc\InvalidPhpDocTagValueRule
+  - PHPStan\Rules\PhpDoc\InvalidPHPStanDocTagRule
+  - PHPStan\Rules\PhpDoc\InvalidThrowsPhpDocValueRule
+  - PHPStan\Rules\PhpDoc\WrongVariableNameInVarTagRule
+
 parameters:
   level: 1
 

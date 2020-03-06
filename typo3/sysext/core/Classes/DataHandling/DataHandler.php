@@ -2407,7 +2407,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name for which $value must be unique
      * @param int $uid UID to filter out in the lookup (the record itself...)
      * @param int $pid If set, the value will be unique for this PID
-     * @return \Doctrine\DBAL\Driver\Statement|int Return the prepared statement to check uniqueness
+     * @return \Doctrine\DBAL\Driver\Statement Return the prepared statement to check uniqueness
      */
     protected function getUniqueCountStatement(
         string $value,
@@ -7601,7 +7601,6 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Check if there are subpages that need an adoption as well
      * @param int $pageId
-     * @param int $pid
      */
     protected function fixUniqueInSiteForSubpages(int $pageId)
     {

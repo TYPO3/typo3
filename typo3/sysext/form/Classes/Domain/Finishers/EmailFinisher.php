@@ -238,7 +238,7 @@ class EmailFinisher extends AbstractFinisher
      *
      * @param string $listOption List option name
      * @param string $singleAddressOption Single address option
-     * @param string $singleAddressName Single address name
+     * @param string|null $singleAddressNameOption Single address name
      * @return array
      *
      * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.

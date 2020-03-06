@@ -27,8 +27,8 @@ class TreeDataProviderFactory
      * Gets the data provider, depending on TCA configuration
      *
      * @param array $tcaConfiguration
-     * @param $table
-     * @param $field
+     * @param string $table
+     * @param string $field
      * @param array $currentValue The current database row, handing over 'uid' is enough
      * @return DatabaseTreeDataProvider
      * @throws \InvalidArgumentException

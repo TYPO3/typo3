@@ -514,7 +514,7 @@ class DeletedRecords
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param int $depth
      * @param int $begin
      * @param string $permsClause

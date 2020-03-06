@@ -185,7 +185,7 @@ class PageSlugCandidateProvider
      *
      * @param array $slugCandidates
      * @param int $languageId
-     * @param string|null $excludeUids when called recursively this is the mountpoint parameter of the original prefix
+     * @param array $excludeUids when called recursively this is the mountpoint parameter of the original prefix
      * @return array[]|array
      * @throws SiteNotFoundException
      */

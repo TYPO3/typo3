@@ -77,8 +77,8 @@ class Folder implements FolderInterface
      * Initialization of the folder
      *
      * @param ResourceStorage $storage
-     * @param $identifier
-     * @param $name
+     * @param string $identifier
+     * @param string $name
      */
     public function __construct(ResourceStorage $storage, $identifier, $name)
     {

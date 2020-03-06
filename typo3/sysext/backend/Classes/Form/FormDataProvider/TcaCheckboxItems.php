@@ -99,7 +99,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     /**
      * @param string $fieldName
      * @param string $tableName
-     * @param $checkboxEntry
+     * @param mixed $checkboxEntry
      * @param int $checkboxKey
      * @throws \UnexpectedValueException
      */

@@ -179,7 +179,7 @@ class BackendController
     /**
      * Main function generating the BE scaffolding
      *
-     * @param $request ServerRequestInterface
+     * @param ServerRequestInterface $request
      * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface

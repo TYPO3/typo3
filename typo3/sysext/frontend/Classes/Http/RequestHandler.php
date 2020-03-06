@@ -106,7 +106,7 @@ class RequestHandler implements RequestHandlerInterface
      * Handles a frontend request, after finishing running middlewares
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface|null
+     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

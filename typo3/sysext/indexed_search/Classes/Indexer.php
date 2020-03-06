@@ -280,8 +280,8 @@ class Indexer
                             $this->conf['gr_list'] = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
                             // page arguments array
                             $this->conf['staticPageArguments'] = [];
-                            /** @var PageArguments $pageArguments */
                             if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+                                /** @var PageArguments $pageArguments */
                                 $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing', null);
                                 if ($pageArguments instanceof PageArguments) {
                                     $this->conf['staticPageArguments'] = $pageArguments->getStaticArguments();

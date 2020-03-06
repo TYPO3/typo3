@@ -429,7 +429,7 @@ class ModuleTemplate
     /**
      * Generates the Menu for things like Web->Info
      *
-     * @param $moduleMenuIdentifier
+     * @param string $moduleMenuIdentifier
      * @return self
      */
     public function registerModuleMenu($moduleMenuIdentifier): self

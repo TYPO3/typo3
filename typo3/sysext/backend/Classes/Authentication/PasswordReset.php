@@ -407,7 +407,7 @@ class PasswordReset implements LoggerAwareInterface
      * @param int $error see SystemLogErrorClassification
      * @param int $userId
      * @param array $data additional information, used for the message
-     * @param $ipAddress
+     * @param string $ipAddress
      * @param Context $context
      */
     protected function log(string $message, int $action, int $error, int $userId, array $data, $ipAddress, Context $context): void

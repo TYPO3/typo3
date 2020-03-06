@@ -52,7 +52,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
     }
 
     /**
-     * @param $verbose
+     * @param bool $verbose
      * @return Status[]
      */
     protected function getStatusInternal($verbose)

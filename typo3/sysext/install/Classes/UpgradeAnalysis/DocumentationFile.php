@@ -88,7 +88,7 @@ class DocumentationFile
 
         $directories = [];
         foreach ($finder->directories() as $directory) {
-            /** @var $directory SplFileInfo */
+            /** @var SplFileInfo $directory */
             $directories[] = $directory->getBasename();
         }
 
@@ -260,7 +260,7 @@ class DocumentationFile
         $finder = $this->getDocumentFinder()->in($absolutePath);
 
         foreach ($finder->files() as $file) {
-            /** @var $file SplFileInfo */
+            /** @var SplFileInfo $file */
             $documentationFiles[] = $this->getListEntry($file->getPathname());
         }
 
@@ -270,7 +270,7 @@ class DocumentationFile
     /**
      * Merge tag list
      *
-     * @param $documentationFiles
+     * @param iterable $documentationFiles
      * @return array
      */
     protected function collectTagTotal($documentationFiles): array

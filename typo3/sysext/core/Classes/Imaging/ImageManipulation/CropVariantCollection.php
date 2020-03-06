@@ -25,7 +25,7 @@ class CropVariantCollection
     protected $cropVariants;
 
     /**
-     * @param CropVariant[] cropVariants
+     * @param CropVariant[] $cropVariants
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
     public function __construct(array $cropVariants)
@@ -154,7 +154,7 @@ class CropVariantCollection
     }
 
     /**
-     * @param CropVariant[] $cropVariants
+     * @param array<int,CropVariant> $cropVariants
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
     protected function setCropVariants(CropVariant ...$cropVariants)

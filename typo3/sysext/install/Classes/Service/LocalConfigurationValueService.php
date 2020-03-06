@@ -65,7 +65,7 @@ class LocalConfigurationValueService
      * to check entries recursively.
      *
      * @param array $sections
-     * @param array|null $sectionsFromCurrentConfiguration
+     * @param array $sectionsFromCurrentConfiguration
      * @param array $descriptions
      * @param array $path
      * @return array

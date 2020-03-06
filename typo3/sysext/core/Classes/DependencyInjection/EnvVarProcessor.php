@@ -28,7 +28,7 @@ class EnvVarProcessor implements EnvVarProcessorInterface
      * @param string $name The name of the variable within the namespace
      * @param \Closure $getEnv A closure that allows fetching more env vars
      * @return mixed
-     * @throws RuntimeException on error
+     * @throws \RuntimeException on error
      */
     public function getEnv($prefix, $name, \Closure $getEnv)
     {

@@ -96,7 +96,7 @@ class CreateFolderController
     }
 
     /**
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      *
      * @throws InsufficientFolderAccessPermissionsException
      * @throws \RuntimeException

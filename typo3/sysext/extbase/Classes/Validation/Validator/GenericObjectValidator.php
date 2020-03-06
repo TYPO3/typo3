@@ -163,7 +163,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
     }
 
     /**
-     * @param $object
+     * @param object $object
      */
     protected function markInstanceAsValidated($object): void
     {

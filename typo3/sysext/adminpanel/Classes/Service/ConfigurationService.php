@@ -111,7 +111,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * @param array $modules
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param $configurationToSave
+     * @param array $configurationToSave
      */
     protected function triggerOnSubmitActors(
         array $modules,

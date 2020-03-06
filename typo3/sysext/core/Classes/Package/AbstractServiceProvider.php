@@ -73,8 +73,8 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
 
     /**
      * @param ContainerInterface $container
-     * @param ArrayObject $middlewares
-     * @param string $path supplied when invoked internally through PseudoServiceProvider
+     * @param ArrayObject $routes
+     * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
     public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null): ArrayObject

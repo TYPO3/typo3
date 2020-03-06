@@ -342,7 +342,7 @@ class File extends AbstractFile
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @internal Only for use in Repositories and indexer
      * @return mixed
      */

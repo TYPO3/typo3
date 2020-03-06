@@ -147,7 +147,7 @@ class RedirectHandler
      * Base on setting redirectFirstMethod get first or last entry from redirect url list.
      *
      * @param array $redirectUrlList
-     * @param $redirectFirstMethod
+     * @param string $redirectFirstMethod
      * @return string
      */
     protected function fetchReturnUrlFromList(array $redirectUrlList, $redirectFirstMethod): string

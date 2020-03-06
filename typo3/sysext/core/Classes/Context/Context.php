@@ -57,7 +57,7 @@ class Context implements SingletonInterface
     /**
      * Sets up the context with pre-defined aspects
      *
-     * @param array|null $defaultAspects
+     * @param array $defaultAspects
      */
     public function __construct(array $defaultAspects = [])
     {

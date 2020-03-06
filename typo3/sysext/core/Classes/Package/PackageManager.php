@@ -689,7 +689,7 @@ class PackageManager implements SingletonInterface
      * resolved direct or indirect dependencies of each package will put into the package
      * states configuration array.
      *
-     * @param $packageConfig
+     * @param array $packageConfig
      * @return array
      */
     protected function resolvePackageDependencies($packageConfig)

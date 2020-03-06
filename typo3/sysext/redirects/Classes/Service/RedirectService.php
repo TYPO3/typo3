@@ -259,7 +259,7 @@ class RedirectService implements LoggerAwareInterface
      * Called when TypoScript/TSFE is available, so typolink is used to generate the URL
      *
      * @param array $redirectRecord
-     * @param FrontendUserAuthentication|null $frontendUserAuthentication
+     * @param FrontendUserAuthentication $frontendUserAuthentication
      * @param SiteInterface|null $site
      * @param array $linkDetails
      * @param array $queryParams
@@ -313,7 +313,7 @@ class RedirectService implements LoggerAwareInterface
      *
      * So a link to a page can be generated.
      *
-     * @param FrontendUserAuthentication|null $frontendUserAuthentication
+     * @param FrontendUserAuthentication $frontendUserAuthentication
      * @param SiteInterface|null $site
      * @param array $queryParams
      * @return TypoScriptFrontendController

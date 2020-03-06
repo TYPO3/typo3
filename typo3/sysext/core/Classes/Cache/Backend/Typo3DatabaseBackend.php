@@ -481,7 +481,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * If compression is enabled and this is not set,
      * gzcompress default level will be used
      *
-     * @param int -1 to 9: Compression level
+     * @param int $compressionLevel -1 to 9: Compression level
      */
     public function setCompressionLevel($compressionLevel)
     {

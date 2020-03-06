@@ -282,7 +282,7 @@ class DatabaseCheck implements CheckInterface
 
     /**
      * @param string $driverName
-     * @return Driver
+     * @return string
      * @throws Exception
      */
     public static function retrieveDatabaseDriverClassByDriverName(string $driverName): string

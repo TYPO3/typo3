@@ -46,7 +46,7 @@ class PageBrowsingResultsViewHelper extends AbstractViewHelper
 
     /**
      * @param array $arguments
-     * @param callable|\Closure $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
      */

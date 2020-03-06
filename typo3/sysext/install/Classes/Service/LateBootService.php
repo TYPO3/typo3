@@ -47,7 +47,7 @@ class LateBootService
 
     /**
      * @param ContainerBuilder $containerBuilder
-     * @param ConteinerInterface $failsafeContainer
+     * @param ContainerInterface $failsafeContainer
      */
     public function __construct(ContainerBuilder $containerBuilder, ContainerInterface $failsafeContainer)
     {
@@ -83,7 +83,7 @@ class LateBootService
      * is specified
      *
      * @param ContainerInterface $container
-     * @param array $backup
+     * @param array $oldBackup
      * @return array
      */
     public function makeCurrent(ContainerInterface $container = null, array $oldBackup = []): array

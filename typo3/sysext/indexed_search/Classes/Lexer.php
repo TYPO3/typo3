@@ -56,7 +56,7 @@ class Lexer
      * Splitting string into words.
      * Used for indexing, can also be used to find words in query.
      *
-     * @param string String with UTF-8 content to process.
+     * @param string $wordString String with UTF-8 content to process.
      * @return array Array of words in utf-8
      */
     public function split2Words($wordString)

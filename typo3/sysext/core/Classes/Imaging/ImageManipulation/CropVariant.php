@@ -182,7 +182,7 @@ class CropVariant
     }
 
     /**
-     * @param Ratio[] $ratios
+     * @param array<int,Ratio> $ratios
      * @throws InvalidConfigurationException
      */
     protected function setAllowedAspectRatios(Ratio ...$ratios)
@@ -206,7 +206,7 @@ class CropVariant
     }
 
     /**
-     * @param Area[] $areas
+     * @param array<int,Area> $areas
      * @throws InvalidConfigurationException
      */
     protected function setCoverAreas(Area ...$areas)

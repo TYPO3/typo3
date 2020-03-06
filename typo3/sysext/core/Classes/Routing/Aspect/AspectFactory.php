@@ -95,7 +95,7 @@ class AspectFactory
      *
      * @param AspectInterface $aspect
      * @param SiteLanguage $language
-     * @return AspectInterface|mixed
+     * @return AspectInterface
      */
     protected function enrich(AspectInterface $aspect, SiteLanguage $language): AspectInterface
     {

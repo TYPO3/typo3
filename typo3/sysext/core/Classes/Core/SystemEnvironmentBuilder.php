@@ -411,7 +411,7 @@ class SystemEnvironmentBuilder
     /**
      * Define constants and variables
      *
-     * @param string
+     * @param string $mode
      */
     protected static function defineLegacyConstants(string $mode)
     {

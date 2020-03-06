@@ -47,7 +47,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
     /**
      * Sets the expand state
      *
-     * @param $expanded
+     * @param bool $expanded
      */
     public function setExpanded($expanded)
     {

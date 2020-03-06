@@ -89,7 +89,7 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
     /**
      * Checks if the language is allowed in Frontend, if not, check if there is valid BE user
      *
-     * @param SiteLanguage|null $language
+     * @param SiteLanguage $language
      * @param BackendUserAuthentication|null $user
      * @return bool
      */

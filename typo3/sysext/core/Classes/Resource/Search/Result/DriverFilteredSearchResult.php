@@ -124,7 +124,7 @@ class DriverFilteredSearchResult implements FileSearchResultInterface
     /**
      * Filter out identifiers by calling all attached filters
      *
-     * @param File[] $files
+     * @param array<int,File> $files
      * @return array
      */
     private function applyFilters(File ...$files): array

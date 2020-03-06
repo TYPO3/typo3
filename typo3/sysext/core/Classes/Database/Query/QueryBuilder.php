@@ -384,7 +384,7 @@ class QueryBuilder
      * Specifies items that are to be returned in the query result.
      * Replaces any previously specified selections, if any.
      *
-     * @param string[] $selects
+     * @param array<int,string> $selects
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function select(string ...$selects): QueryBuilder
@@ -397,7 +397,7 @@ class QueryBuilder
     /**
      * Adds an item that is to be returned in the query result.
      *
-     * @param string[] $selects The selection expression.
+     * @param array<int,string> $selects The selection expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -414,7 +414,7 @@ class QueryBuilder
      * This should only be used for literal SQL expressions as no
      * quoting/escaping of any kind will be performed on the items.
      *
-     * @param string[] $selects Literal SQL expressions to be selected. Warning: No quoting will be done!
+     * @param array<int,string> $selects Literal SQL expressions to be selected. Warning: No quoting will be done!
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function selectLiteral(string ...$selects): QueryBuilder
@@ -429,7 +429,7 @@ class QueryBuilder
      * only be used for literal SQL expressions as no quoting/escaping of
      * any kind will be performed on the items.
      *
-     * @param string[] $selects Literal SQL expressions to be selected.
+     * @param array<int,string> $selects Literal SQL expressions to be selected.
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function addSelectLiteral(string ...$selects): QueryBuilder
@@ -625,7 +625,7 @@ class QueryBuilder
      * Specifies one or more restrictions to the query result.
      * Replaces any previously specified restrictions, if any.
      *
-     * @param mixed $predicates
+     * @param array<int,mixed> $predicates
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function where(...$predicates): QueryBuilder
@@ -639,7 +639,7 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * conjunction with any previously specified restrictions.
      *
-     * @param mixed $where The query restrictions.
+     * @param array<int,string> $where The query restrictions.
      *
      * @return QueryBuilder This QueryBuilder instance.
      *
@@ -656,7 +656,7 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * disjunction with any previously specified restrictions.
      *
-     * @param mixed $where The WHERE statement.
+     * @param array<int,string> $where The WHERE statement.
      *
      * @return QueryBuilder This QueryBuilder instance.
      *
@@ -673,7 +673,7 @@ class QueryBuilder
      * Specifies a grouping over the results of the query.
      * Replaces any previously specified groupings, if any.
      *
-     * @param mixed $groupBy The grouping expression.
+     * @param array<int,string> $groupBy The grouping expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -687,7 +687,7 @@ class QueryBuilder
     /**
      * Adds a grouping expression to the query.
      *
-     * @param mixed $groupBy The grouping expression.
+     * @param array<int,string> $groupBy The grouping expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -743,7 +743,7 @@ class QueryBuilder
      * Specifies a restriction over the groups of the query.
      * Replaces any previous having restrictions, if any.
      *
-     * @param mixed $having The restriction over the groups.
+     * @param array<int,string> $having The restriction over the groups.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -757,7 +757,7 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * conjunction with any existing having restrictions.
      *
-     * @param mixed $having The restriction to append.
+     * @param array<int,string> $having The restriction to append.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -772,7 +772,7 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * disjunction with any existing having restrictions.
      *
-     * @param mixed $having The restriction to add.
+     * @param array<int,string> $having The restriction to add.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */

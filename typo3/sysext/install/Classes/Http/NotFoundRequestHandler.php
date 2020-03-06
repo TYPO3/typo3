@@ -31,7 +31,6 @@ class NotFoundRequestHandler implements RequestHandlerInterface
      * Handles an Install Tool request when previously executed middlewares didn't handle thr request.
      *
      * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface

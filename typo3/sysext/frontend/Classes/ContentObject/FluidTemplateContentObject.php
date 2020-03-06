@@ -248,7 +248,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setExtbaseVariables(array $conf)
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
         $requestPluginName = isset($conf['extbase.']['pluginName.'])
             ? $this->cObj->stdWrap($conf['extbase.']['pluginName'] ?? '', $conf['extbase.']['pluginName.'])
             : ($conf['extbase.']['pluginName'] ?? '');

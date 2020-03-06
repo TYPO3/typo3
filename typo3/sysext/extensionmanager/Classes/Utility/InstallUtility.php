@@ -153,7 +153,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Helper function to install an extension
      * also processes db updates and clears the cache if the extension asks for it
      *
-     * @param array $extensionKeys
+     * @param array<int,mixed> $extensionKeys
      * @throws ExtensionManagerException
      */
     public function install(...$extensionKeys)
@@ -433,7 +433,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         // Only check for update for TER extensions
         $version = $extensionData->getIntegerVersion();
 
-        /** @var $extensionUpdates [] \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
+        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension[] $extensionUpdates */
         $extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionData->getExtensionKey(),
             $version,

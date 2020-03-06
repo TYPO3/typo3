@@ -2406,7 +2406,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Split the link vars string by "," but not if the "," is inside of braces
      *
-     * @param $string
+     * @param string $string
      *
      * @return array
      */
@@ -2995,7 +2995,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
         }
         if (!empty($this->config['INTincScript_ext']['assetCollector'])) {
-            /** @var AssetCollector $assetCollectorr */
+            /** @var AssetCollector $assetCollector */
             $assetCollector = unserialize($this->config['INTincScript_ext']['assetCollector'], ['allowed_classes' => [AssetCollector::class]]);
             GeneralUtility::setSingletonInstance(AssetCollector::class, $assetCollector);
         }

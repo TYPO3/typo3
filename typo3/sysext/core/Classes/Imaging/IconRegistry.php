@@ -464,7 +464,7 @@ class IconRegistry implements SingletonInterface
     }
 
     /**
-     * @param FrontendInterface $coreCache
+     * @param FrontendInterface $cache
      * @internal
      */
     public static function setCache(FrontendInterface $cache)

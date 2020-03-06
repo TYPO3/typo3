@@ -25,7 +25,7 @@ class TelephoneLinkHandler implements LinkHandlingInterface
      * Returns the link to a telephone number as a string
      *
      * @param array $parameters
-     * @return mixed
+     * @return string
      */
     public function asString(array $parameters): string
     {

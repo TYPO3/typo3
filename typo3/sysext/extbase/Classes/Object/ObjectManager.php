@@ -103,7 +103,7 @@ class ObjectManager implements ObjectManagerInterface
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
      * @param string $objectName The name of the object to return an instance of
-     * @param array $constructorArguments
+     * @param array<int,mixed> $constructorArguments
      * @return object The object instance
      */
     public function get(string $objectName, ...$constructorArguments): object

@@ -75,7 +75,7 @@ class BackendModuleController
      * Starts / updates the session and redirects to the install tool
      * with given action.
      *
-     * @param $controller
+     * @param string $controller
      * @return ResponseInterface
      */
     protected function setAuthorizedAndRedirect(string $controller): ResponseInterface

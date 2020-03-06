@@ -215,7 +215,7 @@ class CacheHashCalculator implements SingletonInterface
     /**
      * Check whether the given parameter may be used even with an empty value
      *
-     * @param $key
+     * @param string $key
      * @return bool
      */
     protected function isAllowedWithEmptyValue($key)

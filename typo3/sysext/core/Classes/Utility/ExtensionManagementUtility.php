@@ -1356,7 +1356,7 @@ tt_content.' . $key . $suffix . ' {
      * @param string $key Is the extension key (informative only).
      * @param string $type Is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
      * @param string $content Is the TS content, will be prefixed with a [GLOBAL] line and a comment-header.
-     * @param int|string string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
+     * @param int|string $afterStaticUid string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
      * @throws \InvalidArgumentException
      */
     public static function addTypoScript(string $key, string $type, string $content, $afterStaticUid = 0)

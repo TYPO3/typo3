@@ -264,7 +264,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * The comparison function given as must return an integer less than, equal to, or greater than
      * zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
      *
-     * @param $callbackFunction
+     * @param callable $callbackFunction
      * @see http://www.php.net/manual/en/function.usort.php
      */
     public function usort($callbackFunction)

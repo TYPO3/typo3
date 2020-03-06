@@ -354,7 +354,7 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Fetches the title of the workspace
      *
-     * @param $workspaceId
+     * @param int $workspaceId
      * @return string the title of the workspace
      */
     protected function getWorkspaceTitle(int $workspaceId): string

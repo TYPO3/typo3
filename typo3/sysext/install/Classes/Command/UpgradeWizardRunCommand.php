@@ -125,8 +125,8 @@ class UpgradeWizardRunCommand extends Command
      * Get Wizard instance by class name and identifier
      * Returns null if wizard is already done
      *
-     * @param $className
-     * @param $identifier
+     * @param string $className
+     * @param string $identifier
      * @return \TYPO3\CMS\Install\Updates\UpgradeWizardInterface|null
      */
     protected function getWizard(string $className, string $identifier): ?UpgradeWizardInterface

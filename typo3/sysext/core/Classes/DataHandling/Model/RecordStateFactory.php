@@ -52,7 +52,7 @@ class RecordStateFactory
      * @param array $data
      * @param int|string|null $pageId
      * @param int|string|null $recordId
-     * @return object|RecordState
+     * @return RecordState
      */
     public function fromArray(array $data, $pageId = null, $recordId = null): RecordState
     {

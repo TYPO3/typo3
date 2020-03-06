@@ -177,7 +177,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
             } elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
                 /** @var StorageRepository $storageRepository */
                 $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                /** @var ResourceStorage $storage */
+                /** @var ResourceStorage $storageObject */
                 $storageObject = $storageRepository->findByUid($uid);
             }
             if (!$storageObject instanceof ResourceStorage) {
@@ -561,7 +561,6 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
      */
     public function createFileObject(array $fileData, ResourceStorage $storage = null)
     {
-        /** @var File $fileObject */
         if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
             $storageObject = $this->getStorageObject((int)$fileData['storage']);
         } elseif ($storage !== null) {
@@ -570,6 +569,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
         } else {
             throw new \RuntimeException('A file needs to reside in a Storage', 1381570997);
         }
+        /** @var File $fileObject */
         $fileObject = GeneralUtility::makeInstance(File::class, $fileData, $storageObject);
         return $fileObject;
     }

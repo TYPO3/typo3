@@ -36,7 +36,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     /**
      * Translation shortcut
      *
-     * @param $key
+     * @param string $key
      * @param array|null $arguments
      * @return string|null
      */

@@ -970,7 +970,7 @@ class PageLayoutController
     /**
      * Check if page can be edited by current user
      *
-     * @param int|null $languageId
+     * @param int $languageId
      * @return bool
      */
     protected function isPageEditable(int $languageId): bool

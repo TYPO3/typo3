@@ -607,7 +607,7 @@ class Bootstrap
      */
     public static function initializeLanguageObject()
     {
-        /** @var $GLOBALS['LANG'] \TYPO3\CMS\Core\Localization\LanguageService */
+        /** @var \TYPO3\CMS\Core\Localization\LanguageService $GLOBALS['LANG'] */
         $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
     }
 }

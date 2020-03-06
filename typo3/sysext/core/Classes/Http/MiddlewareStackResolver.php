@@ -99,7 +99,7 @@ class MiddlewareStackResolver
     /**
      * Order each stack and sanitize to a plain array
      *
-     * @param ArrayObject
+     * @param ArrayObject $allMiddlewares
      * @return array
      */
     protected function sanitizeMiddlewares(ArrayObject $allMiddlewares): array

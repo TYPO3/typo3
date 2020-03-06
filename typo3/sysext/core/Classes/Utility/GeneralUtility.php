@@ -2578,8 +2578,8 @@ class GeneralUtility
     /**
      * This method is only for testing and should never be used outside tests-
      *
-     * @param $envName
-     * @param $value
+     * @param string $envName
+     * @param mixed $value
      * @internal
      */
     public static function setIndpEnv($envName, $value)
@@ -3413,7 +3413,7 @@ class GeneralUtility
      * the instance of a specific class.
      *
      * @param string $className name of the class to instantiate, must not be empty and not start with a backslash
-     * @param array|mixed[] $constructorArguments Arguments for the constructor
+     * @param array<int,mixed> $constructorArguments Arguments for the constructor
      * @return object the created instance
      * @throws \InvalidArgumentException if $className is empty or starts with a backslash
      */
@@ -3474,7 +3474,7 @@ class GeneralUtility
      * container.
      *
      * @param string $className name of the class to instantiate
-     * @param array|mixed[] $constructorArguments Arguments for the constructor
+     * @param array<int,mixed> $constructorArguments Arguments for the constructor
      * @return object the created instance
      * @internal
      */

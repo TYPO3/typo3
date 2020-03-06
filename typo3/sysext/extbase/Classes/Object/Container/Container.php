@@ -130,7 +130,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
      * Internal implementation for getting a class.
      *
      * @param string $className
-     * @param array $givenConstructorArguments the list of constructor arguments as array
+     * @param array<int,mixed> $givenConstructorArguments the list of constructor arguments as array
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      * @return object the built object
@@ -178,7 +178,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
      * such that circular references of singletons are correctly instantiated.
      *
      * @param ClassSchema $classSchema
-     * @param array $givenConstructorArguments
+     * @param array<int,mixed> $givenConstructorArguments
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @return object the new instance
      */
