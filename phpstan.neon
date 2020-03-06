@@ -4,7 +4,7 @@ includes:
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
 parameters:
-  level: 0
+  level: 1
 
   # Set to true during local runs to find unmatched ignored errors. bamboo needs this to be set to false.
   reportUnmatchedIgnoredErrors: false
@@ -81,3 +81,15 @@ parameters:
       message: "#^Variable \\$column in isset\\(\\) always exists and is not nullable\\.$#"
       count: 1
       path: typo3/sysext/workspaces/Classes/Service/GridDataService.php
+    -
+      message: "#^Constructor of class TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController has an unused parameter \\$_2\\.$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
+    -
+      message: "#^Constructor of class TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin has an unused parameter \\$_\\.$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
+    -
+      message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
+      count: 1
+      path: typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
