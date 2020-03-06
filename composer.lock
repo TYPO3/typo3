@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c27c24f88eb2b4f90845f42b1df0d00b",
+    "content-hash": "8b435086754c424f8dbd2d84fad4ab3a",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2105,12 +2105,12 @@
             "version": "1.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/facebook/php-webdriver.git",
+                "url": "https://github.com/php-webdriver/php-webdriver.git",
                 "reference": "77300c4ab2025d4316635f592ec849ca7323bd8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/77300c4ab2025d4316635f592ec849ca7323bd8c",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver/zipball/77300c4ab2025d4316635f592ec849ca7323bd8c",
                 "reference": "77300c4ab2025d4316635f592ec849ca7323bd8c",
                 "shasum": ""
             },
