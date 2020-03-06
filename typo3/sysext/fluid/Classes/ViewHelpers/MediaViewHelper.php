@@ -96,7 +96,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         $file = $this->arguments['file'];
-        $additionalConfig = $this->arguments['additionalConfig'];
+        $additionalConfig = (array)$this->arguments['additionalConfig'];
         $width = $this->arguments['width'];
         $height = $this->arguments['height'];
 
