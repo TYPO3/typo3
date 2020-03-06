@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -178,9 +179,10 @@ class BackendController
     /**
      * Main function generating the BE scaffolding
      *
+     * @param $request ServerRequestInterface
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(): ResponseInterface
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->executeHook('renderPreProcess');
 
@@ -196,7 +198,7 @@ class BackendController
         if (!empty($this->css)) {
             $this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
         }
-        $this->generateJavascript();
+        $this->generateJavascript($request);
 
         // Set document title
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
@@ -319,8 +321,10 @@ class BackendController
 
     /**
      * Generates the JavaScript code for the backend.
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function generateJavascript()
+    protected function generateJavascript(ServerRequestInterface $request)
     {
         $beUser = $this->getBackendUser();
         // Needed for FormEngine manipulation (date picker)
@@ -365,8 +369,8 @@ class BackendController
         top.goToModule = function(modName, cMR_flag, addGetVars) {
             TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
         }
-        ' . $this->setStartupModule()
-          . $this->handlePageEditing(),
+        ' . $this->setStartupModule($request)
+          . $this->handlePageEditing($request),
             false
         );
     }
@@ -374,12 +378,12 @@ class BackendController
     /**
      * Checking if the "&edit" variable was sent so we can open it for editing the page.
      */
-    protected function handlePageEditing(): string
+    protected function handlePageEditing(ServerRequestInterface $request): string
     {
         $beUser = $this->getBackendUser();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
-        // EDIT page:
-        $editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
+        // EDIT page
+        $editId = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['edit'] ?? '');
         if ($editId) {
             // Looking up the page to edit, checking permissions:
             $where = ' AND (' . $beUser->getPagePermsClause(Permission::PAGE_EDIT) . ' OR ' . $beUser->getPagePermsClause(Permission::CONTENT_EDIT) . ')';
@@ -421,11 +425,12 @@ class BackendController
     /**
      * Sets the startup module from either GETvars module and modParams or user configuration.
      *
+     * @param ServerRequestInterface $request
      * @return string the JavaScript code for the startup module
      */
-    protected function setStartupModule()
+    protected function setStartupModule(ServerRequestInterface $request)
     {
-        $startModule = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('module'));
+        $startModule = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['module'] ?? '');
         $startModuleParameters = '';
         if (!$startModule) {
             $beUser = $this->getBackendUser();
@@ -445,7 +450,7 @@ class BackendController
             }
         }
 
-        $moduleParameters = GeneralUtility::_GET('modParams');
+        $moduleParameters = $request->getQueryParams()['modParams'] ?? '';
         // if no GET parameters are set, check if there are parameters given from the UC
         if (!$moduleParameters && $startModuleParameters) {
             $moduleParameters = $startModuleParameters;
