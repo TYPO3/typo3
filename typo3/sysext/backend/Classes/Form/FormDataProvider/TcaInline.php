@@ -197,7 +197,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                             $e->getMessage(),
                             [
                                 'table' => $childTableName,
-                                'uid' => $localizedUid,
+                                'uid' => $defaultLanguageUid,
                                 'exception' => $e
                             ]
                         );
