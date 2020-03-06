@@ -388,26 +388,30 @@ class SchedulerModuleController
         $this->view->assign('lastRunMessage', $message);
         $this->view->assign('lastRunSeverity', $severity);
 
-        // Check if CLI script is executable or not
-        $script = GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3');
-        $this->view->assign('script', $script);
+        if (Environment::isComposerMode()) {
+            $this->view->assign('composerMode', true);
+        } else {
+            // Check if CLI script is executable or not
+            $script = GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3');
+            $this->view->assign('script', $script);
+            // Skip this check if running Windows, as rights do not work the same way on this platform
+            // (i.e. the script will always appear as *not* executable)
+            if (Environment::isWindows()) {
+                $isExecutable = true;
+            } else {
+                $isExecutable = is_executable($script);
+            }
+            if ($isExecutable) {
+                $message = $this->getLanguageService()->getLL('msg.cliScriptExecutable');
+                $severity = InfoboxViewHelper::STATE_OK;
+            } else {
+                $message = $this->getLanguageService()->getLL('msg.cliScriptNotExecutable');
+                $severity = InfoboxViewHelper::STATE_ERROR;
+            }
+            $this->view->assign('isExecutableMessage', $message);
+            $this->view->assign('isExecutableSeverity', $severity);
+        }
 
-        // Skip this check if running Windows, as rights do not work the same way on this platform
-        // (i.e. the script will always appear as *not* executable)
-        if (Environment::isWindows()) {
-            $isExecutable = true;
-        } else {
-            $isExecutable = is_executable($script);
-        }
-        if ($isExecutable) {
-            $message = $this->getLanguageService()->getLL('msg.cliScriptExecutable');
-            $severity = InfoboxViewHelper::STATE_OK;
-        } else {
-            $message = $this->getLanguageService()->getLL('msg.cliScriptNotExecutable');
-            $severity = InfoboxViewHelper::STATE_ERROR;
-        }
-        $this->view->assign('isExecutableMessage', $message);
-        $this->view->assign('isExecutableSeverity', $severity);
         $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
