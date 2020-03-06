@@ -24,6 +24,15 @@
 			<trans-unit id="hdg.cliScript" resname="hdg.cliScript">
 				<source>CLI script</source>
 			</trans-unit>
+			<trans-unit id="hdg.composerMode" resname="hdg.composerMode">
+				<source>System is running in Composer Mode</source>
+			</trans-unit>
+			<trans-unit id="msg.composerMode" resname="msg.composerMode">
+				<source>
+					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
+					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
+				</source>
+			</trans-unit>
 			<trans-unit id="hdg.lastRun" resname="hdg.lastRun">
 				<source>Last run</source>
 			</trans-unit>
