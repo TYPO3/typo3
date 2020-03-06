@@ -16,15 +16,14 @@ namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
  */
 
 /**
- * In case a widget should provide additional CSS files, the widget must implement this interface.
+ * The dataprovider of a NumberWithIcon widget should implement this interface
  */
-interface AdditionalCssInterface
+interface NumberWithIconDataProviderInterface
 {
     /**
-     * This method returns an array with paths to required CSS files.
-     * e.g. ['EXT:myext/Resources/Public/Css/my_widget.css']
+     * Return the number that should be shown in the widget
      *
-     * @return array
+     * @return int
      */
-    public function getCssFiles(): array;
+    public function getNumber(): int;
 }

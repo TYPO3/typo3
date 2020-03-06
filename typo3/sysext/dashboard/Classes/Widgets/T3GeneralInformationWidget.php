@@ -17,53 +17,58 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * This widget will show general information regarding TYPO3
+ * Concrete TYPO3 information widget
+ *
+ * This widget will give some general information about TYPO3 version and the version installed.
+ *
+ * There are no options available for this widget
  */
-class T3GeneralInformation extends AbstractWidget
+class T3GeneralInformationWidget implements WidgetInterface
 {
     /**
-     * @var string
+     * @var WidgetConfigurationInterface
      */
-    protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.title';
+    private $configuration;
 
     /**
-     * @var string
+     * @var StandaloneView
      */
-    protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.description';
+    private $view;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $templateName = 'T3GeneralInformation';
+    private $options;
 
-    /**
-     * @var string
-     */
-    protected $iconIdentifier = 'content-widget-text';
-
-    /**
-     * @var int
-     */
-    protected $height = 4;
-
-    /**
-     * @var int
-     */
-    protected $width = 4;
+    public function __construct(
+        WidgetConfigurationInterface $configuration,
+        StandaloneView $view,
+        array $options = []
+    ) {
+        $this->configuration = $configuration;
+        $this->view = $view;
+        $this->options = $options;
+    }
 
     public function renderWidgetContent(): string
     {
         $typo3Information = new Typo3Information();
         $typo3Version = new Typo3Version();
+
+        $this->view->setTemplate('Widget/T3GeneralInformationWidget');
         $this->view->assignMultiple([
             'title' => 'TYPO3 CMS ' . $typo3Version->getVersion(),
             'copyrightYear' => $typo3Information->getCopyrightYear(),
             'currentVersion' => $typo3Version->getVersion(),
             'donationUrl' => $typo3Information::URL_DONATE,
             'copyRightNotice' => $typo3Information->getCopyrightNotice(),
-
+            'options' => $this->options,
+            'configuration' => $this->configuration
         ]);
         return $this->view->render();
     }

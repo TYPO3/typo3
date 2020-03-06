@@ -27,15 +27,10 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Dashboard\Dashboard;
-use TYPO3\CMS\Dashboard\DashboardPreset;
+use TYPO3\CMS\Dashboard\DashboardInitializationService;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\CMS\Dashboard\DashboardRepository;
-use TYPO3\CMS\Dashboard\WidgetGroupRegistry;
-use TYPO3\CMS\Dashboard\WidgetRegistry;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalCssInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalJavaScriptInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\RequireJsModuleInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -57,34 +52,9 @@ class DashboardController extends AbstractController
     protected $view;
 
     /**
-     * @var array
-     */
-    protected $cssFiles = [];
-
-    /**
-     * @var array
-     */
-    protected $jsFiles = [];
-
-    /**
-     * @var mixed[]
-     */
-    protected $requireJsModules = [];
-
-    /**
      * @var Dashboard
      */
     protected $currentDashboard;
-
-    /**
-     * @var Dashboard[]
-     */
-    protected $dashboardsForCurrentUser;
-
-    /**
-     * @var DashboardPreset[]
-     */
-    protected $availableDashboardPresets;
 
     /**
      * @var DashboardPresetRegistry
@@ -97,76 +67,32 @@ class DashboardController extends AbstractController
     protected $dashboardRepository;
 
     /**
-     * @var WidgetGroupRegistry
+     * @var DashboardInitializationService
      */
-    protected $widgetGroupRepository;
+    private $dashboardInitializationService;
 
     /**
-     * @var WidgetRegistry
+     * @var WidgetGroupInitializationService
      */
-    protected $widgetRegistry;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    private $widgetGroupInitializationService;
 
     public function __construct(
         ModuleTemplate $moduleTemplate,
         UriBuilder $uriBuilder,
         DashboardPresetRegistry $dashboardPresetRepository,
         DashboardRepository $dashboardRepository,
-        WidgetGroupRegistry $widgetGroupRepository,
-        WidgetRegistry $widgetRegistry
+        DashboardInitializationService $dashboardInitializationService,
+        WidgetGroupInitializationService $widgetGroupInitializationService
     ) {
         $this->moduleTemplate = $moduleTemplate;
         $this->uriBuilder = $uriBuilder;
         $this->dashboardPresetRepository = $dashboardPresetRepository;
         $this->dashboardRepository = $dashboardRepository;
-        $this->widgetGroupRepository = $widgetGroupRepository;
-        $this->widgetRegistry = $widgetRegistry;
+        $this->dashboardInitializationService = $dashboardInitializationService;
 
-        $this->initializeDashboardsForCurrentUser();
-    }
-
-    protected function initializeDashboardsForCurrentUser(): void
-    {
-        $this->dashboardsForCurrentUser = $this->getDashboardsForCurrentUser();
-        $this->currentDashboard = $this->dashboardRepository->getDashboardByIdentifier($this->loadCurrentDashboard());
-
-        $this->availableDashboardPresets = $this->dashboardPresetRepository->getDashboardPresets();
-
-        if (empty($this->dashboardsForCurrentUser)) {
-            $this->dashboardsForCurrentUser = [];
-
-            $userConfig = $this->getBackendUser()->getTSConfig();
-            $dashboardsToCreate = GeneralUtility::trimExplode(
-                ',',
-                $userConfig['options.']['dashboard.']['dashboardPresetsForNewUsers'] ?? 'default'
-            );
-
-            /** @var DashboardPreset $dashboardPreset */
-            foreach ($this->availableDashboardPresets as $dashboardPreset) {
-                if (in_array($dashboardPreset->getIdentifier(), $dashboardsToCreate, true)) {
-                    $dashboard = $this->dashboardRepository->create(
-                        $dashboardPreset,
-                        (int)$this->getBackendUser()->user['uid']
-                    );
-
-                    if ($dashboard instanceof Dashboard) {
-                        $this->dashboardsForCurrentUser[$dashboard->getIdentifier()] = $dashboard;
-                    }
-                }
-            }
-        }
-
-        if (!$this->currentDashboard instanceof Dashboard) {
-            $this->currentDashboard = reset($this->dashboardsForCurrentUser);
-            $this->saveCurrentDashboard($this->currentDashboard->getIdentifier());
-        }
-
-        $this->currentDashboard->initializeWidgets();
-        $this->defineResourcesOfWidgets($this->currentDashboard->getWidgets());
+        $this->dashboardInitializationService->initializeDashboards($this->getBackendUser());
+        $this->currentDashboard = $this->dashboardInitializationService->getCurrentDashboard();
+        $this->widgetGroupInitializationService = $widgetGroupInitializationService;
     }
 
     /**
@@ -178,9 +104,9 @@ class DashboardController extends AbstractController
     public function mainAction(): void
     {
         $this->view->assignMultiple([
-            'availableDashboards' => $this->dashboardsForCurrentUser,
-            'dashboardPresets' => $this->availableDashboardPresets,
-            'widgetGroups' => $this->buildWidgetGroupsConfiguration(),
+            'availableDashboards' => $this->dashboardInitializationService->getDashboardsForUser(),
+            'dashboardPresets' => $this->dashboardPresetRepository->getDashboardPresets(),
+            'widgetGroups' => $this->widgetGroupInitializationService->buildWidgetGroupsConfiguration(),
             'currentDashboard' => $this->currentDashboard,
             'addWidgetUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addWidget']),
             'addDashboardUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addDashboard']),
@@ -333,17 +259,17 @@ class DashboardController extends AbstractController
      */
     protected function addFrontendResources(PageRenderer $pageRenderer): void
     {
-        foreach ($this->requireJsModules as $requireJsModule) {
+        foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
             if (is_array($requireJsModule)) {
                 $pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);
             } else {
                 $pageRenderer->loadRequireJsModule($requireJsModule);
             }
         }
-        foreach ($this->cssFiles as $cssFile) {
+        foreach ($this->dashboardInitializationService->getCssFiles() as $cssFile) {
             $pageRenderer->addCssFile($cssFile);
         }
-        foreach ($this->jsFiles as $jsFile) {
+        foreach ($this->dashboardInitializationService->getJsFiles() as $jsFile) {
             $pageRenderer->addJsFile($jsFile);
         }
     }
@@ -376,112 +302,5 @@ class DashboardController extends AbstractController
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardModal');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardDelete');
         $pageRenderer->addCssFile($publicResourcesPath . 'Css/dashboard.css');
-    }
-
-    /**
-     * @return Dashboard[]
-     */
-    protected function getDashboardsForCurrentUser(): array
-    {
-        $dashboards = [];
-        foreach ($this->dashboardRepository->getDashboardsForUser((int)$this->getBackendUser()->user['uid']) as $dashboard) {
-            $dashboards[$dashboard->getIdentifier()] = $dashboard;
-        }
-        return $dashboards;
-    }
-
-    /**
-     * Define the different groups of widgets as shown in the modal when adding a widget to the current dashboard
-     *
-     * @return array
-     */
-    protected function buildWidgetGroupsConfiguration(): array
-    {
-        $groupConfigurations = [];
-        foreach ($this->widgetGroupRepository->getWidgetGroups() as $widgetGroup) {
-            $widgetInstances = [];
-            $widgetGroupIdentifier = $widgetGroup->getIdentifier();
-
-            $widgetsForGroup = $this->widgetRegistry->getAvailableWidgetsForWidgetGroup($widgetGroupIdentifier);
-            foreach ($widgetsForGroup as $identifier => $widgetService) {
-                $widgetInstances[$identifier] = GeneralUtility::makeInstance($widgetService);
-            }
-
-            $groupConfigurations[$widgetGroupIdentifier] = [
-                'identifier' => $widgetGroupIdentifier,
-                'title' => $widgetGroup->getTitle(),
-                'widgets' => $widgetInstances
-            ];
-        }
-
-        return $groupConfigurations;
-    }
-
-    /**
-     * @param array $widgets
-     */
-    protected function defineResourcesOfWidgets(array $widgets): void
-    {
-        foreach ($widgets as $widget) {
-            if ($widget instanceof RequireJsModuleInterface) {
-                $this->defineRequireJsModules($widget);
-            }
-            if ($widget instanceof AdditionalCssInterface) {
-                $this->defineCssFiles($widget);
-            }
-            if ($widget instanceof AdditionalJavaScriptInterface) {
-                $this->defineJsFiles($widget);
-            }
-        }
-    }
-
-    /**
-     * Add the RequireJS modules needed by some widgets
-     *
-     * @param RequireJsModuleInterface $widgetInstance
-     */
-    protected function defineRequireJsModules(RequireJsModuleInterface $widgetInstance): void
-    {
-        foreach ($widgetInstance->getRequireJsModules() as $moduleNameOrIndex => $callbackOrModuleName) {
-            if (is_string($moduleNameOrIndex)) {
-                $this->requireJsModules[] = [$moduleNameOrIndex, $callbackOrModuleName];
-            } else {
-                $this->requireJsModules[] = $callbackOrModuleName;
-            }
-        }
-    }
-
-    /**
-     * Define the correct path of the JS files of a widget and add them to the list of JS files that needs to be
-     * included
-     *
-     * @param AdditionalJavaScriptInterface $widgetInstance
-     */
-    protected function defineJsFiles(AdditionalJavaScriptInterface $widgetInstance): void
-    {
-        foreach ($widgetInstance->getJsFiles() as $key => $jsFile) {
-            if (strpos($jsFile, 'EXT:') === 0) {
-                $jsFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($jsFile));
-            }
-            $this->jsFiles[$jsFile] = $jsFile;
-        }
-    }
-
-    /**
-     * Define the correct path of the CSS files of a widget and add them to the list of CSS files that needs to be
-     * included
-     *
-     * @param AdditionalCssInterface $widgetInstance
-     */
-    protected function defineCssFiles(AdditionalCssInterface $widgetInstance): void
-    {
-        foreach ($widgetInstance->getCssFiles() as $cssFile) {
-            if (strpos($cssFile, 'EXT:') === 0) {
-                $cssFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($cssFile));
-            }
-            if (!in_array($cssFile, $this->cssFiles, true)) {
-                $this->cssFiles[$cssFile] = $cssFile;
-            }
-        }
     }
 }

@@ -16,15 +16,15 @@ namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
  */
 
 /**
- * In case a widget should provide additional CSS files, the widget must implement this interface.
+ * The dataprovider of a ListWidget, should implement this interface
  */
-interface AdditionalCssInterface
+interface ListDataProviderInterface
 {
     /**
-     * This method returns an array with paths to required CSS files.
-     * e.g. ['EXT:myext/Resources/Public/Css/my_widget.css']
+     * Return the items to be shown. This should be an array like ['item 1', 'item 2', 'item 3']. This is a
+     * real simple list of items.
      *
      * @return array
      */
-    public function getCssFiles(): array;
+    public function getItems(): array;
 }

@@ -9,9 +9,9 @@
             </div>
         </f:if>
         <div class="widget-number-content">
-            <div class="widget-number-title">{title}</div>
+            <div class="widget-number-title"><f:translate key="{title}" default="{title}" /></div>
             <f:if condition="{subtitle}">
-                <div class="widget-number-subtitle"><small>{subtitle}</small></div>
+                <div class="widget-number-subtitle"><small><f:translate key="{subtitle}" default="{subtitle}" /></small></div>
             </f:if>
             <div class="widget-number-number">{number}</div>
         </div>

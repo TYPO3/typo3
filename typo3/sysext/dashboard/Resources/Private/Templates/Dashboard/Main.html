@@ -27,7 +27,7 @@
     <f:then>
         <div class="dashboard-grid">
             <f:for each="{currentDashboard.widgets}" as="widget" iteration="widgetIterator" key="widgetHash">
-                <div class="dashboard-item dashboard-item--w{widget.width} dashboard-item--h{widget.height} {widget.additionalClasses} dashboard-item--enableSelect" data-widget-hash="{widgetHash}" data-widget-key="{widget.identifier}">
+                <div class="dashboard-item dashboard-item--w-{widget.width} dashboard-item--h-{widget.height} {widget.additionalCssClasses} dashboard-item--enableSelect" data-widget-hash="{widgetHash}" data-widget-key="{widget.identifier}">
                     <div class="dashboard-item-content">
                         <div class="widget widget-identifier-{widget.identifier}">
                             <div class="widget-waiting">

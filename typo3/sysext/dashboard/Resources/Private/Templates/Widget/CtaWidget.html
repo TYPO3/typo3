@@ -3,24 +3,13 @@
 <f:section name="main">
 
     <f:if condition="{text}">
-        {text}
+        <f:translate id='{text}' default='{text}' />
     </f:if>
 
 </f:section>
 <f:section name="footer">
-
-    <f:if condition="{link}">
-        <f:link.external uri="{link}" target="_blank" class="widget-cta">
-            <f:if condition="{icon}">
-                <div class="widget-cta-icon">
-                    <core:icon identifier="{icon}" size="large" alternativeMarkupIdentifier="inline" />
-                </div>
-            </f:if>
-            <f:if condition="{label}">
-                <f:translate key="{label}" default="{label}"/>
-            </f:if>
-        </f:link.external>
+    <f:if condition="{button}">
+        <a href="{button.link}" target="{button.target}" class="widget-cta">{f:translate(id: button.text, default: button.text)}</a>
     </f:if>
-
 </f:section>
 </html>

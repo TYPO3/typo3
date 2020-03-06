@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Dashboard\Widgets;
+namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,39 +21,11 @@ use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\NumberWithIconDataProviderInterface;
 
-/**
- * This widget will show the number of failed logins during a given period
- */
-class FailedLoginsWidget extends AbstractNumberWithIconWidget
+class NumberOfFailedLoginsDataProvider implements NumberWithIconDataProviderInterface
 {
-    /**
-     * @var string
-     */
-    protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title';
-
-    /**
-     * @var string
-     */
-    protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description';
-
-    /**
-     * @var string
-     */
-    protected $subtitle = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle';
-
-    /**
-     * @var string
-     */
-    protected $icon = 'content-elements-login';
-
-    protected function initializeView(): void
-    {
-        $this->number = $this->getNumberOfFailedLogins();
-        parent::initializeView();
-    }
-
-    public function getNumberOfFailedLogins(int $secondsBack = 86400): int
+    public function getNumber(int $secondsBack = 86400): int
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');

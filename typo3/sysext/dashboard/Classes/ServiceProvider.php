@@ -131,32 +131,6 @@ class ServiceProvider extends AbstractServiceProvider
         return $widgetGroupRegistry;
     }
 
-    public static function configureWidgetRegistry(
-        ContainerInterface $container,
-        WidgetRegistry $widgetRegistry = null
-    ): WidgetRegistry {
-        $widgetRegistry = $widgetRegistry ?? self::new($container, WidgetRegistry::class);
-        $cache = $container->get('cache.core');
-
-        $cacheIdentifier = 'Dashboard_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'Widgets');
-        if ($cache->has($cacheIdentifier)) {
-            $widgetsFromPackages = $cache->require($cacheIdentifier);
-        } else {
-            $widgetsFromPackages = $container->get('dashboard.widgets')->getArrayCopy();
-            $cache->set($cacheIdentifier, 'return ' . var_export($widgetsFromPackages, true) . ';');
-        }
-
-        foreach ($widgetsFromPackages as $identifier => $options) {
-            $widgetRegistry->registerWidget(
-                $identifier,
-                $options['class'],
-                (array)$options['widgetGroups']
-            );
-        }
-
-        return $widgetRegistry;
-    }
-
     /**
      * @param ContainerInterface $container
      * @param ArrayObject $presets

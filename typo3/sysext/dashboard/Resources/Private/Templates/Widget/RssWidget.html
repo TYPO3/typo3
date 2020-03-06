@@ -18,12 +18,8 @@
 
 </f:section>
 <f:section name="footer">
-
-    <f:if condition="{moreItemsLink}">
-        <f:link.typolink parameter="{moreItemsLink}" target="_blank" class="widget-cta">
-            <f:translate key="{moreItemsText}" default="{moreItemsText}"/>
-        </f:link.typolink>
+    <f:if condition="{button}">
+        <a href="{button.link}" target="{button.target}" class="widget-cta">{f:translate(id: button.text, default: button.text)}</a>
     </f:if>
-
 </f:section>
 </html>

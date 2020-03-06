@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Dashboard\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
@@ -58,23 +57,21 @@ class WidgetAjaxController extends AbstractController
     public function getContent(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $availableWidgets = $this->widgetRegistry->getAvailableWidgets();
 
-        if (empty((string)$queryParams['widget']) || !array_key_exists((string)$queryParams['widget'], $availableWidgets)) {
+        try {
+            $widgetObject = $this->widgetRegistry->getAvailableWidget((string)$queryParams['widget']);
+        } catch (\InvalidArgumentException $e) {
             return new JsonResponse(['error' => 'Widget is not available!']);
         }
 
-        $widgetObject = GeneralUtility::makeInstance($availableWidgets[(string)$queryParams['widget']]);
-
-        $eventData = $widgetObject instanceof EventDataInterface ? $widgetObject->getEventData() : [];
         if (!$widgetObject instanceof WidgetInterface) {
-            return new JsonResponse(['error' => 'Widget doesnt have a valid widget class']);
+            return new JsonResponse(['error' => 'Widget doesn\'t have a valid widget class']);
         }
 
         $data = [
             'widget' => $queryParams['widget'],
             'content' => $widgetObject->renderWidgetContent(),
-            'eventdata' => $eventData,
+            'eventdata' => $widgetObject instanceof EventDataInterface ? $widgetObject->getEventData() : [],
         ];
 
         return new JsonResponse($data);

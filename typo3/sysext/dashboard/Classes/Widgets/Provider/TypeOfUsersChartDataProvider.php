@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Dashboard\Widgets;
+namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,39 +17,39 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\WidgetApi;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface;
 
-/**
- * This widget will show the type of users (admin / non-admin) in a doughnut chart
- */
-class TypeOfUsersWidget extends AbstractDoughnutChartWidget
+class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
 {
     /**
-     * @var string
+     * @var LanguageService
      */
-    protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title';
+    private $languageService;
 
-    /**
-     * @var string
-     */
-    protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description';
+    public function __construct(LanguageService $languageService)
+    {
+        $this->languageService = $languageService;
+    }
 
     /**
      * @inheritDoc
      */
-    protected function prepareChartData(): void
+    public function getChartData(): array
     {
         $adminUsers = $this->getNumberOfUsers(true);
         $normalUsers = $this->getNumberOfUsers(false);
 
-        $this->chartData = [
+        return [
             'labels' => [
-                $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.normalUsers'),
-                $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.adminUsers')
+                $this->languageService ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.normalUsers'),
+                $this->languageService ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.adminUsers')
             ],
             'datasets' => [
                 [
-                    'backgroundColor' => [$this->chartColors[0], $this->chartColors[1]],
+                    'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'data' => [$normalUsers, $adminUsers]
                 ]
             ],

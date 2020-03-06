@@ -1412,4 +1412,69 @@ return [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
         ],
     ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractChartWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractCtaButtonWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractDoughnutChartWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractListWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractNumberWithIconWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractRssWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\AbstractWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\DocumentationGettingStartedWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\DocumentationTSconfigReferenceWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\T3GeneralInformation' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\T3NewsWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\T3SecurityAdvisoriesWidget' => [
+        'restFiles' => [
+            'Breaking-90660-RegistrationOfWidgetsChanged.rst',
+        ],
+    ],
 ];

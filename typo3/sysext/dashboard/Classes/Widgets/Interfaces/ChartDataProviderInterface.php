@@ -16,15 +16,19 @@ namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
  */
 
 /**
- * In case a widget should provide additional CSS files, the widget must implement this interface.
+ * Defines API for provider, used for chart widgets.
  */
-interface AdditionalCssInterface
+interface ChartDataProviderInterface
 {
     /**
-     * This method returns an array with paths to required CSS files.
-     * e.g. ['EXT:myext/Resources/Public/Css/my_widget.css']
+     * This method should provide the data for the graph.
+     * The data and options you have depend on the type of chart.
+     * More information can be found in the documentation of the specific type.
+     *
+     * @link https://www.chartjs.org/docs/latest/charts/bar.html#data-structure
+     * @link https://www.chartjs.org/docs/latest/charts/doughnut.html#data-structure
      *
      * @return array
      */
-    public function getCssFiles(): array;
+    public function getChartData(): array;
 }

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Dashboard\Widgets;
+namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,78 +15,54 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\WidgetApi;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface;
 
 /**
- * This widget will show the number of system log errors in a bar chart
+ * Provides chart data for sys log errors.
  */
-class SysLogErrorsWidget extends AbstractBarChartWidget
+class SysLogErrorsDataProvider implements ChartDataProviderInterface
 {
     /**
-     * @var string
-     */
-    protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title';
-
-    /**
-     * @var string
-     */
-    protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description';
-
-    /**
-     * @var string
-     */
-    protected $buttonText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.buttonText';
-
-    /**
+     * Number of days to gather information for.
+     *
      * @var int
      */
-    protected $width = 4;
+    protected $days = 31;
 
     /**
-     * @var int
-     */
-    protected $height = 4;
-
-    /**
-     * @var mixed[]
-     */
-    protected $data = [];
-
-    /**
-     * @var mixed[]
+     * @var array
      */
     protected $labels = [];
 
-    protected function initializeView(): void
-    {
-        if (ExtensionManagementUtility::isLoaded('belog')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->buttonLink = (string)$uriBuilder->buildUriFromRoute(
-                'system_BelogLog',
-                ['tx_belog_system_beloglog[constraint][action]' => -1]
-            );
-        }
+    /**
+     * @var array
+     */
+    protected $data = [];
 
-        parent::initializeView();
+    public function __construct(int $days = 31)
+    {
+        $this->days = $days;
     }
+
     /**
      * @inheritDoc
      */
-    protected function prepareChartData(): void
+    public function getChartData(): array
     {
-        $this->calculateDataForLastDays(31);
+        $this->calculateDataForLastDays();
 
-        $this->chartData = [
+        return [
             'labels' => $this->labels,
             'datasets' => [
                 [
                     'label' => $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.chart.dataSet.0'),
-                    'backgroundColor' => $this->chartColors[0],
+                    'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
                     'border' => 0,
                     'data' => $this->data
                 ]
@@ -118,16 +94,21 @@ class SysLogErrorsWidget extends AbstractBarChartWidget
             ->fetchColumn();
     }
 
-    protected function calculateDataForLastDays(int $days): void
+    protected function calculateDataForLastDays(): void
     {
         $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
 
-        for ($daysBefore=$days; $daysBefore>=0; $daysBefore--) {
+        for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
             $this->labels[] = date($format, strtotime('-' . $daysBefore . ' day'));
             $startPeriod = strtotime('-' . $daysBefore . ' day 0:00:00');
             $endPeriod =  strtotime('-' . $daysBefore . ' day 23:59:59');
 
             $this->data[] = $this->getNumberOfErrorsInPeriod($startPeriod, $endPeriod);
         }
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

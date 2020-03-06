@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,15 +16,23 @@ namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
  */
 
 /**
- * In case a widget should provide additional CSS files, the widget must implement this interface.
+ * Provides API for widgets.
  */
-interface AdditionalCssInterface
+class WidgetApi
 {
     /**
-     * This method returns an array with paths to required CSS files.
-     * e.g. ['EXT:myext/Resources/Public/Css/my_widget.css']
+     * Provides default colors to use for charts.
      *
-     * @return array
+     * @return array Hex codes of default colors.
      */
-    public function getCssFiles(): array;
+    public static function getDefaultChartColors(): array
+    {
+        return [
+            '#ff8700',
+            '#a4276a',
+            '#1a568f',
+            '#4c7e3a',
+            '#69bbb5',
+        ];
+    }
 }

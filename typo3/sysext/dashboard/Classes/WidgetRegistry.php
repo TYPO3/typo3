@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Dashboard;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
 
 class WidgetRegistry implements SingletonInterface
@@ -52,6 +53,18 @@ class WidgetRegistry implements SingletonInterface
         return $this->widgets;
     }
 
+    /**
+     * @throws \InvalidArgumentException If requested identifier does not exist.
+     */
+    public function getAvailableWidget(string $identifier): WidgetInterface
+    {
+        if (array_key_exists($identifier, $this->getAvailableWidgets())) {
+            return $this->container->get($this->widgets[$identifier]->getServiceName());
+        }
+
+        throw new \InvalidArgumentException('Requested widget "' . $identifier . '" does not exist.', 1584777201);
+    }
+
     public function getAvailableWidgetsForWidgetGroup(string $widgetGroupIdentifier): array
     {
         if (!array_key_exists($widgetGroupIdentifier, $this->widgetsPerWidgetGroup)) {
@@ -60,36 +73,40 @@ class WidgetRegistry implements SingletonInterface
         return $this->checkPermissionOfWidgets($this->widgetsPerWidgetGroup[$widgetGroupIdentifier]);
     }
 
-    public function registerWidget(string $identifier, string $widgetServiceName, array $widgetGroupIdentifiers): void
+    public function registerWidget(string $serviceName): void
     {
-        $this->widgets[$identifier] = $widgetServiceName;
-        foreach ($widgetGroupIdentifiers as $widgetGroupIdentifier) {
-            $this->widgetsPerWidgetGroup[$widgetGroupIdentifier][$identifier] = $widgetServiceName;
+        $widgetConfiguration = $this->container->get($serviceName);
+        $this->widgets[$widgetConfiguration->getIdentifier()] = $widgetConfiguration;
+        foreach ($widgetConfiguration->getGroupNames() as $groupIdentifier) {
+            $this->widgetsPerWidgetGroup = ArrayUtility::setValueByPath(
+                $this->widgetsPerWidgetGroup,
+                $groupIdentifier . '/' . $widgetConfiguration->getIdentifier(),
+                $widgetConfiguration
+            );
         }
     }
 
     protected function checkPermissionOfWidgets(array $widgets): array
     {
-        return array_filter($widgets, function ($widgetIdentifier) {
-            return $this->getBackendUser()->check('available_widgets', $widgetIdentifier);
+        return array_filter($widgets, function ($identifier) {
+            return $this->getBackendUser()->check('available_widgets', $identifier);
         }, ARRAY_FILTER_USE_KEY);
+    }
+
+    public function widgetItemsProcFunc(array &$parameters): void
+    {
+        foreach ($this->widgets as $widget) {
+            $parameters['items'][] = [
+                $widget->getTitle(),
+                $widget->getIdentifier(),
+                $widget->getIconIdentifier(),
+                $widget->getDescription(),
+            ];
+        }
     }
 
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    public function widgetItemsProcFunc(array $parameters): void
-    {
-        foreach ($this->widgets as $identifier => $widget) {
-            $widgetObject = $this->container->get($widget);
-            $parameters['items'][] = [
-                $widgetObject->getTitle() ,
-                $identifier,
-                $widgetObject->getIconIdentifier() ?? 'content-dashboard',
-                $widgetObject->getDescription()
-            ];
-        }
     }
 }

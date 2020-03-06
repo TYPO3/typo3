@@ -1,3 +1,6 @@
+imports:
+  - { resource: Backend/DashboardWidgets.yaml }
+
 services:
   _defaults:
     autowire: true
@@ -6,6 +9,7 @@ services:
 
   TYPO3\CMS\Dashboard\:
     resource: '../Classes/*'
+    exclude: '../Classes/Widgets/*'
 
   TYPO3\CMS\Dashboard\Controller\DashboardController:
     public: true
@@ -15,66 +19,3 @@ services:
 
   TYPO3\CMS\Dashboard\DasboardRegistry:
     public: true
-
-  TYPO3\CMS\Dashboard\Widgets\DocumentationGettingStartedWidget:
-    arguments: ['docGettingStarted']
-    tags:
-      - name: dashboard.widget
-        identifier: docGettingStarted
-        widgetGroups: 'documentation'
-
-  TYPO3\CMS\Dashboard\Widgets\DocumentationTypoScriptReference:
-    arguments: ['docTypoScriptReference']
-    tags:
-      - name: dashboard.widget
-        identifier: docTypoScriptReference
-        widgetGroups: 'documentation'
-
-  TYPO3\CMS\Dashboard\Widgets\DocumentationTSconfigReferenceWidget:
-    arguments: ['docTSconfig']
-    tags:
-      - name: dashboard.widget
-        identifier: docTSconfig
-        widgetGroups: 'documentation'
-
-  TYPO3\CMS\Dashboard\Widgets\T3GeneralInformation:
-    arguments: ['t3information']
-    tags:
-      - name: dashboard.widget
-        identifier: t3information
-        widgetGroups: 'general'
-
-  TYPO3\CMS\Dashboard\Widgets\SysLogErrorsWidget:
-    arguments: ['sysLogErrors']
-    tags:
-      - name: dashboard.widget
-        identifier: sysLogErrors
-        widgetGroups: 'systemInfo'
-
-  TYPO3\CMS\Dashboard\Widgets\TypeOfUsersWidget:
-    arguments: ['typeOfUsers']
-    tags:
-      - name: dashboard.widget
-        identifier: typeOfUsers
-        widgetGroups: 'systemInfo'
-
-  TYPO3\CMS\Dashboard\Widgets\FailedLoginsWidget:
-    arguments: ['failedLogins']
-    tags:
-      - name: dashboard.widget
-        identifier: failedLogins
-        widgetGroups: 'general'
-
-  TYPO3\CMS\Dashboard\Widgets\T3NewsWidget:
-    arguments: ['t3news']
-    tags:
-      - name: dashboard.widget
-        identifier: t3news
-        widgetGroups: 'typo3'
-
-  TYPO3\CMS\Dashboard\Widgets\T3SecurityAdvisoriesWidget:
-    arguments: ['t3securityAdvisories']
-    tags:
-      - name: dashboard.widget
-        identifier: t3securityAdvisories
-        widgetGroups: 'typo3'

@@ -72,24 +72,28 @@
     user-select: auto !important;
 }
 
-.dashboard-item--h4 {
+.dashboard-item--h-medium {
     @media screen and (min-width: 750px) {
         height: $widget-height * 2;
     }
 }
 
-.dashboard-item--h6 {
+.dashboard-item--h-large {
     @media screen and (min-width: 750px) {
         height: $widget-height * 3;
     }
 }
 
-.dashboard-item--w4 {
+.dashboard-item--w-medium {
     width: 100%;
 
     @media screen and (min-width: 1285px) {
         width: 50%;
     }
+}
+
+.dashboard-item--w-large {
+    width: 100%;
 }
 
 .dashboard-item-content {

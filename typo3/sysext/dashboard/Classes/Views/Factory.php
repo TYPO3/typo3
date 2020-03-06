@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Views;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,16 +15,16 @@ namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * In case a widget should provide additional CSS files, the widget must implement this interface.
- */
-interface AdditionalCssInterface
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
+class Factory
 {
-    /**
-     * This method returns an array with paths to required CSS files.
-     * e.g. ['EXT:myext/Resources/Public/Css/my_widget.css']
-     *
-     * @return array
-     */
-    public function getCssFiles(): array;
+    public static function widgetTemplate(): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('dashboard');
+
+        return $view;
+    }
 }

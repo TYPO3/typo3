@@ -1,0 +1,68 @@
+<?php
+declare(strict_types = 1);
+namespace TYPO3\CMS\Dashboard\Widgets\Provider;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
+
+/**
+ * Provide link for sys log button.
+ * Check whether belog is enabled and add link to module.
+ * No link is returned if not enabled.
+ */
+class SysLogButtonProvider implements ButtonProviderInterface
+{
+    /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var string
+     */
+    private $target;
+
+    public function __construct(string $title, string $target = '')
+    {
+        $this->title = $title;
+        $this->target = $target;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getLink(): string
+    {
+        if (ExtensionManagementUtility::isLoaded('belog')) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            return (string)$uriBuilder->buildUriFromRoute(
+                'system_BelogLog',
+                ['tx_belog_system_beloglog[constraint][action]' => -1]
+            );
+        }
+
+        return '';
+    }
+
+    public function getTarget(): string
+    {
+        return $this->target;
+    }
+}

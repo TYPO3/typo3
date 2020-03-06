@@ -17,8 +17,11 @@ namespace TYPO3\CMS\Dashboard\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 
 /**
  * @internal
@@ -44,6 +47,7 @@ final class DashboardWidgetPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $widgetRegistryDefinition = $container->findDefinition(WidgetRegistry::class);
+        /* @var Definition|bool $widgetRegistryDefinition */
         if (!$widgetRegistryDefinition) {
             return;
         }
@@ -51,19 +55,72 @@ final class DashboardWidgetPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
             $definition = $container->findDefinition($serviceName);
             $definition->setPublic(true);
-            // Widgets are handled like prototypes right now (will require state)
-            // @todo: Widgets should preferably be services, but that will require WidgetInterface
-            // to change
-            $definition->setShared(false);
-            $className = $definition->getClass() ?? $serviceName;
+
             foreach ($tags as $attributes) {
                 $identifier = $attributes['identifier'] ?? $serviceName;
-                $widgetRegistryDefinition->addMethodCall('registerWidget', [
+                $attributes['identifier'] = $identifier;
+                $attributes['serviceName'] = $serviceName;
+                $attributes = $this->convertAttributes($attributes);
+
+                $configurationServiceName = $this->registerWidgetConfigurationService(
+                    $container,
                     $identifier,
-                    $serviceName,
-                    GeneralUtility::trimExplode(',', $attributes['widgetGroups'] ?? '', true)
-                ]);
+                    $attributes
+                );
+                $definition->setArgument('$configuration', new Reference($configurationServiceName));
+
+                $widgetRegistryDefinition->addMethodCall('registerWidget', [$identifier . 'WidgetConfiguration']);
             }
         }
+    }
+
+    private function convertAttributes(array $attributes): array
+    {
+        $attributes = array_merge([
+            'iconIdentifier' => 'content-dashboard',
+            'height' => 'small',
+            'width' => 'small',
+        ], $attributes);
+
+        if (isset($attributes['groupNames'])) {
+            $attributes['groupNames'] = GeneralUtility::trimExplode(',', $attributes['groupNames'], true);
+        } else {
+            $attributes['groupNames'] = [];
+        }
+
+        if (isset($attributes['additionalCssClasses'])) {
+            $attributes['additionalCssClasses'] = GeneralUtility::trimExplode(' ', $attributes['additionalCssClasses'], true);
+        } else {
+            $attributes['additionalCssClasses'] = [];
+        }
+
+        return $attributes;
+    }
+
+    private function registerWidgetConfigurationService(
+        ContainerBuilder $container,
+        string $widgetIdentifier,
+        array $arguments
+    ): string {
+        $serviceName = $widgetIdentifier . 'WidgetConfiguration';
+
+        $definition = new Definition(
+            WidgetConfiguration::class,
+            $this->adjustArgumentsForDi($arguments)
+        );
+        $definition->setPublic(true);
+        $container->addDefinitions([$serviceName => $definition]);
+
+        return $serviceName;
+    }
+
+    private function adjustArgumentsForDi(array $arguments): array
+    {
+        foreach ($arguments as $key => $value) {
+            $arguments['$' . $key] = $value;
+            unset($arguments[$key]);
+        }
+
+        return $arguments;
     }
 }
