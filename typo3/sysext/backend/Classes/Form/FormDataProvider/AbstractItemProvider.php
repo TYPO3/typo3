@@ -1081,8 +1081,10 @@ abstract class AbstractItemProvider
                         $rowFieldValue = $result[$databaseRowKey][$whereClauseSubParts[0]] ?? '';
                         if (is_array($rowFieldValue)) {
                             // If a select or group field is used here, it may have been processed already and
-                            // is now an array. Use first selected value in this case.
-                            $rowFieldValue = $rowFieldValue[0];
+                            // is now an array containing uid + table + title + row.
+                            // See TcaGroup data provider for details.
+                            // Pick the first one (always on 0), and use uid only.
+                            $rowFieldValue = $rowFieldValue[0]['uid'] ?? $rowFieldValue[0];
                         }
                         if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubParts[1][0] === '\'') {
                             $whereClauseParts[0] = substr($whereClauseParts[0], 0, -1);
