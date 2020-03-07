@@ -14,7 +14,7 @@
 import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 
 class ValueSlider {
-  private readonly selector: string = '[data-slider-id]';
+  private readonly controlElement: HTMLInputElement = null;
 
   /**
    * Update value of slider element
@@ -47,12 +47,16 @@ class ValueSlider {
     element.title = renderedValue.toString();
   }
 
-  constructor() {
-    new ThrottleEvent('input', function (this: HTMLInputElement): void {
-      ValueSlider.updateValue(this);
-      ValueSlider.updateTooltipValue(this);
-    }, 25).delegateTo(document, this.selector);
+  constructor(controlElementId: string) {
+    this.controlElement = document.getElementById(controlElementId) as HTMLInputElement;
+    new ThrottleEvent('input', this.handleRangeChange, 25).bindTo(this.controlElement);
+  }
+
+  private handleRangeChange = (e: Event): void => {
+    const target = e.target as HTMLInputElement;
+    ValueSlider.updateValue(target);
+    ValueSlider.updateTooltipValue(target);
   }
 }
 
-export = new ValueSlider();
+export = ValueSlider;

@@ -129,9 +129,11 @@ class InputTextElement extends AbstractFormElement
             }
         }
 
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
+
         $attributes = [
             'value' => '',
-            'id' => StringUtility::getUniqueId('formengine-input-'),
+            'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
                 't3js-clearable',
@@ -185,7 +187,10 @@ class InputTextElement extends AbstractFormElement
 
         $valueSliderHtml = [];
         if (isset($config['slider']) && is_array($config['slider'])) {
-            $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/ValueSlider';
+            $id = 'slider-' . $fieldId;
+            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/FieldWizard/ValueSlider' =>
+                'function(ValueSlider) { new ValueSlider(' . GeneralUtility::quoteJSvalue($id) . '); }'
+            ];
             $min = $config['range']['lower'] ?? 0;
             $max = $config['range']['upper'] ?? 10000;
             $step = $config['slider']['step'] ?? 1;
@@ -199,7 +204,6 @@ class InputTextElement extends AbstractFormElement
                 $itemValue = (double)$itemValue;
             }
             $callbackParams = [ $table, $row['uid'], $fieldName, $parameterArray['itemFormElName'] ];
-            $id = 'slider-' . md5($parameterArray['itemFormElName']);
             $rangeAttributes = [
                 'id' => $id,
                 'type' => 'range',
