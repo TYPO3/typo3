@@ -104,8 +104,8 @@ class LocalCropScaleMaskHelper
         // Normal situation (no masking)
         if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
 
-            // SVG
-            if ($croppedImage === null && $sourceFile->getExtension() === 'svg') {
+            // SVG without having a fileExtension (e.g. png) forced to convert to another format, leave this unchanged
+            if ($croppedImage === null && $sourceFile->getExtension() === 'svg' && ($task->getConfiguration()['fileExtension'] ?? 'svg') === 'svg') {
                 $newDimensions = $this->getNewSvgDimensions($sourceFile, $configuration, $options, $gifBuilder);
                 $result = [
                     0 => $newDimensions['width'],
