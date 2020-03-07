@@ -297,6 +297,7 @@ class TreeController
             'checked' => false,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
+            'allowDelete' => $this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_DELETE)
         ];
 
         if (!empty($page['_children'])) {
