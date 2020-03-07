@@ -36,6 +36,18 @@ namespace TYPO3\CMS\Core\Core;
  */
 class Environment
 {
+    /**
+     * A list of supported CGI server APIs
+     * @var array
+     */
+    protected static $supportedCgiServerApis = [
+        'fpm-fcgi',
+        'cgi',
+        'isapi',
+        'cgi-fcgi',
+        'srv', // HHVM with fastcgi
+    ];
+
     protected static $cli;
     protected static $composerMode;
     protected static $context;
@@ -263,6 +275,16 @@ class Environment
     public static function isUnix(): bool
     {
         return self::$os === 'UNIX';
+    }
+
+    /**
+     * Returns true if the server is running on a list of supported CGI server APIs.
+     *
+     * @return bool
+     */
+    public static function isRunningOnCgiServer(): bool
+    {
+        return in_array(PHP_SAPI, self::$supportedCgiServerApis, true);
     }
 
     /**

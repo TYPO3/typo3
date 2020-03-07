@@ -632,7 +632,17 @@ class NormalizedParams
         bool $isHttps,
         bool $isBehindReverseProxy
     ): string {
-        $scriptName = ($serverParams['ORIG_SCRIPT_NAME'] ?? '') ?: ($serverParams['SCRIPT_NAME'] ?? '');
+        // see https://forge.typo3.org/issues/89312
+        // When using a CGI wrapper to dispatch the PHP process `ORIG_SCRIPT_NAME`
+        // contains the name of the wrapper script (which is most probably outside
+        // the TYPO3's project root) and leads to invalid prefixes, e.g. resolving
+        // the `siteUrl` incorrectly as `http://ip10.local/fcgi/` instead of
+        // actual `http://ip10.local/`
+        $possiblePathInfo = ($serverParams['ORIG_PATH_INFO'] ?? '') ?: ($serverParams['PATH_INFO'] ?? '');
+        $possibleScriptName = ($serverParams['ORIG_SCRIPT_NAME'] ?? '') ?: ($serverParams['SCRIPT_NAME'] ?? '');
+        $scriptName = Environment::isRunningOnCgiServer() && $possiblePathInfo
+            ? $possiblePathInfo
+            : $possibleScriptName;
         if ($isBehindReverseProxy) {
             // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
             if ($isHttps && !empty($configuration['reverseProxyPrefixSSL'])) {
