@@ -65,12 +65,8 @@ class StaticRouteResolver implements MiddlewareInterface
             ($configuration = $site->getConfiguration()['routes'] ?? null)
         ) {
             $path = ltrim($request->getUri()->getPath(), '/');
-            $routeNames = array_map(function (string $route) use ($site) {
-                return ltrim(trim($site->getBase()->getPath(), '/') . '/' . ltrim($route, '/'), '/');
-            }, array_column($configuration, 'route'));
-            if (in_array($path, $routeNames, true)) {
-                $key = array_search($path, $routeNames, true);
-                $routeConfig = $configuration[$key];
+            $routeConfig = $this->getApplicableStaticRoute($configuration, $site, $path);
+            if (is_array($routeConfig)) {
                 try {
                     [$content, $contentType] = $this->resolveByType($request, $site, $routeConfig['type'], $routeConfig);
                 } catch (InvalidRouteArgumentsException $e) {
@@ -81,6 +77,37 @@ class StaticRouteResolver implements MiddlewareInterface
             }
         }
         return $handler->handle($request);
+    }
+
+    /**
+     * Find the proper configuration for the static route in the static route configuration. Mainly:
+     * - needs to have a valid "route" property
+     * - needs to have a "type"
+     *
+     * @param array $staticRouteConfiguration the "routes" part of the site configuration
+     * @param Site $site the current site where the configuration is based on
+     * @param string $uriPath the path of the current request - used to match the "route" value of a single static route
+     * @return array|null the configuration for the static route that matches, or null if no route is given
+     */
+    protected function getApplicableStaticRoute(array $staticRouteConfiguration, Site $site, string $uriPath): ?array
+    {
+        $routeNames = array_map(function (?string $route) use ($site) {
+            if ($route === null || $route === '') {
+                return null;
+            }
+            return ltrim(trim($site->getBase()->getPath(), '/') . '/' . ltrim($route, '/'), '/');
+        }, array_column($staticRouteConfiguration, 'route'));
+        // Remove empty routes which would throw an error (could happen within creating a false route in the GUI)
+        $routeNames = array_filter($routeNames);
+
+        if (in_array($uriPath, $routeNames, true)) {
+            $key = array_search($uriPath, $routeNames, true);
+            // Only allow routes with a type "given"
+            if (isset($staticRouteConfiguration[$key]['type'])) {
+                return $staticRouteConfiguration[$key];
+            }
+        }
+        return null;
     }
 
     /**
