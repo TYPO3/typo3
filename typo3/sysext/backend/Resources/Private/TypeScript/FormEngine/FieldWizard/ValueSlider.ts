@@ -24,8 +24,7 @@ interface ValueSliderUpdateEvent extends JQueryEventObject {
 }
 
 class ValueSlider {
-  private id: string; // internally set by the renderTooltipValue callback
-  private selector: string = '[data-slider-id]';
+  private readonly controlElement: HTMLElement = null;
 
   /**
    * Update value of slider element
@@ -41,7 +40,8 @@ class ValueSlider {
     TBE_EDITOR.fieldChanged.apply(TBE_EDITOR, sliderCallbackParams);
   }
 
-  constructor() {
+  constructor(controlElementId: string) {
+    this.controlElement = document.getElementById(controlElementId) as HTMLElement;
     this.initializeSlider();
   }
 
@@ -49,22 +49,20 @@ class ValueSlider {
    * Initialize all slider elements
    */
   private initializeSlider(): void {
-    const $sliders = $(this.selector);
-    if ($sliders.length > 0) {
-      $sliders.slider({
-        formatter: this.renderTooltipValue,
-      });
-      $sliders.on('change', ValueSlider.updateValue);
-    }
+    const $slider = $(this.controlElement);
+    $slider.slider({
+      formatter: this.renderTooltipValue,
+    });
+    $slider.on('change', ValueSlider.updateValue);
   }
 
   /**
    * @param {string} value
-   * @returns {string | number}
+   * @returns {string}
    */
-  private renderTooltipValue(value: string): any {
+  private renderTooltipValue = (value: string): string => {
     let renderedValue;
-    const $slider = $('[data-slider-id="' + this.id + '"]');
+    const $slider = $(this.controlElement);
     const data = $slider.data();
     switch (data.sliderValueType) {
       case 'double':
@@ -72,11 +70,11 @@ class ValueSlider {
         break;
       case 'int':
       default:
-        renderedValue = parseInt(value, 10);
+        renderedValue = parseInt(value, 10).toString();
     }
 
     return renderedValue;
   }
 }
 
-export = new ValueSlider();
+export = ValueSlider;
