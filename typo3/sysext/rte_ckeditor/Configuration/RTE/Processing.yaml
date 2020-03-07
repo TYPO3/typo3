@@ -51,7 +51,6 @@ processing:
     - small
     - span
     - strong
-    - style
     - sub
     - sup
     - table
