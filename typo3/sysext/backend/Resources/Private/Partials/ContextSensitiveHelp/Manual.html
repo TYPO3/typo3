@@ -2,7 +2,7 @@
 
 <h2>{manual.headerLine}</h2>
 
-<p>{manual.content -> f:format.raw()}</p>
+<p>{manual.content -> f:format.htmlentities() -> f:format.raw()}</p>
 
 <f:if condition="{manual.configuration.details}">
 	<h3>
