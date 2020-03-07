@@ -401,7 +401,6 @@ return [
         'fallbackType' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.fallbackType',
             'displayCond' => 'FIELD:languageId:>:0',
-            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
