@@ -123,7 +123,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         try {
             $input = new ArrayInput($this->getParameters(true), $schedulableCommand->getDefinition());
             $arguments = $input->__toString();
-        } catch (\Symfony\Component\Console\Exception\RuntimeException $e) {
+        } catch (\Symfony\Component\Console\Exception\RuntimeException|\Symfony\Component\Console\Exception\InvalidArgumentException $e) {
             return $label . "\n"
                 . sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingArguments'),
