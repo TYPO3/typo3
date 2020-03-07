@@ -295,6 +295,7 @@ class TreeController
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
             'siblingsCount' => $page['siblingsCount'] ?? 1,
             'siblingsPosition' => $page['siblingsPosition'] ?? 1,
+            'allowDelete' => $this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_DELETE)
         ];
 
         if (!empty($page['_children'])) {
