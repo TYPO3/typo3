@@ -1,7 +1,7 @@
 <a id="{manual.table}{f:if(condition:manual.field,then:'.{manual.field}')}"></a>
 
 <h2>{manual.headerLine}</h2>
-<p>{manual.content -> f:format.raw()}</p>
+<p>{manual.content -> f:format.htmlentities() -> f:format.raw()}</p>
 
 <f:if condition="{manual.configuration.details}">
     <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" /></h3>
