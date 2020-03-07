@@ -286,7 +286,7 @@ class GroupElement extends AbstractFormElement
             $html[] =                   ' data-tablename="' . htmlspecialchars($table) . '"';
             $html[] =                   ' data-field="' . htmlspecialchars($elementName) . '"';
             $html[] =                   ' data-uid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
-            $html[] =                   ' data-pid="' . htmlspecialchars($this->data['effectivePid']) . '"';
+            $html[] =                   ' data-pid="' . htmlspecialchars($this->data['parentPageRow']['uid'] ?? 0) . '"';
             $html[] =                   ' data-fieldtype="' . htmlspecialchars($config['type']) . '"';
             $html[] =                   ' data-minchars="' . htmlspecialchars($suggestMinimumCharacters) . '"';
             $html[] =                   ' data-datastructureidentifier="' . htmlspecialchars($dataStructureIdentifier) . '"';
