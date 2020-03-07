@@ -196,7 +196,7 @@ class AuthenticationServiceTest extends UnitTestCase
         );
         $dbUser = [
             // an argon2i hash of 'myPassword'
-            'password' => '$argon2i$v=19$m=65536,t=16,p=2$LnUzc3ZISWJwQWlSbmpkYw$qD1sRsJFzkUmjcEaKzDeg6LtflwdTpo49VbH3tMeMXU',
+            'password' => '$argon2i$v=19$m=65536,t=16,p=1$eGpyelFZbkpRdXN3QVhsUA$rd4abz2fcuksGu3b3fipglQZtHbIy+M3XoIS+sNVSl4',
             'lockToDomain' => ''
         ];
         $this->assertSame(200, $subject->authUser($dbUser));
