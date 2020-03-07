@@ -25,12 +25,14 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
      * We raise that significantly by default. At the time of this writing, with the options
      * below, password_verify() needs about 130ms on an I7 6820 on 2 CPU's (argon2i).
      *
+     * We are not raising the amount of threads used, as that might lead to problems on various
+     * systems - see #90612
+     *
      * @var array
      */
     protected $options = [
         'memory_cost' => 65536,
         'time_cost' => 16,
-        'threads' => 2
     ];
 
     /**
