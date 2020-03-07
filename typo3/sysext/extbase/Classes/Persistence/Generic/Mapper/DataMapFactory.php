@@ -138,7 +138,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             $classSettings = $this->classesConfiguration->getConfigurationFor($className);
             $subclasses = $this->classesConfiguration->getSubClasses($className);
             if (isset($classSettings['recordType']) && $classSettings['recordType'] !== '') {
-                $recordType = $classSettings['mapping']['recordType'];
+                $recordType = $classSettings['recordType'];
             }
             if (isset($classSettings['tableName']) && $classSettings['tableName'] !== '') {
                 $tableName = $classSettings['tableName'];
