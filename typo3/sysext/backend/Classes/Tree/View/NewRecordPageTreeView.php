@@ -23,6 +23,17 @@ namespace TYPO3\CMS\Backend\Tree\View;
 class NewRecordPageTreeView extends PageTreeView
 {
     /**
+     * @var int
+     */
+    protected $currentPageId;
+
+    public function __construct(int $currentPageId)
+    {
+        $this->currentPageId = $currentPageId;
+        parent::__construct();
+    }
+
+    /**
      * Determines whether to expand a branch or not.
      * Here the branch is expanded if the current id matches the global id for the listing/new
      *
@@ -31,6 +42,6 @@ class NewRecordPageTreeView extends PageTreeView
      */
     public function expandNext($id)
     {
-        return $id == $GLOBALS['SOBE']->id;
+        return (int)$id === $this->currentPageId;
     }
 }

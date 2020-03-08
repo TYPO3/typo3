@@ -115,11 +115,6 @@ class NewRecordController
     protected $code;
 
     /**
-     * @var string
-     */
-    protected $R_URI;
-
-    /**
      * @var int
      *
      * @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
@@ -170,9 +165,6 @@ class NewRecordController
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-
-        // @see \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::expandNext()
-        $GLOBALS['SOBE'] = $this;
     }
 
     /**
@@ -415,7 +407,6 @@ class NewRecordController
 
         if ($numberOfPages > 0) {
             $this->code .= '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>';
-            /** @var \TYPO3\CMS\Backend\Tree\View\PagePositionMap $positionMap */
             $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
             $this->code .= $positionMap->positionTree(
                 $this->id,
@@ -424,8 +415,7 @@ class NewRecordController
                 $this->returnUrl
             );
         } else {
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // No pages yet, no need to prompt for position, redirect to page creation.
             $urlParameters = [
                 'edit' => [
