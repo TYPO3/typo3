@@ -400,7 +400,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      */
     protected function linkEditContent(string $linkText, $row): string
     {
-        if ($this->getBackendUser()->recordEditAccessInternals('tt_content', $row)) {
+        $backendUser = $this->getBackendUser();
+        if ($backendUser->check('tables_modify', 'tt_content') && $backendUser->recordEditAccessInternals('tt_content', $row)) {
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [

@@ -8,7 +8,7 @@
         <f:if condition="{column.active}">
             <f:then>
                 <div class="t3-page-column-header-icons">
-                    <f:if condition="{column.editUrl}">
+                    <f:if condition="{allowEditContent} && {column.editUrl}">
                         <a href="{column.editUrl}" title="{column.editLinkTitle}"><core:icon identifier="actions-document-open" /></a>
                     </f:if>
                 </div>
@@ -25,7 +25,7 @@
             </f:else>
         </f:if>
     </div>
-    <f:if condition="{column.contentEditable} && {grid.allowNewContent}">
+    <f:if condition="{allowEditContent} && {column.contentEditable} && {grid.allowNewContent}">
         <div class="t3-page-ce t3js-page-ce" data-page="{column.backendLayout.drawingConfiguration.pageId}" id="{column.uniqueId}">
             <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{column.columnNumber}-page-{column.backendLayout.drawingConfiguration.pageId}-{column.uniqueId}">
                 <a href="{column.newContentUrl}" title="{newContentTitle}" data-title="{newContentTitle}"

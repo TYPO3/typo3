@@ -35,7 +35,7 @@
                                 <core:icon identifier="actions-open" />
                             </a>
                         </f:if>
-                        <f:if condition="{languageColumn.allowTranslate}">
+                        <f:if condition="{allowEditContent} && {languageColumn.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
                             <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
                                 title="{languageColumn.translatePageTitle}"
                                 data-page="{languageColumn.localizedPageRecord.title}"

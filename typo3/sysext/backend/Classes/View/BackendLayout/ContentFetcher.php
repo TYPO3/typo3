@@ -128,6 +128,16 @@ class ContentFetcher
         }
 
         if (!isset($this->languageHasTranslationsCache[$language])) {
+            if ($language) {
+                $contentRecordsInDefaultLanguage = $this->getContentRecordsPerColumn(null, 0);
+                if (!empty($contentRecordsInDefaultLanguage)) {
+                    $contentRecordsInDefaultLanguage = array_merge(...$contentRecordsInDefaultLanguage);
+                }
+            } else {
+                $contentRecordsInDefaultLanguage = $contentElements;
+            }
+            $untranslatedRecordUids = array_flip(array_column($contentRecordsInDefaultLanguage, 'uid'));
+
             foreach ($contentElements as $contentElement) {
                 if ((int)$contentElement['l18n_parent'] === 0) {
                     $this->languageHasTranslationsCache[$language]['hasStandAloneContent'] = true;
@@ -137,10 +147,14 @@ class ContentFetcher
                     $this->languageHasTranslationsCache[$language]['hasTranslations'] = true;
                     $this->languageHasTranslationsCache[$language]['mode'] = 'connected';
                 }
+                if ((int)$contentElement['l10n_source'] > 0) {
+                    unset($untranslatedRecordUids[(int)$contentElement['l10n_source']]);
+                }
             }
             if (!isset($this->languageHasTranslationsCache[$language])) {
                 $this->languageHasTranslationsCache[$language]['hasTranslations'] = false;
             }
+            $this->languageHasTranslationsCache[$language]['untranslatedRecordUids'] = array_keys($untranslatedRecordUids);
 
             // Check for inconsistent translations, force "mixed" mode and dispatch a FlashMessage to user if such a case is encountered.
             if (isset($this->languageHasTranslationsCache[$language]['hasStandAloneContent'])

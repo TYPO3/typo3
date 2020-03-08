@@ -98,6 +98,7 @@ class BackendLayoutRenderer
         }
         $this->view->assign('newContentTitle', $this->getLanguageService()->getLL('newContentElement'));
         $this->view->assign('newContentTitleShort', $this->getLanguageService()->getLL('content'));
+        $this->view->assign('allowEditContent', $this->getBackendUser()->check('tables_modify', 'tt_content'));
 
         $rendered = $this->view->render('PageLayout');
         if ($renderUnused) {

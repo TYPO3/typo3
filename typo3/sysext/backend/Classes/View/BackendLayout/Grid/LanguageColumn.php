@@ -54,23 +54,18 @@ class LanguageColumn extends AbstractGridObject
     /**
      * @var array
      */
-    protected $defaultLanguageElements = [];
-
-    /**
-     * @var array
-     */
-    protected $flatContentOfLanguage = [];
+    protected $localizationConfiguration = [];
 
     /**
      * @var GridColumn|null
      */
     protected $grid;
 
-    public function __construct(BackendLayout $backendLayout, SiteLanguage $language, array $defaultLanguageElements)
+    public function __construct(BackendLayout $backendLayout, SiteLanguage $language)
     {
         parent::__construct($backendLayout);
         $this->siteLanguage = $language;
-        $this->defaultLanguageElements = $defaultLanguageElements;
+        $this->localizationConfiguration = BackendUtility::getPagesTSconfig($backendLayout->getDrawingConfiguration()->getPageId())['mod.']['web_layout.']['localization.'] ?? [];
         if ($this->siteLanguage->getLanguageId() > 0) {
             $pageLocalizationRecord = BackendUtility::getRecordLocalization(
                 'pages',
@@ -84,14 +79,6 @@ class LanguageColumn extends AbstractGridObject
             $this->localizedPageRecord = $pageLocalizationRecord;
         } else {
             $this->localizedPageRecord = $backendLayout->getDrawingConfiguration()->getPageRecord();
-        }
-
-        $contentFetcher = $backendLayout->getContentFetcher();
-        $contentRecords = $contentFetcher->getContentRecordsPerColumn(null, $language->getLanguageId());
-        if (!empty($contentRecords)) {
-            $this->flatContentOfLanguage = array_merge(...$contentRecords);
-        } else {
-            $this->flatContentOfLanguage = [];
         }
     }
 
@@ -149,55 +136,18 @@ class LanguageColumn extends AbstractGridObject
 
     public function getAllowTranslate(): bool
     {
-        if ($this->siteLanguage->getLanguageId() === 0) {
-            return false;
-        }
-
-        $localizationTsConfig = BackendUtility::getPagesTSconfig($this->backendLayout->getDrawingConfiguration()->getPageId())['mod.']['web_layout.']['localization.'] ?? [];
-        $allowTranslate = (bool)($localizationTsConfig['enableTranslate'] ?? true);
-        if (!$allowTranslate) {
-            return false;
-        }
-
-        $translationData = $this->backendLayout->getContentFetcher()->getTranslationData($this->flatContentOfLanguage, $this->siteLanguage->getLanguageId());
-        if (!empty($translationData)) {
-            if (isset($translationData['hasStandAloneContent'])) {
-                return false;
-            }
-        }
-
-        $defaultLanguageUids = array_flip(array_column($this->defaultLanguageElements, 'uid'));
-        $translatedLanguageUids = array_column($this->flatContentOfLanguage, 'l10n_source');
-        if (empty($translatedLanguageUids)) {
-            return true;
-        }
-
-        foreach ($translatedLanguageUids as $translatedUid) {
-            unset($defaultLanguageUids[$translatedUid]);
-        }
-
-        return !empty($defaultLanguageUids);
+        return ($this->localizationConfiguration['enableTranslate'] ?? true) && !($this->getTranslationData()['hasStandAloneContent'] ?? false);
     }
 
     public function getTranslationData(): array
     {
         $contentFetcher = $this->backendLayout->getContentFetcher();
-        return $contentFetcher->getTranslationData($this->defaultLanguageElements, $this->siteLanguage->getLanguageId());
+        return $contentFetcher->getTranslationData($contentFetcher->getFlatContentRecords(), $this->siteLanguage->getLanguageId());
     }
 
     public function getAllowTranslateCopy(): bool
     {
-        $localizationTsConfig = BackendUtility::getPagesTSconfig($this->backendLayout->getDrawingConfiguration()->getPageId())['mod.']['web_layout.']['localization.'] ?? [];
-        $allowCopy = (bool)($localizationTsConfig['enableCopy'] ?? true);
-        if (!empty($translationData)) {
-            if (isset($translationData['hasStandAloneContent'])) {
-                return false;
-            }
-            if (isset($translationData['hasTranslations'])) {
-                $allowCopy = $allowCopy && !$translationData['hasTranslations'];
-            }
-        }
-        return $allowCopy;
+        return ($this->localizationConfiguration['enableCopy'] ?? true) && !($this->getTranslationData()['hasTranslations'] ?? false);
     }
 
     public function getTranslatePageTitle(): string

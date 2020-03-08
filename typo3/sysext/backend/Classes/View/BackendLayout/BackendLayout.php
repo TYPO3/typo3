@@ -280,18 +280,13 @@ class BackendLayout
     public function getLanguageColumns(): iterable
     {
         if (empty($this->languageColumns)) {
-            $defaultLanguageElements = [];
-            $contentByColumn = $this->getContentFetcher()->getContentRecordsPerColumn(null, 0);
-            if (!empty($contentByColumn)) {
-                $defaultLanguageElements = array_merge(...$contentByColumn);
-            }
             foreach ($this->getDrawingConfiguration()->getSiteLanguages() as $siteLanguage) {
                 if (!in_array($siteLanguage->getLanguageId(), $this->getDrawingConfiguration()->getLanguageColumns())) {
                     continue;
                 }
                 $backendLayout = clone $this;
                 $backendLayout->getDrawingConfiguration()->setLanguageColumnsPointer($siteLanguage->getLanguageId());
-                $this->languageColumns[] = GeneralUtility::makeInstance(LanguageColumn::class, $backendLayout, $siteLanguage, $defaultLanguageElements);
+                $this->languageColumns[] = GeneralUtility::makeInstance(LanguageColumn::class, $backendLayout, $siteLanguage);
             }
         }
         return $this->languageColumns;
