@@ -203,7 +203,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $searchData = array_merge($this->settings['defaultOptions'], $searchData);
         }
         // if "languageUid" was set to "current", take the current site language
-        if ($searchData['languageUid'] ?? '' === 'current') {
+        if (($searchData['languageUid'] ?? '') === 'current') {
             $searchData['languageUid'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
         }
 
