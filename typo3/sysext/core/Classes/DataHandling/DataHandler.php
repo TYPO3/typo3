@@ -8757,6 +8757,7 @@ class DataHandler implements LoggerAwareInterface
         // Get Page TSconfig relevant:
         $TSConfig = BackendUtility::getPagesTSconfig($pid)['TCEMAIN.'] ?? [];
         if (empty($TSConfig['clearCache_disable'])) {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             // If table is "pages":
             $pageIdsThatNeedCacheFlush = [];
             if ($table === 'pages') {
@@ -8764,7 +8765,6 @@ class DataHandler implements LoggerAwareInterface
                 $pageUid = $this->getDefaultLanguagePageId($uid);
 
                 // Builds list of pages on the SAME level as this page (siblings)
-                $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
                     ->removeAll()
@@ -8780,10 +8780,10 @@ class DataHandler implements LoggerAwareInterface
                     )
                     ->execute();
 
-                $pid_tmp = 0;
+                $parentPageId = 0;
                 while ($row_tmp = $siblings->fetch()) {
                     $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['uid'];
-                    $pid_tmp = (int)$row_tmp['pid'];
+                    $parentPageId = (int)$row_tmp['pid'];
                     // Add children as well:
                     if ($TSConfig['clearCache_pageSiblingChildren']) {
                         $siblingChildrenQuery = $connectionPool->getQueryBuilderForTable('pages');
@@ -8803,11 +8803,11 @@ class DataHandler implements LoggerAwareInterface
                         }
                     }
                 }
-                // Finally, add the parent page as well:
-                if ($pid_tmp > 0) {
-                    $pageIdsThatNeedCacheFlush[] = $pid_tmp;
+                // Finally, add the parent page as well when clearing a specific page
+                if ($parentPageId > 0) {
+                    $pageIdsThatNeedCacheFlush[] = $parentPageId;
                 }
-                // Add grand-parent as well:
+                // Add grand-parent as well if configured
                 if ($TSConfig['clearCache_pageGrandParent']) {
                     $parentQuery = $connectionPool->getQueryBuilderForTable('pages');
                     $parentQuery->getRestrictions()
@@ -8818,7 +8818,7 @@ class DataHandler implements LoggerAwareInterface
                         ->from('pages')
                         ->where($parentQuery->expr()->eq(
                             'uid',
-                            $parentQuery->createNamedParameter($pid_tmp, \PDO::PARAM_INT)
+                            $parentQuery->createNamedParameter($parentPageId, \PDO::PARAM_INT)
                         ))
                         ->execute()
                         ->fetch();
@@ -8829,6 +8829,25 @@ class DataHandler implements LoggerAwareInterface
             } else {
                 // For other tables than "pages", delete cache for the records "parent page".
                 $pageIdsThatNeedCacheFlush[] = $pageUid = (int)$this->getPID($table, $uid);
+                // Add the parent page as well
+                if ($TSConfig['clearCache_pageGrandParent']) {
+                    $parentQuery = $connectionPool->getQueryBuilderForTable('pages');
+                    $parentQuery->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $parentPageRecord = $parentQuery
+                        ->select('pid')
+                        ->from('pages')
+                        ->where($parentQuery->expr()->eq(
+                            'uid',
+                            $parentQuery->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                        ))
+                        ->execute()
+                        ->fetch();
+                    if (!empty($parentPageRecord)) {
+                        $pageIdsThatNeedCacheFlush[] = (int)$parentPageRecord['pid'];
+                    }
+                }
             }
             // Call pre-processing function for clearing of cache for page ids:
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] ?? [] as $funcName) {
