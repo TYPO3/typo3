@@ -33,12 +33,13 @@ var setFormValueOpenBrowser, // @deprecated
 define(['jquery',
   'TYPO3/CMS/Backend/FormEngineValidation',
   'TYPO3/CMS/Backend/DocumentSaveActions',
+  'TYPO3/CMS/Backend/Icons',
   'TYPO3/CMS/Backend/Modal',
   'TYPO3/CMS/Backend/Utility/MessageUtility',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/BackendException',
   'TYPO3/CMS/Backend/Event/InteractionRequestMap'
-], function($, FormEngineValidation, DocumentSaveActions, Modal, MessageUtility, Severity, BackendException, InteractionRequestMap) {
+], function($, FormEngineValidation, DocumentSaveActions, Icons, Modal, MessageUtility, Severity, BackendException, InteractionRequestMap) {
 
   /**
    * @param {InteractionRequest} interactionRequest
@@ -596,6 +597,25 @@ define(['jquery',
       const params = $me.data('params');
 
       FormEngine.openPopupWindow(mode, params);
+    });
+
+    document.editform.addEventListener('submit', function () {
+      const elements = [
+        'button[form]',
+        'button[name^="_save"]',
+        'a[data-name^="_save"]',
+        'button[name="CMD"][value^="save"]',
+        'a[data-name="CMD"][data-value^="save"]',
+      ].join(',');
+
+      const button = document.querySelector(elements);
+      if (button !== null) {
+        button.disabled = true;
+
+        Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then(function (markup) {
+          button.querySelector('.t3js-icon').outerHTML = markup;
+        });
+      }
     });
 
     window.addEventListener('message', FormEngine.handlePostMessage);
@@ -1291,12 +1311,25 @@ define(['jquery',
    */
   FormEngine.closeDocument = function() {
     document.editform.closeDoc.value = 1;
+
+    FormEngine.dispatchSubmitEvent();
     document.editform.submit();
   };
 
   FormEngine.saveDocument = function() {
     document.editform.doSave.value = 1;
+
+    FormEngine.dispatchSubmitEvent();
     document.editform.submit();
+  };
+
+  /**
+   * Dispatches the "submit" event to the form. This is necessary if .submit() is called directly.
+   */
+  FormEngine.dispatchSubmitEvent = function() {
+    const submitEvent = document.createEvent('Event');
+    submitEvent.initEvent('submit', false, true);
+    document.editform.dispatchEvent(submitEvent);
   };
 
   /**
