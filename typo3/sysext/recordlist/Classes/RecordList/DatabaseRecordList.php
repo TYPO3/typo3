@@ -822,10 +822,10 @@ class DatabaseRecordList
             // Only restrict to the default language if no search request is in place
             // And if only translations should be shown
             if ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
-                $addWhere = (string)$queryBuilder->expr()->orX(
+                $addWhere = '(' . (string)$queryBuilder->expr()->orX(
                     $queryBuilder->expr()->lte($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0),
                     $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0)
-                );
+                ) . ')';
             }
         }
         // Cleaning up:
