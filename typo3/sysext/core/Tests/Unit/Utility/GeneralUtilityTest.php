@@ -28,12 +28,14 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ExtendedSingletonClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMakeInstanceInjectLoggerFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OtherReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\SingletonClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -3665,6 +3667,20 @@ class GeneralUtilityTest extends UnitTestCase
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
         $this->assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
         $this->assertSame($registeredSingletonInstances[$instanceClassName], $instance);
+    }
+
+    /**
+     * @test
+     */
+    public function setSingletonInstanceReturnsFinalClassNameWithOverriddenClass()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][SingletonClassFixture::class]['className'] = ExtendedSingletonClassFixture::class;
+        $anotherInstance = new ExtendedSingletonClassFixture();
+        GeneralUtility::makeInstance(SingletonClassFixture::class);
+        GeneralUtility::setSingletonInstance(SingletonClassFixture::class, $anotherInstance);
+        $result = GeneralUtility::makeInstance(SingletonClassFixture::class);
+        self::assertSame($anotherInstance, $result);
+        self::assertEquals(ExtendedSingletonClassFixture::class, get_class($anotherInstance));
     }
 
     /**
