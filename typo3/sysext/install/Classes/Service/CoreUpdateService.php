@@ -200,6 +200,19 @@ class CoreUpdateService
                     FlashMessage::ERROR
                 ));
             } else {
+                // Check symlink creation
+                $link = Environment::getPublicPath() . '/' . StringUtility::getUniqueId('install-core-update-test-');
+                @symlink($file, $link);
+                if (!is_link($link)) {
+                    $success = false;
+                    $this->messages->enqueue(new FlashMessage(
+                        'Could not create a symbolic link in path "' . Environment::getPublicPath() . '/"!',
+                        'Automatic TYPO3 CMS core update not possible: No symlink creation possible',
+                        FlashMessage::ERROR
+                    ));
+                } else {
+                    unlink($link);
+                }
                 unlink($file);
             }
 
