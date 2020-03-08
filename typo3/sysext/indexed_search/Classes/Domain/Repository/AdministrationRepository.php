@@ -405,6 +405,7 @@ class AdministrationRepository
                 )
             )
             ->groupBy('word')
+            ->orderBy('c', 'desc')
             ->setMaxResults((int)$max);
 
         if (!empty($additionalWhere)) {
@@ -413,6 +414,7 @@ class AdministrationRepository
 
         $result = $queryBuilder->execute();
         $countQueryBuilder = clone $queryBuilder;
+        $countQueryBuilder->resetQueryPart('orderBy');
         $count = (int)$countQueryBuilder
             ->count('uid')
             ->execute()
