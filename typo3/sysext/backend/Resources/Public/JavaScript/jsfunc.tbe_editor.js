@@ -186,6 +186,24 @@ var TBE_EDITOR = {
     if (TBE_EDITOR.doSaveFieldName) {
       document[TBE_EDITOR.formname][TBE_EDITOR.doSaveFieldName].value = 1;
     }
+
+    const elements = [
+      'button[form]',
+      'button[name^="_save"]',
+      'a[data-name^="_save"]',
+      'button[name="CMD"][value^="save"]',
+      'a[data-name="CMD"][data-value^="save"]',
+    ].join(',');
+
+    const button = document.querySelector(elements);
+    if (button !== null) {
+      button.disabled = true;
+
+      TYPO3.Icons.getIcon('spinner-circle-dark', TYPO3.Icons.sizes.small).done(function (markup) {
+        button.querySelector('.t3js-icon').outerHTML = markup;
+      });
+    }
+
     // Set a short timeout to allow other JS processes to complete, in particular those from
     // EXT:backend/Resources/Public/JavaScript/FormEngine.js (reference: http://forge.typo3.org/issues/58755).
     // TODO: This should be solved in a better way when this script is refactored.
