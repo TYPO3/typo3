@@ -51,6 +51,14 @@
                     <match url="^/(typo3|typo3temp|typo3conf|t3lib|tslib|fileadmin|uploads|showpic\.php|favicon\.ico)$" />
                     <action type="None" />
                 </rule>
+                <rule name="TYPO3 - Version Number in File Name (if set)" stopProcessing="true">
+                    <match url="^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$" ignoreCase="false" />
+                    <conditions logicalGrouping="MatchAll">
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+                    </conditions>
+                    <action type="Rewrite" url="{R:1}.{R:3}" />
+                </rule>
                 <rule name="TYPO3 - If the file/directory does not exist => Redirect to index.php." stopProcessing="true">
                     <match url="^.*$" ignoreCase="false" />
                     <conditions logicalGrouping="MatchAll">
