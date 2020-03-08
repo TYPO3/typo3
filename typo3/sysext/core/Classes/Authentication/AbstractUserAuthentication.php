@@ -1033,6 +1033,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
         $this->sessionData = [];
         $this->user = null;
+        if ($this->isCookieSet()) {
+            $this->removeCookie($this->name);
+        }
     }
 
     /**

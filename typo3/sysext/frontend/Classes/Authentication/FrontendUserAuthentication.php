@@ -500,9 +500,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $this->user = null;
         } else {
             parent::performLogoff();
-            if ($this->isCookieSet()) {
-                $this->removeCookie($this->name);
-            }
         }
     }
 
