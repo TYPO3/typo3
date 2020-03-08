@@ -86,9 +86,17 @@ class SystemEnvironmentBuilder
         self::initializeEnvironment($requestType, $scriptPath, $rootPath);
     }
 
+    /**
+     * Some notes:
+     *
+     * HTTP_TYPO3_CONTEXT -> used with Apache suexec support
+     * REDIRECT_TYPO3_CONTEXT -> used under some circumstances when value is set in the webserver and proxying the values to FPM
+     * @return ApplicationContext
+     * @throws \TYPO3\CMS\Core\Exception
+     */
     protected static function createApplicationContext(): ApplicationContext
     {
-        $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
+        $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: (getenv('HTTP_TYPO3_CONTEXT') ?: 'Production'));
         return new ApplicationContext($applicationContext);
     }
 
