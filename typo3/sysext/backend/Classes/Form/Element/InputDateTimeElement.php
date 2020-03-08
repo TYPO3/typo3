@@ -106,8 +106,13 @@ class InputDateTimeElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
+        // Early return for read only fields
         if (isset($config['readOnly']) && $config['readOnly']) {
-            // Early return for read only fields
+            // Ensure dbType values (see DatabaseRowDateTimeFields) are converted to a UNIX timestamp before rendering read-only
+            if (!empty($itemValue) && !MathUtility::canBeInterpretedAsInteger($itemValue)) {
+                $itemValue = (new \DateTime($itemValue))->getTimestamp();
+            }
+            // Format the unix-timestamp to the defined format (date/year etc)
             $itemValue = $this->formatValue($format, $itemValue);
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
