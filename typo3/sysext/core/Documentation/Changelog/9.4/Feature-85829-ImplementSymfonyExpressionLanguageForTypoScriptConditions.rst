@@ -57,7 +57,7 @@ Here are some examples to understand the power of the expression language:
    # request.getQueryParams() does not contain.
    [END]
 
-   [traverse(request.getQueryParams(), 'tx_news_pi/news') > 0]
+   [traverse(request.getQueryParams(), 'tx_news_pi1/news') > 0]
    # This condition matches if current query parameters have tx_news_pi[news] set to a value greater than zero
    [END]
 
@@ -161,7 +161,7 @@ The following functions are available in **any** context:
 |                        |                       | - first parameter is the array to traverse                              |
 |                        |                       | - second parameter is the path to traverse                              |
 |                        |                       | Syntax: <array-key>[/<array-key>]*                                      |
-|                        |                       | Example: `[traverse(request.getQueryParams(), 'tx_news_pi/news') > 0]`  |
+|                        |                       | Example: `[traverse(request.getQueryParams(), 'tx_news_pi1/news') > 0]` |
 +------------------------+-----------------------+-------------------------------------------------------------------------+
 | ip                     | String                | Value or Constraint, Wildcard or RegExp possible                        |
 |                        |                       | special value: devIP (match the devIPMask)                              |
