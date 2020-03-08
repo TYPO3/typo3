@@ -3549,7 +3549,9 @@ class GeneralUtility
     public static function setSingletonInstance($className, SingletonInterface $instance)
     {
         self::checkInstanceClassName($className, $instance);
-        self::$singletonInstances[$className] = $instance;
+        // Check for XCLASS registration (same is done in makeInstance() in order to store the singleton of the final class name)
+        $finalClassName = self::getClassName($className);
+        self::$singletonInstances[$finalClassName] = $instance;
     }
 
     /**
