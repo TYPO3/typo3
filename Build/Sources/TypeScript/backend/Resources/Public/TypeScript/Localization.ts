@@ -107,7 +107,7 @@ class Localization {
               + '<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-exclamation fa-stack-1x"></i></span>'
               + '</div>'
               + '<div class="media-body">'
-              + '<p class="alert-message">' + TYPO3.lang['localize.educate.mixedmode'] + '</p>'
+              + '<p class="alert-message">' + TYPO3.lang['localize.educate.noTranslate'] + '</p>'
               + '</div>'
               + '</div>'
               + '</div>'
