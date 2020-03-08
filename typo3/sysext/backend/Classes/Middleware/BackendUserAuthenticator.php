@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -75,6 +76,11 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $this->setBackendUserAspect($GLOBALS['BE_USER']);
 
         $response = $handler->handle($request);
+
+        // If no backend user is logged-in, the cookie should be removed
+        if (!GeneralUtility::makeInstance(Context::class)->getAspect('backend.user')->isLoggedIn()) {
+            $GLOBALS['BE_USER']->removeCookie($GLOBALS['BE_USER']->name);
+        }
 
         // Additional headers to never cache any PHP request should be sent at any time when
         // accessing the TYPO3 Backend
