@@ -4115,10 +4115,6 @@ class DataHandler implements LoggerAwareInterface
                 if ($table === 'pages') {
                     $this->fixUniqueInSiteForSubpages((int)$uid);
                 }
-                // fixCopyAfterDuplFields
-                if ($origDestPid < 0) {
-                    $this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
-                }
             } elseif ($this->enableLogging) {
                 $destPropArr = $this->getRecordProperties('pages', $destPid);
                 $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page \'%s\' (%s) to inside of its own rootline (at page \'%s\' (%s))', 10, [$propArr['header'], $uid, $destPropArr['header'], $destPid], $propArr['pid']);
@@ -4177,10 +4173,6 @@ class DataHandler implements LoggerAwareInterface
                     $this->fixUniqueInSite($table, (int)$uid);
                     if ($table === 'pages') {
                         $this->fixUniqueInSiteForSubpages((int)$uid);
-                    }
-                    // fixCopyAfterDuplFields
-                    if ($origDestPid < 0) {
-                        $this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
                     }
                 } elseif ($this->enableLogging) {
                     $destPropArr = $this->getRecordProperties('pages', $destPid);
