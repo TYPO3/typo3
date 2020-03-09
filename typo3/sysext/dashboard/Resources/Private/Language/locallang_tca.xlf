@@ -12,9 +12,6 @@
 			<trans-unit id="title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="configuration" xml:space="preserve">
-				<source>Configuration</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
