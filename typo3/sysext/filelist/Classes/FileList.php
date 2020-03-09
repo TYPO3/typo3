@@ -746,7 +746,6 @@ class FileList
                                 $flagIcon = $language['flagIcon'];
                                 if (array_key_exists($languageId, $translations)) {
                                     $title = htmlspecialchars(sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']));
-                                    // @todo the overlay for the flag needs to be added ($flagIcon . '-overlay')
                                     $urlParameters = [
                                         'edit' => [
                                             'sys_file_metadata' => [
