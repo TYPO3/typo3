@@ -131,45 +131,60 @@ class DefaultFactory
         } else {
             // This is when the public path is a subfolder (e.g. public/ or web/)
             $publicPath = substr(Environment::getPublicPath(), strlen(Environment::getProjectPath())+1);
+
+            $publicPathSubStructure = [
+                [
+                    'name' => 'typo3temp',
+                    'type' => DirectoryNode::class,
+                    'targetPermission' => $directoryPermission,
+                    'children' => [
+                        [
+                            'name' => 'index.html',
+                            'type' => FileNode::class,
+                            'targetPermission' => $filePermission,
+                            'targetContent' => '',
+                        ],
+                        $this->getTemporaryAssetsFolderStructure(),
+                    ],
+                ],
+                [
+                    'name' => 'typo3conf',
+                    'type' => DirectoryNode::class,
+                    'targetPermission' => $directoryPermission,
+                    'children' => [
+                        [
+                            'name' => 'ext',
+                            'type' => DirectoryNode::class,
+                            'targetPermission' => $directoryPermission,
+                        ],
+                    ],
+                ],
+                $this->getFileadminStructure(),
+            ];
+
+            // Have a default .htaccess if running apache web server or a default web.config if running IIS
+            if ($this->isApacheServer()) {
+                $publicPathSubStructure[] = [
+                    'name' => '.htaccess',
+                    'type' => FileNode::class,
+                    'targetPermission' => $filePermission,
+                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess',
+                ];
+            } elseif ($this->isMicrosoftIisServer()) {
+                $publicPathSubStructure[] = [
+                    'name' => 'web.config',
+                    'type' => FileNode::class,
+                    'targetPermission' => $filePermission,
+                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-web-config',
+                ];
+            }
+
             $structure = [
                 // Note that root node has no trailing slash like all others
                 'name' => Environment::getProjectPath(),
                 'targetPermission' => $directoryPermission,
                 'children' => [
-                    [
-                        'name' => $publicPath,
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                        'children' => [
-                            [
-                                'name' => 'typo3temp',
-                                'type' => DirectoryNode::class,
-                                'targetPermission' => $directoryPermission,
-                                'children' => [
-                                    [
-                                        'name' => 'index.html',
-                                        'type' => FileNode::class,
-                                        'targetPermission' => $filePermission,
-                                        'targetContent' => '',
-                                    ],
-                                    $this->getTemporaryAssetsFolderStructure(),
-                                ],
-                            ],
-                            [
-                                'name' => 'typo3conf',
-                                'type' => DirectoryNode::class,
-                                'targetPermission' => $directoryPermission,
-                                'children' => [
-                                    [
-                                        'name' => 'ext',
-                                        'type' => DirectoryNode::class,
-                                        'targetPermission' => $directoryPermission,
-                                    ],
-                                ],
-                            ],
-                            $this->getFileadminStructure(),
-                        ]
-                    ],
+                    $this->getPublicStructure($publicPath, $publicPathSubStructure),
                     [
                         'name' => 'var',
                         'type' => DirectoryNode::class,
@@ -205,25 +220,38 @@ class DefaultFactory
                     ]
                 ],
             ];
-
-            // Have a default .htaccess if running apache web server or a default web.config if running IIS
-            if ($this->isApacheServer()) {
-                $structure['children'][0]['children'][] = [
-                    'name' => '.htaccess',
-                    'type' => FileNode::class,
-                    'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess',
-                ];
-            } elseif ($this->isMicrosoftIisServer()) {
-                $structure['children'][0]['children'][] = [
-                    'name' => 'web.config',
-                    'type' => FileNode::class,
-                    'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-web-config',
-                ];
-            }
         }
         return $structure;
+    }
+
+    /**
+     * Get public path structure while resolving nested paths
+     *
+     * @param string $publicPath
+     * @param array $subStructure
+     * @return array
+     */
+    protected function getPublicStructure(string $publicPath, array $subStructure): array
+    {
+        $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
+        $publicPathParts = array_reverse(mb_split('/', $publicPath));
+
+        $lastNode = null;
+        foreach ($publicPathParts as $publicPathPart) {
+            $node = [
+                'name' => $publicPathPart,
+                'type' => DirectoryNode::class,
+                'targetPermission' => $directoryPermission,
+            ];
+            if ($lastNode !== null) {
+                $node['children'][] = $lastNode;
+            } else {
+                $node['children'] = $subStructure;
+            }
+            $lastNode = $node;
+        }
+
+        return $lastNode;
     }
 
     protected function getFileadminStructure(): array
