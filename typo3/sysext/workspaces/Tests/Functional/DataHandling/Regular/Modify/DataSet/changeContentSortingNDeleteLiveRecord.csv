@@ -14,6 +14,6 @@
 ,321,-1,256,1,0,0,0,297,1,4,0,297,0,"Regular Element #1"
 ,322,89,640,1,0,0,0,0,1,3,0,0,297,"[MOVE-TO PLACEHOLDER for #297, WS#1]"
 ,323,-1,384,1,1,321,297,301,1,4,0,301,0,"[Translate to Dansk:] Regular Element #1"
-,324,89,576,1,0,297,0,0,1,3,0,0,301,"[MOVE-TO PLACEHOLDER for #301, WS#1]"
+,324,89,576,1,1,297,0,0,1,3,0,0,301,"[MOVE-TO PLACEHOLDER for #301, WS#1]"
 ,325,-1,448,1,2,321,301,302,1,4,0,302,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-,326,89,544,1,0,297,0,0,1,3,0,0,302,"[MOVE-TO PLACEHOLDER for #302, WS#1]"
+,326,89,544,1,2,297,0,0,1,3,0,0,302,"[MOVE-TO PLACEHOLDER for #302, WS#1]"
