@@ -18,7 +18,7 @@ return [
         'typeicon_classes' => [
             'default' => 'content-dashboard'
         ],
-        'searchFields' => 'identifier,title,configuration'
+        'searchFields' => 'identifier,title'
     ],
     'columns' => [
         'hidden' => [
@@ -74,20 +74,13 @@ return [
                 'max' => 255,
                 'eval' => 'required'
             ]
-        ],
-        'configuration' => [
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:configuration',
-            'config' => [
-                'type' => 'text',
-                'readOnly' => true,
-            ],
         ]
     ],
     'types' => [
         '1' => [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    identifier,title,configuration,
+                    identifier,title,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     hidden, --palette--;;timeRestriction,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
