@@ -44,6 +44,24 @@ class AssetDataProvider
                     'js_prio' => '',
                 ]
             ],
+            '1 file from external source' => [
+                [
+                    ['file1', 'https://typo3.org/foo.ext', [], []]
+                ],
+                [
+                    'file1' => [
+                        'source' => 'https://typo3.org/foo.ext',
+                        'attributes' => [],
+                        'options' => [],
+                    ]
+                ],
+                [
+                    'css_no_prio' => '<link href="https://typo3.org/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_prio' => '',
+                    'js_no_prio' => '<script src="https://typo3.org/foo.ext" type="text/javascript"></script>',
+                    'js_prio' => '',
+                ]
+            ],
             '2 files' => [
                 [
                     ['file1', 'fileadmin/foo.ext', [], []],
