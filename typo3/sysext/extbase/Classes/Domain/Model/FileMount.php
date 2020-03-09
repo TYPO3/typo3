@@ -18,9 +18,19 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * This model represents a file mount.
+ *
+ * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
 class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    public function __construct()
+    {
+        trigger_error(
+            __CLASS__ . ' is deprecated since TYPO3 10.4 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+    }
+
     /**
      * Title of the file mount.
      *

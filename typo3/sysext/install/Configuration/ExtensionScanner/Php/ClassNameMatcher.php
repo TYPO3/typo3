@@ -1372,4 +1372,9 @@ return [
             'Deprecation-90625-ExtbaseSignalSlotDispatcher.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Domain\Model\FileMount' => [
+        'restFiles' => [
+            'Deprecation-90686-DeprecateModelFileMount.rst',
+        ],
+    ],
 ];
