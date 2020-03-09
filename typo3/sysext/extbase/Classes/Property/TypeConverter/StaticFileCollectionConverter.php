@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\FileCollection.
  *
  * @internal experimental! This class is experimental and subject to change!
+ * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
 class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter
 {

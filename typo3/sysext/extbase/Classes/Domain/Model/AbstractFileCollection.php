@@ -18,9 +18,18 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * A file object (File Abstraction Layer)
  *
  * @internal experimental! This class is experimental and subject to change!
+ * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
 abstract class AbstractFileCollection extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    public function __construct()
+    {
+        trigger_error(
+            __CLASS__ . ' is deprecated since TYPO3 10.4 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+    }
+
     /**
      * @var \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
      */

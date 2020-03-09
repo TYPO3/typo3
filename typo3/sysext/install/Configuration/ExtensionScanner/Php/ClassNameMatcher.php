@@ -1377,4 +1377,34 @@ return [
             'Deprecation-90686-DeprecateModelFileMount.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection' => [
+        'restFiles' => [
+            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection' => [
+        'restFiles' => [
+            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection' => [
+        'restFiles' => [
+            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter' => [
+        'restFiles' => [
+            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter' => [
+        'restFiles' => [
+            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter' => [
+        'restFiles' => [
+            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+        ],
+    ],
 ];
