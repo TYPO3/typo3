@@ -14,9 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -91,8 +90,8 @@ class LocalesTest extends UnitTestCase
      */
     public function setSystemLocaleFromSiteLanguageWithoutLocaleDoesNotSetLocale(): void
     {
-        $language = new SiteLanguage(0, '', new Uri('/'), []);
-        $result = Locales::setSystemLocaleFromSiteLanguage($language);
+        $site = $this->createSiteWithDefaultLanguage('');
+        $result = Locales::setSystemLocaleFromSiteLanguage($site->getLanguageById(0));
         self::assertFalse($result);
         $currentLocale = setlocale(LC_COLLATE, 0);
         // Check that the locale was not overridden
@@ -105,8 +104,8 @@ class LocalesTest extends UnitTestCase
     public function setSystemLocaleFromSiteLanguageWithProperLocaleSetsLocale(): void
     {
         $locale = 'en_US';
-        $language = new SiteLanguage(0, $locale, new Uri('/'), []);
-        $result = Locales::setSystemLocaleFromSiteLanguage($language);
+        $site = $this->createSiteWithDefaultLanguage($locale);
+        $result = Locales::setSystemLocaleFromSiteLanguage($site->getLanguageById(0));
         self::assertTrue($result);
         $currentLocale = setlocale(LC_COLLATE, 0);
         // Check that the locale was overridden
@@ -120,11 +119,27 @@ class LocalesTest extends UnitTestCase
     public function setSystemLocaleFromSiteLanguageWithInvalidLocaleDoesNotSetLocale(): void
     {
         $locale = 'af_EUR';
-        $language = new SiteLanguage(0, $locale, new Uri('/'), []);
-        $result = Locales::setSystemLocaleFromSiteLanguage($language);
+        $site = $this->createSiteWithDefaultLanguage($locale);
+        $result = Locales::setSystemLocaleFromSiteLanguage($site->getLanguageById(0));
         self::assertFalse($result);
         $currentLocale = setlocale(LC_COLLATE, 0);
         // Check that the locale was not overridden
         self::assertEquals($this->originalLocale, $currentLocale);
+    }
+
+    private function createSiteWithDefaultLanguage(string $locale): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'locale' => $locale,
+                    'base' => '/',
+                ],
+            ]
+        ]);
     }
 }

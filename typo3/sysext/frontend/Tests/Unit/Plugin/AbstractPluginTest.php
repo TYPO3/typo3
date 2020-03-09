@@ -16,8 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -51,7 +50,9 @@ class AbstractPluginTest extends UnitTestCase
 
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->cObjectDepthCounter = 100;
-        $tsfe->getLanguage(Argument::cetera())->willReturn(new SiteLanguage(0, 'en_US', new Uri('/'), ['typo3Language' => 'en']));
+        $tsfe->getLanguage(Argument::cetera())->willReturn(
+            $this->createSiteWithDefaultLanguage()->getLanguageById(0)
+        );
 
         $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
@@ -274,5 +275,22 @@ class AbstractPluginTest extends UnitTestCase
         self::assertSame($expected, $actualReturnValue);
 
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults']);
+    }
+
+    private function createSiteWithDefaultLanguage(): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                [
+                    'base' => '/',
+                    'languageId' => 0,
+                    'locale' => 'en_US',
+                    'typo3Language' => 'en'
+                ],
+            ]
+        ]);
     }
 }

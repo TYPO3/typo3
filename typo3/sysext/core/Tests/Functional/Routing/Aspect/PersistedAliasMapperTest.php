@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Routing\Aspect;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedAliasMapper;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -59,25 +59,48 @@ class PersistedAliasMapperTest extends FunctionalTestCase
             $this->setUpDatabase();
         });
 
+        $site = new Site('acme-inc', 1000, [
+            'identifier' => 'acme-inc',
+            'rootPageId' => 1000,
+            'base' => 'https://acme.com/',
+            'languages' => [
+                [
+                    'languageId' => 3,
+                    'base' => '/es-es/',
+                    'locale' => 'es_ES.UTF-8',
+                    'fallbackType' => 'fallback',
+                    'fallbacks' => [0],
+                    'title' => 'Spanish',
+                ],
+                [
+                    'languageId' => 2,
+                    'base' => '/fr-ca/',
+                    'locale' => 'fr_CA.UTF-8',
+                    'fallbackType' => 'fallback',
+                    'fallbacks' => [1, 0],
+                    'title' => 'Franco-Canadian',
+                ],
+                [
+                    'languageId' => 1,
+                    'base' => '/fr-fr/',
+                    'locale' => 'fr_FR.UTF-8',
+                    'fallbackType' => 'fallback',
+                    'fallbacks' => [0],
+                    'French',
+                ],
+                [
+                    'languageId' => 0,
+                    'base' => 'en_US.UTF-8',
+                    'locale' => '/en-us/',
+                ],
+            ]
+        ]);
         $this->languages = [
-            'es-es' => new SiteLanguage(3, 'es_ES.UTF-8', new Uri('/es-es/'), [
-                'fallbackType' => 'fallback',
-                'fallbacks' => [0],
-                'title' => 'Spanish',
-            ]),
-            'fr-ca' => new SiteLanguage(2, 'fr_CA.UTF-8', new Uri('/fr-ca/'), [
-                'fallbackType' => 'fallback',
-                'fallbacks' => [1, 0],
-                'title' => 'Franco-Canadian',
-            ]),
-            'fr-fr' => new SiteLanguage(1, 'fr_FR.UTF-8', new Uri('/fr-fr/'), [
-                'fallbackType' => 'fallback',
-                'fallbacks' => [0],
-                'French',
-            ]),
-            'default' => new SiteLanguage(0, 'en_US.UTF-8', new Uri('/en-us/'), []),
+            'es-es' => $site->getLanguageById(3),
+            'fr-ca' => $site->getLanguageById(2),
+            'fr-fr' => $site->getLanguageById(1),
+            'default' => $site->getLanguageById(0),
         ];
-
         $this->subject = new PersistedAliasMapper(self::ASPECT_CONFIGURATION);
     }
 

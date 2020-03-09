@@ -21,12 +21,10 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -127,8 +125,12 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     public function localizationReturnsUnchangedStringIfNotLocallangLabel()
     {
         $string = StringUtility::getUniqueId();
+        $site = $this->createSiteWithDefaultLanguage([
+            'locale' => 'fr',
+            'typo3Language' => 'fr',
+        ]);
         $this->subject->page = [];
-        $this->subject->language = new SiteLanguage(0, 'fr', new Uri('/'), ['typo3Language' => 'fr']);
+        $this->subject->_set('language', $site->getLanguageById(0));
         $this->subject->_call('setOutputLanguage');
         self::assertEquals($string, $this->subject->sL($string));
     }
@@ -514,13 +516,15 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
-        $site = new Site('test', 13, ['base' => 'https://www.example.com/']);
-        $language = new SiteLanguage(0, 'fr', new Uri('/'), ['typo3Language' => 'fr-test']);
+        $site = $this->createSiteWithDefaultLanguage([
+            'locale' => 'fr',
+            'typo3Language' => 'fr-test',
+        ]);
         // Constructor calling initPageRenderer()
         new TypoScriptFrontendController(
             new Context(),
             $site,
-            $language,
+            $site->getLanguageById(0),
             new PageArguments(13, '0', [])
         );
         // since PageRenderer is a singleton, this can be queried via the makeInstance call
@@ -537,8 +541,10 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
-        $site = new Site('test', 13, ['base' => 'https://www.example.com/']);
-        $language = new SiteLanguage(0, 'fr', new Uri('/'), ['typo3Language' => 'fr']);
+        $site = $this->createSiteWithDefaultLanguage([
+            'locale' => 'fr',
+            'typo3Language' => 'fr',
+        ]);
         // Constructor calling setOutputLanguage()
         $subject = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
@@ -546,12 +552,30 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             [
                 new Context(),
                 $site,
-                $language,
+                $site->getLanguageById(0),
                 new PageArguments(13, '0', [])
             ]
         );
         $languageService = $subject->_get('languageService');
         // since PageRenderer is a singleton, this can be queried via the makeInstance call
         self::assertEquals('fr', $languageService->lang);
+    }
+
+    private function createSiteWithDefaultLanguage(array $languageConfiguration): Site
+    {
+        return new Site('test', 13, [
+            'identifier' => 'test',
+            'rootPageId' => 13,
+            'base' => 'https://www.example.com/',
+            'languages' => [
+                array_merge(
+                    $languageConfiguration,
+                    [
+                        'languageId' => 0,
+                        'base' => '/',
+                    ]
+                )
+            ]
+        ]);
     }
 }

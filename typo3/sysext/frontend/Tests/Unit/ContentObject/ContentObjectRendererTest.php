@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -139,6 +138,14 @@ class ContentObjectRendererTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $site = $this->createSiteWithLanguage([
+            'base' => '/',
+            'languageId' => 2,
+            'locale' => 'en_UK',
+            'typo3Language' => 'default',
+        ]);
+
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
@@ -163,7 +170,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock->config = [];
         $this->frontendControllerMock->page = [];
         $this->frontendControllerMock->sys_page = $pageRepositoryMock;
-        $this->frontendControllerMock->_set('language', new SiteLanguage(2, 'en_UK', new Uri(), ['typo3Language' => 'default']));
+        $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
 
         $this->cacheManager = $this->prophesize(CacheManager::class);
@@ -1743,10 +1750,14 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSiteLanguage(): void
     {
-        $language = new SiteLanguage(1, 'de-de', new Uri('/'), [
+        $site = $this->createSiteWithLanguage([
+            'base' => '/',
+            'languageId' => 1,
+            'locale' => 'de_DE',
             'title' => 'languageTitle',
             'navigationTitle' => 'German'
         ]);
+        $language = $site->getLanguageById(1);
         $this->frontendControllerMock->_set('language', $language);
         self::assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
     }
@@ -6745,8 +6756,13 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_langViaSiteLanguage(string $expected, string $input, array $conf, string $language): void
     {
-        $siteLanguage = new SiteLanguage(2, 'en_UK', new Uri(), ['typo3Language' => $language]);
-        $this->frontendControllerMock->_set('language', $siteLanguage);
+        $site = $this->createSiteWithLanguage([
+            'base' => '/',
+            'languageId' => 2,
+            'locale' => 'en_UK',
+            'typo3Language' => $language,
+        ]);
+        $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         self::assertSame(
             $expected,
             $this->subject->stdWrap_lang($input, $conf)
@@ -8715,4 +8731,25 @@ class ContentObjectRendererTest extends UnitTestCase
     /***************************************************************************
      * End: Mixed tests
      ***************************************************************************/
+
+    /**
+     * @param array $languageConfiguration
+     * @return Site
+     */
+    private function createSiteWithLanguage(array $languageConfiguration): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                array_merge(
+                    $languageConfiguration,
+                    [
+                        'base' => '/',
+                    ]
+                )
+            ]
+        ]);
+    }
 }

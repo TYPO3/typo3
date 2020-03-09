@@ -19,9 +19,8 @@ use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -233,7 +232,7 @@ class RequestHandlerTest extends UnitTestCase
             'content' => '10'
         ];
 
-        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
+        $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -272,7 +271,7 @@ class RequestHandlerTest extends UnitTestCase
      */
     public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags)
     {
-        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
+        $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -315,7 +314,7 @@ class RequestHandlerTest extends UnitTestCase
             'custom:key' => '',
         ];
 
-        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
+        $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -414,7 +413,7 @@ class RequestHandlerTest extends UnitTestCase
      */
     public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags)
     {
-        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
+        $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -494,5 +493,21 @@ class RequestHandlerTest extends UnitTestCase
         $subject->_call('resetGlobalsToCurrentRequest', $request);
         self::assertEquals($_GET, $modifiedGetVars);
         self::assertEquals($_POST, $modifiedPostVars);
+    }
+
+    private function createSiteWithLanguage(): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                [
+                    'base' => '/',
+                    'languageId' => 3,
+                    'locale' => 'fr_FR',
+                ],
+            ]
+        ]);
     }
 }
