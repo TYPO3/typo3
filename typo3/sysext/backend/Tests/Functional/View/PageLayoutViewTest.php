@@ -18,8 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -41,21 +40,39 @@ class PageLayoutViewTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $this->subject = $this->getAccessibleMock(PageLayoutView::class, ['dummy']);
-        $this->subject->_set('siteLanguages', [
-            0 => new SiteLanguage(0, '', new Uri('/'), [
-                'title' => 'default',
-            ]),
-            1 => new SiteLanguage(1, '', new Uri('/'), [
-                'title' => 'german',
-            ]),
-            2 => new SiteLanguage(2, '', new Uri('/'), [
-                'title' => 'french',
-            ]),
-            3 => new SiteLanguage(3, '', new Uri('/'), [
-                'title' => 'polish',
-            ]),
+        $site = new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'locale' => '',
+                    'base' => '/',
+                    'title' => 'default',
+                ],
+                [
+                    'languageId' => 1,
+                    'locale' => '',
+                    'base' => '/',
+                    'title' => 'german',
+                ],
+                [
+                    'languageId' => 2,
+                    'locale' => '',
+                    'base' => '/',
+                    'title' => 'french',
+                ],
+                [
+                    'languageId' => 3,
+                    'locale' => '',
+                    'base' => '/',
+                    'title' => 'polish',
+                ],
+            ],
         ]);
+        $this->subject = $this->getAccessibleMock(PageLayoutView::class, ['dummy']);
+        $this->subject->_set('siteLanguages', $site->getLanguages());
     }
 
     /**

@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -1757,12 +1756,16 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSiteLanguage(): void
     {
-        $site = new SiteLanguage(1, 'de-de', new Uri('/'), [
+        $site = $this->createSiteWithLanguage([
+            'base' => '/',
+            'languageId' => 1,
+            'locale' => 'de_DE',
             'title' => 'languageTitle',
             'navigationTitle' => 'German'
         ]);
+        $language = $site->getLanguageById(1);
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $serverRequest->getAttribute('language')->willReturn($site);
+        $serverRequest->getAttribute('language')->willReturn($language);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
         $this->assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
     }
@@ -6401,10 +6404,16 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_langViaSiteLanguage(string $expected, string $input, array $conf, string $language): void
     {
         if ($language) {
+            $site = $this->createSiteWithLanguage([
+                'base' => '/',
+                'languageId' => 2,
+                'locale' => 'en_UK',
+                'typo3Language' => $language,
+            ]);
             $request = new ServerRequest();
             $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute(
                 'language',
-                new SiteLanguage(2, 'en_UK', new Uri(), ['typo3Language' => $language])
+                $site->getLanguageById(2)
             );
         }
         $this->assertSame(
@@ -8373,4 +8382,25 @@ class ContentObjectRendererTest extends UnitTestCase
     /***************************************************************************
      * End: Mixed tests
      ***************************************************************************/
+
+    /**
+     * @param array $languageConfiguration
+     * @return Site
+     */
+    private function createSiteWithLanguage(array $languageConfiguration): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                array_merge(
+                    $languageConfiguration,
+                    [
+                        'base' => '/',
+                    ]
+                )
+            ]
+        ]);
+    }
 }
