@@ -43,6 +43,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayGlobalMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassConstantMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassNameMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstantMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\FunctionCallMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\InterfaceMethodChangedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodAnnotationMatcher;
@@ -128,6 +129,10 @@ class UpgradeController extends AbstractController
         [
             'class' => ConstantMatcher::class,
             'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ConstantMatcher.php',
+        ],
+        [
+            'class' => ConstructorArgumentMatcher::class,
+            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ConstructorArgumentMatcher.php',
         ],
         [
             'class' => PropertyAnnotationMatcher::class,
@@ -685,11 +690,17 @@ class UpgradeController extends AbstractController
         // Parse PHP file to AST and traverse tree calling visitors
         $statements = $parser->parse(file_get_contents($absoluteFilePath));
 
-        $traverser = new NodeTraverser();
         // The built in NameResolver translates class names shortened with 'use' to fully qualified
         // class names at all places. Incredibly useful for us and added as first visitor.
+        // IMPORTANT: first process completely to resolve fully qualified names of arguments
+        // (otherwise GeneratorClassesResolver will NOT get reliable results)
+        $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver());
-        // Understand makeInstance('My\\Package\\Foo\\Bar') as fqdn class name in first argument
+        $statements = $traverser->traverse($statements);
+
+        // IMPORTANT: second process to actually work on the pre-resolved statements
+        $traverser = new NodeTraverser();
+        // Understand GeneralUtility::makeInstance('My\\Package\\Foo\\Bar') as fqdn class name in first argument
         $traverser->addVisitor(new GeneratorClassesResolver());
         // Count ignored lines, effective code lines, ...
         $statistics = new CodeStatistics();

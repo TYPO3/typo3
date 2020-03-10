@@ -16,10 +16,15 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php;
  */
 
 use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 
 /**
  * Create a fully qualified class name object from first argument of
@@ -42,13 +47,34 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
     {
         if ($node instanceof StaticCall
             && $node->class instanceof FullyQualified
-            && $node->class->toString() === \TYPO3\CMS\Core\Utility\GeneralUtility::class
+            && $node->class->toString() === GeneralUtility::class
             && $node->name->name === 'makeInstance'
             && isset($node->args[0]->value)
-            && $node->args[0]->value instanceof String_
+            && $node->args[0]->value instanceof Expr
         ) {
-            $newSubNode = new FullyQualified($node->args[0]->value->value, $node->args[0]->value->getAttributes());
-            $node->args[0]->value = $newSubNode;
+            if (null === $className = $this->resolveClassName($node->args[0]->value)) {
+                return;
+            }
+            $node->args[0]->value = $className;
+            $node->setAttribute(AbstractCoreMatcher::NODE_RESOLVED_AS, new New_(
+                $className,
+                // remove first argument (class name)
+                array_slice($node->args, 1),
+                $node->getAttributes()
+            ));
         }
+    }
+
+    protected function resolveClassName(Expr $value): ?FullyQualified
+    {
+        if ($value instanceof String_) {
+            // 'TYPO3\\CMS\\ClassName'
+            return new FullyQualified($value->value, $value->getAttributes());
+        }
+        if ($value instanceof ClassConstFetch && $value->class instanceof FullyQualified) {
+            // \TYPO3\CMS\ClassName::class
+            return $value->class;
+        }
+        return null;
     }
 }

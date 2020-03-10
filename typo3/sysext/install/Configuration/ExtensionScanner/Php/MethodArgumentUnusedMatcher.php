@@ -34,11 +34,4 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
-    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct' => [
-        'unusedArgumentNumbers' => [ 4 ],
-        'restFiles' => [
-            'Deprecation-86002-TSFEConstructorWithNo_cacheArgument.rst',
-            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
-        ],
-    ],
 ];
