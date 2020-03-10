@@ -33,10 +33,4 @@ return [
             'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
         ],
     ],
-    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct' => [
-        'unusedArgumentNumbers' => [ 4 ],
-        'restFiles' => [
-            'Deprecation-86002-TSFEConstructorWithNo_cacheArgument.rst',
-        ],
-    ],
 ];
