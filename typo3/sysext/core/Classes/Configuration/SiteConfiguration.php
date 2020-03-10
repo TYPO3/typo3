@@ -105,7 +105,7 @@ class SiteConfiguration implements SingletonInterface
                     'title' => 'English',
                     'enabled' => true,
                     'languageId' => 0,
-                    'base' => '/en/',
+                    'base' => '/',
                     'typo3Language' => 'default',
                     'locale' => 'en_US.UTF-8',
                     'iso-639-1' => 'en',
