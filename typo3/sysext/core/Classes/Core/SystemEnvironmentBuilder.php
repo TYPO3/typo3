@@ -50,21 +50,6 @@ class SystemEnvironmentBuilder
     const REQUESTTYPE_INSTALL = 16;
 
     /**
-     * A list of supported CGI server APIs
-     * NOTICE: This is a duplicate of the SAME array in GeneralUtility!
-     *         It is duplicated here as this information is needed early in bootstrap
-     *         and GeneralUtility is not available yet.
-     * @var array
-     */
-    protected static $supportedCgiServerApis = [
-        'fpm-fcgi',
-        'cgi',
-        'isapi',
-        'cgi-fcgi',
-        'srv', // HHVM with fastcgi
-    ];
-
-    /**
      * Run base setup.
      * This entry method is used in all scopes (FE, BE, Install Tool and CLI)
      *
@@ -314,7 +299,7 @@ class SystemEnvironmentBuilder
     protected static function getPathThisScriptNonCli()
     {
         $cgiPath = $_SERVER['ORIG_PATH_TRANSLATED'] ?? $_SERVER['PATH_TRANSLATED'] ?? '';
-        if ($cgiPath && in_array(PHP_SAPI, self::$supportedCgiServerApis, true)) {
+        if ($cgiPath && Environment::isRunningOnCgiServer()) {
             return $cgiPath;
         }
         return $_SERVER['ORIG_SCRIPT_FILENAME'] ?? $_SERVER['SCRIPT_FILENAME'];

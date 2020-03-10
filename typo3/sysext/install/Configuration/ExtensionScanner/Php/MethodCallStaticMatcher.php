@@ -966,4 +966,11 @@ return [
             'Deprecation-90260-ResourceFactorygetInstancePseudo-factory.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::isRunningOnCgiServerApi' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-90800-GeneralUtilityisRunningOnCgiServerApi.rst',
+        ],
+    ],
 ];

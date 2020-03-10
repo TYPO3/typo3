@@ -90,19 +90,6 @@ class GeneralUtility
     protected static $applicationContext;
 
     /**
-     * A list of supported CGI server APIs
-     * NOTICE: This is a duplicate of the SAME array in SystemEnvironmentBuilder
-     * @var array
-     */
-    protected static $supportedCgiServerApis = [
-        'fpm-fcgi',
-        'cgi',
-        'isapi',
-        'cgi-fcgi',
-        'srv', // HHVM with fastcgi
-    ];
-
-    /**
      * @var array
      */
     protected static $indpEnvCache = [];
@@ -2647,7 +2634,7 @@ class GeneralUtility
         $retVal = '';
         switch ((string)$getEnvName) {
             case 'SCRIPT_NAME':
-                $retVal = self::isRunningOnCgiServerApi()
+                $retVal = Environment::isRunningOnCgiServer()
                     && (($_SERVER['ORIG_PATH_INFO'] ?? false) ?: ($_SERVER['PATH_INFO'] ?? false))
                         ? (($_SERVER['ORIG_PATH_INFO'] ?? '') ?: ($_SERVER['PATH_INFO'] ?? ''))
                         : (($_SERVER['ORIG_SCRIPT_NAME'] ?? '') ?: ($_SERVER['SCRIPT_NAME'] ?? ''));
@@ -2695,7 +2682,7 @@ class GeneralUtility
                 // Right now strcmp($_SERVER['PATH_INFO'], GeneralUtility::getIndpEnv('SCRIPT_NAME')) will always
                 // return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO
                 // because of PHP_SAPI=='cgi' (see above)
-                if (!self::isRunningOnCgiServerApi()) {
+                if (!Environment::isRunningOnCgiServer()) {
                     $retVal = $_SERVER['PATH_INFO'];
                 }
                 break;
@@ -3828,10 +3815,12 @@ class GeneralUtility
     /**
      * Check if the current request is running on a CGI server API
      * @return bool
+     * @deprecated will be removed in TYPO3 v11.0. Use Environment::isRunningOnCgiServer() instead.
      */
     public static function isRunningOnCgiServerApi()
     {
-        return in_array(PHP_SAPI, self::$supportedCgiServerApis, true);
+        trigger_error('GeneralUtility::isRunningOnCgiServerApi() will be removed in TYPO3 v11.0. Use "Environment::isRunningOnCgiServer()" instead.', E_USER_DEPRECATED);
+        return Environment::isRunningOnCgiServer();
     }
 
     /**

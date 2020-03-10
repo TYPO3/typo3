@@ -71,7 +71,7 @@ class EnvironmentController extends AbstractController
     {
         $view = $this->initializeStandaloneView($request, 'Environment/SystemInformation.html');
         $view->assignMultiple([
-            'systemInformationCgiDetected' => GeneralUtility::isRunningOnCgiServerApi(),
+            'systemInformationCgiDetected' => Environment::isRunningOnCgiServer(),
             'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
             'systemInformationOperatingSystem' => Environment::isWindows() ? 'Windows' : 'Unix',
             'systemInformationApplicationContext' => $this->getApplicationContextInformation(),
