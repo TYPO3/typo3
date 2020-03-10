@@ -1,0 +1,15 @@
+<f:layout name="SystemEmail" />
+<f:section name="Title">Scheduler Test Task</f:section>
+<f:section name="Main">
+    <strong>UID:</strong> {data.uid}<br>
+    <strong>Sitename:</strong> {typo3.sitename}<br>
+    <strong>Site:</strong> {data.site}<br>
+    <strong>Called by:</strong> {data.calledBy}<br>
+    <strong>Tstamp:</strong> {f:format.date(format:'Y-m-d H:i:s',date:data.tstamp)} [{data.tstamp}]<br>
+    <strong>maxLifetime:</strong> {data.maxLifetime}<br>
+    <strong>Start:</strong> {f:format.date(format:'Y-m-d H:i:s', date:exec.start)} [{exec.start}]<br>
+    <strong>End:</strong> <f:if condition="{exec.end}"><f:then>{f:format.date(format:'Y-m-d H:i:s', date:exec.end)} [{exec.end}]</f:then><f:else>-</f:else></f:if><br>
+    <strong>Interval:</strong> {exec.interval}<br>
+    <strong>multiple:</strong> {f:if(condition:exec.multiple,then:'yes',else:'no')}<br>
+    <strong>cronCmd:</strong> {f:if(condition:exec.cronCmd,then:cronCmd,else:'not used')}
+</f:section>
