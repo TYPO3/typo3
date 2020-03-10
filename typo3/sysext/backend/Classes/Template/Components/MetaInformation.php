@@ -211,7 +211,9 @@ class MetaInformation
                         Icon::SIZE_SMALL
                     )->render() . '</span>';
                 }
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'sys_file', $pageRecord['combined_identifier']);
+                $tableName = ($resourceObject->getIdentifier() === $resourceObject->getStorage()->getRootLevelFolder()->getIdentifier())
+                    ? 'sys_filemounts' : 'sys_file';
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, $tableName, $pageRecord['combined_identifier']);
             } catch (ResourceDoesNotExistException $e) {
                 $theIcon = '';
             }
