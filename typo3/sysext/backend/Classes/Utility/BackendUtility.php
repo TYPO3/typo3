@@ -1742,13 +1742,13 @@ class BackendUtility
                                 ksort($mmlA);
                                 $l = implode('; ', $mmlA);
                             } else {
-                                $l = 'N/A';
+                                $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                             }
                         } else {
-                            $l = 'N/A';
+                            $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                         }
                     } else {
-                        $l = 'N/A';
+                        $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                     }
                 } else {
                     $columnTsConfig = [];
@@ -1902,13 +1902,13 @@ class BackendUtility
                                     ksort($mmlA);
                                     $l = implode('; ', $mmlA);
                                 } else {
-                                    $l = 'N/A';
+                                    $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                                 }
                             } else {
-                                $l = 'N/A';
+                                $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                             }
                         } else {
-                            $l = 'N/A';
+                            $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                         }
                     } else {
                         $finalValues = [];
@@ -2028,7 +2028,7 @@ class BackendUtility
                 if ($defaultPassthrough) {
                     $l = $value;
                 } elseif (isset($theColConf['MM'])) {
-                    $l = 'N/A';
+                    $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                 } elseif ($value) {
                     $l = GeneralUtility::fixed_lgd_cs(strip_tags($value), 200);
                 }

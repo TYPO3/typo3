@@ -201,6 +201,9 @@
 			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>
 			</trans-unit>
+			<trans-unit id="notAvailableAbbreviation" resname="notAvailableAbbreviation">
+				<source>N/A</source>
+			</trans-unit>
 			<trans-unit id="pleaseConfirm" resname="pleaseConfirm">
 				<source>Please confirm</source>
 			</trans-unit>
