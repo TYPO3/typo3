@@ -609,10 +609,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
                     $sortingKey = pathinfo($entryArray['name'], PATHINFO_EXTENSION);
                     break;
                 case 'tstamp':
-                    $sortingKey = '0';
-                    if ($entryArray['type'] === 'file') {
-                        $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'mtime');
-                    }
+                    $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'mtime');
                     // Add a character for a natural order sorting
                     $sortingKey .= 't';
                     break;
