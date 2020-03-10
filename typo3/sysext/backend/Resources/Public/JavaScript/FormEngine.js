@@ -600,6 +600,10 @@ define(['jquery',
     });
 
     document.editform.addEventListener('submit', function () {
+      if (document.editform.closeDoc.value) {
+        return;
+      }
+
       const elements = [
         'button[form]',
         'button[name^="_save"]',
