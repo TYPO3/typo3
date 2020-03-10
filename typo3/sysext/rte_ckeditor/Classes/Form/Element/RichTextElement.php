@@ -236,6 +236,15 @@ class RichTextElement extends AbstractFormElement
                             FormEngine.Validation.validate();
                             FormEngine.Validation.markFieldAsChanged($(\'#' . $fieldId . '\'));
                         });
+                        CKEDITOR.instances["' . $fieldId . '"].on(\'mode\', function() {
+                            // detect field changes in source mode
+                            if (this.mode === \'source\') {
+                                var sourceArea = CKEDITOR.instances["' . $fieldId . '"].editable();
+                                sourceArea.attachListener(sourceArea, \'change\', function() {
+                                    FormEngine.Validation.markFieldAsChanged($(\'#' . $fieldId . '\'));
+                                });
+                            }
+                        });
                         $(document).on(\'inline:sorting-changed\', function() {
                             CKEDITOR.instances["' . $fieldId . '"].destroy();
                             CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
