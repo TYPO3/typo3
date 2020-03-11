@@ -7,6 +7,27 @@
 
 <f:if condition="{pages}">
     <f:then>
+        <f:if condition="{duplicatedEntryPoints}">
+            <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints')}" state="1">
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints.listing" />
+                <ul>
+                <f:for each="{duplicatedEntryPoints}" key="item" as="schemes">
+                    <li>
+                        <strong>{item}</strong>
+                        <f:if condition="{schemes}">
+                            <ul>
+                                <f:for each="{schemes}" key="schema" as="count">
+                                    <li>
+                                        {schema} ({count})
+                                    </li>
+                                </f:for>
+                            </ul>
+                        </f:if>
+                    </li>
+                </f:for>
+                </ul>
+            </f:be.infobox>
+        </f:if>
         <div class="table-fit">
             <table class="table table-striped table-hover table-condensed">
                 <thead>

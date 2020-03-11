@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -122,9 +123,11 @@ class SiteConfigurationController
                 $unassignedSites[] = $site;
             }
         }
+
         $this->view->assignMultiple([
             'pages' => $pages,
-            'unassignedSites' => $unassignedSites
+            'unassignedSites' => $unassignedSites,
+            'duplicatedEntryPoints' => $this->getDuplicatedEntryPoints($allSites, $pages),
         ]);
     }
 
@@ -660,6 +663,38 @@ class SiteConfigurationController
             $pages[(int)$row['uid']] = $row;
         }
         return $pages;
+    }
+
+    /**
+     * Get all entry duplicates which are used multiple times
+     *
+     * @param Site[] $allSites
+     * @param array $pages
+     * @return array
+     */
+    protected function getDuplicatedEntryPoints(array $allSites, array $pages): array
+    {
+        $duplicatedEntryPoints = [];
+
+        foreach ($allSites as $identifier => $site) {
+            if (!isset($pages[$site->getRootPageId()])) {
+                continue;
+            }
+            foreach ($site->getAllLanguages() as $language) {
+                $base = $language->getBase();
+                $entryPoint = rtrim((string)$language->getBase(), '/');
+                $scheme = $base->getScheme() ? $base->getScheme() . '://' : '//';
+                $entryPointWithoutScheme = str_replace($scheme, '', $entryPoint);
+                if (!isset($duplicatedEntryPoints[$entryPointWithoutScheme][$entryPoint])) {
+                    $duplicatedEntryPoints[$entryPointWithoutScheme][$entryPoint] = 1;
+                } else {
+                    $duplicatedEntryPoints[$entryPointWithoutScheme][$entryPoint]++;
+                }
+            }
+        }
+        return array_filter($duplicatedEntryPoints, static function (array $variants): bool {
+            return count($variants) > 1 || reset($variants) > 1;
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
