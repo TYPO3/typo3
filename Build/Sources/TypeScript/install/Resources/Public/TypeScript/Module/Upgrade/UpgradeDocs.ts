@@ -20,6 +20,7 @@ import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Router = require('../../Router');
+import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
 
 /**
  * Module: TYPO3/CMS/Install/Module/UpgradeDocs
@@ -75,10 +76,6 @@ class UpgradeDocs extends AbstractInteractableModule {
         return jQuery(elem).text().toUpperCase().includes(arg.toUpperCase());
       };
     });
-
-    const searchInput = <HTMLInputElement>currentModal.find(this.selectorFulltextSearch).get(0);
-    searchInput.clearable();
-    searchInput.focus();
   }
 
   private getContent(): void {
@@ -148,13 +145,18 @@ class UpgradeDocs extends AbstractInteractableModule {
   private initializeFullTextSearch(): void {
     this.fulltextSearchField = this.findInModal(this.selectorFulltextSearch);
     const searchInput = <HTMLInputElement>this.fulltextSearchField.get(0);
-    searchInput.clearable();
+    searchInput.clearable({
+      onClear: (): void => {
+        this.combinedFilterSearch();
+      }
+    });
     searchInput.focus();
 
     this.initializeChosenSelector();
-    this.fulltextSearchField.on('keyup', (): void => {
+
+    new DebounceEvent('keyup', (): void => {
       this.combinedFilterSearch();
-    });
+    }).bindTo(searchInput);
   }
 
   private initializeChosenSelector(): void {
@@ -200,7 +202,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const $items = modalContent.find('div.item');
     if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
-      $('.panel-version:not(:first) > .panel-collapse').collapse('hide');
+      this.currentModal.find('.panel-version .panel-collapse.in').collapse('hide');
       $items.removeClass('hidden searchhit filterhit');
       return false;
     }
@@ -215,7 +217,7 @@ class UpgradeDocs extends AbstractInteractableModule {
       const andTags: Array<string> = [];
       $.each(this.chosenField.val(), (index: number, item: any): void => {
         const tagFilter = '[data-item-tags*="' + item + '"]';
-        if (item.contains(':', 1)) {
+        if (item.includes(':', 1)) {
           orTags.push(tagFilter);
         } else {
           andTags.push(tagFilter);
