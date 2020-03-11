@@ -433,7 +433,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         // Only check for update for TER extensions
         $version = $extensionData->getIntegerVersion();
 
-        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension[] $extensionUpdates */
         $extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionData->getExtensionKey(),
             $version,
@@ -442,6 +441,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         );
         if ($extensionUpdates->count() > 0) {
             foreach ($extensionUpdates as $extensionUpdate) {
+                /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionUpdate */
                 try {
                     $this->dependencyUtility->checkDependencies($extensionUpdate);
                     if (!$this->dependencyUtility->hasDependencyErrors()) {

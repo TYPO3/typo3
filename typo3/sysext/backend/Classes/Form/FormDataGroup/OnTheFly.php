@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class OnTheFly implements FormDataGroupInterface
 {
     /**
-     * @var array<FormDataProviderInterface>
+     * @var string[]
      */
     protected $providerList = [];
 

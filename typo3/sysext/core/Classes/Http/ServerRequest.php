@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Http;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Represents a typical request incoming from the server to be processed

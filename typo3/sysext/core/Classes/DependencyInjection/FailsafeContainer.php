@@ -46,6 +46,7 @@ class FailsafeContainer implements ContainerInterface
 
         $factories = [];
         foreach ($providers as $provider) {
+            /** @var ServiceProviderInterface $provider */
             $factories = $provider->getFactories() + $factories;
             foreach ($provider->getExtensions() as $id => $extension) {
                 // Decorate a previously defined extension or if that is not available,

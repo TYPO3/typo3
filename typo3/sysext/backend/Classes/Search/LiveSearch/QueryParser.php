@@ -45,7 +45,6 @@ class QueryParser
      * Retrieve the validated command key
      *
      * @param string $query
-     * @return string Command name
      */
     protected function extractKeyFromQuery($query)
     {

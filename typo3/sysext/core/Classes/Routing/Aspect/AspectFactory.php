@@ -111,6 +111,7 @@ class AspectFactory
     {
         // the check for the trait can be removed at any time after TYPO3 v11
         if ($aspect instanceof SiteLanguageAwareInterface || in_array(SiteLanguageAwareTrait::class, class_uses($aspect), true)) {
+            /** @var AspectInterface|SiteLanguageAwareInterface $aspect */
             $aspect->setSiteLanguage($language);
         }
         if ($aspect instanceof ContextAwareInterface) {

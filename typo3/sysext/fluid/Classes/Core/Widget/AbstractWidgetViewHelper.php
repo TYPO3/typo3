@@ -252,7 +252,6 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * The widget identifier is unique on the current page, and is used
      * in the URI as a namespace for the widget's arguments.
      *
-     * @return string the widget identifier for this widget
      * @todo clean up, and make it somehow more routing compatible.
      */
     private function initializeWidgetIdentifier()

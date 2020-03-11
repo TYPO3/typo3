@@ -41,7 +41,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
      * and file modification time in days to select from
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param RecyclerGarbageCollectionTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -93,7 +93,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
      * Saves given integer value in task object
      *
      * @param array $submittedData Contains data submitted by the user
-     * @param AbstractTask $task Reference to the current task object
+     * @param RecyclerGarbageCollectionTask $task Reference to the current task object
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

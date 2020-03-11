@@ -66,7 +66,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
      * Add a select field of available tables.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param TableGarbageCollectionTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -97,7 +97,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
      * Add a select field of available tables.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param TableGarbageCollectionTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -145,7 +145,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
      * Add an input field to get the number of days.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param TableGarbageCollectionTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -255,7 +255,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
      * Save additional field in task
      *
      * @param array $submittedData Contains data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
+     * @param TableGarbageCollectionTask $task Reference to the current task object
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

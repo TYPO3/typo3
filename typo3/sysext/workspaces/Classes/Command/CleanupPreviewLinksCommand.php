@@ -50,6 +50,7 @@ class CleanupPreviewLinksCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
+        /** @var int $affectedRows */
         $affectedRows = $queryBuilder
             ->delete('sys_preview')
             ->where(

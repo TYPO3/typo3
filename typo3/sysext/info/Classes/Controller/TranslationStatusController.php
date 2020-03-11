@@ -150,7 +150,7 @@ class TranslationStatusController
     /**
      * Rendering the localization information table.
      *
-     * @param array $tree The Page tree data
+     * @param PageTreeView $tree The Page tree data
      * @return string HTML for the localization information table.
      */
     protected function renderL10nTable(&$tree)

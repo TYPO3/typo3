@@ -532,7 +532,7 @@ class Folder implements FolderInterface
      *
      * The parent folder of the root folder is the root folder.
      *
-     * @return Folder
+     * @return FolderInterface
      */
     public function getParentFolder()
     {

@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
@@ -177,6 +178,7 @@ class InstallerController
 
             // Create a PackageStates.php with all packages activated marked as "part of factory default"
             if (!file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')) {
+                /** @var FailsafePackageManager $packageManager */
                 $packageManager = GeneralUtility::makeInstance(PackageManager::class);
                 $packages = $packageManager->getAvailablePackages();
                 foreach ($packages as $package) {

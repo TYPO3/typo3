@@ -392,6 +392,7 @@ class Import extends ImportExport
             // check, if there is an identical file
             try {
                 if ($storage->hasFile($fileRecord['identifier'])) {
+                    /** @var File $file */
                     $file = $storage->getFile($fileRecord['identifier']);
                     if ($file->getSha1() === $fileRecord['sha1']) {
                         $newFile = $file;

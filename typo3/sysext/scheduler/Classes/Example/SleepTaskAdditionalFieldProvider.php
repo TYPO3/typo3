@@ -32,7 +32,7 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
      * In this case, it adds a sleep time field
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param SleepTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -91,7 +91,7 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
      * if the task class matches
      *
      * @param array $submittedData Array containing the data submitted by the user
-     * @param AbstractTask $task Reference to the current task object
+     * @param SleepTask $task Reference to the current task object
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

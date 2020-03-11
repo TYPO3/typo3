@@ -38,7 +38,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
      * Add a multi select box with all available database tables.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param OptimizeDatabaseTableTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -114,7 +114,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
      * Save selected backends in task object
      *
      * @param array $submittedData Contains data submitted by the user
-     * @param AbstractTask $task Reference to the current task object
+     * @param OptimizeDatabaseTableTask $task Reference to the current task object
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

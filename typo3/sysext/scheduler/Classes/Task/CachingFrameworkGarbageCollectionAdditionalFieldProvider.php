@@ -32,7 +32,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
      * Add a multi select box with all available cache backends.
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-     * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
+     * @param CachingFrameworkGarbageCollectionTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
      */
@@ -95,7 +95,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
      * Save selected backends in task object
      *
      * @param array $submittedData Contains data submitted by the user
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
+     * @param CachingFrameworkGarbageCollectionTask $task Reference to the current task object
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

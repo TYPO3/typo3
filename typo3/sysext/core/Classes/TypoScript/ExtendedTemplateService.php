@@ -456,7 +456,7 @@ class ExtendedTemplateService extends TemplateService
      * lineNumbers are in sync with the calculated lineNumbers '.ln..' in TypoScriptParser
      *
      * @param array $lnArr Array with linenumbers (might have some extra symbols, for example for unsetting) to be processed
-     * @return array The same array where each entry has been prepended by the template title if available
+     * @return string Imploded array of line number and template title
      */
     public function lineNumberToScript(array $lnArr)
     {
@@ -727,7 +727,7 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * @param int $lineNumber Line Number
-     * @param array $str
+     * @param string $str
      * @return string
      */
     public function ext_lnBreakPointWrap($lineNumber, $str)
