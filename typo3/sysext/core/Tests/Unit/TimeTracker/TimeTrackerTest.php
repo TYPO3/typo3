@@ -41,6 +41,6 @@ class TimeTrackerTest extends UnitTestCase
         $subject->start();
         sleep(1);
         $subject->finish();
-        self::assertLessThan(1010, $subject->getParseTime());
+        self::assertLessThan(1040, $subject->getParseTime());
     }
 }
