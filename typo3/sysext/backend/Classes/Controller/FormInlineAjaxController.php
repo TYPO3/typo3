@@ -207,6 +207,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     ],
                 ],
             ],
+            'uid' => $parent['uid'],
             'tableName' => $parent['table'],
             'inlineFirstPid' => $inlineFirstPid,
             // Hand over given original return url to compile stack. Needed if inline children compile links to
@@ -501,7 +502,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
             // values of the current parent element
             // it is always a string either an id or new...
-            'inlineParentUid' => $parentData['databaseRow']['uid'],
+            'inlineParentUid' => $parentData['databaseRow']['uid'] ?? $parentData['uid'],
             'inlineParentTableName' => $parentData['tableName'],
             'inlineParentFieldName' => $parentFieldName,
 
