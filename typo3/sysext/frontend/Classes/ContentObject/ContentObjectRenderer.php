@@ -6139,7 +6139,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return '';
         }
 
-        return ' AND ' . (string)$where;
+        return ' AND (' . (string)$where . ')';
     }
 
     /**
