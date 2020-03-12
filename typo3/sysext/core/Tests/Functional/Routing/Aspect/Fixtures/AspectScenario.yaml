@@ -48,6 +48,30 @@ entities:
                 languageVariants:
                   - self: {id: 4042, title: '40xx-slug-fr-ca', language: 2}
               - self: {id: 4043, title: '40xx-slug-es', language: 3}
-          - self: {id: 5011, title: 'hidden-visibility-slug', language: 0, hidden: 1}
-          - self: {id: 5012, title: 'restricted-visibility-slug', language: 0, visitorGroups: '13'}
-          - self: {id: 5013, title: 'scheduled-visibility-slug', language: 0, starttime: 10000, endtime: 30000}
+          - self: {id: 4051, title: 'hidden-visibility-slug', language: 0, hidden: 1}
+          - self: {id: 4052, title: 'restricted-visibility-slug', language: 0, visitorGroups: '13'}
+          - self: {id: 4053, title: 'scheduled-visibility-slug', language: 0, starttime: 10000, endtime: 30000}
+    # all entities are duplicated, for each `uid + 4000` (1000 -> 5000)
+    - self: {id: 5000, title: 'Other Inc', root: true, slug: '/'}
+      entities:
+        content:
+          - self: {id: 7010, title: '30xx-slug', language: 0}
+            languageVariants:
+              - self: {id: 7011, title: '30xx-slug-fr', language: 1}
+                languageVariants:
+                  - self: {id: 7012, title: '30xx-slug-fr-ca', language: 2}
+              - self: {id: 7013, title: '30xx-slug-es', language: 3}
+          - self: {id: 7020, title: '30xx-slug-fr', language: 0}
+          - self: {id: 7030, title: '30xx-slug-fr-ca', language: 0}
+
+          - self: {id: 8020, title: '40xx-slug-fr', language: 0}
+          - self: {id: 8030, title: '40xx-slug-fr-ca', language: 0}
+          - self: {id: 8040, title: '40xx-slug', language: 0}
+            languageVariants:
+              - self: {id: 8041, title: '40xx-slug-fr', language: 1}
+                languageVariants:
+                  - self: {id: 8042, title: '40xx-slug-fr-ca', language: 2}
+              - self: {id: 8043, title: '40xx-slug-es', language: 3}
+          - self: {id: 8051, title: 'hidden-visibility-slug', language: 0, hidden: 1}
+          - self: {id: 8052, title: 'restricted-visibility-slug', language: 0, visitorGroups: '13'}
+          - self: {id: 8053, title: 'scheduled-visibility-slug', language: 0, starttime: 10000, endtime: 30000}
