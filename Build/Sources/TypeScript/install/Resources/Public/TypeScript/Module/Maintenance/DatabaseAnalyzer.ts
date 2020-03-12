@@ -157,6 +157,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
   private execute(): void {
     const modalContent = this.getModalBody();
+    const modalFooter = this.getModalFooter();
     const executeToken = this.getModuleContent().data('database-analyzer-execute-token');
     const outputContainer = modalContent.find(this.selectorOutputContainer);
     const selectedHashes: Array<any> = [];
@@ -165,8 +166,8 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       selectedHashes.push($(element).data('hash'));
     });
     outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Executing database updates...', ''));
-    modalContent.find(this.selectorExecuteTrigger).prop('disabled', true);
-    modalContent.find(this.selectorAnalyzeTrigger).prop('disabled', true);
+    modalFooter.find(this.selectorExecuteTrigger).prop('disabled', true);
+    modalFooter.find(this.selectorAnalyzeTrigger).prop('disabled', true);
 
     (new AjaxRequest(Router.getUrl()))
       .post({
