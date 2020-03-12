@@ -186,7 +186,7 @@ define([
       var modalContent = this.currentModal.find(this.selectorModalBody);
       var $items = modalContent.find('div.item');
       if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
-        $('.panel-version:not(:first) > .panel-collapse').collapse('hide');
+        this.currentModal.find('.panel-version .panel-collapse.in').collapse('hide');
         $items.removeClass('hidden searchhit filterhit');
         return false;
       }
