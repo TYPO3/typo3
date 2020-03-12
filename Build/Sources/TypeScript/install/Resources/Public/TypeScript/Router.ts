@@ -59,21 +59,20 @@ class Router {
       } else {
         const modalTitle = $me.closest('.card').find('.card-title').html();
         const modalSize = $me.data('modalSize') || Modal.sizes.large;
-
+        const $modal = Modal.advanced({
+          type: Modal.types.default,
+          title: modalTitle,
+          size: modalSize,
+          content: $('<div class="modal-loading">'),
+          additionalCssClasses: ['install-tool-modal'],
+          callback: (currentModal: any): void => {
+            require([requireModule], (aModule: AbstractInteractableModule): void => {
+              aModule.initialize(currentModal);
+            });
+          },
+        });
         Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: any): void => {
-          const configuration = {
-            type: Modal.types.default,
-            title: modalTitle,
-            size: modalSize,
-            content: $('<div class="modal-loading">').append(icon),
-            additionalCssClasses: ['install-tool-modal'],
-            callback: (currentModal: any): void => {
-              require([requireModule], (aModule: AbstractInteractableModule): void => {
-                aModule.initialize(currentModal);
-              });
-            },
-          };
-          Modal.advanced(configuration);
+          $modal.find('.modal-loading').append(icon);
         });
       }
     });
