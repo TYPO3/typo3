@@ -1595,6 +1595,8 @@ class DatabaseRecordList
                         }
                         // Add an empty entry, so column count fits again after moving this into $icon
                         $theData[$fCol] = '&nbsp;';
+                    } else {
+                        $icon = $this->spaceIcon;
                     }
                     break;
                 default:
@@ -1852,7 +1854,7 @@ class DatabaseRecordList
             $this->addActionToCellGroup($cells, $viewAction, 'view');
         }
         // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
-        if ($permsEdit) {
+        if ($permsEdit && $this->isEditable($table)) {
             $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
@@ -1860,10 +1862,9 @@ class DatabaseRecordList
                 $params .= '&overrideVals[pages][sys_language_uid]=' . (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 $iconIdentifier = 'actions-page-open';
             }
-            $overlayIdentifier = !$this->isEditable($table) ? 'overlay-readonly' : null;
             $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
             $editAction = '<a class="btn btn-default" href="' . htmlspecialchars($editLink) . '"'
-                . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier)->render() . '</a>';
+                . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $editAction = $this->spaceIcon;
         }
@@ -1874,7 +1875,7 @@ class DatabaseRecordList
             . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
         // "Move" wizard link for pages/tt_content elements:
-        if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
+        if ($permsEdit && ($table === 'tt_content' || $table === 'pages') && $this->isEditable($table)) {
             if ($isL10nOverlay) {
                 $moveAction = $this->spaceIcon;
             } else {
@@ -2741,7 +2742,10 @@ class DatabaseRecordList
      */
     public function isEditable(string $table): bool
     {
-        return !empty($GLOBALS['TCA'][$table]['ctrl']['readOnly']) ? false : $this->editable;
+        $backendUser = $this->getBackendUserAuthentication();
+        return !$GLOBALS['TCA'][$table]['ctrl']['readOnly']
+            && $this->editable
+            && ($backendUser->isAdmin() || $backendUser->check('tables_modify', $table));
     }
 
     /**
@@ -3482,7 +3486,7 @@ class DatabaseRecordList
                     $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT && $backendUser->recordEditAccessInternals($table, $row);
                 }
                 // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
-                if ($permsEdit) {
+                if ($permsEdit && $this->isEditable($table)) {
                     $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
                     $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
                     $code = '<a href="' . htmlspecialchars($editLink) . '" title="' . htmlspecialchars($lang->getLL('edit')) . '">' . $code . '</a>';
