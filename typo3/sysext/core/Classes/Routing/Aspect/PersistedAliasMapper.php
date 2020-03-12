@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait;
+use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -48,9 +49,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *           routeFieldName: 'path_segment'
  *           routeValuePrefix: '/'
  */
-class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface
+class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface
 {
+    use AspectTrait;
     use SiteLanguageAccessorTrait;
+    use SiteAccessorTrait;
     use ContextAwareTrait;
     use PersistedAliasMapperLegacyTrait;
 
@@ -90,6 +93,11 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     protected $languageParentFieldName;
 
     /**
+     * @var bool
+     */
+    protected $slugUniqueInSite;
+
+    /**
      * @param array $settings
      * @throws \InvalidArgumentException
      */
@@ -125,6 +133,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $this->languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
         $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
         $this->persistenceFieldNames = $this->buildPersistenceFieldNames();
+        $this->slugUniqueInSite = $this->isSlugUniqueInSite($this->tableName, $this->routeFieldName);
     }
 
     /**
@@ -224,6 +233,11 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
             ->where(...$constraints)
             ->execute()
             ->fetchAll();
+        // limit results to be contained in rootPageId of current Site
+        // (which is defining the route configuration currently being processed)
+        if ($this->slugUniqueInSite) {
+            $results = array_values($this->filterContainedInSite($results));
+        }
         // return first result record in case table is not language aware
         if (!$languageAware) {
             return $results[0] ?? null;

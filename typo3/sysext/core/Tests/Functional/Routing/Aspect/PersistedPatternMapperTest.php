@@ -21,18 +21,22 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Routing\Aspect\PersistedAliasMapper;
+use TYPO3\CMS\Core\Routing\Aspect\PersistedPatternMapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class PersistedAliasMapperTest extends FunctionalTestCase
+class PersistedPatternMapperTest extends FunctionalTestCase
 {
     private const ASPECT_CONFIGURATION = [
         'tableName' => 'tt_content',
         'routeFieldName' => 'header',
+        // `layout` does not really much sense here since it's always `0`
+        // just to have an additional field for the pattern mapper
+        'routeFieldPattern' => '^(?P<header>.+)-(?P<layout>\d+)$',
+        'routeFieldResult' => '{header}-{layout}',
     ];
 
     private const SLUG_CONFIGURATION = [
@@ -58,7 +62,7 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     ];
 
     /**
-     * @var PersistedAliasMapper
+     * @var PersistedPatternMapper
      */
     private $subject;
 
@@ -138,7 +142,7 @@ class PersistedAliasMapperTest extends FunctionalTestCase
         ];
         $this->writeSiteConfiguration($this->sites['acme']);
         $this->writeSiteConfiguration($this->sites['other']);
-        $this->subject = new PersistedAliasMapper(self::ASPECT_CONFIGURATION);
+        $this->subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
         $this->subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
         $this->subject->setSite($this->sites['acme']);
     }
@@ -168,36 +172,36 @@ class PersistedAliasMapperTest extends FunctionalTestCase
         $baseDataSet = [
             'non-existing, default language' => ['this-value-does-not-exist', 'default', null],
 
-            '30xx-slug, default language' => ['30xx-slug', 'default', '3010'],
-            '30xx-slug, fr-fr language' => ['30xx-slug', 'fr-fr', '3010'],
-            '30xx-slug, fr-ca language' => ['30xx-slug', 'fr-ca', '3010'],
+            '30xx-slug, default language' => ['30xx-slug-0', 'default', '3010'],
+            '30xx-slug, fr-fr language' => ['30xx-slug-0', 'fr-fr', '3010'],
+            '30xx-slug, fr-ca language' => ['30xx-slug-0', 'fr-ca', '3010'],
 
-            '30xx-slug-fr-ca, fr-ca language' => ['30xx-slug-fr-ca', 'fr-ca', '3010'],
-            // '30xx-slug-fr-ca' available in default language as well, fallbacks to that one
-            '30xx-slug-fr-ca, fr-fr language' => ['30xx-slug-fr-ca', 'fr-fr', '3030'],
-            // '30xx-slug-fr-ca' available in default language, use it directly
-            '30xx-slug-fr-ca, default language' => ['30xx-slug-fr-ca', 'default', '3030'],
+            '30xx-slug-fr-ca, fr-ca language' => ['30xx-slug-fr-ca-0', 'fr-ca', '3010'],
+            // '30xx-slug-fr-ca-0' available in default language as well, fallbacks to that one
+            '30xx-slug-fr-ca, fr-fr language' => ['30xx-slug-fr-ca-0', 'fr-fr', '3030'],
+            // '30xx-slug-fr-ca-0' available in default language, use it directly
+            '30xx-slug-fr-ca, default language' => ['30xx-slug-fr-ca-0', 'default', '3030'],
 
-            '30xx-slug-fr, fr-ca language' => ['30xx-slug-fr', 'fr-ca', '3010'],
-            '30xx-slug-fr, fr-fr language' => ['30xx-slug-fr', 'fr-fr', '3010'],
-            // '30xx-slug-fr-ca' available in default language, use it directly
-            '30xx-slug-fr, default language' => ['30xx-slug-fr', 'default', '3020'],
+            '30xx-slug-fr, fr-ca language' => ['30xx-slug-fr-0', 'fr-ca', '3010'],
+            '30xx-slug-fr, fr-fr language' => ['30xx-slug-fr-0', 'fr-fr', '3010'],
+            // '30xx-slug-fr-0' available in default language, use it directly
+            '30xx-slug-fr, default language' => ['30xx-slug-fr-0', 'default', '3020'],
 
             // basically the same, but being stored in reverse order in database
-            '40xx-slug, default language' => ['40xx-slug', 'default', '4040'],
-            '40xx-slug, fr-fr language' => ['40xx-slug', 'fr-fr', '4040'],
-            '40xx-slug, fr-ca language' => ['40xx-slug', 'fr-ca', '4040'],
+            '40xx-slug, default language' => ['40xx-slug-0', 'default', '4040'],
+            '40xx-slug, fr-fr language' => ['40xx-slug-0', 'fr-fr', '4040'],
+            '40xx-slug, fr-ca language' => ['40xx-slug-0', 'fr-ca', '4040'],
 
-            '40xx-slug-fr-ca, fr-ca language' => ['40xx-slug-fr-ca', 'fr-ca', '4040'],
-            // '40xx-slug-fr-ca' available in default language as well, fallbacks to that one
-            '40xx-slug-fr-ca, fr-fr language' => ['40xx-slug-fr-ca', 'fr-fr', '4030'],
-            // '40xx-slug-fr-ca' available in default language, use it directly
-            '40xx-slug-fr-ca, default language' => ['40xx-slug-fr-ca', 'default', '4030'],
+            '40xx-slug-fr-ca, fr-ca language' => ['40xx-slug-fr-ca-0', 'fr-ca', '4040'],
+            // '40xx-slug-fr-ca-0' available in default language as well, fallbacks to that one
+            '40xx-slug-fr-ca, fr-fr language' => ['40xx-slug-fr-ca-0', 'fr-fr', '4030'],
+            // '40xx-slug-fr-ca-0' available in default language, use it directly
+            '40xx-slug-fr-ca, default language' => ['40xx-slug-fr-ca-0', 'default', '4030'],
 
-            '40xx-slug-fr, fr-ca language' => ['40xx-slug-fr', 'fr-ca', '4040'],
-            '40xx-slug-fr, fr-fr language' => ['40xx-slug-fr', 'fr-fr', '4040'],
-            // '40xx-slug-fr-ca' available in default language, use it directly
-            '40xx-slug-fr, default language' => ['40xx-slug-fr', 'default', '4020'],
+            '40xx-slug-fr, fr-ca language' => ['40xx-slug-fr-0', 'fr-ca', '4040'],
+            '40xx-slug-fr, fr-fr language' => ['40xx-slug-fr-0', 'fr-fr', '4040'],
+            // '40xx-slug-fr-ca-0' available in default language, use it directly
+            '40xx-slug-fr, default language' => ['40xx-slug-fr-0', 'default', '4020'],
         ];
         // permute $baseDataSet to be either prepended
         // with site identifier argument 'acme' or 'other'
@@ -257,32 +261,32 @@ class PersistedAliasMapperTest extends FunctionalTestCase
         return [
             'hidden-visibility-slug, raw context' => [
                 $rawContext,
-                ['slug' => 'hidden-visibility-slug', 'uid' => '4051'],
+                ['slug' => 'hidden-visibility-slug-0', 'uid' => '4051'],
                 false,
             ],
             'restricted-visibility-slug, raw context' => [
                 $rawContext,
-                ['slug' => 'restricted-visibility-slug', 'uid' => '4052'],
+                ['slug' => 'restricted-visibility-slug-0', 'uid' => '4052'],
                 false,
             ],
             'scheduled-visibility-slug, raw context' => [
                 $rawContext,
-                ['slug' => 'scheduled-visibility-slug', 'uid' => '4053'],
+                ['slug' => 'scheduled-visibility-slug-0', 'uid' => '4053'],
                 false,
             ],
             'hidden-visibility-slug, visibility context (include hidden content)' => [
                 $visibleContext,
-                ['slug' => 'hidden-visibility-slug', 'uid' => '4051'],
+                ['slug' => 'hidden-visibility-slug-0', 'uid' => '4051'],
                 true,
             ],
             'restricted-visibility-slug, frontend-groups context (13)' => [
                 $frontendGroupsContext,
-                ['slug' => 'restricted-visibility-slug', 'uid' => '4052'],
+                ['slug' => 'restricted-visibility-slug-0', 'uid' => '4052'],
                 false, // @todo actually `true`, FrontendGroupRestriction does not support Context, yet
             ],
             'scheduled-visibility-slug, scheduled context (timestamp 20000)' => [
                 $scheduledContext,
-                ['slug' => 'scheduled-visibility-slug', 'uid' => '4053'],
+                ['slug' => 'scheduled-visibility-slug-0', 'uid' => '4053'],
                 false, // @todo actually `true`, Start-/EndTimeRestriction do not support Context, yet
             ],
         ];

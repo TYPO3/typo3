@@ -21,4 +21,11 @@ return [
             'Deprecation-86046-AdditionalArgumentsInSeveralTypoScriptFrontendControllerMethods.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Routing\Aspect\AspectFactory' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Important-88720-RespectSiteForPersistedMappers.rst',
+        ],
+    ],
 ];

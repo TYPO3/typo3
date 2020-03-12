@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait;
+use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -51,9 +52,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  *
  * @internal might change its options in the future, be aware that there might be modifications.
  */
-class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface
+class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface
 {
+    use AspectTrait;
     use SiteLanguageAccessorTrait;
+    use SiteAccessorTrait;
     use ContextAwareTrait;
     use PersistedPatternMapperLegacyTrait;
 
@@ -95,6 +98,11 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     protected $languageParentFieldName;
 
     /**
+     * @var bool
+     */
+    protected $slugUniqueInSite;
+
+    /**
      * @param array $settings
      * @throws \InvalidArgumentException
      */
@@ -127,6 +135,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         $this->routeFieldResultNames = $routeFieldResultNames['fieldName'] ?? [];
         $this->languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
         $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
+        $this->slugUniqueInSite = $this->hasSlugUniqueInSite($this->tableName, ...$this->routeFieldResultNames);
     }
 
     /**
@@ -222,6 +231,11 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             ->where(...$this->createRouteFieldConstraints($queryBuilder, $values))
             ->execute()
             ->fetchAll();
+        // limit results to be contained in rootPageId of current Site
+        // (which is defining the route configuration currently being processed)
+        if ($this->slugUniqueInSite) {
+            $results = array_values($this->filterContainedInSite($results));
+        }
         // return first result record in case table is not language aware
         if (!$languageAware) {
             return $results[0] ?? null;

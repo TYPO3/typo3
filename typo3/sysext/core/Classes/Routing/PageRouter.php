@@ -676,7 +676,8 @@ class PageRouter implements RouterInterface
             if (!empty($enhancerConfiguration['aspects'] ?? null)) {
                 $aspects = $this->aspectFactory->createAspects(
                     $enhancerConfiguration['aspects'],
-                    $language
+                    $language,
+                    $this->site
                 );
                 $enhancer->setAspects($aspects);
             }
