@@ -159,6 +159,10 @@ body {
     @media (max-width: $scaffold-breakpoint-max) {
         left: 0 !important;
     }
+
+    &.scaffold-no-modules {
+        left: 0 !important;
+    }
 }
 
 .scaffold-content-navigation-iframe,

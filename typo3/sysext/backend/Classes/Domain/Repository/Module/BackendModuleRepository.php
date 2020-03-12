@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -300,6 +301,18 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         return $modules;
+    }
+
+    public function modulesHaveNavigationComponent(): bool
+    {
+        /** @var BackendModule $module */
+        foreach ($this->moduleStorage->getEntries() as $module) {
+            if ($module->getNavigationComponentId() !== '') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

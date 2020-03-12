@@ -138,7 +138,10 @@ class BackendLoginCest
         $I->fillField('#t3-password', $password);
         $I->click('#t3-login-submit-section > button');
         // wait for the next to element to indicate if the backend was loaded successful
-        $I->waitForElement('.nav', 30);
+        if ($username !== 'editor') {
+            // "editor" doesn't have any modules available in this setup
+            $I->waitForElement('.scaffold-modulemenu', 30);
+        }
         $I->waitForElement('.scaffold-content iframe', 30);
         $I->seeCookie('be_typo_user');
     }

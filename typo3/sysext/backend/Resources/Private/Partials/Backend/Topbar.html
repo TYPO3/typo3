@@ -1,12 +1,9 @@
 <div class="scaffold-topbar t3js-scaffold-topbar" data-topbar-identifier="topbar">
     <div class="topbar">
         <div class="topbar-header t3js-topbar-header">
-            <button class="topbar-button topbar-button-modulemenu t3js-topbar-button-modulemenu" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.minMaxModuleMenu')}">
-                <core:icon identifier="actions-menu" alternativeMarkupIdentifier="inline" />
-            </button>
-            <button class="topbar-button topbar-button-navigationcomponent t3js-topbar-button-navigationcomponent" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.collapsePageTree')}">
-                <core:icon identifier="actions-pagetree" alternativeMarkupIdentifier="inline" />
-            </button>
+            <f:render section="ToggleButton" arguments="{icon: 'actions-menu', enabled: '{hasModules}', classes: 'topbar-button-modulemenu t3js-topbar-button-modulemenu', title: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.minMaxModuleMenu\')}'}" />
+            <f:render section="ToggleButton" arguments="{icon: 'actions-pagetree', enabled: '{modulesHaveNavigationComponent}', classes: 'topbar-button-navigationcomponent t3js-topbar-button-navigationcomponent', title: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.collapsePageTree\')}'}" />
+
             <div class="topbar-header-site">
                 <a href="./" target="_top" title="{siteName} - {applicationVersion}">
                     <span class="topbar-header-site-logo">
@@ -34,3 +31,18 @@
         </ul>
     </div>
 </div>
+
+<f:section name="ToggleButton">
+    <f:variable name="disabled" value="{f:if(condition: '!{enabled}', then: 1, else: 0)}" />
+    <f:variable name="disabledAttr" value="{f:if(condition: '{disabled}', then: 'disabled')}" />
+
+    <button {disabledAttr} class="topbar-button {classes}" title="{title}">
+        <f:render section="Icon" arguments="{identifier: icon, disabled: disabled}" />
+    </button>
+</f:section>
+
+<f:section name="Icon">
+    <f:variable name="overlay" value="{f:if(condition: '{disabled}', then: 'overlay-readonly', else: null)}" />
+
+    <core:icon identifier="{identifier}" alternativeMarkupIdentifier="inline" overlay="{overlay}" />
+</f:section>

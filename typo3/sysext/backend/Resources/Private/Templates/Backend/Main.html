@@ -1,13 +1,15 @@
-<div class="scaffold t3js-scaffold {f:if(condition: '!{moduleMenuCollapsed}', then: 'scaffold-modulemenu-expanded')}">
+<div class="scaffold t3js-scaffold {f:if(condition: '!{moduleMenuCollapsed} && {hasModules}', then: 'scaffold-modulemenu-expanded')}">
     <div class="t3js-scaffold-header">
         <f:format.raw>{topbar}</f:format.raw>
     </div>
-    <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
-        <div class="modulemenu t3js-modulemenu">
-            <f:format.raw>{moduleMenu}</f:format.raw>
+    <f:if condition="{hasModules}">
+        <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+            <div class="modulemenu t3js-modulemenu">
+                <f:format.raw>{moduleMenu}</f:format.raw>
+            </div>
         </div>
-    </div>
-    <div class="scaffold-content t3js-scaffold-content">
+    </f:if>
+    <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
         <div class="scaffold-content-navigation t3js-scaffold-content-navigation">
             <div class="scaffold-content-navigation-component" data-component="typo3-navigationIframe">
                 <iframe name="nav_frame" src="about:blank" id="typo3-navigationContainerIframe"  scrolling="no" class="scaffold-content-navigation-iframe t3js-scaffold-content-navigation-iframe"></iframe>

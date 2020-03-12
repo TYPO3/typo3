@@ -87,6 +87,11 @@ class BackendController
     protected $uriBuilder;
 
     /**
+     * @var \SplObjectStorage
+     */
+    protected $moduleStorage;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -140,6 +145,8 @@ class BackendController
 
         $this->initializeToolbarItems();
         $this->executeHook('constructPostProcess');
+
+        $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help', 'dashboard']);
     }
 
     /**
@@ -194,6 +201,7 @@ class BackendController
         $view->assign('moduleMenuCollapsed', $this->getCollapseStateOfMenu());
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
+        $view->assign('hasModules', count($this->moduleStorage) > 0);
 
         if (!empty($this->css)) {
             $this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
@@ -247,6 +255,8 @@ class BackendController
             }
         }
 
+        $view->assign('hasModules', count($this->moduleStorage) > 0);
+        $view->assign('modulesHaveNavigationComponent', $this->backendModuleRepository->modulesHaveNavigationComponent());
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
@@ -506,11 +516,8 @@ class BackendController
      */
     protected function generateModuleMenu()
     {
-        // get all modules except the user modules for the side menu
-        $moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help', 'dashboard']);
-
         $view = $this->getFluidTemplateObject($this->templatePath . 'ModuleMenu/Main.html');
-        $view->assign('modules', $moduleStorage);
+        $view->assign('modules', $this->moduleStorage);
         return $view->render();
     }
 
