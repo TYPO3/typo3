@@ -361,11 +361,11 @@ class ConnectionMigrator
             if (count($changedTable->addedColumns) !== 0) {
                 // Treat each added column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                foreach ($changedTable->addedColumns as $addedColumn) {
+                foreach ($changedTable->addedColumns as $columnName => $addedColumn) {
                     $changedTables[$index . ':tbl_' . $addedColumn->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
                         $changedTable->name,
-                        [$addedColumn],
+                        [$columnName => $addedColumn],
                         [],
                         [],
                         [],
@@ -379,14 +379,14 @@ class ConnectionMigrator
             if (count($changedTable->addedIndexes) !== 0) {
                 // Treat each added index with a new diff to get a dedicated suggestions
                 // just for this index.
-                foreach ($changedTable->addedIndexes as $addedIndex) {
+                foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
                     $changedTables[$index . ':idx_' . $addedIndex->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
                         $changedTable->name,
                         [],
                         [],
                         [],
-                        [$this->buildQuotedIndex($addedIndex)],
+                        [$indexName => $this->buildQuotedIndex($addedIndex)],
                         [],
                         [],
                         $fromTable
@@ -497,7 +497,7 @@ class ConnectionMigrator
             // Treat each changed index with a new diff to get a dedicated suggestions
             // just for this index.
             if (count($changedTable->changedIndexes) !== 0) {
-                foreach ($changedTable->changedIndexes as $key => $changedIndex) {
+                foreach ($changedTable->changedIndexes as $indexName => $changedIndex) {
                     $indexDiff = GeneralUtility::makeInstance(
                         TableDiff::class,
                         $changedTable->name,
@@ -505,7 +505,7 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        [$changedIndex],
+                        [$indexName => $changedIndex],
                         [],
                         $schemaDiff->fromSchema->getTable($changedTable->name)
                     );
@@ -567,7 +567,7 @@ class ConnectionMigrator
                 // just for this single column.
                 $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
 
-                foreach ($changedTable->changedColumns as $changedColumn) {
+                foreach ($changedTable->changedColumns as $columnName => $changedColumn) {
                     // Field has been renamed and will be handled separately
                     if ($changedColumn->getOldColumnName()->getName() !== $changedColumn->column->getName()) {
                         continue;
@@ -587,7 +587,7 @@ class ConnectionMigrator
                         TableDiff::class,
                         $changedTable->name,
                         [],
-                        [$changedColumn],
+                        [$columnName => $changedColumn],
                         [],
                         [],
                         [],
@@ -711,9 +711,11 @@ class ConnectionMigrator
                 continue;
             }
 
+            $isSqlite = $this->tableRunsOnSqlite($index);
+
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
-            foreach ($changedTable->changedColumns as $changedColumn) {
+            foreach ($changedTable->changedColumns as $oldFieldName => $changedColumn) {
                 // Field has not been renamed
                 if ($changedColumn->getOldColumnName()->getName() === $changedColumn->column->getName()) {
                     continue;
@@ -723,13 +725,16 @@ class ConnectionMigrator
                     TableDiff::class,
                     $changedTable->name,
                     [],
-                    [$changedColumn],
+                    [$oldFieldName => $changedColumn],
                     [],
                     [],
                     [],
                     [],
                     $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name))
                 );
+                if ($isSqlite) {
+                    break;
+                }
             }
         }
 
@@ -765,28 +770,35 @@ class ConnectionMigrator
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
             $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
 
+            $isSqlite = $this->tableRunsOnSqlite($index);
+            $addMoreOperations = true;
+
             if (count($changedTable->removedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                foreach ($changedTable->removedColumns as $removedColumn) {
+                foreach ($changedTable->removedColumns as $columnName => $removedColumn) {
                     $changedTables[$index . ':tbl_' . $removedColumn->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
                         $changedTable->name,
                         [],
                         [],
-                        [$this->buildQuotedColumn($removedColumn)],
+                        [$columnName => $this->buildQuotedColumn($removedColumn)],
                         [],
                         [],
                         [],
                         $fromTable
                     );
+                    if ($isSqlite) {
+                        $addMoreOperations = false;
+                        break;
+                    }
                 }
             }
 
-            if (count($changedTable->removedIndexes) !== 0) {
+            if ($addMoreOperations && count($changedTable->removedIndexes) !== 0) {
                 // Treat each removed index with a new diff to get a dedicated suggestions
                 // just for this index.
-                foreach ($changedTable->removedIndexes as $removedIndex) {
+                foreach ($changedTable->removedIndexes as $indexName => $removedIndex) {
                     $changedTables[$index . ':idx_' . $removedIndex->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
                         $changedTable->name,
@@ -795,13 +807,17 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        [$this->buildQuotedIndex($removedIndex)],
+                        [$indexName => $this->buildQuotedIndex($removedIndex)],
                         $fromTable
                     );
+                    if ($isSqlite) {
+                        $addMoreOperations = false;
+                        break;
+                    }
                 }
             }
 
-            if (count($changedTable->removedForeignKeys) !== 0) {
+            if ($addMoreOperations && count($changedTable->removedForeignKeys) !== 0) {
                 // Treat each removed foreign key with a new diff to get a dedicated suggestions
                 // just for this foreign key.
                 foreach ($changedTable->removedForeignKeys as $removedForeignKey) {
@@ -818,6 +834,9 @@ class ConnectionMigrator
                         $fromTable
                     );
                     $changedTables[$fkIndex]->removedForeignKeys = [$this->buildQuotedForeignKey($removedForeignKey)];
+                    if ($isSqlite) {
+                        break;
+                    }
                 }
             }
         }
@@ -1301,5 +1320,11 @@ class ConnectionMigrator
             $databasePlatform->quoteIdentifier($index->getName()),
             $index->getOptions()
         );
+    }
+
+    protected function tableRunsOnSqlite(string $tableName): bool
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        return $connection->getDatabasePlatform() instanceof SqlitePlatform;
     }
 }

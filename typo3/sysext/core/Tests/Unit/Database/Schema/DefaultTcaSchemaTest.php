@@ -42,8 +42,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(DefaultTcaSchema::class, ['tableRunsOnSqlite']);
-        $this->subject->method('tableRunsOnSqlite')->willReturn(false);
+        $this->subject = new DefaultTcaSchema();
         $this->defaultTable = new Table('aTable');
     }
 
@@ -134,7 +133,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedUidColumn = new Column(
-            'uid',
+            '`uid`',
             Type::getType('integer'),
             [
                 'notnull' => true,
@@ -155,7 +154,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedPidColumn = new Column(
-            'pid',
+            '`pid`',
             Type::getType('integer'),
             [
                 'default' => 0,
@@ -176,7 +175,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedPidColumn = new Column(
-            'pid',
+            '`pid`',
             Type::getType('integer'),
             [
                 'default' => 0,

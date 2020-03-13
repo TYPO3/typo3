@@ -16,10 +16,7 @@ namespace TYPO3\CMS\Core\Database\Schema;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Table;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class is called by the SchemaMigrator after all extension's ext_tables.sql
@@ -63,7 +60,7 @@ class DefaultTcaSchema
             // uid column and primary key if uid is not defined
             if (!$this->isColumnDefinedForTable($tables, $tableName, 'uid')) {
                 $tables[$tablePosition]->addColumn(
-                    'uid',
+                    $this->quote('uid'),
                     'integer',
                     [
                         'notnull' => true,
@@ -71,10 +68,7 @@ class DefaultTcaSchema
                         'autoincrement' => true,
                     ]
                 );
-                // SQLite does not need primary key, only needs autoincrement on integer fields
-                if (!$this->tableRunsOnSqlite($tableName)) {
-                    $tables[$tablePosition]->setPrimaryKey(['uid']);
-                }
+                $tables[$tablePosition]->setPrimaryKey(['uid']);
             }
 
             // pid column and prepare parent key if pid is not defined
@@ -89,7 +83,7 @@ class DefaultTcaSchema
                     // We need negative pid's (-1) if table is workspace aware
                     $options['unsigned'] = true;
                 }
-                $tables[$tablePosition]->addColumn('pid', 'integer', $options);
+                $tables[$tablePosition]->addColumn($this->quote('pid'), 'integer', $options);
                 $pidColumnAdded = true;
             }
 
@@ -665,17 +659,5 @@ class DefaultTcaSchema
     protected function quote(string $identifier): string
     {
         return '`' . $identifier . '`';
-    }
-
-    /**
-     * SQLite does not need primary key, only needs autoincrement on integer fields
-     * See https://github.com/doctrine/dbal/pull/3141
-     * @param string $tableName
-     * @return bool
-     */
-    protected function tableRunsOnSqlite(string $tableName): bool
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
-        return $connection->getDatabasePlatform() instanceof SqlitePlatform;
     }
 }
