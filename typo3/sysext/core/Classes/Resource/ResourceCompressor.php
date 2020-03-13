@@ -432,11 +432,12 @@ class ResourceCompressor
 
         // if the file is an absolute reference within the docRoot
         $absolutePath = $docRoot . '/' . $fileNameWithoutSlash;
-        // if it is already an absolute path to the file
-        if (PathUtility::isAbsolutePath($filename)) {
+        // If the $filename stems from a call to PathUtility::getAbsoluteWebPath() it has a leading slash,
+        // hence isAbsolutePath() results in true, which is obviously wrong. Check file existence to be sure.
+        // Calling is_file without @ for a path starting with '../' causes a PHP Warning when using open_basedir restriction
+        if (PathUtility::isAbsolutePath($filename) && @is_file($filename)) {
             $absolutePath = $filename;
         }
-        // Calling is_file without @ for a path starting with '../' causes a PHP Warning when using open_basedir restriction
         if (@is_file($absolutePath)) {
             if (strpos($absolutePath, $this->rootPath) === 0) {
                 // the path is within the current root path, simply strip rootPath off
