@@ -74,7 +74,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Link to create a new record then return back to the BE module "web_MyextensionList"::
  *
- *    <be.link.newRecord table="a_table" returnUrl="{f:be.uri(route: 'web_MyextensionList')}" pid="17">
+ *    <be:link.newRecord table="a_table" returnUrl="{f:be.uri(route: 'web_MyextensionList')}" pid="17">
  */
 class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {

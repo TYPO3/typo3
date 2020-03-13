@@ -41,7 +41,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Link to edit page uid=3 and then return back to the BE module "web_MyextensionList"::
  *
- *    <be.link.editRecord uid="3" table="pages" returnUrl="{f:be.uri(route: 'web_MyextensionList')}">
+ *    <be:link.editRecord uid="3" table="pages" returnUrl="{f:be.uri(route: 'web_MyextensionList')}">
  */
 class EditRecordViewHelper extends AbstractTagBasedViewHelper
 {
