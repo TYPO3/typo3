@@ -559,6 +559,16 @@ class ResourceCompressorTest extends BaseTestCase
                 'typo3temp/assets/compressed/.htaccess',
                 '../typo3temp/assets/compressed/.htaccess'
             ],
+            // Get filename using absolute path
+            [
+                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            // Get filename using docroot relative path
+            [
+                '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
         ];
     }
 
@@ -626,5 +636,53 @@ class ResourceCompressorTest extends BaseTestCase
 
         $relativeToRootPath = $this->subject->_call('getFilenameFromMainDir', $filename);
         $this->assertSame($expected, $relativeToRootPath, 'Path to the file relative to the path converted correctly.');
+    }
+
+    public function getFilenamesFromMainDirInBackendContextInSubfolderDataProvider(): array
+    {
+        $subfolderFake = basename(Environment::getPublicPath());
+        return [
+            // Get filename using absolute path
+            [
+                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+            // Get filename using docroot relative path
+            [
+                '/' . $subfolderFake . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getFilenamesFromMainDirInBackendContextInSubfolderDataProvider
+     * @param string $filename
+     * @param string $expected
+     */
+    public function getFilenamesFromMainDirInBackendContextWithSubFolder(string $filename, string $expected): void
+    {
+        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
+        // like '.../bin/phpunit' in testing context, but we want .../typo3/index.php as entry
+        // script point here to fake the backend call.
+        $bePath = Environment::getBackendPath();
+        $subfolderFake = basename(Environment::getPublicPath());
+        $_SERVER['ORIG_SCRIPT_NAME'] = '/' . $subfolderFake . '/typo3/index.php';
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            $bePath . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject->setRootPath($bePath . '/');
+        $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
+        self::assertSame($expected, $relativeToRootPath);
     }
 }
