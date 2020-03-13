@@ -64,23 +64,22 @@ define([
         } else {
           var modalTitle = $me.closest('.card').find('.card-title').html();
           var modalSize = $me.data('modalSize') || Modal.sizes.large;
-
+          var $modal = Modal.advanced({
+            type: Modal.types.default,
+            title: modalTitle,
+            size: modalSize,
+            content: $('<div class="modal-loading">'),
+            additionalCssClasses: ['install-tool-modal'],
+            callback: function (currentModal) {
+              require([requireModule], function (aModule) {
+                if (typeof aModule.initialize !== 'undefined') {
+                  aModule.initialize(currentModal);
+                }
+              });
+            }
+          });
           Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
-            var configuration = {
-              type: Modal.types.default,
-              title: modalTitle,
-              size: modalSize,
-              content: $('<div class="modal-loading">').append(icon),
-              additionalCssClasses: ['install-tool-modal'],
-              callback: function (currentModal) {
-                require([requireModule], function (aModule) {
-                  if (typeof aModule.initialize !== 'undefined') {
-                    aModule.initialize(currentModal);
-                  }
-                });
-              }
-            };
-            Modal.advanced(configuration);
+            $modal.find('.modal-loading').append(icon);
           });
         }
       });
