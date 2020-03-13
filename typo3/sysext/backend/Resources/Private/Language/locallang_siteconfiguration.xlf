@@ -40,7 +40,7 @@
 				<source>The following sites don't belong to any page anymore and can be removed.</source>
 			</trans-unit>
 			<trans-unit id="overview.duplicatedEntryPoints" resname="overview.duplicatedEntryPoints">
-				<source>Dupliated Entrypoints</source>
+				<source>Duplicated Entrypoints</source>
 			</trans-unit>
 			<trans-unit id="overview.duplicatedEntryPoints.listing" resname="overview.duplicatedEntryPoints.listing">
 				<source>The following entry points are used more than once:</source>
