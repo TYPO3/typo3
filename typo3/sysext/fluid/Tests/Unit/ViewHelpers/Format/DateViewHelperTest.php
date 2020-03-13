@@ -148,8 +148,8 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $expectedResult = (new \DateTime())->format('Y-m-d');
-        $this->assertEquals($expectedResult, $actualResult);
+        $expectedResult = date('Y-m-d', $GLOBALS['EXEC_TIME']);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -168,8 +168,8 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $expectedResult = (new \DateTime())->format('Y-m-d');
-        $this->assertEquals($expectedResult, $actualResult);
+        $expectedResult = date('Y-m-d', $GLOBALS['EXEC_TIME']);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
