@@ -162,7 +162,9 @@ class LinkAnalyzer
                 $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
             }
             if ($GLOBALS['TCA'][$table]['ctrl']['type'] ?? false) {
-                $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
+                if (isset($GLOBALS['TCA'][$table]['columns'][$GLOBALS['TCA'][$table]['ctrl']['type']])) {
+                    $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
+                }
             }
 
             $result = $queryBuilder->select(...$selectFields)
