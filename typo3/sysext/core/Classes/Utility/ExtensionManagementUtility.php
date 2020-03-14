@@ -761,6 +761,9 @@ class ExtensionManagementUtility
      */
     public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
     {
+        if (!isset($GLOBALS['TBE_MODULES'])) {
+            $GLOBALS['TBE_MODULES'] = [];
+        }
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
         if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
@@ -788,6 +791,48 @@ class ExtensionManagementUtility
             }
             // Re-inserting the submodule list:
             $GLOBALS['TBE_MODULES'][$main] = trim($modules, ',');
+        } elseif (!isset($GLOBALS['TBE_MODULES'][$main]) && empty($sub)) {
+            // Create a new main module, respecting the order, which is only possible when the module does not exist yet
+            $conf = $GLOBALS['TBE_MODULES']['_configuration'] ?? [];
+            unset($GLOBALS['TBE_MODULES']['_configuration']);
+            $navigationComponents = $GLOBALS['TBE_MODULES']['_navigationComponents'] ?? [];
+            unset($GLOBALS['TBE_MODULES']['_navigationComponents']);
+
+            $modules = array_keys($GLOBALS['TBE_MODULES']);
+            [$place, $moduleReference] = array_pad(GeneralUtility::trimExplode(':', $position, true), 2, null);
+            if ($place === null || ($moduleReference !== null && !in_array($moduleReference, $modules, true))) {
+                $place = 'bottom';
+            }
+            $newModules = [];
+            switch (strtolower($place)) {
+                case 'after':
+                    foreach ($modules as $existingMainModule) {
+                        $newModules[$existingMainModule] = $GLOBALS['TBE_MODULES'][$existingMainModule];
+                        if ($moduleReference === $existingMainModule) {
+                            $newModules[$main] = '';
+                        }
+                    }
+                    break;
+                case 'before':
+                    foreach ($modules as $existingMainModule) {
+                        if ($moduleReference === $existingMainModule) {
+                            $newModules[$main] = '';
+                        }
+                        $newModules[$existingMainModule] = $GLOBALS['TBE_MODULES'][$existingMainModule];
+                    }
+                    break;
+                case 'top':
+                    $newModules[$main] = '';
+                    $newModules += $GLOBALS['TBE_MODULES'];
+                    break;
+                case 'bottom':
+                default:
+                    $newModules = $GLOBALS['TBE_MODULES'];
+                    $newModules[$main] = '';
+            }
+            $GLOBALS['TBE_MODULES'] = $newModules;
+            $GLOBALS['TBE_MODULES']['_configuration'] = $conf;
+            $GLOBALS['TBE_MODULES']['_navigationComponents'] = $navigationComponents;
         } else {
             // Create new main modules with only one submodule, $sub (or none if $sub is blank)
             $GLOBALS['TBE_MODULES'][$main] = $sub;

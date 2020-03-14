@@ -35,55 +35,89 @@ $GLOBALS['PAGES_TYPES'] = [
  * For information about adding modules to TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-$GLOBALS['TBE_MODULES'] = [
-    'web' => 'list',
-    'site' => '',
-    'file' => '',
-    'user' => '',
-    'tools' => '',
-    'system' => '',
-    'help' => '',
-    '_configuration' => [
-        'web' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
-            'name' => 'web',
-            'iconIdentifier' => 'modulegroup-web'
-        ],
-        'site' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
-            'name' => 'site',
-            'workspaces' => 'online',
-            'iconIdentifier' => 'modulegroup-site',
-        ],
-        'file' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
-            'navigationFrameModule' => 'file_navframe',
-            'name' => 'file',
-            'workspaces' => 'online,custom',
-            'iconIdentifier' => 'modulegroup-file'
-        ],
-        'user' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
-            'name' => 'user',
-            'iconIdentifier' => 'modulegroup-user'
-        ],
-        'tools' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
-            'name' => 'tools',
-            'iconIdentifier' => 'modulegroup-tools'
-        ],
-        'system' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
-            'name' => 'system',
-            'iconIdentifier' => 'modulegroup-system'
-        ],
-        'help' => [
-            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
-            'name' => 'help',
-            'iconIdentifier' => 'modulegroup-help'
-        ]
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'web',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
+        'name' => 'web',
+        'iconIdentifier' => 'modulegroup-web'
     ]
-];
+);
+// workaround to add web->list by default
+$GLOBALS['TBE_MODULES']['web'] = 'list';
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'site',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
+        'name' => 'site',
+        'workspaces' => 'online',
+        'iconIdentifier' => 'modulegroup-site',
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'file',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
+        'navigationFrameModule' => 'file_navframe',
+        'name' => 'file',
+        'workspaces' => 'online,custom',
+        'iconIdentifier' => 'modulegroup-file'
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'user',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
+        'name' => 'user',
+        'iconIdentifier' => 'modulegroup-user'
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'tools',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
+        'name' => 'tools',
+        'iconIdentifier' => 'modulegroup-tools'
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'system',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
+        'name' => 'system',
+        'iconIdentifier' => 'modulegroup-system'
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'help',
+    '',
+    '',
+    null,
+    [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
+        'name' => 'help',
+        'iconIdentifier' => 'modulegroup-help'
+    ]
+);
 
 // Register the page tree core navigation component
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'TYPO3/CMS/Backend/PageTree/PageTreeElement');

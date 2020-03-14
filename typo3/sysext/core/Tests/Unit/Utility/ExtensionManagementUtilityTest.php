@@ -1322,6 +1322,30 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals($expected, $GLOBALS['TBE_MODULES'][$mainModule]);
     }
 
+    /**
+     * @test
+     * @dataProvider addModulePositionTestsDataProvider
+     * @param $position
+     * @param $existing
+     * @param $expected
+     */
+    public function addModuleCanAddMainModule($position, $existing, $expected)
+    {
+        $mainModule = 'newModule';
+        if ($existing) {
+            foreach (explode(',', $existing) as $existingMainModule) {
+                $GLOBALS['TBE_MODULES'][$existingMainModule] = '';
+            }
+        }
+
+        ExtensionManagementUtility::addModule($mainModule, '', $position);
+
+        self::assertTrue(isset($GLOBALS['TBE_MODULES'][$mainModule]));
+        unset($GLOBALS['TBE_MODULES']['_configuration']);
+        unset($GLOBALS['TBE_MODULES']['_navigationComponents']);
+        self::assertEquals($expected, implode(',', array_keys($GLOBALS['TBE_MODULES'])));
+    }
+
     /////////////////////////////////////////
     // Tests concerning createExtLocalconfCacheEntry
     /////////////////////////////////////////
