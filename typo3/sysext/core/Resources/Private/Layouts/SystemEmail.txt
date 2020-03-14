@@ -1,4 +1,4 @@
-<f:spaceless><f:render section="Title" />
+<f:spaceless><f:render section="Title" optional="true" />
 <f:render section="Main" /></f:spaceless>
 
 This email was sent by {typo3.sitename} from URL: {normalizedParams.siteUrl}
