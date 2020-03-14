@@ -1,0 +1,2 @@
+<f:layout name="SystemEmail" />
+<f:section name="Main">{message -> f:format.raw()}</f:section>

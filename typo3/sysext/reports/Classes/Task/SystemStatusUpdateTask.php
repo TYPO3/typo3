@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Reports\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
-use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -114,11 +117,21 @@ class SystemStatusUpdateTask extends AbstractTask
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
 
-        GeneralUtility::makeInstance(MailMessage::class)
+        $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+        $templateConfiguration['templateRootPaths'][20] = 'EXT:reports/Resources/Private/Templates/Email/';
+
+        $email = GeneralUtility::makeInstance(FluidEmail::class, new TemplatePaths($templateConfiguration));
+        $email
             ->to(...$sendEmailsTo)
+            ->format('plain')
             ->subject($subject)
-            ->text($message)
-            ->send();
+            ->setTemplate('Report')
+            ->assign('message', $message);
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            $email->setRequest($GLOBALS['TYPO3_REQUEST']);
+        }
+
+        GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 
     /**
