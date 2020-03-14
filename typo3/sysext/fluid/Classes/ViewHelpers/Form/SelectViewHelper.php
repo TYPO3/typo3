@@ -144,13 +144,18 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
         $content = '';
+
         // register field name for token generation.
+        $this->registerFieldNameForFormTokenGeneration($name);
         // in case it is a multi-select, we need to register the field name
         // as often as there are elements in the box
         if (isset($this->arguments['multiple']) && $this->arguments['multiple']) {
             $content .= $this->renderHiddenFieldForEmptyValue();
+            // Register the field name additional times as required by the total number of
+            // options. Since we already registered it once above, we start the counter at 1
+            // instead of 0.
             $optionsCount = count($options);
-            for ($i = 0; $i < $optionsCount; $i++) {
+            for ($i = 1; $i < $optionsCount; $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
             }
             // save the parent field name so that any child f:form.select.option
@@ -161,8 +166,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
                 'registerFieldNameForFormTokenGeneration',
                 $name
             );
-        } else {
-            $this->registerFieldNameForFormTokenGeneration($name);
         }
 
         $viewHelperVariableContainer->addOrUpdate(self::class, 'selectedValue', $this->getSelectedValue());

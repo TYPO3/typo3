@@ -302,6 +302,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function multipleSelectCreatesExpectedOptions()
     {
         $this->tagBuilder = new TagBuilder();
+        $this->viewHelper->expects(self::exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
 
         $this->arguments['options'] = [
             'value1' => 'label1',
@@ -317,6 +318,26 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->setTagBuilder($this->tagBuilder);
         $result = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>' . \chr(10) . '<option value="value2">label2</option>' . \chr(10) . '<option value="value3" selected="selected">label3</option>' . \chr(10) . '</select>';
+        self::assertSame($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function multipleSelectWithoutOptionsCreatesExpectedOptions()
+    {
+        $this->tagBuilder = new TagBuilder();
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
+
+        $this->arguments['options'] = [];
+        $this->arguments['value'] = ['value3', 'value1'];
+        $this->arguments['name'] = 'myName';
+        $this->arguments['multiple'] = true;
+
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $result = $this->viewHelper->initializeArgumentsAndRender();
+        $expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"></select>';
         self::assertSame($expected, $result);
     }
 
