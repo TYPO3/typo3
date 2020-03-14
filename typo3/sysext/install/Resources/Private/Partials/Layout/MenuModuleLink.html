@@ -1,16 +1,21 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
-
-<li class="modulemenu-item t3js-mainmodule" data-controller="{controller}">
-    <a class="modulemenu-item-link" href="{i:uri.action(controller: controller)}">
-        <span class="modulemenu-icon modulemenu-item-icon">
-            <span class="t3js-icon icon icon-size-default icon-state-default">
-                <span class="icon-markup">
-                    <img src="{f:uri.resource(path: 'Icons/module-install-{controller}.svg')}" width="32" height="32">
-                </span>
-            </span>
-        </span>
-        <span class="modulemenu-item-title">{label}</span>
-    </a>
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<li data-level="1">
+    <button
+        title="{label}"
+        class="modulemenu-action t3js-modulemenu-action"
+        role="menuitem"
+        id="{module.name}"
+        data-modulename="{module.name}"
+        data-controller="{controller}"
+        data-link="{i:uri.action(controller: controller)}"
+    >
+        <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-{controller}" size="default" alternativeMarkupIdentifier="inline"/></span>
+        <span class="modulemenu-name">{label}</span>
+        <span class="modulemenu-indicator" aria-hidden="true"></span>
+    </button>
 </li>
-
 </html>

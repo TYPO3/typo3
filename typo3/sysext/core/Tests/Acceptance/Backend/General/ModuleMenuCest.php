@@ -36,21 +36,21 @@ class ModuleMenuCest
     public function checkIfModuleMenuIsCollapsible(BackendTester $I)
     {
         // A sub-element of web module is shown
-        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
-        $I->seeElement('#web .modulemenu-group-container .modulemenu-item');
+        $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
+        $I->seeElement('#web + .modulemenu-group-container .modulemenu-action');
 
         // Collapse web module and verify sub elements are hidden
         $I->wantTo('collapse the menu element');
-        $I->waitForElementVisible('#web .modulemenu-group-header');
-        $I->click('#web .modulemenu-group-header');
-        $I->waitForElementNotVisible('#web .modulemenu-group-container .modulemenu-item');
-        $I->dontSeeElement('#web .modulemenu-group-container .modulemenu-item');
+        $I->waitForElementVisible('#web');
+        $I->click('#web');
+        $I->waitForElementNotVisible('#web + .modulemenu-group-container .modulemenu-action');
+        $I->dontSeeElement('#web + .modulemenu-group-container .modulemenu-action');
 
         // Expand again and verify sub elements are shown
         $I->wantTo('expand the menu element again');
-        $I->click('#web .modulemenu-group-header');
-        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
-        $I->seeElement('#web .modulemenu-group-container .modulemenu-item');
+        $I->click('#web');
+        $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
+        $I->seeElement('#web + .modulemenu-group-container .modulemenu-action');
     }
 
     /**
@@ -58,13 +58,13 @@ class ModuleMenuCest
      */
     public function selectingAModuleDoesHighlightIt(BackendTester $I)
     {
-        $I->seeNumberOfElements('#web .modulemenu-item-link', [2, 20]);
+        $I->seeNumberOfElements('#web + .modulemenu-group-container .modulemenu-action', [2, 20]);
 
-        $I->wantTo('check that the second element has no "active" class\'');
-        $I->cantSeeElement('#web #web_list.active');
-        $I->click('#web #web_list .modulemenu-item-link');
+        $I->wantTo('check that the second element has no "modulemenu-action-active" class\'');
+        $I->cantSeeElement('#web_list.modulemenu-action-active');
+        $I->click('#web_list');
 
-        $I->wantTo('see that the second element has an "active" class');
-        $I->canSeeElement('#web #web_list.active');
+        $I->wantTo('see that the second element has an "modulemenu-action-active" class');
+        $I->canSeeElement('#web_list.modulemenu-action-active');
     }
 }

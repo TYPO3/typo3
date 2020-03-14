@@ -36,7 +36,7 @@ class CategoryTreeCest
     public function checkIfCategoryListIsAvailable(BackendTester $I)
     {
         // A sub-element of web module is show
-        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
+        $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
         $I->click('#web_list');
         $I->switchToContentFrame();
         $I->waitForElement('#recordlist-sys_category');
@@ -49,7 +49,7 @@ class CategoryTreeCest
     public function editCategoryItem(BackendTester $I)
     {
         // A sub-element of web module is show
-        $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
+        $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
         $I->click('#web_list');
         $I->switchToContentFrame();
         // Collapse all tables and expand category again - ensures category fits into window

@@ -146,7 +146,7 @@ class BackendController
         $this->initializeToolbarItems();
         $this->executeHook('constructPostProcess');
 
-        $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help', 'dashboard']);
+        $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
     }
 
     /**

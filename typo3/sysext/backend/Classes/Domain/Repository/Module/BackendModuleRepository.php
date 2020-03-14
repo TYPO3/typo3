@@ -62,7 +62,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
         $modules = new \SplObjectStorage();
         foreach ($this->moduleStorage->getEntries() as $moduleGroup) {
             if (!in_array($moduleGroup->getName(), $excludeGroupNames, true)) {
-                if ($moduleGroup->getChildren()->count() > 0) {
+                if ($moduleGroup->getChildren()->count() > 0 || $moduleGroup->isStandalone()) {
                     $modules->attach($moduleGroup);
                 }
             }
@@ -183,6 +183,9 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($module['navigationFrameScriptParam']) && is_string($module['navigationFrameScriptParam'])) {
             $entry->setNavigationFrameScriptParameters($module['navigationFrameScriptParam']);
         }
+        if (!empty($module['standalone'])) {
+            $entry->setStandalone((bool)$module['standalone']);
+        }
         $moduleMenuState = json_decode($this->getBackendUser()->uc['modulemenu'] ?? '{}', true);
         $entry->setCollapsed(isset($moduleMenuState[$module['name']]));
         return $entry;
@@ -252,9 +255,10 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                 'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
                 'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                 'link' => $moduleLink,
-                'description' => $moduleLabels['shortdescription']
+                'description' => $moduleLabels['shortdescription'],
+                'standalone' => (bool)$moduleData['standalone']
             ];
-            if (!is_array($moduleData['sub']) && $moduleData['script'] !== $dummyScript) {
+            if ((($moduleData['standalone'] ?? false) === false) && !is_array($moduleData['sub']) && $moduleData['script'] !== $dummyScript) {
                 // Work around for modules with own main entry, but being self the only submodule
                 $modules[$moduleKey]['subitems'][$moduleKey] = [
                     'name' => $moduleName,

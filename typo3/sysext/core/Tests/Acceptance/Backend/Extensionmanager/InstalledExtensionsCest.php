@@ -30,7 +30,7 @@ class InstalledExtensionsCest
     {
         $I->useExistingSession('admin');
 
-        $I->click('Extensions', '#menu');
+        $I->click('Extensions', '#modulemenu');
         $I->switchToContentFrame();
         $I->waitForElementVisible('#typo3-extension-list');
     }
@@ -88,7 +88,7 @@ class InstalledExtensionsCest
 
         $I->amGoingTo('install extension belog');
         $I->switchToMainFrame();
-        $I->seeElement('.modulemenu-item-link');
+        $I->seeElement('.modulemenu-action');
         $I->cantSeeElement('#system_BelogLog');
 
         $I->switchToContentFrame();

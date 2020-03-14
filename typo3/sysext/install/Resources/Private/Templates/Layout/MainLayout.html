@@ -56,55 +56,40 @@
             </div>
 
             <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
-                <div class="modulemenu t3js-modulemenu">
-                    <ul class="nav nav-modules" data-role="modulemenu" id="menu">
-                        <li class="modulemenu-group expanded" id="web" data-modulename="web" data-navigationcomponentid="" data-navigationframescript="" data-navigationframescriptparameters="">
-                            <div class="modulemenu-group-header">
-                                <span class="modulemenu-icon modulemenu-group-icon">
-                                    <span class="t3js-icon icon icon-size-default icon-state-default icon-module-tools" data-identifier="module-tools">
-                                        <span class="icon-markup">
-                                            <core:icon identifier="modulegroup-tools" size="default" alternativeMarkupIdentifier="inline"/>
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="modulemenu-group-title">
-                                    Admin Tools
-                                </span>
-                            </div>
-                            <ul class="modulemenu-group-container">
-                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
-                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
-                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
-                                <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
-                            </ul>
+                <div class="modulemenu t3js-modulemenu" role="menubar" data-role="modulemenu" id="modulemenu">
+                    <ul class="modulemenu-group-container">
+                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
+                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
+                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
+                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
+                        <li class="modulemenu-group-spacer"></li>
+                        <li data-level="1">
+                            <button
+                                title="Switch to Backend"
+                                class="modulemenu-action t3js-modulemenu-action"
+                                role="menuitem"
+                                id="backend"
+                                data-modulename="backend"
+                                data-link="index.php"
+                            >
+                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-web" size="default" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="modulemenu-name">Switch to Backend</span>
+                                <span class="modulemenu-indicator" aria-hidden="true"></span>
+                            </button>
                         </li>
-                        <li class="modulemenu-group expanded" id="context" data-modulename="context" data-navigationcomponentid="" data-navigationframescript="" data-navigationframescriptparameters="">
-                            <ul class="modulemenu-group-container">
-                                <li class="modulemenu-item t3js-mainmodule ">
-                                    <a class="modulemenu-item-link" href="index.php">
-                                        <span class="modulemenu-icon modulemenu-item-icon">
-                                            <span class="t3js-icon icon icon-size-default icon-state-default">
-                                                <span class="icon-markup">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
-                                                </span>
-                                            </span>
-                                        </span>
-                                        <span class="modulemenu-item-title">Backend admin</span>
-                                    </a>
-                                </li>
-                                <li class="modulemenu-item t3js-mainmodule ">
-                                    <a class="modulemenu-item-link" href="../index.php">
-                                        <span class="modulemenu-icon modulemenu-item-icon">
-                                            <span class="t3js-icon icon icon-size-default icon-state-default">
-                                                <span class="icon-markup">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
-                                                </span>
-                                            </span>
-                                        </span>
-                                        <span class="modulemenu-item-title">Frontend website</span>
-                                    </a>
-                                </li>
-                            </ul>
+                        <li data-level="1">
+                            <button
+                                title="Switch to Frontend"
+                                class="modulemenu-action t3js-modulemenu-action"
+                                role="menuitem"
+                                id="frontend"
+                                data-modulename="frontend"
+                                data-link="../index.php"
+                            >
+                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-site" size="default" alternativeMarkupIdentifier="inline"/></span>
+                                <span class="modulemenu-name">Switch to Frontend</span>
+                                <span class="modulemenu-indicator" aria-hidden="true"></span>
+                            </button>
                         </li>
                     </ul>
                 </div>

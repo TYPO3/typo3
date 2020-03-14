@@ -1,114 +1,181 @@
 //
-// Module menu
+// Module Menu
+// ===========
 //
 
-// Module links
-$modulemenu-item-padding-vertical: 2px;
-$modulemenu-item-padding-horizontal: 4px;
-
-// Module menu wrapper
-.module-wrapper {
-    position: relative;
-
-    iframe {
-        border: none;
-    }
-}
-
-// Module menu styling
+//
+// Component
+//
 .modulemenu {
+    margin: 0;
+    padding: 1em;
+    list-style: none;
 
-    /// Module menu group
-    .modulemenu-group-container {
-        clear: both;
+    > ul > .modulemenu-group {
+        margin: 1em 0;
 
-        @extend .list-unstyled;
-    }
-
-    .modulemenu-group {
-        position: relative;
-        padding: 5px 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    }
-
-    .modulemenu-group-header,
-    .modulemenu-item-link {
-        @extend .clearfix;
-
-        position: relative;
-        display: block;
-        cursor: pointer;
-        padding: $modulemenu-item-padding-vertical $modulemenu-item-padding-horizontal;
-        text-decoration: none;
-    }
-
-    .modulemenu-group-header {
-        user-select: none;
-        text-transform: uppercase;
-    }
-
-    .modulemenu-item-link {
-        &:focus,
-        &:hover {
-            outline: none;
-            background-color: rgba(255, 255, 255, 0.1);
+        &:first-child {
+            margin-top: 0;
         }
-    }
 
-    .modulemenu-item.active {
-        .modulemenu-item-link {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-    }
-
-    // Module menu icons
-    .modulemenu-icon {
-        float: left;
-        margin-right: $modulemenu-item-padding-horizontal;
-
-        .fa {
-            font-size: 0.5em;
-        }
-    }
-
-    // Module menu group and item titles
-    .modulemenu-group-title,
-    .modulemenu-item-title {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding-top: 7px;
-        padding-left: $modulemenu-item-padding-horizontal;
-        display: none;
-        overflow: hidden;
-        *zoom: 1;
-    }
-
-    .modulemenu-group-title {
-        padding-right: 20px;
-
-        .caret {
-            @include rotate(90deg);
-
-            position: absolute;
-            top: 17px;
-            right: 18px;
-        }
-    }
-
-    // Module Group Expanded
-    .expanded {
-        .modulemenu-group-title {
-            .caret {
-                @include rotate(0deg);
-            }
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 }
 
-// Module menu snapped
+//
+// Action
+//
+.modulemenu-action {
+    display: flex;
+    padding: 4px;
+    margin-top: 1px;
+    color: inherit;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    border: none;
+    border-radius: 3px;
+    background-color: transparent;
+    text-align: left;
+
+    &:not(:disabled):focus,
+    &:not(:disabled):hover {
+        color: inherit;
+        text-decoration: none;
+        outline: none;
+    }
+
+    &:not(:disabled):focus {
+        background-color: rgba(255, 255, 255, 0.05);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+
+    &:not(:disabled):hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &.modulemenu-action-active {
+        background-color: rgba(255, 255, 255, 0.2);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+}
+
+//
+// Icon
+//
+.modulemenu-icon {
+    position: relative;
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+//
+// Name
+//
+.modulemenu-name {
+    overflow: hidden;
+    display: none;
+    flex-grow: 1;
+    margin-left: 1em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+//
+// Indicator
+//
+.modulemenu-group > button:not(:disabled) {
+    .modulemenu-indicator {
+        display: none;
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+        margin: 8px;
+        color: inherit;
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            height: 0;
+            width: 6px;
+            border-top: 1px solid currentColor;
+            transition: transform 0.25s ease-in-out;
+        }
+
+        &:before {
+            left: 3px;
+            transform: rotate(45deg);
+        }
+
+        &:after {
+            right: 3px;
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+//
+// Group
+//
+.modulemenu-group-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > li {
+        width: auto !important;
+    }
+}
+
+.modulemenu-group-spacer {
+    margin: 1.5em 0;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+button[aria-expanded="true"]:not(:disabled) {
+    .modulemenu-indicator {
+        &:before {
+            transform: rotate(-45deg);
+        }
+
+        &:after {
+            transform: rotate(45deg);
+        }
+    }
+}
+
+//
+// Dropdown
+//
+.dropdown-menu {
+    .modulemenu-name {
+        display: block;
+    }
+}
+
+//
+// Scaffold
+//
 .scaffold-modulemenu-expanded {
-    .modulemenu-group-title,
-    .modulemenu-item-title {
+    .modulemenu-action {
+        margin-left: 0;
+    }
+
+    .modulemenu-indicator {
+        display: block !important;
+    }
+
+    .modulemenu-name {
         display: block;
     }
 }

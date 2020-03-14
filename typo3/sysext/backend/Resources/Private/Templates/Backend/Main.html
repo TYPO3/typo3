@@ -4,9 +4,7 @@
     </div>
     <f:if condition="{hasModules}">
         <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
-            <div class="modulemenu t3js-modulemenu">
-                <f:format.raw>{moduleMenu}</f:format.raw>
-            </div>
+            <f:format.raw>{moduleMenu}</f:format.raw>
         </div>
     </f:if>
     <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">

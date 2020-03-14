@@ -29,8 +29,9 @@ class TasksCest
     public function _before(BackendTester $I)
     {
         $I->useExistingSession('admin');
+        $I->scrollTo('#system_txschedulerM1');
         $I->see('Scheduler', '#system_txschedulerM1');
-        $I->click('Scheduler', '#system_txschedulerM1');
+        $I->click('#system_txschedulerM1');
         $I->switchToContentFrame();
     }
 

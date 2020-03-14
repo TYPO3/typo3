@@ -140,7 +140,7 @@ class ModuleMenu {
       navigationComponentId: $subModuleElement.data('navigationcomponentid'),
       navigationFrameScript: $subModuleElement.data('navigationframescript'),
       navigationFrameScriptParam: $subModuleElement.data('navigationframescriptparameters'),
-      link: $subModuleElement.find('a').data('link'),
+      link: $subModuleElement.data('link'),
     };
   }
 
@@ -148,8 +148,8 @@ class ModuleMenu {
    * @param {string} module
    */
   private static highlightModuleMenuItem(module: string): void {
-    $('.modulemenu-item.active').removeClass('active');
-    $('#' + module).addClass('active');
+    $('.modulemenu-action.modulemenu-action-active').removeClass('modulemenu-action-active');
+    $('#' + module).addClass('modulemenu-action-active');
   }
 
   constructor() {
@@ -162,7 +162,7 @@ class ModuleMenu {
   public refreshMenu(): void {
     new AjaxRequest(TYPO3.settings.ajaxUrls.modulemenu).get().then(async (response: AjaxResponse): Promise<void> => {
       const result = await response.resolve();
-      document.getElementById('menu').outerHTML = result.menu;
+      document.getElementById('modulemenu').outerHTML = result.menu;
       if (top.currentModuleLoaded) {
         ModuleMenu.highlightModuleMenuItem(top.currentModuleLoaded);
       }
@@ -211,7 +211,7 @@ class ModuleMenu {
       );
     } else {
       // fetch first module
-      const $firstModule = $('.t3js-mainmodule:first');
+      const $firstModule = $('.t3js-modulemenu-action[data-link]:first');
       if ($firstModule.attr('id')) {
         deferred = this.showModule(
           $firstModule.attr('id'),
@@ -228,31 +228,40 @@ class ModuleMenu {
   }
 
   private initializeEvents(): void {
-    $(document).on('click', '.modulemenu-group .modulemenu-group-header', (e: JQueryEventObject): void => {
+    $(document).on('click', '.t3js-modulemenu-action', (e: JQueryEventObject): void => {
+      const $element = $(e.currentTarget);
       const $group = $(e.currentTarget).parent('.modulemenu-group');
       const $groupContainer = $group.find('.modulemenu-group-container');
 
-      Viewport.NavigationContainer.cleanup();
-      if ($group.hasClass('expanded')) {
-        ModuleMenu.addCollapsedMainMenuItem($group.attr('id'));
-        $group.addClass('collapsed').removeClass('expanded');
-        $groupContainer.stop().slideUp().promise().done((): void => {
-          Viewport.doLayout();
+      if ($element.attr('aria-expanded') === 'true') {
+        ModuleMenu.addCollapsedMainMenuItem($element.attr('id'));
+        $group.addClass('modulemenu-group-collapsed').removeClass('modulemenu-group-expanded');
+        $element.attr('aria-expanded', 'false');
+        $groupContainer.attr('aria-hidden', 'true');
+        $groupContainer.stop().slideUp({
+          'complete': function() {
+            Viewport.doLayout();
+          }
         });
-      } else {
-        ModuleMenu.removeCollapseMainMenuItem($group.attr('id'));
-        $group.addClass('expanded').removeClass('collapsed');
-        $groupContainer.stop().slideDown().promise().done((): void => {
-          Viewport.doLayout();
+      } else if ($element.attr('aria-expanded') === 'false') {
+        ModuleMenu.removeCollapseMainMenuItem($element.attr('id'));
+        $group.addClass('modulemenu-group-expanded').removeClass('modulemenu-group-collapsed');
+        $element.attr('aria-expanded', 'true');
+        $groupContainer.attr('aria-hidden', 'false');
+        $groupContainer.stop().slideDown({
+          'complete': function() {
+            Viewport.doLayout();
+          }
         });
+      }
+
+      if ($element.attr('data-link')) {
+        e.preventDefault();
+        this.showModule($(e.currentTarget).attr('id'), '', e);
       }
     });
 
     // register clicking on sub modules
-    $(document).on('click', '.modulemenu-item,.t3-menuitem-submodule', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-      this.showModule($(evt.currentTarget).attr('id'), '', evt);
-    });
     $(document).on('click', '.t3js-topbar-button-modulemenu', (evt: JQueryEventObject): void => {
       evt.preventDefault();
       ModuleMenu.toggleMenu();

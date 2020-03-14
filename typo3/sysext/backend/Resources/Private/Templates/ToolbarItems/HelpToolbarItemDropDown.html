@@ -2,24 +2,28 @@
 <h3 class="dropdown-headline">
     {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help') -> f:format.raw()}
 </h3>
-<hr>
-<div class="dropdown-table">
-    <f:for each="{modules}" as="module">
-        <div class="dropdown-table-row"
-                id="{module.name -> f:format.htmlspecialchars()}"
-                data-modulename="{module.name -> f:format.htmlspecialchars()}"
-                data-navigationcomponentid="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
-                data-navigationframescript="{module.navigationFrameScript -> f:format.htmlspecialchars()}"
-                data-navigationframescriptparameters="{module.navigationFrameScriptParameters -> f:format.htmlspecialchars()}">
-            <div class="dropdown-table-column dropdown-table-icon">
-                {module.icon -> f:format.raw()}
-            </div>
-            <div class="dropdown-table-column dropdown-table-title">
-                <a href="#" data-link="{module.link}" title="{module.description -> f:format.htmlspecialchars()}">
-                    {module.title}
-                </a>
-            </div>
-        </div>
-    </f:for>
-</div>
+<f:if condition="{modules}">
+    <hr>
+    <ul class="modulemenu-group-container">
+        <f:for each="{modules}" as="module">
+            <li>
+                <button
+                    title="{module.description}"
+                    class="modulemenu-action t3js-modulemenu-action"
+                    role="menuitem"
+                    id="{module.name}"
+                    data-modulename="{module.name}"
+                    {f:if(condition: module.link, then: 'data-link="{module.link}"')}
+                    {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
+                    {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
+                    {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
+                >
+                    <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
+                    <span class="modulemenu-name">{module.title}</span>
+                    <span class="modulemenu-indicator" aria-hidden="true"></span>
+                </button>
+            </li>
+        </f:for>
+    </ul>
+</f:if>
 </html>

@@ -67,7 +67,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
         $I->fillField('#t3-username', 'admin');
         $I->fillField('#t3-password', 'password');
         $I->click('#t3-login-submit-section > button');
-        $I->waitForElement('.nav', 30);
+        $I->waitForElement('.modulemenu', 30);
         $I->waitForElement('.scaffold-content iframe', 30);
         $I->seeCookie('be_typo_user');
 

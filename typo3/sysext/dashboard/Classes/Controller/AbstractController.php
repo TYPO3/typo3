@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 
 class AbstractController
 {
-    protected const MODULE_DATA_CURRENT_DASHBOARD_IDENTIFIER = 'web_dashboard/current_dashboard/';
+    protected const MODULE_DATA_CURRENT_DASHBOARD_IDENTIFIER = 'dashboard/current_dashboard/';
 
     protected function getBackendUser(): BackendUserAuthentication
     {

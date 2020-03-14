@@ -19,6 +19,6 @@ call_user_func(static function () {
         /**
          * Set starting module to dashboard if users didn't change it
          */
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC']['startModule'] = 'web_dashboard';
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC']['startModule'] = 'dashboard';
     }
 });

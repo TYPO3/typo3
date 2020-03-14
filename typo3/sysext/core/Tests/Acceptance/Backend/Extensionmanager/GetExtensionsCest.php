@@ -30,7 +30,7 @@ class GetExtensionsCest
     {
         $I->useExistingSession('admin');
 
-        $I->click('Extensions', '#menu');
+        $I->click('Extensions', '#modulemenu');
         $I->switchToContentFrame();
         $I->waitForElementVisible('#typo3-extension-list');
 

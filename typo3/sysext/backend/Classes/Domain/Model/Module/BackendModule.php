@@ -75,6 +75,13 @@ class BackendModule
     protected $collapsed = false;
 
     /**
+     * Standalone modules are top-level modules without a group
+     *
+     * @var bool
+     */
+    protected $standalone = false;
+
+    /**
      * construct
      */
     public function __construct()
@@ -292,5 +299,21 @@ class BackendModule
     public function getCollapsed(): bool
     {
         return $this->collapsed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStandalone(): bool
+    {
+        return $this->standalone;
+    }
+
+    /**
+     * @param bool $standalone
+     */
+    public function setStandalone(bool $standalone): void
+    {
+        $this->standalone = $standalone;
     }
 }

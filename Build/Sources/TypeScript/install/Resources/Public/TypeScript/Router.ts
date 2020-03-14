@@ -45,6 +45,12 @@ class Router {
       }
     });
 
+    $(document).on('click', '.t3js-modulemenu-action', (e: JQueryEventObject): void => {
+      e.preventDefault();
+      const $me = $(e.currentTarget);
+      window.location.href = $me.data('link');
+    });
+
     $(document).on('click', '.card .btn', (e: JQueryEventObject): void => {
       e.preventDefault();
 
@@ -170,7 +176,7 @@ class Router {
             // Mark main module as active in standalone
             if ($(this.selectorBody).data('context') !== 'backend') {
               const controller = $outputContainer.data('controller');
-              $outputContainer.find('.t3js-mainmodule[data-controller="' + controller + '"]').addClass('active');
+              $outputContainer.find('.t3js-modulemenu-action[data-controller="' + controller + '"]').addClass('modulemenu-action-active');
             }
             this.loadCards();
           } else {

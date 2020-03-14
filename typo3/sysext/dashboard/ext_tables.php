@@ -6,18 +6,19 @@ $GLOBALS['TBE_MODULES']['_configuration']['dashboard'] = [
     'name' => 'dashboard'
 ];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-    'web',
     'dashboard',
+    '',
     'top',
     '',
     [
         'routeTarget' => \TYPO3\CMS\Dashboard\Controller\DashboardController::class . '::handleRequest',
         'access' => 'user,group',
-        'name' => 'web_dashboard',
+        'name' => 'dashboard',
         'icon' => 'EXT:dashboard/Resources/Public/Icons/Extension.svg',
         'navigationComponentId' => '',
         'inheritNavigationComponentFromMainModule' => false,
-        'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf'
+        'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
+        'standalone' => true
     ]
 );
 

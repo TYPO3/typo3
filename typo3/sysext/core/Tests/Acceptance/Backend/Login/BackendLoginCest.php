@@ -108,7 +108,7 @@ class BackendLoginCest
         $this->login($I, 'editor', 'password');
 
         // user is redirected to 'about modules' after login, but must not see the 'admin tools' section
-        $I->cantSee('Admin tools', '#menu');
+        $I->cantSee('Admin tools', '#modulemenu');
 
         $topBarItemSelector = Topbar::$containerSelector . ' ' . Topbar::$dropdownToggleSelector . ' *';
 
