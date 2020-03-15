@@ -142,12 +142,12 @@ class PagePositionMap
     public function positionTree($id, $pageinfo, $perms_clause, $R_URI)
     {
         // Make page tree object
-        /** @var PageTreeView $pageTree */
         if ($this->pageTreeClassName === NewRecordPageTreeView::class) {
             $pageTree = GeneralUtility::makeInstance($this->pageTreeClassName, (int)$id);
         } else {
             $pageTree = GeneralUtility::makeInstance($this->pageTreeClassName);
         }
+        /** @var PageTreeView $pageTree */
         $pageTree->init(' AND ' . $perms_clause);
         $pageTree->addField('pid');
         // Initialize variables:
