@@ -66,7 +66,6 @@ class RedirectCacheService
     public function rebuild(): array
     {
         $redirects = [];
-        $this->flush();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class))
@@ -85,15 +84,7 @@ class RedirectCacheService
                 $redirects[$host]['flat'][rtrim($row['source_path'], '/') . '/'][$row['uid']] = $row;
             }
         }
-        $this->cache->set('redirects', $redirects, ['redirects']);
+        $this->cache->set('redirects', $redirects);
         return $redirects;
-    }
-
-    /**
-     * Flushes all redirects from the cache
-     */
-    protected function flush()
-    {
-        $this->cache->flushByTag('redirects');
     }
 }
