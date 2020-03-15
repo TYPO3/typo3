@@ -206,18 +206,28 @@ class RichTextElement extends AbstractFormElement
                 ' . $externalPlugins . '
                 require([\'jquery\', \'TYPO3/CMS/Backend/FormEngine\'], function($, FormEngine) {
                     $(function(){
+                        var escapedFieldSelector = \'#\' + $.escapeSelector(\'' . $fieldId . '\');
                         CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
-                        CKEDITOR.instances["' . $fieldId . '"].on(\'change\', function() {
+                        CKEDITOR.instances["' . $fieldId . '"].on(\'change\', function(e) {
+                            var commands = e.sender.commands;
                             CKEDITOR.instances["' . $fieldId . '"].updateElement();
                             FormEngine.Validation.validate();
-                            FormEngine.Validation.markFieldAsChanged($(\'#' . $fieldId . '\'));
+                            FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
+
+                            // remember changes done in maximized state and mark field as changed, once minimized again
+                            if (typeof commands.maximize !== \'undefined\' && commands.maximize.state === 1) {
+                                CKEDITOR.instances["' . $fieldId . '"].on(\'maximize\', function(e) {
+                                    $(this).off(\'maximize\');
+                                    FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
+                                });
+                            }
                         });
                         CKEDITOR.instances["' . $fieldId . '"].on(\'mode\', function() {
                             // detect field changes in source mode
                             if (this.mode === \'source\') {
                                 var sourceArea = CKEDITOR.instances["' . $fieldId . '"].editable();
                                 sourceArea.attachListener(sourceArea, \'change\', function() {
-                                    FormEngine.Validation.markFieldAsChanged($(\'#' . $fieldId . '\'));
+                                    FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
                                 });
                             }
                         });
