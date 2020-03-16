@@ -52,7 +52,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
         return new ExpressionFunction('loginUser', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments, $str) {
-            $user = $arguments['backend']->user ?? $arguments['frontend']->user;
+            $user = $arguments['frontend']->user ?? $arguments['backend']->user;
             if ($user->isLoggedIn) {
                 foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
                     if ($test === '*' || (string)$user->userId === (string)$test) {
@@ -81,7 +81,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
         return new ExpressionFunction('usergroup', function () {
             // Not implemented, we only use the evaluator
         }, function ($arguments, $str) {
-            $user = $arguments['backend']->user ?? $arguments['frontend']->user;
+            $user = $arguments['frontend']->user ?? $arguments['backend']->user;
             $groupList = $user->userGroupList ?? '';
             // '0,-1' is the default usergroups string when not logged in!
             if ($groupList !== '0,-1' && $groupList !== '') {
