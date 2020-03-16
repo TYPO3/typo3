@@ -1,0 +1,13 @@
+.. note::
+
+   Difference between **registration** of widgets and **implementation** of widgets:
+
+   Widgets provide some functionality, e.g. collect system log errors over a time span.
+   This functionality is provided by the implementation, a PHP class with some code.
+   The registration is done in :file:`Services.yaml`,
+   in order to create the actual widget with provided functionality.
+   During registration options can be set, e.g.  the time span.
+
+   Registration is documented at :ref:`register-new-widget`,
+   while implementation is documented at
+   :ref:`implement-new-widget`.
