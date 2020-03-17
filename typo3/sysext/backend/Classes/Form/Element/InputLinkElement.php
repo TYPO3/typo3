@@ -420,6 +420,15 @@ class InputLinkElement extends AbstractFormElement
                     ];
                 }
                 break;
+            case LinkService::TYPE_TELEPHONE:
+                $telephone = $linkData['telephone'];
+                if ($telephone) {
+                    $data = [
+                        'text' => $telephone,
+                        'icon' => $this->iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render()
+                    ];
+                }
+                break;
             default:
                 // Please note that this hook is preliminary and might change, as this element could become its own
                 // TCA type in the future
