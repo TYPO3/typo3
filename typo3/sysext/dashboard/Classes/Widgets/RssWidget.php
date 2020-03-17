@@ -108,21 +108,20 @@ class RssWidget implements WidgetInterface
             throw new \RuntimeException('RSS URL could not be fetched', 1573385431);
         }
         $rssFeed = simplexml_load_string($rssContent);
-        $itemCount = 0;
         $items = [];
         foreach ($rssFeed->channel->item as $item) {
-            if ($itemCount >= $this->options['limit']) {
-                break;
-            }
-
             $items[] = [
-                'title' => (string)$item->title,
+                'title' => trim((string)$item->title),
                 'link' => trim((string)$item->link),
-                'pubDate' => (string)$item->pubDate,
-                'description' => (string)$item->description,
+                'pubDate' => trim((string)$item->pubDate),
+                'description' => trim((string)$item->description),
             ];
-            $itemCount++;
         }
+        usort($items, function ($item1, $item2) {
+            return new \DateTime($item2['pubDate']) <=> new \DateTime($item1['pubDate']);
+        });
+        $items = array_slice($items, 0, $this->options['limit']);
+
         $this->cache->set($cacheHash, $items, ['dashboard_rss'], $this->options['lifeTime']);
 
         return $items;
