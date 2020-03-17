@@ -5358,14 +5358,14 @@ class DataHandler implements LoggerAwareInterface
             // before (un-)deleting this record, check for child records or references
             $this->deleteRecord_procFields($table, $uid, $undeleteRecord);
             try {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->update($table, $updateFields, ['uid' => (int)$uid]);
                 // Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
                 if (!$undeleteRecord) {
                     $this->deletedRecords[$table][] = (int)$uid;
                     $this->deleteL10nOverlayRecords($table, $uid);
                 }
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->update($table, $updateFields, ['uid' => (int)$uid]);
             } catch (DBALException $e) {
                 $databaseErrorMessage = $e->getPrevious()->getMessage();
             }
