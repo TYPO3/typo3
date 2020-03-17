@@ -106,6 +106,7 @@ return [
         ],
         'workspace_perms' => [
             'exclude' => 1,
+            'displayCond' => 'USER:TYPO3\CMS\Core\Hooks\TcaDisplayConditions->isExtensionInstalled:workspaces',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms',
             'config' => [
                 'type' => 'check',

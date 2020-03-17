@@ -33,7 +33,6 @@ class BackendGroupsVisibleFieldsTest extends FunctionalTestCase
         'non_exclude_fields',
         'explicit_allowdeny',
         'allowed_languages',
-        'workspace_perms',
         'db_mountpoints',
         'file_mountpoints',
         'file_permissions',
