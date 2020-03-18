@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,6 +29,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EditDocumentControllerTest extends UnitTestCase
 {
+    /**
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -48,9 +54,11 @@ class EditDocumentControllerTest extends UnitTestCase
             'magic' => 'yes'
         ];
         $result = [];
+        $uriBuilder = $this->prophesize(UriBuilder::class);
         $moduleTemplate = $this->prophesize(ModuleTemplate::class);
         $moduleTemplate->setUiBlock(Argument::any())->willReturn($moduleTemplate->reveal());
         $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
+        GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilder->reveal());
         GeneralUtility::addInstance(ModuleTemplate::class, $moduleTemplate->reveal());
 
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);

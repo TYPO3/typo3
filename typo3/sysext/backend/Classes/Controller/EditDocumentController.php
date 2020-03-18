@@ -382,9 +382,15 @@ class EditDocumentController
      */
     protected $eventDispatcher;
 
+    /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->setUiBlock(true);
         // @todo Used by TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching
@@ -460,8 +466,7 @@ class EditDocumentController
         $this->addSlugFieldsToColumnsOnly($queryParams);
 
         // Set final return URL
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->retUrl = $this->returnUrl ?: (string)$uriBuilder->buildUriFromRoute('dummy');
+        $this->retUrl = $this->returnUrl ?: (string)$this->uriBuilder->buildUriFromRoute('dummy');
 
         // Change $this->editconf if versioning applies to any of the records
         $this->fixWSversioningInEditConf();
@@ -586,10 +591,9 @@ class EditDocumentController
                             }
                             $newEditConf[$tableName][$editId] = 'edit';
                         }
-                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                         // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
                         if ($tableName === 'pages'
-                            && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')
+                            && $this->retUrl != (string)$this->uriBuilder->buildUriFromRoute('dummy')
                             && $this->returnNewPageId
                         ) {
                             $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
@@ -1621,8 +1625,6 @@ class EditDocumentController
             && $this->isSavedRecord
             && count($this->elementsData) === 1
         ) {
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $classNames = 't3js-editform-delete-record';
             $returnUrl = $this->retUrl;
             if ($this->firstEl['table'] === 'pages') {
@@ -1633,7 +1635,7 @@ class EditDocumentController
                 ) {
                     // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
                     // tree from the outside to be able to mark the pid as active
-                    $returnUrl = (string)$uriBuilder->buildUriFromRoutePath($queryParams['route'], ['id' => 0]);
+                    $returnUrl = (string)$this->uriBuilder->buildUriFromRoutePath($queryParams['route'], ['id' => 0]);
                 }
             }
 
@@ -1660,7 +1662,7 @@ class EditDocumentController
                 )
             );
 
-            $deleteUrl = (string)$uriBuilder->buildUriFromRoute('tce_db', [
+            $deleteUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                 'cmd' => [
                     $this->firstEl['table'] => [
                         $this->firstEl['uid'] => [
@@ -1706,12 +1708,9 @@ class EditDocumentController
             && !empty($this->firstEl['table'])
             && $this->getTsConfigOption($this->firstEl['table'], 'showHistory')
         ) {
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
             $historyButtonOnClick = 'window.location.href=' .
                 GeneralUtility::quoteJSvalue(
-                    (string)$uriBuilder->buildUriFromRoute(
+                    (string)$this->uriBuilder->buildUriFromRoute(
                         'record_history',
                         [
                             'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
@@ -1997,9 +1996,6 @@ class EditDocumentController
     {
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
         // Table editable and activated for languages?
         if ($this->getBackendUser()->check('tables_modify', $table)
             && $languageField
@@ -2094,7 +2090,7 @@ class EditDocumentController
                         if (!isset($rowsByLang[$languageId])) {
                             // Translation in this language does not exist
                             $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
-                            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                            $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                                 'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
                                 'returnUrl' => $this->retUrl
                             ]);
@@ -2120,7 +2116,7 @@ class EditDocumentController
                                     ]
                                 ];
                             }
-                            $href = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
+                            $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                         }
                         if ($addOption) {
                             $menuItem = $languageMenu->makeMenuItem()
@@ -2183,9 +2179,8 @@ class EditDocumentController
             $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '';
             if (is_array($localizedRecord)) {
                 // Create redirect response to self to edit just created record
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 return new RedirectResponse(
-                    (string)$uriBuilder->buildUriFromRoute(
+                    (string)$this->uriBuilder->buildUriFromRoute(
                         'record_edit',
                         [
                             'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
@@ -2431,10 +2426,9 @@ class EditDocumentController
         if ($mode === self::DOCUMENT_CLOSE_MODE_NO_REDIRECT) {
             return null;
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: used by
         // other scripts, like wizard_add, to know which records was created or so...
-        if ($this->returnEditConf && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')) {
+        if ($this->returnEditConf && $this->retUrl != (string)$this->uriBuilder->buildUriFromRoute('dummy')) {
             $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
         }
         // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
