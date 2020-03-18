@@ -8137,7 +8137,7 @@ class DataHandler implements LoggerAwareInterface
         $userTsConfig = $this->BE_USER->getTSConfig();
         switch (strtolower($cacheCmd)) {
             case 'pages':
-                if ($this->admin || $userTsConfig['options.']['clearCache.']['pages'] ?? false) {
+                if ($this->admin || ($userTsConfig['options.']['clearCache.']['pages'] ?? false)) {
                     $this->getCacheManager()->flushCachesInGroup('pages');
                 }
                 break;
@@ -8145,7 +8145,7 @@ class DataHandler implements LoggerAwareInterface
                 // allow to clear all caches if the TS config option is enabled or the option is not explicitly
                 // disabled for admins (which could clear all caches by default). The latter option is useful
                 // for big production sites where it should be possible to restrict the cache clearing for some admins.
-                if ($userTsConfig['options.']['clearCache.']['all'] ?? false
+                if (($userTsConfig['options.']['clearCache.']['all'] ?? false)
                     || ($this->admin && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
                 ) {
                     $this->getCacheManager()->flushCaches();
