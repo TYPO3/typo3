@@ -616,16 +616,21 @@ class DataHandlerHook
             return;
         }
         // Lock file name:
-        $lockFileName = Environment::getVarPath() . '/lock/swap' . $table . '_' . $id . '.ser';
+        $lockFileName = Environment::getVarPath() . '/lock/workspaces_swap' . $table . '_' . $id . '.json';
         if (@is_file($lockFileName)) {
-            $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', SystemLogErrorClassification::SYSTEM_ERROR);
-            return;
+            $lockFileContents = file_get_contents($lockFileName);
+            $lockFileContents = json_decode($lockFileContents ?: '', true);
+            // Only skip if the lock file is newer than the last 1h (a publishing process should not be running longer than 60mins)
+            if (isset($lockFileContents['tstamp']) && $lockFileContents['tstamp'] > ($GLOBALS['EXEC_TIME']-3600)) {
+                $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', SystemLogErrorClassification::SYSTEM_ERROR);
+                return;
+            }
         }
 
         // Now start to swap records by first creating the lock file
 
         // Write lock-file:
-        GeneralUtility::writeFileToTypo3tempDir($lockFileName, serialize([
+        GeneralUtility::writeFileToTypo3tempDir($lockFileName, json_encode([
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'user' => $dataHandler->BE_USER->user['username'],
             'curVersion' => $curVersion,
