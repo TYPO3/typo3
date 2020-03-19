@@ -1200,6 +1200,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.sysinfo.database" resname="toolbarItems.sysinfo.database">
 				<source>Database</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.database.offline" resname="toolbarItems.sysinfo.database.offline">
+				<source>Offline</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.applicationcontext" resname="toolbarItems.sysinfo.applicationcontext">
 				<source>Application Context</source>
 			</trans-unit>

@@ -281,12 +281,20 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getDatabase()
     {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
+            $serverVersion = '[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database.offline') . ']';
+            $success = true;
+            try {
+                $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionByName($connectionName)
+                    ->getServerVersion();
+            } catch (\Exception $exception) {
+                $success = false;
+            }
             $this->systemInformation[] = [
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
                 'titleAddition' => $connectionName,
-                'value' => GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionByName($connectionName)
-                    ->getServerVersion(),
+                'value' => $serverVersion,
+                'status' => $success ?: InformationStatus::STATUS_WARNING,
                 'iconIdentifier' => 'information-database'
             ];
         }
