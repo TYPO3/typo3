@@ -105,9 +105,15 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     public function parseDateTimeTypeWithInvalidLowerBound()
     {
         $this->expectException(StatementException::class);
-        $this->expectExceptionMessageRegExp(
-            '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must >= 0@'
-        );
+        if (method_exists($this, 'expectDeprecationMessageMatches')) {
+            $this->expectDeprecationMessageMatches(
+                '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must >= 0@'
+            );
+        } else {
+            $this->expectExceptionMessageRegExp(
+                '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must >= 0@'
+            );
+        }
         $this->createSubject('TIME(-1)');
     }
 
@@ -117,9 +123,15 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     public function parseDateTimeTypeWithInvalidUpperBound()
     {
         $this->expectException(StatementException::class);
-        $this->expectExceptionMessageRegExp(
-            '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must <= 6@'
-        );
+        if (method_exists($this, 'expectDeprecationMessageMatches')) {
+            $this->expectDeprecationMessageMatches(
+                '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must <= 6@'
+            );
+        } else {
+            $this->expectExceptionMessageRegExp(
+                '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must <= 6@'
+            );
+        }
         $this->createSubject('TIME(7)');
     }
 }
