@@ -2454,6 +2454,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // Setting flag, so we know, that some cached content has been loaded
                     $this->cacheContentFlag = true;
                     $this->cacheExpires = $row['expires'];
+                    // Restore the current tags as they can be retrieved by getPageCacheTags()
+                    $this->pageCacheTags = $row['cacheTags'] ?? [];
 
                     // Restore page title information, this is needed to generate the page title for
                     // partially cached pages.
@@ -3386,6 +3388,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $tags = GeneralUtility::trimExplode(',', $this->page['cache_tags'], true);
             $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
         }
+        // Add the cache themselves as well, because they are fetched by getPageCacheTags()
+        $cacheData['cacheTags'] = $this->pageCacheTags;
         $this->pageCache->set($this->newHash, $cacheData, $this->pageCacheTags, $expirationTstamp - $GLOBALS['EXEC_TIME']);
     }
 
