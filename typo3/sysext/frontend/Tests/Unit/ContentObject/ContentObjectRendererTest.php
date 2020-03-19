@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -37,7 +36,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -583,7 +581,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $_GET = ['common' => 'GET', 'get' => 'GET'];
         $configuration = ['method' => $method];
-        $this->expectException(Warning::class);
+        $this->expectWarning();
         $this->expectExceptionMessage($expectedMessage);
         self::assertSame($expectedResult, $this->subject->getQueryArguments($configuration));
     }

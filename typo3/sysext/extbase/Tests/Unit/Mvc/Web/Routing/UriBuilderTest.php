@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use PHPUnit\Framework\Error\Warning;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -416,7 +415,7 @@ class UriBuilderTest extends UnitTestCase
     public function buildBackendUriHandlesRemovedMethods(string $method, string $expectedMessage, string $expectedResult): void
     {
         $_GET = ['common' => 'GET', 'get' => 'GET', 'route' => '/test/Path'];
-        $this->expectException(Warning::class);
+        $this->expectWarning();
         $this->expectExceptionMessage($expectedMessage);
         $this->uriBuilder->setAddQueryStringMethod($method);
         self::assertSame($expectedResult, $this->uriBuilder->buildFrontendUri());
