@@ -13,7 +13,12 @@
     <table cellpadding="0" cellspacing="0" class="t3-page-columns t3-grid-table t3js-page-columns">
         <tr>
             <f:for each="{backendLayout.languageColumns}" as="languageColumn">
-                <td valign="top" class="t3-page-column t3-page-column-lang-name" data-language-uid="{languageColumn.siteLanguage.languageId}">
+                <td valign="top"
+                    class="t3-page-column t3-page-column-lang-name"
+                    data-language-uid="{languageColumn.siteLanguage.languageId}"
+                    data-language-title="{languageColumn.siteLanguage.title}"
+                    data-flag-identifier="{languageColumn.siteLanguage.flagIdentifier}"
+                >
                     <h2>{languageColumn.siteLanguage.title}</h2>
                     <f:if condition="{languageColumn.languageMode}">
                         <span class="label label-{languageColumn.languageModeLabelClass}">{languageColumn.languageMode}</span>

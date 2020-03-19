@@ -144,7 +144,7 @@ class GridColumnItem extends AbstractGridObject
                 $language->getFlagIdentifier(),
                 Icon::SIZE_SMALL
             )->render();
-            return '<span title="' . $title . '">' . $icon . '</span>&nbsp;' . $title;
+            return '<span title="' . $title . '" class="t3js-flag">' . $icon . '</span>&nbsp;<span class="t3js-language-title">' . $title . '</span>';
         }
         return $title;
     }

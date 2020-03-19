@@ -683,8 +683,16 @@ class PageLayoutView implements LoggerAwareInterface
                         // we'll let opcode optimize this intentionally empty case
                 }
             }
+            $columnAttributes = [
+                'valign' => 'top',
+                'class' => 't3-page-column t3-page-column-lang-name',
+                'data-language-uid' => $languageId,
+                'data-language-title' => $this->siteLanguages[$languageId]->getTitle(),
+                'data-flag-identifier' => $this->siteLanguages[$languageId]->getFlagIdentifier()
+            ];
+
             $cCont[$languageId] = '
-					<td valign="top" class="t3-page-column t3-page-column-lang-name" data-language-uid="' . $languageId . '">
+					<td ' . GeneralUtility::implodeAttributes($columnAttributes, true) . '>
 						<h2>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$languageId]) . '</h2>
 						' . ($languageMode !== '' ? '<span class="label label-' . $labelClass . '">' . $languageMode . '</span>' : '') . '
 					</td>';
@@ -1923,7 +1931,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $language->getFlagIdentifier(),
                 Icon::SIZE_SMALL
             )->render();
-            return '<span title="' . $title . '">' . $icon . '</span>&nbsp;' . $title;
+            return '<span title="' . $title . '" class="t3js-flag">' . $icon . '</span>&nbsp;<span class="t3js-language-title">' . $title . '</span>';
         }
         return $title;
     }

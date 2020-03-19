@@ -19,8 +19,8 @@
 import * as $ from 'jquery';
 import 'jquery-ui/droppable';
 import DataHandler = require('../AjaxDataHandler');
+import Icons = require('../Icons');
 import ResponseInterface from '../AjaxDataHandler/ResponseInterface';
-
 
 interface Parameters {
   cmd?: { tt_content: { [key: string]: any } };
@@ -166,13 +166,13 @@ class DragDrop {
    * @param {Event} evt the event
    * @private
    */
-  public static onDrop($draggableElement: number | JQuery, $droppableElement: JQuery, evt: JQueryEventObject): void {
+  public static onDrop($draggableElement: JQuery, $droppableElement: JQuery, evt: JQueryEventObject): void {
     const newColumn = DragDrop.getColumnPositionForElement($droppableElement);
 
     $droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
 
     // send an AJAX requst via the AjaxDataHandler
-    const contentElementUid: number = parseInt((<JQuery>$draggableElement).data('uid'), 10);
+    const contentElementUid: number = parseInt($draggableElement.data('uid'), 10);
 
     if (typeof(contentElementUid) === 'number' && contentElementUid > 0) {
       let parameters: Parameters = {};
@@ -209,17 +209,26 @@ class DragDrop {
             },
           },
         };
-        // TODO Make sure we actually have a JQuery object here, not only cast it
-        DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction);
       } else {
         parameters.data.tt_content[contentElementUid] = {
           colPos: colPos,
           sys_language_uid: language,
         };
         parameters.cmd.tt_content[contentElementUid] = {move: targetPid};
-        // fire the request, and show a message if it has failed
-        DragDrop.ajaxAction($droppableElement, <JQuery>$draggableElement, parameters, copyAction);
       }
+
+      DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction).then((): void => {
+        const $languageDescriber = $(`.t3-page-column-lang-name[data-language-uid="${language}"]`);
+        const newFlagIdentifier = $languageDescriber.data('flagIdentifier');
+        const newLanguageTitle = $languageDescriber.data('languageTitle');
+
+        $draggableElement.find('.t3js-language-title').text(newLanguageTitle);
+
+        Icons.getIcon(newFlagIdentifier, Icons.sizes.small).then((markup: string): void => {
+          const $flagIcon = $draggableElement.find('.t3js-flag');
+          $flagIcon.attr('title', newLanguageTitle).html(markup);
+        });
+      });
     }
   }
 
@@ -232,10 +241,10 @@ class DragDrop {
    * @param {boolean} copyAction
    * @private
    */
-  public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, copyAction: boolean): void {
-    DataHandler.process(parameters).then((result: ResponseInterface): void => {
+  public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, copyAction: boolean): Promise<any> {
+    return DataHandler.process(parameters).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
-        return;
+        throw result.messages;
       }
 
       // insert draggable on the new position
@@ -247,7 +256,7 @@ class DragDrop {
           .insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
       }
       if (copyAction) {
-        self.location.reload(true);
+        self.location.reload();
       }
     });
   }
