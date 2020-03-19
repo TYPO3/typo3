@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -52,7 +53,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         'addRecord' => [
             'renderType' => 'addRecord',
             'disabled' => true,
-            'after' => [ 'editPopup' ],
         ],
         'listModule' => [
             'renderType' => 'listModule',
@@ -83,6 +83,38 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             ],
         ],
     ];
+
+    /**
+     * Merge field control configuration with default controls and render them.
+     *
+     * @return array Result array
+     */
+    protected function renderFieldControl(): array
+    {
+        $alternativeResult =  [
+            'additionalJavaScriptPost' => [],
+            'additionalHiddenFields' => [],
+            'additionalInlineLanguageLabelFiles' => [],
+            'stylesheetFiles' => [],
+            'requireJsModules' => [],
+            'inlineData' => [],
+            'html' => '',
+        ];
+        $options = $this->data;
+        $fieldControl = $this->defaultFieldControl;
+        $fieldControlFromTca = $options['parameterArray']['fieldConf']['config']['fieldControl'] ?? [];
+        ArrayUtility::mergeRecursiveWithOverrule($fieldControl, $fieldControlFromTca);
+        $options['renderType'] = 'fieldControl';
+        if (isset($fieldControl['editPopup'])) {
+            $editPopupControl = $fieldControl['editPopup'];
+            unset($fieldControl['editPopup']);
+            $alternativeOptions = $options;
+            $alternativeOptions['renderData']['fieldControl'] = ['editPopup' => $editPopupControl];
+            $alternativeResult = $this->nodeFactory->create($alternativeOptions)->render();
+        }
+        $options['renderData']['fieldControl'] = $fieldControl;
+        return [$this->nodeFactory->create($options)->render(), $alternativeResult];
+    }
 
     /**
      * Render side by side element.
@@ -202,9 +234,11 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        $fieldControlResult = $this->renderFieldControl();
+        [$fieldControlResult, $alternativeControlResult] = $this->renderFieldControl();
         $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
+        $alternativeFieldControlHtml = $alternativeControlResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $alternativeControlResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
@@ -272,6 +306,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             $html[] =                               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
             $html[] =                           '</a>';
         }
+        $html[] =                                $alternativeFieldControlHtml;
         $html[] =                               '<a href="#"';
         $html[] =                                   ' class="btn btn-default t3js-btn-option t3js-btn-removeoption"';
         $html[] =                                   ' data-fieldname="' . htmlspecialchars($elementName) . '"';
