@@ -51,8 +51,16 @@ class LanguagePackService
      */
     protected $requestFactory;
 
-    private const DEFAULT_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
-    private const NEW_LANGUAGE_PACK_URL = 'https://localize.typo3.org/fileadmin/ter/';
+    private const OLD_LANGUAGE_PACK_URLS = [
+        'https://extensions.typo3.org/fileadmin/l10n/',
+        'https://typo3.org/fileadmin/ter/',
+        'https://beta-translation.typo3.org/fileadmin/ter/',
+        'https://localize.typo3.org/fileadmin/ter/'
+    ];
+
+    private const OLD_LANGUAGE_PACK_URL = 'https://extensions.typo3.org/fileadmin/l10n/';
+
+    private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
     public function __construct()
     {
@@ -199,7 +207,7 @@ class LanguagePackService
         }
         if (empty($downloadBaseUrl)) {
             // Hard coded fallback if something went wrong fetching & parsing mirror list
-            $downloadBaseUrl = self::DEFAULT_LANGUAGE_PACK_URL;
+            $downloadBaseUrl = self::OLD_LANGUAGE_PACK_URL;
         }
         $this->registry->set('languagePacks', 'baseUrl', $downloadBaseUrl);
         return $downloadBaseUrl;
@@ -239,9 +247,9 @@ class LanguagePackService
             throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
         }
 
-        if ($languagePackBaseUrl === self::DEFAULT_LANGUAGE_PACK_URL
+        if (in_array(self::OLD_LANGUAGE_PACK_URLS, $languagePackBaseUrl, true)
             && GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('newTranslationServer')) {
-            $languagePackBaseUrl = self::NEW_LANGUAGE_PACK_URL;
+            $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
         }
 
         // Allow to modify the base url on the fly by calling a signal
@@ -259,11 +267,11 @@ class LanguagePackService
         $majorVersion = explode('.', TYPO3_branch)[0];
         if (strpos($path, '/sysext/') !== false) {
             // This is a system extension and the package URL should be adapted to have different packs per core major version
-            // https://typo3.org/fileadmin/ter/b/a/backend-l10n/backend-l10n-fr.v9.zip
+            // https://extensions.typo3.org/fileadmin/l10n/b/a/backend-l10n/backend-l10n-fr.v9.zip
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.v' . $majorVersion . '.zip';
         } else {
             // Typical non sysext path, Hungarian:
-            // https://typo3.org/fileadmin/ter/a/n/anextension-l10n/anextension-l10n-hu.zip
+            // https://extensions.typo3.org/fileadmin/l10n/a/n/anextension-l10n/anextension-l10n-hu.zip
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.zip';
         }
 
