@@ -498,15 +498,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * If a user has actually logged in and switched to a different user (admins can use the SU switch user method)
-     * the real UID is sometimes needed (when checking for permissions for example).
-     */
-    protected function getRealUserId(): int
-    {
-        return (int)($GLOBALS['BE_USER']->user['ses_backuserid'] ?: $this->user['uid']);
-    }
-
-    /**
      * Returns a WHERE-clause for the pages-table where user permissions according to input argument, $perms, is validated.
      * $perms is the "mask" used to select. Fx. if $perms is 1 then you'll get all pages that a user can actually see!
      * 2^0 = show (1)

@@ -284,24 +284,6 @@ class LiveSearch
     }
 
     /**
-     * Crops a title string to a limited length and if it really was cropped,
-     * wrap it in a <span title="...">|</span>,
-     * which offers a tooltip with the original title when moving mouse over it.
-     *
-     * @param string $title The title string to be cropped
-     * @param int $titleLength Crop title after this length - if not set, BE_USER->uc['titleLen'] is used
-     * @return string The processed title string, wrapped in <span title="...">|</span> if cropped
-     */
-    public function getRecordTitlePrep($title, $titleLength = 0)
-    {
-        // If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
-        if (!$titleLength || !MathUtility::canBeInterpretedAsInteger($titleLength) || $titleLength < 0) {
-            $titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
-        }
-        return htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $titleLength));
-    }
-
-    /**
      * Build the MySql where clause by table.
      *
      * @param QueryBuilder $queryBuilder

@@ -5443,44 +5443,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Decryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
-     *
-     * @param string $string Input string to en/decode: "mailto:some@example.com
-     * @param mixed  $type - either "ascii" or a number between -10 and 10 taken from config.spamProtectEmailAddresses
-     * @return string decoded version of $string
-     */
-    protected function decryptEmail(string $string, $type): string
-    {
-        $out = '';
-        // obfuscates using the decimal HTML entity references for each character
-        if ($type === 'ascii') {
-            foreach (preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY) as $char) {
-                $out .= '&#' . mb_ord($char) . ';';
-            }
-        } else {
-            // like str_rot13() but with a variable offset and a wider character range
-            $len = strlen($string);
-            $offset = (int)$type * -1;
-            for ($i = 0; $i < $len; $i++) {
-                $charValue = ord($string[$i]);
-                // 0-9 . , - + / :
-                if ($charValue >= 43 && $charValue <= 58) {
-                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
-                } elseif ($charValue >= 64 && $charValue <= 90) {
-                    // A-Z @
-                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
-                } elseif ($charValue >= 97 && $charValue <= 122) {
-                    // a-z
-                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
-                } else {
-                    $out .= $string[$i];
-                }
-            }
-        }
-        return $out;
-    }
-
-    /**
      * Encryption (or decryption) of a single character.
      * Within the given range the character is shifted with the supplied offset.
      *

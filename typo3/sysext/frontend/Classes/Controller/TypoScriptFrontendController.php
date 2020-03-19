@@ -2620,19 +2620,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Clears cache content for a list of page ids
-     *
-     * @param string $pidList A list of INTEGER numbers which points to page uids for which to clear entries in the cache_pages cache (page content cache)
-     */
-    protected function clearPageCacheContent_pidList($pidList)
-    {
-        $pageIds = GeneralUtility::trimExplode(',', $pidList);
-        foreach ($pageIds as $pageId) {
-            $this->pageCache->flushByTag('pageId_' . (int)$pageId);
-        }
-    }
-
-    /**
      * Sets sys last changed
      * Setting the SYS_LASTCHANGED value in the pagerecord: This value will thus be set to the highest tstamp of records rendered on the page. This includes all records with no regard to hidden records, userprotection and so on.
      *
@@ -3201,7 +3188,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
         if (!$this->isClientCachable) {
-            $this->contentStrReplace();
+            // Substitute various tokens in content. This should happen only if the content is not cached by proxies or client browsers.
+            $search = [];
+            $replace = [];
+            // Hook for supplying custom search/replace data
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'] ?? [] as $_funcRef) {
+                $_params = [
+                    'search' => &$search,
+                    'replace' => &$replace
+                ];
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
+            if (!empty($search)) {
+                $this->content = str_replace($search, $replace, $this->content);
+            }
         }
         // Hook for post-processing of page content before output:
         $_params = ['pObj' => &$this];
@@ -3311,26 +3311,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function isStaticCacheble()
     {
         return !$this->no_cache && !$this->isINTincScript() && !$this->isUserOrGroupSet();
-    }
-
-    /**
-     * Substitute various tokens in content. This should happen only if the content is not cached by proxies or client browsers.
-     */
-    protected function contentStrReplace()
-    {
-        $search = [];
-        $replace = [];
-        // Hook for supplying custom search/replace data
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'] ?? [] as $_funcRef) {
-            $_params = [
-                'search' => &$search,
-                'replace' => &$replace
-            ];
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        if (!empty($search)) {
-            $this->content = str_replace($search, $replace, $this->content);
-        }
     }
 
     /********************************************

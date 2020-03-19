@@ -449,13 +449,6 @@ class DataHandler implements LoggerAwareInterface
 
     // Internal caching arrays
     /**
-     * Used by function checkRecordUpdateAccess() to store whether a record is updatable or not.
-     *
-     * @var array
-     */
-    protected $recUpdateAccessCache = [];
-
-    /**
      * User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
      *
      * @var array
