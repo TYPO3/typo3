@@ -122,6 +122,8 @@ class PreviewSimulator implements MiddlewareInterface
 
         $frontendUser = $request->getAttribute('frontend.user');
         $frontendUser->user[$frontendUser->usergroup_column] = $simulateUserGroup;
+        // let's fake having a user with that group, too
+        $frontendUser->user['uid'] = 1;
         $this->context->setAspect(
             'frontend.user',
             GeneralUtility::makeInstance(

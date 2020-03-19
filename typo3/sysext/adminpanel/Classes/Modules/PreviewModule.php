@@ -93,7 +93,8 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             $this->config['showHiddenPages'],
             $this->config['showHiddenRecords'],
             $this->config['simulateDate'],
-            $this->config['simulateUserGroup']
+            $this->config['simulateUserGroup'],
+            $request
         );
 
         return $request;
@@ -155,13 +156,15 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      * @param bool $showHiddenRecords
      * @param int $simulateDate
      * @param int $simulateUserGroup UID of the fe_group to simulate
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      * @throws \Exception
      */
     protected function initializeFrontendPreview(
         bool $showHiddenPages,
         bool $showHiddenRecords,
         int $simulateDate,
-        int $simulateUserGroup
+        int $simulateUserGroup,
+        ServerRequestInterface $request
     ): void {
         $context = GeneralUtility::makeInstance(Context::class);
         $this->clearPreviewSettings($context);
@@ -193,11 +196,15 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         }
         // simulate usergroup
         if ($simulateUserGroup) {
+            $frontendUser = $request->getAttribute('frontend.user');
+            $frontendUser->user[$frontendUser->usergroup_column] = $simulateUserGroup;
+            // let's fake having a user with that group, too
+            $frontendUser->user['uid'] = 1337;
             $context->setAspect(
                 'frontend.user',
                 GeneralUtility::makeInstance(
                     UserAspect::class,
-                    null,
+                    $frontendUser,
                     [$simulateUserGroup]
                 )
             );

@@ -9,6 +9,7 @@ use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PreviewModuleTest extends UnitTestCase
@@ -61,6 +62,8 @@ class PreviewModuleTest extends UnitTestCase
     {
         $this->resetSingletonInstances = true;
         $request = $this->prophesize(ServerRequestInterface::class);
+        $request->getQueryParams()->willReturn([]);
+        $request->getAttribute('frontend.user')->willReturn($this->prophesize(FrontendUserAuthentication::class)->reveal());
         $configurationService = $this->prophesize(ConfigurationService::class);
         $configurationService->getMainConfiguration()->willReturn([]);
         $configurationService->getConfigurationOption('preview', 'showHiddenPages')->willReturn('0');
