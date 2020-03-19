@@ -786,6 +786,8 @@ class UpgradeController extends AbstractController
         $loadTcaService->loadExtensionTablesWithoutMigration();
         $baseTca = $GLOBALS['TCA'];
         foreach ($this->packageManager->getActivePackages() as $package) {
+            $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
+
             $extensionKey = $package->getPackageKey();
             $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
             if (@file_exists($extTablesPath)) {
