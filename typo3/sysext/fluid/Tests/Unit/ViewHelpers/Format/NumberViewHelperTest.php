@@ -99,4 +99,20 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         self::assertEquals('3,141.59', $actualResult);
     }
+
+    /**
+     * @test
+     */
+    public function formatNumberWithEmptyInput()
+    {
+        $this->viewHelper->setRenderChildrenClosure(function () {
+            return '';
+        });
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            []
+        );
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        self::assertEquals('0.00', $actualResult);
+    }
 }

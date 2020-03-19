@@ -85,6 +85,6 @@ class NumberViewHelper extends AbstractViewHelper
         $thousandsSeparator = $arguments['thousandsSeparator'];
 
         $stringToFormat = $renderChildrenClosure();
-        return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
+        return number_format((float)$stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
     }
 }
