@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  */
 
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -23,6 +25,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EditDocumentControllerTest extends UnitTestCase
 {
+    /**
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -43,6 +50,8 @@ class EditDocumentControllerTest extends UnitTestCase
             'magic' => 'yes'
         ];
         $result = [];
+        $uriBuilder = $this->prophesize(UriBuilder::class);
+        GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilder->reveal());
         $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
         $mock->_callRef('parseAdditionalGetParameters', $result, $typoScript);
         $this->assertSame($expectedParameters, $result);
