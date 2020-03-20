@@ -13,6 +13,9 @@
 
 import * as $ from 'jquery';
 import Typo3Notification = require('TYPO3/CMS/Backend/Notification');
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import Severity = require('TYPO3/CMS/Backend/Severity');
+import Client = require('TYPO3/CMS/Backend/Storage/Client');
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
@@ -54,8 +57,34 @@ class LoginRefresh {
 
     this.startTask();
 
-    if (document.location.protocol === 'https:' && typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
-      Notification.requestPermission();
+    const askForNotifications = !(Client.isset('notifications.asked') && Client.get('notifications.asked') === 'yes');
+    const isDefaultNotificationLevel = typeof Notification !== 'undefined' && Notification.permission === 'default';
+    if (askForNotifications
+      && document.location.protocol === 'https:'
+      && isDefaultNotificationLevel
+    ) {
+      Modal.confirm(
+        TYPO3.lang['notification.request.title'],
+        TYPO3.lang['notification.request.description'],
+        Severity.info,
+        [{
+          text: TYPO3.lang['button.yes'] || 'Yes',
+          btnClass: 'btn-' + Severity.getCssClass(Severity.info),
+          name: 'ok',
+          active: true,
+        }, {
+          text: TYPO3.lang['button.no'] || 'No',
+          btnClass: 'btn-' + Severity.getCssClass(Severity.notice),
+          name: 'cancel',
+        }],
+      ).on('confirm.button.ok', (): void => {
+        Notification.requestPermission();
+        Modal.dismiss();
+      }).on('confirm.button.cancel', (): void => {
+        Modal.dismiss();
+      }).on('hide.bs.modal', (): void => {
+        Client.set('notifications.asked', 'yes');
+      });
     }
   }
 
@@ -67,7 +96,7 @@ class LoginRefresh {
       return;
     }
     // set interval to 60 seconds
-    let interval: Number = this.intervalTime * 1000;
+    let interval: number = this.intervalTime * 1000;
     this.intervalId = setInterval(this.checkActiveSession, interval);
   }
 
