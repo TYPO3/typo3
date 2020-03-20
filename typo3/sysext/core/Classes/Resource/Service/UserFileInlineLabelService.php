@@ -66,7 +66,7 @@ class UserFileInlineLabelService
                     }
                 }
 
-                $value = BackendUtility::getRecordTitlePrep(htmlspecialchars($fullTitle));
+                $value = BackendUtility::getRecordTitlePrep($fullTitle);
             } else {
                 if (isset($params['row'][$field])) {
                     $value = htmlspecialchars($params['row'][$field]);
