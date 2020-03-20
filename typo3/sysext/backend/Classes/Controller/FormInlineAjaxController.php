@@ -749,10 +749,10 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         if (empty($context['config'])) {
             throw new \RuntimeException('Empty context config section given', 1489751362);
         }
-        if (!hash_equals(GeneralUtility::hmac(json_encode($context['config']), 'InlineContext'), $context['hmac'])) {
+        if (!hash_equals(GeneralUtility::hmac((string)$context['config'], 'InlineContext'), (string)$context['hmac'])) {
             throw new \RuntimeException('Hash does not validate', 1489751363);
         }
-        return $context['config'];
+        return json_decode($context['config'], true);
     }
 
     /**
