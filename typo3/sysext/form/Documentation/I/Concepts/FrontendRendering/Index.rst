@@ -113,7 +113,7 @@ we need to add some meaningful values to ``$prototypeConfiguration``::
 
 For each abstract ``<formElementTypeIdentifier>`` we have to add some
 configuration. In the snippet above, we only define the ``implementation
-class name``. Apart form that, it is always possible to set default values
+class name``. Apart from that, it is always possible to set default values
 for all configuration options of such elements, as the following example
 shows::
 
