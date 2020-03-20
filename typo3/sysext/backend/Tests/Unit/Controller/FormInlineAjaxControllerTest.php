@@ -72,9 +72,9 @@ class FormInlineAjaxControllerTest extends UnitTestCase
                 'ajax' => [
                     'context' => json_encode(
                         [
-                            'config' => [
+                            'config' => json_encode([
                                 'type' => 'inline',
-                            ],
+                            ]),
                             'hmac' => 'anInvalidHash',
                         ]
                     ),
@@ -133,9 +133,9 @@ class FormInlineAjaxControllerTest extends UnitTestCase
                 'ajax' => [
                     'context' => json_encode(
                         [
-                            'config' => [
+                            'config' => json_encode([
                                 'type' => 'inline',
-                            ],
+                            ]),
                             'hmac' => 'anInvalidHash',
                         ]
                     ),
@@ -194,9 +194,9 @@ class FormInlineAjaxControllerTest extends UnitTestCase
                 'ajax' => [
                     'context' => json_encode(
                         [
-                            'config' => [
+                            'config' => json_encode([
                                 'type' => 'inline',
-                            ],
+                            ]),
                             'hmac' => 'anInvalidHash',
                         ]
                     ),
