@@ -552,6 +552,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
                 || ($isFile && !$includeFiles) // skip files if they are excluded
                 || ($isDirectory && !$includeDirs) // skip directories if they are excluded
                 || $entry->getFilename() === '' // skip empty entries
+                || !$entry->isReadable() // skip unreadable entries
             ) {
                 $iterator->next();
                 continue;
