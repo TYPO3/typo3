@@ -1,0 +1,2 @@
+<f:if condition="{normalizedParams.remoteAddress}">This password reset request originated from the IP address "{normalizedParams.remoteAddress}".</f:if>
+If you have not requested a password reset and have concerns about this email, please let your administrator know.

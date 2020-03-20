@@ -241,7 +241,7 @@
 				<source>Reset Password</source>
 			</trans-unit>
 			<trans-unit id="resetPassword.confirmation.text" resname="resetPassword.confirmation.text">
-				<source>Are you sure to reset the password for %s?</source>
+				<source>Are you sure you want to reset the password for %s?</source>
 			</trans-unit>
 		</body>
 	</file>

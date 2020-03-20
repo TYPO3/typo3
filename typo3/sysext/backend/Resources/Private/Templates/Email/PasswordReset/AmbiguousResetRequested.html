@@ -1,12 +1,10 @@
 <f:layout name="SystemEmail" />
 <f:section name="Subject">Password reset requested at "{typo3.sitename}"</f:section>
-<f:section name="Title">Your email was used to trigger a password reset</f:section>
+<f:section name="Title">Your email address was used to trigger a password reset</f:section>
 <f:section name="Main">
-    <h4>Your email address is used multiple times</h4>
-    <p>It seems like your email address "{email}" is used for multiple Backend accounts in this TYPO3 installation.</p>
-    <p>We cannot reset your account for this reason. Reach out to your TYPO3 administrator to change this.</p>
-    <f:if condition="{normalizedParams.remoteAddress}">
-        <p>The email was requested by IP address <strong>{normalizedParams.remoteAddress}</strong>.</p>
-    </f:if>
-    <p>If you did not initiate a password reset, reach out to your administrator.</p>
+    <p>
+        Unfortunately, we are unable to reset your password because your email address "{email}" is used for multiple backend user accounts at the TYPO3 instance "{typo3.sitename}".
+        Please ask your administrator to generate a new password for you.
+    </p>
+    <f:render partial="Email/PasswordReset/ClosingParagraph" arguments="{normalizedParams: normalizedParams}" />
 </f:section>
