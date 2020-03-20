@@ -54,6 +54,9 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
             $linkLocation = $tsfe->absRefPrefix . $linkLocation;
         }
         $url = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
+        if (!empty($linkDetails['fragment'])) {
+            $url .= '#' . $linkDetails['fragment'];
+        }
         return [
             $this->forceAbsoluteUrl($url, $conf),
             $linkText,

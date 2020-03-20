@@ -58,7 +58,9 @@ class FileLinkHandler implements LinkHandlingInterface
             $identifier = $parameters['file']->getIdentifier();
             $urn = '?identifier=' . urlencode($identifier);
         }
-
+        if (!empty($parameters['fragment'])) {
+            $urn .= '#' . $parameters['fragment'];
+        }
         return $this->baseUrn . $urn;
     }
 
@@ -76,7 +78,11 @@ class FileLinkHandler implements LinkHandlingInterface
         } catch (FileDoesNotExistException $e) {
             $file = null;
         }
-        return ['file' => $file];
+        $result = ['file' => $file];
+        if (!empty($data['fragment'])) {
+            $result['fragment'] = $data['fragment'];
+        }
+        return $result;
     }
 
     /**
