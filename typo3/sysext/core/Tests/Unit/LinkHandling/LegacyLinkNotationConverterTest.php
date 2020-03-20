@@ -186,6 +186,15 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ],
                 't3://file?identifier=fileadmin%2Fon%2Fsteroids.png'
             ],
+            'file without FAL and anchor - VERY old style' => [
+                'fileadmin/on/steroids.png#page-23',
+                [
+                    'type' => LinkService::TYPE_FILE,
+                    'file' => 'fileadmin/on/steroids.png',
+                    'fragment' => 'page-23'
+                ],
+                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png#page-23'
+            ],
             'file without FAL with file prefix - VERY old style' => [
                 'file:fileadmin/on/steroids.png',
                 [
@@ -194,6 +203,15 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ],
                 't3://file?identifier=fileadmin%2Fon%2Fsteroids.png'
             ],
+            'file without FAL with file prefix and anchor - VERY old style' => [
+                'file:fileadmin/on/steroids.png#page-13',
+                [
+                    'type' => LinkService::TYPE_FILE,
+                    'file' => 'fileadmin/on/steroids.png',
+                    'fragment' => 'page-13'
+                ],
+                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png#page-13'
+            ],
             'file with FAL uid - old style' => [
                 'file:23',
                 [
@@ -201,6 +219,15 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'file' => 23
                 ],
                 't3://file?uid=23'
+            ],
+            'file with FAL uid and anchor - old style' => [
+                'file:23#page-13',
+                [
+                    'type' => LinkService::TYPE_FILE,
+                    'file' => 23,
+                    'fragment' => 'page-13',
+                ],
+                't3://file?uid=23#page-13'
             ],
             'folder without FAL - VERY old style' => [
                 'fileadmin/myimages/',

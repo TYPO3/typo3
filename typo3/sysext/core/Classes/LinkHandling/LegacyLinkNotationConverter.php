@@ -207,6 +207,9 @@ class LegacyLinkNotationConverter
     protected function getFileOrFolderObjectFromMixedIdentifier(string $mixedIdentifier): array
     {
         $result = [];
+        if (strpos($mixedIdentifier, '#') !== false) {
+            [$mixedIdentifier, $result['fragment']] = explode('#', $mixedIdentifier, 2);
+        }
         try {
             $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($mixedIdentifier);
             // Link to a folder or file

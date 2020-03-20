@@ -41,7 +41,6 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -5333,29 +5332,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
 
-        // Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-        if ($linkHandlerKeyword === 'file' && strpos($linkParameterParts['url'], 'file://') !== 0) {
-            try {
-                $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
-                // Link to a folder or file
-                if ($fileOrFolderObject instanceof File || $fileOrFolderObject instanceof Folder) {
-                    $linkParameter = $fileOrFolderObject->getPublicUrl();
-                } else {
-                    $linkParameter = null;
-                }
-            } catch (\RuntimeException $e) {
-                // Element wasn't found
-                $linkParameter = null;
-            } catch (ResourceDoesNotExistException $e) {
-                // Resource was not found
-                return $linkText;
-            }
-        } elseif (in_array(strtolower(preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
+        if (in_array(strtolower(preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
             // Disallow insecure scheme's like javascript: or data:
             return $linkText;
-        } else {
-            $linkParameter = $linkParameterParts['url'];
         }
+        $linkParameter = $linkParameterParts['url'];
 
         // additional parameters that need to be set
         if ($linkParameterParts['additionalParams'] !== '') {
