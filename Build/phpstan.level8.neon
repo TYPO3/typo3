@@ -1,0 +1,5 @@
+includes:
+	- phpstan.level7.neon
+
+parameters:
+	checkNullables: true

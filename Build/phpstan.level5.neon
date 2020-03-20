@@ -1,0 +1,16 @@
+includes:
+	- phpstan.level4.neon
+
+conditionalTags:
+	PHPStan\Rules\Functions\RandomIntParametersRule:
+		phpstan.rules.rule: %featureToggles.randomIntParameters%
+
+#parameters:
+#	checkFunctionArgumentTypes: true
+#	checkArgumentsPassedByReference: true
+
+services:
+	-
+		class: PHPStan\Rules\Functions\RandomIntParametersRule
+		arguments:
+			reportMaybes: %reportMaybes%
