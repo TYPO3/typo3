@@ -197,7 +197,7 @@ class DragUploaderPlugin {
    *
    * @param {Event} event
    */
-  public hideDropzone(event: Event): void {
+  public hideDropzone = (event: Event): void => {
     event.stopPropagation();
     event.preventDefault();
     this.$dropzone.hide();
