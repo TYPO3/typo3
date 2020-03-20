@@ -255,8 +255,8 @@ class InlineControlContainer {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      me.loadRecordDetails(this.parentElement.dataset.objectId);
-    }).delegateTo(this.container, Selectors.toggleSelector);
+      me.loadRecordDetails(this.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
+    }).delegateTo(this.container, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
   }
 
   private registerSort(): void {
