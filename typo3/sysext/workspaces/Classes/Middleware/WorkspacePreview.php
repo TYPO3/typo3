@@ -165,14 +165,15 @@ class WorkspacePreview implements MiddlewareInterface
      *
      * @param ServerRequestInterface $request
      * @param string $inputCode
-     * @return array Preview configuration array from sys_preview record.
+     * @return array|null Preview configuration array from sys_preview record.
      * @throws \Exception
      */
-    protected function getPreviewConfigurationFromRequest(ServerRequestInterface $request, string $inputCode): array
+    protected function getPreviewConfigurationFromRequest(ServerRequestInterface $request, string $inputCode): ?array
     {
         $previewData = $this->getPreviewData($inputCode);
         if (!is_array($previewData)) {
-            throw new \Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
+            // ADMCMD command could not be executed! (No keyword configuration found)
+            return null;
         }
         if ($request->getMethod() === 'POST') {
             throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);
