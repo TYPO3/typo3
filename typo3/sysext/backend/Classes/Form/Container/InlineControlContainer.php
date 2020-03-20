@@ -166,6 +166,7 @@ class InlineControlContainer extends AbstractContainer
             'table' => $foreign_table,
             'md5' => md5($nameObject)
         ];
+        $configJson = json_encode($config);
         $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
             'min' => $config['minitems'],
             'max' => $config['maxitems'],
@@ -175,8 +176,8 @@ class InlineControlContainer extends AbstractContainer
                 'uid' => $top['uid']
             ],
             'context' => [
-                'config' => $config,
-                'hmac' => GeneralUtility::hmac(json_encode($config), 'InlineContext'),
+                'config' => $configJson,
+                'hmac' => GeneralUtility::hmac($configJson, 'InlineContext'),
             ],
         ];
         $this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];

@@ -74,9 +74,9 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
                 'ajax' => [
                     'context' => json_encode(
                         [
-                            'config' => [
+                            'config' => json_encode([
                                 'type' => 'inline',
-                            ],
+                            ]),
                             'hmac' => 'anInvalidHash',
                         ]
                     ),
@@ -138,9 +138,9 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
                 'ajax' => [
                     'context' => json_encode(
                         [
-                            'config' => [
+                            'config' => json_encode([
                                 'type' => 'inline',
-                            ],
+                            ]),
                             'hmac' => 'anInvalidHash',
                         ]
                     ),
@@ -202,9 +202,9 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
                 'ajax' => [
                     'context' => json_encode(
                         [
-                            'config' => [
+                            'config' => json_encode([
                                 'type' => 'inline',
-                            ],
+                            ]),
                             'hmac' => 'anInvalidHash',
                         ]
                     ),
