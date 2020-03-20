@@ -336,7 +336,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
      */
     public function isSingleton(string $className): bool
     {
-        return $this->getReflectionService()->getClassSchema($className)->isSingleton();
+        return in_array(SingletonInterface::class, class_implements($className, true), true);
     }
 
     /**
