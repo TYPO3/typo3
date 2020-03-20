@@ -174,7 +174,7 @@ If you want to get more detailed information, use the --verbose option.')
 
         // Traverse the references and check if the files exists
         while ($record = $result->fetch()) {
-            $fileName = $record['ref_string'];
+            $fileName = $this->getFileNameWithoutAnchor($record['ref_string']);
             if (empty($record['softref_key']) && !@is_file(Environment::getPublicPath() . '/' . $fileName)) {
                 $missingReferences[$fileName][$record['hash']] = $this->formatReferenceIndexEntryToString($record);
             }
@@ -207,12 +207,26 @@ If you want to get more detailed information, use the --verbose option.')
 
         // Traverse the references and check if the files exists
         while ($record = $result->fetch()) {
-            $fileName = $record['ref_string'];
+            $fileName = $this->getFileNameWithoutAnchor($record['ref_string']);
             if (!@is_file(Environment::getPublicPath() . '/' . $fileName)) {
                 $missingReferences[] = $fileName . ' - ' . $record['hash'] . ' - ' . $this->formatReferenceIndexEntryToString($record);
             }
         }
         return $missingReferences;
+    }
+
+    /**
+     * Remove a possible anchor like 'my-path/file.pdf#page15'
+     *
+     * @param string $fileName a filename as found in sys_refindex.ref_string
+     * @return string the filename but leaving everything behind #page15 behind
+     */
+    protected function getFileNameWithoutAnchor(string $fileName): string
+    {
+        if (strpos($fileName, '#') !== false) {
+            [$fileName] = explode('#', $fileName);
+        }
+        return $fileName;
     }
 
     /**
