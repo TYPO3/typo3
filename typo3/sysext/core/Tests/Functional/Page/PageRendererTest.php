@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Functional\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -324,5 +329,54 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->loadJquery('1.6.3', 'google', PageRenderer::JQUERY_NAMESPACE_NONE, true);
         $out = $subject->render();
         $this->assertRegExp($expectedRegex, $out);
+    }
+
+    /**
+     * @test
+     */
+    public function pageRendererMergesRequireJsPackagesOnConsecutiveCalls(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['session']['BE'] = [
+            'backend'  => DatabaseSessionBackend::class,
+            'options' => [
+                'table' => 'be_sessions',
+            ],
+        ];
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $GLOBALS['BE_USER']->id = md5('abc');
+        $GLOBALS['BE_USER']->user = ['uid' => 1];
+        $GLOBALS['BE_USER']->setLogger(new NullLogger());
+
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+
+        $subject = new PageRenderer();
+        $subject->setCharSet('utf-8');
+        $subject->setLanguage('default');
+
+        $packages = [
+            [
+                'name' => 'foo',
+                'location' => '/typo3conf/ext/foo/Resources/Public/JavaScript/Contrib/foo',
+                'main' => 'lib/foo'
+            ],
+            [
+                'name' => 'bar',
+                'location' => '/typo3conf/ext/bar/Resources/Public/JavaScript/Contrib/bar',
+                'main' => 'lib/bar'
+            ]
+        ];
+
+        foreach ($packages as $package) {
+            $subject->addRequireJsConfiguration([
+                'packages' => [$package]
+            ]);
+        }
+
+        $expectedConfiguration = json_encode(['packages' => $packages]);
+        // Remove surrounding brackets as the expectation is a substring of a larger JSON string
+        $expectedConfiguration = trim($expectedConfiguration, '{}');
+
+        $renderedString = $subject->render();
+        self::assertStringContainsString($expectedConfiguration, $renderedString);
     }
 }
