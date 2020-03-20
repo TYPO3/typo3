@@ -286,6 +286,8 @@ class Indexer implements LoggerAwareInterface
                 }
             } catch (InvalidHashException $e) {
                 $this->logger->error('Unable to create hash for file ' . $identifier);
+            } catch (\Exception $e) {
+                $this->logger->error('Unable to index / update file with identifier ' . $identifier . ' (Error: ' . $e->getMessage() . ')');
             }
         }
     }
