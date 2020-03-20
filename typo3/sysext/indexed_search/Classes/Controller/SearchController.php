@@ -615,6 +615,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function makeRating($row)
     {
+        $default = ' ';
         switch ((string)$this->searchData['sortOrder']) {
             case 'rank_count':
                 return $row['order_val'] . ' ' . LocalizationUtility::translate('result.ratingMatches', 'IndexedSearch');
@@ -629,7 +630,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $total = MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
                     return ceil(log($total) / log(32767) * 100) . '%';
                 }
-                break;
+                return $default;
             case 'rank_freq':
                 $max = 10000;
                 $total = MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
@@ -639,7 +640,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             case 'mtime':
                 return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
             default:
-                return ' ';
+                return $default;
         }
     }
 

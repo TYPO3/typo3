@@ -62,6 +62,7 @@ class InaccessibleFolder extends Folder
     public function getPublicUrl($relativeToCurrentScript = false)
     {
         $this->throwInaccessibleException();
+        return null;
     }
 
     /**

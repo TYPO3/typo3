@@ -3198,6 +3198,8 @@ class GeneralUtility
             move_uploaded_file($uploadedFileName, $tempFile);
             return @is_file($tempFile) ? $tempFile : '';
         }
+
+        return '';
     }
 
     /**
@@ -3206,7 +3208,7 @@ class GeneralUtility
      * Use this after upload_to_tempfile() or tempnam() from this class!
      *
      * @param string $uploadedTempFileName absolute file path - must reside within var/ or typo3temp/ folder.
-     * @return bool Returns TRUE if the file was unlink()'ed
+     * @return bool|null Returns TRUE if the file was unlink()'ed
      * @see upload_to_tempfile()
      * @see tempnam()
      */
@@ -3227,6 +3229,8 @@ class GeneralUtility
                 }
             }
         }
+
+        return null;
     }
 
     /**

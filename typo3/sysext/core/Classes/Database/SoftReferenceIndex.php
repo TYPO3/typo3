@@ -101,7 +101,7 @@ class SoftReferenceIndex implements SingletonInterface
      * @param string $spKey The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
      * @param array $spParams Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
      * @param string $structurePath If running from inside a FlexForm structure, this is the path of the tag.
-     * @return array|bool Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|bool|null Result array on positive matches, see description above. Otherwise FALSE or null
      */
     public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '')
     {
@@ -162,7 +162,7 @@ class SoftReferenceIndex implements SingletonInterface
      *
      * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|null Result array on positive matches, see description above. Otherwise null
      * @see \TYPO3\CMS\Frontend\ContentObject::typolink()
      * @see getTypoLinkParts()
      */
@@ -191,6 +191,8 @@ class SoftReferenceIndex implements SingletonInterface
             ];
             return $resultArray;
         }
+
+        return null;
     }
 
     /**
@@ -198,7 +200,7 @@ class SoftReferenceIndex implements SingletonInterface
      * Will search for <link ...> and <a> tags in the content string and process any found.
      *
      * @param string $content The input content to analyze
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|null Result array on positive matches, see description above. Otherwise null
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
      * @see getTypoLinkParts()
      */
@@ -297,6 +299,8 @@ class SoftReferenceIndex implements SingletonInterface
             ];
             return $resultArray;
         }
+
+        return null;
     }
 
     /**
@@ -304,7 +308,7 @@ class SoftReferenceIndex implements SingletonInterface
      *
      * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|null Result array on positive matches, see description above. Otherwise null
      */
     public function findRef_email($content, $spParams)
     {
@@ -334,6 +338,8 @@ class SoftReferenceIndex implements SingletonInterface
             ];
             return $resultArray;
         }
+
+        return null;
     }
 
     /**
@@ -341,7 +347,7 @@ class SoftReferenceIndex implements SingletonInterface
      *
      * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|null Result array on positive matches, see description above. Otherwise null
      */
     public function findRef_url($content, $spParams)
     {
@@ -374,13 +380,15 @@ class SoftReferenceIndex implements SingletonInterface
             ];
             return $resultArray;
         }
+
+        return null;
     }
 
     /**
      * Finding reference to files from extensions in content, but only to notify about their existence. No substitution
      *
      * @param string $content The input content to analyze
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|null Result array on positive matches, see description above. Otherwise null
      */
     public function findRef_extension_fileref($content)
     {
@@ -402,6 +410,8 @@ class SoftReferenceIndex implements SingletonInterface
             ];
             return $resultArray;
         }
+
+        return null;
     }
 
     /*************************

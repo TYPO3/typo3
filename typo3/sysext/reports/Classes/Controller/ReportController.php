@@ -139,7 +139,7 @@ class ReportController
      * Display a single report
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface|null
+     * @return ResponseInterface|void
      */
     protected function detailAction(ServerRequestInterface $request)
     {

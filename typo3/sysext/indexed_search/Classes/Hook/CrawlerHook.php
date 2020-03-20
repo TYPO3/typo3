@@ -583,7 +583,7 @@ class CrawlerHook
      * @param string $url URL string to check
      * @param array $urlLog Array of already indexed URLs (input url is looked up here and must not exist already)
      * @param string $baseUrl Base URL of the indexing process (input URL must be "inside" the base URL!)
-     * @return string Returns the URL if OK, otherwise FALSE
+     * @return string Returns the URL if OK, otherwise empty string
      */
     public function checkUrl($url, $urlLog, $baseUrl)
     {
@@ -596,6 +596,8 @@ class CrawlerHook
                 }
             }
         }
+
+        return '';
     }
 
     /**

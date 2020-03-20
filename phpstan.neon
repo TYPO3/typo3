@@ -94,3 +94,9 @@ parameters:
       message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
       count: 1
       path: typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
+
+    # Ignored errors for level 2
+    -
+      message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Processing\\\\ImageCropScaleMaskTask\\:\\:fileNeedsProcessing\\(\\) should return bool but return statement is missing\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Resource/Processing/ImageCropScaleMaskTask.php

@@ -638,6 +638,8 @@ class Indexer
                 return $reg2[1];
             }
         }
+
+        return '';
     }
 
     /**

@@ -106,6 +106,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      */
     public function getAddedObjects()
     {
+        return [];
     }
 
     /**
@@ -117,6 +118,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      */
     public function getRemovedObjects()
     {
+        return [];
     }
 
     /**
@@ -168,6 +170,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      */
     public function countAll()
     {
+        return 0;
     }
 
     /**

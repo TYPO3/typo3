@@ -89,6 +89,8 @@ class LockedBackendGuard implements MiddlewareInterface
             }
             throw new BackendLockedException('TYPO3 Backend locked: Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.', 1517949793);
         }
+
+        return null;
     }
 
     /**

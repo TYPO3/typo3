@@ -712,7 +712,7 @@ page.10.value = HELLO WORLD!
     /**
      * Return the content of the 'main' function inside the "Function menu module" if present
      *
-     * @return string
+     * @return string|null
      */
     protected function getExtObjContent()
     {
@@ -731,6 +731,8 @@ page.10.value = HELLO WORLD!
         } elseif (is_callable([$this->extObj, 'main'])) {
             return $this->extObj->main();
         }
+
+        return null;
     }
 
     /**

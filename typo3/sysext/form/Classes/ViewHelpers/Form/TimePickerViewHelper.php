@@ -114,6 +114,8 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         if ($this->hasArgument('initialDate')) {
             return new \DateTime($this->arguments['initialDate']);
         }
+
+        return null;
     }
 
     /**

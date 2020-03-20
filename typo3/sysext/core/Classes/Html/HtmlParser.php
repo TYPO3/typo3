@@ -280,6 +280,7 @@ class HtmlParser
             }
             return [$attributes, $attributesMeta];
         }
+        return [null, null];
     }
 
     /**

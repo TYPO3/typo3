@@ -1,7 +1,7 @@
 parameters:
 	checkClassCaseSensitivity: true
 #	checkThisOnly: false
-#	checkPhpDocMissingReturn: true
+	checkPhpDocMissingReturn: true
 
 rules:
 	- PHPStan\Rules\Cast\EchoRule

@@ -94,7 +94,7 @@ class BasicFileUtility
      * @param string $theFile The input filename to check
      * @param string $theDest The directory for which to return a unique filename for $theFile. $theDest MUST be a valid directory. Should be absolute.
      * @param bool $dontCheckForUnique If set the filename is returned with the path prepended without checking whether it already existed!
-     * @return string The destination absolute filepath (not just the name!) of a unique filename/foldername in that path.
+     * @return string|null The destination absolute filepath (not just the name!) of a unique filename/foldername in that path.
      * @internal May be removed without further notice. Method has been marked as deprecated for various versions but is still used in core.
      * @todo: should go into the LocalDriver in a protected way (not important to the outside world)
      */
@@ -134,6 +134,8 @@ class BasicFileUtility
                 }
             }
         }
+
+        return null;
     }
 
     /*********************

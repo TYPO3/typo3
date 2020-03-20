@@ -144,7 +144,7 @@ class IndexedSearchUtility
      *
      * @param string $operator The possible operator to find in the internal operator array.
      * @param array $operatorTranslateTable an array of possible operators
-     * @return string If found, the SQL operator for the localized input operator.
+     * @return string|null If found, the SQL operator for the localized input operator.
      */
     protected static function getOperator($operator, $operatorTranslateTable)
     {
@@ -160,5 +160,7 @@ class IndexedSearchUtility
                 return $operatorTranslateTable[$key][1];
             }
         }
+
+        return null;
     }
 }

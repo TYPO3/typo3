@@ -124,6 +124,8 @@ class RedirectService implements LoggerAwareInterface
                 }
             }
         }
+
+        return null;
     }
 
     /**
