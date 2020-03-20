@@ -231,7 +231,8 @@ class ContextMenuActions {
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {
       if (e.target.getAttribute('name') === 'delete') {
-        AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1').then((): void => {
+        const eventData = {component: 'contextmenu', trigger: $anchorElement.get(0), action: 'delete', table, uid};
+        AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
           if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
             if (uid === top.fsMod.recentIds.web) {
               let node = Viewport.NavigationContainer.PageTree.getFirstNode();

@@ -28,6 +28,14 @@ enum Identifiers {
   icon = '.t3js-icon',
 }
 
+interface AfterProcessEventDict {
+  component: string;
+  action: string;
+  trigger?: Node;
+  table: string;
+  uid: number;
+}
+
 /**
  * Module: TYPO3/CMS/Backend/AjaxDataHandler
  * Javascript functions to work with AJAX and interacting with Datahandler
@@ -65,20 +73,29 @@ class AjaxDataHandler {
   /**
    * Generic function to call from the outside the script and validate directly showing errors
    *
-   * @param {Object} parameters
-   * @returns {JQueryPromise<any>}
+   * @param {string | object} parameters
+   * @param {AfterProcessEventDict} eventDict Dictionary used as event detail. This is private API yet.
+   * @returns {Promise<any>}
    */
-  public process(parameters: string | object): Promise<any> {
+  public process(parameters: string | object, eventDict?: AfterProcessEventDict): Promise<any> {
     const promise = AjaxDataHandler.call(parameters);
     return promise.then((result: ResponseInterface): ResponseInterface => {
       if (result.hasErrors) {
         this.handleErrors(result);
       }
 
+      if (eventDict) {
+        const event = new CustomEvent(`datahandler:process:${eventDict.action}`,{
+          detail: {...eventDict, hasErrors: result.hasErrors}
+        });
+        document.dispatchEvent(event);
+      }
+
       return result;
     });
   }
 
+  // TODO: Many extensions rely on this behavior but it's misplaced in AjaxDataHandler. Move into Recordlist.ts and deprecate in v11.
   private initialize(): void {
     // HIDE/UNHIDE: click events for all action icons to hide/unhide
     $(document).on('click', Identifiers.hide, (e: JQueryEventObject): void => {
@@ -92,7 +109,7 @@ class AjaxDataHandler {
       this._showSpinnerIcon($iconElement);
 
       // make the AJAX call to toggle the visibility
-      AjaxDataHandler.call(params).then((result: ResponseInterface): void => {
+      this.process(params).then((result: ResponseInterface): void => {
         // print messages on errors
         if (result.hasErrors) {
           this.handleErrors(result);
@@ -201,8 +218,14 @@ class AjaxDataHandler {
     // add a spinner
     this._showSpinnerIcon($iconElement);
 
+    const $table = $anchorElement.closest('table[data-table]');
+    const table = $table.data('table');
+    let $rowElements = $anchorElement.closest('tr[data-uid]');
+    const uid = $rowElements.data('uid');
+
     // make the AJAX call to toggle the visibility
-    AjaxDataHandler.call(params).then((result: ResponseInterface): void => {
+    const eventData = {component: 'datahandler', trigger: $anchorElement.get(0), action: 'delete', table, uid};
+    this.process(params, eventData).then((result: ResponseInterface): void => {
       // revert to the old class
       Icons.getIcon('actions-edit-delete', Icons.sizes.small).then((icon: string): void => {
         $iconElement = $anchorElement.find(Identifiers.icon);
@@ -212,12 +235,8 @@ class AjaxDataHandler {
       if (result.hasErrors) {
         this.handleErrors(result);
       } else {
-        const $table = $anchorElement.closest('table[data-table]');
         const $panel = $anchorElement.closest('.panel');
         const $panelHeading = $panel.find('.panel-heading');
-        const table = $table.data('table');
-        let $rowElements = $anchorElement.closest('tr[data-uid]');
-        const uid = $rowElements.data('uid');
         const $translatedRowElements = $table.find('[data-l10nparent=' + uid + ']').closest('tr[data-uid]');
         $rowElements = $rowElements.add($translatedRowElements);
 

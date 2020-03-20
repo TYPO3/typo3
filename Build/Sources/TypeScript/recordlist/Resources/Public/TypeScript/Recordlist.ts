@@ -12,8 +12,10 @@
  */
 
 import * as $ from 'jquery';
-import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 import Icons = require('TYPO3/CMS/Backend/Icons');
+import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import Viewport = require('TYPO3/CMS/Backend/Viewport');
 
 declare global {
   const T3_THIS_LOCATION: string;
@@ -52,6 +54,7 @@ class Recordlist {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
     $(document).on('click', this.identifier.localize, this.disableButton);
+    new RegularEvent('datahandler:process:delete', this.deleteRow).bindTo(document);
   }
 
   public toggleClick = (e: JQueryEventObject): void => {
@@ -164,6 +167,42 @@ class Recordlist {
     const $me = $(event.currentTarget);
 
     $me.prop('disable', true).addClass('disabled');
+  }
+
+  private deleteRow = (e: CustomEvent): void => {
+    if (e.detail.hasErrors) {
+      return;
+    }
+
+    if (e.detail.component === 'datahandler') {
+      // In this case the delete action was triggered by AjaxDataHandler itself, which currently has its own handling.
+      // Visual handling is about to get decoupled from data handling itself, thus the logic is duplicated for now.
+      return;
+    }
+
+    const $tableElement = $(`table[data-table="${e.detail.table}"]`);
+    const $rowElement = $tableElement.find(`tr[data-uid="${e.detail.uid}"]`);
+    const $panel = $tableElement.closest('.panel');
+    const $panelHeading = $panel.find('.panel-heading');
+    const $translatedRowElements = $tableElement.find(`[data-l10nparent="${e.detail.uid}"]`);
+
+    const $rowElements = $().add($rowElement).add($translatedRowElements);
+    $rowElements.fadeTo('slow', 0.4, (): void => {
+      $rowElements.slideUp('slow', (): void => {
+        $rowElements.remove();
+        if ($tableElement.find('tbody tr').length === 0) {
+          $panel.slideUp('slow');
+        }
+      });
+    });
+    if ($rowElement.data('l10nparent') === '0' || $rowElement.data('l10nparent') === '') {
+      const count = Number($panelHeading.find('.t3js-table-total-items').html());
+      $panelHeading.find('.t3js-table-total-items').text(count - 1);
+    }
+
+    if (e.detail.table === 'pages') {
+      Viewport.NavigationContainer.PageTree.refreshTree();
+    }
   }
 
   private getCheckboxState(CBname: string): boolean {
