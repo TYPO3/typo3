@@ -103,12 +103,14 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                         $foreignUid = $foreignUid[0]['uid'];
                     }
                     // Fetch field of this foreign row from db
-                    $foreignRow = $this->getDatabaseRow($foreignTable, $foreignUid, $foreignTableTypeField);
-                    if ($foreignRow[$foreignTableTypeField]) {
-                        // @todo: It might be necessary to fetch the value from default language record as well here,
-                        // @todo: this was buggy in the "old" implementation and never worked. It was therefor left out here for now.
-                        // @todo: To implement that, see if the foreign row is a localized overlay, fetch default and merge exclude
-                        $recordTypeValue = $foreignRow[$foreignTableTypeField];
+                    if (MathUtility::canBeInterpretedAsInteger($foreignUid)) {
+                        $foreignRow = $this->getDatabaseRow($foreignTable, (int)$foreignUid, $foreignTableTypeField);
+                        if ($foreignRow[$foreignTableTypeField]) {
+                            // @todo: It might be necessary to fetch the value from default language record as well here,
+                            // @todo: this was buggy in the "old" implementation and never worked. It was therefor left out here for now.
+                            // @todo: To implement that, see if the foreign row is a localized overlay, fetch default and merge exclude
+                            $recordTypeValue = $foreignRow[$foreignTableTypeField];
+                        }
                     }
                 }
             }
