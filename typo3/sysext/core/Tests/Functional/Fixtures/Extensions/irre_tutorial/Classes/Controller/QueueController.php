@@ -30,7 +30,7 @@ class QueueController extends AbstractController
      * @Extbase\Inject
      * @var \OliverHader\IrreTutorial\Domain\Repository\ContentRepository
      */
-    protected $contentRepository;
+    public $contentRepository;
 
     /**
      * @var string

@@ -226,13 +226,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
                 $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
 
-            if ($classSchema->getProperty($injectPropertyName)->isPublic()) {
-                $instance->{$injectPropertyName} = $instanceToInject;
-            } else {
-                $propertyReflection = new \ReflectionProperty($instance, $injectPropertyName);
-                $propertyReflection->setAccessible(true);
-                $propertyReflection->setValue($instance, $instanceToInject);
-            }
+            $instance->{$injectPropertyName} = $instanceToInject;
         }
     }
 

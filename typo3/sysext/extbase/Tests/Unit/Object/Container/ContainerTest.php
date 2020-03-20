@@ -30,7 +30,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorA
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgumentTwo;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\OptionalConstructorArgument;
-use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ProtectedPropertyInjectClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\PublicPropertyInjectClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\SimpleTypeConstructorArgument;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional;
@@ -967,14 +966,5 @@ class ContainerTest extends UnitTestCase
     {
         $object = $this->subject->getInstance(PublicPropertyInjectClass::class);
         self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->foo);
-    }
-
-    /**
-     * @test
-     */
-    public function getInstanceInjectsProtectedProperties()
-    {
-        $object = $this->subject->getInstance(ProtectedPropertyInjectClass::class);
-        self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->getFoo());
     }
 }

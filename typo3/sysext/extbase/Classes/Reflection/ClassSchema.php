@@ -244,7 +244,7 @@ class ClassSchema
                 $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT;
             }
 
-            $isInjectProperty = $propertyName !== 'settings'
+            $isInjectProperty = $propertyName !== 'settings' && $reflectionProperty->isPublic()
                 && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject);
 
             if ($isInjectProperty) {

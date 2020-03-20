@@ -34,7 +34,7 @@ class BlogController extends ActionController
      * @Extbase\Inject
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
      */
-    protected $blogRepository;
+    public $blogRepository;
 
     /**
      * @var string
@@ -45,7 +45,7 @@ class BlogController extends ActionController
      * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
-    protected $dataMapFactory;
+    public $dataMapFactory;
 
     public function listAction()
     {

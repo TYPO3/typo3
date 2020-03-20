@@ -35,7 +35,7 @@ class ContentController extends ActionController
      * @Extbase\Inject
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository
      */
-    protected $contentRepository;
+    public $contentRepository;
 
     /**
      * @var string
@@ -46,7 +46,7 @@ class ContentController extends ActionController
      * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
-    protected $dataMapFactory;
+    public $dataMapFactory;
 
     /**
      * @return array

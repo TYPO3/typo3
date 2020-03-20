@@ -33,7 +33,7 @@ abstract class AbstractController extends ActionController
      * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
-    protected $dataMapFactory;
+    public $dataMapFactory;
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
