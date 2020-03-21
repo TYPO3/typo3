@@ -17,14 +17,27 @@
                     <button type="button" class="btn btn-default btn-success t3js-login-login">
                         Login
                     </button>
-                    <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool">
-                        <i class="fa fa-lock"></i> Lock Install Tool again
-                    </button>
+                    <f:if condition="!{installToolEnableFilePermanent}">
+                        <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool">
+                            <i class="fa fa-lock"></i> Lock Install Tool again
+                        </button>
+                    </f:if>
                 </form>
             </div>
             <div id="t3-install-box-border-bottom">&nbsp;</div>
 
             <div class="t3js-login-output"></div>
+
+            <f:if condition="{installToolEnableFilePermanent}">
+                <div class="panel panel-danger">
+                    <div class="panel-heading"><h3 class="panel-title">Install Tool is permanently enabled</h3></div>
+                    <div class="panel-body">
+                        The Install Tool is permanently enabled because our <code>ENABLE_INSTALL_TOOL</code> file contains
+                        the text <em>KEEP_FILE</em>.<br />
+                        Never use this on production systems!
+                    </div>
+                </div>
+            </f:if>
 
             <div class="panel panel-info">
                 <div class="panel-heading"><h3 class="panel-title">Information</h3></div>

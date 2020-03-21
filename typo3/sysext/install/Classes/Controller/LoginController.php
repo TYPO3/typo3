@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
  * Login controller
@@ -55,6 +56,7 @@ class LoginController extends AbstractController
         $view->assignMultiple([
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'loginToken' => $formProtection->generateToken('installTool', 'login'),
+            'installToolEnableFilePermanent' => EnableFileService::isInstallToolEnableFilePermanent(),
         ]);
         return new JsonResponse([
             'success' => true,
