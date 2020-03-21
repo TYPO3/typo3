@@ -2256,7 +2256,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($actionCMDs as $key => $value) {
             if ($key === '_ACTION') {
                 // First, check if there are "commands":
-                if (current($actionCMDs[$key]) === '') {
+                if (empty(array_filter($actionCMDs[$key]))) {
                     continue;
                 }
 

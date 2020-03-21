@@ -122,8 +122,14 @@ class FlexFormElement {
           Modal.currentModal.trigger('modal-dismiss');
         });
         $confirm.on('confirm.button.ok', () => {
-          $(evt.target).closest(this.opts.sectionSelector).hide().addClass(this.opts.sectionDeletedClass);
-          this.setActionStatus();
+          const $section = $(evt.target).closest(this.opts.sectionSelector);
+          $section.find(this.opts.sectionActionInputFieldSelector).detach().appendTo($section.parent()).val('DELETE');
+          $section.addClass('t3-flex-section--deleted');
+
+          $section.on('transitionend', (): void => {
+            $section.remove();
+          });
+
           FormEngine.Validation.validate();
           Modal.currentModal.trigger('modal-dismiss');
         });
@@ -158,11 +164,9 @@ class FlexFormElement {
 
   // Updates the "action"-status for a section. This is used to move and delete elements.
   private setActionStatus(): void {
-    const that = this;
     // Traverse and find how many sections are open or closed, and save the value accordingly
-    this.$el.find(this.opts.sectionActionInputFieldSelector).each(function (this: HTMLElement, index: number): void {
-      const actionValue = ($(this).parents(that.opts.sectionSelector).hasClass(that.opts.sectionDeletedClass) ? 'DELETE' : index);
-      $(this).val(actionValue);
+    this.$el.find(this.opts.sectionSelector + ' ' + this.opts.sectionActionInputFieldSelector).each(function (this: HTMLInputElement, index: number): void {
+      this.value = String(index);
     });
   }
 
