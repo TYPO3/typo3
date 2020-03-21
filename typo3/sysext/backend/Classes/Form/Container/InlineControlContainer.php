@@ -525,7 +525,7 @@ class InlineControlContainer extends AbstractContainer
         }
         if ($showUpload && $isDirectFileUploadEnabled) {
             $folder = $backendUser->getDefaultUploadFolder(
-                $this->data['parentPageRow']['uid'],
+                $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : $this->data['parentPageRow']['uid'],
                 $this->data['tableName'],
                 $this->data['fieldName']
             );
