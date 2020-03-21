@@ -507,10 +507,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function isSystemMaintainer(): bool
     {
+        if (!$this->isAdmin()) {
+            return false;
+        }
+
         if ((int)$GLOBALS['BE_USER']->user['ses_backuserid'] !== 0) {
             return false;
         }
-        if (GeneralUtility::getApplicationContext()->isDevelopment() && $this->isAdmin()) {
+        if (GeneralUtility::getApplicationContext()->isDevelopment()) {
             return true;
         }
         $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
@@ -525,7 +529,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             && empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'])) {
             return false;
         }
-        return $this->isAdmin();
+        return true;
     }
 
     /**
