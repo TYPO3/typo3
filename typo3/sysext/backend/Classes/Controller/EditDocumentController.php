@@ -593,7 +593,8 @@ class EditDocumentController
                         }
                         // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
                         if ($tableName === 'pages'
-                            && $this->retUrl != (string)$this->uriBuilder->buildUriFromRoute('dummy')
+                            && $this->retUrl !== (string)$this->uriBuilder->buildUriFromRoute('dummy')
+                            && $this->retUrl !== $this->getCloseUrl()
                             && $this->returnNewPageId
                         ) {
                             $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
