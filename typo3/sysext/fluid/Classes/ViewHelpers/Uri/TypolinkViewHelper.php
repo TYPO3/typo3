@@ -67,6 +67,7 @@ class TypolinkViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
         // @deprecated useCacheHash
         $this->registerArgument('useCacheHash', 'bool', 'Deprecated: You should not need this.', false);
         $this->registerArgument('addQueryString', 'bool', '', false, false);
@@ -111,6 +112,9 @@ class TypolinkViewHelper extends AbstractViewHelper
             'parameter' => $typoLinkParameter,
             'forceAbsoluteUrl' => $absolute,
         ];
+        if (isset($arguments['language']) && $arguments['language'] !== null) {
+            $instructions['language'] = $arguments['language'];
+        }
         if ($addQueryString) {
             $instructions['addQueryString'] = $addQueryString;
             $instructions['addQueryString.'] = [

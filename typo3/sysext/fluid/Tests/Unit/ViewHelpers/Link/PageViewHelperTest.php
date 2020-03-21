@@ -50,6 +50,7 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         $this->uriBuilder->expects(self::any())->method('setSection')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setFormat')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setCreateAbsoluteUri')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setLanguage')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setAddQueryString')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setArgumentsToBeExcludedFromQueryString')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setLinkAccessRestrictedPages')->willReturn($this->uriBuilder);

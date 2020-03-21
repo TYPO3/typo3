@@ -109,6 +109,11 @@ class UriBuilder
     protected $targetPageType = 0;
 
     /**
+     * @var string
+     */
+    protected $language;
+
+    /**
      * @var bool
      */
     protected $noCache = false;
@@ -291,6 +296,22 @@ class UriBuilder
     {
         $this->absoluteUriScheme = $absoluteUriScheme;
         return $this;
+    }
+
+    /**
+     * Enforces a URI / link to a page to a specific language (or use "current")
+     * @param string|null $language
+     * @return UriBuilder
+     */
+    public function setLanguage(?string $language): UriBuilder
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
     }
 
     /**
@@ -526,6 +547,7 @@ class UriBuilder
         $this->arguments = [];
         $this->section = '';
         $this->format = '';
+        $this->language = null;
         $this->createAbsoluteUri = false;
         $this->addQueryString = false;
         $this->addQueryStringMethod = '';
@@ -761,6 +783,10 @@ class UriBuilder
                 $typolinkConfiguration['addQueryString.']['method'] = $this->addQueryStringMethod;
             }
         }
+        if ($this->language !== null) {
+            $typolinkConfiguration['language'] = $this->language;
+        }
+
         if ($this->noCache === true) {
             $typolinkConfiguration['no_cache'] = 1;
         }
