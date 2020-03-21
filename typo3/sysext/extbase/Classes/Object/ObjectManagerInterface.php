@@ -30,6 +30,7 @@ interface ObjectManagerInterface extends SingletonInterface
      * @param string $objectName The name of the object to return an instance of
      * @param array ...$constructorArguments
      * @return object The object instance
+     * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
     public function get(string $objectName, ...$constructorArguments): object;
 

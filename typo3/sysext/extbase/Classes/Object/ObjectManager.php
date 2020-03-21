@@ -94,9 +94,12 @@ class ObjectManager implements ObjectManagerInterface
      * @param string $objectName The name of the object to return an instance of
      * @param array<int,mixed> $constructorArguments
      * @return object The object instance
+     * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
     public function get(string $objectName, ...$constructorArguments): object
     {
+        // todo: This method needs to trigger a deprecation error as soon as the core does not use this method any more.
+
         if ($objectName === \DateTime::class) {
             return GeneralUtility::makeInstance($objectName, ...$constructorArguments);
         }
