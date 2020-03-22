@@ -310,7 +310,7 @@ class InlineControlContainer {
       throw 'Denied message sent by ' + e.origin;
     }
 
-    if (e.data.actionName === 'typo3:foreignRelation:inserted') {
+    if (e.data.actionName === 'typo3:foreignRelation:insert') {
       if (typeof e.data.objectGroup === 'undefined') {
         throw 'No object group defined for message';
       }
@@ -325,7 +325,17 @@ class InlineControlContainer {
         return;
       }
 
-      this.importRecord([e.data.objectGroup, e.data.uid]);
+      this.importRecord([e.data.objectGroup, e.data.uid]).then((): void => {
+        if (e.source) {
+          const message = {
+            actionName: 'typo3:foreignRelation:inserted',
+            objectGroup: e.data.objectId,
+            table: e.data.table,
+            uid: e.data.uid,
+          };
+          MessageUtility.send(message, e.source as Window);
+        }
+      });
     } else {
       console.warn(`Unhandled action "${e.data.actionName}"`);
     }
@@ -356,11 +366,11 @@ class InlineControlContainer {
    * @param {Array} params
    * @param {string} afterUid
    */
-  private async importRecord(params: Array<any>, afterUid?: string): Promise<any> {
-    this.ajaxDispatcher.send(
+  private async importRecord(params: Array<any>, afterUid?: string): Promise<void> {
+    return this.ajaxDispatcher.send(
       this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_create')),
       params,
-    ).then(async (response: InlineResponseInterface): Promise<any> => {
+    ).then(async (response: InlineResponseInterface): Promise<void> => {
       if (this.isBelowMax()) {
         this.createRecord(
           response.compilerInput.uid,

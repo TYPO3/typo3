@@ -700,7 +700,7 @@ class DragUploader {
    */
   public static addFileToIrre(irre_object: number, file: UploadedFile): void {
     const message = {
-      actionName: 'typo3:foreignRelation:inserted',
+      actionName: 'typo3:foreignRelation:insert',
       objectGroup: irre_object,
       table: 'sys_file',
       uid: file.uid,

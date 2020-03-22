@@ -12,9 +12,13 @@
  */
 
 import * as $ from 'jquery';
+import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import ElementBrowser = require('./ElementBrowser');
+import NProgress = require('nprogress');
 // Yes we really need this import, because Tree... is used in inline markup...
 import Tree = require('TYPO3/CMS/Backend/LegacyTree');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import Icons = TYPO3.Icons;
 
 interface LinkElement {
   fileExt: string;
@@ -112,20 +116,49 @@ class Selector {
     if (items.length) {
       items.each((position: number, item: any): void => {
         if (item.checked && item.name) {
-          selectedItems.push(item.name);
+          selectedItems.unshift(item.name);
         }
       });
-      if (selectedItems.length > 0) {
-        for (let selectedItem of selectedItems) {
-          BrowseFiles.File.insertElement(selectedItem);
-        }
-      }
-      ElementBrowser.focusOpenerAndClose();
+      Icons.getIcon('spinner-circle', Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
+        e.currentTarget.classList.add('disabled');
+        e.currentTarget.innerHTML = icon;
+      });
+      this.handleSelection(selectedItems);
     }
   }
 
   public getItems(): JQuery {
     return $('#typo3-filelist').find('.typo3-bulk-item');
+  }
+
+  private handleSelection(items: string[]): void {
+    NProgress.configure({parent: '#typo3-filelist', showSpinner: false});
+    NProgress.start();
+    const stepping = 1 / items.length;
+    this.handleNext(items);
+
+    new RegularEvent('message', (e: MessageEvent): void => {
+      if (!MessageUtility.verifyOrigin(e.origin)) {
+        throw 'Denied message sent by ' + e.origin;
+      }
+
+      if (e.data.actionName === 'typo3:foreignRelation:inserted') {
+        if (items.length > 0) {
+          NProgress.inc(stepping);
+          this.handleNext(items);
+        } else {
+          NProgress.done();
+          ElementBrowser.focusOpenerAndClose();
+        }
+      }
+    }).bindTo(window);
+  }
+
+  private handleNext(items: string[]): void {
+    if (items.length > 0) {
+      const item = items.pop();
+      BrowseFiles.File.insertElement(item);
+    }
   }
 }
 

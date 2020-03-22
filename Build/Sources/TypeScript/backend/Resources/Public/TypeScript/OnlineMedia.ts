@@ -64,7 +64,7 @@ class OnlineMedia {
       (data: Response): void => {
         if (data.file) {
           const message = {
-            actionName: 'typo3:foreignRelation:inserted',
+            actionName: 'typo3:foreignRelation:insert',
             objectGroup: irreObjectUid,
             table: 'sys_file',
             uid: data.file,

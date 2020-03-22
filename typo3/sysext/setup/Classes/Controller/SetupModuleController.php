@@ -933,7 +933,7 @@ class SetupModuleController
                     if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
                         throw \'Denied message sent by \' + e.origin;
                     }
-                    if (e.data.actionName === \'typo3:foreignRelation:inserted\') {
+                    if (e.data.actionName === \'typo3:foreignRelation:insert\') {
                         if (typeof e.data.objectGroup === \'undefined\') {
                             throw \'No object group defined for message\';
                         }
