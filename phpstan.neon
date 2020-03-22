@@ -1,5 +1,5 @@
 includes:
-    - Build/phpstan.typo3.neon
+    - vendor/friendsoftypo3/phpstan-typo3/extension.neon
     - Build/phpstan.level8.neon
 # Include bleeding edge rules if necessary but do not commit
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon

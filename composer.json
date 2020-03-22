@@ -83,6 +83,7 @@
 		"codeception/module-filesystem": "^1.0",
 		"codeception/module-webdriver": "^1.0",
 		"friendsofphp/php-cs-fixer": "^2.16.1",
+		"friendsoftypo3/phpstan-typo3": "~0.2",
 		"phpspec/prophecy": "^1.7.5",
 		"phpstan/phpstan": "^0.12.13",
 		"rector/rector": "~0.7",
