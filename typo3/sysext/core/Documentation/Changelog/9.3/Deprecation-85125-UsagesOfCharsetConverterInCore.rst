@@ -10,9 +10,11 @@ Description
 ===========
 
 The following method has been marked as deprecated:
+
 - :php:`TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver->getCharsetConversion()`
 
 The following public properties have been deprecated:
+
 - :php:`TYPO3\CMS\IndexedSearch\Lexer->csObj`
 - :php:`TYPO3\CMS\IndexedSearch\Indexer->csObj`
 

@@ -17,11 +17,12 @@ This is possible since TYPO3 v8, because TCA compiling is now completely separat
 :php:`TypoScriptFrontendController`) in the frontend.
 
 This leads to the following changes in behaviour:
+
 - TCA compilation is done earlier in the request process. It is handled after :file:`ext_localconf.php` is
-evaluated, but before any further hooks are executed.
+  evaluated, but before any further hooks are executed.
 - The full TCA is available even when evaluating any RequestHandler.
 - The global variable $TCA is now available at the very beginning of an eID request, it is not
-necessary to load TCA via :php:`EidUtility::loadTCA()` anymore.
+  necessary to load TCA via :php:`EidUtility::loadTCA()` anymore.
 
 Side Note: This does not affect the install tool as it does a custom set-up of the TYPO3 Bootstrap.
 

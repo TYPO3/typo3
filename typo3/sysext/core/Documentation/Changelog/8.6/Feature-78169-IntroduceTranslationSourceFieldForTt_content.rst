@@ -51,6 +51,7 @@ Impact
 ======
 
 Introduction of the new field is a base step for further refactorings, e.g.
+
 - it opens a way to implement features like "reconnecting" free-mode translations back to the "connected mode"
 - replace usage of the `t3_origuid` with the `l10n_source` where `t3_origuid` is misused for language handling purposes (e.g. in LocalizationRepository)
 

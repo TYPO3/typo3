@@ -12,8 +12,9 @@ Description
 MountPoints allow TYPO3 editors to mount a page (and its subpages) from a different area of the site in the current page tree.
 
 The definitions are as follows:
+
 - MountPoint Page: A page with doktype=7 - a page pointing to a different page ("web mount")
-that should act as replacement for this page and possible descendants.
+  that should act as replacement for this page and possible descendants.
 - Mounted Page a.k.a. "Mount Target": A regular page containing content and subpages.
 
 The idea behind it is to manage content only once and "link" / "mount" to a tree to be used
@@ -57,12 +58,12 @@ Impact
 Limitations:
 
 1. Multi-language support
-Please be aware that multi-language setups are supported in general, but this would only fit if both sites support the same language IDs.
+   Please be aware that multi-language setups are supported in general, but this would only fit if both sites support the same language IDs.
 
 2. Slug uniqueness when using Multi-Site setups cannot be ensured
-If a MountPoint Page has the slug "/more", mounting a page with "/imprint" subpage, but the MountPoint Page
-has a regular sibling page with "/more/imprint" a collision cannot be detected, whereas the non-mounted page
-would always work and a subpage of a Mounted Page would never be reached.
+   If a MountPoint Page has the slug "/more", mounting a page with "/imprint" subpage, but the MountPoint Page
+   has a regular sibling page with "/more/imprint" a collision cannot be detected, whereas the non-mounted page
+   would always work and a subpage of a Mounted Page would never be reached.
 
 For the sake of completeness, please consider the TYPO3 documentation on the following TypoScript properties related to mount points:
 

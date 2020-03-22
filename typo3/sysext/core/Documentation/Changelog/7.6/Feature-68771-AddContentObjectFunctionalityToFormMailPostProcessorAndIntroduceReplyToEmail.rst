@@ -12,6 +12,7 @@ Description
 
 If the form configuration is defined by TypoScript the following items for the MailPostProcessor
 in ext:form have contentObject functionality now:
+
 - subject
 - senderEmail
 - senderName

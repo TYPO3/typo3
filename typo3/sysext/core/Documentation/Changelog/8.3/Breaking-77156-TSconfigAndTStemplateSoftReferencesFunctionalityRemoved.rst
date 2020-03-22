@@ -21,6 +21,7 @@ anymore that are not based on the File Abstraction Layer.
 The public PHP property :php:`SoftReferenceIndex::$fileAdminDir` has been removed.
 
 The following PHP methods has been removed without substitution:
+
 - :php:`SoftReferenceIndex::findRef_TStemplate()`
 - :php:`SoftReferenceIndex::findRef_TSconfig()`
 - :php:`SoftReferenceIndex::fileadminReferences()`

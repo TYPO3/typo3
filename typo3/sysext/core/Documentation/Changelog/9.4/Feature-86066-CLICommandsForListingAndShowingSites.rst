@@ -10,6 +10,7 @@ Description
 ===========
 
 Two new CLI commands have been added:
+
 -  :shell:`site:list`
 -  :shell:`site:show`
 
