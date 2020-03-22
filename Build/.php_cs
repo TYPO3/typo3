@@ -20,7 +20,7 @@
  *
  * And then simply run
  *
- *  $ php-cs-fixer fix --config ../Build/.php_cs
+ *  $ ./bin/php-cs-fixer fix --config ./Build/.php_cs
  *
  * inside the TYPO3 directory. Warning: This may take up to 10 minutes.
  *
@@ -58,7 +58,7 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax' => 'short'],
         'cast_spaces' => ['space' => 'none'],
         'concat_space' => ['spacing' => 'one'],
-        'declare_equal_normalize' => ['space' => 'single'],
+        'declare_equal_normalize' => ['space' => 'none'],
         'dir_constant' => true,
         'function_typehint_space' => true,
         'hash_to_slash_comment' => true,
