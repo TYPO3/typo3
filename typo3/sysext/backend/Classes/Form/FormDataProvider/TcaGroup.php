@@ -161,13 +161,11 @@ class TcaGroup implements FormDataProviderInterface
                 if ($allowed[0] !== '*') {
                     // Only some tables, filter them:
                     foreach ($allowed as $tablename) {
-                        $elementValue = key($clipboard->elFromTable($tablename));
-                        if ($elementValue) {
-                            list($elementTable, $elementUid) = explode('|', $elementValue);
-                            $record = BackendUtility::getRecordWSOL($elementTable, $elementUid);
+                        foreach ($clipboard->elFromTable($tablename) as $recordUid) {
+                            $record = BackendUtility::getRecordWSOL($tablename, $recordUid);
                             $sanitizedClipboardElements[] = [
-                                'title' => BackendUtility::getRecordTitle($elementTable, $record),
-                                'value' => $elementTable . '_' . $elementUid,
+                                'title' => BackendUtility::getRecordTitle($tablename, $record),
+                                'value' => $tablename . '_' . $recordUid,
                             ];
                         }
                     }
