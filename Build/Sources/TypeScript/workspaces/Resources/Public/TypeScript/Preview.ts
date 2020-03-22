@@ -84,9 +84,9 @@ class Preview extends Workspaces {
    * Registers the events
    */
   private registerEvents(): void {
-    $(window).on('resize', (): void => {
+    new ThrottleEvent('resize', (): void => {
       this.resizeViews();
-    });
+    }, 50).bindTo(window);
     $(document)
       .on('click', Identifiers.discardAction, this.renderDiscardWindow)
       .on('click', Identifiers.sendToStageAction, this.renderSendPageToStageWindow)
