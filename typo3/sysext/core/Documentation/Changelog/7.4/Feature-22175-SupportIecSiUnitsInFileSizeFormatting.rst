@@ -11,6 +11,7 @@ Description
 ===========
 
 Size formatting supports two keywords additionally to the list of labels:
+
 - iec: uses the Ki, Mi, etc prefixes and binary base (power of two, 1024)
 - si: uses the k, M, etc prefixes and decimal base (power of ten, 1000)
 
