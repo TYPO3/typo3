@@ -34,6 +34,9 @@ class DebounceEvent extends RegularEvent {
       clearTimeout(timeout);
       if (callNow) {
         callback.apply(this, args);
+        timeout = setTimeout((): void => {
+          timeout = null;
+        }, wait);
       } else {
         timeout = setTimeout((): void => {
           timeout = null;
