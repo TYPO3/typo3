@@ -15,9 +15,11 @@ For this reason, all FAL-related Signals have been migrated to PSR-14 event list
 first listener to be executed when an Event is fired.
 
 The following interface has been deprecated and will be removed in TYPO3 v11:
+
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
 
 The following constants have been deprecated and will be removed in TYPO3 v11:
+
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreProcessStorage`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd`

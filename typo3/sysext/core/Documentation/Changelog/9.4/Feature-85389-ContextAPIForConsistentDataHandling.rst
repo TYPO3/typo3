@@ -106,11 +106,12 @@ However, if custom DB queries need to be made, it is strongly recommended to clo
 
 
 As a rule of thumb:
+
 - If new code is written that depends on external factors for querying data, ensure that a context object
-can be handed in via e.g. the constructor.
+  can be handed in via e.g. the constructor.
 - If you are sure, that the consuming class is NOT altering the context object, the main context object can be used
 - If the consuming class, e.g. ContentObjectRenderer is altering the context object, it is recommended to hand in a clone
-of a context.
+  of a context.
 
 Further development
 ===================

@@ -13,10 +13,12 @@ The old-fashioned way of storing links as <link>-tags in the database was migrat
 is still in place.
 
 Using the following hooks is not encouraged:
+
 - :php:`$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']`
 - :php:`$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']`
 
 The following public methods in RteHtmlParser have been marked as deprecated:
+
 - :php:`TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_rte()`
 - :php:`TYPO3\CMS\Core\Html\RteHtmlParser->transformStyledATags()`
 

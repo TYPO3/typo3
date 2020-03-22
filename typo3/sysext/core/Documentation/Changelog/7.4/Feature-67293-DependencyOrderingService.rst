@@ -14,6 +14,7 @@ In many cases it is necessary to establish a sorted list of items from a set of 
 The ordered list is then used to execute actions in the given order.
 
 Some examples from the Core are:
+
 - Hook execution order
 - Extension loading order
 - Listing of menu items

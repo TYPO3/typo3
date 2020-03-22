@@ -16,6 +16,7 @@ Impact
 ======
 
 The method signature of the constructor changed. This means:
+
 - The amount of constructor arguments increased
 - The order of arguments possibly changed
 

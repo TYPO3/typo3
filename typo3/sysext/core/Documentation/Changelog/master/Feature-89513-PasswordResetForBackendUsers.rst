@@ -15,6 +15,7 @@ Login form.
 
 The reset link is only shown if there is at least one user that matches the
 following criteria:
+
 * The user has a password entered previously (used to indicate that no third-party login was used)
 * The user has a valid email added to his user record
 * The user is neither deleted nor disabled
@@ -28,6 +29,7 @@ The link is valid for 2 hours, and a token is added to the link.
 If the password was provided correctly, it is updated for the user and can log-in.
 
 Some notes on security:
+
 + When having multiple users with the same email address
 + No information disclosure is built-in, so if the email address is not in the system, it is not known to the outside
 + Rate limiting is activated for allowing three emails to be sent within 30 minutes per email address
@@ -54,6 +56,8 @@ need to send a password over the wire in plaintext (e.g. email) to a user.
 
 The administrator can use the CLI command:
 
+.. code-block:: bash
+
    ./typo3/sysext/core/bin/typo3 backend:resetpassword https://www.example.com/typo3/ editor@example.com
 
 Alternatively it is possible for administrators to use the "Backend users" module
@@ -73,6 +77,7 @@ In addition, the email can be styled completely for HTML and plain-text only
 versions through the Fluid-based templated email feature.
 
 Further improvements on the horizon:
+
 * Trigger a password-reset via CLI or the Backend users module
 * Trigger a password-set email on creation of a new user, so the admin has no
   involvement in needing to know or share the password

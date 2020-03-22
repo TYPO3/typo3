@@ -12,6 +12,7 @@ Description
 
 The action buttons in Web>List for pages and content elements have been split into two groups to organize
 the actions as primary and secondary actions. Primary actions are common RUD actions:
+
 - Show
 - Edit
 - Hide

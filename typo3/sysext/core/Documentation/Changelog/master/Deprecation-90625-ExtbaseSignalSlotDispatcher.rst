@@ -21,12 +21,12 @@ Since March 2019, a new standards recommendation in PHP - PSR-14 - was put into 
 in TYPO3 v10.0. TYPO3's PSR-14 implementation has several advantages over SignalSlot:
 
 * All Events ("Signals" in Extbase world) are actual PHP objects that clearly define what can
-be read or modified.
+  be read or modified.
 * All Events are registered at compile-time (inside the Service Container), so the Listeners
-("Slots" in Extbase world) are defined in one place and are always available. Previously the
-registration of the slots was done in :php:`ext_localconf.php`.
+  ("Slots" in Extbase world) are defined in one place and are always available. Previously the
+  registration of the slots was done in :php:`ext_localconf.php`.
 * Events can be used across other PHP projects as well, and the EventDispatcher can be the same
-instance, as it is a standards recommendation.
+  instance, as it is a standards recommendation.
 
 In TYPO3 v10, all Extbase signals provided by TYPO3 Core have been migrated to PSR-14 events.
 

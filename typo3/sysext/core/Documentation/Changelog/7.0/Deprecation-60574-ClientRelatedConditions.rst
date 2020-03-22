@@ -35,6 +35,7 @@ Installations using TypoScript conditions for browser, version, system or userag
 
 Migration
 =========
+
 * Most usual conditions for specific browsers can nowadays be turned into conditional CSS includes
 * Use libraries such as modernizr for browser support
 * If conditions for specific clients or devices are still needed, they

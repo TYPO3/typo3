@@ -49,10 +49,12 @@ The button with the buttonName `softHyphen` of the plugin is assigned to a toolb
 use the toolbarGroup or the buttonName to display the button at the desired location in the toolbar.
 
 Please take look into the supplied RTE presets to see working examples:
+
 - :file:`EXT:rte_ckeditor/Configuration/RTE/Default.yaml`
 - :file:`EXT:rte_ckeditor/Configuration/RTE/Full.yaml`
 
 More information can be found in the official CKEditor 4 documentation (toolbar concepts):
+
 - https://docs.ckeditor.com/ckeditor4/latest/guide/dev_toolbarconcepts.html
 
 .. index:: RTE, ext:rte_ckeditor

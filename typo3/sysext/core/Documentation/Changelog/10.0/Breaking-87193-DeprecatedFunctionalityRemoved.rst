@@ -1416,6 +1416,7 @@ The following hooks don't pass the class reference anymore:
 
 
 The following signals have been removed:
+
 * :php:`TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService` signal `hasInstalledExtensions`
 * :php:`TYPO3\CMS\Extensionmanager\Utility\InstallUtility` signal `tablesDefinitionIsBeingBuilt`
 
