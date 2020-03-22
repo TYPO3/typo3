@@ -30,11 +30,6 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 class OpendocsToolbarItem implements ToolbarItemInterface
 {
     /**
-     * @var array
-     */
-    protected $recentDocs = [];
-
-    /**
      * @var OpenDocumentService
      */
     protected $documentService;

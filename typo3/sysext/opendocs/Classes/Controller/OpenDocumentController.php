@@ -71,6 +71,8 @@ class OpenDocumentController
 
         if ($identifier) {
             $this->documents->closeDocument($identifier);
+        } else {
+            $this->documents->closeAllDocuments();
         }
 
         return $this->renderMenu();

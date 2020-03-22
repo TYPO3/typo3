@@ -85,6 +85,18 @@ class OpenDocumentService
     }
 
     /**
+     * Closes all open documents
+     */
+    public function closeAllDocuments(): void
+    {
+        $openDocuments = $this->getOpenDocuments();
+        $this->storeOpenDocuments([]);
+        foreach ($openDocuments as $identifier => $document) {
+            $this->addToRecentDocuments($identifier, $document);
+        }
+    }
+
+    /**
      * Store a list of open documents
      *
      * @param array $openDocuments

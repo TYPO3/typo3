@@ -77,9 +77,7 @@ class OpendocsMenu {
     $(Selectors.containerSelector).on('click', Selectors.closeSelector, (evt: JQueryEventObject): void => {
       evt.preventDefault();
       const md5 = $(evt.currentTarget).data(this.hashDataAttributeName);
-      if (md5) {
-        this.closeDocument(md5);
-      }
+      this.closeDocument(md5);
     }).on('click', Selectors.entrySelector, (evt: JQueryEventObject): void => {
       evt.preventDefault();
 
@@ -93,10 +91,12 @@ class OpendocsMenu {
   /**
    * Closes an open document
    */
-  private closeDocument(md5sum: string): void {
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.opendocs_closedoc)).post({
-      md5sum: md5sum,
-    }).then(async (response: AjaxResponse): Promise<any> => {
+  private closeDocument(md5sum?: string): void {
+    const payload: {[key: string]: string} = {};
+    if (md5sum) {
+      payload.md5sum = md5sum;
+    }
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.opendocs_closedoc)).post(payload).then(async (response: AjaxResponse): Promise<any> => {
       $(Selectors.menuContainerSelector, Selectors.containerSelector).html(await response.resolve());
       OpendocsMenu.updateNumberOfDocs();
       // Re-open the menu after closing a document
