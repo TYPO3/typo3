@@ -101,6 +101,29 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
+     * easy function to just return the number of hours.
+     *
+     * a preview link is valid, based on the workspaces' custom value (default to 48 hours)
+     * or falls back to the users' TSconfig value "options.workspaces.previewLinkTTLHours".
+     *
+     * by default, it's 48hs.
+     *
+     * @return int The hours as a number
+     */
+    public function getPreviewLinkLifetime(): int
+    {
+        $workspaceId = $GLOBALS['BE_USER']->workspace;
+        if ($workspaceId > 0) {
+            $wsRecord = BackendUtility::getRecord('sys_workspace', $workspaceId, '*');
+            if (($wsRecord['previewlink_lifetime'] ?? 0) > 0) {
+                return (int)$wsRecord['previewlink_lifetime'];
+            }
+        }
+        $ttlHours = (int)($GLOBALS['BE_USER']->getTSConfig()['options.']['workspaces.']['previewLinkTTLHours'] ?? 0);
+        return $ttlHours ?: 24 * 2;
+    }
+
+    /**
      * Find the title for the requested workspace.
      *
      * @param int $wsId

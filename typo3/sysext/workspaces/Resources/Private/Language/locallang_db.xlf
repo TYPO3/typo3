@@ -120,6 +120,9 @@
 			<trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification">
 				<source>Notification settings during state change</source>
 			</trans-unit>
+			<trans-unit id="sys_workspace.previewlink_lifetime" resname="sys_workspace.previewlink_lifetime">
+				<source>Lifetime in hours on how long a preview link will be valid</source>
+			</trans-unit>
 			<trans-unit id="sys_workspace.stagechg_notification.0" resname="sys_workspace.stagechg_notification.0">
 				<source>Disable notifications</source>
 			</trans-unit>

@@ -23,6 +23,7 @@ CREATE TABLE sys_workspace (
 	live_edit tinyint(3) DEFAULT '0' NOT NULL,
 	swap_modes tinyint(3) DEFAULT '0' NOT NULL,
 	publish_access tinyint(3) DEFAULT '0' NOT NULL,
+	previewlink_lifetime int(11) DEFAULT '0' NOT NULL,
 	custom_stages int(11) DEFAULT '0' NOT NULL,
 	stagechg_notification tinyint(3) DEFAULT '0' NOT NULL,
 	edit_notification_defaults varchar(255) DEFAULT '' NOT NULL,

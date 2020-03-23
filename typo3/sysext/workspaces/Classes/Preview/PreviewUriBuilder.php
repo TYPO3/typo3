@@ -48,9 +48,15 @@ class PreviewUriBuilder
      */
     protected $workspaceService;
 
+    /**
+     * @var int
+     */
+    protected $previewLinkLifetime;
+
     public function __construct()
     {
         $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
+        $this->previewLinkLifetime = $this->workspaceService->getPreviewLinkLifetime();
     }
 
     /**
@@ -63,7 +69,7 @@ class PreviewUriBuilder
     public function buildUriForPage(int $uid, int $languageId = 0): string
     {
         $previewKeyword = $this->compilePreviewKeyword(
-            $this->getPreviewLinkLifetime() * 3600,
+            $this->previewLinkLifetime * 3600,
             $this->workspaceService->getCurrentWorkspace()
         );
 
@@ -221,19 +227,6 @@ class PreviewUriBuilder
             );
 
         return $keyword;
-    }
-
-    /**
-     * easy function to just return the number of hours
-     * a preview link is valid, based on the TSconfig value "options.workspaces.previewLinkTTLHours"
-     * by default, it's 48hs
-     *
-     * @return int The hours as a number
-     */
-    protected function getPreviewLinkLifetime(): int
-    {
-        $ttlHours = (int)($this->getBackendUser()->getTSConfig()['options.']['workspaces.']['previewLinkTTLHours'] ?? 0);
-        return $ttlHours ?: 24 * 2;
     }
 
     /**
