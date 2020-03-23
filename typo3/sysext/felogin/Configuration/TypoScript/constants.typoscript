@@ -1,7 +1,7 @@
 # customsubcategory=01_Storage=Storage
 # customsubcategory=02_Template=Template
 # customsubcategory=03_Features=Features
-# customsubcategory=04_EMail=E-Mail
+# customsubcategory=04_EMail=Email
 # customsubcategory=05_Redirects=Redirects
 # customsubcategory=06_Security=Security
 
@@ -25,16 +25,23 @@ styles.content.loginform {
   # cat=Frontend Login/03_Features/102; type=boolean; label= Disable redirect after successful login, but display logout-form: If set, the logout form will be displayed immediately after successful login.
   showLogoutFormAfterLogin = 0
 
-  # cat=Frontend Login/04_EMail/100; type=string; label= E-Mail Sender Address: E-Mail address used as sender of the change password emails
+  # cat=Frontend Login/04_EMail/100; type=string; label= Email Sender Address: email address used as sender of the change password emails
   emailFrom =
-  # cat=Frontend Login/04_EMail/101; type=string; label= E-Mail Sender Name: Name used as sender of the change password emails
+  # cat=Frontend Login/04_EMail/101; type=string; label= Email Sender Name: Name used as sender of the change password emails
   emailFromName =
-  # cat=Frontend Login/04_EMail/102; type=string; label= Reply To E-Mail Address: Reply-to address used in the change password emails
+  # cat=Frontend Login/04_EMail/102; type=string; label= Reply to email Address: Reply to address used in the change password emails
   replyToEmail =
-  # cat=Frontend Login/04_EMail/103; type=string; label= HTML-email template path: Path to template file used for HTML-Emails
-  emailHtmlTemplatePath = EXT:felogin/Resources/Private/Email/Templates/PasswordRecovery.html
-  # cat=Frontend Login/04_EMail/104; type=string; label= Plain text email template path: Path to template file used for plain text emails
-  emailPlainTemplatePath = EXT:felogin/Resources/Private/Email/Templates/PasswordRecovery.txt
+
+  email {
+    # cat=Frontend Login/04_EMail/103; type=string; label= Layout root path: Path to layout directory used for emails
+    layoutRootPath =
+    # cat=Frontend Login/04_EMail/104; type=string; label= Template root path: Path to template directory used for emails
+    templateRootPath = EXT:felogin/Resources/Private/Email/Templates/
+    # cat=Frontend Login/04_EMail/105; type=string; label= Partial root path: Path to partial directory used for emails
+    partialRootPath =
+    # cat=Frontend Login/04_EMail/106; type=string; label= Template name for emails. Plaintext emails get the .txt file extension.
+    templateName = PasswordRecovery
+  }
 
   # cat=Frontend Login/05_Redirects/101; type=string; label= Redirect Mode: Comma separated list of redirect modes. Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout
   redirectMode =

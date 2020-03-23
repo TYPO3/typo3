@@ -22,11 +22,10 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
@@ -46,16 +45,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
     protected $forgotHash;
 
     /**
-     * @var string
-     */
-    protected $htmlMailTemplatePath;
-
-    /**
-     * @var string
-     */
-    protected $plainMailTemplatePath;
-
-    /**
      * @var Address|null
      */
     protected $replyTo;
@@ -71,14 +60,9 @@ class RecoveryConfiguration implements LoggerAwareInterface
     protected $settings;
 
     /**
-     * @var StandaloneView
+     * @var string
      */
-    protected $plainMailTemplate;
-
-    /**
-     * @var StandaloneView
-     */
-    protected $htmlMailTemplate;
+    protected $mailTemplateName;
 
     /**
      * @var int
@@ -90,6 +74,7 @@ class RecoveryConfiguration implements LoggerAwareInterface
      * @param ConfigurationManager $configurationManager
      * @param Random $random
      * @param HashService $hashService
+     *
      * @throws IncompleteConfigurationException
      * @throws InvalidConfigurationTypeException
      */
@@ -106,22 +91,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
     }
 
     /**
-     * Return true if a html mail template path is configured otherwise false.
-     *
-     * @return bool
-     */
-    public function hasHtmlMailTemplate(): bool
-    {
-        if (empty($this->htmlMailTemplatePath)) {
-            $this->logger->warning(
-                'Key "plugin.tx_felogin_login.settings.email_htmlTemplatePath" is empty or unset.',
-                [$this]
-            );
-        }
-        return (bool)$this->htmlMailTemplatePath;
-    }
-
-    /**
      * Returns the forgot hash.
      *
      * @return string
@@ -132,19 +101,37 @@ class RecoveryConfiguration implements LoggerAwareInterface
     }
 
     /**
-     * Returns the html template view if a path is configured otherwise null.
+     * Returns an instance of TemplatePaths with paths configured in felogin TypoScript and
+     * paths configured in $GLOBALS['TYPO3_CONF_VARS']['MAIL'].
      *
-     * @return StandaloneView|null
+     * @return TemplatePaths
      */
-    public function getHtmlMailTemplate(): ?StandaloneView
+    public function getMailTemplatePaths(): TemplatePaths
     {
-        if ($this->htmlMailTemplate === null && $this->htmlMailTemplatePath) {
-            $mailTemplate = GeneralUtility::makeInstance(StandaloneView::class);
-            $mailTemplate->setTemplatePathAndFilename($this->htmlMailTemplatePath);
-            $this->htmlMailTemplate = $mailTemplate;
-        }
+        $pathArray = array_replace_recursive(
+            [
+                'layoutRootPaths'   => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'],
+                'templateRootPaths' => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'],
+                'partialRootPaths'  => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths']
+            ],
+            [
+                'layoutRootPaths'   => $this->settings['email']['layoutRootPaths'],
+                'templateRootPaths' => $this->settings['email']['templateRootPaths'],
+                'partialRootPaths'  => $this->settings['email']['partialRootPaths']
+            ]
+        );
 
-        return $this->htmlMailTemplate;
+        return new TemplatePaths($pathArray);
+    }
+
+    /**
+     * Returns email template name configured in TypoScript
+     *
+     * @return string
+     */
+    public function getMailTemplateName(): string
+    {
+        return $this->mailTemplateName;
     }
 
     /**
@@ -161,23 +148,6 @@ class RecoveryConfiguration implements LoggerAwareInterface
         }
 
         return $this->timestamp;
-    }
-
-    /**
-     * Returns plain template view.
-     *
-     * @return StandaloneView
-     * @throws IncompleteConfigurationException if no path is configured
-     */
-    public function getPlainMailTemplate(): StandaloneView
-    {
-        if ($this->plainMailTemplate === null) {
-            $mailTemplate = GeneralUtility::makeInstance(StandaloneView::class);
-            $mailTemplate->setTemplatePathAndFilename($this->plainMailTemplatePath);
-            $this->plainMailTemplate = $mailTemplate;
-        }
-
-        return $this->plainMailTemplate;
     }
 
     /**
@@ -236,13 +206,12 @@ class RecoveryConfiguration implements LoggerAwareInterface
                 );
             }
         }
-        $this->plainMailTemplatePath = $this->settings['email_plainTemplatePath'];
-        if (empty($this->plainMailTemplatePath)) {
+        $this->mailTemplateName = $this->settings['email']['templateName'];
+        if (empty($this->mailTemplateName)) {
             throw new IncompleteConfigurationException(
-                'Key "plugin.tx_felogin_login.settings.email_plainTemplatePath" cannot be empty!',
-                1562665945
+                'Key "plugin.tx_felogin_login.settings.email.templateName" cannot be empty!',
+                1584998393
             );
         }
-        $this->htmlMailTemplatePath = $this->settings['email_htmlTemplatePath'] ?? '';
     }
 }

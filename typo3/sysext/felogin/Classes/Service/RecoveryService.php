@@ -21,8 +21,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
@@ -75,6 +75,7 @@ class RecoveryService implements RecoveryServiceInterface
      * @param RecoveryConfiguration $recoveryConfiguration
      * @param UriBuilder $uriBuilder
      * @param FrontendUserRepository $userRepository
+     *
      * @throws InvalidConfigurationTypeException
      */
     public function __construct(
@@ -141,6 +142,7 @@ class RecoveryService implements RecoveryServiceInterface
      *
      * @param Address $receiver
      * @param string $hash
+     *
      * @return Email
      * @throws IncompleteConfigurationException
      */
@@ -161,22 +163,13 @@ class RecoveryService implements RecoveryServiceInterface
             'validUntil' => date($this->settings['dateFormat'], $this->recoveryConfiguration->getLifeTimeTimestamp()),
         ];
 
-        $plainMailTemplate = $this->recoveryConfiguration->getPlainMailTemplate();
-        $plainMailTemplate->assignMultiple($variables);
+        $mailTemplatePaths = $this->recoveryConfiguration->getMailTemplatePaths();
 
-        $subject = $this->getEmailSubject();
-        $mail = GeneralUtility::makeInstance(MailMessage::class);
-        $mail
-            ->subject($subject)
-            ->from($this->recoveryConfiguration->getSender())
+        $mail = GeneralUtility::makeInstance(FluidEmail::class, $mailTemplatePaths);
+        $mail->subject($this->getEmailSubject())
             ->to($receiver)
-            ->text($plainMailTemplate->render());
-
-        if ($this->recoveryConfiguration->hasHtmlMailTemplate()) {
-            $htmlMailTemplate = $this->recoveryConfiguration->getHtmlMailTemplate();
-            $htmlMailTemplate->assignMultiple($variables);
-            $mail->html($htmlMailTemplate->render());
-        }
+            ->assignMultiple($variables)
+            ->setTemplate($this->recoveryConfiguration->getMailTemplateName());
 
         $replyTo = $this->recoveryConfiguration->getReplyTo();
         if ($replyTo) {

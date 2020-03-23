@@ -5,11 +5,22 @@ plugin.tx_felogin_login {
     # Template
     dateFormat = {$styles.content.loginform.dateFormat}
 
-    # E-Mail Settings
+    # Email Settings
     email_from = {$styles.content.loginform.emailFrom}
     email_fromName = {$styles.content.loginform.emailFromName}
-    email_htmlTemplatePath = {$styles.content.loginform.emailHtmlTemplatePath}
-    email_plainTemplatePath = {$styles.content.loginform.emailPlainTemplatePath}
+    email {
+      templateName = {$styles.content.loginform.emailTemplateName}
+      layoutRootPaths {
+        20 = {$styles.content.loginform.email.layoutRootPath}
+      }
+      templateRootPaths {
+        20 = {$styles.content.loginform.email.templateRootPath}
+      }
+      partialRootPaths {
+        20 = {$styles.content.loginform.email.partialRootPath}
+      }
+    }
+
     replyTo = {$styles.content.loginform.replyToEmail}
 
     # Security

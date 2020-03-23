@@ -12,7 +12,7 @@ Description
 As part of the felogin extbase plugin, a password recovery form has been added.
 
 FE users are able to request a password change via email. A mail with a forgot hash will be send to the requesting user.
-If that hash is found valid a form reset password form is shown. If all validators are met the users password will be updated.
+If that hash is found valid a reset password form is shown. If all validators are met the users password will be updated.
 
 There is a way to define and override default validators. Configured as default are two validators: NotEmptyValidator and StringLengthValidator.
 
@@ -31,7 +31,7 @@ Default is as follows:
       }
    }
 
-A custom configuration can look like this:
+A custom configuration could look like this:
 
 .. code-block:: typoscript
 
@@ -46,6 +46,49 @@ A custom configuration can look like this:
       }
       30 = \Vendor\MyExt\Validation\Validator\MyCustomPasswordPolicyValidator
    }
+
+Felogin uses FluidMail. The email_templateName variable in TypoScript is mandatory. Depending on the configuration of
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['format'] the template has to exist as an HTML file, txt file or both. The template
+files have to be placed in the same folder.
+The template paths can be configured via TypoScript. These paths can either be added to the paths configured in
+$GLOBALS['TYPO3_CONF_VARS']['MAIL'] or replace them.
+
+The template paths configuration can be extended as follows:
+
+.. code-block:: typoscript
+
+   plugin.tx_felogin_login {
+     settings {
+       email {
+         templateName = MyRecoveryEmailTemplateName
+
+         layoutRootPaths {
+            30 = EXT:myext/Resources/Private/Layouts/Email/
+         }
+         templateRootPaths {
+           30 = EXT:myext/Resources/Private/Templates/Email/
+         }
+         partialRootPaths {
+           30 = EXT:myext/Resources/Private/Partials/Email/
+         }
+       }
+     }
+   }
+
+To overwrite the template path configuration provided by felogin, it has to be as follows:
+
+.. code-block:: typoscript
+
+   plugin.tx_felogin_login {
+     settings {
+       email{
+         templateRootPaths {
+           20 = EXT:myext/Resources/Private/Templates/Email/
+         }
+       }
+     }
+   }
+
 
 Impact
 ======

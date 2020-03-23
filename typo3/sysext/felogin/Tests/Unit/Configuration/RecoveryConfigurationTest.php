@@ -20,13 +20,13 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Configuration;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -37,29 +37,38 @@ class RecoveryConfigurationTest extends UnitTestCase
      * @var ObjectProphecy|Context
      */
     protected $context;
+
     /**
      * @var ObjectProphecy|ConfigurationManager
      */
     protected $configurationManager;
+
     /**
      * @var ObjectProphecy|HashService
      */
     protected $hashService;
+
     /**
      * @var array
      */
     protected $settings = [
         'email_from' => 'example@example.com',
         'email_fromName' => 'TYPO3 Installation',
-        'email_plainTemplatePath' => '/some/path/to/a/plain/text/file',
-        'email_htmlTemplatePath' => '/some/path/to/a/html/file',
+        'email' => [
+            'layoutRootPaths' => [20 => '/some/path/to/a/layout/folder/'],
+            'templateRootPaths' => [20 => '/some/path/to/a/template/folder/'],
+            'partialRootPaths' => [20 => '/some/path/to/a/partial/folder/'],
+            'templateName' => 'someTemplateFileName',
+        ],
         'forgotLinkHashValidTime' => 1,
         'replyTo' => ''
     ];
+
     /**
      * @var RecoveryConfiguration
      */
     protected $subject;
+
     /**
      * @var ObjectProphecy|LoggerInterface
      */
@@ -83,7 +92,9 @@ class RecoveryConfigurationTest extends UnitTestCase
      */
     protected function setupSubject(): void
     {
-        $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)->willReturn($this->settings);
+        $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)->willReturn(
+            $this->settings
+        );
 
         $this->subject = new RecoveryConfiguration(
             $this->context->reveal(),
@@ -93,24 +104,6 @@ class RecoveryConfigurationTest extends UnitTestCase
         );
 
         $this->subject->setLogger($this->logger->reveal());
-    }
-
-    /**
-     * @test
-     */
-    public function hasHtmlMailTemplateShouldReturnFalseAndLogIfNoHtmlTemplatePathIsConfigured(): void
-    {
-        $this->settings['email_htmlTemplatePath'] = '';
-        $this->setupSubject();
-
-        self::assertFalse($this->subject->hasHtmlMailTemplate());
-
-        $this->logger
-            ->warning(
-                'Key "plugin.tx_felogin_login.settings.email_htmlTemplatePath" is empty or unset.',
-                [$this->subject]
-            )
-            ->shouldHaveBeenCalledTimes(1);
     }
 
     /**
@@ -159,54 +152,13 @@ class RecoveryConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHtmlMailTemplateShouldNotCreateMailTemplateWhilePathIsEmpty(): void
+    public function getEmailTemplateNameThrowsExceptionIfTemplateNameIsEmpty(): void
     {
-        $this->settings['email_htmlTemplatePath'] = '';
-        $this->setupSubject();
-
-        $this->subject->getHtmlMailTemplate();
-    }
-
-    /**
-     * @test
-     */
-    public function getPlainMailTemplateThrowsExceptionIfPlainMailTemplatePathIsEmpty(): void
-    {
-        $this->settings['email_plainTemplatePath'] = '';
+        $this->settings['email']['templateName'] = '';
         $this->expectException(IncompleteConfigurationException::class);
-        $this->expectExceptionCode(1562665945);
+        $this->expectExceptionCode(1584998393);
         $this->setupSubject();
-        $this->subject->getPlainMailTemplate();
-    }
-
-    /**
-     * @test
-     */
-    public function getPlainMailTemplateCreatesMailTemplateOnce(): void
-    {
-        $mailTemplate = $this->prophesize(StandaloneView::class);
-        GeneralUtility::addInstance(StandaloneView::class, $mailTemplate->reveal());
-        $this->setupSubject();
-
-        $this->subject->getPlainMailTemplate();
-        $this->subject->getPlainMailTemplate();
-
-        $mailTemplate->setTemplatePathAndFilename($this->settings['email_plainTemplatePath'])->shouldHaveBeenCalledTimes(1);
-    }
-
-    /**
-     * @test
-     */
-    public function getHtmlMailTemplateCreatesMailTemplateOnce(): void
-    {
-        $mailTemplate = $this->prophesize(StandaloneView::class);
-        GeneralUtility::addInstance(StandaloneView::class, $mailTemplate->reveal());
-        $this->setupSubject();
-
-        $this->subject->getHtmlMailTemplate();
-        $this->subject->getHtmlMailTemplate();
-
-        $mailTemplate->setTemplatePathAndFilename($this->settings['email_htmlTemplatePath'])->shouldHaveBeenCalledTimes(1);
+        $this->subject->getMailTemplateName();
     }
 
     /**
@@ -250,5 +202,79 @@ class RecoveryConfigurationTest extends UnitTestCase
         $this->setupSubject();
 
         self::assertNull($this->subject->getReplyTo());
+    }
+
+    /**
+     * @test
+     */
+    public function getMailTemplatePathsReturnsAnInstanceOfTemplatePathsObjectWithConfigurationOfTypoScript(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
+            0 => 'EXT:core/Resources/Private/Templates/',
+            10 => 'EXT:backend/Resources/Private/Templates/'
+        ];
+        $this->setupSubject();
+        $actualTemplatePaths = $this->subject->getMailTemplatePaths();
+        self::assertSame(
+            [
+                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
+                Environment::getPublicPath() . '/typo3/sysext/backend/Resources/Private/Templates/',
+                '/some/path/to/a/template/folder/'
+            ],
+            $actualTemplatePaths->getTemplateRootPaths()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getMailTemplatePathsReplacesTemplatePathsWithPathsConfiguredInTypoScript(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
+            0 => 'EXT:core/Resources/Private/Templates/',
+            10 => 'EXT:backend/Resources/Private/Templates/'
+        ];
+        $this->settings['email']['templateRootPaths'] = [10 => '/some/path/to/a/template/folder/'];
+        $this->setupSubject();
+        $actualTemplatePaths = $this->subject->getMailTemplatePaths();
+        self::assertSame(
+            [
+                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
+                '/some/path/to/a/template/folder/'
+            ],
+            $actualTemplatePaths->getTemplateRootPaths()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getMailTemplateNameWillReturnTemplateNameConfiguredInTypoScript()
+    {
+        $this->setupSubject();
+        self::assertSame($this->settings['email']['templateName'], $this->subject->getMailTemplateName());
+    }
+
+    /**
+     * @test
+     */
+    public function recoveryConfigurationWillCreateAnInstanceOfAddressIfDefaultMailReplyToAddressIsSet()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToAddress'] = 'typo3@example.com';
+        $this->setupSubject();
+        self::assertInstanceOf(Address::class, $this->subject->getReplyTo());
+    }
+
+    /**
+     * @test
+     */
+    public function recoveryConfigurationWillCreateAnInstanceOfAddressWithName()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToName'] = 'TYPO3';
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToAddress'] = 'typo3@example.com';
+        $this->setupSubject();
+
+        self::assertSame('typo3@example.com', $this->subject->getReplyTo()->getAddress());
+        self::assertSame('TYPO3', $this->subject->getReplyTo()->getName());
     }
 }

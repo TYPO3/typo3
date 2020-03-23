@@ -23,12 +23,12 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Service\RecoveryService;
@@ -51,20 +51,30 @@ class RecoveryServiceTest extends UnitTestCase
      */
     protected $recoveryConfiguration;
 
+    /**
+     * @var TemplatePaths|ObjectProphecy
+     */
+    protected $templatePathsProphecy;
+
     protected function setUp(): void
     {
         $this->userRepository = $this->prophesize(FrontendUserRepository::class);
         $this->recoveryConfiguration = $this->prophesize(RecoveryConfiguration::class);
+        $this->templatePathsProphecy = $this->prophesize(TemplatePaths::class);
     }
 
     /**
      * @test
      * @dataProvider configurationDataProvider
+     *
      * @param string $emailAddress
      * @param array $recoveryConfiguration
      * @param array $userInformation
      * @param Address $receiver
      * @param array $settings
+     *
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function sendRecoveryEmailShouldGenerateMailFromConfiguration(
         string $emailAddress,
@@ -73,38 +83,22 @@ class RecoveryServiceTest extends UnitTestCase
         Address $receiver,
         array $settings
     ): void {
-        $expectedMail = new MailMessage();
-        $expectedMail->subject('translation')
-            ->from($recoveryConfiguration['sender'])
-            ->to($receiver)
-            ->text('plain mail template');
-        $expectedViewVariables = [
-            'receiverName' => $receiver->getName(),
-            'url' => 'some uri',
-            'validUntil' => date($settings['dateFormat'], $recoveryConfiguration['lifeTimeTimestamp'])
-        ];
-
-        $plainMailTemplate = $this->prophesize(StandaloneView::class);
-        $plainMailTemplate->assignMultiple($expectedViewVariables)->shouldBeCalledOnce();
-        $plainMailTemplate->render()->willReturn('plain mail template');
-        $htmlMailTemplate = $this->prophesize(StandaloneView::class);
-
-        if ($recoveryConfiguration['hasHtmlMailTemplate']) {
-            $this->recoveryConfiguration->getHtmlMailTemplate()->willReturn($htmlMailTemplate->reveal());
-            $htmlMailTemplate->assignMultiple($expectedViewVariables)->shouldBeCalledOnce();
-            $htmlMailTemplate->render()->willReturn('html mail template');
-            $expectedMail->html('html mail template');
-        }
-
         $this->mockRecoveryConfigurationAndUserRepository(
             $emailAddress,
             $recoveryConfiguration,
-            $userInformation,
-            $plainMailTemplate
+            $userInformation
         );
 
+        $expectedViewVariables = [
+            'receiverName' => $receiver->getName(),
+            'url'          => 'some uri',
+            'validUntil'   => date($settings['dateFormat'], $recoveryConfiguration['lifeTimeTimestamp'])
+        ];
+
         $configurationManager = $this->prophesize(ConfigurationManager::class);
-        $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)->willReturn($settings);
+        $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)->willReturn(
+            $settings
+        );
 
         $languageService = $this->prophesize(LanguageService::class);
         $languageService->sL(Argument::containingString('password_recovery_mail_header'))->willReturn('translation');
@@ -119,101 +113,120 @@ class RecoveryServiceTest extends UnitTestCase
             'Login'
         )->willReturn('some uri');
 
-        $mailer = $this->prophesize(Mailer::class);
-        $mailer->send($expectedMail)->shouldBeCalledOnce();
+        $fluidEmailProphecy = $this->setupFluidEmailProphecy($receiver, $expectedViewVariables, $recoveryConfiguration);
 
-        GeneralUtility::addInstance(MailMessage::class, new MailMessage());
+        $mailer = $this->prophesize(Mailer::class);
+        $mailer->send($fluidEmailProphecy)->shouldBeCalledOnce();
 
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $subject = $this->getMockBuilder(RecoveryService::class)
             ->onlyMethods(['getEmailSubject'])
             ->setConstructorArgs(
                 [
-                $mailer->reveal(),
-                $eventDispatcherProphecy->reveal(),
-                $configurationManager->reveal(),
-                $this->recoveryConfiguration->reveal(),
-                $uriBuilder->reveal(),
-                $this->userRepository->reveal()
-            ]
+                    $mailer->reveal(),
+                    $eventDispatcherProphecy->reveal(),
+                    $configurationManager->reveal(),
+                    $this->recoveryConfiguration->reveal(),
+                    $uriBuilder->reveal(),
+                    $this->userRepository->reveal()
+                ]
             )->getMock();
         $subject->method('getEmailSubject')->willReturn('translation');
+
         $subject->sendRecoveryEmail($emailAddress);
     }
 
     public function configurationDataProvider(): Generator
     {
         yield 'minimal configuration' => [
-            'email' => 'max@mustermann.de',
+            'email'                 => 'max@mustermann.de',
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 1234567899,
-                'forgotHash' => '0123456789|some hash',
-                'sender' => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
-                'hasHtmlMailTemplate' => false,
-                'replyTo' => null
+                'forgotHash'        => '0123456789|some hash',
+                'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
+                'mailTemplateName'  => 'MailTemplateName',
+                'replyTo'           => null
             ],
-            'userInformation' => [
-                'first_name' => '',
+            'userInformation'       => [
+                'first_name'  => '',
                 'middle_name' => '',
-                'last_name' => '',
-                'username' => 'm.mustermann'
+                'last_name'   => '',
+                'username'    => 'm.mustermann'
             ],
-            'receiver' => new Address('max@mustermann.de', 'm.mustermann'),
-            'settings' => ['dateFormat' => 'Y-m-d H:i']
+            'receiver'              => new Address('max@mustermann.de', 'm.mustermann'),
+            'settings'              => ['dateFormat' => 'Y-m-d H:i']
+        ];
+        yield 'minimal configuration add replyTo Address' => [
+            'email'                 => 'max@mustermann.de',
+            'recoveryConfiguration' => [
+                'lifeTimeTimestamp' => 1234567899,
+                'forgotHash'        => '0123456789|some hash',
+                'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
+                'mailTemplateName'  => 'MailTemplateName',
+                'replyTo'           => new Address('reply_to@typo3.typo3', 'reply to TYPO3 Installation'),
+            ],
+            'userInformation'       => [
+                'first_name'  => '',
+                'middle_name' => '',
+                'last_name'   => '',
+                'username'    => 'm.mustermann'
+            ],
+            'receiver'              => new Address('max@mustermann.de', 'm.mustermann'),
+            'settings'              => ['dateFormat' => 'Y-m-d H:i']
         ];
         yield 'html mail provided' => [
-            'email' => 'max@mustermann.de',
+            'email'                 => 'max@mustermann.de',
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 123456789,
-                'forgotHash' => '0123456789|some hash',
-                'sender' => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
-                'hasHtmlMailTemplate' => true,
-                'replyTo' => null
+                'forgotHash'        => '0123456789|some hash',
+                'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
+                'mailTemplateName'  => 'MailTemplateName',
+                'replyTo'           => null
             ],
-            'userInformation' => [
-                'first_name' => '',
+            'userInformation'       => [
+                'first_name'  => '',
                 'middle_name' => '',
-                'last_name' => '',
-                'username' => 'm.mustermann'
+                'last_name'   => '',
+                'username'    => 'm.mustermann'
             ],
-            'receiver' => new Address('max@mustermann.de', 'm.mustermann'),
-            'settings' => ['dateFormat' => 'Y-m-d H:i']
+            'receiver'              => new Address('max@mustermann.de', 'm.mustermann'),
+            'settings'              => ['dateFormat' => 'Y-m-d H:i']
         ];
         yield 'complex display name instead of username' => [
-            'email' => 'max@mustermann.de',
+            'email'                 => 'max@mustermann.de',
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 123456789,
-                'forgotHash' => '0123456789|some hash',
-                'sender' => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
-                'hasHtmlMailTemplate' => true,
-                'replyTo' => null
+                'forgotHash'        => '0123456789|some hash',
+                'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
+                'mailTemplateName'  => 'MailTemplateName',
+                'replyTo'           => null
             ],
-            'userInformation' => [
-                'first_name' => 'Max',
+            'userInformation'       => [
+                'first_name'  => 'Max',
                 'middle_name' => 'Maximus',
-                'last_name' => 'Mustermann',
-                'username' => 'm.mustermann'
+                'last_name'   => 'Mustermann',
+                'username'    => 'm.mustermann'
             ],
-            'receiver' => new Address('max@mustermann.de', 'Max Maximus Mustermann'),
-            'settings' => ['dateFormat' => 'Y-m-d H:i']
+            'receiver'              => new Address('max@mustermann.de', 'Max Maximus Mustermann'),
+            'settings'              => ['dateFormat' => 'Y-m-d H:i']
         ];
         yield 'custom dateFormat and no middle name' => [
-            'email' => 'max@mustermann.de',
+            'email'                 => 'max@mustermann.de',
             'recoveryConfiguration' => [
                 'lifeTimeTimestamp' => 987654321,
-                'forgotHash' => '0123456789|some hash',
-                'sender' => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
-                'hasHtmlMailTemplate' => true,
-                'replyTo' => null
+                'forgotHash'        => '0123456789|some hash',
+                'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
+                'mailTemplateName'  => 'MailTemplateName',
+                'replyTo'           => null
             ],
-            'userInformation' => [
-                'first_name' => 'Max',
+            'userInformation'       => [
+                'first_name'  => 'Max',
                 'middle_name' => '',
-                'last_name' => 'Mustermann',
-                'username' => 'm.mustermann'
+                'last_name'   => 'Mustermann',
+                'username'    => 'm.mustermann'
             ],
-            'receiver' => new Address('max@mustermann.de', 'Max Mustermann'),
-            'settings' => ['dateFormat' => 'Y-m-d']
+            'receiver'              => new Address('max@mustermann.de', 'Max Mustermann'),
+            'settings'              => ['dateFormat' => 'Y-m-d']
         ];
     }
 
@@ -221,24 +234,52 @@ class RecoveryServiceTest extends UnitTestCase
      * @param string $emailAddress
      * @param array $recoveryConfiguration
      * @param array $userInformation
-     * @param ObjectProphecy $plainMailTemplate
      */
     protected function mockRecoveryConfigurationAndUserRepository(
         string $emailAddress,
         array $recoveryConfiguration,
-        array $userInformation,
-        ObjectProphecy $plainMailTemplate
+        array $userInformation
     ): void {
         $this->recoveryConfiguration->getForgotHash()->willReturn($recoveryConfiguration['forgotHash']);
         $this->recoveryConfiguration->getLifeTimeTimestamp()->willReturn($recoveryConfiguration['lifeTimeTimestamp']);
-        $this->recoveryConfiguration->getPlainMailTemplate()->willReturn($plainMailTemplate->reveal());
         $this->recoveryConfiguration->getSender()->willReturn($recoveryConfiguration['sender']);
-        $this->recoveryConfiguration->hasHtmlMailTemplate()->willReturn($recoveryConfiguration['hasHtmlMailTemplate']);
+        $this->recoveryConfiguration->getMailTemplateName()->willReturn($recoveryConfiguration['mailTemplateName']);
         $this->recoveryConfiguration->getReplyTo()->willReturn($recoveryConfiguration['replyTo']);
 
-        $this->userRepository->updateForgotHashForUserByEmail($emailAddress, GeneralUtility::hmac($recoveryConfiguration['forgotHash']))
-            ->shouldBeCalledOnce();
-        $this->userRepository->fetchUserInformationByEmail($emailAddress)
-            ->willReturn($userInformation);
+        $this->templatePathsProphecy->setTemplateRootPaths(['/some/path/to/a/template/folder/']);
+        $this->recoveryConfiguration->getMailTemplatePaths()->willReturn($this->templatePathsProphecy->reveal());
+
+        $this->userRepository->updateForgotHashForUserByEmail(
+            $emailAddress,
+            GeneralUtility::hmac($recoveryConfiguration['forgotHash'])
+        )->shouldBeCalledOnce();
+
+        $this->userRepository->fetchUserInformationByEmail($emailAddress)->willReturn($userInformation);
+    }
+
+    /**
+     * @param Address $receiver
+     * @param array $expectedViewVariables
+     * @param array $recoveryConfiguration
+     *
+     * @return ObjectProphecy|FluidEmail
+     */
+    private function setupFluidEmailProphecy(
+        Address $receiver,
+        array $expectedViewVariables,
+        array $recoveryConfiguration
+    ) {
+        $fluidEmailProphecy = $this->prophesize(FluidEmail::class);
+        GeneralUtility::addInstance(FluidEmail::class, $fluidEmailProphecy->reveal());
+        $fluidEmailProphecy->subject('translation')->willReturn($fluidEmailProphecy);
+        $fluidEmailProphecy->to($receiver)->willReturn($fluidEmailProphecy);
+        $fluidEmailProphecy->assignMultiple($expectedViewVariables)->willReturn($fluidEmailProphecy);
+        $fluidEmailProphecy->setTemplate($recoveryConfiguration['mailTemplateName'])->willReturn($fluidEmailProphecy);
+
+        if (!empty($recoveryConfiguration['replyTo'])) {
+            $fluidEmailProphecy->addReplyTo($recoveryConfiguration['replyTo'])->willReturn($fluidEmailProphecy);
+        }
+
+        return $fluidEmailProphecy;
     }
 }
