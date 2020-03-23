@@ -1663,9 +1663,13 @@ class BackendUtility
         /*****************
          *HOOK: pre-processing the human readable output from a record
          ****************/
-        $null = null;
+        $referenceObject = new \stdClass();
+        $referenceObject->table = $table;
+        $referenceObject->fieldName = $col;
+        $referenceObject->uid = $uid;
+        $referenceObject->value = &$value;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $theColConf, $null);
+            GeneralUtility::callUserFunction($_funcRef, $theColConf, $referenceObject);
         }
 
         $l = '';
