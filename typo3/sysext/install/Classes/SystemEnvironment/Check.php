@@ -200,10 +200,15 @@ class Check implements CheckInterface
                 'Maximum size for POST requests is smaller than maximum upload filesize in PHP',
                 FlashMessage::ERROR
             ));
+        } elseif ($maximumPostSize === $maximumUploadFilesize) {
+            $this->messageQueue->enqueue(new FlashMessage(
+                'The maximum size for file uploads is set to ' . ini_get('upload_max_filesize'),
+                'Maximum post upload size correlates with maximum upload file size in PHP'
+            ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
-                'The maximum size for file uploads is actually set to ' . ini_get('upload_max_filesize'),
-                'Maximum post upload size correlates with maximum upload file size in PHP'
+                'The maximum size for file uploads is set to ' . ini_get('upload_max_filesize'),
+                'Maximum post upload size is higher than maximum upload file size in PHP, which is fine.'
             ));
         }
     }
