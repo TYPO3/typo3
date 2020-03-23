@@ -466,9 +466,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             if (!$currentClass) {
                 $currentClass = empty($this->classesAnchorDefault[$this->displayedLinkHandlerId]) ? '' : $this->classesAnchorDefault[$this->displayedLinkHandlerId];
             }
-            $title = $currentClass
-                ? $this->classesAnchorClassTitle[$currentClass]
-                : ($this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?? '');
+            $title = $this->classesAnchorClassTitle[$currentClass] ?? $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?? '';
         }
         return '
                 <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
