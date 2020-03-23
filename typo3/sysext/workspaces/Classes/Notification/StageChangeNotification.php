@@ -148,6 +148,9 @@ class StageChangeNotification
         if ($emailConfig['format']) {
             $emailObject->format($emailConfig['format']);
         }
+        if (!empty($emailConfig['senderEmail']) && GeneralUtility::validEmail($emailConfig['senderEmail'])) {
+            $emailObject->from(new Address($emailConfig['senderEmail'], $emailConfig['senderName'] ?? ''));
+        }
         $this->mailer->send($emailObject);
     }
 }

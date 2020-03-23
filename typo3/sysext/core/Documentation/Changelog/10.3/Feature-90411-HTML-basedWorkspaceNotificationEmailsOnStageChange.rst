@@ -32,7 +32,10 @@ The following TSconfig options have been added:
    tx_workspaces.emails.layoutRootPaths.100 = EXT:myproject/...
    tx_workspaces.emails.partialRootPaths.100 = EXT:myproject/...
    tx_workspaces.emails.templateRootPaths.100 = EXT:myproject/...
-   tx_workspaces.emails.format = html/text/both
+   # valid formats are "text", "html" or "both"
+   tx_workspaces.emails.format = html
+   tx_workspaces.emails.senderEmail = workspaces@example.com
+   tx_workspaces.emails.senderName = Your TYPO3 at Example.com
 
 The template name is always called `StageChangeNotification`.
 
