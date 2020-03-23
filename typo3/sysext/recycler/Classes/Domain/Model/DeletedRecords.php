@@ -270,8 +270,9 @@ class DeletedRecords
         // create the filter WHERE-clause
         $filterConstraint = null;
         if (trim($filter) !== '') {
-            $filterConstraint = $queryBuilder->expr()->like(
-                $GLOBALS['TCA'][$table]['ctrl']['label'],
+            $filterConstraint = $queryBuilder->expr()->comparison(
+                $queryBuilder->castFieldToTextType($GLOBALS['TCA'][$table]['ctrl']['label']),
+                'LIKE',
                 $queryBuilder->createNamedParameter(
                     '%' . $queryBuilder->escapeLikeWildcards($filter) . '%',
                     \PDO::PARAM_STR
