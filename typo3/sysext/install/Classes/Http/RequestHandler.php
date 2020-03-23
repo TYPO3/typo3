@@ -97,6 +97,11 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
     {
         $controllerName = $request->getQueryParams()['install']['controller'] ?? 'layout';
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';
+
+        if ($actionName === 'showEnableInstallToolFile' && EnableFileService::isInstallToolEnableFilePermanent()) {
+            $actionName = 'showLogin';
+        }
+
         $action = $actionName . 'Action';
 
         $session = $this->initializeSession();
