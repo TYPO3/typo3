@@ -178,7 +178,6 @@ class MetaDataAspectTest extends UnitTestCase
             'l10n_diffsource' => '',
             'title' => 'Hooray',
             'uid' => '5',
-            'newlyCreated' => true,
         ];
 
         self::assertSame($expected, $file->getMetaData()->get());

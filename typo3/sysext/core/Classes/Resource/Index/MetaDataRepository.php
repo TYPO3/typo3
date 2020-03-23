@@ -74,7 +74,9 @@ class MetaDataRepository implements SingletonInterface
         // created and inserted into the database. If this is the case
         // we have to take care about correct meta information for width and
         // height in case of an image.
-        if (!empty($record['newlyCreated'])) {
+        // This logic can be transferred into a custom PSR-14 event listener in the future by just using
+        // the AfterMetaDataCreated event.
+        if (!empty($record['crdate']) && (int)$record['crdate'] === $GLOBALS['EXEC_TIME']) {
             if ($file->getType() === File::FILETYPE_IMAGE && $file->getStorage()->getDriverType() === 'Local') {
                 $fileNameAndPath = $file->getForLocalProcessing(false);
 
@@ -157,7 +159,6 @@ class MetaDataRepository implements SingletonInterface
 
         $record = $emptyRecord;
         $record['uid'] = $connection->lastInsertId($this->tableName);
-        $record['newlyCreated'] = true;
 
         return $this->eventDispatcher->dispatch(new AfterFileMetaDataCreatedEvent($fileUid, (int)$record['uid'], $record))->getRecord();
     }
