@@ -201,6 +201,7 @@ select {
         }
 
         &[size="1"],
+        &:not([multiple][size]),
         &:not([size]) {
             appearance: none;
 
