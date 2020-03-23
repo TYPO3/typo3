@@ -229,6 +229,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 $hookObject->preProcess($pageLayoutView, $info, $record);
             }
+            $item->setRecord($record);
         }
 
         if (!empty($info)) {
@@ -258,6 +259,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 $hookObject->preProcess($pageLayoutView, $drawItem, $previewHeader, $hookPreviewContent, $record);
             }
+            $item->setRecord($record);
         }
 
         $content = $previewHeader;

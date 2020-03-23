@@ -183,6 +183,11 @@ class GridColumnItem extends AbstractGridObject
         return $this->record;
     }
 
+    public function setRecord(array $record): void
+    {
+        $this->record = $record;
+    }
+
     public function getColumn(): GridColumn
     {
         return $this->column;
