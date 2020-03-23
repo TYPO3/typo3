@@ -42,7 +42,7 @@ define([
         self.login();
       });
       $(document).on('keydown', '#t3-install-form-password', function(e) {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
           e.preventDefault();
           $('.t3js-login-login').click();
         }
