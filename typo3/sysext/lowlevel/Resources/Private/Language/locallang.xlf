@@ -267,18 +267,6 @@
 			<trans-unit id="relations_description" resname="relations_description">
 				<source>This will analyze the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
 			</trans-unit>
-			<trans-unit id="files_many_ref" resname="files_many_ref">
-				<source>Files referenced from more than one record</source>
-			</trans-unit>
-			<trans-unit id="no_files_found" resname="no_files_found">
-				<source>No files found.</source>
-			</trans-unit>
-			<trans-unit id="files_no_ref" resname="files_no_ref">
-				<source>Files with no references at all (delete them!)</source>
-			</trans-unit>
-			<trans-unit id="files_no_file" resname="files_no_file">
-				<source>Missing files</source>
-			</trans-unit>
 			<trans-unit id="select_db" resname="select_db">
 				<source>Select fields</source>
 			</trans-unit>
@@ -302,12 +290,6 @@
 			</trans-unit>
 			<trans-unit id="search_description" resname="search_description">
 				<source>This searches through all database tables and records for a text string.</source>
-			</trans-unit>
-			<trans-unit id="filesearch" resname="filesearch">
-				<source>Search all filenames for pattern</source>
-			</trans-unit>
-			<trans-unit id="filesearch_description" resname="filesearch_description">
-				<source>Will search recursively for filenames inside sub directories of the public web folder (PublicPath) matching a certain regex pattern.</source>
 			</trans-unit>
 			<trans-unit id="refindex" resname="refindex">
 				<source>Check and update global reference index</source>

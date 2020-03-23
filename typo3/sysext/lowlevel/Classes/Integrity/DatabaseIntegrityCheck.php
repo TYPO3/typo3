@@ -69,11 +69,6 @@ class DatabaseIntegrityCheck
     protected $recIdArray = [];
 
     /**
-     * @var array
-     */
-    protected $checkFileRefs = [];
-
-    /**
      * @var array From the select-fields
      */
     protected $checkSelectDBRefs = [];
@@ -115,10 +110,9 @@ class DatabaseIntegrityCheck
      * This list should ideally include all records in the pages-table.
      *
      * @param int $theID a pid (page-record id) from which to start making the tree
-     * @param string $depthData HTML-code (image-tags) used when this function calls itself recursively.
      * @param bool $versions Internal variable, don't set from outside!
      */
-    public function genTree($theID, $depthData = '', $versions = false)
+    public function genTree($theID, $versions = false)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
@@ -166,7 +160,7 @@ class DatabaseIntegrityCheck
             if ($this->genTreeIncludeRecords) {
                 foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
                     if ($tableName !== 'pages') {
-                        $this->genTree_records($newID, '', $tableName);
+                        $this->genTree_records($newID, $tableName);
                     }
                 }
             }
@@ -174,18 +168,17 @@ class DatabaseIntegrityCheck
             $this->genTree($newID);
             // If versions are included in the tree, add those now:
             if ($this->genTreeIncludeVersions) {
-                $this->genTree($newID, '', true);
+                $this->genTree($newID, true);
             }
         }
     }
 
     /**
      * @param int $theID a pid (page-record id) from which to start making the tree
-     * @param string $_ Unused parameter
      * @param string $table Table to get the records from
      * @param bool $versions Internal variable, don't set from outside!
      */
-    public function genTree_records($theID, $_ = '', $table = '', $versions = false): void
+    public function genTree_records($theID, $table, $versions = false): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
@@ -221,7 +214,7 @@ class DatabaseIntegrityCheck
             }
             // Select all versions of this record:
             if ($this->genTreeIncludeVersions && BackendUtility::isTableWorkspaceEnabled($table)) {
-                $this->genTree_records($newID, '', $table, true);
+                $this->genTree_records($newID, $table, true);
             }
         }
     }
@@ -359,51 +352,21 @@ class DatabaseIntegrityCheck
     }
 
     /**
-     * Finding relations in database based on type 'group' (files or database-uid's in a list)
+     * Finding relations in database based on type 'group' (database-uid's in a list)
      *
-     * @param string $mode $mode = file, $mode = db, $mode = '' (all...)
-     * @return array An array with all fields listed that somehow are references to other records (foreign-keys) or files
+     * @return array An array with all fields listed that somehow are references to other records (foreign-keys)
      */
-    public function getGroupFields($mode): array
-    {
-        $result = [];
-        foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-            $cols = $GLOBALS['TCA'][$table]['columns'];
-            foreach ($cols as $field => $config) {
-                if ($config['config']['type'] === 'group') {
-                    if ((!$mode || $mode === 'db') && $config['config']['internal_type'] === 'db') {
-                        $result[$table][] = $field;
-                    }
-                }
-                if ((!$mode || $mode === 'db') && $config['config']['type'] === 'select' && $config['config']['foreign_table']) {
-                    $result[$table][] = $field;
-                }
-            }
-            if ($result[$table]) {
-                $result[$table] = implode(',', $result[$table]);
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Returns an array with arrays of table/field pairs which are allowed to hold references to the input table name - according to $GLOBALS['TCA']
-     *
-     * @param string $theSearchTable Table name
-     * @return array
-     */
-    public function getDBFields($theSearchTable): array
+    public function getGroupFields(): array
     {
         $result = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'db') {
-                    if (trim($config['config']['allowed']) === '*' || strpos($config['config']['allowed'], $theSearchTable) !== false) {
-                        $result[] = [$table, $field];
-                    }
-                } elseif ($config['config']['type'] === 'select' && $config['config']['foreign_table'] == $theSearchTable) {
-                    $result[] = [$table, $field];
+                    $result[$table][] = $field;
+                }
+                if ($config['config']['type'] === 'select' && $config['config']['foreign_table']) {
+                    $result[$table][] = $field;
                 }
             }
         }
@@ -413,111 +376,103 @@ class DatabaseIntegrityCheck
     /**
      * This selects non-empty-records from the tables/fields in the fkey_array generated by getGroupFields()
      *
-     * @param array $fkey_arrays Array with tables/fields generated by getGroupFields()
      * @see getGroupFields()
      */
-    public function selectNonEmptyRecordsWithFkeys($fkey_arrays): void
+    public function selectNonEmptyRecordsWithFkeys(): void
     {
-        if (is_array($fkey_arrays)) {
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            foreach ($fkey_arrays as $table => $field_list) {
-                if ($GLOBALS['TCA'][$table] && trim($field_list)) {
-                    $connection = $connectionPool->getConnectionForTable($table);
-                    $schemaManager = $connection->getSchemaManager();
-                    $tableColumns = $schemaManager->listTableColumns($table);
+        $fkey_arrays = $this->getGroupFields();
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        foreach ($fkey_arrays as $table => $fields) {
+            $connection = $connectionPool->getConnectionForTable($table);
+            $schemaManager = $connection->getSchemaManager();
+            $tableColumns = $schemaManager->listTableColumns($table);
 
-                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
-                    $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
 
-                    $fields = GeneralUtility::trimExplode(',', $field_list, true);
+            $queryBuilder->select('uid')
+                ->from($table);
+            $whereClause = [];
 
-                    $queryBuilder->select('uid')
-                        ->from($table);
-                    $whereClause = [];
+            foreach ($fields as $fieldName) {
+                // The array index of $tableColumns is the lowercased column name!
+                // It is quoted for keywords
+                $column = $tableColumns[strtolower($fieldName)]
+                    ?? $tableColumns[$connection->quoteIdentifier(strtolower($fieldName))];
+                if (!$column) {
+                    // Throw meaningful exception if field does not exist in DB - 'none' is not filtered here since the
+                    // method is only called with type=group fields
+                    throw new \RuntimeException(
+                        'Field ' . $fieldName . ' for table ' . $table . ' has been defined in TCA, but does not exist in DB',
+                        1536248937
+                    );
+                }
+                $fieldType = $column->getType()->getName();
+                if (in_array(
+                    $fieldType,
+                    [Types::BIGINT, Types::INTEGER, Types::SMALLINT, Types::DECIMAL, Types::FLOAT],
+                    true
+                )) {
+                    $whereClause[] = $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->isNotNull($fieldName),
+                        $queryBuilder->expr()->neq(
+                            $fieldName,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
+                    );
+                } elseif (in_array($fieldType, [Types::STRING, Types::TEXT], true)) {
+                    $whereClause[] = $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->isNotNull($fieldName),
+                        $queryBuilder->expr()->neq(
+                            $fieldName,
+                            $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        )
+                    );
+                } elseif ($fieldType === Types::BLOB) {
+                    $whereClause[] = $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->isNotNull($fieldName),
+                        $queryBuilder->expr()
+                            ->comparison(
+                                $queryBuilder->expr()->length($fieldName),
+                                ExpressionBuilder::GT,
+                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            )
+                    );
+                }
+            }
+            $queryResult = $queryBuilder->orWhere(...$whereClause)->execute();
 
-                    foreach ($fields as $fieldName) {
-                        // The array index of $tableColumns is the lowercased column name!
-                        // It is quoted for keywords
-                        $column = $tableColumns[strtolower($fieldName)]
-                            ?? $tableColumns[$connection->quoteIdentifier(strtolower($fieldName))];
-                        if (!$column) {
-                            // Throw meaningful exception if field does not exist in DB - 'none' is not filtered here since the
-                            // method is only called with type=group fields
-                            throw new \RuntimeException(
-                                'Field ' . $fieldName . ' for table ' . $table . ' has been defined in TCA, but does not exist in DB',
-                                1536248937
+            while ($row = $queryResult->fetch()) {
+                foreach ($fields as $field) {
+                    if (trim($row[$field])) {
+                        $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+                        if ($fieldConf['type'] === 'group' && $fieldConf['internal_type'] === 'db') {
+                            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                            $dbAnalysis->start(
+                                $row[$field],
+                                $fieldConf['allowed'],
+                                $fieldConf['MM'],
+                                $row['uid'],
+                                $table,
+                                $fieldConf
                             );
+                            foreach ($dbAnalysis->itemArray as $tempArr) {
+                                $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
+                            }
                         }
-                        $fieldType = $column->getType()->getName();
-                        if (in_array(
-                            $fieldType,
-                            [Types::BIGINT, Types::INTEGER, Types::SMALLINT, Types::DECIMAL, Types::FLOAT],
-                            true
-                        )) {
-                            $whereClause[] = $queryBuilder->expr()->andX(
-                                $queryBuilder->expr()->isNotNull($fieldName),
-                                $queryBuilder->expr()->neq(
-                                    $fieldName,
-                                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                                )
+                        if ($fieldConf['type'] === 'select' && $fieldConf['foreign_table']) {
+                            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                            $dbAnalysis->start(
+                                $row[$field],
+                                $fieldConf['foreign_table'],
+                                $fieldConf['MM'],
+                                $row['uid'],
+                                $table,
+                                $fieldConf
                             );
-                        } elseif (in_array($fieldType, [Types::STRING, Types::TEXT], true)) {
-                            $whereClause[] = $queryBuilder->expr()->andX(
-                                $queryBuilder->expr()->isNotNull($fieldName),
-                                $queryBuilder->expr()->neq(
-                                    $fieldName,
-                                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                                )
-                            );
-                        } elseif ($fieldType === Types::BLOB) {
-                            $whereClause[] = $queryBuilder->expr()->andX(
-                                $queryBuilder->expr()->isNotNull($fieldName),
-                                $queryBuilder->expr()
-                                    ->comparison(
-                                        $queryBuilder->expr()->length($fieldName),
-                                        ExpressionBuilder::GT,
-                                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                                    )
-                            );
-                        }
-                    }
-                    $queryResult = $queryBuilder->orWhere(...$whereClause)->execute();
-
-                    while ($row = $queryResult->fetch()) {
-                        foreach ($fields as $field) {
-                            if (trim($row[$field])) {
-                                $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                                if ($fieldConf['type'] === 'group') {
-                                    if ($fieldConf['internal_type'] === 'db') {
-                                        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                                        $dbAnalysis->start(
-                                            $row[$field],
-                                            $fieldConf['allowed'],
-                                            $fieldConf['MM'],
-                                            $row['uid'],
-                                            $table,
-                                            $fieldConf
-                                        );
-                                        foreach ($dbAnalysis->itemArray as $tempArr) {
-                                            $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
-                                        }
-                                    }
-                                }
-                                if ($fieldConf['type'] === 'select' && $fieldConf['foreign_table']) {
-                                    $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                                    $dbAnalysis->start(
-                                        $row[$field],
-                                        $fieldConf['foreign_table'],
-                                        $fieldConf['MM'],
-                                        $row['uid'],
-                                        $table,
-                                        $fieldConf
-                                    );
-                                    foreach ($dbAnalysis->itemArray as $tempArr) {
-                                        if ($tempArr['id'] > 0) {
-                                            $this->checkGroupDBRefs[$fieldConf['foreign_table']][$tempArr['id']] += 1;
-                                        }
-                                    }
+                            foreach ($dbAnalysis->itemArray as $tempArr) {
+                                if ($tempArr['id'] > 0) {
+                                    $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] += 1;
                                 }
                             }
                         }
@@ -571,55 +526,6 @@ class DatabaseIntegrityCheck
             }
         }
         return $result;
-    }
-
-    /**
-     * Finding all references to record based on table/uid
-     *
-     * @param string $searchTable Table name
-     * @param int $id Uid of database record
-     * @return array Array with other arrays containing information about where references was found
-     */
-    public function whereIsRecordReferenced($searchTable, $id): array
-    {
-        // Gets tables / Fields that reference to files
-        $fileFields = $this->getDBFields($searchTable);
-        $theRecordList = [];
-        foreach ($fileFields as $info) {
-            [$table, $field] = $info;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()->removeAll();
-            $queryResult = $queryBuilder
-                ->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field)
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->like(
-                        $field,
-                        $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards($id) . '%')
-                    )
-                )
-                ->execute();
-
-            while ($row = $queryResult->fetch()) {
-                // Now this is the field, where the reference COULD come from.
-                // But we're not guaranteed, so we must carefully examine the data.
-                $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                $allowedTables = $fieldConf['type'] === 'group' ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
-                $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                $dbAnalysis->start($row[$field], $allowedTables, $fieldConf['MM'], $row['uid'], $table, $fieldConf);
-                foreach ($dbAnalysis->itemArray as $tempArr) {
-                    if ($tempArr['table'] == $searchTable && $tempArr['id'] == $id) {
-                        $theRecordList[] = [
-                            'table' => $table,
-                            'uid' => $row['uid'],
-                            'field' => $field,
-                            'pid' => $row['pid']
-                        ];
-                    }
-                }
-            }
-        }
-        return $theRecordList;
     }
 
     /**

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -73,16 +74,6 @@ class DatabaseIntegrityController
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
-
-    /**
-     * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
-     *
-     * @see init()
-     * @var array
-     */
-    protected $MCONF = [
-        'name' => 'system_dbint',
-    ];
 
     /**
      * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
@@ -254,8 +245,7 @@ class DatabaseIntegrityController
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('DatabaseJumpMenu');
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
@@ -286,8 +276,7 @@ class DatabaseIntegrityController
     {
         $modules = [];
         $availableModFuncs = ['records', 'relations', 'search', 'refindex'];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($availableModFuncs as $modFunc) {
             $modules[$modFunc] = (string)$uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=' . $modFunc;
         }
@@ -439,8 +428,7 @@ class DatabaseIntegrityController
                     $theNumberOfRe = '';
                 }
                 $lr = '';
-                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 if (is_array($admin->getLRecords()[$t])) {
                     foreach ($admin->getLRecords()[$t] as $data) {
                         if (!GeneralUtility::inList($admin->getLostPagesList(), $data['pid'])) {
@@ -472,8 +460,7 @@ class DatabaseIntegrityController
     protected function func_relations()
     {
         $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-        $fkey_arrays = $admin->getGroupFields('');
-        $admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
+        $admin->selectNonEmptyRecordsWithFkeys();
 
         $this->view->assignMultiple([
             'select_db' => $admin->testDBRefs($admin->getCheckSelectDBRefs()),
