@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Core\Database\Query;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Connection;
@@ -1031,6 +1035,46 @@ class QueryBuilder
     public function quoteColumnValuePairs(array $input): array
     {
         return $this->getConnection()->quoteColumnValuePairs($input);
+    }
+
+    /**
+     * Creates a cast of the $fieldName to a text datatype depending on the database management system.
+     *
+     * @param string $fieldName The fieldname will be quoted and casted according to database platform automatically
+     * @return string
+     */
+    public function castFieldToTextType(string $fieldName): string
+    {
+        $databasePlatform = $this->connection->getDatabasePlatform();
+        // https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_convert
+        if ($databasePlatform instanceof MySqlPlatform) {
+            return sprintf('CONVERT(%s, CHAR)', $this->connection->quoteIdentifier($fieldName));
+        }
+        // https://www.postgresql.org/docs/current/sql-createcast.html
+        if ($databasePlatform instanceof PostgreSqlPlatform) {
+            return sprintf('%s::text', $this->connection->quoteIdentifier($fieldName));
+        }
+        // https://www.sqlite.org/lang_expr.html#castexpr
+        if ($databasePlatform instanceof SqlitePlatform) {
+            return sprintf('CAST(%s as TEXT)', $this->connection->quoteIdentifier($fieldName));
+        }
+        // https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-ver15#implicit-conversions
+        if ($databasePlatform instanceof SQLServerPlatform) {
+            return sprintf('CAST(%s as VARCHAR)', $this->connection->quoteIdentifier($fieldName));
+        }
+        // https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqlj33562.html
+        if ($databasePlatform instanceof OraclePlatform) {
+            return sprintf('CAST(%s as VARCHAR)', $this->connection->quoteIdentifier($fieldName));
+        }
+
+        throw new \RuntimeException(
+            sprintf(
+                '%s is not implemented for the used database platform "%s", yet!',
+                __METHOD__,
+                get_class($this->connection->getDatabasePlatform())
+            ),
+            1584637096
+        );
     }
 
     /**

@@ -3603,7 +3603,7 @@ class DatabaseRecordList
                 $evalRules = $fieldConfig['eval'] ?: '';
                 $searchConstraint = $expressionBuilder->andX(
                     $expressionBuilder->comparison(
-                        'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
+                        'LOWER(' . $queryBuilder->castFieldToTextType($fieldName) . ')',
                         'LIKE',
                         'LOWER(' . $like . ')'
                     )

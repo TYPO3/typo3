@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
@@ -1348,5 +1350,55 @@ class QueryBuilderTest extends UnitTestCase
         GeneralUtility::addInstance(DefaultRestrictionContainer::class, $container->reveal());
 
         $queryBuilder->resetRestrictions();
+    }
+
+    public function castFieldToTextTypeDataProvider(): array
+    {
+        return [
+            'Test cast for MySqlPlatform' => [
+                new MySqlPlatform(),
+                'CONVERT(aField, CHAR)'
+            ],
+            'Test cast for PostgreSqlPlatform' => [
+                new PostgreSqlPlatform(),
+                'aField::text'
+            ],
+            'Test cast for SqlitePlatform' => [
+                new SqlitePlatform(),
+                'CAST(aField as TEXT)'
+            ],
+            'Test cast for SQLServerPlatform' => [
+                new SQLServerPlatform(),
+                'CAST(aField as VARCHAR)'
+            ],
+            'Test cast for OraclePlatform' => [
+                new OraclePlatform(),
+                'CAST(aField as VARCHAR)'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider castFieldToTextTypeDataProvider
+     *
+     * @param AbstractPlatform $platform
+     * @param string $expectation
+     */
+    public function castFieldToTextType(AbstractPlatform $platform, string $expectation): void
+    {
+        $this->connection->quoteIdentifier('aField')
+            ->shouldBeCalled()
+            ->willReturnArgument(0);
+
+        $this->connection->getDatabasePlatform()->willReturn($platform);
+
+        $concreteQueryBuilder = new \Doctrine\DBAL\Query\QueryBuilder($this->connection->reveal());
+
+        $subject = new QueryBuilder($this->connection->reveal(), null, $concreteQueryBuilder);
+        $result = $subject->castFieldToTextType('aField');
+
+        $this->connection->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        self::assertSame($expectation, $result);
     }
 }
