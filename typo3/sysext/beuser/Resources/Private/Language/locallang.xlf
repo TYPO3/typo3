@@ -87,6 +87,12 @@
 			<trans-unit id="compareUserList" resname="compareUserList">
 				<source>Compare user list</source>
 			</trans-unit>
+			<trans-unit id="compareBackendUsersGroups" resname="compareBackendUsersGroups">
+				<source>Compare backend usergroups</source>
+			</trans-unit>
+			<trans-unit id="clearCompareList" resname="clearCompareList">
+				<source>Clear compare list</source>
+			</trans-unit>
 			<trans-unit id="status" resname="status">
 				<source>Status</source>
 			</trans-unit>
@@ -155,6 +161,9 @@
 			</trans-unit>
 			<trans-unit id="section.compare" resname="section.compare">
 				<source>Compare</source>
+			</trans-unit>
+			<trans-unit id="section.allUserGroups" resname="section.allUserGroups">
+				<source>All User Groups</source>
 			</trans-unit>
 			<trans-unit id="compare" resname="compare">
 				<source>Compare</source>
@@ -242,6 +251,15 @@
 			</trans-unit>
 			<trans-unit id="resetPassword.confirmation.text" resname="resetPassword.confirmation.text">
 				<source>Are you sure you want to reset the password for %s?</source>
+			</trans-unit>
+			<trans-unit id="compare.tables" resname="compare.tables">
+				<source>Table permissions</source>
+			</trans-unit>
+			<trans-unit id="compare.direct.inherit" resname="compare.direct.inherit">
+				<source>Inherit</source>
+			</trans-unit>
+			<trans-unit id="compare.direct.direct" resname="compare.direct.direct">
+				<source>Direct</source>
 			</trans-unit>
 		</body>
 	</file>

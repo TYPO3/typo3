@@ -43,10 +43,10 @@ class ListGroupCest
      */
     public function canEditBeGroupsFromListView(BackendTester $I)
     {
-        $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(1) > td.col-title > a > b');
+        $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(1) > td.title > a > b');
 
         $I->amGoingTo('test edit on group name');
-        $I->click('table.table-striped > tbody > tr:nth-child(1) > td.col-title > a');
+        $I->click('table.table-striped > tbody > tr:nth-child(1) > td.title > a');
         $this->openAndCloseTheEditForm($I, $groupname);
 
         $I->amGoingTo('test edit on edit button');

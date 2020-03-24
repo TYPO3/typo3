@@ -179,7 +179,7 @@ class BackendUserController extends ActionController
      */
     public function showAction(int $uid = 0): void
     {
-        $data = $this->userInformationService->get($uid);
+        $data = $this->userInformationService->getUserInformation($uid);
         $this->view->assignMultiple([
             'shortcutLabel' => 'showUser',
             'data' => $data
@@ -198,7 +198,9 @@ class BackendUserController extends ActionController
 
         $compareData = [];
         foreach ($compareUserList as $uid) {
-            $compareData[] =  $this->userInformationService->get($uid);
+            if ($compareInformation = $this->userInformationService->getUserInformation($uid)) {
+                $compareData[] = $compareInformation;
+            }
         }
 
         $this->view->assignMultiple([
@@ -256,12 +258,29 @@ class BackendUserController extends ActionController
      * Removes given backend user to the compare list
      *
      * @param int $uid
+     * @param int $redirectToCompare
      */
-    public function removeFromCompareListAction($uid)
+    public function removeFromCompareListAction($uid, int $redirectToCompare = 0)
     {
         $this->moduleData->detachUidCompareUser($uid);
         $this->moduleDataStorageService->persistModuleData($this->moduleData);
-        $this->forward('index');
+        if ($redirectToCompare) {
+            $this->redirect('compare');
+        } else {
+            $this->redirect('index');
+        }
+    }
+
+    /**
+     * Removes all backend users from the compare list
+     */
+    public function removeAllFromCompareListAction(): void
+    {
+        foreach ($this->moduleData->getCompareUserList() as $user) {
+            $this->moduleData->detachUidCompareUser($user);
+        }
+        $this->moduleDataStorageService->persistModuleData($this->moduleData);
+        $this->redirect('index');
     }
 
     /**

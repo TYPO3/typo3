@@ -14,6 +14,11 @@
         link="{be:moduleLink(route: 'system_BeuserTxBeuser')}"
     />
     <be:moduleLayout.button.linkButton
+        icon="actions-open"
+        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
+        link="{be:uri.editRecord(uid: data.user.uid, table: 'be_users')}"
+    />
+    <be:moduleLayout.button.linkButton
         icon="actions-add"
         title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
         link="{be:uri.newRecord(table: 'be_users')}"
@@ -32,16 +37,16 @@
 
     <table class="table table-striped table-bordered table-hover">
         <tr>
+            <th><f:translate key="admin" /></th>
+            <td><f:render partial="Compare/Information" section="yesno" arguments="{value:data.user.admin}" /></td>
+        </tr>
+        <tr>
             <th>{f:translate(key:'realName')}</th>
             <td>
                 <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{data.user.uid}" title="id={data.user.uid}">
                     <be:avatar backendUser="{data.user.uid}" showIcon="true"/>
                 </a>
                 {data.user.realName}
-                <be:link.editRecord class="btn btn-default pull-right" table="be_users" uid="{data.user.uid}"
-                                    title="edit">
-                    <core:icon identifier="actions-open"/>
-                </be:link.editRecord>
             </td>
         </tr>
         <tr>
@@ -53,10 +58,29 @@
             </td>
         </tr>
         <tr>
-            <th>{f:translate(key:'startDateAndTime')}</th>
+            <th><f:translate key="lastLogin" /></th>
+            <td>
+                <f:if condition="{data.user.lastlogin}">
+                    <f:then>
+                        <f:format.date format="{dateFormat} {timeFormat}">{data.user.lastlogin}</f:format.date>
+                    </f:then>
+                    <f:else>
+                        <f:translate key="never" />
+                    </f:else>
+                </f:if>
+            </td>
+        </tr>
+
+        <tr>
+            <th>{f:translate(key:'startDateAndTime')} / <f:translate key="endDateAndTime" /></th>
             <td>
                 <f:if condition="{data.user.starttime}">
-                    <f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date>
+                    <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date></f:then>
+                    <f:else>-</f:else>
+                </f:if>&nbsp;/
+                <f:if condition="{data.user.endtime}">
+                    <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.endtime}</f:format.date></f:then>
+                    <f:else>-</f:else>
                 </f:if>
             </td>
         </tr>
@@ -64,109 +88,46 @@
 
     <div class="row">
         <div class="col-md-4">
-            <h4><f:translate key="groups" /></h4>
-            <f:render partial="BackendUser/Information" section="groups" arguments="{groups:data.groups}"/>
+            <h2><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" /></h2>
+            <f:render partial="Compare/Information" section="groups" arguments="{groups:data.groups}"/>
         </div>
         <div class="col-md-4">
-            <h4><f:translate key="languages" /></h4>
-            <f:render partial="BackendUser/Information" section="languages" arguments="{languages:data.languages}"/>
+            <h3><f:translate key="allowedLanguages" /></h3>
+            <f:render partial="Compare/Information" section="languages" arguments="{languages:data.languages}"/>
         </div>
         <div class="col-md-4">
+            <h3><f:translate key="dbMountPoints" /></h3>
+            <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts:data.dbMounts}"/>
 
-            <h4><f:translate key="dbMounts" /></h4>
-            <f:render partial="BackendUser/Information" section="dbMounts" arguments="{dbMounts:data.dbMounts}"/>
-
-            <h4><f:translate key="fileMounts" /></h4>
-            <f:render partial="BackendUser/Information" section="fileMounts" arguments="{fileMounts:data.fileMounts}"/>
-
-            <h4><f:translate key="categories" /></h4>
-            <f:render partial="BackendUser/Information" section="categories" arguments="{categories:data.categories}"/>
+            <h3><f:translate key="fileMounts" /></h3>
+            <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts:data.fileMounts}"/>
         </div>
     </div>
 
 
     <div class="row">
         <div class="col-md-6">
-            <h2><f:translate key="permissions" /></h2>
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th><f:translate key="modules" /></th>
-                </tr>
-                </thead>
-                <tbody>
-                <f:for each="{data.modules}" as="module">
-                    <tr>
-                        <td>
-                            <core:icon identifier="{module.iconIdentifier}"></core:icon>
-                            {f:translate(key:'{module.labels}:mlang_tabs_tab')} <code>{module.name}</code>
-                        </td>
-                    </tr>
-                </f:for>
-                </tbody>
-            </table>
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th><f:translate key="tableModes" /></th>
-                    <th class="text-center"><f:translate key="tableModes.select" /></th>
-                    <th class="text-center"><f:translate key="tableModes.modify" /></th>
-                </tr>
-                </thead>
-                <tbody>
-                <f:for each="{data.tables.all}" key="table" as="label">
-                    <tr>
-                        <td>
-                            <f:if condition="{label}">
-                                <f:then>
-                                    {f:translate(key:label)}<code>{table}</code>
-                                </f:then>
-                                <f:else>
-                                    <code>{table}</code>
-                                </f:else>
-                            </f:if>
-                        </td>
-                        <td class="text-center">
-                            <bu:display.tableAccess table="{table}" select="{data.tables.tables_select}">
-                                <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
-                                </f:then>
-                                <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
-                            </bu:display.tableAccess>
-                        </td>
-                        <td class="text-center">
-                            <bu:display.tableAccess table="{table}" select="{data.tables.tables_modify}"
-                                                    modify="{data.tables.tables_modify}">
-                                <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
-                                </f:then>
-                                <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
-                            </bu:display.tableAccess>
-                        </td>
-                    </tr>
-                </f:for>
-                </tbody>
-            </table>
+            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select')}</h3>
+            <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes:data.pageTypes}" />
+
+            <h3><f:translate key="permissions" /></h3>
+            <f:render partial="Compare/Information" section="modules" arguments="{showTitle:1,modules:data.modules}"/>
+
+            <h3>{f:translate(key:'compare.tables')}</h3>
+            <f:render partial="Compare/Information" section="tables" arguments="{showTitle:1,tables:data.tables}"/>
+
+            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms')}</h3>
+            <f:render partial="Compare/Information" section="categories" arguments="{categories:data.categories}"/>
+
+            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</h3>
+            <f:render partial="Compare/Information" section="tsconfig" arguments="{tsconfig:data.tsconfig,id:data.user.uid}" />
         </div>
         <div class="col-md-6">
-            <h3>ACL</h3>
-            <f:for each="{data.non_exclude_fields}" key="tableName" as="table">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>{f:translate(key:table.label)} <code>{tableName}</code></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <f:for each="{table.fields}" as="label" key="field">
-                        <tr>
-                            <td>
-                                {f:translate(key:label)}
-                                <code>{field}</code>
-                            </td>
-                        </tr>
-                    </f:for>
-                    </tbody>
-                </table>
-            </f:for>
+            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields')}</h3>
+            <f:render partial="Compare/Information" section="nonExcludeFields" arguments="{nonExcludeFields:data.non_exclude_fields, id:data.user.uid}"/>
+
+            <h3>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms')}</h3>
+            <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions:data.fileFolderPermissions}" />
         </div>
     </div>
 </f:section>

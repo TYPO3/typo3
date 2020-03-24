@@ -8,8 +8,8 @@ defined('TYPO3_MODE') or die();
     'tx_Beuser',
     'top',
     [
-        \TYPO3\CMS\Beuser\Controller\BackendUserController::class => 'index, show, addToCompareList, removeFromCompareList, compare, online, terminateBackendUserSession, initiatePasswordReset',
-        \TYPO3\CMS\Beuser\Controller\BackendUserGroupController::class => 'index'
+        \TYPO3\CMS\Beuser\Controller\BackendUserController::class => 'index, show, addToCompareList, removeFromCompareList, removeAllFromCompareList, compare, online, terminateBackendUserSession, initiatePasswordReset',
+        \TYPO3\CMS\Beuser\Controller\BackendUserGroupController::class => 'index, addToCompareList, removeFromCompareList, removeAllFromCompareList, compare'
     ],
     [
         'access' => 'admin',

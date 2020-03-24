@@ -38,4 +38,25 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Reposito
         $query->getQuerySettings()->setIgnoreEnableFields(true);
         return $query;
     }
+
+    /**
+     * Finds Backend Usergroups on a given list of uids
+     *
+     * @param array $uidList
+     * @return array
+     */
+    public function findByUidList(array $uidList): array
+    {
+        $items = [];
+
+        foreach ($uidList as $id) {
+            $query = $this->createQuery();
+            $query->matching($query->equals('uid', $id));
+            $result = $query->execute(true);
+            if ($result) {
+                $items[] = $result[0];
+            }
+        }
+        return $items;
+    }
 }

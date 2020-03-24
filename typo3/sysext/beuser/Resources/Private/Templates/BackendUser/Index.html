@@ -32,27 +32,41 @@
                                 </a>
                             </td>
                             <td class="col-title">
-                                {compareUser.userName}
+                                <be:link.editRecord table="be_users" uid="{compareUser.uid}" title="edit">
+                                    <b>{compareUser.username}</b>
+                                </be:link.editRecord>
+                                <f:if condition="{onlineBackendUsers.{compareUser.uid}}">
+                                    <span class="label label-success"><f:translate key="online" /></span>
+                                </f:if>
+                                <br />
+                                <f:if condition="{compareUser.realName}">
+                                    <be:link.editRecord table="be_users" uid="{compareUser.uid}" title="edit">
+                                        {compareUser.realName}
+                                    </be:link.editRecord>
+                                </f:if>
                             </td>
-                            <td>
-                                <f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right btn btn-default" title="{f:translate(key: 'remove')}">
-                                    <core:icon identifier="actions-remove" />
-                                </f:link.action>
+                            <td class="col-control">
+                                <div class="btn-group" role="group">
+                                    <be:link.editRecord class="btn btn-default" table="be_users" uid="{compareUser.uid}" title="{f:translate(key:'edit')}">
+                                        <core:icon identifier="actions-open" />
+                                    </be:link.editRecord>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="btn btn-default" title="{f:translate(key: 'remove')}">
+                                        <core:icon identifier="actions-remove" />
+                                    </f:link.action>
+                                </div>
                             </td>
                         </tr>
                     </f:for>
                 </tbody>
             </table>
         </div>
-        <f:form action="compare">
-            <f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" title="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default" />
-        </f:form>
+        <f:link.action action="compare" title="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="compare btn btn-default">{f:translate(key: 'compareUserList', default: 'Compare user list')}</f:link.action>
+        <f:link.action action="removeAllFromCompareList" class="btn btn-default"><core:icon identifier="actions-selection-delete" /> {f:translate(key: 'clearCompareList')}</f:link.action>
         <hr>
     </f:if>
 
-    <f:comment>
-        Filter section
-    </f:comment>
     <f:render partial="Filters/BackendUser/Index" arguments="{demand: demand, backendUserGroups: backendUserGroups}" />
 
     <f:render partial="BackendUser/PaginatedListWidget" arguments="{_all}" />

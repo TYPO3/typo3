@@ -1,0 +1,155 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="Buttons">
+    <be:moduleLayout.button.linkButton
+        icon="actions-view-go-back"
+        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
+        link="{be:moduleLink(route: 'system_BeuserTxBeuser', query: 'tx_beuser_system_beusertxbeuser[controller]=BackendUserGroup')}"
+    />
+</f:section>
+
+<f:section name="Content">
+    <h1>{f:translate(key:'compareBackendUsersGroups')}</h1>
+    <div class="table-fit">
+        <table id="tx_beuser_compare" class="table table-striped table-hover table-vertical-top">
+            <colgroup>
+                <col>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <f:comment><!-- width enforced to be 50% for equal grouping --></f:comment>
+                    <col style="width: 50%">
+                </f:for>
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <th class="nowrap">
+                        {compareData.group.title} [{compareData.group.uid}]
+                        <f:link.action action="removeFromCompareList" arguments="{uid: compareData.group.uid, redirectToCompare:1}" class="btn btn-default pull-right">
+                            <core:icon identifier="actions-remove" size="small"/>
+                        </f:link.action>
+                        <be:link.editRecord class="btn btn-default pull-right" table="be_groups" uid="{compareData.group.uid}">
+                            <core:icon identifier="actions-open" />
+                        </be:link.editRecord>
+                    </th>
+                </f:for>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="col-word-break">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td class="col-word-break">
+                        <f:render partial="Compare/Information" section="recordInformation" arguments="{recordInformation:compareData.group.description}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" /></th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="groups" arguments="{groups:compareData.groups}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'compare.tables')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="tables" arguments="{tables:compareData.tables}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="modules" arguments="{modules:compareData.modules}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="nonExcludeFields" arguments="{nonExcludeFields:compareData.non_exclude_fields,id:compareData.group.uid}"/>
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th><f:translate key="allowedLanguages" /></th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="languages" arguments="{languages:compareData.languages}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th><f:translate key="dbMountPoints" /></th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts:compareData.dbMounts}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th><f:translate key="fileMounts" /></th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts:compareData.fileMounts}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions:compareData.fileFolderPermissions}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes:compareData.pageTypes}" />
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="categories" arguments="{categories:compareData.categories}"/>
+                    </td>
+                </f:for>
+            </tr>
+            <tr>
+                <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</th>
+                <f:for each="{compareGroupList}" as="compareData">
+                    <td>
+                        <f:render partial="Compare/Information" section="tsconfig" arguments="{tsconfig:compareData.tsconfig, id:compareData.group.uid}" />
+                    </td>
+                </f:for>
+            </tr>
+            <f:if condition="{compareGroupList.0.workspaces}">
+                <tr>
+                    <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms')}</th>
+                    <f:for each="{compareGroupList}" as="compareData">
+                        <td>
+                            <f:render partial="Compare/Information" section="workspaces" arguments="{workspaces:compareData.workspaces}"/>
+                        </td>
+                    </f:for>
+                </tr>
+            </f:if>
+            </tbody>
+        </table>
+    </div>
+</f:section>
+</html>

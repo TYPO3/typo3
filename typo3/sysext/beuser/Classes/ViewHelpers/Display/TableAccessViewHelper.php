@@ -31,6 +31,6 @@ class TableAccessViewHelper extends AbstractConditionViewHelper
     public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
         $table = $arguments['table'];
-        return array_key_exists($table, $arguments['select']) || array_key_exists($table, $arguments['modify']);
+        return array_key_exists($table, (array)$arguments['select']) || array_key_exists($table, (array)$arguments['modify']);
     }
 }

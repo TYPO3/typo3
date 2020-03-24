@@ -1,0 +1,256 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
+
+<f:section name="languages">
+    <table class="table table-condensed table-hover">
+        <f:for each="{languages}" key="languageUid" as="language">
+            <tr>
+                <f:if condition="{languageUid} ==0">
+                    <f:then>
+                        <td class="col-icon"></td>
+                        <td class="col-title">{f:translate(key:'information.defaultLanguage')}</td>
+                    </f:then>
+                    <f:else>
+                        <td class="col-icon">
+                            <a href="#" class="t3js-contextmenutrigger" data-table="sys_language" data-uid="{language.uid}" title="id={language.uid}">
+                                <core:iconForRecord table="sys_language" row="{language}"/>
+                            </a>
+                        </td>
+                        <td class="col-title">{language.title} [{language.uid}]</td>
+                    </f:else>
+                </f:if>
+            </tr>
+        </f:for>
+    </table>
+</f:section>
+
+<f:section name="groups">
+    <f:if condition="{groups.all}">
+        <table class="table table-condensed table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center">{f:translate(key:'compare.direct.direct')}</th>
+                    <th >{f:translate(key:'compare.direct.inherit')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{groups.all}" as="group">
+                    <tr>
+                        <td class="col-title col-responsive nowrap">
+                            <a href="#" class="t3js-contextmenutrigger" data-table="be_groups" data-uid="{group.row.uid}" title="id={group.row.uid}">
+                                <core:iconForRecord table="be_groups" row="{group.row}"/>
+                            </a>
+                            <be:link.editRecord table="be_groups" uid="{group.row.uid}">
+                                {group.row.title}
+                            </be:link.editRecord>
+                        </td>
+                        <td class="text-center"><f:if condition="{group.direct}"><span class="t3-icon change-permission fa fa-check text-success"></span></f:if></td>
+                        <td class="text-center"><f:if condition="{group.diff}"><span class="t3-icon change-permission fa fa-check text-success"></span></f:if></td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="dbMounts">
+    <f:if condition="{dbMounts}">
+        <table class="table table-condensed table-hover">
+            <f:for each="{dbMounts}" as="item">
+                <tr>
+                    <td class="col-icon">
+                        <a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{item.uid}" title="id={item.uid}">
+                            <core:iconForRecord table="pages" row="{item}"/>
+                        </a>
+                    </td>
+                    <td class="col-title">{item.title} [{item.uid}]</td>
+                </tr>
+            </f:for>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="fileMounts">
+    <f:if condition="{fileMounts}">
+        <table class="table table-condensed table-hover">
+            <f:for each="{fileMounts}" as="item">
+                <tr>
+                    <td class="col-icon">
+                        <a href="#" class="t3js-contextmenutrigger" data-table="sys_filemounts" data-uid="{item.uid}" title="id={item.uid}">
+                            <core:iconForRecord table="sys_filemounts" row="{item}"/>
+                        </a>
+                    </td>
+                    <td class="col-title">{item.title} [{item.uid}]</td>
+                </tr>
+            </f:for>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="fileFolderPermissions">
+    <f:if condition="{fileFolderPermissions}">
+        <table class="table table-condensed table-hover">
+            <f:for each="{fileFolderPermissions}" as="item">
+                <tr>
+                    <td class="col-icon"><core:icon identifier="{item.2}"/></td>
+                    <td class="col-title">{f:translate(key:item.0,default:item.1)}</td>
+                </tr>
+            </f:for>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="categories">
+    <f:if condition="{categories}">
+        <table class="table table-condensed table-hover">
+            <f:for each="{categories}" as="item">
+                <tr>
+                    <td class="col-icon">
+                        <a href="#" class="t3js-contextmenutrigger" data-table="sys_category" data-uid="{item.uid}" title="id={item.uid}">
+                            <core:iconForRecord table="sys_category" row="{item}"/>
+                        </a>
+                    </td>
+                    <td class="col-title">{item.title} [{item.uid}]</td>
+                </tr>
+            </f:for>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="workspaces">
+    <f:if condition="{workspaces}">
+        <f:if condition="{workspaces.record.uid}">
+            <strong><f:translate key="information.defaultWorkspace" />:</strong>
+            <a href="#" class="t3js-contextmenutrigger" data-table="sys_workspace" data-uid="{workspaces.record.uid}" title="id={workspaces.record.uid}">
+                <core:iconForRecord table="sys_workspaces" row="{workspaces.record}"/>
+                {workspaces.record.title}
+            </a>
+        </f:if>
+    </f:if>
+</f:section>
+
+<f:section name="pageTypes">
+    <f:if condition="{pageTypes}">
+        <table class="table table-condensed table-hover">
+            <f:for each="{pageTypes}" as="item">
+                <tr>
+                    <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
+                    <td class="col-title">{f:translate(key:item.label,default:item.label)}</td>
+                </tr>
+            </f:for>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="recordInformation">
+{recordInformation -> f:format.nl2br()}
+</f:section>
+
+<f:section name="modules">
+    <f:if condition="{modules}">
+        <table class="table table-hover table-condensed">
+            <f:if condition="{showHeadline}">
+                <thead>
+                <tr>
+                    <th><f:translate key="modules" /></th>
+                </tr>
+                </thead>
+            </f:if>
+            <tbody>
+            <f:for each="{modules}" as="item">
+                <tr>
+                    <td class="col-icon"><core:icon identifier="{item.iconIdentifier}"></core:icon></td>
+                    <td class="col-title">{f:translate(key:'{item.labels}:mlang_tabs_tab')} [{item.name}]</td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </f:if>
+</f:section>
+
+<f:section name="tables">
+    <f:if condition="{tables.all}">
+    <div class="table-fit">
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+            <th><f:if condition="{showHeadline}"><f:translate key="tableModes" /></f:if></th>
+            <th class="text-center"><f:translate key="tableModes.select" /></th>
+            <th class="text-center"><f:translate key="tableModes.modify" /></th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{tables.all}" key="table" as="label">
+            <tr>
+                <td class="col-title col-responsive nowrap">
+                    <f:if condition="{label}">{f:translate(key:label)}</f:if> [{table}]
+                </td>
+                <td class="text-center">
+                    <bu:display.tableAccess table="{table}" select="{tables.tables_select}" modify="{tables.tables_modify}">
+                        <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
+                        </f:then>
+                        <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
+                    </bu:display.tableAccess>
+                </td>
+                <td class="text-center">
+                    <bu:display.tableAccess table="{table}" modify="{tables.tables_modify}">
+                        <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
+                        </f:then>
+                        <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
+                    </bu:display.tableAccess>
+                </td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+    </div>
+    </f:if>
+</f:section>
+
+<f:section name="nonExcludeFields">
+    <f:if condition="{nonExcludeFields}">
+        <f:for each="{nonExcludeFields}" key="tableName" as="table">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="{tableName}-{id}-heading">
+                    <a data-toggle="collapse" title="{item.linkTitle}" data-parent="#{id}" href="#{tableName}-{id}" aria-expanded="true" aria-controls="{tableName}-{id}">
+                        <f:if condition="{table.label}">{f:translate(key:table.label)}</f:if> [{tableName}]
+                    </a>
+                </div>
+                <div id="{tableName}-{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{tableName}-{id}-heading">
+                        <div class="panel-body">
+                            <f:for each="{table.fields}" as="label" key="field">
+                                        {f:translate(key:label)}
+                                        [{field}]<br>
+                            </f:for>
+                        </div>
+                </div>
+            </div>
+        </f:for>
+    </f:if>
+</f:section>
+
+<f:section name="tsconfig">
+    <f:if condition="tsconfig">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="{tableName}-{id}-heading">
+                <a data-toggle="collapse" data-parent="#tsconfig-{id}-heading" href="#tsconfig-{id}" aria-expanded="true" aria-controls="tsconfig-{id}">
+                    {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}
+                </a>
+            </div>
+            <div id="tsconfig-{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tsconfig-{id}-heading">
+                <div class="panel-body">
+                    <be:arrayBrowser data="{tsconfig}" />
+                </div>
+            </div>
+        </div>
+    </f:if>
+</f:section>
+
+<f:section name="yesno">
+    <f:if condition="{value}">
+        <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>{f:translate(key:'yes')}</f:then>
+        <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span>{f:translate(key:'no')}</f:else>
+    </f:if>
+</f:section>
+
+</html>

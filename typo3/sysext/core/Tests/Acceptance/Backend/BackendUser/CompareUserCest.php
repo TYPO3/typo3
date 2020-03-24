@@ -46,24 +46,24 @@ class CompareUserCest
         $I->click('#typo3-backend-user-list > tbody > tr:nth-child(2) > td.col-control > div:nth-child(3) > a');
         $I->waitForElementVisible('table#typo3-backend-user-list-compare', 20);
         $I->canSeeNumberOfElements('#typo3-backend-user-list-compare tbody tr', 2);
-        $I->click('body > div > div.module-body.t3js-module-body > form:nth-child(4) > input');
+        $I->click('body > div > div.module-body.t3js-module-body .compare');
         $I->waitForElementVisible('table.table-striped');
 
         // first user can be edited
         $usernameFirstCompare = $I->grabTextFrom('#tx_beuser_compare > thead > tr > th:nth-child(2)');
-        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(2) > a.btn.btn-default.pull-right');
+        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(2) > a[title="edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
 
         // back to compare view
-        $I->click('.module-docheader .btn.t3js-editform-close');
+        $I->click('.module-docheader a[title="Close"]');
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Compare backend users', 'h1');
 
         // second user can be edited
         $usernameFirstCompare = $I->grabTextFrom('#tx_beuser_compare > thead > tr > th:nth-child(3)');
-        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(3) > a.btn.btn-default.pull-right');
+        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(3) > a[title="edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');

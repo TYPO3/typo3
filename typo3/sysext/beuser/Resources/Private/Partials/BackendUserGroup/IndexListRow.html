@@ -10,18 +10,18 @@
             <bu:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
         </a>
     </td>
-    <td class="col-title">
+    <td class="title">
         <be:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="edit">
             <b>{backendUserGroup.title}</b><br />
             {backendUser.realName}
         </be:link.editRecord>
     </td>
-    <td>
+    <td class="nowrap-disabled">
         <f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
             <be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">
                 {subgroup.title}
             </be:link.editRecord>
-            <f:if condition="{subGroupIterator.isLast}"><f:else>, </f:else></f:if>
+            <f:if condition="!{subGroupIterator.isLast}">, </f:if>
         </f:for>
     </td>
     <td class="col-control">
@@ -40,6 +40,21 @@
         </div>
         <div class="btn-group" role="group">
             <a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
+        </div>
+        <div class="btn-group" role="group">
+            <f:if condition="{compareGroupUidList.{backendUserGroup.uid}}">
+                <f:then>
+                    <f:link.action action="removeFromCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
+                        <core:icon identifier="actions-remove" size="small"/>
+                        <f:translate key="compare" />
+                    </f:link.action>
+                </f:then>
+                <f:else>
+                    <f:link.action action="addToCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
+                        <core:icon identifier="actions-add" size="small"/> <f:translate key="compare" />
+                    </f:link.action>
+                </f:else>
+            </f:if>
         </div>
     </td>
 </tr>

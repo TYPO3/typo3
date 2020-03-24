@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Beuser\Service;
 
 /*
@@ -33,9 +34,40 @@ class UserInformationService
      */
     protected $iconFactory;
 
-    public function __construct()
+    public function __construct(IconFactory $iconFactory)
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->iconFactory = $iconFactory;
+    }
+
+    /**
+     * Get all relevant information for a backend usergroup
+     * @param int $groupId
+     * @return array
+     */
+    public function getGroupInformation(int $groupId): array
+    {
+        $usergroupRecord = BackendUtility::getRecord('be_groups', $groupId);
+        if (!$usergroupRecord) {
+            return [];
+        }
+
+        $user = GeneralUtility::makeInstance(BackendUserAuthentication::class);
+        $user->enablecolumns = [
+            'deleted' => true
+        ];
+        // Setup dummy user to allow fetching all group data
+        // @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::fetchGroups
+        $user->user = [
+            'uid' => 3016,
+            'options' => 3,
+            $user->usergroup_column => $groupId
+        ];
+        $user->fetchGroupData();
+
+        $data = $this->convert($user);
+        $data['group'] = $usergroupRecord;
+
+        return $data;
     }
 
     /**
@@ -44,13 +76,30 @@ class UserInformationService
      * @param int $userId
      * @return array
      */
-    public function get(int $userId): array
+    public function getUserInformation(int $userId): array
     {
         $user = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-        $user->enablecolumns = [];
+        $user->enablecolumns = [
+            'deleted' => true
+        ];
         $user->setBeUserByUid($userId);
+        if (!$user->user) {
+            return [];
+        }
         $user->fetchGroupData();
 
+        return $this->convert($user);
+    }
+
+    /**
+     * Convert hard readable user & group information into structured
+     * data which can be rendered later
+     *
+     * @param BackendUserAuthentication $user
+     * @return array
+     */
+    protected function convert(BackendUserAuthentication $user): array
+    {
         // usergroups
         $data = [
             'user' => $user->user ?? [],
@@ -62,7 +111,11 @@ class UserInformationService
         $data['groups']['diff'] = array_diff($data['groups']['inherit'], $data['groups']['direct']);
         foreach ($data['groups'] as $type => $groups) {
             foreach ($groups as $key => $id) {
-                $data['groups'][$type][$key] = BackendUtility::getRecord('be_groups', $id);
+                $record = BackendUtility::getRecord('be_groups', $id);
+                if ($record) {
+                    $data['groups']['all'][$record['uid']]['row'] = $record;
+                    $data['groups']['all'][$record['uid']][$type] = 1;
+                }
             }
         }
 
@@ -70,7 +123,10 @@ class UserInformationService
         $languages = GeneralUtility::trimExplode(',', $user->dataLists['allowed_languages'], true);
         asort($languages);
         foreach ($languages as $language) {
-            $data['languages'][$language] = BackendUtility::getRecord('sys_language', $language);
+            $record = BackendUtility::getRecord('sys_language', $language);
+            if ($record) {
+                $data['languages'][$language] = $record;
+            }
         }
 
         // table permissions
@@ -88,7 +144,7 @@ class UserInformationService
         $dbMounts = GeneralUtility::trimExplode(',', $user->dataLists['webmount_list'], true);
         asort($dbMounts);
         foreach ($dbMounts as $mount) {
-            $record = BackendUtility::getRecord('pages', $mount, '*');
+            $record = BackendUtility::getRecord('pages', $mount);
             if ($record) {
                 $data['dbMounts'][] = $record;
             }
@@ -98,7 +154,10 @@ class UserInformationService
         $fileMounts = GeneralUtility::trimExplode(',', $user->dataLists['filemount_list'], true);
         asort($fileMounts);
         foreach ($fileMounts as $mount) {
-            $data['fileMounts'][] = BackendUtility::getRecord('sys_filemounts', $mount, '*');
+            $record = BackendUtility::getRecord('sys_filemounts', $mount);
+            if ($record) {
+                $data['fileMounts'][] = $record;
+            }
         }
 
         // Modules
@@ -106,20 +165,37 @@ class UserInformationService
         foreach ($modules as $module) {
             $data['modules'][$module] = $GLOBALS['TBE_MODULES']['_configuration'][$module];
         }
+        $data['modules'] = array_filter((array)$data['modules']);
 
         // Categories
-        $categories = GeneralUtility::trimExplode(',', $user->user['category_perms'], true);
+        $categories = $user->getCategoryMountPoints();
         foreach ($categories as $category) {
-            $data['categories'][$category] = BackendUtility::getRecord('sys_category', $category);
+            $record = BackendUtility::getRecord('sys_category', $category);
+            if ($record) {
+                $data['categories'][$category] = $record;
+            }
         }
 
         // workspaces
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
             $data['workspaces'] = [
-              'loaded' => true,
-              'record' => $user->workspaceRec
+                'loaded' => true,
+                'record' => $user->workspaceRec
             ];
         }
+
+        // file & folder permissions
+        if ($filePermissions = $user->dataLists['file_permissions']) {
+            $items = GeneralUtility::trimExplode(',', $filePermissions, true);
+            foreach ($GLOBALS['TCA']['be_groups']['columns']['file_permissions']['config']['items'] as $availableItem) {
+                if (in_array($availableItem[1], $items, true)) {
+                    $data['fileFolderPermissions'][] = $availableItem;
+                }
+            }
+        }
+
+        // tsconfig
+        $data['tsconfig'] = $user->getTSConfig();
 
         // non_exclude_fields
         $fieldListTmp = GeneralUtility::trimExplode(',', $user->dataLists['non_exclude_fields'], true);
@@ -129,8 +205,13 @@ class UserInformationService
             $fieldList[$split[0]]['label'] = $GLOBALS['TCA'][$split[0]]['ctrl']['title'];
             $fieldList[$split[0]]['fields'][$split[1]] = $GLOBALS['TCA'][$split[0]]['columns'][$split[1]]['label'] ?? $split[1];
         }
+        ksort($fieldList);
+        foreach ($fieldList as &$fieldListItem) {
+            ksort($fieldListItem['fields']);
+        }
         $data['non_exclude_fields'] = $fieldList;
 
+        // page types
         $specialItems = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         foreach ($specialItems as $specialItem) {
             $value = $specialItem[1];

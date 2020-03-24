@@ -3,14 +3,14 @@
         <thead>
         <tr>
             <th class="col-icon"></th>
-            <th class="col-title"><f:translate key="backendUserGroup" /></th>
+            <th><f:translate key="backendUserGroup" /></th>
             <th><f:translate key="subGroups" /></th>
             <th class="col-control"></th>
         </tr>
         </thead>
         <tbody>
         <f:for each="{paginatedBackendUserGroups}" as="backendUserGroup">
-            <f:render partial="BackendUserGroup/IndexListRow" section="list_row" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, currentUserUid: currentUserUid}" />
+            <f:render partial="BackendUserGroup/IndexListRow" section="list_row" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, currentUserUid: currentUserUid, compareGroupUidList: compareGroupUidList,}" />
         </f:for>
         <f:comment>
             Footer row: no officially defined style yet

@@ -99,6 +99,7 @@ class ArrayBrowser
             $positionKey .= '.';
         }
         foreach ($array as $key => $value) {
+            $key = (string)$key;
             $depth = $positionKey . $key;
             if (is_object($value) && !$value instanceof \Traversable) {
                 $value = (array)$value;
