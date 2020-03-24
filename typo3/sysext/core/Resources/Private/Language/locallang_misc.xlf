@@ -234,6 +234,15 @@
 			<trans-unit id="newContentElement" resname="newContentElement">
 				<source>New content element</source>
 			</trans-unit>
+			<trans-unit id="newContentElement.filter.label" resname="newContentElement.filter.label">
+				<source>Filter by:</source>
+			</trans-unit>
+			<trans-unit id="newContentElement.filter.placeholder" resname="newContentElement.filter.placeholder">
+				<source>Search for any content type</source>
+			</trans-unit>
+			<trans-unit id="newContentElement.filter.noResults" resname="newContentElement.filter.noResults">
+				<source>Unfortunately no content type matches your query, please try a different one.</source>
+			</trans-unit>
 			<trans-unit id="system_records" resname="system_records">
 				<source>System Records</source>
 			</trans-unit>

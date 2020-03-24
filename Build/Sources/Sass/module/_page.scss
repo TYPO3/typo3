@@ -378,20 +378,21 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     .panel {
         border: 0;
         box-shadow: none;
+
+        .panel-body {
+            display: flex;
+            flex-flow: row wrap;
+            padding-top: 0;
+
+            .media {
+                margin-top: 15px;
+            }
+        }
     }
 }
 
 @media (min-width: $screen-md-min) {
     .media-new-content-element-wizard {
-        float: left;
         width: 50%;
-
-        &:nth-child(2) {
-            margin-top: 0;
-        }
-
-        &:nth-child(odd) {
-            clear: both;
-        }
     }
 }
