@@ -32,10 +32,10 @@ Example TypoScript:
 
    jsonview = PAGE
    jsonview.typeNum = 26
+   jsonview.config.disableAllHeaderCode = 1
+   jsonview.config.additionalHeaders.10.header = Content-Type: application/json
    jsonview.10 = USER
    jsonview.10.userFunc = MyVendor\MyExtension\Controller\JsonPageController->renderAction
-   jsonview.10.config.disableAllHeaderCode = 1
-   jsonview.10.config.additionalHeaders.10.header = Content-Type: application/json
 
 Now configure the Route Enhancer in your site's :file:`config.yaml` file like this:
 
