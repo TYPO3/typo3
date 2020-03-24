@@ -186,7 +186,7 @@ abstract class AbstractItemProvider
                     if (!empty($helpTextArray['description'])) {
                         $helpText['description'] = $helpTextArray['description'];
                     }
-                    $items[] = [$label, $currentTable, $icon, $helpText];
+                    $items[] = [$label, $currentTable, $icon, null, $helpText];
                 }
                 break;
             case $special === 'pagetypes':
@@ -245,6 +245,7 @@ abstract class AbstractItemProvider
                         rtrim($excludeArray['origin'] === 'flexForm' ? $excludeArray['fieldLabel'] : $languageService->sL($GLOBALS['TCA'][$excludeArray['table']]['columns'][$excludeArray['fieldName']]['label']), ':') . ' (' . $excludeArray['fieldName'] . ')',
                         $excludeArray['table'] . ':' . $excludeArray['fullField'],
                         'empty-empty',
+                        null,
                         $helpText
                     ];
                 }
@@ -344,6 +345,7 @@ abstract class AbstractItemProvider
                                     $languageService->sL($itemCfg[0]),
                                     $coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
                                     $icon,
+                                    null,
                                     $helpText
                                 ];
                             }
@@ -384,7 +386,7 @@ abstract class AbstractItemProvider
                         $label .= $languageService->sL($moduleLabels['title']);
 
                         // Item configuration
-                        $items[] = [$label, $theMod, $icon, $helpText];
+                        $items[] = [$label, $theMod, $icon, null, $helpText];
                     }
                 }
                 break;
@@ -1327,18 +1329,20 @@ abstract class AbstractItemProvider
             }
             $value = strlen((string)$item[1]) > 0 ? $item[1] : '';
             $icon = !empty($item[2]) ? $item[2] : null;
+            $groupId = isset($item[3]) ? $item[3] : null;
             $helpText = null;
-            if (!empty($item[3])) {
-                if (\is_string($item[3])) {
-                    $helpText = $languageService->sL($item[3]);
+            if (!empty($item[4])) {
+                if (\is_string($item[4])) {
+                    $helpText = $languageService->sL($item[4]);
                 } else {
-                    $helpText = $item[3];
+                    $helpText = $item[4];
                 }
             }
             $itemArray[$key] = [
                 $label,
                 $value,
                 $icon,
+                $groupId,
                 $helpText
             ];
         }

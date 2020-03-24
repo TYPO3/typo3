@@ -480,6 +480,66 @@ class ExtensionManagementUtility
     }
 
     /**
+     * Adds an item group to a TCA select field, allows to add a group so addTcaSelectItem() can add a groupId
+     * with a label and its position within other groups.
+     *
+     * @param string $table the table name in TCA - e.g. tt_content
+     * @param string $field the field name in TCA - e.g. CType
+     * @param string $groupId the unique identifier for a group, where all items from addTcaSelectItem() with a group ID are connected
+     * @param string $groupLabel the label e.g. LLL:my_extension/Resources/Private/Language/locallang_tca.xlf:group.mygroupId
+     * @param string|null $position e.g. "before:special", "after:default" (where the part after the colon is an existing groupId) or "top" or "bottom"
+     */
+    public static function addTcaSelectItemGroup(string $table, string $field, string $groupId, string $groupLabel, ?string $position = 'bottom'): void
+    {
+        if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? null)) {
+            throw new \RuntimeException('Given select field item list was not found.', 1586728563);
+        }
+        $itemGroups = $GLOBALS['TCA'][$table]['columns'][$field]['config']['itemGroups'] ?? [];
+        // Group has been defined already, nothing to do
+        if (isset($itemGroups[$groupId])) {
+            return;
+        }
+        $position = (string)$position;
+        $positionGroupId = '';
+        if (strpos($position, ':') !== false) {
+            [$position, $positionGroupId] = explode(':', $position, 2);
+        }
+        // Referenced group was not not found, just append to the bottom
+        if (!isset($itemGroups[$positionGroupId])) {
+            $position = 'bottom';
+        }
+        switch ($position) {
+            case 'after':
+                $newItemGroups = [];
+                foreach ($itemGroups as $existingGroupId => $existingGroupLabel) {
+                    $newItemGroups[$existingGroupId] = $existingGroupLabel;
+                    if ($positionGroupId === $existingGroupId) {
+                        $newItemGroups[$groupId] = $groupLabel;
+                    }
+                }
+                $itemGroups = $newItemGroups;
+                break;
+            case 'before':
+                $newItemGroups = [];
+                foreach ($itemGroups as $existingGroupId => $existingGroupLabel) {
+                    if ($positionGroupId === $existingGroupId) {
+                        $newItemGroups[$groupId] = $groupLabel;
+                    }
+                    $newItemGroups[$existingGroupId] = $existingGroupLabel;
+                }
+                $itemGroups = $newItemGroups;
+                break;
+            case 'top':
+                $itemGroups = array_merge([$groupId => $groupLabel], $itemGroups);
+                break;
+            case 'bottom':
+            default:
+                $itemGroups[$groupId] = $groupLabel;
+        }
+        $GLOBALS['TCA'][$table]['columns'][$field]['config']['itemGroups'] = $itemGroups;
+    }
+
+    /**
      * Gets the TCA configuration for a field handling (FAL) files.
      *
      * @param string $fieldName Name of the field to be used
@@ -1177,7 +1237,7 @@ class ExtensionManagementUtility
      *
      * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
      *
-     * @param array $itemArray Numerical array: [0] => Plugin label, [1] => Plugin identifier / plugin key, ideally prefixed with a extension-specific name (e.g. "events2_list"), [2] => Path to plugin icon relative to TYPO3_mainDir
+     * @param array $itemArray Numerical array: [0] => Plugin label, [1] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2] => Path to plugin icon, [3] => an optional "group" ID, falls back to "default"
      * @param string $type Type (eg. "list_type") - basically a field from "tt_content" table
      * @param string $extensionKey The extension key
      * @throws \RuntimeException
@@ -1197,6 +1257,9 @@ class ExtensionManagementUtility
         if (!isset($itemArray[2]) || !$itemArray[2]) {
             // @todo do we really set $itemArray[2], even if we cannot find an icon? (as that means it's set to 'EXT:foobar/')
             $itemArray[2] = 'EXT:' . $extensionKey . '/' . static::getExtensionIcon(static::$packageManager->getPackage($extensionKey)->getPackagePath());
+        }
+        if (!isset($itemArray[3])) {
+            $itemArray[3] = 'default';
         }
         if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
             foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {

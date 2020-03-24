@@ -150,9 +150,10 @@ tt_content.' . $pluginSignature . ' {
      * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
      * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
      * @param string $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
+     * @param string $group add this plugin to a plugin group, should be something like "news" or the like, "default" as regular
      * @throws \InvalidArgumentException
      */
-    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null)
+    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null, $group = 'default')
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
@@ -176,8 +177,12 @@ tt_content.' . $pluginSignature . ' {
         // pluginType is usually defined by configurePlugin() in the global array. Use this or fall back to default "list_type".
         $pluginType = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] ?? 'list_type';
 
+        $itemArray = [$pluginTitle, $pluginSignature, $pluginIcon];
+        if ($group) {
+            $itemArray[3] = $group;
+        }
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-            [$pluginTitle, $pluginSignature, $pluginIcon],
+            $itemArray,
             $pluginType,
             $extensionKey
         );

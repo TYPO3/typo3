@@ -78,56 +78,75 @@ return [
                 'items' => [
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.page',
-                        '--div--'
+                        '--div--',
+                        null,
+                        'default'
                     ],
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.0',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
-                        'apps-pagetree-page-default'
+                        'apps-pagetree-page-default',
+                        'default'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.4',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_BE_USER_SECTION,
-                        'apps-pagetree-page-backend-users'
+                        'apps-pagetree-page-backend-users',
+                        'default'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.link',
-                        '--div--'
+                        '--div--',
+                        null,
+                        'link'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.2',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT,
-                        'apps-pagetree-page-shortcut'
+                        'apps-pagetree-page-shortcut',
+                        'link'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.5',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_MOUNTPOINT,
-                        'apps-pagetree-page-mountpoint'
+                        'apps-pagetree-page-mountpoint',
+                        'link'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.8',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_LINK,
-                        'apps-pagetree-page-shortcut-external'
+                        'apps-pagetree-page-shortcut-external',
+                        'link'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.special',
-                        '--div--'
+                        '--div--',
+                        null,
+                        'special'
                     ],
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.folder',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SYSFOLDER,
-                        'apps-pagetree-folder-default'
+                        'apps-pagetree-folder-default',
+                        'special'
                     ],
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.2',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_RECYCLER,
-                        'apps-filetree-folder-recycler'
+                        'apps-filetree-folder-recycler',
+                        'special'
                     ],
                     [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.7',
                         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SPACER,
-                        'apps-pagetree-spacer'
+                        'apps-pagetree-spacer',
+                        'special'
                     ]
+                ],
+                'itemGroups' => [
+                    'default' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.page',
+                    'link' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.link',
+                    'special' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.special',
                 ],
                 'default' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
             ]

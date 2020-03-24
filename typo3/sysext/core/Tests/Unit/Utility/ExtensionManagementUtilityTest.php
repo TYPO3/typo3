@@ -1835,7 +1835,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             [
                 'label',
                 $extKey,
-                'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png'
+                'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png',
+                'default'
             ]
         ];
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -1852,5 +1853,120 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1404068038);
 
         ExtensionManagementUtility::addPlugin('test');
+    }
+
+    public function addTcaSelectItemGroupAddsGroupDataProvider()
+    {
+        return [
+            'add the first group' => [
+                'my_group',
+                'my_group_label',
+                null,
+                null,
+                [
+                    'my_group' => 'my_group_label'
+                ]
+            ],
+            'add a new group at the bottom' => [
+                'my_group',
+                'my_group_label',
+                'bottom',
+                [
+                    'default' => 'default_label'
+                ],
+                [
+                    'default' => 'default_label',
+                    'my_group' => 'my_group_label'
+                ]
+            ],
+            'add a new group at the top' => [
+                'my_group',
+                'my_group_label',
+                'top',
+                [
+                    'default' => 'default_label'
+                ],
+                [
+                    'my_group' => 'my_group_label',
+                    'default' => 'default_label'
+                ]
+            ],
+            'add a new group after an existing group' => [
+                'my_group',
+                'my_group_label',
+                'after:default',
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label'
+                ],
+                [
+                    'default' => 'default_label',
+                    'my_group' => 'my_group_label',
+                    'special' => 'special_label'
+                ]
+            ],
+            'add a new group before an existing group' => [
+                'my_group',
+                'my_group_label',
+                'before:default',
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label'
+                ],
+                [
+                    'my_group' => 'my_group_label',
+                    'default' => 'default_label',
+                    'special' => 'special_label'
+                ]
+            ],
+            'add a new group after a non-existing group moved to bottom' => [
+                'my_group',
+                'my_group_label',
+                'after:default2',
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label'
+                ],
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label',
+                    'my_group' => 'my_group_label',
+                ]
+            ],
+            'add a new group which already exists does nothing' => [
+                'my_group',
+                'my_group_label',
+                'does-not-matter',
+                [
+                    'default' => 'default_label',
+                    'my_group' => 'existing_label',
+                    'special' => 'special_label'
+                ],
+                [
+                    'default' => 'default_label',
+                    'my_group' => 'existing_label',
+                    'special' => 'special_label'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @param string $groupId
+     * @param string $groupLabel
+     * @param string $position
+     * @param array|null $existingGroups
+     * @param array $expectedGroups
+     * @dataProvider addTcaSelectItemGroupAddsGroupDataProvider
+     */
+    public function addTcaSelectItemGroupAddsGroup(string $groupId, string $groupLabel, ?string $position, ?array $existingGroups, array $expectedGroups)
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config'] = [];
+        if (is_array($existingGroups)) {
+            $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'] = $existingGroups;
+        }
+        ExtensionManagementUtility::addTcaSelectItemGroup('tt_content', 'CType', $groupId, $groupLabel, $position);
+        self::assertEquals($expectedGroups, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']);
     }
 }

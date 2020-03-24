@@ -37,6 +37,7 @@ call_user_func(function () {
         'Form',
         'Formframework',
         'Form',
-        'content-form'
+        'content-form',
+        'forms'
     );
 });

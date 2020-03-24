@@ -274,10 +274,88 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
         $expected['processedTca']['columns']['aField']['config']['items'][0][2] = null;
         $expected['processedTca']['columns']['aField']['config']['items'][0][3] = null;
+        $expected['processedTca']['columns']['aField']['config']['items'][0][4] = null;
 
         $expected['databaseRow']['aField'] = ['aValue'];
 
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataAddsDividersIfItemGroupsAreDefined()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                [
+                                    'aLabel',
+                                    'aValue',
+                                    'an-icon-reference',
+                                    'non-existing-group',
+                                    null,
+                                ],
+                                [
+                                    'anotherLabel',
+                                    'anotherValue',
+                                    'an-icon-reference',
+                                    'example-group',
+                                    null,
+                                ],
+                            ],
+                            'itemGroups' => [
+                                'example-group' => 'My Example Group'
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = ['aValue'];
+        $expected['processedTca']['columns']['aField']['config']['items'] = [
+            [
+                'My Example Group',
+                '--div--',
+                null,
+                'example-group',
+                null,
+            ],
+            [
+                'anotherLabel',
+                'anotherValue',
+                'an-icon-reference',
+                'example-group',
+                null,
+            ],            [
+                'non-existing-group',
+                '--div--',
+                null,
+                'non-existing-group',
+                null,
+            ],
+            [
+                'aLabel',
+                'aValue',
+                'an-icon-reference',
+                'non-existing-group',
+                null,
+            ],
+        ];
+
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -302,6 +380,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'aValue',
                                     2 => 'an-icon-reference',
                                     3 => null,
+                                    4 => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -396,7 +475,8 @@ class TcaSelectItemsTest extends UnitTestCase
                 0 => 'aTitle',
                 1 => 'aTable',
                 2 => null,
-                3 => [
+                3 => null,
+                4 => [
                     'description' => 'aDescription',
                 ],
             ]
@@ -461,6 +541,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 'aValue',
                 2 => null,
                 3 => null,
+                4 => null,
             ]
         ];
 
@@ -498,12 +579,14 @@ class TcaSelectItemsTest extends UnitTestCase
                         1 => '--div--',
                         2 => null,
                         3 => null,
+                        4 => null,
                     ],
                     1 => [
                         0 => 'barColumnTitle (bar)',
                         1 => 'fooTable:bar',
                         2 => 'empty-empty',
                         3 => null,
+                        4 => null,
                     ],
                 ],
             ],
@@ -533,12 +616,14 @@ class TcaSelectItemsTest extends UnitTestCase
                         1 => '--div--',
                         2 => null,
                         3 => null,
+                        4 => null,
                     ],
                     1 => [
                         0 => 'barColumnTitle (bar)',
                         1 => 'fooTable:bar',
                         2 => 'empty-empty',
                         3 => null,
+                        4 => null,
                     ],
                 ],
             ],
@@ -678,12 +763,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '--div--',
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => 'flexInputLabel (input1)',
                 1 => 'fooTable:aFlexField;dummy;sDEF;input1',
                 2 => 'empty-empty',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -749,12 +836,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '--div--',
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => '[allowMe] anItemTitle',
                 1 => 'fooTable:aField:anItemValue:ALLOW',
                 2 => 'status-status-permission-granted',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -820,12 +909,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '--div--',
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => '[denyMe] anItemTitle',
                 1 => 'fooTable:aField:anItemValue:DENY',
                 2 => 'status-status-permission-denied',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -906,18 +997,21 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '--div--',
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => '[allowMe] aItemTitle',
                 1 => 'fooTable:aField:aItemValue:ALLOW',
                 2 => 'status-status-permission-granted',
                 3 => null,
+                4 => null,
             ],
             2 => [
                 0 => '[allowMe] cItemTitle',
                 1 => 'fooTable:aField:cItemValue:ALLOW',
                 2 => 'status-status-permission-granted',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -998,18 +1092,21 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '--div--',
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => '[denyMe] aItemTitle',
                 1 => 'fooTable:aField:aItemValue:DENY',
                 2 => 'status-status-permission-denied',
                 3 => null,
+                4 => null,
             ],
             2 => [
                 0 => '[denyMe] cItemTitle',
                 1 => 'fooTable:aField:cItemValue:DENY',
                 2 => 'status-status-permission-denied',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -1062,6 +1159,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 13,
                 2 => 'flags-aFlag.gif',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -1113,18 +1211,21 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '--div--',
                 null,
                 null,
+                null,
             ],
             1 => [
                 0 => 'anItemTitle',
                 1 => 'aKey:anItemKey',
                 2 => 'empty-empty',
                 3 => null,
+                4 => null,
             ],
             2 => [
                 0 => 'anotherTitle',
                 1 => 'aKey:anotherKey',
                 2 => 'empty-empty',
-                3 => [ 'description' => 'aDescription' ],
+                3 => null,
+                4 => [ 'description' => 'aDescription' ],
             ],
         ];
 
@@ -1179,7 +1280,8 @@ class TcaSelectItemsTest extends UnitTestCase
                 0 => 'aModuleLabel',
                 1 => 'aModule',
                 2 => 'empty-empty',
-                3 => [
+                3 => null,
+                4 => [
                     'title' => 'aModuleTabLabel',
                     'description' => 'aModuleTabDescription',
                 ],
@@ -1230,12 +1332,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 'anImage.gif',
                 2 => Environment::getVarPath() . '/' . $directory . 'anImage.gif',
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => 'subdir/anotherImage.gif',
                 1 => 'subdir/anotherImage.gif',
                 2 => Environment::getVarPath() . '/' . $directory . 'subdir/anotherImage.gif',
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -1292,6 +1396,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'keep',
                                     null,
                                     null,
+                                    null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1317,6 +1422,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][1] = [
             0 => 'addMe',
             1 => '1',
+            null,
             null,
             null,
         ];
@@ -1346,6 +1452,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'keep',
                                     null,
                                     null,
+                                    null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1371,6 +1478,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][1] = [
             0 => 'addMe',
             1 => 'keep',
+            null,
             null,
             null,
         ];
@@ -1818,6 +1926,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'itemValue',
                                     2 => null,
                                     3 => null,
+                                    4 => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1964,12 +2073,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 1,
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => 'aPrefix[LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title]',
                 1 => 2,
                 2 => null,
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -2068,6 +2179,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 1,
                 2 => null,
                 3 => null,
+                4 => null,
             ]
         ];
 
@@ -2155,6 +2267,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 1,
                 2 => null,
                 3 => null,
+                4 => null,
             ],
         ];
         $expected['databaseRow']['aField'] = [];
@@ -2182,6 +2295,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 0 => [
                                     0 => 'keepMe',
                                     1 => 'keep',
+                                    null,
                                     null,
                                     null,
                                 ],
@@ -2327,16 +2441,19 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => '1',
                 null,
                 null,
+                null,
             ],
             1 => [
                 0 => 'addItem #1',
                 1 => '1',
                 null,
                 null,
+                null,
             ],
             2 => [
                 0 => 'addItem #12',
                 1 => '12',
+                null,
                 null,
                 null,
             ],
@@ -2367,6 +2484,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'keep',
                                     null,
                                     null,
+                                    null,
                                 ],
                                 1 => [
                                     0 => 'removeMe',
@@ -2375,6 +2493,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 2 => [
                                     0 => 'keep me',
                                     1 => 0,
+                                    null,
                                     null,
                                     null,
                                 ],
@@ -2424,10 +2543,12 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'keep',
                                     null,
                                     null,
+                                    null,
                                 ],
                                 1 => [
                                     0 => 'keepMe',
                                     1 => 'keepMe2',
+                                    null,
                                     null,
                                     null,
                                 ],
@@ -2478,6 +2599,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 0 => [
                                     0 => 'keepMe',
                                     1 => 'keep',
+                                    null,
                                     null,
                                     null,
                                 ],
@@ -2537,6 +2659,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'keep',
                                     null,
                                     null,
+                                    null,
                                 ],
                                 1 => [
                                     0 => 'removeMe',
@@ -2565,8 +2688,8 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
-            [ '[ INVALID VALUE "aValue" ]', 'aValue', null, null ],
-            [ 'keepMe', 'keep', null, null ],
+            [ '[ INVALID VALUE "aValue" ]', 'aValue', null, 'none', null ],
+            [ 'keepMe', 'keep', null, null, null ],
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -2593,6 +2716,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 0 => [
                                     0 => 'keepMe',
                                     1 => 'keep',
+                                    null,
                                     null,
                                     null,
                                 ],
@@ -2643,6 +2767,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'keep',
                                     null,
                                     null,
+                                    null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -2683,6 +2808,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 0 => [
                                     0 => 'keepMe',
                                     1 => 'keep',
+                                    null,
                                     null,
                                     null,
                                 ],
@@ -2737,6 +2863,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                         1 => 'aValue',
                                         2 => null,
                                         3 => null,
+                                        4 => null,
                                     ],
                                 ];
                             },
@@ -2757,6 +2884,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     1 => 'aValue',
                     2 => null,
                     3 => null,
+                    4 => null,
                 ],
             ],
             'maxitems' => 99999,
@@ -2838,12 +2966,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 1,
                 2 => null,
                 3 => null,
+                4 => null,
             ],
             1 => [
                 0 => 'aLabel_2',
                 1 => 2,
                 2 => null,
                 3 => null,
+                4 => null,
             ],
         ];
 
@@ -2887,6 +3017,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                             $item[0],   // label
                                             $item[1],   // uid
                                             null,       // icon
+                                            null,       // groupID
                                             null        // helpText
                                         ];
                                     }
@@ -2952,6 +3083,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     1 => 2,
                     2 => null,
                     3 => null,
+                    4 => null,
                 ],
             ],
             'maxitems' => 99999
@@ -2996,6 +3128,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                             $item[0],   // label
                                             $item[1],   // uid
                                             null,       // icon
+                                            null,       // groupId
                                             null        // helpText
                                         ];
                                     }
@@ -3069,6 +3202,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     1 => 1,
                     2 => null,
                     3 => null,
+                    4 => null,
                 ]
             ],
             'maxitems' => 99999
@@ -3113,6 +3247,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                             $item[0],   // label
                                             $item[1],   // uid
                                             null,       // icon
+                                            null,       // groupID
                                             null        // helpText
                                         ];
                                     }
@@ -3188,12 +3323,14 @@ class TcaSelectItemsTest extends UnitTestCase
                     1 => 2,
                     2 => null,
                     3 => null,
+                    4 => null,
                 ],
                 1 => [
                     0 => 'Label of the added item',
                     1 => 12,
                     2 => null,
                     3 => null,
+                    4 => null,
                 ],
             ],
             'maxitems' => 99999
@@ -3356,6 +3493,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'aValue',
                                     null,
                                     null,
+                                    null
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -3549,7 +3687,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'foreign_table' => 'foreignTable',
                             'maxitems' => 999,
                             'items' => [
-                                ['foo', 'foo', null, null],
+                                ['foo', 'foo', null, null, null],
                             ],
                         ],
                     ],
@@ -3581,8 +3719,8 @@ class TcaSelectItemsTest extends UnitTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
-                                ['foo', 'foo', null, null],
-                                ['bar', 'bar', null, null],
+                                ['foo', 'foo', null, null, null],
+                                ['bar', 'bar', null, null, null],
                             ],
                         ],
                     ],
@@ -3647,9 +3785,9 @@ class TcaSelectItemsTest extends UnitTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
-                                ['a', '', null, null],
-                                ['b', 'b', null, null],
-                                ['c', 'c', null, null],
+                                ['a', '', null, null, null],
+                                ['b', 'b', null, null, null],
+                                ['c', 'c', null, null, null],
                             ],
                         ],
                     ],
@@ -3689,7 +3827,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
-                                ['foo', 'foo', null, null],
+                                ['foo', 'foo', null, null, null],
                             ],
                         ],
                     ],
@@ -3731,7 +3869,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 99999,
                             'items' => [
-                                ['foo', 'foo', null, null],
+                                ['foo', 'foo', null, null, null],
                             ],
                         ],
                     ],
@@ -3742,10 +3880,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo'];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
-            ['[ INVALID VALUE "bar" ]', 'bar', null, null],
-            ['[ INVALID VALUE "2" ]', '2', null, null],
-            ['[ INVALID VALUE "1" ]', '1', null, null],
-            ['foo', 'foo', null, null],
+            ['[ INVALID VALUE "bar" ]', 'bar', null, 'none', null],
+            ['[ INVALID VALUE "2" ]', '2', null, 'none', null],
+            ['[ INVALID VALUE "1" ]', '1', null, 'none', null],
+            ['foo', 'foo', null, null, null],
         ];
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
@@ -3769,10 +3907,10 @@ class TcaSelectItemsTest extends UnitTestCase
                             'multiple' => true,
                             'maxitems' => 999,
                             'items' => [
-                                ['1', '1', null, null],
-                                ['foo', 'foo', null, null],
-                                ['bar', 'bar', null, null],
-                                ['2', '2', null, null],
+                                ['1', '1', null, null, null],
+                                ['foo', 'foo', null, null, null],
+                                ['bar', 'bar', null, null, null],
+                                ['2', '2', null, null, null],
                             ],
                         ],
                     ],
@@ -3811,10 +3949,10 @@ class TcaSelectItemsTest extends UnitTestCase
                             'multiple' => false,
                             'maxitems' => 999,
                             'items' => [
-                                ['1', '1', null, null],
-                                ['foo', 'foo', null, null],
-                                ['bar', 'bar', null, null],
-                                ['2', '2', null, null],
+                                ['1', '1', null, null, null],
+                                ['foo', 'foo', null, null, null],
+                                ['bar', 'bar', null, null, null],
+                                ['2', '2', null, null, null],
                             ],
                         ],
                     ],
