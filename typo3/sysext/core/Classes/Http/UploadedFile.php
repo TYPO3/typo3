@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Http;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class UploadedFile which represents one uploaded file, usually coming
@@ -186,7 +185,7 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if (!empty($this->file) && is_uploaded_file($this->file)) {
-            if (GeneralUtility::upload_copy_move($this->file, $targetPath . PathUtility::basename($this->file)) === false) {
+            if (GeneralUtility::upload_copy_move($this->file, $targetPath) === false) {
                 throw new \RuntimeException('An error occurred while moving uploaded file', 1436717310);
             }
         } elseif ($this->stream) {
