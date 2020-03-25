@@ -115,19 +115,16 @@ class T3editorElement extends AbstractFormElement
 
         $parameterArray = $this->data['parameterArray'];
 
-        $rows = MathUtility::forceIntegerInRange($parameterArray['fieldConf']['config']['rows'] ?: 10, 1, 40);
-
         $attributes = [];
-        $attributes['rows'] = $rows;
+        if (isset($parameterArray['fieldConf']['config']['rows']) && MathUtility::canBeInterpretedAsInteger($parameterArray['fieldConf']['config']['rows'])) {
+            $attributes['rows'] = $parameterArray['fieldConf']['config']['rows'];
+        }
+
         $attributes['wrap'] = 'off';
         $attributes['style'] = 'width:100%;';
         $attributes['onchange'] = GeneralUtility::quoteJSvalue($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
 
-        $attributeString = '';
-        foreach ($attributes as $param => $value) {
-            $attributeString .= $param . '="' . htmlspecialchars((string)$value) . '" ';
-        }
-
+        $attributeString = GeneralUtility::implodeAttributes($attributes, true);
         $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],
             'text-monospace enable-tab',
