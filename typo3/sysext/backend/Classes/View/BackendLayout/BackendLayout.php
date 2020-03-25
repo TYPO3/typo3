@@ -19,10 +19,9 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\Grid;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridRow;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,9 +55,11 @@ class BackendLayout
     protected $configuration;
 
     /**
+     * The structured data of the configuration represented as array.
+     *
      * @var array
      */
-    protected $configurationArray;
+    protected $structure = [];
 
     /**
      * @var array
@@ -114,7 +115,8 @@ class BackendLayout
         $this->setIdentifier($identifier);
         $this->setTitle($title);
         if (is_array($configuration)) {
-            $this->setConfigurationArray($configuration);
+            $this->structure = $configuration;
+            $this->configuration = $configuration['config'] ?? '';
         } else {
             $this->setConfiguration($configuration);
         }
@@ -201,61 +203,24 @@ class BackendLayout
     }
 
     /**
-     * @param array $configurationArray
-     */
-    public function setConfigurationArray(array $configurationArray): void
-    {
-        if (!isset($configurationArray['__colPosList'], $configurationArray['__items'])) {
-            // Backend layout configuration is unprocessed, process it now to extract counts and column item lists
-            $colPosList = [];
-            $items = [];
-            $rowIndex = 0;
-            foreach ($configurationArray['backend_layout.']['rows.'] as $row) {
-                $index = 0;
-                $colCount = 0;
-                $columns = [];
-                foreach ($row['columns.'] as $column) {
-                    if (!isset($column['colPos'])) {
-                        continue;
-                    }
-                    $colPos = $column['colPos'];
-                    $colPos = (int)$colPos;
-                    $colPosList[$colPos] = $colPos;
-                    $key = ($index + 1) . '.';
-                    $columns[$key] = $column;
-                    $items[$colPos] = [
-                        (string)$this->getLanguageService()->sL($column['name']),
-                        $colPos,
-                        $column['icon']
-                    ];
-                    $colCount += $column['colspan'] ? $column['colspan'] : 1;
-                    ++ $index;
-                }
-                ++ $rowIndex;
-            }
-
-            $configurationArray['__config'] = $configurationArray;
-            $configurationArray['__colPosList'] = $colPosList;
-            $configurationArray['__items'] = $items;
-        }
-        $this->configurationArray = $configurationArray;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfigurationArray(): array
-    {
-        return $this->configurationArray;
-    }
-
-    /**
      * @param string $configuration
      */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
-        $this->parseConfigurationStringAndSetConfigurationArray($configuration);
+        GeneralUtility::makeInstance(BackendLayoutView::class)->parseStructure($this);
+    }
+
+    /**
+     * Returns the columns registered for this layout as $key => $value pair where the key is the colPos
+     * and the value is the title.
+     * "1" => "Left" etc.
+     * Please note that the title can contain LLL references ready for translation.
+     * @return array
+     */
+    public function getUsedColumns(): array
+    {
+        return $this->structure['usedColumns'] ?? [];
     }
 
     /**
@@ -272,6 +237,16 @@ class BackendLayout
     public function setData(array $data)
     {
         $this->data = $data;
+    }
+
+    public function setStructure(array $structure)
+    {
+        $this->structure = $structure;
+    }
+
+    public function getStructure(): array
+    {
+        return $this->structure;
     }
 
     /**
@@ -295,7 +270,7 @@ class BackendLayout
     public function getGrid(): Grid
     {
         $grid = GeneralUtility::makeInstance(Grid::class, $this);
-        foreach ($this->getConfigurationArray()['__config']['backend_layout.']['rows.'] as $row) {
+        foreach ($this->structure['__config']['backend_layout.']['rows.'] ?? [] as $row) {
             $rowObject = GeneralUtility::makeInstance(GridRow::class, $this);
             foreach ($row['columns.'] as $column) {
                 $columnObject = GeneralUtility::makeInstance(GridColumn::class, $this, $column);
@@ -313,7 +288,7 @@ class BackendLayout
 
     public function getColumnPositionNumbers(): array
     {
-        return $this->getConfigurationArray()['__colPosList'];
+        return $this->structure['__colPosList'];
     }
 
     public function getContentFetcher(): ContentFetcher
@@ -349,22 +324,9 @@ class BackendLayout
         return $translationData['mode'] ?? '';
     }
 
-    protected function parseConfigurationStringAndSetConfigurationArray(string $configuration): void
-    {
-        $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $conditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
-        $parser->parse(TypoScriptParser::checkIncludeLines($configuration), $conditionMatcher);
-        $this->setConfigurationArray($parser->setup);
-    }
-
     public function __clone()
     {
         $this->drawingConfiguration = clone $this->drawingConfiguration;
         $this->contentFetcher->setBackendLayout($this);
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

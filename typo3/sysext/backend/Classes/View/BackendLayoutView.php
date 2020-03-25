@@ -14,8 +14,15 @@ namespace TYPO3\CMS\Backend\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
+use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * @var BackendLayout\DataProviderCollection
+     * @var DataProviderCollection
      */
     protected $dataProviderCollection;
 
@@ -53,15 +60,8 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function initializeDataProviderCollection()
     {
-        /** @var BackendLayout\DataProviderCollection $dataProviderCollection */
-        $dataProviderCollection = GeneralUtility::makeInstance(
-            BackendLayout\DataProviderCollection::class
-        );
-
-        $dataProviderCollection->add(
-            'default',
-            \TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class
-        );
+        $dataProviderCollection = GeneralUtility::makeInstance(DataProviderCollection::class);
+        $dataProviderCollection->add('default', DefaultDataProvider::class);
 
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {
             $dataProviders = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'];
@@ -74,15 +74,15 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @param BackendLayout\DataProviderCollection $dataProviderCollection
+     * @param DataProviderCollection $dataProviderCollection
      */
-    public function setDataProviderCollection(BackendLayout\DataProviderCollection $dataProviderCollection)
+    public function setDataProviderCollection(DataProviderCollection $dataProviderCollection)
     {
         $this->dataProviderCollection = $dataProviderCollection;
     }
 
     /**
-     * @return BackendLayout\DataProviderCollection
+     * @return DataProviderCollection
      */
     public function getDataProviderCollection()
     {
@@ -327,32 +327,89 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Gets the selected backend layout
+     * Gets the selected backend layout structure as an array
      *
      * @param int $pageId
      * @return array|null $backendLayout
      */
-    public function getSelectedBackendLayout($pageId)
+    public function getSelectedBackendLayout($pageId): ?array
+    {
+        $layout = $this->getBackendLayoutForPage((int)$pageId);
+        if ($layout instanceof BackendLayout) {
+            return $layout->getStructure();
+        }
+        return null;
+    }
+
+    /**
+     * Get the BackendLayout object and parse the structure based on the UserTSconfig
+     * @param int $pageId
+     * @return BackendLayout
+     */
+    public function getBackendLayoutForPage(int $pageId): ?BackendLayout
     {
         if (isset($this->selectedBackendLayout[$pageId])) {
             return $this->selectedBackendLayout[$pageId];
         }
-        $backendLayoutData = null;
-
         $selectedCombinedIdentifier = $this->getSelectedCombinedIdentifier($pageId);
         // If no backend layout is selected, use default
         if (empty($selectedCombinedIdentifier)) {
             $selectedCombinedIdentifier = 'default';
         }
-
         $backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
         // If backend layout is not found available anymore, use default
         if ($backendLayout === null) {
-            $selectedCombinedIdentifier = 'default';
-            $backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
+            $backendLayout = $this->getDataProviderCollection()->getBackendLayout('default', $pageId);
         }
 
-        return $backendLayout->getConfigurationArray();
+        $structure = null;
+        if ($backendLayout instanceof BackendLayout) {
+            $structure = $this->parseStructure($backendLayout);
+            // Parse the configuration and inject it back in the backend layout object
+            $backendLayout->setStructure($structure);
+            $this->selectedBackendLayout[$pageId] = $backendLayout;
+        }
+        return $backendLayout;
+    }
+
+    /**
+     * @param BackendLayout $backendLayout
+     * @return array
+     * @internal
+     */
+    public function parseStructure(BackendLayout $backendLayout): array
+    {
+        $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
+        $conditionMatcher = GeneralUtility::makeInstance(ConditionMatcher::class);
+        $parser->parse(TypoScriptParser::checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
+
+        $backendLayoutData = [];
+        $backendLayoutData['config'] = $backendLayout->getConfiguration();
+        $backendLayoutData['__config'] = $parser->setup;
+        $backendLayoutData['__items'] = [];
+        $backendLayoutData['__colPosList'] = [];
+        $backendLayoutData['usedColumns'] = [];
+
+        // create items and colPosList
+        if (!empty($backendLayoutData['__config']['backend_layout.']['rows.'])) {
+            foreach ($backendLayoutData['__config']['backend_layout.']['rows.'] as $row) {
+                if (!empty($row['columns.'])) {
+                    foreach ($row['columns.'] as $column) {
+                        if (!isset($column['colPos'])) {
+                            continue;
+                        }
+                        $backendLayoutData['__items'][] = [
+                            $this->getColumnName($column),
+                            $column['colPos'],
+                            null
+                        ];
+                        $backendLayoutData['__colPosList'][] = $column['colPos'];
+                        $backendLayoutData['usedColumns'][(int)$column['colPos']] = $column['name'];
+                    }
+                }
+            }
+        }
+        return $backendLayoutData;
     }
 
     /**
@@ -421,18 +478,35 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return BackendLayout\DataProviderContext
+     * @return DataProviderContext
      */
     protected function createDataProviderContext()
     {
-        return GeneralUtility::makeInstance(BackendLayout\DataProviderContext::class);
+        return GeneralUtility::makeInstance(DataProviderContext::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Get column name from colPos item structure
+     *
+     * @param array $column
+     * @return string
+     */
+    protected function getColumnName($column)
+    {
+        $columnName = $column['name'];
+
+        if (GeneralUtility::isFirstPartOfStr($columnName, 'LLL:')) {
+            $columnName = $this->getLanguageService()->sL($columnName);
+        }
+
+        return $columnName;
     }
 }

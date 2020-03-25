@@ -260,15 +260,15 @@ class LocalizationController
     {
         $columns = [];
         $backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
-        $backendLayouts = $backendLayoutView->getSelectedBackendLayout($pageId);
+        $backendLayout = $backendLayoutView->getBackendLayoutForPage($pageId);
 
-        foreach ($backendLayouts['__items'] as $backendLayout) {
-            $columns[(int)$backendLayout[1]] = $backendLayout[0];
+        foreach ($backendLayout->getUsedColumns() as $columnPos => $columnLabel) {
+            $columns[$columnPos] = $GLOBALS['LANG']->sL($columnLabel);
         }
 
         return [
             'columns' => $columns,
-            'columnList' => array_values($backendLayouts['__colPosList']),
+            'columnList' => array_values($backendLayout->getColumnPositionNumbers()),
         ];
     }
 }

@@ -546,9 +546,9 @@ class PageLayoutController
             ');
 
             // Find backend layout / columns
-            $backendLayout = $this->backendLayouts->getSelectedBackendLayout($this->id);
-            if (!empty($backendLayout['__colPosList'])) {
-                $this->colPosList = implode(',', $backendLayout['__colPosList']);
+            $backendLayout = $this->backendLayouts->getBackendLayoutForPage($this->id);
+            if (!empty($backendLayout->getColumnPositionNumbers())) {
+                $this->colPosList = implode(',', $backendLayout->getColumnPositionNumbers());
             }
             // Removing duplicates, if any
             $this->colPosList = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
@@ -612,24 +612,7 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
-            $selectedCombinedIdentifier = $this->backendLayouts->getSelectedCombinedIdentifier($this->id);
-            // If no backend layout is selected, use default
-            if (empty($selectedCombinedIdentifier)) {
-                $selectedCombinedIdentifier = 'default';
-            }
-
-            $backendLayout = $this->backendLayouts->getDataProviderCollection()->getBackendLayout(
-                $selectedCombinedIdentifier,
-                $this->id
-            );
-
-            // If backend layout is not found available anymore, use default
-            if ($backendLayout === null) {
-                $backendLayout = $this->backendLayouts->getDataProviderCollection()->getBackendLayout(
-                    'default',
-                    $this->id
-                );
-            }
+            $backendLayout = $this->backendLayouts->getBackendLayoutForPage((int)$this->id);
 
             $configuration = $backendLayout->getDrawingConfiguration();
             $configuration->setPageId($this->id);
