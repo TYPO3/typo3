@@ -19,6 +19,22 @@ defined('TYPO3_MODE') or die();
                 'default' => '',
             ],
         ],
+        'tx_testdatahandler_select_dynamic' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Select',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'items' => [
+                    ['predefined label', 'predefined value']
+                ],
+                'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\SelectElementItems->getItems',
+                'minitems' => 1,
+                'maxitems' => 10,
+                'autoSizeMax' => 10,
+                'default' => '',
+            ],
+        ],
          'tx_testdatahandler_group' => [
             'exclude' => true,
             'label' => 'DataHandler Test Group',
