@@ -108,8 +108,10 @@ define(['jquery',
       var $template = $(
         '<div class="' + _this.settings.toolbarSelector + '">' +
         '<div class="svg-toolbar__menu">' +
+        '<div class="btn-group">' +
         '<div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="filter">' +
         '<button class="svg-toolbar__btn" data-tree-icon="actions-filter" title="' + TYPO3.lang['tree.buttonFilter'] + '"></button>' +
+        '</div>' +
         '</div>' +
         '<div class="x-btn btn btn-default btn-sm x-btn-noicon js-svg-refresh">' +
         '<button class="svg-toolbar__btn" data-tree-icon="actions-refresh" title="' + TYPO3.lang['labels.refresh'] + '"></button>' +
@@ -127,7 +129,7 @@ define(['jquery',
 
       if (this.tree.settings.doktypes && this.tree.settings.doktypes.length) {
         var $buttons = $template.find('[data-tree-submenu=page-new]');
-        $template.find('.svg-toolbar__menu').prepend('<div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="page-new">' +
+        $template.find('.svg-toolbar__menu .btn-group').prepend('<div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="page-new">' +
           '<button class="svg-toolbar__btn" data-tree-icon="actions-page-new" title="' + TYPO3.lang['tree.buttonNewNode'] + '"></button>' +
           '</div>'
         );

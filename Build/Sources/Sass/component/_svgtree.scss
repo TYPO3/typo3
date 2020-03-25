@@ -302,10 +302,6 @@ $svgColors: (
         margin-bottom: 4px;
 
         .x-btn {
-            &:not(:last-child) {
-                margin-right: 4px;
-            }
-
             &:last-child {
                 float: right;
             }
