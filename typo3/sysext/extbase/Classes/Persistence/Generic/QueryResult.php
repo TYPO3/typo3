@@ -193,6 +193,7 @@ class QueryResult implements QueryResultInterface
     public function offsetSet($offset, $value)
     {
         $this->initialize();
+        $this->numberOfResults = null;
         $this->queryResult[$offset] = $value;
     }
 
@@ -205,6 +206,7 @@ class QueryResult implements QueryResultInterface
     public function offsetUnset($offset)
     {
         $this->initialize();
+        $this->numberOfResults = null;
         unset($this->queryResult[$offset]);
     }
 

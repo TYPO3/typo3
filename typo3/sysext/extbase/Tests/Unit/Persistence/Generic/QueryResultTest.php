@@ -162,6 +162,24 @@ class QueryResultTest extends UnitTestCase
     /**
      * @test
      */
+    public function countCallsGetObjectCountByQueryIfOffsetChanges()
+    {
+        $this->mockPersistenceManager->expects(self::once())->method('getObjectCountByQuery')->willReturn(2);
+        $firstCount = $this->queryResult->count();
+        $this->queryResult->offsetSet(3, new \stdClass());
+        $this->queryResult->offsetSet(4, new \stdClass());
+        $secondCount = $this->queryResult->count();
+        $this->queryResult->offsetUnset(1);
+        $thirdCount = $this->queryResult->count();
+
+        self::assertSame(2, $firstCount);
+        self::assertSame(4, $secondCount);
+        self::assertSame(3, $thirdCount);
+    }
+
+    /**
+     * @test
+     */
     public function iteratorMethodsAreCorrectlyImplemented()
     {
         $array1 = ['foo' => 'Foo1', 'bar' => 'Bar1'];
