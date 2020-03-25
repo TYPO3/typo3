@@ -1374,12 +1374,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $JSwindowExpand = isset($conf['JSwindow.']['expand.']) ? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.']) : $conf['JSwindow.']['expand'];
                 $offset = GeneralUtility::intExplode(',', $JSwindowExpand . ',');
                 $newWindow = isset($conf['JSwindow.']['newWindow.']) ? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.']) : $conf['JSwindow.']['newWindow'];
+                $params = [
+                    'width' => ($processedFile->getProperty('width') + $offset[0]),
+                    'height' => ($processedFile->getProperty('height') + $offset[1]),
+                    'status' => '0',
+                    'menubar' => '0'
+                ];
+                // params override existing parameters from above, or add more
+                $windowParams = isset($conf['JSwindow.']['params.']) ? $this->stdWrap($conf['JSwindow.']['params'], $conf['JSwindow.']['params.']) : $conf['JSwindow.']['params'];
+                $windowParams = explode(',', $windowParams);
+                foreach ($windowParams as $windowParam) {
+                    [$paramKey, $paramValue] = explode('=', $windowParam);
+                    if ($paramValue !== '') {
+                        $params[$paramKey] = $paramValue;
+                    } else {
+                        unset($params[$paramKey]);
+                    }
+                }
+                $paramString = '';
+                foreach ($params as $paramKey => $paramValue) {
+                    $paramString .= htmlspecialchars($paramKey) . '=' . htmlspecialchars($paramValue) . ',';
+                }
+
                 $onClick = 'openPic('
                     . GeneralUtility::quoteJSvalue($this->getTypoScriptFrontendController()->baseUrlWrap($url)) . ','
                     . '\'' . ($newWindow ? md5($url) : 'thePicture') . '\','
-                    . GeneralUtility::quoteJSvalue('width=' . ($processedFile->getProperty('width') + $offset[0])
-                        . ',height=' . ($processedFile->getProperty('height') + $offset[1]) . ',status=0,menubar=0')
-                    . '); return false;';
+                    . GeneralUtility::quoteJSvalue(rtrim($paramString, ',')) . '); return false;';
                 $a1 = '<a href="' . htmlspecialchars($url) . '"'
                     . ' onclick="' . htmlspecialchars($onClick) . '"'
                     . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
