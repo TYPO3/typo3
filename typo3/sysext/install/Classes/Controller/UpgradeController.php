@@ -1208,7 +1208,6 @@ class UpgradeController extends AbstractController
         $documentationFiles = $documentationFileService->findDocumentationFiles(
             str_replace('\\', '/', realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog/' . $version))
         );
-        $documentationFiles = array_reverse($documentationFiles);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_registry');
         $filesMarkedAsRead = $queryBuilder

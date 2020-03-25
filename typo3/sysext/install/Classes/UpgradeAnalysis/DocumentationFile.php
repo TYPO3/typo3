@@ -335,6 +335,7 @@ class DocumentationFile
         $finder = new Finder();
         $finder
             ->depth(0)
+            ->sortByName()
             ->name('/^(Feature|Breaking|Deprecation|Important)\-\d+.+\.rst$/i');
 
         return $finder;
