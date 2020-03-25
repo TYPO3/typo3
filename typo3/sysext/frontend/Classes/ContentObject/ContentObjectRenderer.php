@@ -5090,11 +5090,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $JSwindowParams = '';
         if ($target && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $target, $JSwindowParts)) {
             // Take all pre-configured and inserted parameters and compile parameter list, including width+height:
-            $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), true);
+            $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower(($conf['JSwindow_params'] ?? '') . ',' . ($JSwindowParts[4] ?? '')), true);
             $JSwindow_paramsArr = [];
+            $target = $conf['target'] ?? 'FEopenLink';
             foreach ($JSwindow_tempParamsArr as $JSv) {
                 [$JSp, $JSv] = explode('=', $JSv, 2);
-                $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
+                // If the target is set as JS param, this is extracted
+                if ($JSp === 'target') {
+                    $target = $JSv;
+                } else {
+                    $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
+                }
             }
             // Add width/height:
             $JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
@@ -5114,13 +5120,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Target attribute
         if (!empty($target)) {
             $tagAttributes['target'] = htmlspecialchars($target);
-        } elseif ($JSwindowParams && !in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
+        }
+        if ($JSwindowParams && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
             // Create TARGET-attribute only if the right doctype is used
-            $tagAttributes['target'] = 'FEopenLink';
+            unset($tagAttributes['target']);
         }
 
         if ($JSwindowParams) {
-            $onClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url'])) . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSwindowParams) . ');vHWin.focus();return false;';
+            $onClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url']))
+                . ',' . GeneralUtility::quoteJSvalue($target) . ','
+                . GeneralUtility::quoteJSvalue($JSwindowParams)
+                . ');vHWin.focus();return false;';
             $tagAttributes['onclick'] = htmlspecialchars($onClick);
         }
 

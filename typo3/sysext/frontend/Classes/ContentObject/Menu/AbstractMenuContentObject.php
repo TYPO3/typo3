@@ -1407,10 +1407,11 @@ abstract class AbstractMenuContentObject
             }
             // Open in popup window?
             if ($matches[3] && $matches[4]) {
+                $target = $LD['target'] ?? 'FEopenLink';
                 $JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
                 $onClick = 'vHWin=window.open('
                     . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($LD['totalURL']))
-                    . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSparamWH) . ');vHWin.focus();return false;';
+                    . ',' . GeneralUtility::quoteJSvalue($target) . ',' . GeneralUtility::quoteJSvalue($JSparamWH) . ');vHWin.focus();return false;';
                 $LD['target'] = '';
             }
         }
