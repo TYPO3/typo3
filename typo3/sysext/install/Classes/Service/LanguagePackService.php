@@ -247,7 +247,7 @@ class LanguagePackService
             throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
         }
 
-        if (in_array(self::OLD_LANGUAGE_PACK_URLS, $languagePackBaseUrl, true)
+        if (in_array($languagePackBaseUrl, self::OLD_LANGUAGE_PACK_URLS, true)
             && GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('newTranslationServer')) {
             $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
         }
