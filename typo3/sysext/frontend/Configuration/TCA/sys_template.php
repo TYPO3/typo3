@@ -116,7 +116,7 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 48,
-                'rows' => 10,
+                'rows' => 15,
                 'wrap' => 'off',
                 'enableTabulator' => true,
                 'fixedFont' => true,
@@ -193,7 +193,7 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.config',
             'config' => [
                 'type' => 'text',
-                'rows' => 10,
+                'rows' => 15,
                 'cols' => 48,
                 'wrap' => 'off',
                 'enableTabulator' => true,

@@ -176,7 +176,7 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 5,
+                'rows' => 15,
                 'enableTabulator' => true,
                 'fixedFont' => true,
             ],
