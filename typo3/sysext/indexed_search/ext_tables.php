@@ -10,7 +10,7 @@ defined('TYPO3_MODE') or die();
         \TYPO3\CMS\IndexedSearch\Controller\AdministrationController::class => 'index,pages,externalDocuments,statistic,statisticDetails,deleteIndexedItem,saveStopwordsKeywords,wordDetail',
     ],
     [
-        'access' => 'admin',
+        'access' => 'user,group',
         'icon'   => 'EXT:indexed_search/Resources/Public/Icons/module-indexed_search.svg',
         'labels' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
     ]
