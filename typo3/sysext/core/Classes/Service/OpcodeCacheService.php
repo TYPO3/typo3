@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Core\Service;
 
 /*
@@ -30,25 +31,19 @@ class OpcodeCacheService
     public function getAllActive()
     {
         $supportedCaches = [
-            // The ZendOpcache aka OPcache since PHP 5.5
-            // http://php.net/manual/de/book.opcache.php
             'OPcache' => [
                 'active' => extension_loaded('Zend OPcache') && ini_get('opcache.enable') === '1',
                 'version' => phpversion('Zend OPcache'),
-                'canReset' => true, // opcache_reset() ... it seems that it doesn't reset for current run.
-                // From documentation this function exists since first version (7.0.0) but from Changelog
-                // this function exists since OPcache 7.0.2
-                // http://pecl.php.net/package-changelog.php?package=ZendOpcache&release=7.0.2
-                // PHP 7.0 onward is delivered minimum OPcache 7.0.6-dev
-                'canInvalidate' => true,
-                'error' => false,
-                'clearCallback' => function ($fileAbsPath) {
-                    if ($fileAbsPath !== null) {
-                        opcache_invalidate($fileAbsPath);
-                    } else {
-                        opcache_reset();
+                'warning' => self::isClearable() ? false : 'Either opcache_invalidate or opcache_reset are disabled in this installation. Clearing will not work.',
+                'clearCallback' => static function ($fileAbsPath) {
+                    if (self::isClearable()) {
+                        if ($fileAbsPath !== null) {
+                            opcache_invalidate($fileAbsPath);
+                        } else {
+                            opcache_reset();
+                        }
                     }
-                }
+                },
             ],
         ];
 
@@ -72,5 +67,14 @@ class OpcodeCacheService
             $callback = $properties['clearCallback'];
             $callback($fileAbsPath);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    protected static function isClearable(): bool
+    {
+        $disabled = explode(',', ini_get('disable_functions'));
+        return !(in_array('opcache_invalidate', $disabled, true) || in_array('opcache_reset', $disabled, true));
     }
 }
