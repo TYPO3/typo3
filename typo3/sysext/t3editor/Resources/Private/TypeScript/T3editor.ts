@@ -120,13 +120,26 @@ class T3editor {
         FormEngine.Validation.markFieldAsChanged($textarea);
       });
 
+      const bottomPanel = T3editor.createPanelNode('bottom', $textarea.attr('alt'));
       cm.addPanel(
-        T3editor.createPanelNode('bottom', $textarea.attr('alt')),
+        bottomPanel,
         {
           position: 'bottom',
-          stable: true,
+          stable: false,
         },
       );
+
+      // cm.addPanel() changes the height of the editor, thus we have to override it here again
+      if ($textarea.attr('rows')) {
+        const lineHeight = 18;
+        const paddingBottom = 4;
+        cm.setSize(null, parseInt($textarea.attr('rows'), 10) * lineHeight + paddingBottom + bottomPanel.getBoundingClientRect().height);
+      } else {
+        // Textarea has no "rows" attribute configured, don't limit editor in space
+        cm.getWrapperElement().style.height =
+          (document.body.getBoundingClientRect().height - cm.getWrapperElement().getBoundingClientRect().top - 80) + 'px';
+        cm.setOption('viewportMargin', Infinity);
+      }
     });
 
     $textarea.prop('is_t3editor', true);
