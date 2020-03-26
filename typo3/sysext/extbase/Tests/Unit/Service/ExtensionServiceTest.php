@@ -61,14 +61,16 @@ class ExtensionServiceTest extends UnitTestCase
                 'plugins' => [
                     'SomePlugin' => [
                         'controllers' => [
-                            'ControllerName' => [
+                            'Fully\\Qualified\\ControllerName' => [
+                                'alias' => 'ControllerName',
                                 'actions' => ['index', 'otherAction']
                             ]
                         ]
                     ],
                     'ThirdPlugin' => [
                         'controllers' => [
-                            'ControllerName' => [
+                            'Fully\\Qualified\\ControllerName' => [
+                                'alias' => 'ControllerName',
                                 'actions' => ['otherAction', 'thirdAction']
                             ]
                         ]
@@ -79,11 +81,13 @@ class ExtensionServiceTest extends UnitTestCase
                 'plugins' => [
                     'SecondPlugin' => [
                         'controllers' => [
-                            'ControllerName' => [
+                            'Fully\\Qualified\\ControllerName' => [
+                                'alias' => 'ControllerName',
                                 'actions' => ['index', 'otherAction']
                             ],
-                            'SecondControllerName' => [
+                            'Fully\\Qualified\\SecondControllerName' => [
                                 'actions' => ['someAction', 'someOtherAction'],
+                                'alias' => 'SecondControllerName',
                                 'nonCacheableActions' => ['someOtherAction']
                             ]
                         ]

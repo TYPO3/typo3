@@ -123,11 +123,14 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
         }
         $pluginNames = [];
         foreach ($plugins as $pluginName => $pluginConfiguration) {
-            foreach ($pluginConfiguration['controllers'] ?? [] as $pluginControllerName => $pluginControllerActions) {
+            $controllers = $pluginConfiguration['controllers'] ?? [];
+            $controllerAliases = array_column($controllers, 'actions', 'alias');
+
+            foreach ($controllerAliases as $pluginControllerName => $pluginControllerActions) {
                 if (strtolower($pluginControllerName) !== strtolower($controllerName)) {
                     continue;
                 }
-                if (in_array($actionName, $pluginControllerActions['actions'], true)) {
+                if (in_array($actionName, $pluginControllerActions, true)) {
                     $pluginNames[] = $pluginName;
                 }
             }
@@ -230,10 +233,10 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getDefaultControllerNameByPlugin(string $extensionName, string $pluginName): ?string
     {
-        // todo: using false as a default is fishy.
-        // todo: rather make sure that $controllers is an array and then return the (string) key or null
-        $controllers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'] ?? false;
-        return $controllers ? key($controllers) : null;
+        $controllers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'] ?? [];
+        $controllerAliases = array_column($controllers, 'alias');
+        $defaultControllerName = (string)($controllerAliases[0] ?? '');
+        return $defaultControllerName !== '' ? $defaultControllerName : null;
     }
 
     /**
@@ -246,11 +249,11 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getDefaultActionNameByPluginAndController(string $extensionName, string $pluginName, string $controllerName): ?string
     {
-        // todo: using false as a default is fishy.
-        // todo: rather make sure that $actions is an array and then return the (string) key or null
-        // todo: also use reset(), rather than current, as array pointer might have been moved.
-        $actions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['actions'] ?? false;
-        return $actions ? current($actions) : null;
+        $controllers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'] ?? [];
+        $controllerActionsByAlias = array_column($controllers, 'actions', 'alias');
+        $actions = $controllerActionsByAlias[$controllerName] ?? [];
+        $defaultActionName = (string)($actions[0] ?? '');
+        return $defaultActionName !== '' ? $defaultActionName : null;
     }
 
     /**
