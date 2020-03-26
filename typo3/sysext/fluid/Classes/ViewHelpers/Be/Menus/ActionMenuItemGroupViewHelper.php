@@ -65,7 +65,7 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
         $this->tag->addAttribute('label', $label);
         $options = '';
         foreach ($this->childNodes as $childNode) {
-            if ($childNode instanceof ViewHelperNode && $childNode->getViewHelperClassName() === ActionMenuItemViewHelper::class) {
+            if ($childNode instanceof ViewHelperNode) {
                 $options .= $childNode->evaluate($this->renderingContext);
             }
         }
