@@ -42,6 +42,7 @@ class AuthenticationService extends AbstractAuthenticationService
     {
         $isProcessed = false;
         if ($passwordTransmissionStrategy === 'normal') {
+            $loginData = array_map('trim', $loginData);
             $loginData['uident_text'] = $loginData['uident'];
             $isProcessed = true;
         }

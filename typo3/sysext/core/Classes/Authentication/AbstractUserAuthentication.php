@@ -1268,7 +1268,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($loginData['status'] === LoginType::LOGIN) {
             $loginData = $this->processLoginData($loginData);
         }
-        $loginData = array_map('trim', $loginData);
         return $loginData;
     }
 

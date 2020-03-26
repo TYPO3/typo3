@@ -66,6 +66,20 @@ class AuthenticationServiceTest extends UnitTestCase
                     'uident_text' => 'password',
                 ]
             ],
+            'Frontend login with securityLevel "normal" and spaced passwords removes spaces' => [
+                'normal',
+                [
+                    'status' => 'login',
+                    'uname' => 'admin ',
+                    'uident' => ' my password ',
+                ],
+                [
+                    'status' => 'login',
+                    'uname' => 'admin',
+                    'uident' => 'my password',
+                    'uident_text' => 'my password',
+                ]
+            ],
         ];
     }
 
