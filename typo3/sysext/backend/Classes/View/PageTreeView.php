@@ -110,7 +110,7 @@ class PageTreeView extends BrowseTreeView
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $bank . ');';
         $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', 'pages', $row['uid'], 'tree', '', '', true);
 
-        $thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
+        $thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
         // Wrap title in a drag/drop span.
         return '<span class="list-tree-title dragTitle" id="dragTitleID_' . $row['uid'] . '">' . $thePageTitle . '</span>';
     }
