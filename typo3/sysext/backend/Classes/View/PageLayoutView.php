@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -203,6 +204,34 @@ class PageLayoutView implements LoggerAwareInterface
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @param DrawingConfiguration $drawingConfiguration
+     * @return PageLayoutView
+     * @internal
+     */
+    public static function createFromDrawingConfiguration(DrawingConfiguration $drawingConfiguration): PageLayoutView
+    {
+        /** @var PageLayoutView $pageLayoutView */
+        $pageLayoutView = GeneralUtility::makeInstance(self::class);
+        $pageLayoutView->id = $drawingConfiguration->getPageId();
+        $pageLayoutView->pageRecord = $drawingConfiguration->getPageRecord();
+        $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
+        $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
+        $pageLayoutView->tt_contentConfig['cols'] = implode(',', $drawingConfiguration->getActiveColumns());
+        $pageLayoutView->tt_contentConfig['activeCols'] = implode(',', $drawingConfiguration->getActiveColumns());
+        $pageLayoutView->tt_contentConfig['showHidden'] = $drawingConfiguration->getShowHidden();
+        $pageLayoutView->tt_contentConfig['sys_language_uid'] = $drawingConfiguration->getLanguageColumnsPointer();
+        if ($drawingConfiguration->getLanguageMode()) {
+            $pageLayoutView->tt_contentConfig['languageMode'] = 1;
+            $pageLayoutView->tt_contentConfig['languageCols'] = $drawingConfiguration->getLanguageColumns();
+            $pageLayoutView->tt_contentConfig['languageColsPointer'] = $drawingConfiguration->getLanguageColumnsPointer();
+        }
+        $pageLayoutView->doEdit = $pageLayoutView->isContentEditable($drawingConfiguration->getLanguageColumnsPointer());
+        $pageLayoutView->CType_labels = $drawingConfiguration->getContentTypeLabels();
+        $pageLayoutView->itemLabels = $drawingConfiguration->getItemLabels();
+        return $pageLayoutView;
     }
 
     protected function initialize()

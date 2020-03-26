@@ -255,8 +255,9 @@ class BackendLayout
     public function getLanguageColumns(): iterable
     {
         if (empty($this->languageColumns)) {
+            $availableLanguageColumns = $this->getDrawingConfiguration()->getLanguageColumns();
             foreach ($this->getDrawingConfiguration()->getSiteLanguages() as $siteLanguage) {
-                if (!in_array($siteLanguage->getLanguageId(), $this->getDrawingConfiguration()->getLanguageColumns())) {
+                if (!isset($availableLanguageColumns[$siteLanguage->getLanguageId()])) {
                     continue;
                 }
                 $backendLayout = clone $this;
@@ -304,6 +305,11 @@ class BackendLayout
     public function getDrawingConfiguration(): DrawingConfiguration
     {
         return $this->drawingConfiguration;
+    }
+
+    public function setDrawingConfiguration(DrawingConfiguration $drawingConfiguration): void
+    {
+        $this->drawingConfiguration = $drawingConfiguration;
     }
 
     public function getBackendLayoutRenderer(): BackendLayoutRenderer

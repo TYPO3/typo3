@@ -92,6 +92,7 @@ class BackendLayoutRenderer
      */
     public function drawContent(bool $renderUnused = true): string
     {
+        $this->view->assign('pageLayoutConfiguration', $this->backendLayout->getDrawingConfiguration());
         $this->view->assign('hideRestrictedColumns', (bool)(BackendUtility::getPagesTSconfig($this->backendLayout->getDrawingConfiguration()->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false));
         if (!$this->backendLayout->getDrawingConfiguration()->getLanguageMode()) {
             $this->view->assign('grid', $this->backendLayout->getGrid());

@@ -1,8 +1,8 @@
-<f:if condition="{backendLayout.drawingConfiguration.newLanguageOptions}">
+<f:if condition="{pageLayoutConfiguration.newLanguageOptions}">
     <div class="form-inline form-inline-spaced">
         <div class="form-group">
             <select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
-                <f:for each="{backendLayout.drawingConfiguration.newLanguageOptions}" as="languageName" key="url">
+                <f:for each="{pageLayoutConfiguration.newLanguageOptions}" as="languageName" key="url">
                     <option value="{url}">{languageName}</option>
                 </f:for>
             </select>

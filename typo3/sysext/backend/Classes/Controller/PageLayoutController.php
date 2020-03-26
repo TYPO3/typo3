@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -610,23 +611,31 @@ class PageLayoutController
     protected function renderContent(): string
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+
+        $configuration = GeneralUtility::makeInstance(DrawingConfiguration::class);
+        $configuration->setPageId($this->id);
+        $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
+        $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
+        $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
+        $configuration->setLanguageColumns($this->MOD_MENU['language']);
+        $configuration->setLanguageColumnsPointer((int)$this->current_sys_language);
+        if ($this->MOD_SETTINGS['function'] == 2) {
+            $configuration->setLanguageMode(true);
+        }
+        $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
+        $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
+
+        $backendLayout = $this->backendLayouts->getBackendLayoutForPage((int)$this->id);
+        $backendLayout->setDrawingConfiguration($configuration);
 
         if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
-            $backendLayout = $this->backendLayouts->getBackendLayoutForPage((int)$this->id);
-
-            $configuration = $backendLayout->getDrawingConfiguration();
-            $configuration->setPageId($this->id);
-            $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
-            $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
-            $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
-            $configuration->setLanguageColumns(array_combine(array_keys($this->MOD_MENU['language']), array_keys($this->MOD_MENU['language'])));
-            $configuration->setLanguageColumnsPointer((int)$this->current_sys_language);
-            if ($this->MOD_SETTINGS['function'] == 2) {
-                $configuration->setLanguageMode($this->MOD_SETTINGS['function'] == 2);
-            }
-
             $pageLayoutDrawer = $backendLayout->getBackendLayoutRenderer();
-            $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
 
             $pageActionsCallback = null;
             if ($configuration->isPageEditable()) {
@@ -644,63 +653,29 @@ class PageLayoutController
                 }';
             }
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
-            $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
             $tableOutput = $pageLayoutDrawer->drawContent();
         } else {
-            $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
-            $dbList->doEdit = $this->isContentEditable($this->current_sys_language);
-            $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
-            $dbList->defLangBinding = !empty($this->modTSconfig['properties']['defLangBinding']);
-            $tcaItems = $this->backendLayouts->getColPosListItemsParsed($this->id);
-            $numberOfHiddenElements = $this->getNumberOfHiddenElements(is_array($dbList->tt_contentConfig['languageCols']) ? $dbList->tt_contentConfig['languageCols'] : []);
-            // Setting up the tt_content columns to show:
-            if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
-                $colList = [];
-                foreach ($tcaItems as $temp) {
-                    $colList[] = $temp[1];
-                }
-            } else {
-                // ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
-                $colList = ['1', '0', '2', '3'];
-            }
+            $dbList = PageLayoutView::createFromDrawingConfiguration($configuration);
+            // Setting up the tt_content columns to show
+            $colList = array_keys($backendLayout->getUsedColumns());
             if ($this->colPosList !== '') {
                 $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
             }
             // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
             $dbList->tt_contentConfig['cols'] = implode(',', $colList);
-            $dbList->tt_contentConfig['activeCols'] = $this->activeColPosList;
-            $dbList->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
-            $dbList->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
-            // If the function menu is set to "Language":
-            if ($this->MOD_SETTINGS['function'] == 2) {
-                $dbList->tt_contentConfig['languageMode'] = 1;
-                $dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
-                $dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
-            }
             $tableOutput = $dbList->getTable_tt_content($this->id);
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         }
 
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
-        $h_func_b = '';
-        if ($this->getBackendUser()->check('tables_select', 'tt_content')) {
+        if ($this->getBackendUser()->check('tables_select', 'tt_content') && $numberOfHiddenElements > 0) {
             // Toggle hidden ContentElements
-
-            if ($numberOfHiddenElements > 0) {
-                $h_func_b = '
-                    <div class="checkbox">
-                        <label for="checkTt_content_showHidden">
-                            <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
-                            ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
-                        </label>
-                    </div>';
-            }
+            $tableOutput .= '
+                <div class="checkbox">
+                    <label for="checkTt_content_showHidden">
+                        <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
+                        ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
+                    </label>
+                </div>';
         }
-        $tableOutput .= $h_func_b;
 
         // Init the content
         $content = '';

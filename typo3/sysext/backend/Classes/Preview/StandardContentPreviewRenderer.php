@@ -20,7 +20,6 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
-use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawFooterHookInterface;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
@@ -150,7 +149,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             case 'list':
                 $hookOut = '';
                 if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'])) {
-                    $pageLayoutView = $this->createEmulatedPageLayoutViewFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+                    $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
                     $_params = ['pObj' => &$pageLayoutView, 'row' => $record];
                     foreach (
                         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$record['list_type']] ??
@@ -221,7 +220,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
         // Call drawFooter hooks
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'])) {
-            $pageLayoutView = $this->createEmulatedPageLayoutViewFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+            $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
@@ -251,7 +250,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
         // Hook: Render an own preview of a record
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
-            $pageLayoutView = $this->createEmulatedPageLayoutViewFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+            $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
@@ -417,27 +416,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $linkText . '</a>';
         }
         return $linkText;
-    }
-
-    protected function createEmulatedPageLayoutViewFromDrawingConfiguration(DrawingConfiguration $drawingConfiguration): PageLayoutView
-    {
-        $pageLayoutView = GeneralUtility::makeInstance(PageLayoutView::class);
-        $pageLayoutView->id = $drawingConfiguration->getPageId();
-        $pageLayoutView->pageRecord = $drawingConfiguration->getPageRecord();
-        $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
-        $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
-        $pageLayoutView->tt_contentConfig['cols'] = implode(',', $drawingConfiguration->getActiveColumns());
-        $pageLayoutView->tt_contentConfig['activeCols'] = implode(',', $drawingConfiguration->getActiveColumns());
-        $pageLayoutView->tt_contentConfig['showHidden'] = $drawingConfiguration->getShowHidden();
-        $pageLayoutView->tt_contentConfig['sys_language_uid'] = $drawingConfiguration->getLanguageColumnsPointer();
-        if ($drawingConfiguration->getLanguageMode()) {
-            $pageLayoutView->tt_contentConfig['languageMode'] = 1;
-            $pageLayoutView->tt_contentConfig['languageCols'] = $drawingConfiguration->getLanguageColumns();
-            $pageLayoutView->tt_contentConfig['languageColsPointer'] = $drawingConfiguration->getLanguageColumnsPointer();
-        }
-        $pageLayoutView->CType_labels = $drawingConfiguration->getContentTypeLabels();
-        $pageLayoutView->itemLabels = $drawingConfiguration->getItemLabels();
-        return $pageLayoutView;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

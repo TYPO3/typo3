@@ -26,8 +26,8 @@
         </f:if>
     </div>
     <f:if condition="{allowEditContent} && {column.contentEditable} && {grid.allowNewContent}">
-        <div class="t3-page-ce t3js-page-ce" data-page="{column.backendLayout.drawingConfiguration.pageId}" id="{column.uniqueId}">
-            <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{column.columnNumber}-page-{column.backendLayout.drawingConfiguration.pageId}-{column.uniqueId}">
+        <div class="t3-page-ce t3js-page-ce" data-page="{pageLayoutConfiguration.pageId}" id="{column.uniqueId}">
+            <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{column.columnNumber}-page-{pageLayoutConfiguration.pageId}-{column.uniqueId}">
                 <a href="{column.newContentUrl}" title="{newContentTitle}" data-title="{newContentTitle}"
                     class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">
                     <core:icon identifier="actions-add" />

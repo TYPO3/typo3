@@ -53,6 +53,7 @@ class DrawingConfiguration
     protected $languageMode = false;
 
     /**
+     * Key => "Language ID", Value "Label of language"
      * @var array
      */
     protected $languageColumns = [];
@@ -124,8 +125,8 @@ class DrawingConfiguration
 
     public function getLanguageColumns(): array
     {
-        if ($this->languageColumnsPointer) {
-            return [0 => 0, $this->languageColumnsPointer => $this->languageColumnsPointer];
+        if (empty($this->languageColumns)) {
+            return [0 => 'Default'];
         }
         return $this->languageColumns;
     }
