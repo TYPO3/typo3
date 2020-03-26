@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -174,7 +175,8 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
 
             $connection->insert(
                 $this->table,
-                $insertFields
+                $insertFields,
+                ['configuration' => Connection::PARAM_LOB]
             );
 
             $uid = $connection->lastInsertId($this->table);
@@ -200,7 +202,8 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 $updateFields,
                 [
                     'uid' => (int)$uid
-                ]
+                ],
+                ['configuration' => Connection::PARAM_LOB]
             );
         }
     }
