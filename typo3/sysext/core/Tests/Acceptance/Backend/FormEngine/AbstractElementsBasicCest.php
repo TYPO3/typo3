@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
  */
 
 use Codeception\Example;
+use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverKeys;
@@ -27,10 +28,19 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 abstract class AbstractElementsBasicCest
 {
     /**
+     * here a click will be executed after filling in test field value. It will trigger validation
+     * override in concrete class, if not on the first tab of the input form
+     *
+     * @var string fieldLabel of field to click in order to trigger a focus change
+     */
+    protected $triggerFocusChangeFieldLabel = 'input_22';
+
+    /**
      * Method to run basic elements input field test details
      *
      * @param BackendTester $I
      * @param Example $testData
+     * @throws \Exception
      */
     protected function runInputFieldTest(BackendTester $I, Example $testData)
     {
@@ -50,10 +60,14 @@ abstract class AbstractElementsBasicCest
         }
 
         $I->fillField($inputField, $testData['inputValue']);
-        // Change focus to trigger validation
-        $inputField->sendKeys(WebDriverKeys::TAB);
-        // Click on the div so that any opened popup (potentially from the field below) is closed
-        $formSection->click();
+
+        // force click into another field to trigger validation
+        $otherFormSection = $this->getFormSectionByFieldLabel($I, $this->triggerFocusChangeFieldLabel);
+        $otherInputField = $this->getInputField($otherFormSection);
+        $otherInputField->click();
+        // close any overlay triggered by the click
+        $otherInputField->sendKeys(WebDriverKeys::ESCAPE);
+
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->comment('Test value of visible and hidden field');
@@ -64,6 +78,7 @@ abstract class AbstractElementsBasicCest
         $saveButtonLink = '//*/button[@name="_savedok"][1]';
         $I->waitForElement($saveButtonLink, 30);
         $I->click($saveButtonLink);
+
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElement('//*/button[@name="_savedok"][not(@disabled)][1]', 30);
         $I->waitForElement($initializedInputFieldXpath, 30);
@@ -122,5 +137,37 @@ abstract class AbstractElementsBasicCest
                 );
             }
         );
+    }
+
+    /**
+     * @param BackendTester $I
+     * @param string $tabTitle the tab you want to click. If necessary, several attempts are made
+     * @param string $referenceField one field that is available to receive a click. Will be used to scroll up from there.
+     */
+    protected function ensureTopOfFrameIsUsedAndClickTab(BackendTester $I, string $tabTitle, string $referenceField)
+    {
+        try {
+            $I->click($tabTitle);
+        } catch (UnknownServerException $exception) {
+            // this is fired if the element can't be clicked, because for example another element overlays it.
+            $this->scrollToTopOfFrame($I, $tabTitle, $referenceField);
+        }
+    }
+
+    protected function scrollToTopOfFrame(BackendTester $I, string $tabTitle, string $referenceField)
+    {
+        $formSection = $this->getFormSectionByFieldLabel($I, $referenceField);
+        $field = $this->getInputField($formSection);
+        $maxPageUp = 10;
+        do {
+            $doItAgain = false;
+            $maxPageUp--;
+            try {
+                $field->sendKeys(WebDriverKeys::PAGE_UP);
+                $I->click($tabTitle);
+            } catch (UnknownServerException $exception) {
+                $doItAgain = true;
+            }
+        } while ($doItAgain === true && $maxPageUp > 0);
     }
 }
