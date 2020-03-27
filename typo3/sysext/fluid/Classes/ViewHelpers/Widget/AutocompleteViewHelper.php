@@ -44,6 +44,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * The storeSession attribute can be used in any widget
  * and will prevent cookie creation / session storage for the widget.
  * See Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
+ * @deprecated since TYPO3 v10.4, will be removed in TYPO3 v11.0.
  */
 class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {
@@ -56,6 +57,11 @@ class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController
      */
     protected $controller;
+
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v11.', E_USER_DEPRECATED);
+    }
 
     /**
      * Initialize arguments

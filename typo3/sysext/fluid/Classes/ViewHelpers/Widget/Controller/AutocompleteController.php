@@ -16,9 +16,15 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
 
 /**
  * Class AutocompleteController
+ * @deprecated since TYPO3 v10.4, will be removed in TYPO3 v11.0.
  */
 class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
 {
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v11.', E_USER_DEPRECATED);
+    }
+
     /**
      * Simply assigns the ID of the widget.
      */
