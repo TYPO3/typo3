@@ -482,6 +482,10 @@ define(['jquery',
     PageTree.prototype.editNodeLabel = function(node) {
       var _this = this;
 
+      if (!node.allowEdit) {
+        return;
+      }
+
       _this.removeEditedText();
       _this.nodeIsEdit = true;
 
