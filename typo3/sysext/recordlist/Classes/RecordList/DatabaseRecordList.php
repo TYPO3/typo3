@@ -1252,7 +1252,7 @@ class DatabaseRecordList
         }
 
         $tagAttributes = [
-            'class' => ['t3js-entity'],
+            'class' => [],
             'data-table' => $table,
             'title' => 'id=' . $row['uid'],
         ];
@@ -1276,6 +1276,9 @@ class DatabaseRecordList
         if (!empty($row['_CSSCLASS'])) {
             $tagAttributes['class'] = [$row['_CSSCLASS']];
         }
+
+        $tagAttributes['class'][] = 't3js-entity';
+
         // Incr. counter.
         $this->counter++;
         // The icon with link
