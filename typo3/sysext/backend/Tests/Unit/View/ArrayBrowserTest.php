@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Lowlevel\Tests\Unit\Utility;
+namespace TYPO3\CMS\Backend\Tests\Unit\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,23 +14,12 @@ namespace TYPO3\CMS\Lowlevel\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser class in the TYPO3 Core.
- */
 class ArrayBrowserTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser
-     */
-    protected $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
-    }
+    protected $resetSingletonInstances = true;
 
     ///////////////////////////////
     // Tests concerning depthKeys
@@ -40,7 +29,8 @@ class ArrayBrowserTest extends UnitTestCase
      */
     public function depthKeysWithEmptyFirstParameterAddsNothing()
     {
-        self::assertEquals([], $this->subject->depthKeys([], []));
+        $subject = new ArrayBrowser();
+        self::assertEquals([], $subject->depthKeys([], []));
     }
 
     /**
@@ -48,6 +38,7 @@ class ArrayBrowserTest extends UnitTestCase
      */
     public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray()
     {
-        self::assertEquals([0 => 1], $this->subject->depthKeys(['foo'], []));
+        $subject = new ArrayBrowser();
+        self::assertEquals([0 => 1], $subject->depthKeys(['foo'], []));
     }
 }

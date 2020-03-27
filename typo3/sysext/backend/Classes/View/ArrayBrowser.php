@@ -1,5 +1,7 @@
 <?php
-namespace TYPO3\CMS\Lowlevel\Utility;
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\Backend\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,13 +16,15 @@ namespace TYPO3\CMS\Lowlevel\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class for displaying an array as a tree
- * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
- * @internal just a helper class for internal usage
+ * Class for displaying an array as a tree which can collapse / expand.
+ *
+ * See the extension 'lowlevel' / config (Backend module 'Tools > Configuration')
+ * @internal just a helper class for internal usage.
  */
 class ArrayBrowser
 {
@@ -28,13 +32,6 @@ class ArrayBrowser
      * @var bool
      */
     public $expAll = false;
-
-    /**
-     * If set, will expand all (depthKeys is obsolete then) (and no links are applied)
-     *
-     * @var bool
-     */
-    public $dontLinkVar = false;
 
     /**
      * If set, the variable keys are not linked.
@@ -52,14 +49,6 @@ class ArrayBrowser
     public $searchKeys = [];
 
     /**
-     * After calling the getSearchKeys function this array is populated with the
-     * key-positions in the array which contains values matching the search.
-     *
-     * @var int
-     */
-    public $fixedLgd = 1;
-
-    /**
      * If set, the values are truncated with "..." appended if longer than a certain
      * length.
      *
@@ -72,21 +61,32 @@ class ArrayBrowser
      *
      * @var bool
      */
-    public $searchKeysToo = false;
+    public $searchKeysToo = true;
 
     /**
-     * If set, array keys are subject to the search too.
-     *
-     * @var string
+     * @var UriBuilder
      */
-    public $varName = '';
+    protected $uriBuilder;
+
+    /**
+     * If null then there are no links set.
+     *
+     * @var Route|null
+     */
+    protected $route;
+
+    public function __construct(Route $route = null)
+    {
+        $this->route = $route;
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    }
 
     /**
      * Set var name here if you want links to the variable name.
      *
      * Make browsable tree
      * Before calling this function you may want to set some of the internal vars like
-     * depthKeys, regexMode and fixedLgd.
+     * depthKeys and regexMode.
      *
      * @param array $array The array to display
      * @param string $positionKey Key-position id. Build up during recursive calls - [key1].[key2].[key3] - and so on.
@@ -96,10 +96,8 @@ class ArrayBrowser
     {
         $output = '<ul class="list-tree text-monospace">';
         if ($positionKey) {
-            $positionKey = $positionKey . '.';
+            $positionKey .= '.';
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($array as $key => $value) {
             $depth = $positionKey . $key;
             if (is_object($value) && !$value instanceof \Traversable) {
@@ -107,14 +105,14 @@ class ArrayBrowser
             }
             $isArray = is_iterable($value);
             $isResult = (bool)$this->searchKeys[$depth];
-            $isExpanded = $isArray && ($this->depthKeys[$depth] || $this->expAll);
+            $isExpanded = $isArray && (!empty($this->depthKeys[$depth]) || $this->expAll);
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
             $output .= '<span class="list-tree-group">';
-            if ($isArray && !$this->expAll) {
+            if ($isArray && !$this->expAll && $this->route) {
                 $goto = 'a' . substr(md5($depth), 0, 6);
-                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route')) . '&node[' . rawurlencode($depth) . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto) . '"><i class="fa"></i></a> ';
+                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->route->getOption('_identifier'), ['node' => [rawurldecode($depth) => $isExpanded ? 0 : 1]]) . '#' . $goto) . '"><i class="fa"></i></a> ';
             }
-            $output .= $this->wrapArrayKey($key, $depth, !$isArray ? $value : '');
+            $output .= '<span class="list-tree-label">' . htmlspecialchars($key) . '</span>';
             if (!$isArray) {
                 $output .= ' = <span class="list-tree-value">' . htmlspecialchars($value) . '</span>';
             }
@@ -132,34 +130,6 @@ class ArrayBrowser
     }
 
     /**
-     * Wrapping the value in bold tags etc.
-     *
-     * @param string $label The title string
-     * @param string $depth Depth path
-     * @param string $theValue The value for the array entry.
-     * @return string Title string, htmlspecialchars()'ed
-     */
-    public function wrapArrayKey($label, $depth, $theValue)
-    {
-        // Protect label:
-        $label = htmlspecialchars($label);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        // If varname is set:
-        if ($this->varName && !$this->dontLinkVar) {
-            $variableName = $this->varName
-                . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = '
-                . (!MathUtility::canBeInterpretedAsInteger($theValue) ? '\''
-                . addslashes($theValue) . '\'' : $theValue) . '; ';
-            $label = '<a class="list-tree-label" href="'
-                . htmlspecialchars((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route'))
-                . '&varname=' . urlencode($variableName))
-                . '#varname">' . $label . '</a>';
-        }
-        return '<span class="list-tree-label">' . $label . '</span>';
-    }
-
-    /**
      * Creates an array with "depthKeys" which will expand the array to show the search results
      *
      * @param array $keyArr The array to search for the value
@@ -172,7 +142,7 @@ class ArrayBrowser
     public function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)
     {
         if ($depth_in) {
-            $depth_in = $depth_in . '.';
+            $depth_in .= '.';
         }
         foreach ($keyArr as $key => $value) {
             $depth = $depth_in . $key;
@@ -214,7 +184,7 @@ class ArrayBrowser
     {
         $tsbrArray = [];
         foreach ($arr as $theK => $theV) {
-            $theKeyParts = explode('.', $theK);
+            $theKeyParts = explode('.', (string)$theK);
             $depth = '';
             $c = count($theKeyParts);
             $a = 0;

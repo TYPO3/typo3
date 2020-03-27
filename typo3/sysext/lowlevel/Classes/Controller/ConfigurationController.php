@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 
 /**
  * View configuration arrays in the backend
@@ -267,9 +267,8 @@ class ConfigurationController
         }
 
         // Prepare array renderer class, apply search and expand / collapse states
-        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
-        $arrayBrowser->dontLinkVar = true;
-        $arrayBrowser->searchKeysToo = true;
+        $route = GeneralUtility::makeInstance(Router::class)->match(GeneralUtility::_GP('route'));
+        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class, $route);
         $arrayBrowser->regexMode = $moduleState['regexSearch'];
         $node = $queryParams['node'];
         if ($searchString) {
