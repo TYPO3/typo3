@@ -326,7 +326,7 @@ define(['jquery',
               Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
             }
           } else {
-            Notification.error('Oops, an error occurred', 'Please look at the console output for details');
+            Notification.error('Oops, an error occurred', 'Please look at the browser console output for details');
             console.error(data);
           }
         },
