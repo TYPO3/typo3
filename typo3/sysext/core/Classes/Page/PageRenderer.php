@@ -1330,7 +1330,6 @@ class PageRenderer implements SingletonInterface
         $requireJsConfig['public']['paths'] = [
             'jquery' => $corePath . '/jquery/jquery',
             'jquery-ui' => $corePath . 'jquery-ui',
-            'datatables' => $corePath . 'jquery.dataTables',
             'nprogress' => $corePath . 'nprogress',
             'moment' => $corePath . 'moment',
             'cropper' => $corePath . 'cropper.min',
@@ -1343,7 +1342,12 @@ class PageRenderer implements SingletonInterface
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             'd3' => $corePath . 'd3/d3',
             'Sortable' => $corePath . 'Sortable.min',
+            'tablesort' => $corePath . 'tablesort',
+            'tablesort.dotsep' => $corePath . 'tablesort.dotsep',
             'broadcastchannel' => $corePath . '/broadcastchannel-polyfill',
+        ];
+        $requireJsConfig['public']['shim'] = [
+            'tablesort.dotsep' => ['deps' => ['tablesort']],
         ];
         $requireJsConfig['public']['waitSeconds'] = 30;
         $requireJsConfig['public']['typo3BaseUrl'] = false;

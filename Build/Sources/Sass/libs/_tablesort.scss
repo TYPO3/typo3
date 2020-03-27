@@ -1,0 +1,30 @@
+// CSS based on https://github.com/tristen/tablesort/blob/gh-pages/tablesort.css
+th[role=columnheader]:not([data-sort-method="none"]) {
+    cursor: pointer;
+
+    &:after {
+        content: '';
+        float: right;
+        margin-top: 7px;
+        border-width: 4px 4px 0;
+        border-style: solid;
+        border-color: #404040 transparent;
+        visibility: hidden;
+        opacity: 0;
+        user-select: none;
+    }
+
+    &:hover:after {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+th[aria-sort="descending"]:not([data-sort-method="none"]):after {
+    border-width: 0 4px 4px;
+}
+
+th[aria-sort]:not([data-sort-method="none"]):after {
+    visibility: visible;
+    opacity: 0.4;
+}

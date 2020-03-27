@@ -149,12 +149,6 @@ interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
  * Required to make jQuery plugins "available" in TypeScript
  */
 interface JQuery {
-  dataTableExt: any;
-
-  search(term?: string): JQuery;
-
-  draw(): JQuery;
-
   datetimepicker(options?: any): JQuery;
 
   dragUploader(options?: any): JQuery;

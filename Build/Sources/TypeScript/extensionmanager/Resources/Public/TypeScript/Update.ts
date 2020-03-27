@@ -14,7 +14,6 @@
 import * as $ from 'jquery';
 import * as NProgress from 'nprogress';
 import Notification = require('TYPO3/CMS/Backend/Notification');
-import 'datatables';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
@@ -24,7 +23,7 @@ enum ExtensionManagerUpdateIdentifier {
   terUpdateAction = '.update-from-ter',
   pagination = '.pagination-wrap',
   splashscreen = '.splash-receivedata',
-  terTableDataTableWrapper = '#terTableWrapper .dataTables_wrapper',
+  terTableWrapper = '#terTableWrapper .table',
 }
 
 class ExtensionManagerUpdate {
@@ -66,7 +65,7 @@ class ExtensionManagerUpdate {
 
     // Show loaders
     $(ExtensionManagerUpdateIdentifier.splashscreen).addClass('extensionmanager-is-shown');
-    $(ExtensionManagerUpdateIdentifier.terTableDataTableWrapper).addClass('extensionmanager-is-loading');
+    $(ExtensionManagerUpdateIdentifier.terTableWrapper).addClass('extensionmanager-is-loading');
     $(ExtensionManagerUpdateIdentifier.pagination).addClass('extensionmanager-is-loading');
 
     let reload = false;
@@ -107,7 +106,7 @@ class ExtensionManagerUpdate {
       if (!reload) {
         // Hide loaders
         $(ExtensionManagerUpdateIdentifier.splashscreen).removeClass('extensionmanager-is-shown');
-        $(ExtensionManagerUpdateIdentifier.terTableDataTableWrapper).removeClass('extensionmanager-is-loading');
+        $(ExtensionManagerUpdateIdentifier.terTableWrapper).removeClass('extensionmanager-is-loading');
         $(ExtensionManagerUpdateIdentifier.pagination).removeClass('extensionmanager-is-loading');
 
         // Show triggers for TER-update

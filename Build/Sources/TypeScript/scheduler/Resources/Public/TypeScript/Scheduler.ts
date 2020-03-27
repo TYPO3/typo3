@@ -12,7 +12,7 @@
  */
 
 import * as $ from 'jquery';
-import 'datatables';
+import 'tablesort';
 import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import MessageUtility = require('TYPO3/CMS/Backend/Utility/MessageUtility');
@@ -163,11 +163,10 @@ class Scheduler {
       this.actOnChangeSchedulerTableGarbageCollectionTable($(evt.currentTarget));
     });
 
-    $('table.taskGroup-table').DataTable({
-      'paging': false,
-      'info': false,
-      'searching': false,
-    });
+    const taskGroupTable = document.querySelector('table.taskGroup-table');
+    if (taskGroupTable !== null) {
+      new Tablesort(taskGroupTable);
+    }
 
     $(document).on('click', '.t3js-element-browser', (e: JQueryEventObject): void => {
       e.preventDefault();

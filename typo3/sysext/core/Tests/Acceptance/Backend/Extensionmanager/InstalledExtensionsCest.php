@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Extensionmanager;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Codeception\Util\Locator;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 /**
@@ -44,7 +43,7 @@ class InstalledExtensionsCest
 
         // Fill extension search field
         $I->fillField('Tx_Extensionmanager_extensionkey', 'backend');
-        $I->waitForElementNotVisible(Locator::contains('#typo3-extension-list', 'core'));
+        $I->waitForElementNotVisible('tr#core');
 
         // see 2 rows. 1 for the header and one for the result
         $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', 3);

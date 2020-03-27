@@ -16,10 +16,11 @@ import * as NProgress from 'nprogress';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
-import 'datatables';
+import 'tablesort';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class Repository {
   public downloadPath: string = '';
@@ -27,67 +28,32 @@ class Repository {
   public initDom(): void {
     NProgress.configure({parent: '.module-loading-indicator', showSpinner: false});
 
-    $('#terTable').DataTable({
-      lengthChange: false,
-      pageLength: 15,
-      stateSave: false,
-      info: false,
-      paging: false,
-      searching: false,
-      ordering: false,
-      drawCallback: this.bindDownload,
-    });
+    const terVersionTable = document.getElementById('terVersionTable');
+    const terSearchTable = document.getElementById('terSearchTable');
 
-    $('#terVersionTable').DataTable({
-      lengthChange: false,
-      pageLength: 15,
-      stateSave: false,
-      info: false,
-      paging: false,
-      searching: false,
-      drawCallback: this.bindDownload,
-      order: [
-        [2, 'asc'],
-      ],
-      columns: [
-        {orderable: false},
-        {orderable: false},
-        {type: 'version'},
-        {orderable: false},
-        null,
-        {orderable: false},
-      ],
-    });
-
-    $('#terSearchTable').DataTable({
-      paging: false,
-      lengthChange: false,
-      stateSave: false,
-      info: false,
-      searching: false,
-      language: {
-        search: 'Filter results:',
-      },
-      ordering: false,
-      drawCallback: this.bindDownload,
-    });
+    if (terVersionTable !== null) {
+      new Tablesort(terVersionTable);
+    }
+    if (terSearchTable !== null) {
+      new Tablesort(terSearchTable);
+    }
 
     this.bindDownload();
     this.bindSearchFieldResetter();
   }
 
   private bindDownload(): void {
-    const installButtons = $('.downloadFromTer form.download button[type=submit]');
-    installButtons.off('click');
-    installButtons.on('click', (event: JQueryEventObject): void => {
-      event.preventDefault();
-      const $element: any = $(event.currentTarget);
-      const $form = $element.closest('form');
-      const url = $form.attr('data-href');
-      this.downloadPath = $form.find('input.downloadPath:checked').val();
-      NProgress.start()
-      new AjaxRequest(url).get().then(this.getDependencies);
-    });
+    const me = this;
+    new RegularEvent('click', function (this: HTMLInputElement, e: Event): void {
+      e.preventDefault();
+
+      const form = this.closest('form');
+      const url = form.dataset.href;
+      me.downloadPath = (form.querySelector('input.downloadPath:checked') as HTMLInputElement).value;
+      NProgress.start();
+      new AjaxRequest(url).get().then(me.getDependencies);
+
+    }).delegateTo(document, '.downloadFromTer form.download button[type=submit]');
   }
 
   private getDependencies = async(response: AjaxResponse): Promise<void> => {

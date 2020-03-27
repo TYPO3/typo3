@@ -35,7 +35,7 @@ class GetExtensionsCest
         $I->waitForElementVisible('#typo3-extension-list');
 
         $I->selectOption('[name="ExtensionManagerModuleMenu"]', 'Get Extensions');
-        $I->waitForElementVisible('#terTable_wrapper');
+        $I->waitForElementVisible('#terTable');
 
         // We expect exact two extensions created from the Fixtures
         $I->seeNumberOfElements('#terTable tbody tr', 2);

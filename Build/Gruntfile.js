@@ -497,7 +497,8 @@ module.exports = function (grunt) {
         },
         files: {
           'nprogress.js': 'nprogress/nprogress.js',
-          'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
+          'tablesort.js': 'tablesort/dist/tablesort.min.js',
+          'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
           'require.js': 'requirejs/require.js',
           'moment.js': 'moment/min/moment-with-locales.min.js',
           'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',

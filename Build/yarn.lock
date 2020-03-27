@@ -147,13 +147,6 @@
   resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-4.9.8.tgz#2585bfea409c0d9e970d04611fb22726c6a6d219"
   integrity sha512-UM2t8mRul1vT/Al3c1L5elal925YstzcBQHLHk+hVvEoFOUkQKokePnGgD1L7K9n4h3hoPDDwc5jEKeUU3UxMw==
 
-"@types/datatables.net@^1.10.17":
-  version "1.10.18"
-  resolved "https://registry.yarnpkg.com/@types/datatables.net/-/datatables.net-1.10.18.tgz#620c318cdd4a4a11b2e1c619b6747745a25c1d8d"
-  integrity sha512-uz80YsSHTLGd14/A3P4+EIp4n5SqBIbjtd2Hl7SwsXl/9zpsXzE2OY+sz0Gm8TF2jPfsKl0+9yB7/8RtoD3qoA==
-  dependencies:
-    "@types/jquery" "*"
-
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -2018,13 +2011,6 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
-
-datatables@^1.10.13:
-  version "1.10.18"
-  resolved "https://registry.yarnpkg.com/datatables/-/datatables-1.10.18.tgz#fee16e82aa70b17c5faf1a6954ac68f404f33a70"
-  integrity sha512-ntatMgS9NN6UMpwbmO+QkYJuKlVeMA2Mi0Gu/QxyIh+dW7ZjLSDhPT2tWlzjpIWEkDYgieDzS9Nu7bdQCW0sbQ==
-  dependencies:
-    jquery ">=1.7"
 
 date-format@^2.0.0:
   version "2.1.0"
@@ -8163,6 +8149,11 @@ table@^5.2.3:
     lodash "^4.17.14"
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
+
+tablesort@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/tablesort/-/tablesort-5.2.0.tgz#132643eaebf31b5e17d6e90222aa24ee11d9b4e6"
+  integrity sha512-uiG1z/yvuZPod3uesK78bNMtLisnbQzNeD+CDQSZsrZTK2AzMjCmrTa1NUPBVLwD43VxJnIUYlrTM1jYl+HZFQ==
 
 taboverride@^4.0.3:
   version "4.0.3"

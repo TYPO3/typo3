@@ -2,9 +2,9 @@
 <table id="{tableId}" class="table table-striped table-hover extension-list">
     <thead>
         <tr>
-            <th><f:translate key="extensionList.header.extensionActions"/></th>
+            <th data-sort-method="none"><f:translate key="extensionList.header.extensionActions"/></th>
             <th><f:translate key="extensionList.header.extensionName"/></th>
-            <th><f:translate key="extensionList.header.version"/></th>
+            <th data-sort-method="dotsep"><f:translate key="extensionList.header.version"/></th>
             <th><f:translate key="extensionList.header.uploadComment"/></th>
             <th><f:translate key="extensionList.header.lastUpdate"/></th>
             <th><f:translate key="extensionList.header.extensionState"/></th>
@@ -17,7 +17,7 @@
                 <td>{extension.title}</th>
                 <td>{extension.version}</td>
                 <td><f:format.nl2br>{extension.updateComment}</f:format.nl2br></td>
-                <td><f:format.date>{extension.lastUpdated}</f:format.date></td>
+                <td data-sort="{f:format.date(date: extension.lastUpdated, format: 'U')}"><f:format.date>{extension.lastUpdated}</f:format.date></td>
                 <td><span class="label label-{extension.stateString}">{extension.stateString}</span></td>
             </tr>
         </f:for>

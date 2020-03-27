@@ -49,24 +49,24 @@
         <table id="typo3-extension-list" class="table table-striped table-hover extension-list">
             <thead>
                 <tr>
-                    <th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
-                    <th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
-                    <th><f:translate key="extensionList.header.extensionName"/></th>
-                    <th><f:translate key="extensionList.header.extensionKey"/></th>
-                    <th><f:translate key="extensionList.header.extensionVersion"/></th>
-                    <th><f:translate key="extensionList.header.extensionState"/></th>
+                    <th data-sort-method="none" title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
+                    <th data-sort-method="none" title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
+                    <th data-filterable><f:translate key="extensionList.header.extensionName"/></th>
+                    <th data-filterable data-sort-default><f:translate key="extensionList.header.extensionKey"/></th>
+                    <th data-sort-method="dotsep"><f:translate key="extensionList.header.extensionVersion"/></th>
+                    <th data-sort-method="none"><f:translate key="extensionList.header.extensionState"/></th>
                     <th><f:translate key="extensionList.header.extensionType"/></th>
-                    <th><f:translate key="extensionList.header.extensionActions"/></th>
+                    <th data-sort-method="none"><f:translate key="extensionList.header.extensionActions"/></th>
                 </tr>
             </thead>
             <tbody>
                 <f:for each="{extensions}" as="extension" key="extensionKey">
                     <f:if condition="{extension.terObject}">
                         <f:then>
-                            <tr id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} == -1', then:'insecure')}{f:if(condition:'{extension.terObject.reviewState} == -2', then:'outdated')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
+                            <tr role="row" id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} == -1', then:'insecure')}{f:if(condition:'{extension.terObject.reviewState} == -2', then:'outdated')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
                         </f:then>
                         <f:else>
-                            <tr id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
+                            <tr role="row" id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
                         </f:else>
                     </f:if>
                     <td>

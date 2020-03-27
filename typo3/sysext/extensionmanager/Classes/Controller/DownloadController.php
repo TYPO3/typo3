@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
@@ -213,7 +214,7 @@ class DownloadController extends AbstractController
                 foreach ($messages as $message) {
                     $this->addFlashMessage(
                         $message['message'],
-                        \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                        LocalizationUtility::translate(
                             'distribution.error.headline',
                             'extensionmanager',
                             [$extensionKey]
@@ -231,12 +232,12 @@ class DownloadController extends AbstractController
         } else {
             // FlashMessage that extension is installed
             $this->addFlashMessage(
-                \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                LocalizationUtility::translate(
                     'distribution.welcome.message',
                     'extensionmanager',
                     [$extension->getExtensionKey()]
                 ),
-                \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager')
+                LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager')
             );
 
             // Redirect to show action

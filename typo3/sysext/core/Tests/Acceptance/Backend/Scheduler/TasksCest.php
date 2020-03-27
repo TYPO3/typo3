@@ -157,7 +157,7 @@ class TasksCest
         $this->createASchedulerTask($I);
 
         $I->amGoingTo('test the new task group button on task edit view');
-        $I->click('#DataTables_Table_0 > tbody > tr > td.nowrap > span > div:nth-child(1) > a:nth-child(1)');
+        $I->click('.taskGroup-table > tbody > tr > td.nowrap > span > div:nth-child(1) > a:nth-child(1)');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit task', 'h2');
         $I->click('#task_group_row > div > div > div > div > a');
