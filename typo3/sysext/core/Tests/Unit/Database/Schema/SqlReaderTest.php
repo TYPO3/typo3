@@ -111,4 +111,42 @@ class SqlReaderTest extends UnitTestCase
         $this->assertCount(1, $result);
         $this->assertStringStartsWith('CREATE TABLE', array_pop($result));
     }
+
+    /**
+     * @param string $comment
+     * @dataProvider commentProvider
+     * @test
+     */
+    public function getCreateTableStatementArrayResultWithComment(string $comment)
+    {
+        $subject = new SqlReader($this->prophesize(Dispatcher::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
+        $result = $subject->getCreateTableStatementArray(
+            $comment . LF . 'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
+            LF .
+            'INSERT INTO aTestTable(`aTestField`) VALUES(1);'
+        );
+        self::assertCount(1, $result);
+        self::assertStringStartsWith('CREATE TABLE', array_pop($result));
+    }
+
+    public function commentProvider(): array
+    {
+        return [
+            'Single line comment starting with "#"' => [
+                '# Comment'
+            ],
+            'Single line comment starting with "--"' => [
+                '-- Comment'
+            ],
+            'Single line c-style comment' => [
+                '/* Same line c-style comment */'
+            ],
+            'Multiline comment variant 1' => [
+                '/*' . LF . 'Some comment text' . LF . 'more text' . LF . '*/'
+            ],
+            'Multiline comment variant 2' => [
+                '/* More' . LF . ' comments */'
+            ]
+        ];
+    }
 }

@@ -90,11 +90,21 @@ class SqlReader
     {
         $statementArray = [];
         $statementArrayPointer = 0;
+        $isInMultilineComment = false;
         foreach (explode(LF, $dumpContent) as $lineContent) {
             $lineContent = trim($lineContent);
 
             // Skip empty lines and comments
-            if ($lineContent === '' || $lineContent[0] === '#' || strpos($lineContent, '--') === 0) {
+            if ($lineContent === '' || $lineContent[0] === '#' || strpos($lineContent, '--') === 0 ||
+                strpos($lineContent, '/*') === 0 || substr($lineContent, -2) === '*/' || $isInMultilineComment
+            ) {
+                // skip c style multiline comments
+                if (strpos($lineContent, '/*') === 0 && substr($lineContent, -2) !== '*/') {
+                    $isInMultilineComment = true;
+                }
+                if (substr($lineContent, -2) === '*/') {
+                    $isInMultilineComment = false;
+                }
                 continue;
             }
 
