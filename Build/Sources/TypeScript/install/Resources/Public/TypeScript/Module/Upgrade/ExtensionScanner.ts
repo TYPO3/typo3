@@ -328,7 +328,7 @@ class ExtensionScanner extends AbstractInteractableModule {
             });
           });
         } else {
-          Notification.error('Oops, an error occurred', 'Please look at the console output for details');
+          Notification.error('Oops, an error occurred', 'Please look at the browser console output for details');
           console.error(data);
         }
       },
