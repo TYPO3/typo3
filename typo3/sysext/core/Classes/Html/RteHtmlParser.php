@@ -373,10 +373,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     continue;
                 }
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
-                $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
-
                 // Store the link as <a> tag as default by TYPO3, with the link service syntax
                 try {
+                    $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
                     $tagAttributes['href'] = $linkService->asString($linkInformation);
                 } catch (UnknownLinkHandlerException $e) {
                     $tagAttributes['href'] = $linkInformation['href'] ?? $tagAttributes['href'];
@@ -815,12 +814,17 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             if (empty($attributes['href'])) {
                 continue;
             }
-            $hrefInformation = $linkService->resolve($attributes['href']);
 
-            $brokenLinkAnalysis = new BrokenLinkAnalysisEvent($hrefInformation['type'], $hrefInformation);
-            $this->eventDispatcher->dispatch($brokenLinkAnalysis);
-            if ($brokenLinkAnalysis->isBrokenLink()) {
-                $attributes['data-rte-error'] = $brokenLinkAnalysis->getReason();
+            try {
+                $hrefInformation = $linkService->resolve($attributes['href']);
+
+                $brokenLinkAnalysis = new BrokenLinkAnalysisEvent($hrefInformation['type'], $hrefInformation);
+                $this->eventDispatcher->dispatch($brokenLinkAnalysis);
+                if ($brokenLinkAnalysis->isBrokenLink()) {
+                    $attributes['data-rte-error'] = $brokenLinkAnalysis->getReason();
+                }
+            } catch (UnknownLinkHandlerException $e) {
+                $attributes['data-rte-error'] = $e->getMessage();
             }
 
             // Always rewrite the block to allow the nested calling even if a page is found

@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -5023,7 +5024,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $linkService = GeneralUtility::makeInstance(LinkService::class);
         try {
             $linkDetails = $linkService->resolve($linkParameter);
-        } catch (Exception\InvalidPathException $exception) {
+        } catch (UnknownLinkHandlerException | Exception\InvalidPathException $exception) {
             $this->logger->warning('The link could not be generated', ['exception' => $exception]);
             return $linkText;
         }
