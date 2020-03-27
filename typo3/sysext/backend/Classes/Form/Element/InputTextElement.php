@@ -92,13 +92,21 @@ class InputTextElement extends AbstractFormElement
             if (in_array('password', $evalList, true)) {
                 $itemValue = $itemValue ? '*********' : '';
             }
+
+            $disabledFieldAttributes = [
+                'class' => 'form-control',
+                'data-formengine-input-name' => $parameterArray['itemFormElName'],
+                'type' => 'text',
+                'value' => $itemValue,
+            ];
+
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
+            $html[] =               '<input ' . GeneralUtility::implodeAttributes($disabledFieldAttributes, true) . ' disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
