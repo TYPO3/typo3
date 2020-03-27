@@ -1803,10 +1803,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * See if page is in cache and get it if so
      * Stores the page content in $this->content if something is found.
      *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @param ServerRequestInterface|null $request if given this is used to determine values in headerNoCache() instead of the superglobal $_SERVER
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    public function getFromCache()
+    public function getFromCache(ServerRequestInterface $request = null)
     {
         // clearing the content-variable, which will hold the pagecontent
         $this->content = '';
@@ -1854,7 +1854,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Look for page in cache only if a shift-reload is not sent to the server.
         $lockHash = $this->getLockHash();
-        if (!$this->headerNoCache() && $this->all) {
+        if (!$this->headerNoCache($request) && $this->all) {
             // we got page section information (TypoScript), so lets see if there is also a cached version
             // of this page in the pages cache.
             $this->newHash = $this->getHash();
@@ -1949,13 +1949,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Will not be called if re-generation of page happens by other reasons (for instance that the page is not in cache yet!)
      * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
      *
+     * @param ServerRequestInterface|null $request
      * @return bool If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
      */
-    public function headerNoCache()
+    public function headerNoCache(ServerRequestInterface $request = null)
     {
+        if ($request instanceof ServerRequestInterface) {
+            $serverParams = $request->getServerParams();
+        } else {
+            $serverParams = $_SERVER;
+        }
         $disableAcquireCacheData = false;
         if ($this->isBackendUserLoggedIn()) {
-            if (strtolower($_SERVER['HTTP_CACHE_CONTROL']) === 'no-cache' || strtolower($_SERVER['HTTP_PRAGMA']) === 'no-cache') {
+            if (strtolower($serverParams['HTTP_CACHE_CONTROL']) === 'no-cache' || strtolower($serverParams['HTTP_PRAGMA']) === 'no-cache') {
                 $disableAcquireCacheData = true;
             }
         }
@@ -2063,10 +2069,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($this->tmpl->loaded) {
                 $timeTracker->push('Setting the config-array');
                 // toplevel - objArrayName
-                $this->sPre = $this->tmpl->setup['types.'][$this->type];
-                $this->pSetup = $this->tmpl->setup[$this->sPre . '.'];
+                $typoScriptPageTypeName = $this->tmpl->setup['types.'][$this->type];
+                $this->sPre = $typoScriptPageTypeName;
+                $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'];
                 if (!is_array($this->pSetup)) {
-                    $message = 'The page is not configured! [type=' . $this->type . '][' . $this->sPre . '].';
+                    $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
                     $this->logger->alert($message);
                     try {
                         $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
@@ -2102,6 +2109,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
                     if (!isset($this->config['config']['compressJs'])) {
                         $this->config['config']['compressJs'] = 0;
+                    }
+                    // Rendering charset of HTML page.
+                    if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
+                        $this->metaCharset = $this->config['config']['metaCharset'];
                     }
                     // Setting default cache_timeout
                     if (isset($this->config['config']['cache_period'])) {
@@ -2172,11 +2183,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
             GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
-        }
-
-        // Rendering charset of HTML page.
-        if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
-            $this->metaCharset = $this->config['config']['metaCharset'];
         }
 
         // Get values from site language

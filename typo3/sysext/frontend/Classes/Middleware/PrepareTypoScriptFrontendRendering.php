@@ -63,7 +63,7 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         // Get from cache
         $this->timeTracker->push('Get Page from cache');
         // Locks may be acquired here
-        $this->controller->getFromCache();
+        $this->controller->getFromCache($request);
         $this->timeTracker->pull();
         // Get config if not already gotten
         // After this, we should have a valid config-array ready
