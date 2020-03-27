@@ -240,6 +240,7 @@ class TreeController
      */
     protected function pagesToFlatArray(array $page, int $entryPoint, int $depth = 0, array $inheritedData = []): array
     {
+        $backendUser = $this->getBackendUser();
         $pageId = (int)$page['uid'];
         if (in_array($pageId, $this->hiddenRecords, true)) {
             return [];
@@ -297,7 +298,10 @@ class TreeController
             'checked' => false,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
-            'allowDelete' => $this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_DELETE)
+            'allowDelete' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_DELETE),
+            'allowEdit' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_EDIT)
+                && $backendUser->check('tables_modify', 'pages')
+                && $backendUser->checkLanguageAccess(0)
         ];
 
         if (!empty($page['_children'])) {
