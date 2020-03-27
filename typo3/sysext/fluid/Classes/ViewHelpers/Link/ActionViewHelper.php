@@ -120,6 +120,9 @@ class ActionViewHelper extends AbstractTagBasedViewHelper
         }
 
         $uri = $uriBuilder->uriFor($action, $parameters, $controller, $extensionName, $pluginName);
+        if ($uri === '') {
+            return $this->renderChildren();
+        }
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($this->renderChildren());
         $this->tag->forceClosingTag(true);
