@@ -85,6 +85,9 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
             ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
             ->setAddQueryStringMethod($addQueryStringMethod)
             ->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
+        if ($uri === '') {
+            return $this->renderChildren();
+        }
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($this->renderChildren());
         $this->tag->forceClosingTag(true);
