@@ -1046,11 +1046,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $file File TypoScript resource
      * @param array $conf TypoScript configuration properties
      * @return string HTML <img> tag, (possibly wrapped in links and other HTML) if any image found.
-     * @internal
+     * @deprecated will be removed in TYPO3 v11.0
      * @see IMAGE()
      */
     public function cImage($file, $conf)
     {
+        trigger_error('cObj->cImage() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject now.', E_USER_DEPRECATED);
         $tsfe = $this->getTypoScriptFrontendController();
         $info = $this->getImgResource($file, $conf['file.']);
         $tsfe->lastImageInfo = $info;
@@ -1115,9 +1116,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $borderAttr The border attribute
      * @return string The border attribute
+     * @deprecated will be removed in TYPO3 v11.0.
      */
     public function getBorderAttr($borderAttr)
     {
+        trigger_error('cObj->getBorderAttr() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
         $tsfe = $this->getTypoScriptFrontendController();
         $docType = $tsfe->xhtmlDoctype;
         if (
@@ -1137,9 +1140,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $layoutKey rendering key
      * @param array $conf TypoScript configuration properties
      * @return string
+     * @deprecated will be removed in TYPO3 v11.0.
      */
     public function getImageTagTemplate($layoutKey, $conf)
     {
+        trigger_error('cObj->getImageTagTemplate() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
         if ($layoutKey && isset($conf['layout.']) && isset($conf['layout.'][$layoutKey . '.'])) {
             $imageTagLayout = $this->stdWrap(
                 $conf['layout.'][$layoutKey . '.']['element'] ?? '',
@@ -1159,9 +1164,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $file
      * @throws \UnexpectedValueException
      * @return string
+     * @deprecated will be removed in TYPO3 v11.0.
      */
     public function getImageSourceCollection($layoutKey, $conf, $file)
     {
+        trigger_error('cObj->getImageSourceCollection() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
         $sourceCollection = '';
         if ($layoutKey
             && isset($conf['sourceCollection.']) && $conf['sourceCollection.']
@@ -1289,6 +1296,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript properties for the "imageLinkWrap" function
      * @return string The input string, $string, wrapped as configured.
      * @see cImage()
+     * @internal This method should be used within TYPO3 Core only
      */
     public function imageLinkWrap($string, $imageFile, $conf)
     {
@@ -1446,9 +1454,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return string Wrapped output string
      * @see wrap()
      * @see cImage()
+     * @deprecated will be removed in TYPO3 v11.0.
      */
     public function linkWrap($content, $wrap)
     {
+        trigger_error('cObj->linkWrap() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
         $wrapArr = explode('|', $wrap);
         if (preg_match('/\\{([0-9]*)\\}/', $wrapArr[0], $reg)) {
             $uid = $this->getTypoScriptFrontendController()->tmpl->rootLine[$reg[1]]['uid'] ?? null;
@@ -1466,10 +1476,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript configuration properties
      * @param bool $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
      * @return string Parameter string containing alt and title parameters (if any)
-     * @see cImage()
+     * @deprecated will be removed in TYPO3 v11.0.
      */
     public function getAltParam($conf, $longDesc = true)
     {
+        trigger_error('cObj->getAltParam() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
         $altText = isset($conf['altText.']) ? trim($this->stdWrap($conf['altText'], $conf['altText.'])) : trim($conf['altText']);
         $titleText = isset($conf['titleText.']) ? trim($this->stdWrap($conf['titleText'], $conf['titleText.'])) : trim($conf['titleText']);
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
