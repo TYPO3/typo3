@@ -109,21 +109,16 @@ Manual repair suggestions:
                 ->orderBy('uid')
                 ->execute();
 
-            $totalOrphans = 0;
             $rowCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
             if ($rowCount) {
                 $orphans[$tableName] = [];
                 while ($orphanRecord = $result->fetch()) {
                     $orphans[$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];
                 }
-                $totalOrphans += count($orphans[$tableName]);
 
-                if ($io->isVeryVerbose() && count($orphans[$tableName])) {
-                    $io->writeln('Found ' . count($orphans[$tableName]) . ' orphan records in table "' . $tableName . '".');
+                if (count($orphans[$tableName])) {
+                    $io->note('Found ' . count($orphans[$tableName]) . ' orphan records in table "' . $tableName . '" with following ids: ' . implode(', ', $orphans[$tableName]));
                 }
-            }
-            if (!$io->isQuiet() && $totalOrphans) {
-                $io->note('Found ' . $totalOrphans . ' records in ' . count($orphans) . ' database tables.');
             }
         }
 
