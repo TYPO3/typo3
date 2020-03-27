@@ -152,8 +152,7 @@ class ScenarioETest extends AbstractLocalizedPagesTestCase
                 'menu' => [
                     ['title' => 'DE: Über uns', 'link' => '/de-ch/ueber-uns'],
                     ['title' => 'DE: Produkte', 'link' => '/de-ch/produkte'],
-                    // FIXME: Page "EN: Shortcut to welcome" must to be rendered in menu, needs a refactored menu generation
-                    ['title' => 'EN: Shortcut to welcome', 'link' => ''],
+                    ['title' => 'EN: Shortcut to welcome', 'link' => '/de-ch/hello'],
                 ],
             ],
             [
@@ -161,8 +160,7 @@ class ScenarioETest extends AbstractLocalizedPagesTestCase
                 'menu' => [
                     ['title' => 'DE: Über uns', 'link' => '/de-ch/ueber-uns'],
                     ['title' => 'DE: Produkte', 'link' => '/de-ch/produkte'],
-                    // FIXME: Page "EN: Shortcut to welcome" must to be rendered in menu, needs a refactored menu generation
-                    ['title' => 'EN: Shortcut to welcome', 'link' => ''],
+                    ['title' => 'EN: Shortcut to welcome', 'link' => '/de-ch/hello'],
                 ],
             ],
         ];

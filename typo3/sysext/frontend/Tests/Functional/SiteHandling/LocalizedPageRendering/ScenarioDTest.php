@@ -167,8 +167,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
                 'menu' => [
                     ['title' => 'DE-CH: Über uns', 'link' => '/de-ch/ueber-uns'],
                     ['title' => 'DE-CH: Produkte', 'link' => '/de-ch/produkte'],
-                    // FIXME: Page "EN: Shortcut to welcome" must to be rendered in menu, needs a refactored menu generation
-                    ['title' => 'EN: Shortcut to welcome', 'link' => '/de-ch/hello'],
+                    ['title' => 'EN: Shortcut to welcome', 'link' => ''],
                 ],
             ],
         ];
