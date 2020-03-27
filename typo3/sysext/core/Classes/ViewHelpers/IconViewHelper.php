@@ -68,11 +68,11 @@ class IconViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('identifier', 'string', 'the table for the record icon', true);
-        $this->registerArgument('size', 'string', 'the icon size', false, Icon::SIZE_SMALL);
-        $this->registerArgument('overlay', 'string', '', false, null);
-        $this->registerArgument('state', 'string', '', false, IconState::STATE_DEFAULT);
-        $this->registerArgument('alternativeMarkupIdentifier', 'string', '', false, null);
+        $this->registerArgument('identifier', 'string', 'Identifier of the icon as registered in the Icon Registry.', true);
+        $this->registerArgument('size', 'string', 'Desired size of the icon. All values of the Icons.sizes enum are allowed, these are: "small", "default", "large" and "overlay".', false, Icon::SIZE_SMALL);
+        $this->registerArgument('overlay', 'string', 'Identifier of an overlay icon as registered in the Icon Registry.', false, null);
+        $this->registerArgument('state', 'string', 'Sets the state of the icon. All values of the Icons.states enum are allowed, these are: "default" and "disabled".', false, IconState::STATE_DEFAULT);
+        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative icon identifier. Takes precedence over the identifier if supported by the IconProvider.', false, null);
     }
 
     /**
