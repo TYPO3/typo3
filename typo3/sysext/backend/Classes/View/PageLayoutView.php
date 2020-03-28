@@ -216,6 +216,7 @@ class PageLayoutView implements LoggerAwareInterface
         /** @var PageLayoutView $pageLayoutView */
         $pageLayoutView = GeneralUtility::makeInstance(self::class);
         $pageLayoutView->id = $drawingConfiguration->getPageId();
+        $pageLayoutView->pageinfo = BackendUtility::readPageAccess($pageLayoutView->id, '');
         $pageLayoutView->pageRecord = $drawingConfiguration->getPageRecord();
         $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
         $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
