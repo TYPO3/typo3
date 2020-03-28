@@ -65,7 +65,7 @@ class AssetCollector implements SingletonInterface
      */
     protected $media = [];
 
-    public function addJavaScript(string $identifier, string $source, array $attributes, array $options = []): self
+    public function addJavaScript(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->javaScripts[$identifier]['attributes'] ?? [];
         ArrayUtility::mergeRecursiveWithOverrule($existingAttributes, $attributes);
@@ -79,7 +79,7 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
-    public function addInlineJavaScript(string $identifier, string $source, array $attributes, array $options = []): self
+    public function addInlineJavaScript(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->inlineJavaScripts[$identifier]['attributes'] ?? [];
         ArrayUtility::mergeRecursiveWithOverrule($existingAttributes, $attributes);
@@ -93,7 +93,7 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
-    public function addStyleSheet(string $identifier, string $source, array $attributes, array $options = []): self
+    public function addStyleSheet(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->styleSheets[$identifier]['attributes'] ?? [];
         ArrayUtility::mergeRecursiveWithOverrule($existingAttributes, $attributes);
@@ -107,7 +107,7 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
-    public function addInlineStyleSheet(string $identifier, string $source, array $attributes, array $options = []): self
+    public function addInlineStyleSheet(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->inlineStyleSheets[$identifier]['attributes'] ?? [];
         ArrayUtility::mergeRecursiveWithOverrule($existingAttributes, $attributes);
