@@ -65,6 +65,13 @@ class AssetCollector implements SingletonInterface
      */
     protected $media = [];
 
+    /**
+     * @param string $identifier
+     * @param string $source URI to JavaScript file (allows EXT: syntax)
+     * @param array $attributes additional HTML <script> tag attributes
+     * @param array $options ['priority' => true] means rendering before other tags
+     * @return AssetCollector
+     */
     public function addJavaScript(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->javaScripts[$identifier]['attributes'] ?? [];
@@ -79,6 +86,13 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
+    /**
+     * @param string $identifier
+     * @param string $source JavaScript code
+     * @param array $attributes additional HTML <script> tag attributes
+     * @param array $options ['priority' => true] means rendering before other tags
+     * @return AssetCollector
+     */
     public function addInlineJavaScript(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->inlineJavaScripts[$identifier]['attributes'] ?? [];
@@ -93,6 +107,13 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
+    /**
+     * @param string $identifier
+     * @param string $source URI to stylesheet file (allows EXT: syntax)
+     * @param array $attributes additional HTML <link> tag attributes
+     * @param array $options ['priority' => true] means rendering before other tags
+     * @return AssetCollector
+     */
     public function addStyleSheet(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->styleSheets[$identifier]['attributes'] ?? [];
@@ -107,6 +128,13 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
+    /**
+     * @param string $identifier
+     * @param string $source stylesheet code
+     * @param array $attributes additional HTML <link> tag attributes
+     * @param array $options ['priority' => true] means rendering before other tags
+     * @return AssetCollector
+     */
     public function addInlineStyleSheet(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
         $existingAttributes = $this->inlineStyleSheets[$identifier]['attributes'] ?? [];

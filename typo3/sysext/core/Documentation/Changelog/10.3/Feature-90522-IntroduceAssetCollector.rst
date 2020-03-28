@@ -64,6 +64,39 @@ There are also two new ViewHelpers, the :html:`<f:asset.css>` and the - :html:`<
       alert('hello world');
    </f:asset.script>
 
+Considerations
+--------------
+
+Currently, assets registered with the AssetCollector are not included in callbacks of these hooks:
+
+- :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler']`
+
+Currently, CSS and JavaScript registered with the AssetCollector will always be rendered after their
+PageRenderer counterparts. The order is:
+
+- :html:`<head>`
+- :ts:`page.includeJSLibs.forceOnTop`
+- :ts:`page.includeJSLibs`
+- :ts:`page.includeJS.forceOnTop`
+- :ts:`page.includeJS`
+- :php:`AssetCollector::addJavaScript()` with 'priority'
+- :ts:`page.jsInline`
+- :php:`AssetCollector::addInlineJavaScript()` with 'priority'
+- :html:`</head>`
+
+- :ts:`page.includeJSFooterlibs.forceOnTop`
+- :ts:`page.includeJSFooterlibs`
+- :ts:`page.includeJSFooter.forceOnTop`
+- :ts:`page.includeJSFooter`
+- :php:`AssetCollector::addJavaScript()`
+- :ts:`page.jsFooterInline`
+- :php:`AssetCollector::addInlineJavaScript()`
+
+Currently, JavaScript registered with AssetCollector is not affected by
+:ts:`config.moveJsFromHeaderToFooter`.
 
 Examples
 --------
