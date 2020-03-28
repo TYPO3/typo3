@@ -80,7 +80,7 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
-        $identifier = $this->arguments['identifier'];
+        $identifier = (string)$this->arguments['identifier'];
         $attributes = $this->tag->getAttributes();
         $src = $this->tag->getAttribute('src');
         unset($attributes['src']);

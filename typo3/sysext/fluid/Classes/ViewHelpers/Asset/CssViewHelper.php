@@ -84,7 +84,7 @@ class CssViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
-        $identifier = $this->arguments['identifier'];
+        $identifier = (string)$this->arguments['identifier'];
         $attributes = $this->tag->getAttributes();
         $file = $this->tag->getAttribute('href');
         unset($attributes['href']);
