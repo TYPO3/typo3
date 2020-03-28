@@ -2,14 +2,6 @@
 <f:layout name="FormManager" />
 <f:section name="MainContent">
 
-    <script>
-        require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.viewModel}'], function (formManagerApp, viewModel) {
-            var FORMMANAGER_APP = formManagerApp.getInstance(
-                <f:format.htmlentitiesDecode>{formManagerAppInitialData}</f:format.htmlentitiesDecode>,
-                viewModel
-            ).run();
-        });
-    </script>
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
     <f:if condition="{paginator.paginatedItems}">
         <f:then>

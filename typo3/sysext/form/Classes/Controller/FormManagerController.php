@@ -106,6 +106,15 @@ class FormManagerController extends AbstractBackendController
             $this->getPageRenderer()->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
         }
 
+        $requireJsModules = $this->formSettings['formManager']['dynamicRequireJsModules'];
+        $script = 'require([\'' . $requireJsModules['app'] . '\', \'' . $requireJsModules['viewModel'] . '\'], function (formManagerApp, viewModel) {
+            var FORMMANAGER_APP = formManagerApp.getInstance(
+                ' . html_entity_decode($this->getFormManagerAppInitialData()) . ',
+                viewModel
+            ).run();
+        });';
+        $this->getPageRenderer()->addJsInlineCode('formManagerIndex', $script);
+
         return $this->htmlResponse();
     }
 

@@ -120,7 +120,6 @@ class FormEditorController extends AbstractBackendController
             'maximumUndoSteps' => $this->prototypeConfiguration['formEditor']['maximumUndoSteps'],
         ];
 
-        $this->view->assign('formEditorAppInitialData', json_encode($formEditorAppInitialData));
         $this->view->assign('stylesheets', $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']));
         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
         $this->view->assign('dynamicRequireJsModules', $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']);
@@ -145,6 +144,21 @@ class FormEditorController extends AbstractBackendController
         );
 
         $this->view->assign('addInlineSettings', $addInlineSettings);
+
+        $formEditorAppInitialData = json_encode($formEditorAppInitialData);
+        if ($formEditorAppInitialData === false) {
+            throw new Exception('The form editor app data could not be encoded', 1628677079);
+        }
+
+        $requireJsModules = $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules'];
+        $script = 'require([\'' . $requireJsModules['app'] . '\', \'' . $requireJsModules['mediator'] . '\', \'' . $requireJsModules['viewModel'] . '\'], function (formEditorApp, mediator, viewModel) {
+            window.TYPO3.FORMEDITOR_APP = formEditorApp.getInstance(
+                ' . html_entity_decode($formEditorAppInitialData) . ',
+                mediator,
+                viewModel
+            ).run();
+        });';
+        $this->getPageRenderer()->addJsInlineCode('formEditorIndex', $script);
 
         return $this->htmlResponse();
     }

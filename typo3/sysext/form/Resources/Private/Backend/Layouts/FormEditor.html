@@ -25,13 +25,4 @@
         <f:render section="Inspector" />
     </section>
 </div>
-<script>
-    require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.mediator}', '{dynamicRequireJsModules.viewModel}'], function (formEditorApp, mediator, viewModel) {
-        window.TYPO3.FORMEDITOR_APP = formEditorApp.getInstance(
-            <f:format.htmlentitiesDecode>{formEditorAppInitialData}</f:format.htmlentitiesDecode>,
-            mediator,
-            viewModel
-        ).run();
-    });
-</script>
 </html>
