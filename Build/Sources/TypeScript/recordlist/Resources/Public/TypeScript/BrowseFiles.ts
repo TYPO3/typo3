@@ -57,6 +57,10 @@ class BrowseFiles {
         );
       });
 
+      new RegularEvent('change', (): void => {
+        BrowseFiles.Selector.toggleImportButton();
+      }).delegateTo(document, '.typo3-bulk-item');
+
       $('#t3js-importSelection').on('click', BrowseFiles.Selector.handle);
       $('#t3js-toggleSelection').on('click', BrowseFiles.Selector.toggle);
     });
@@ -102,6 +106,7 @@ class Selector {
         item.checked = (item.checked ? null : 'checked');
       });
     }
+    this.toggleImportButton();
   }
 
   /**
@@ -129,6 +134,11 @@ class Selector {
 
   public getItems(): JQuery {
     return $('#typo3-filelist').find('.typo3-bulk-item');
+  }
+
+  public toggleImportButton(): void {
+    const hasCheckedElements = document.querySelectorAll('#typo3-filelist .typo3-bulk-item:checked').length > 0;
+    document.getElementById('t3js-importSelection').classList.toggle('disabled', !hasCheckedElements);
   }
 
   private handleSelection(items: string[]): void {
