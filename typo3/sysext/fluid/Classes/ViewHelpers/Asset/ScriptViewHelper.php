@@ -54,11 +54,11 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         parent::registerUniversalTagAttributes();
-        $this->registerTagAttribute('async', 'string', '', false);
+        $this->registerTagAttribute('async', 'bool', '', false);
         $this->registerTagAttribute('crossorigin', 'string', '', false);
-        $this->registerTagAttribute('defer', 'string', '', false);
+        $this->registerTagAttribute('defer', 'bool', '', false);
         $this->registerTagAttribute('integrity', 'string', '', false);
-        $this->registerTagAttribute('nomodule', 'string', '', false);
+        $this->registerTagAttribute('nomodule', 'bool', '', false);
         $this->registerTagAttribute('nonce', 'string', '', false);
         $this->registerTagAttribute('referrerpolicy', 'string', '', false);
         $this->registerTagAttribute('src', 'string', '', false);
@@ -82,6 +82,14 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
     {
         $identifier = (string)$this->arguments['identifier'];
         $attributes = $this->tag->getAttributes();
+
+        // boolean attributes shall output attr="attr" if set
+        foreach (['async', 'defer', 'nomodule'] as $_attr) {
+            if ($attributes[$_attr] ?? false) {
+                $attributes[$_attr] = $_attr;
+            }
+        }
+
         $src = $this->tag->getAttribute('src');
         unset($attributes['src']);
         $options = [

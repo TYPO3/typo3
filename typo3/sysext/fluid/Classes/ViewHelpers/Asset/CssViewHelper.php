@@ -56,7 +56,7 @@ class CssViewHelper extends AbstractTagBasedViewHelper
         parent::registerUniversalTagAttributes();
         $this->registerTagAttribute('as', 'string', '', false);
         $this->registerTagAttribute('crossorigin', 'string', '', false);
-        $this->registerTagAttribute('disabled', 'string', '', false);
+        $this->registerTagAttribute('disabled', 'bool', '', false);
         $this->registerTagAttribute('href', 'string', '', false);
         $this->registerTagAttribute('hreflang', 'string', '', false);
         $this->registerTagAttribute('importance', 'string', '', false);
@@ -86,6 +86,12 @@ class CssViewHelper extends AbstractTagBasedViewHelper
     {
         $identifier = (string)$this->arguments['identifier'];
         $attributes = $this->tag->getAttributes();
+
+        // boolean attributes shall output attr="attr" if set
+        if ($attributes['disabled'] ?? false) {
+            $attributes['disabled'] = 'disabled';
+        }
+
         $file = $this->tag->getAttribute('href');
         unset($attributes['href']);
         $options = [
