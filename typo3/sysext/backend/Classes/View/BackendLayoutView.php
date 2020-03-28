@@ -332,7 +332,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      * @param int $pageId
      * @return array|null $backendLayout
      */
-    public function getSelectedBackendLayout($pageId): ?array
+    public function getSelectedBackendLayout($pageId)
     {
         $layout = $this->getBackendLayoutForPage((int)$pageId);
         if ($layout instanceof BackendLayout) {
@@ -362,11 +362,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
             $backendLayout = $this->getDataProviderCollection()->getBackendLayout('default', $pageId);
         }
 
-        $structure = null;
         if ($backendLayout instanceof BackendLayout) {
-            $structure = $this->parseStructure($backendLayout);
-            // Parse the configuration and inject it back in the backend layout object
-            $backendLayout->setStructure($structure);
             $this->selectedBackendLayout[$pageId] = $backendLayout;
         }
         return $backendLayout;

@@ -208,7 +208,7 @@ class BackendLayout
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
-        GeneralUtility::makeInstance(BackendLayoutView::class)->parseStructure($this);
+        $this->structure = GeneralUtility::makeInstance(BackendLayoutView::class)->parseStructure($this);
     }
 
     /**

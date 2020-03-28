@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
-use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -618,7 +617,9 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
-        $configuration = GeneralUtility::makeInstance(DrawingConfiguration::class);
+        $backendLayout = $this->backendLayouts->getBackendLayoutForPage((int)$this->id);
+
+        $configuration = $backendLayout->getDrawingConfiguration();
         $configuration->setPageId($this->id);
         $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
         $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
@@ -630,9 +631,6 @@ class PageLayoutController
         }
         $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
         $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
-
-        $backendLayout = $this->backendLayouts->getBackendLayoutForPage((int)$this->id);
-        $backendLayout->setDrawingConfiguration($configuration);
 
         if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
             $pageLayoutDrawer = $backendLayout->getBackendLayoutRenderer();
