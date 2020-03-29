@@ -85,7 +85,8 @@ class PermissionsViewHelper extends AbstractViewHelper
             }
 
             $label = static::$permissionLabels[$mask];
-            $icon .= '<span style="cursor:pointer"'
+            $icon .= '<button'
+                . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
                 . ' data-toggle="tooltip"'
                 . ' data-page="' . htmlspecialchars($arguments['pageId']) . '"'
@@ -93,7 +94,7 @@ class PermissionsViewHelper extends AbstractViewHelper
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
                 . ' data-bits="' . htmlspecialchars($mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
-                . ' class="t3-icon change-permission fa ' . htmlspecialchars($permissionClass) . '"></span>';
+                . ' class="t3-icon btn-clear change-permission fa ' . htmlspecialchars($permissionClass) . '"></button>';
         }
 
         return '<span id="' . htmlspecialchars($arguments['pageId'] . '_' . $arguments['scope']) . '">' . $icon . '</span>';

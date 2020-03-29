@@ -79,7 +79,7 @@ class Permissions {
       // Replace content
       $(elementSelector).replaceWith(data);
       // Reinitialize tooltip
-      $(elementSelector).find('span').tooltip();
+      $(elementSelector).find('button').tooltip();
     });
   }
 
