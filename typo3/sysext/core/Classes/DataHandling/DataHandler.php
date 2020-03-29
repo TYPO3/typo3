@@ -4741,7 +4741,15 @@ class DataHandler implements LoggerAwareInterface
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
             return;
         }
-        if (!$noRecordCheck && !$this->doesRecordExist($table, $uid, Permission::PAGE_DELETE)) {
+        if ($table === 'pages') {
+            $perms = Permission::PAGE_DELETE;
+        } elseif ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
+            // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
+            $perms = Permission::PAGE_EDIT;
+        } else {
+            $perms = Permission::CONTENT_EDIT;
+        }
+        if (!$noRecordCheck && !$this->doesRecordExist($table, $uid, $perms)) {
             return;
         }
 
@@ -5029,7 +5037,13 @@ class DataHandler implements LoggerAwareInterface
             $res = $this->canDeletePage($id);
             return is_array($res) ? false : $res;
         }
-        return $this->doesRecordExist($table, $id, Permission::PAGE_DELETE) ? false : 'No permission to delete record';
+        if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
+            // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
+            $perms = Permission::PAGE_EDIT;
+        } else {
+            $perms = Permission::CONTENT_EDIT;
+        }
+        return $this->doesRecordExist($table, $id, $perms) ? false : 'No permission to delete record';
     }
 
     /**
