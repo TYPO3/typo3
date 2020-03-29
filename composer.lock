@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c65f0882b32de19ad297d617c9392d55",
+    "content-hash": "dbd4b9d788bd42f0a0ec653c12ca0f6e",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2359,21 +2359,21 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "v2.2.3",
+            "version": "v2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "7ecc2253e2d97a52824fcdd4e2f632bae9936810"
+                "reference": "17243f398bf027ba56be6507c11ab957b15bbe3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/7ecc2253e2d97a52824fcdd4e2f632bae9936810",
-                "reference": "7ecc2253e2d97a52824fcdd4e2f632bae9936810",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/17243f398bf027ba56be6507c11ab957b15bbe3b",
+                "reference": "17243f398bf027ba56be6507c11ab957b15bbe3b",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": ">=7.0.0 <=7.4"
+                "php": ">=7.0.0 <7.5"
             },
             "conflict": {
                 "composer/installers": "<1.0.24 || >1.0.24"
@@ -2422,7 +2422,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2019-09-24T22:09:42+00:00"
+            "time": "2019-12-18T20:02:06+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
@@ -3220,12 +3220,12 @@
             "version": "1.6.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/facebook/php-webdriver.git",
+                "url": "https://github.com/php-webdriver/php-webdriver-archive.git",
                 "reference": "bd8c740097eb9f2fc3735250fc1912bc811a954e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/bd8c740097eb9f2fc3735250fc1912bc811a954e",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver-archive/zipball/bd8c740097eb9f2fc3735250fc1912bc811a954e",
                 "reference": "bd8c740097eb9f2fc3735250fc1912bc811a954e",
                 "shasum": ""
             },
@@ -5569,5 +5569,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.2.5"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }
