@@ -665,10 +665,19 @@ class SetupModuleController
         $loadModules->load($GLOBALS['TBE_MODULES']);
         $startModuleSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('startModule.firstInMenu')) . '</option>';
         foreach ($loadModules->modules as $mainMod => $modData) {
-            if (!empty($modData['sub']) && is_array($modData['sub'])) {
+            $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
+            $isStandalone = $modData['standalone'] ?? false;
+            if ($hasSubmodules || $isStandalone) {
                 $modules = '';
-                foreach ($modData['sub'] as $subData) {
-                    $modName = $subData['name'];
+                if (($hasSubmodules)) {
+                    foreach ($modData['sub'] as $subData) {
+                        $modName = $subData['name'];
+                        $modules .= '<option value="' . htmlspecialchars($modName) . '"';
+                        $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
+                        $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($modName)['title'])) . '</option>';
+                    }
+                } elseif ($isStandalone) {
+                    $modName = $modData['name'];
                     $modules .= '<option value="' . htmlspecialchars($modName) . '"';
                     $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
                     $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($modName)['title'])) . '</option>';
