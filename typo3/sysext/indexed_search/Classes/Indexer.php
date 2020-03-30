@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -671,7 +672,7 @@ class Indexer
     {
         // Get headers:
         $urlHeaders = $this->getUrlHeaders($externalUrl);
-        if (stripos($urlHeaders['Content-Type'], 'text/html') !== false) {
+        if (is_array($urlHeaders) && stripos($urlHeaders['Content-Type'], 'text/html') !== false) {
             $content = ($this->indexExternalUrl_content = GeneralUtility::getUrl($externalUrl));
             if ((string)$content !== '') {
                 // Create temporary file:
@@ -695,20 +696,17 @@ class Indexer
      */
     public function getUrlHeaders($url)
     {
-        // Try to get the headers only
-        $content = GeneralUtility::getUrl($url, 2);
-        if ((string)$content !== '') {
-            // Compile headers:
-            $headers = GeneralUtility::trimExplode(LF, $content, true);
+        try {
+            $response = GeneralUtility::makeInstance(RequestFactory::class)->request($url, 'HEAD');
+            $headers = $response->getHeaders();
             $retVal = [];
-            foreach ($headers as $line) {
-                if (trim($line) === '') {
-                    break;
-                }
-                [$headKey, $headValue] = explode(':', $line, 2);
-                $retVal[$headKey] = $headValue;
+            foreach ($headers as $key => $value) {
+                $retVal[$key] = implode('', $value);
             }
             return $retVal;
+        } catch (\Exception $e) {
+            // fail silently if the HTTP request failed
+            return false;
         }
     }
 

@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -71,14 +72,18 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         try {
             $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
             $content = null;
-            $report = [];
-
             if ($resolvedUrl !== (string)$request->getUri()) {
-                $content = GeneralUtility::getUrl($resolvedUrl, 0, null, $report);
-                if ($content === false && ((int)$report['error'] === -1 || (int)$report['error'] > 200)) {
-                    throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $report['message'], 1544172838);
+                try {
+                    $response = GeneralUtility::makeInstance(RequestFactory::class)->request($resolvedUrl, 'GET');
+                } catch (\Exception $e) {
+                    throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $e->getMessage(), 1544172838);
                 }
+                if ($response->getStatusCode() >= 300) {
+                    throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", status code: ' . $response->getStatusCode(), 1544172839);
+                }
+                return $response->withStatus($this->statusCode);
             }
+            $content = 'The error page could not be resolved, as the error page itself is not accessible';
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
             $content = 'Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource'];
         }

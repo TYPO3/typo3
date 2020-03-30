@@ -65,4 +65,10 @@ return [
             'Deprecation-87332-AvoidRuntimeReflectionCallsInObjectAccess.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::getUrl' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-90956-AlternativeFetchMethodsAndReportsForGeneralUtilitygetUrl.rst',
+        ],
+    ],
 ];

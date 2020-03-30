@@ -1712,13 +1712,16 @@ class GeneralUtility
      * If you are having trouble with proxies when reading URLs you can configure your way out of that with settings within $GLOBALS['TYPO3_CONF_VARS']['HTTP'].
      *
      * @param string $url File/URL to read
-     * @param int $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-     * @param array $requestHeaders HTTP headers to be used in the request
-     * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+     * @param int $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only - deprecated and will be removed in TYPO3 v11.
+     * @param array $requestHeaders HTTP headers to be used in the request - deprecated and will be removed in TYPO3 v11.
+     * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type) - deprecated and will be removed in TYPO3 v11.
      * @return mixed The content from the resource given as input. FALSE if an error has occurred.
      */
     public static function getUrl($url, $includeHeader = 0, $requestHeaders = null, &$report = null)
     {
+        if (func_num_args() > 1) {
+            trigger_error('Calling GeneralUtility::getUrl() with more than one argument will not be supported anymore in TYPO3 v11.0. Use RequestFactory and PSR-7 Requests and Response objects to evaluate the results in detail. For local files, use file_get_contents directly.', E_USER_DEPRECATED);
+        }
         if (isset($report)) {
             $report['error'] = 0;
             $report['message'] = '';

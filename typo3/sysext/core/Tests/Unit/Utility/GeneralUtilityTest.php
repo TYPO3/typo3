@@ -18,13 +18,10 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
 use Prophecy\Argument;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
@@ -4575,36 +4572,6 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $result = GeneralUtility::xml2array($input);
         self::assertSame($expected, $result['index']['vDEF']);
-    }
-
-    public function splitHeaderLinesDataProvider(): array
-    {
-        return [
-            'multi-line headers' => [
-                ['Content-Type' => 'multipart/form-data; boundary=something', 'Content-Language' => 'de-DE, en-CA'],
-                ['Content-Type' => 'multipart/form-data; boundary=something', 'Content-Language' => 'de-DE, en-CA'],
-            ]
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider splitHeaderLinesDataProvider
-     * @param array $headers
-     * @param array $expectedHeaders
-     */
-    public function splitHeaderLines(array $headers, array $expectedHeaders): void
-    {
-        $stream = $this->prophesize(StreamInterface::class);
-        $response = $this->prophesize(ResponseInterface::class);
-        $response->getBody()->willReturn($stream);
-        $requestFactory = $this->prophesize(RequestFactory::class);
-        $requestFactory->request(Argument::cetera())->willReturn($response);
-
-        GeneralUtility::addInstance(RequestFactory::class, $requestFactory->reveal());
-        GeneralUtility::getUrl('http://example.com', 0, $headers);
-
-        $requestFactory->request(Argument::any(), Argument::any(), ['headers' => $expectedHeaders])->shouldHaveBeenCalled();
     }
 
     public function locationHeaderUrlDataProvider(): array
