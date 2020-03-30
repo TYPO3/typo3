@@ -204,23 +204,42 @@ class AssetCollector implements SingletonInterface
         return $this->media;
     }
 
-    public function getJavaScripts(): array
+    public function getJavaScripts(?bool $priority = null): array
     {
-        return $this->javaScripts;
+        return $this->filterAssetsPriority($this->javaScripts, $priority);
     }
 
-    public function getInlineJavaScripts(): array
+    public function getInlineJavaScripts(?bool $priority = null): array
     {
-        return $this->inlineJavaScripts;
+        return $this->filterAssetsPriority($this->inlineJavaScripts, $priority);
     }
 
-    public function getStyleSheets(): array
+    public function getStyleSheets(?bool $priority = null): array
     {
-        return $this->styleSheets;
+        return $this->filterAssetsPriority($this->styleSheets, $priority);
     }
 
-    public function getInlineStyleSheets(): array
+    public function getInlineStyleSheets(?bool $priority = null): array
     {
-        return $this->inlineStyleSheets;
+        return $this->filterAssetsPriority($this->inlineStyleSheets, $priority);
+    }
+
+    /**
+     * @param array $assets Takes a reference to prevent a deep copy. The variable is not changed (const).
+     * @param bool|null $priority null: no filter; else filters for the given priority
+     * @return array
+     */
+    protected function filterAssetsPriority(array &$assets, ?bool $priority): array
+    {
+        if ($priority === null) {
+            return $assets;
+        }
+        $currentPriorityAssets = [];
+        foreach ($assets as $identifier => $asset) {
+            if ($priority === ($asset['options']['priority'] ?? false)) {
+                $currentPriorityAssets[$identifier] = $asset;
+            }
+        }
+        return $currentPriorityAssets;
     }
 }

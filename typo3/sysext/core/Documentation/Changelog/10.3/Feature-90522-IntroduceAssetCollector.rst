@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _changelog-Feature-90522-IntroduceAssetCollector:
+
 ==========================================
 Feature: #90522 - Introduce AssetCollector
 ==========================================
@@ -41,10 +43,10 @@ The new API
 - :php:`\TYPO3\CMS\Core\Page\AssetCollector::removeStyleSheet(string $identifier): self`
 - :php:`\TYPO3\CMS\Core\Page\AssetCollector::removeInlineStyleSheet(string $identifier): self`
 - :php:`\TYPO3\CMS\Core\Page\AssetCollector::removeMedia(string $identifier): self`
-- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getJavaScripts(): array`
-- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getInlineJavaScripts(): array`
-- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getStyleSheets(): array`
-- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getInlineStyleSheets(): array`
+- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getJavaScripts(?bool $priority = null): array`
+- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getInlineJavaScripts(?bool $priority = null): array`
+- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getStyleSheets(?bool $priority = null): array`
+- :php:`\TYPO3\CMS\Core\Page\AssetCollector::getInlineStyleSheets(?bool $priority = null): array`
 - :php:`\TYPO3\CMS\Core\Page\AssetCollector::getMedia(): array`
 
 New ViewHelpers
@@ -74,7 +76,12 @@ Currently, assets registered with the AssetCollector are not included in callbac
 - :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler']`
 
-Currently, CSS and JavaScript registered with the AssetCollector will always be rendered after their
+.. versionadded:: 10.4
+
+   Events for the new API have been introduced in
+   :ref:`changelog-Feature-90899-IntroduceAssetPreRenderingEvents`
+
+Currently, CSS and JavaScript registered with the AssetCollector will be rendered after their
 PageRenderer counterparts. The order is:
 
 - :html:`<head>`

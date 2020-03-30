@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
+use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
+
 class AssetDataProvider
 {
     public static function filesDataProvider(): array
@@ -437,6 +440,24 @@ class AssetDataProvider
                     'fileadmin/bar.png' => ['foo' => 'baz'],
                 ]
             ],
+        ];
+    }
+
+    /**
+     * cross-product of all combinations of AssetRenderer::render*() methods and priorities
+     * @return array[] [render method name, isInline, isPriority, event class]
+     */
+    public static function renderMethodsAndEventsDataProvider(): array
+    {
+        return [
+            ['renderInlineJavaScript', true, true, BeforeJavaScriptsRenderingEvent::class],
+            ['renderInlineJavaScript', true, false, BeforeJavaScriptsRenderingEvent::class],
+            ['renderJavaScript', false, true, BeforeJavaScriptsRenderingEvent::class],
+            ['renderJavaScript', false, false, BeforeJavaScriptsRenderingEvent::class],
+            ['renderInlineStylesheets', true, true, BeforeStylesheetsRenderingEvent::class],
+            ['renderInlineStylesheets', true, false, BeforeStylesheetsRenderingEvent::class],
+            ['renderStylesheets', false, true, BeforeStylesheetsRenderingEvent::class],
+            ['renderStylesheets', false, false, BeforeStylesheetsRenderingEvent::class],
         ];
     }
 }

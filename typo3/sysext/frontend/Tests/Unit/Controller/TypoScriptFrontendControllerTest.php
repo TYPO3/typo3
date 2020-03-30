@@ -16,10 +16,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -102,6 +105,18 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             ])->disableOriginalConstructor()
             ->getMock();
         $tsfe->expects(self::exactly(2))->method('processNonCacheableContentPartsAndSubstituteContentMarkers')->willReturnCallback([$this, 'processNonCacheableContentPartsAndSubstituteContentMarkers']);
+
+        /**
+         * prepare an EventDispatcher for ::makeInstance(AssetRenderer)
+         * @see \TYPO3\CMS\Core\Page\PageRenderer::renderJavaScriptAndCss
+         */
+        GeneralUtility::setSingletonInstance(
+            EventDispatcher::class,
+            new EventDispatcher(
+                new ListenerProvider($this->createMock(ContainerInterface::class))
+            )
+        );
+
         $tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
         $config = [
             'INTincScript_ext' => [

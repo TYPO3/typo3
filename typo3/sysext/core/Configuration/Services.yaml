@@ -329,6 +329,11 @@ services:
         method: 'addCategoryDatabaseSchema'
         event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
 
+  TYPO3\CMS\Core\Page\AssetRenderer:
+    public: true
+    arguments:
+      $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
+
   # clean up files
   TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect:
     tags:

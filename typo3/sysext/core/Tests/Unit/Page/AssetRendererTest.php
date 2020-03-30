@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -16,11 +17,21 @@ class AssetRendererTest extends UnitTestCase
      */
     protected $assetRenderer;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->resetSingletonInstances = true;
-        $this->assetRenderer = GeneralUtility::makeInstance(AssetRenderer::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->assetRenderer = GeneralUtility::makeInstance(
+            AssetRenderer::class,
+            null,
+            $this->eventDispatcher
+        );
     }
 
     /**
@@ -89,5 +100,33 @@ class AssetRendererTest extends UnitTestCase
         }
         self::assertSame($expectedMarkup['css_no_prio'], $this->assetRenderer->renderInlineStyleSheets());
         self::assertSame($expectedMarkup['css_prio'], $this->assetRenderer->renderInlineStyleSheets(true));
+    }
+
+    /**
+     * @param string $renderMethodName
+     * @param bool $isInline
+     * @param bool $priority
+     * @param string $eventClassName
+     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::renderMethodsAndEventsDataProvider
+     */
+    public function testBeforeRenderingEvent(
+        string $renderMethodName,
+        bool $isInline,
+        bool $priority,
+        string $eventClassName
+    ): void {
+        $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
+        $event = new $eventClassName(
+            $assetCollector,
+            $isInline,
+            $priority
+        );
+
+        $this->eventDispatcher
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with($event);
+
+        $this->assetRenderer->$renderMethodName($priority);
     }
 }
