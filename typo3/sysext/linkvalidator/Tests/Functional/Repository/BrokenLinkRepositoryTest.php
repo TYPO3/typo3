@@ -227,7 +227,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $searchFields[$table] = explode(',', $fields);
         }
 
-        $this->setupBackendUser($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
+        $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
 
         $this->importDataSet($inputFile);
 
@@ -369,7 +369,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $searchFields[$table] = explode(',', $fields);
         }
 
-        $this->setupBackendUser($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
+        $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
 
         $this->importDataSet($inputFile);
 
@@ -687,7 +687,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $searchFields[$table] = explode(',', $fields);
         }
 
-        $this->setupBackendUser($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
+        $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
 
         $this->importDataSet($inputFile);
 
@@ -712,7 +712,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $results);
     }
 
-    protected function setupBackendUser(int $uid, string $fixtureFile, string $groupFixtureFile)
+    protected function setupBackendUserAndGroup(int $uid, string $fixtureFile, string $groupFixtureFile)
     {
         if ($groupFixtureFile) {
             $this->importDataSet($groupFixtureFile);
