@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -411,7 +412,8 @@ class PagePositionMap
     public function printRecordMap($lines, $colPosArray, $pid = 0)
     {
         $count = MathUtility::forceIntegerInRange(count($colPosArray), 1);
-        $backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $pid, $this);
+        $backendLayoutProvider = GeneralUtility::makeInstance(BackendLayoutView::class);
+        $backendLayout = $backendLayoutProvider->getSelectedBackendLayout($pid);
         if (isset($backendLayout['__config']['backend_layout.'])) {
             $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
             $table = '<div class="table-fit"><table class="table table-condensed table-bordered table-vertical-top">';
@@ -423,7 +425,7 @@ class PagePositionMap
             }
             $table .= '</colgroup>';
             $table .= '<tbody>';
-            $tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $pid, $this);
+            $tcaItems = $backendLayoutProvider->getColPosListItemsParsed($pid);
             // Cycle through rows
             for ($row = 1; $row <= $rowCount; $row++) {
                 $rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
