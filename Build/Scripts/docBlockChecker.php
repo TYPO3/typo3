@@ -208,6 +208,7 @@ $finder = new Symfony\Component\Finder\Finder();
 $finder->files()
     ->in(__DIR__ . '/../../typo3/sysext/*/Classes/')
     ->in(__DIR__ . '/../../typo3/sysext/*/Tests/')
+    ->notPath('_generated')
     ->name('/\.php$/')
 //    ->notName('ServiceProviderRegistry.php')
 ;
@@ -228,7 +229,13 @@ foreach ($finder as $file) {
     $traverser = new NodeTraverser();
     $traverser->addVisitor($visitor);
 
-    $ast = $traverser->traverse($ast);
+    try {
+        $ast = $traverser->traverse($ast);
+    } catch (\Throwable $e) {
+        $errors[$file->getRealPath()]['error'] = $e->getMessage();
+        $output->write('<error>F</error>');
+        continue;
+    }
 
     if ($visitor->className === null || $visitor->namespace === null) {
         // only process files that contain classes for now

@@ -42,7 +42,7 @@ interface DriverInterface
      * Returns the capabilities of this driver.
      *
      * @return int
-     * @see Storage::CAPABILITY_* constants
+     * @see ResourceStorageInterface::CAPABILITY_ constants
      */
     public function getCapabilities();
 

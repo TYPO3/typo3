@@ -19,8 +19,8 @@
 		"sort-packages": true
 	},
 	"require": {
-		"phpdocumentor/reflection-docblock": "^4.3.2",
-		"phpdocumentor/type-resolver": "~0.5",
+		"phpdocumentor/reflection-docblock": "^5.1.0",
+		"phpdocumentor/type-resolver": "^1.1.0",
 		"symfony/dependency-injection": "^4.4 || ^5.0",
 		"symfony/property-access": "^4.4 || ^5.0",
 		"symfony/property-info": "^4.4 || ^5.0",
