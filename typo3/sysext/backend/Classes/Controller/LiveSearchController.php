@@ -28,11 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class LiveSearchController
 {
     /**
-     * @var array
-     */
-    protected $searchResults = [];
-
-    /**
      * Processes all AJAX calls and sends back a JSON object
      *
      * @param ServerRequestInterface $request

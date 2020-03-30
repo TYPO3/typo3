@@ -1803,38 +1803,6 @@ class GeneralUtility
     }
 
     /**
-     * Split an array of MIME header strings into an associative array.
-     * Multiple headers with the same name have their values merged as an array.
-     *
-     * @static
-     * @param array $headers List of headers, eg. ['Foo: Bar', 'Foo: Baz']
-     * @return array Key/Value(s) pairs of headers, eg. ['Foo' => ['Bar', 'Baz']]
-     */
-    protected static function splitHeaderLines(array $headers): array
-    {
-        $newHeaders = [];
-        foreach ($headers as $header) {
-            $parts = preg_split('/:[ \t]*/', $header, 2, PREG_SPLIT_NO_EMPTY);
-            if (count($parts) !== 2) {
-                continue;
-            }
-            $key = &$parts[0];
-            $value = &$parts[1];
-            if (array_key_exists($key, $newHeaders)) {
-                if (is_array($newHeaders[$key])) {
-                    $newHeaders[$key][] = $value;
-                } else {
-                    $prevValue = &$newHeaders[$key];
-                    $newHeaders[$key] = [$prevValue, $value];
-                }
-            } else {
-                $newHeaders[$key] = $value;
-            }
-        }
-        return $newHeaders;
-    }
-
-    /**
      * Writes $content to the file $file
      *
      * @param string $file Filepath to write to

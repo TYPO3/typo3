@@ -334,14 +334,6 @@ class File extends AbstractFile
     }
 
     /**
-     * @return Index\FileIndexRepository
-     */
-    protected function getFileIndexRepository()
-    {
-        return GeneralUtility::makeInstance(Index\FileIndexRepository::class);
-    }
-
-    /**
      * @param string $key
      * @internal Only for use in Repositories and indexer
      * @return mixed
