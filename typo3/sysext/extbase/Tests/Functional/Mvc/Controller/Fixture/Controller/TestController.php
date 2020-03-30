@@ -69,9 +69,4 @@ class TestController extends ActionController
         // return string so we don't need to mock a view
         return '';
     }
-
-    public function quxAction()
-    {
-        return '';
-    }
 }

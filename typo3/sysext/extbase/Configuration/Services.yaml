@@ -83,6 +83,3 @@ services:
         identifier: 'legacy-slot'
         method: 'emitAfterPersistObjectSignal'
         event: TYPO3\CMS\Extbase\Event\Persistence\EntityPersistedEvent
-
-  TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver: ~
-  TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface: '@TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver'

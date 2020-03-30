@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -116,51 +115,5 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
 
         $validators->rewind();
         self::assertInstanceOf(NotEmptyValidator::class, $validators->current());
-    }
-
-    /**
-     * @test
-     */
-    public function resolveViewRespectsRequestedFormat()
-    {
-        // Test setup
-        $this->request->setControllerActionName('qux');
-        $this->request->setFormat('json');
-
-        // Test run
-        $this->controller->processRequest($this->request, $this->response);
-
-        // Assertions
-        $reflectionClass = new \ReflectionClass($this->controller);
-        $reflectionMethod = $reflectionClass->getProperty('view');
-        $reflectionMethod->setAccessible(true);
-
-        $view = $reflectionMethod->getValue($this->controller);
-        self::assertInstanceOf(JsonView::class, $view);
-    }
-
-    /**
-     * @test
-     */
-    public function resolveViewRespectsDefaultViewObjectName()
-    {
-        // Test setup
-        $reflectionClass = new \ReflectionClass($this->controller);
-        $reflectionMethod = $reflectionClass->getProperty('defaultViewObjectName');
-        $reflectionMethod->setAccessible(true);
-        $reflectionMethod->setValue($this->controller, JsonView::class);
-
-        $this->request->setControllerActionName('qux');
-
-        // Test run
-        $this->controller->processRequest($this->request, $this->response);
-
-        // Assertions
-        $reflectionMethod = $reflectionClass->getProperty('view');
-        $reflectionMethod->setAccessible(true);
-        $reflectionMethod->getValue($this->controller);
-
-        $view = $reflectionMethod->getValue($this->controller);
-        self::assertInstanceOf(JsonView::class, $view);
     }
 }
