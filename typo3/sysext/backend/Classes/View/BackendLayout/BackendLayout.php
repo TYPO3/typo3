@@ -77,7 +77,7 @@ class BackendLayout
     protected $contentFetcher;
 
     /**
-     * @var LanguageColumn
+     * @var LanguageColumn[]
      */
     protected $languageColumns = [];
 

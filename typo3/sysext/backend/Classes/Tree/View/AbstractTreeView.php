@@ -92,7 +92,7 @@ abstract class AbstractTreeView
      * Needs to be initialized with $GLOBALS['BE_USER']
      * Done by default in init()
      *
-     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|string
      */
     public $BE_USER = '';
 

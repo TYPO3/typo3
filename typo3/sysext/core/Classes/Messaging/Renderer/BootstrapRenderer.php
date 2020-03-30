@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 class BootstrapRenderer implements FlashMessageRendererInterface
 {
     /**
-     * @var string The message severity class names
+     * @var string[] The message severity class names
      */
     protected static $classes = [
         FlashMessage::NOTICE => 'notice',
@@ -38,7 +38,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
     ];
 
     /**
-     * @var string The message severity icon names
+     * @var string[] The message severity icon names
      */
     protected static $icons = [
         FlashMessage::NOTICE => 'lightbulb-o',

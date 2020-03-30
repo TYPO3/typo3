@@ -82,7 +82,7 @@ class Query implements QueryInterface
     protected $statement;
 
     /**
-     * @var int
+     * @var int[]
      */
     protected $orderings = [];
 

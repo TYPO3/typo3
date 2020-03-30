@@ -25,7 +25,7 @@ class Error extends \TYPO3\CMS\Extbase\Error\Error
     protected $message = 'Unknown validation error';
 
     /**
-     * @var string
+     * @var int
      */
     protected $code = 1201447005;
 }

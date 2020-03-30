@@ -557,7 +557,7 @@ class DataHandler implements LoggerAwareInterface
      * Tells, that this DataHandler instance was called from \TYPO3\CMS\Impext\ImportExport.
      * This variable is set by \TYPO3\CMS\Impext\ImportExport
      *
-     * @var array
+     * @var bool
      */
     public $callFromImpExp = false;
 

@@ -54,7 +54,7 @@ class ExternalLinktype extends AbstractLinktype
      * Preferred method of fetching (HEAD | GET).
      * If HEAD is used, we fallback to GET
      *
-     * @var array
+     * @var string
      */
     protected $method = 'HEAD';
 

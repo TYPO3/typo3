@@ -70,7 +70,7 @@ class AdministrationController extends ActionController
     /**
      * Backend Template Container
      *
-     * @var BackendTemplateView
+     * @var string
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
 

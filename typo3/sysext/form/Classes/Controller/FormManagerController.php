@@ -60,7 +60,7 @@ class FormManagerController extends AbstractBackendController
     /**
      * Default View Container
      *
-     * @var BackendTemplateView
+     * @var string
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
 

@@ -345,7 +345,7 @@ class EditDocumentController
     /**
      * Used internally to disable the storage of the document reference (eg. new records)
      *
-     * @var bool
+     * @var int
      */
     protected $dontStoreDocumentRef = 0;
 

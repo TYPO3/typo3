@@ -23,7 +23,7 @@ class DefaultRestrictionContainer extends AbstractRestrictionContainer
     /**
      * Default restriction classes.
      *
-     * @var QueryRestrictionInterface[]
+     * @var string[]
      */
     protected $defaultRestrictionTypes = [
         DeletedRestriction::class,

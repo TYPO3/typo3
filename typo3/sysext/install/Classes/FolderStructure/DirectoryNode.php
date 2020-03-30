@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class DirectoryNode extends AbstractNode implements NodeInterface
 {
     /**
-     * @var int|null Default for directories is octal 02775 == decimal 1533
+     * @var string Default for directories is octal 02775 == decimal 1533
      */
     protected $targetPermission = '2775';
 

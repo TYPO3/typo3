@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ContentCreationPagePositionMap extends PagePositionMap
 {
     /**
-     * @var bool
+     * @var int
      */
     public $dontPrintPageInsertIcons = 1;
 

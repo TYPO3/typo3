@@ -48,7 +48,7 @@ class UpdateFromTerController extends AbstractController
     protected $extensionRepository;
 
     /**
-     * @var JsonView
+     * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
 

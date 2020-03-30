@@ -137,7 +137,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     /**
      * BackendTemplateView Container
      *
-     * @var BackendTemplateView
+     * @var string
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
 

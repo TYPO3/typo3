@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FrontendRestrictionContainer extends AbstractRestrictionContainer
 {
     /**
-     * @var QueryRestrictionInterface[]
+     * @var string[]
      */
     protected $defaultRestrictionTypes = [
         DeletedRestriction::class,

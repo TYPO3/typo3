@@ -47,7 +47,7 @@ class DownloadController extends AbstractController
     protected $downloadUtility;
 
     /**
-     * @var JsonView
+     * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
 

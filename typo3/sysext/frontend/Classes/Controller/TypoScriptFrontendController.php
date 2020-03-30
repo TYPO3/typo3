@@ -113,7 +113,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * The type (read-only)
-     * @var int
+     * @var int|string
      */
     public $type = '';
 
@@ -189,7 +189,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * sys_page-object, pagefunctions
      *
-     * @var PageRepository
+     * @var PageRepository|string
      */
     public $sys_page = '';
 
@@ -223,7 +223,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * The frontend user
      *
-     * @var FrontendUserAuthentication
+     * @var FrontendUserAuthentication|string
      */
     public $fe_user = '';
 
@@ -318,7 +318,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * TypoScript configuration of the page-object pointed to by sPre.
      * $this->tmpl->setup[$this->sPre.'.']
-     * @var array
+     * @var array|string
      */
     public $pSetup = '';
 
@@ -357,7 +357,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * May be set to the pagesTSconfig
-     * @var array
+     * @var array|string
      * @internal
      */
     protected $pagesTSconfig = '';
@@ -399,7 +399,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $additionalCSS = [];
 
     /**
-     * @var  string
+     * @var string
      */
     public $JSCode;
 
@@ -593,7 +593,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Page content render object
      *
-     * @var ContentObjectRenderer
+     * @var ContentObjectRenderer|string
      */
     public $cObj = '';
 

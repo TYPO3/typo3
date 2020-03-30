@@ -75,12 +75,12 @@ class SlugService implements LoggerAwareInterface
     protected $pageRepository;
 
     /**
-     * @var CorrelationId
+     * @var CorrelationId|string
      */
     protected $correlationIdRedirectCreation = '';
 
     /**
-     * @var CorrelationId
+     * @var CorrelationId|string
      */
     protected $correlationIdSlugUpdate = '';
 
