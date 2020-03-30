@@ -82,6 +82,24 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $contentTypeLabels = $item->getBackendLayout()->getDrawingConfiguration()->getContentTypeLabels();
         $languageService = $this->getLanguageService();
 
+        $drawItem = true;
+        $hookPreviewContent = '';
+        // Hook: Render an own preview of a record
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
+            $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1582574553);
+                }
+                $hookObject->preProcess($pageLayoutView, $drawItem, $previewHeader, $hookPreviewContent, $record);
+            }
+            $item->setRecord($record);
+        }
+
+        if (!$drawItem) {
+            return $hookPreviewContent;
+        }
         // Check if a Fluid-based preview template was defined for this CType
         // and render it via Fluid. Possible option:
         // mod.web_layout.tt_content.preview.media = EXT:site_mysite/Resources/Private/Templates/Preview/Media.html
@@ -244,36 +262,11 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     public function wrapPageModulePreview(string $previewHeader, string $previewContent, GridColumnItem $item): string
     {
-        $drawItem = true;
-        $record = $item->getRecord();
-        $hookPreviewContent = '';
-
-        // Hook: Render an own preview of a record
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
-            $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1582574553);
-                }
-                $hookObject->preProcess($pageLayoutView, $drawItem, $previewHeader, $hookPreviewContent, $record);
-            }
-            $item->setRecord($record);
-        }
-
-        $content = $previewHeader;
-
-        $content .= $hookPreviewContent;
-        if ($drawItem) {
-            $content .= $previewContent;
-        }
-
-        $out = '<span class="exampleContent">' . $content . '</span>';
-
+        $content = '<span class="exampleContent">' . $previewHeader . $previewContent . '</span>';
         if ($item->isDisabled()) {
-            return '<span class="text-muted">' . $out . '</span>';
+            return '<span class="text-muted">' . $content . '</span>';
         }
-        return $out;
+        return $content;
     }
 
     protected function getProcessedValue(GridColumnItem $item, string $fieldList, array &$info): void
