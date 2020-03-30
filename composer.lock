@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbd4b9d788bd42f0a0ec653c12ca0f6e",
+    "content-hash": "54dfe93aaa3d458fa0096b3472e085d3",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -5779,16 +5779,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "4.14.1",
+            "version": "4.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "9295b87d6e7aaadae03219e9417da72da7d1e064"
+                "reference": "bcc6b38766908e9ed0614a3622a77a4baefd99d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/9295b87d6e7aaadae03219e9417da72da7d1e064",
-                "reference": "9295b87d6e7aaadae03219e9417da72da7d1e064",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/bcc6b38766908e9ed0614a3622a77a4baefd99d3",
+                "reference": "bcc6b38766908e9ed0614a3622a77a4baefd99d3",
                 "shasum": ""
             },
             "require": {
@@ -5835,7 +5835,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2020-02-02T11:09:29+00:00"
+            "time": "2020-04-09T07:11:00+00:00"
         },
         {
             "name": "webmozart/assert",

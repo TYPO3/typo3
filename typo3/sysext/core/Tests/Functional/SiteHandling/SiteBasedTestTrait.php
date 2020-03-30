@@ -29,6 +29,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 trait SiteBasedTestTrait
 {
     /**
+     * @param array $items
+     */
+    protected static function failIfArrayIsNotEmpty(array $items): void
+    {
+        if (empty($items)) {
+            return;
+        }
+
+        static::fail(
+            'Array was not empty as expected, but contained these items:' . LF
+            . '* ' . implode(LF . '* ', $items)
+        );
+    }
+
+    /**
      * @param string $identifier
      * @param array $site
      * @param array $languages
