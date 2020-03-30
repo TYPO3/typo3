@@ -831,7 +831,7 @@ class ContentObjectRenderer
         }
 
         // Store cache
-        if ($cacheConfiguration !== null) {
+        if ($cacheConfiguration !== null && !$this->getTypoScriptFrontendController()->no_cache) {
             $key = $this->calculateCacheKey($cacheConfiguration);
             if (!empty($key)) {
                 /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
@@ -7920,6 +7920,9 @@ class ContentObjectRenderer
     {
         $content = false;
 
+        if ($this->getTypoScriptFrontendController()->no_cache) {
+            return $content;
+        }
         $cacheKey = $this->calculateCacheKey($configuration);
         if (!empty($cacheKey)) {
             /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
