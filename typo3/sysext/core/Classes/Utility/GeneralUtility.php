@@ -99,13 +99,6 @@ class GeneralUtility
     protected static $idnaStringCache = [];
 
     /**
-     * IDNA converter
-     *
-     * @var \Mso\IdnaConvert\IdnaConvert
-     */
-    protected static $idnaConverter;
-
-    /**
      * A list of supported CGI server APIs
      * NOTICE: This is a duplicate of the SAME array in SystemEnvironmentBuilder
      * @var array
@@ -948,10 +941,24 @@ class GeneralUtility
         if (isset(self::$idnaStringCache[$value])) {
             return self::$idnaStringCache[$value];
         }
-        if (!self::$idnaConverter) {
-            self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(['idn_version' => 2008]);
+        // Early return in case input is not a string or empty
+        if (!is_string($value) || empty($value)) {
+            return (string)$value;
         }
-        self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
+
+        // Split on the last "@" since addresses like "foo@bar"@example.org are valid where the only focus
+        // is an email address
+        $atPosition = strrpos($value, '@');
+        if ($atPosition !== false) {
+            $domain = substr($value, $atPosition + 1);
+            $local = substr($value, 0, $atPosition);
+            $domain = (string)HttpUtility::idn_to_ascii($domain);
+            // Return if no @ found or it is placed at the very beginning or end of the email
+            self::$idnaStringCache[$value] = $local . '@' . $domain;
+            return self::$idnaStringCache[$value];
+        }
+
+        self::$idnaStringCache[$value] = (string)HttpUtility::idn_to_ascii($value);
         return self::$idnaStringCache[$value];
     }
 

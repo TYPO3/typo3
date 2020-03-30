@@ -4713,7 +4713,15 @@ class GeneralUtilityTest extends UnitTestCase
             'email with utf8 char (german umlaut)' => [
                 'joe.doe@dömäin.de',
                 'joe.doe@xn--dmin-moa0i.de'
-            ]
+            ],
+            'email with utf8 char and @ in local (german umlaut)' => [
+                'joe@doe@dömäin.de',
+                'joe@doe@xn--dmin-moa0i.de'
+            ],
+            'email with utf8 char and @ in local (2) (german umlaut)' => [
+                '"joe@doe"@dömäin.de',
+                '"joe@doe"@xn--dmin-moa0i.de'
+            ],
         ];
     }
 

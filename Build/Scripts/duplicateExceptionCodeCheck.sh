@@ -20,6 +20,9 @@ ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
 ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php"
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOStatement.php"
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOConnection.php"
+ignoreFiles+="sysext/core/Resources/PHP/idna-convert/IdnaConvert.php"
+ignoreFiles+="sysext/core/Resources/PHP/idna-convert/UnicodeTranscoder.php"
+ignoreFiles+="sysext/core/Resources/PHP/idna-convert/Punycode.php"
 
 foundNewFile=0
 oldFilename=""
