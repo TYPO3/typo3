@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6e138201c43bbc6250fbd836633a21d",
+    "content-hash": "cd0e12abcab99e0526c2f9707df4f2d1",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -8115,8 +8115,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -8259,16 +8259,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.2.0",
+            "version": "6.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "d308d4263b3268873c8b4028d8b526f2862aca6c"
+                "reference": "4e14e564f72875ce4c4414dd390c4b5ddb071fe6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/d308d4263b3268873c8b4028d8b526f2862aca6c",
-                "reference": "d308d4263b3268873c8b4028d8b526f2862aca6c",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/4e14e564f72875ce4c4414dd390c4b5ddb071fe6",
+                "reference": "4e14e564f72875ce4c4414dd390c4b5ddb071fe6",
                 "shasum": ""
             },
             "require": {
@@ -8280,7 +8280,7 @@
                 "typo3/cms-fluid": "10.*.*@dev",
                 "typo3/cms-frontend": "10.*.*@dev",
                 "typo3/cms-recordlist": "10.*.*@dev",
-                "typo3fluid/fluid": "^2.5"
+                "typo3fluid/fluid": "^2.5|^3"
             },
             "suggest": {
                 "codeception/codeception": "^4.0",
@@ -8315,7 +8315,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2020-03-03T13:18:50+00:00"
+            "time": "2020-04-06T15:19:47+00:00"
         }
     ],
     "aliases": [],
