@@ -784,6 +784,7 @@ define(['jquery',
     if ($checkbox.prop('checked')) {
       $item.find('.t3js-formengine-placeholder-placeholder').hide();
       $item.find('.t3js-formengine-placeholder-formfield').show();
+      $item.find('.t3js-formengine-placeholder-formfield').find(':input').focus();
     } else {
       $item.find('.t3js-formengine-placeholder-placeholder').show();
       $item.find('.t3js-formengine-placeholder-formfield').hide();

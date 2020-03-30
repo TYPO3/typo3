@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for fal metadata checks
  */
-class FalMetadataInheritanceCest
+class FalMetadataCest
 {
     /**
      * Call backend and open page module of styleguide page
@@ -136,7 +136,6 @@ class FalMetadataInheritanceCest
      * test for https://forge.typo3.org/issues/81235
      *
      * @param BackendTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
      */
@@ -189,6 +188,50 @@ class FalMetadataInheritanceCest
         $I->seeInField('input.form-control:disabled', 'Test title');
         $I->seeInField('input.form-control:disabled', 'Test alternative');
         $I->seeInField('textarea.form-control:disabled', 'Test description');
+    }
+
+    /**
+     * This scenario tests whether activating a null placeholder checkbox focuses its assigned text field
+     *
+     * @param BackendTester $I
+     * @param PageTree $pageTree
+     * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
+     * @throws \Exception
+     */
+    public function checkIfDeactivatingNullCheckboxesFocusesTextFields(BackendTester $I, PageTree $pageTree): void
+    {
+        $I->amGoingTo('Check if deactivating null checkboxes focuses text fields');
+        $this->goToPageModule($I, $pageTree);
+        $I->switchToWindow();
+        $I->switchToContentFrame();
+        $I->click('tt_content with image');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
+        $I->click('Images');
+        $I->click('.form-irre-header');
+
+        $I->see('(Default: "Test title")', '.t3js-form-field-eval-null-placeholder-checkbox');
+        $I->see('(Default: "Test alternative")', '.t3js-form-field-eval-null-placeholder-checkbox');
+        $I->see('(Default: "Test description")', '.t3js-form-field-eval-null-placeholder-checkbox');
+
+        $I->amGoingTo('assert checkboxes are not checked');
+        $I->dontSeeCheckboxIsChecked('//input[contains(@name, "[title]") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]');
+        $I->dontSeeCheckboxIsChecked('//input[contains(@name, "[alternative]") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]');
+        $I->dontSeeCheckboxIsChecked('//input[contains(@name, "[description]") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]');
+
+        $I->seeInField('input.form-control:disabled', 'Test title');
+        $I->seeInField('input.form-control:disabled', 'Test alternative');
+        $I->seeInField('textarea.form-control:disabled', 'Test description');
+
+        $I->amGoingTo('enable checkboxes and see whether fields are focused');
+        foreach (['title', 'alternative', 'description'] as $fieldName) {
+            $I->checkOption('//input[contains(@name, "[' . $fieldName . ']") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]');
+            $focus = $I->executeJS('let referenceUid = document.querySelector(\'[data-object-uid]\').dataset.objectUid; return document.querySelector(\'[data-formengine-input-name="data[sys_file_reference][\' + referenceUid + \'][' . $fieldName . ']"]\').matches(\':focus\')');
+            $I->assertEquals(true, $focus);
+
+            // Remove focus from field, otherwise codeception can't find other checkboxes
+            $I->click('.form-irre-object .form-section');
+        }
     }
 
     /**
