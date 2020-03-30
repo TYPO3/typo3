@@ -1152,16 +1152,17 @@ class DataMapProcessor
      * Return only ids that are integer - so no "NEW..." values
      *
      * @param string[]|int[] $ids
-     * @return int[]|string[]
+     * @return int[]
      */
     protected function filterNumericIds(array $ids)
     {
-        return array_filter(
+        $ids = array_filter(
             $ids,
             function ($id) {
                 return MathUtility::canBeInterpretedAsInteger($id);
             }
         );
+        return array_map('intval', $ids);
     }
 
     /**
