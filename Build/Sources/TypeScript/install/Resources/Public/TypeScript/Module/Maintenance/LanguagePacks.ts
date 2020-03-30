@@ -38,7 +38,6 @@ class LanguagePacks extends AbstractInteractableModule {
   private selectorDeactivateLanguageIcon: string = '#t3js-languagePacks-deactivate-icon';
   private selectorUpdate: string = '.t3js-languagePacks-update';
   private selectorLanguageUpdateIcon: string = '#t3js-languagePacks-languageUpdate-icon';
-  private selectorExtensionPackMissesIcon: string = '#t3js-languagePacks-extensionPack-misses-icon';
   private selectorNotifications: string = '.t3js-languagePacks-notifications';
 
   private activeLanguages: Array<any> = [];
@@ -413,11 +412,9 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private extensionMatrixHtml(data: any): any {
     const securityUtility = new SecurityUtility();
-    const packMissesIcon: string = this.findInModal(this.selectorExtensionPackMissesIcon).html();
     const updateIcon: string = this.findInModal(this.selectorLanguageUpdateIcon).html();
     let tooltip: string = '';
     let extensionTitle: JQuery;
-    let allPackagesExist: boolean = true;
     let rowCount: number = 0;
     const $markupContainer: JQuery = $('<div>');
 
@@ -444,15 +441,6 @@ class LanguagePacks extends AbstractInteractableModule {
 
     const $tbody = $('<tbody>');
     data.extensions.forEach((extension: any): void => {
-      allPackagesExist = true;
-      extension.packs.forEach((pack: any): void => {
-        if (pack.exists === false) {
-          allPackagesExist = false;
-        }
-      });
-      if (allPackagesExist === true) {
-        return;
-      }
       rowCount++;
       if (extension.icon !== '') {
         extensionTitle = $('<span>').append(
@@ -480,16 +468,22 @@ class LanguagePacks extends AbstractInteractableModule {
           } else {
             tooltip = 'Language pack not downloaded. Click to download';
           }
-          $column.append(
-            $('<a>', {
-              'class': 'btn btn-default t3js-languagePacks-update',
-              'data-extension': extension.key,
-              'data-iso': pack.iso,
-              'data-toggle': 'tooltip',
-              'title': securityUtility.encodeHtml(tooltip),
-            }).append(packMissesIcon),
-          );
+        } else {
+          if (pack.lastUpdate === null) {
+            tooltip = 'Downloaded. Click to renew';
+          } else {
+            tooltip = 'Language pack downloaded at ' + pack.lastUpdate + '. Click to renew';
+          }
         }
+        $column.append(
+          $('<a>', {
+            'class': 'btn btn-default t3js-languagePacks-update',
+            'data-extension': extension.key,
+            'data-iso': pack.iso,
+            'data-toggle': 'tooltip',
+            'title': securityUtility.encodeHtml(tooltip),
+          }).append(updateIcon),
+        );
       });
       $tbody.append($tr);
     });
