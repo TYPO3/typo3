@@ -20,10 +20,14 @@ namespace TYPO3\CMS\Backend\View\Drawing;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\Grid;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
+use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridRow;
+use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
+use TYPO3\CMS\Backend\View\BackendLayout\RecordRememberer;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -57,9 +61,14 @@ class BackendLayoutRenderer
     protected $iconFactory;
 
     /**
-     * @var BackendLayout
+     * @var PageLayoutContext
      */
-    protected $backendLayout;
+    protected $context;
+
+    /**
+     * @var ContentFetcher
+     */
+    protected $contentFetcher;
 
     /**
      * @var Clipboard
@@ -71,9 +80,10 @@ class BackendLayoutRenderer
      */
     protected $view;
 
-    public function __construct(BackendLayout $backendLayout)
+    public function __construct(PageLayoutContext $context)
     {
-        $this->backendLayout = $backendLayout;
+        $this->context = $context;
+        $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->initializeClipboard();
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -84,7 +94,64 @@ class BackendLayoutRenderer
         $this->view->getRenderingContext()->setControllerContext($controllerContext);
         $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('backend');
         $this->view->getRenderingContext()->setControllerName('PageLayout');
-        $this->view->assign('backendLayout', $backendLayout);
+        $this->view->assign('context', $context);
+    }
+
+    public function getGridForPageLayoutContext(PageLayoutContext $context): Grid
+    {
+        $grid = GeneralUtility::makeInstance(Grid::class, $context);
+        $recordRememberer = GeneralUtility::makeInstance(RecordRememberer::class);
+        if ($context->getDrawingConfiguration()->getLanguageMode()) {
+            $languageId = $context->getSiteLanguage()->getLanguageId();
+        } else {
+            $languageId = $context->getDrawingConfiguration()->getSelectedLanguageId();
+        }
+        foreach ($context->getBackendLayout()->getStructure()['__config']['backend_layout.']['rows.'] ?? [] as $row) {
+            $rowObject = GeneralUtility::makeInstance(GridRow::class, $context);
+            foreach ($row['columns.'] as $column) {
+                $columnObject = GeneralUtility::makeInstance(GridColumn::class, $context, $column);
+                $rowObject->addColumn($columnObject);
+                $records = $this->contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
+                $recordRememberer->rememberRecords($records);
+                foreach ($records as $contentRecord) {
+                    $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
+                    $columnObject->addItem($columnItem);
+                }
+            }
+            $grid->addRow($rowObject);
+        }
+        return $grid;
+    }
+
+    /**
+     * @return LanguageColumn[]
+     */
+    public function getLanguageColumnsForPageLayoutContext(PageLayoutContext $context): iterable
+    {
+        $languageColumns = [];
+        foreach ($context->getLanguagesToShow() as $siteLanguage) {
+            $localizedLanguageId = $siteLanguage->getLanguageId();
+            if ($localizedLanguageId > 0) {
+                $localizedContext = $context->cloneForLanguage($siteLanguage);
+                if (!$localizedContext->getLocalizedPageRecord()) {
+                    continue;
+                }
+            } else {
+                $localizedContext = $context;
+            }
+            $translationInfo = $this->contentFetcher->getTranslationData(
+                $this->contentFetcher->getFlatContentRecords($localizedLanguageId),
+                $localizedContext->getSiteLanguage()->getLanguageId()
+            );
+            $languageColumnObject = GeneralUtility::makeInstance(
+                LanguageColumn::class,
+                $localizedContext,
+                $this->getGridForPageLayoutContext($localizedContext),
+                $translationInfo
+            );
+            $languageColumns[] = $languageColumnObject;
+        }
+        return $languageColumns;
     }
 
     /**
@@ -93,20 +160,20 @@ class BackendLayoutRenderer
      */
     public function drawContent(bool $renderUnused = true): string
     {
-        $this->view->assign('pageLayoutConfiguration', $this->backendLayout->getDrawingConfiguration());
-        $this->view->assign('hideRestrictedColumns', (bool)(BackendUtility::getPagesTSconfig($this->backendLayout->getDrawingConfiguration()->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false));
-        if (!$this->backendLayout->getDrawingConfiguration()->getLanguageMode()) {
-            $this->view->assign('grid', $this->backendLayout->getGrid());
-        }
+        $this->view->assign('hideRestrictedColumns', (bool)(BackendUtility::getPagesTSconfig($this->context->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false));
         $this->view->assign('newContentTitle', $this->getLanguageService()->getLL('newContentElement'));
         $this->view->assign('newContentTitleShort', $this->getLanguageService()->getLL('content'));
         $this->view->assign('allowEditContent', $this->getBackendUser()->check('tables_modify', 'tt_content'));
 
+        if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
+            $this->view->assign('languageColumns', $this->getLanguageColumnsForPageLayoutContext($this->context));
+        } else {
+            $this->view->assign('grid', $this->getGridForPageLayoutContext($this->context));
+        }
+
         $rendered = $this->view->render('PageLayout');
         if ($renderUnused) {
-            $unusedBackendLayout = clone $this->backendLayout;
-            $unusedBackendLayout->getDrawingConfiguration()->setLanguageColumnsPointer($this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer());
-            $unusedRecords = $this->backendLayout->getContentFetcher()->getUnusedRecords();
+            $unusedRecords = $this->contentFetcher->getUnusedRecords();
 
             if (!empty($unusedRecords)) {
                 $unusedElementsMessage = GeneralUtility::makeInstance(
@@ -119,14 +186,19 @@ class BackendLayoutRenderer
                 $queue = $service->getMessageQueueByIdentifier();
                 $queue->addMessage($unusedElementsMessage);
 
-                $unusedGrid = GeneralUtility::makeInstance(Grid::class, $unusedBackendLayout);
-                $unusedRow = GeneralUtility::makeInstance(GridRow::class, $unusedBackendLayout);
-                $unusedColumn = GeneralUtility::makeInstance(GridColumn::class, $unusedBackendLayout, ['colPos' => 99, 'name' => 'unused'], $unusedRecords);
+                $unusedGrid = GeneralUtility::makeInstance(Grid::class, $this->context);
+                $unusedRow = GeneralUtility::makeInstance(GridRow::class, $this->context);
+                $unusedColumn = GeneralUtility::makeInstance(GridColumn::class, $this->context, ['colPos' => false, 'name' => 'unused']);
 
                 $unusedGrid->addRow($unusedRow);
                 $unusedRow->addColumn($unusedColumn);
 
-                $this->view->assign('unusedGrid', $unusedGrid);
+                foreach ($unusedRecords as $unusedRecord) {
+                    $item = GeneralUtility::makeInstance(GridColumnItem::class, $this->context, $unusedColumn, $unusedRecord);
+                    $unusedColumn->addItem($item);
+                }
+
+                $this->view->assign('grid', $unusedGrid);
                 $rendered .= $this->view->render('UnusedRecords');
             }
         }
@@ -148,7 +220,7 @@ class BackendLayoutRenderer
         $this->clipboard->endClipboard();
 
         $elFromTable = $this->clipboard->elFromTable('tt_content');
-        if (!empty($elFromTable) && $this->backendLayout->getDrawingConfiguration()->isPageEditable()) {
+        if (!empty($elFromTable) && $this->context->isPageEditable()) {
             $pasteItem = (int)substr(key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
             $pasteTitle = (string)($pasteRecord['header'] ?: $pasteItem);

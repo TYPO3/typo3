@@ -19,9 +19,8 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -43,95 +42,44 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class LanguageColumn extends AbstractGridObject
 {
     /**
-     * @var SiteLanguage
-     */
-    protected $siteLanguage;
-
-    /**
-     * @var array
-     */
-    protected $localizedPageRecord = [];
-
-    /**
      * @var array
      */
     protected $localizationConfiguration = [];
 
     /**
-     * @var GridColumn|null
+     * @var Grid|null
      */
     protected $grid;
 
-    public function __construct(BackendLayout $backendLayout, SiteLanguage $language)
+    /**
+     * @var array
+     */
+    protected $translationInfo = [
+        'hasStandaloneContent' => false,
+        'hasTranslations' => false,
+        'untranslatedRecordUids' => [],
+    ];
+
+    public function __construct(PageLayoutContext $context, Grid $grid, array $translationInfo)
     {
-        parent::__construct($backendLayout);
-        $this->siteLanguage = $language;
-        $this->localizationConfiguration = BackendUtility::getPagesTSconfig($backendLayout->getDrawingConfiguration()->getPageId())['mod.']['web_layout.']['localization.'] ?? [];
-        if ($this->siteLanguage->getLanguageId() > 0) {
-            $pageLocalizationRecord = BackendUtility::getRecordLocalization(
-                'pages',
-                $backendLayout->getDrawingConfiguration()->getPageId(),
-                $language->getLanguageId()
-            );
-            if (is_array($pageLocalizationRecord)) {
-                $pageLocalizationRecord = reset($pageLocalizationRecord);
-            }
-            BackendUtility::workspaceOL('pages', $pageLocalizationRecord);
-            $this->localizedPageRecord = $pageLocalizationRecord;
-        } else {
-            $this->localizedPageRecord = $backendLayout->getDrawingConfiguration()->getPageRecord();
-        }
+        parent::__construct($context);
+        $this->localizationConfiguration = BackendUtility::getPagesTSconfig($context->getPageId())['mod.']['web_layout.']['localization.'] ?? [];
+        $this->grid = $grid;
+        $this->translationInfo = $translationInfo;
     }
 
-    public function getLocalizedPageRecord(): ?array
+    public function getGrid(): ?Grid
     {
-        return $this->localizedPageRecord ?: null;
-    }
-
-    public function getSiteLanguage(): SiteLanguage
-    {
-        return $this->siteLanguage;
-    }
-
-    public function getGrid(): Grid
-    {
-        if (empty($this->grid)) {
-            $this->grid = $this->backendLayout->getGrid();
-        }
         return $this->grid;
-    }
-
-    public function getLanguageModeLabelClass(): string
-    {
-        $contentRecordsPerColumn = $this->backendLayout->getContentFetcher()->getFlatContentRecords();
-        $translationData = $this->backendLayout->getContentFetcher()->getTranslationData($contentRecordsPerColumn, $this->siteLanguage->getLanguageId());
-        return $translationData['mode'] === 'mixed' ? 'danger' : 'info';
-    }
-
-    public function getLanguageMode(): string
-    {
-        switch ($this->backendLayout->getLanguageModeIdentifier()) {
-            case 'mixed':
-                $languageMode = $this->getLanguageService()->getLL('languageModeMixed');
-                break;
-            case 'connected':
-                $languageMode = $this->getLanguageService()->getLL('languageModeConnected');
-                break;
-            case 'free':
-                $languageMode = $this->getLanguageService()->getLL('languageModeFree');
-                break;
-            default:
-                $languageMode = '';
-        }
-        return $languageMode;
     }
 
     public function getPageIcon(): string
     {
+        $localizedPageRecord = $this->context->getLocalizedPageRecord() ?? $this->context->getPageRecord();
         return BackendUtility::wrapClickMenuOnIcon(
-            $this->iconFactory->getIconForRecord('pages', $this->localizedPageRecord, Icon::SIZE_SMALL)->render(),
+            $this->iconFactory->getIconForRecord('pages', $localizedPageRecord, Icon::SIZE_SMALL)->render(),
             'pages',
-            $this->localizedPageRecord['uid']
+            $localizedPageRecord['uid']
         );
     }
 
@@ -142,8 +90,7 @@ class LanguageColumn extends AbstractGridObject
 
     public function getTranslationData(): array
     {
-        $contentFetcher = $this->backendLayout->getContentFetcher();
-        return $contentFetcher->getTranslationData($contentFetcher->getFlatContentRecords(), $this->siteLanguage->getLanguageId());
+        return $this->translationInfo;
     }
 
     public function getAllowTranslateCopy(): bool
@@ -171,13 +118,13 @@ class LanguageColumn extends AbstractGridObject
         $urlParameters = [
             'edit' => [
                 'pages' => [
-                    $this->localizedPageRecord['uid'] => 'edit'
+                    $this->context->getLocalizedPageRecord()['uid'] => 'edit'
                 ]
             ],
             // Disallow manual adjustment of the language field for pages
             'overrideVals' => [
                 'pages' => [
-                    'sys_language_uid' => $this->siteLanguage->getLanguageId()
+                    'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId()
                 ]
             ],
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
@@ -188,7 +135,7 @@ class LanguageColumn extends AbstractGridObject
 
     public function getAllowViewPage(): bool
     {
-        return !VersionState::cast($this->backendLayout->getDrawingConfiguration()->getPageRecord()['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
+        return !VersionState::cast($this->context->getPageRecord()['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
     }
 
     public function getViewPageLinkTitle(): string
@@ -198,14 +145,14 @@ class LanguageColumn extends AbstractGridObject
 
     public function getViewPageOnClick(): string
     {
-        $pageId = $this->backendLayout->getDrawingConfiguration()->getPageId();
+        $pageId = $this->context->getPageId();
         return BackendUtility::viewOnClick(
             $pageId,
             '',
             BackendUtility::BEgetRootLine($pageId),
             '',
             '',
-            '&L=' . $this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer()
+            '&L=' . $this->context->getSiteLanguage()->getLanguageId()
         );
     }
 }

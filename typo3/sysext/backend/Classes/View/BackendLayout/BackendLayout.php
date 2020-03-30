@@ -15,14 +15,7 @@
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayout\Grid\Grid;
-use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
-use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridRow;
-use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
-use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
-use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -68,26 +61,6 @@ class BackendLayout
     protected $data;
 
     /**
-     * @var DrawingConfiguration
-     */
-    protected $drawingConfiguration;
-
-    /**
-     * @var ContentFetcher
-     */
-    protected $contentFetcher;
-
-    /**
-     * @var LanguageColumn[]
-     */
-    protected $languageColumns = [];
-
-    /**
-     * @var RecordRememberer
-     */
-    protected $recordRememberer;
-
-    /**
      * @param string $identifier
      * @param string $title
      * @param string|array $configuration
@@ -110,9 +83,6 @@ class BackendLayout
      */
     public function __construct($identifier, $title, $configuration)
     {
-        $this->drawingConfiguration = GeneralUtility::makeInstance(DrawingConfiguration::class);
-        $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
-        $this->recordRememberer = GeneralUtility::makeInstance(RecordRememberer::class);
         $this->setIdentifier($identifier);
         $this->setTitle($title);
         if (is_array($configuration)) {
@@ -250,90 +220,8 @@ class BackendLayout
         return $this->structure;
     }
 
-    /**
-     * @return LanguageColumn[]
-     */
-    public function getLanguageColumns(): iterable
-    {
-        if (empty($this->languageColumns)) {
-            $availableLanguageColumns = $this->getDrawingConfiguration()->getLanguageColumns();
-            foreach ($this->getDrawingConfiguration()->getSiteLanguages() as $siteLanguage) {
-                if (!isset($availableLanguageColumns[$siteLanguage->getLanguageId()])) {
-                    continue;
-                }
-                $backendLayout = clone $this;
-                $backendLayout->getDrawingConfiguration()->setLanguageColumnsPointer($siteLanguage->getLanguageId());
-                $this->languageColumns[] = GeneralUtility::makeInstance(LanguageColumn::class, $backendLayout, $siteLanguage);
-            }
-        }
-        return $this->languageColumns;
-    }
-
-    public function getGrid(): Grid
-    {
-        $grid = GeneralUtility::makeInstance(Grid::class, $this);
-        foreach ($this->structure['__config']['backend_layout.']['rows.'] ?? [] as $row) {
-            $rowObject = GeneralUtility::makeInstance(GridRow::class, $this);
-            foreach ($row['columns.'] as $column) {
-                $columnObject = GeneralUtility::makeInstance(GridColumn::class, $this, $column);
-                $rowObject->addColumn($columnObject);
-            }
-            $grid->addRow($rowObject);
-        }
-        $pageId = $this->drawingConfiguration->getPageId();
-        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($pageId)['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
-        if (!$allowInconsistentLanguageHandling && $this->getLanguageModeIdentifier() === 'connected') {
-            $grid->setAllowNewContent(false);
-        }
-        return $grid;
-    }
-
     public function getColumnPositionNumbers(): array
     {
         return $this->structure['__colPosList'];
-    }
-
-    public function getContentFetcher(): ContentFetcher
-    {
-        return $this->contentFetcher;
-    }
-
-    public function setContentFetcher(ContentFetcher $contentFetcher): void
-    {
-        $this->contentFetcher = $contentFetcher;
-    }
-
-    public function getDrawingConfiguration(): DrawingConfiguration
-    {
-        return $this->drawingConfiguration;
-    }
-
-    public function setDrawingConfiguration(DrawingConfiguration $drawingConfiguration): void
-    {
-        $this->drawingConfiguration = $drawingConfiguration;
-    }
-
-    public function getBackendLayoutRenderer(): BackendLayoutRenderer
-    {
-        return GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this);
-    }
-
-    public function getRecordRememberer(): RecordRememberer
-    {
-        return $this->recordRememberer;
-    }
-
-    public function getLanguageModeIdentifier(): string
-    {
-        $contentRecordsPerColumn = $this->contentFetcher->getContentRecordsPerColumn(null, $this->drawingConfiguration->getLanguageColumnsPointer());
-        $contentRecords = empty($contentRecordsPerColumn) ? [] : array_merge(...$contentRecordsPerColumn);
-        $translationData = $this->contentFetcher->getTranslationData($contentRecords, $this->drawingConfiguration->getLanguageColumnsPointer());
-        return $translationData['mode'] ?? '';
-    }
-
-    public function __clone()
-    {
-        $this->drawingConfiguration = clone $this->drawingConfiguration;
-        $this->contentFetcher->setBackendLayout($this);
     }
 }

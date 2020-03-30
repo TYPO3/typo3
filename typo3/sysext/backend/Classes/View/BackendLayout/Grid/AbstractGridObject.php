@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
-use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -38,9 +38,9 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 abstract class AbstractGridObject
 {
     /**
-     * @var BackendLayout
+     * @var PageLayoutContext
      */
-    protected $backendLayout;
+    protected $context;
 
     /**
      * @var IconFactory
@@ -52,9 +52,9 @@ abstract class AbstractGridObject
      */
     protected $uniqueId;
 
-    public function __construct(BackendLayout $backendLayout)
+    public function __construct(PageLayoutContext $context)
     {
-        $this->backendLayout = $backendLayout;
+        $this->context = $context;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
@@ -63,9 +63,9 @@ abstract class AbstractGridObject
         return $this->uniqueId ?? $this->uniqueId = StringUtility::getUniqueId();
     }
 
-    public function getBackendLayout(): BackendLayout
+    public function getContext(): PageLayoutContext
     {
-        return $this->backendLayout;
+        return $this->context;
     }
 
     protected function getLanguageService(): LanguageService

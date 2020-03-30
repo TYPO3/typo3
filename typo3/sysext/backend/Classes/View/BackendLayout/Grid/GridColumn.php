@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -67,41 +67,24 @@ class GridColumn extends AbstractGridObject
      */
     protected $rowSpan = 1;
 
-    /**
-     * @var array
-     */
-    protected $records;
-
-    public function __construct(BackendLayout $backendLayout, array $columnDefinition, ?array $records = null)
+    public function __construct(PageLayoutContext $context, array $columnDefinition)
     {
-        parent::__construct($backendLayout);
+        parent::__construct($context);
         $this->columnNumber = isset($columnDefinition['colPos']) ? (int)$columnDefinition['colPos'] : $this->columnNumber;
         $this->columnName = $columnDefinition['name'] ?? $this->columnName;
         $this->icon = $columnDefinition['icon'] ?? $this->icon;
         $this->colSpan = (int)($columnDefinition['colspan'] ?? $this->colSpan);
         $this->rowSpan = (int)($columnDefinition['rowspan'] ?? $this->rowSpan);
-        if ($this->columnNumber !== null) {
-            $this->records = $records ?? $backendLayout->getContentFetcher()->getContentRecordsPerColumn($this->columnNumber, $backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer());
-            foreach ($this->records as $contentRecord) {
-                $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $backendLayout, $this, $contentRecord);
-                $this->addItem($columnItem);
-            }
-        }
     }
 
     public function isActive(): bool
     {
-        return $this->columnNumber !== null && in_array($this->columnNumber, $this->backendLayout->getDrawingConfiguration()->getActiveColumns());
+        return $this->columnNumber !== null && in_array($this->columnNumber, $this->context->getDrawingConfiguration()->getActiveColumns());
     }
 
     public function addItem(GridColumnItem $item): void
     {
         $this->items[] = $item;
-    }
-
-    public function getRecords(): iterable
-    {
-        return $this->records;
     }
 
     /**
@@ -129,7 +112,7 @@ class GridColumn extends AbstractGridObject
 
     public function getColSpan(): int
     {
-        if ($this->backendLayout->getDrawingConfiguration()->getLanguageMode()) {
+        if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
             return 1;
         }
         return $this->colSpan;
@@ -137,7 +120,7 @@ class GridColumn extends AbstractGridObject
 
     public function getRowSpan(): int
     {
-        if ($this->backendLayout->getDrawingConfiguration()->getLanguageMode()) {
+        if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
             return 1;
         }
         return $this->rowSpan;
@@ -157,9 +140,9 @@ class GridColumn extends AbstractGridObject
         if (empty($this->items)) {
             return null;
         }
-        $pageRecord = $this->backendLayout->getDrawingConfiguration()->getPageRecord();
+        $pageRecord = $this->context->getPageRecord();
         if (!$this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            || !$this->getBackendUser()->checkLanguageAccess($this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer())) {
+            || !$this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage()->getLanguageId())) {
             return null;
         }
         $pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(
@@ -172,10 +155,10 @@ class GridColumn extends AbstractGridObject
 
     public function getNewContentUrl(): string
     {
-        $pageId = $this->backendLayout->getDrawingConfiguration()->getPageId();
+        $pageId = $this->context->getPageId();
         $urlParameters = [
             'id' => $pageId,
-            'sys_language_uid' => $this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer(),
+            'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
             'colPos' => $this->getColumnNumber(),
             'uid_pid' => $pageId,
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
@@ -190,7 +173,7 @@ class GridColumn extends AbstractGridObject
     {
         $columnNumber = $this->getColumnNumber();
         $colTitle = (string)BackendUtility::getProcessedValue('tt_content', 'colPos', $columnNumber);
-        foreach ($this->backendLayout->getUsedColumns() as $colPos => $title) {
+        foreach ($this->context->getBackendLayout()->getUsedColumns() as $colPos => $title) {
             if ($colPos === $columnNumber) {
                 $colTitle = (string)$this->getLanguageService()->sL($title);
             }
@@ -221,9 +204,9 @@ class GridColumn extends AbstractGridObject
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        $pageRecord = $this->backendLayout->getDrawingConfiguration()->getPageRecord();
+        $pageRecord = $this->context->getPageRecord();
         return !$pageRecord['editlock']
             && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && $this->getBackendUser()->checkLanguageAccess($this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer());
+            && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage()->getLanguageId());
     }
 }

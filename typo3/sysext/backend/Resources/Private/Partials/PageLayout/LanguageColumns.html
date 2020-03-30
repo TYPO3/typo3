@@ -1,8 +1,8 @@
-<f:if condition="{pageLayoutConfiguration.newLanguageOptions}">
+<f:if condition="{context.newLanguageOptions}">
     <div class="form-inline form-inline-spaced">
         <div class="form-group">
             <select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
-                <f:for each="{pageLayoutConfiguration.newLanguageOptions}" as="languageName" key="url">
+                <f:for each="{context.newLanguageOptions}" as="languageName" key="url">
                     <option value="{url}">{languageName}</option>
                 </f:for>
             </select>
@@ -12,22 +12,22 @@
 <div class="t3-grid-container">
     <table cellpadding="0" cellspacing="0" class="t3-page-columns t3-grid-table t3js-page-columns">
         <tr>
-            <f:for each="{backendLayout.languageColumns}" as="languageColumn">
+            <f:for each="{languageColumns}" as="languageColumn">
                 <td valign="top"
                     class="t3-page-column t3-page-column-lang-name"
-                    data-language-uid="{languageColumn.siteLanguage.languageId}"
-                    data-language-title="{languageColumn.siteLanguage.title}"
-                    data-flag-identifier="{languageColumn.siteLanguage.flagIdentifier}"
+                    data-language-uid="{languageColumn.context.siteLanguage.languageId}"
+                    data-language-title="{languageColumn.context.siteLanguage.title}"
+                    data-flag-identifier="{languageColumn.context.siteLanguage.flagIdentifier}"
                 >
-                    <h2>{languageColumn.siteLanguage.title}</h2>
-                    <f:if condition="{languageColumn.languageMode}">
-                        <span class="label label-{languageColumn.languageModeLabelClass}">{languageColumn.languageMode}</span>
+                    <h2>{languageColumn.context.siteLanguage.title}</h2>
+                    <f:if condition="{languageColumn.context.languageMode}">
+                        <span class="label label-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
                     </f:if>
                 </td>
             </f:for>
         </tr>
         <tr>
-            <f:for each="{backendLayout.languageColumns}" as="languageColumn">
+            <f:for each="{languageColumns}" as="languageColumn">
                 <td class="t3-page-column t3-page-lang-label nowrap">
                     <div class="btn-group">
                         <f:if condition="{languageColumn.allowViewPage}">
@@ -40,30 +40,30 @@
                                 <core:icon identifier="actions-open" />
                             </a>
                         </f:if>
-                        <f:if condition="{allowEditContent} && {languageColumn.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
+                        <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
                             <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
-                                title="{languageColumn.translatePageTitle}"
-                                data-page="{languageColumn.localizedPageRecord.title}"
+                                title="{languageColumn.context.translatePageTitle}"
+                                data-page="{languageColumn.context.localizedPageRecord.title}"
                                 data-has-elements="{languageColumn.translationData.hasTranslations as integer}"
                                 data-allow-copy="{languageColumn.allowTranslateCopy as integer}"
                                 data-allow-translate="{languageColumn.allowTranslate as integer}"
                                 data-table="tt_content"
-                                data-page-id="{backendLayout.drawingConfiguration.pageId}"
-                                data-language-id="{languageColumn.siteLanguage.languageId}"
-                                data-language-name="{languageColumn.siteLanguage.title}">
+                                data-page-id="{context.pageId}"
+                                data-language-id="{languageColumn.context.siteLanguage.languageId}"
+                                data-language-name="{languageColumn.context.siteLanguage.title}">
                                 <core:icon identifier="actions-localize" />
                                 {languageColumn.translatePageTitle}
                             </a>
                         </f:if>
                     </div>
                     {languageColumn.pageIcon -> f:format.raw()}
-                    {languageColumn.localizedPageRecord.title}
+                    {languageColumn.context.localizedPageTitle}
                 </td>
             </f:for>
         </tr>
-        <f:for each="{backendLayout.drawingConfiguration.activeColumns}" as="columnNumber">
+        <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
             <tr>
-                <f:for each="{backendLayout.languageColumns}" as="languageColumn">
+                <f:for each="{languageColumns}" as="languageColumn">
                     <f:variable name="grid" value="{languageColumn.grid}" />
                     <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
                     <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />

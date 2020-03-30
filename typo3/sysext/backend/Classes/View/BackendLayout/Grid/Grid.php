@@ -67,19 +67,9 @@ class Grid extends AbstractGridObject
         return $columns;
     }
 
-    public function isAllowNewContent(): bool
-    {
-        return $this->allowNewContent;
-    }
-
-    public function setAllowNewContent(bool $allowNewContent): void
-    {
-        $this->allowNewContent = $allowNewContent;
-    }
-
     public function getSpan(): int
     {
-        if (!isset($this->rows[0]) || $this->backendLayout->getDrawingConfiguration()->getLanguageMode()) {
+        if (!isset($this->rows[0]) || $this->context->getDrawingConfiguration()->getLanguageMode()) {
             return 1;
         }
         $span = 0;

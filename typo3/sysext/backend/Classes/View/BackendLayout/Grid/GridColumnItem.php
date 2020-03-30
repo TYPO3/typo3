@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -49,13 +49,11 @@ class GridColumnItem extends AbstractGridObject
      */
     protected $column;
 
-    public function __construct(BackendLayout $backendLayout, GridColumn $column, array $record)
+    public function __construct(PageLayoutContext $context, GridColumn $column, array $record)
     {
-        parent::__construct($backendLayout);
+        parent::__construct($context);
         $this->column = $column;
         $this->record = $record;
-        $backendLayout->getRecordRememberer()->rememberRecordUid((int)$record['uid']);
-        $backendLayout->getRecordRememberer()->rememberRecordUid((int)$record['l18n_parent']);
     }
 
     public function isVersioned(): bool
@@ -70,7 +68,7 @@ class GridColumnItem extends AbstractGridObject
             ->resolveRendererFor(
                 'tt_content',
                 $record,
-                $this->backendLayout->getDrawingConfiguration()->getPageId()
+                $this->context->getPageId()
             );
         $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
         $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
@@ -82,7 +80,7 @@ class GridColumnItem extends AbstractGridObject
         $wrapperClassNames = [];
         if ($this->isDisabled()) {
             $wrapperClassNames[] = 't3-page-ce-hidden t3js-hidden-record';
-        } elseif (!in_array($this->record['colPos'], $this->backendLayout->getColumnPositionNumbers())) {
+        } elseif (!in_array($this->record['colPos'], $this->context->getBackendLayout()->getColumnPositionNumbers())) {
             $wrapperClassNames[] = 't3-page-ce-warning';
         }
 
@@ -92,7 +90,7 @@ class GridColumnItem extends AbstractGridObject
     public function isDelible(): bool
     {
         $backendUser = $this->getBackendUser();
-        if (!$backendUser->doesUserHaveAccess($this->backendLayout->getDrawingConfiguration()->getPageRecord(), Permission::CONTENT_EDIT)) {
+        if (!$backendUser->doesUserHaveAccess($this->context->getPageRecord(), Permission::CONTENT_EDIT)) {
             return false;
         }
         return !(bool)($backendUser->getTSConfig()['options.']['disableDelete.']['tt_content'] ?? $backendUser->getTSConfig()['options.']['disableDelete'] ?? false);
@@ -126,7 +124,7 @@ class GridColumnItem extends AbstractGridObject
             ->resolveRendererFor(
                 'tt_content',
                 $record,
-                $this->backendLayout->getDrawingConfiguration()->getPageId()
+                $this->context->getPageId()
             );
         return $previewRenderer->renderPageModulePreviewFooter($this);
     }
@@ -162,9 +160,11 @@ class GridColumnItem extends AbstractGridObject
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }
         $icons[] = $icon;
-        $siteLanguage = $this->backendLayout->getDrawingConfiguration()->getSiteLanguage((int)$row['sys_language_uid']);
-        if ($siteLanguage instanceof SiteLanguage) {
-            $icons[] = $this->renderLanguageFlag($siteLanguage);
+        if ($row['sys_language_uid'] >= 0) {
+            $siteLanguage = $this->context->getSiteLanguage();
+            if ($siteLanguage instanceof SiteLanguage) {
+                $icons[] = $this->renderLanguageFlag($siteLanguage);
+            }
         }
 
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
@@ -204,22 +204,6 @@ class GridColumnItem extends AbstractGridObject
             || $enableCols['endtime'] && $row[$enableCols['endtime']] && $row[$enableCols['endtime']] < $GLOBALS['EXEC_TIME'];
     }
 
-    public function hasTranslation(): bool
-    {
-        $contentElements = $this->column->getRecords();
-        $id = $this->backendLayout->getDrawingConfiguration()->getPageId();
-        $language = $this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer();
-        // If in default language, you may always create new entries
-        // Also, you may override this strict behavior via user TS Config
-        // If you do so, you're on your own and cannot rely on any support by the TYPO3 core.
-        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($id)['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
-        if ($language === 0 || $allowInconsistentLanguageHandling) {
-            return false;
-        }
-
-        return $this->backendLayout->getContentFetcher()->getTranslationData($contentElements, $language)['hasTranslations'] ?? false;
-    }
-
     public function isDeletePlaceholder(): bool
     {
         return VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
@@ -227,11 +211,11 @@ class GridColumnItem extends AbstractGridObject
 
     public function isEditable(): bool
     {
-        $languageId = $this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer();
+        $languageId = $this->context->getSiteLanguage()->getLanguageId();
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        $pageRecord = $this->backendLayout->getDrawingConfiguration()->getPageRecord();
+        $pageRecord = $this->context->getPageRecord();
         return !$pageRecord['editlock']
             && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
             && ($languageId === null || $this->getBackendUser()->checkLanguageAccess($languageId));
@@ -239,7 +223,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function isDragAndDropAllowed(): bool
     {
-        $pageRecord = $this->backendLayout->getDrawingConfiguration()->getPageRecord();
+        $pageRecord = $this->context->getPageRecord();
         return (int)$this->record['l18n_parent'] === 0 &&
             (
                 $this->getBackendUser()->isAdmin()
@@ -262,10 +246,10 @@ class GridColumnItem extends AbstractGridObject
 
     public function getNewContentAfterUrl(): string
     {
-        $pageId = $this->backendLayout->getDrawingConfiguration()->getPageId();
+        $pageId = $this->context->getPageId();
         $urlParameters = [
             'id' => $pageId,
-            'sys_language_uid' => $this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer(),
+            'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
             'colPos' => $this->column->getColumnNumber(),
             'uid_pid' => -$this->record['uid'],
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')

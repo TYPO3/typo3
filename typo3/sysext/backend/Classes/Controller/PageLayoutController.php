@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -160,9 +161,9 @@ class PageLayoutController
     protected $uriBuilder;
 
     /**
-     * @var BackendLayoutView
+     * @var PageLayoutContext
      */
-    protected $backendLayouts;
+    protected $context;
 
     /**
      * Injects the request object for the current request or subrequest
@@ -179,13 +180,18 @@ class PageLayoutController
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $this->backendLayouts = GeneralUtility::makeInstance(BackendLayoutView::class);
         $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         // Setting module configuration / page select clause
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
 
         // Load page info array
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+        $this->context = GeneralUtility::makeInstance(
+            PageLayoutContext::class,
+            $this->pageinfo,
+            GeneralUtility::makeInstance(BackendLayoutView::class)->getBackendLayoutForPage($this->id)
+        );
+
         /** @var SiteInterface $currentSite */
         $currentSite = $request->getAttribute('site');
         $this->availableLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, $this->id);
@@ -547,8 +553,9 @@ class PageLayoutController
                 }
             ');
 
+            $backendLayout = $this->context->getBackendLayout();
+
             // Find backend layout / columns
-            $backendLayout = $this->backendLayouts->getBackendLayoutForPage($this->id);
             if (!empty($backendLayout->getColumnPositionNumbers())) {
                 $this->colPosList = implode(',', $backendLayout->getColumnPositionNumbers());
             }
@@ -619,26 +626,26 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
-        $backendLayout = $this->backendLayouts->getBackendLayoutForPage((int)$this->id);
+        $backendLayout = $this->context->getBackendLayout();
 
-        $configuration = $backendLayout->getDrawingConfiguration();
-        $configuration->setPageId($this->id);
+        $configuration = $this->context->getDrawingConfiguration();
         $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
         $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
         $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
         $configuration->setLanguageColumns($this->MOD_MENU['language']);
-        $configuration->setLanguageColumnsPointer((int)$this->current_sys_language);
+        $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
+        $configuration->setSelectedLanguageId((int)$this->MOD_SETTINGS['language']);
         if ($this->MOD_SETTINGS['function'] == 2) {
             $configuration->setLanguageMode(true);
         }
-        $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
+
         $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
 
         if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
-            $pageLayoutDrawer = $backendLayout->getBackendLayoutRenderer();
+            $pageLayoutDrawer = $this->context->getBackendLayoutRenderer();
 
             $pageActionsCallback = null;
-            if ($configuration->isPageEditable()) {
+            if ($this->context->isPageEditable()) {
                 $languageOverlayId = 0;
                 $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
                 if (is_array($pageLocalizationRecord)) {
@@ -655,7 +662,7 @@ class PageLayoutController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
             $tableOutput = $pageLayoutDrawer->drawContent();
         } else {
-            $dbList = PageLayoutView::createFromDrawingConfiguration($configuration);
+            $dbList = PageLayoutView::createFromPageLayoutContext($this->context);
             // Setting up the tt_content columns to show
             $colList = array_keys($backendLayout->getUsedColumns());
             if ($this->colPosList !== '') {

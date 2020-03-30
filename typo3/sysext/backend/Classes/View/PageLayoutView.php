@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -207,31 +206,33 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * @param DrawingConfiguration $drawingConfiguration
+     * @param PageLayoutContext $context
      * @return PageLayoutView
      * @internal
      */
-    public static function createFromDrawingConfiguration(DrawingConfiguration $drawingConfiguration): PageLayoutView
+    public static function createFromPageLayoutContext(PageLayoutContext $context): PageLayoutView
     {
+        $drawingConfiguration = $context->getDrawingConfiguration();
+        $languageId = $drawingConfiguration->getSelectedLanguageId();
         /** @var PageLayoutView $pageLayoutView */
         $pageLayoutView = GeneralUtility::makeInstance(self::class);
-        $pageLayoutView->id = $drawingConfiguration->getPageId();
+        $pageLayoutView->id = $context->getPageId();
         $pageLayoutView->pageinfo = BackendUtility::readPageAccess($pageLayoutView->id, '');
-        $pageLayoutView->pageRecord = $drawingConfiguration->getPageRecord();
+        $pageLayoutView->pageRecord = $context->getPageRecord();
         $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
         $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
         $pageLayoutView->tt_contentConfig['cols'] = implode(',', $drawingConfiguration->getActiveColumns());
         $pageLayoutView->tt_contentConfig['activeCols'] = implode(',', $drawingConfiguration->getActiveColumns());
         $pageLayoutView->tt_contentConfig['showHidden'] = $drawingConfiguration->getShowHidden();
-        $pageLayoutView->tt_contentConfig['sys_language_uid'] = $drawingConfiguration->getLanguageColumnsPointer();
+        $pageLayoutView->tt_contentConfig['sys_language_uid'] = $languageId;
         if ($drawingConfiguration->getLanguageMode()) {
             $pageLayoutView->tt_contentConfig['languageMode'] = 1;
             $pageLayoutView->tt_contentConfig['languageCols'] = $drawingConfiguration->getLanguageColumns();
-            $pageLayoutView->tt_contentConfig['languageColsPointer'] = $drawingConfiguration->getLanguageColumnsPointer();
+            $pageLayoutView->tt_contentConfig['languageColsPointer'] = $languageId;
         }
-        $pageLayoutView->doEdit = $pageLayoutView->isContentEditable($drawingConfiguration->getLanguageColumnsPointer());
-        $pageLayoutView->CType_labels = $drawingConfiguration->getContentTypeLabels();
-        $pageLayoutView->itemLabels = $drawingConfiguration->getItemLabels();
+        $pageLayoutView->doEdit = $pageLayoutView->isContentEditable($languageId);
+        $pageLayoutView->CType_labels = $context->getContentTypeLabels();
+        $pageLayoutView->itemLabels = $context->getItemLabels();
         return $pageLayoutView;
     }
 

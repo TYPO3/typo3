@@ -54,7 +54,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
         $record = $item->getRecord();
-        $itemLabels = $item->getBackendLayout()->getDrawingConfiguration()->getItemLabels();
+        $itemLabels = $item->getContext()->getItemLabels();
 
         $outHeader = '';
 
@@ -81,14 +81,14 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $out = '';
         $record = $item->getRecord();
 
-        $contentTypeLabels = $item->getBackendLayout()->getDrawingConfiguration()->getContentTypeLabels();
+        $contentTypeLabels = $item->getContext()->getContentTypeLabels();
         $languageService = $this->getLanguageService();
 
         $drawItem = true;
         $hookPreviewContent = '';
         // Hook: Render an own preview of a record
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
-            $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getContext());
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
@@ -169,7 +169,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             case 'list':
                 $hookOut = '';
                 if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'])) {
-                    $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+                    $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getBackendLayout());
                     $_params = ['pObj' => &$pageLayoutView, 'row' => $record];
                     foreach (
                         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$record['list_type']] ??
@@ -240,7 +240,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
         // Call drawFooter hooks
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'])) {
-            $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($item->getBackendLayout()->getDrawingConfiguration());
+            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getBackendLayout());
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
@@ -273,7 +273,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     protected function getProcessedValue(GridColumnItem $item, string $fieldList, array &$info): void
     {
-        $itemLabels = $item->getBackendLayout()->getDrawingConfiguration()->getItemLabels();
+        $itemLabels = $item->getContext()->getItemLabels();
         $record = $item->getRecord();
         $fieldArr = explode(',', $fieldList);
         foreach ($fieldArr as $field) {
