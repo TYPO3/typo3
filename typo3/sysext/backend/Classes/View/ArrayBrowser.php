@@ -112,9 +112,9 @@ class ArrayBrowser
                 $goto = 'a' . substr(md5($depth), 0, 6);
                 $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->route->getOption('_identifier'), ['node' => [rawurldecode($depth) => $isExpanded ? 0 : 1]]) . '#' . $goto) . '"><i class="fa"></i></a> ';
             }
-            $output .= '<span class="list-tree-label">' . htmlspecialchars($key) . '</span>';
+            $output .= '<span class="list-tree-label">' . htmlspecialchars((string)$key) . '</span>';
             if (!$isArray) {
-                $output .= ' = <span class="list-tree-value">' . htmlspecialchars($value) . '</span>';
+                $output .= ' = <span class="list-tree-value">' . htmlspecialchars((string)$value) . '</span>';
             }
             $output .= '</span>';
             if ($isExpanded) {
