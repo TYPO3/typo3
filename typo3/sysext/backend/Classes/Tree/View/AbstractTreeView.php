@@ -153,7 +153,7 @@ abstract class AbstractTreeView
      * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
      *
      * @see addField()
-     * @var array
+     * @var string
      */
     public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
 

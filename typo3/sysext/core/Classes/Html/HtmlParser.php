@@ -806,7 +806,7 @@ class HtmlParser
      * @param mixed $str Input string/array
      * @param bool $caseSensitiveComparison If this value is FALSE, the string is returned in uppercase
      * @param string $cacheKey Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
-     * @return string Output string, processed
+     * @return array|string Output string, processed
      * @internal
      */
     public function caseShift($str, $caseSensitiveComparison, $cacheKey = '')
