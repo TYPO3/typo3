@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
@@ -49,6 +51,11 @@ class ActionController implements ControllerInterface
      * @var HashService
      */
     protected $hashService;
+
+    /**
+     * @var ViewResolverInterface
+     */
+    private $viewResolver;
 
     /**
      * The current view, as resolved by resolveView()
@@ -102,6 +109,15 @@ class ActionController implements ControllerInterface
      * @var \TYPO3\CMS\Extbase\Mvc\Response
      */
     protected $response;
+
+    /**
+     * @param ViewResolverInterface $viewResolver
+     * @internal
+     */
+    public function injectViewResolver(ViewResolverInterface $viewResolver)
+    {
+        $this->viewResolver = $viewResolver;
+    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
@@ -371,10 +387,22 @@ class ActionController implements ControllerInterface
      */
     protected function resolveView()
     {
-        $view = null;
-        if ($this->defaultViewObjectName != '') {
-            /** @var ViewInterface $view */
-            $view = $this->objectManager->get($this->defaultViewObjectName);
+        if ($this->viewResolver instanceof GenericViewResolver) {
+            /*
+             * This setter is not part of the ViewResolverInterface as it's only necessary to set
+             * the default view class from this point when using the generic view resolver which
+             * must respect the possibly overridden property defaultViewObjectName.
+             */
+            $this->viewResolver->setDefaultViewClass($this->defaultViewObjectName);
+        }
+
+        $view = $this->viewResolver->resolve(
+            $this->request->getControllerObjectName(),
+            $this->request->getControllerActionName(),
+            $this->request->getFormat()
+        );
+
+        if ($view instanceof ViewInterface) {
             $this->setViewConfiguration($view);
             if ($view->canRender($this->controllerContext) === false) {
                 $view = null;
