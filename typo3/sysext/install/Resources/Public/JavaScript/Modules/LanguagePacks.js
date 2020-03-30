@@ -39,7 +39,6 @@ define([
     selectorDeactivateLanguageIcon: '#t3js-languagePacks-deactivate-icon',
     selectorUpdate: '.t3js-languagePacks-update',
     selectorLanguageUpdateIcon: '#t3js-languagePacks-languageUpdate-icon',
-    selectorExtensionPackMissesIcon: '#t3js-languagePacks-extensionPack-misses-icon',
     selectorNotifications: '.t3js-languagePacks-notifications',
 
     currentModal: {},
@@ -424,11 +423,9 @@ define([
 
     extensionMatrixHtml: function(data) {
       var securityUtility = new SecurityUtility();
-      var packMissesIcon = this.currentModal.find(this.selectorExtensionPackMissesIcon).html();
       var updateIcon = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
       var tooltip = '';
       var extensionTitle = '';
-      var allPackagesExist = true;
       var rowCount = 0;
       var $markupContainer = $('<div>');
 
@@ -455,15 +452,6 @@ define([
 
       var $tbody = $('<tbody>');
       data.extensions.forEach(function(extension) {
-        allPackagesExist = true;
-        extension.packs.forEach(function(pack) {
-          if (pack.exists === false) {
-            allPackagesExist = false;
-          }
-        });
-        if (allPackagesExist === true) {
-          return;
-        }
         rowCount++;
         if (extension.icon !== '') {
           extensionTitle = $('<span>').append(
@@ -491,16 +479,22 @@ define([
             } else {
               tooltip = 'Language pack not downloaded. Click to download';
             }
-            $column.append(
-              $('<a>', {
-                'class': 'btn btn-default t3js-languagePacks-update',
-                'data-extension': extension.key,
-                'data-iso': pack.iso,
-                'data-toggle': 'tooltip',
-                'title': securityUtility.encodeHtml(tooltip),
-              }).append(packMissesIcon)
-            );
+          } else {
+            if (pack.lastUpdate === null) {
+              tooltip = 'Downloaded. Click to renew';
+            } else {
+              tooltip = 'Language pack downloaded at ' + pack.lastUpdate + '. Click to renew';
+            }
           }
+          $column.append(
+            $('<a>', {
+              'class': 'btn btn-default t3js-languagePacks-update',
+              'data-extension': extension.key,
+              'data-iso': pack.iso,
+              'data-toggle': 'tooltip',
+              'title': securityUtility.encodeHtml(tooltip),
+            }).append(updateIcon)
+          );
         });
         $tbody.append($tr);
       });
