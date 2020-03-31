@@ -13,10 +13,10 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-adminpanel": "9.5.15",
-		"typo3/cms-backend": "9.5.15",
-		"typo3/cms-core": "9.5.15",
-		"typo3/cms-frontend": "9.5.15",
+		"typo3/cms-adminpanel": "9.5.*@dev",
+		"typo3/cms-backend": "9.5.*@dev",
+		"typo3/cms-core": "9.5.*@dev",
+		"typo3/cms-frontend": "9.5.*@dev",
 		"psr/http-message": "~1.0",
 		"psr/http-server-handler": "^1.0",
 		"psr/http-server-middleware": "^1.0"
