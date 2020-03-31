@@ -411,7 +411,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $getImgResourceHookObjects;
 
     /**
-     * @var File Current file objects (during iterations over files)
+     * @var File|FileReference|Folder|null Current file objects (during iterations over files)
      */
     protected $currentFile;
 

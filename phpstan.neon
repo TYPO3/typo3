@@ -144,3 +144,11 @@ parameters:
       message: "#^Ternary operator condition is always true\\.$#"
       count: 2
       path: typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
+    -
+      message: "#^Instanceof between TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\Category\\|null and TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy will always evaluate to false\\.$#"
+      count: 1
+      path: typo3/sysext/extbase/Classes/Domain/Model/Category.php
+    -
+      message: "#^Instanceof between TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File and TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference will always evaluate to false\\.$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php

@@ -263,7 +263,7 @@ class ArrayUtility
      * );
      *
      * @param array $array Input array to manipulate
-     * @param string|array $path Path in array to search for
+     * @param string|array|\ArrayAccess $path Path in array to search for
      * @param mixed $value Value to set at path location in array
      * @param string $delimiter Path delimiter
      * @return array Modified array

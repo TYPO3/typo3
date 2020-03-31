@@ -1063,7 +1063,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * Updating Index (External API)
      *
      * @param bool $testOnly If set, only a test
-     * @param bool $cli_echo If set, output CLI status - but can now be of type ProgressListenerInterface, which should be used instead.
+     * @param bool|ProgressListenerInterface|null $cli_echo If set, output CLI status - but can now be of type ProgressListenerInterface, which should be used instead.
      * @return array Header and body status content
      */
     public function updateIndex($testOnly, $cli_echo = null)

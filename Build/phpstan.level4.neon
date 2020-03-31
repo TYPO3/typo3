@@ -22,14 +22,14 @@ conditionalTags:
 		phpstan.rules.rule: %featureToggles.nullCoalesce%
 
 services:
-#	-
-#		class: PHPStan\Rules\Classes\ImpossibleInstanceOfRule
-#		arguments:
-#			checkAlwaysTrueInstanceof: %checkAlwaysTrueInstanceof%
-#			treatPhpDocTypesAsCertain: %treatPhpDocTypesAsCertain%
-#
-#		tags:
-#			- phpstan.rules.rule
+	-
+		class: PHPStan\Rules\Classes\ImpossibleInstanceOfRule
+		arguments:
+			checkAlwaysTrueInstanceof: %checkAlwaysTrueInstanceof%
+			treatPhpDocTypesAsCertain: %treatPhpDocTypesAsCertain%
+
+		tags:
+			- phpstan.rules.rule
 
 #	-
 #		class: PHPStan\Rules\Comparison\BooleanAndConstantConditionRule

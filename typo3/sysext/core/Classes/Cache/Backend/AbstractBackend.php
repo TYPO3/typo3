@@ -69,14 +69,12 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
     public function __construct($context, array $options = [])
     {
         $this->context = $context;
-        if (is_array($options) || $options instanceof \ArrayAccess) {
-            foreach ($options as $optionKey => $optionValue) {
-                $methodName = 'set' . ucfirst($optionKey);
-                if (method_exists($this, $methodName)) {
-                    $this->{$methodName}($optionValue);
-                } else {
-                    throw new \InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . static::class . '"', 1231267498);
-                }
+        foreach ($options as $optionKey => $optionValue) {
+            $methodName = 'set' . ucfirst($optionKey);
+            if (method_exists($this, $methodName)) {
+                $this->{$methodName}($optionValue);
+            } else {
+                throw new \InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . static::class . '"', 1231267498);
             }
         }
         if ($this->logger === null) {
