@@ -52,11 +52,11 @@ class ExtensionUtility
         $vendorName = null;
         $delimiterPosition = strrpos($extensionName, '.');
         if ($delimiterPosition !== false) {
+            $vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
             trigger_error(
-                'Calling method ' . __METHOD__ . 'with argument $extensionName containing the vendor name is deprecated and will stop working in TYPO3 11.0.',
+                'Calling method ' . __METHOD__ . ' with argument $extensionName ("' . $extensionName . '") containing the vendor name ("' . $vendorName . '") is deprecated and will stop working in TYPO3 11.0.',
                 E_USER_DEPRECATED
             );
-            $vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
             $extensionName = substr($extensionName, $delimiterPosition + 1);
 
             if (!empty($vendorName)) {
@@ -78,7 +78,7 @@ class ExtensionUtility
                 }
             } else {
                 trigger_error(
-                    'Calling ' . __METHOD__ . ' with controller aliases in argument $controllerActions is deprecated and will stop working in TYPO3 11.0.',
+                    'Calling ' . __METHOD__ . ' for extension ("' . $extensionName . '") and plugin ("' . $pluginName . '") with controller aliases in argument $controllerActions is deprecated and will stop working in TYPO3 11.0.',
                     E_USER_DEPRECATED
                 );
                 $controllerAlias = $controllerClassName;
@@ -93,7 +93,7 @@ class ExtensionUtility
 
             if (isset($nonCacheableControllerActions[$controllerAlias]) && !empty($nonCacheableControllerActions[$controllerAlias])) {
                 trigger_error(
-                    'Calling ' . __METHOD__ . ' with controller aliases in argument $nonCacheableControllerActions is deprecated and will stop working in TYPO3 11.0.',
+                    'Calling ' . __METHOD__ . ' for extension ("' . $extensionName . '") and plugin ("' . $pluginName . '") with controller aliases in argument $nonCacheableControllerActions is deprecated and will stop working in TYPO3 11.0.',
                     E_USER_DEPRECATED
                 );
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
@@ -159,8 +159,9 @@ tt_content.' . $pluginSignature . ' {
 
         $delimiterPosition = strrpos($extensionName, '.');
         if ($delimiterPosition !== false) {
+            $vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
             trigger_error(
-                'Calling method ' . __METHOD__ . ' with argument $extensionName containing the vendor name is deprecated and will stop working in TYPO3 11.0.',
+                'Calling method ' . __METHOD__ . ' with argument $extensionName ("' . $extensionName . '") containing the vendor name ("' . $vendorName . '") is deprecated and will stop working in TYPO3 11.0.',
                 E_USER_DEPRECATED
             );
             $extensionName = substr($extensionName, $delimiterPosition + 1);
