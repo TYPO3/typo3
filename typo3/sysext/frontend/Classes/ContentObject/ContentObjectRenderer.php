@@ -661,7 +661,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getCurrentVal()
     {
-        return $this->data[$this->currentValKey];
+        return $this->data[$this->currentValKey] ?? null;
     }
 
     /**
@@ -1313,7 +1313,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         // Check if there's already content available before processing
                         // any ifEmpty or ifBlank stdWrap properties
                         if (($functionName === 'ifBlank' && $content !== '') ||
-                            ($functionName === 'ifEmpty' && trim((string)$content) !== '')) {
+                            ($functionName === 'ifEmpty' && !empty(trim((string)$content)))) {
                             continue;
                         }
 
@@ -1522,7 +1522,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_current($content = '', $conf = [])
     {
-        return $this->data[$this->currentValKey];
+        return $this->getCurrentVal();
     }
 
     /**
@@ -1638,7 +1638,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_ifEmpty($content = '', $conf = [])
     {
-        if (!trim((string)$content)) {
+        if (empty(trim((string)$content))) {
             $content = $conf['ifEmpty'];
         }
         return $content;
