@@ -102,7 +102,7 @@ class ElementInformationController
     protected $row;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\File
+     * @var \TYPO3\CMS\Core\Resource\File|null
      */
     protected $fileObject;
 

@@ -78,13 +78,13 @@ class Constraint
 
     /**
      * Manual date start
-     * @var \DateTime
+     * @var \DateTime|null
      */
     protected $manualDateStart;
 
     /**
      * Manual date stop
-     * @var \DateTime
+     * @var \DateTime|null
      */
     protected $manualDateStop;
 
@@ -315,7 +315,7 @@ class Constraint
     /**
      * Get manual date start
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getManualDateStart()
     {
@@ -335,7 +335,7 @@ class Constraint
     /**
      * Get manual date stop
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getManualDateStop()
     {

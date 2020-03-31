@@ -446,7 +446,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $stdWrapRecursionLevel = 0;
 
     /**
-     * @var TypoScriptFrontendController
+     * @var TypoScriptFrontendController|null
      */
     protected $typoScriptFrontendController;
 

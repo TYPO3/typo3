@@ -52,7 +52,7 @@ class RepositoryRepository extends Repository
     /**
      * Find main typo3.org repository
      *
-     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Repository
+     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Repository|null
      */
     public function findOneTypo3OrgRepository()
     {

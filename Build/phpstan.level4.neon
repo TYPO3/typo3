@@ -106,13 +106,13 @@ services:
 #		tags:
 #			- phpstan.rules.rule
 
-#	-
-#		class: PHPStan\Rules\Comparison\TernaryOperatorConstantConditionRule
-#		arguments:
-#			treatPhpDocTypesAsCertain: %treatPhpDocTypesAsCertain%
-#
-#		tags:
-#			- phpstan.rules.rule
+	-
+		class: PHPStan\Rules\Comparison\TernaryOperatorConstantConditionRule
+		arguments:
+			treatPhpDocTypesAsCertain: %treatPhpDocTypesAsCertain%
+
+		tags:
+			- phpstan.rules.rule
 
 #	-
 #		class: PHPStan\Rules\Comparison\UnreachableIfBranchesRule

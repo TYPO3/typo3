@@ -1250,7 +1250,6 @@ class ResourceStorage implements ResourceStorageInterface
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
         }
         $conflictMode = DuplicationBehavior::cast($conflictMode);
-        $targetFolder = $targetFolder ?: $this->getDefaultFolder();
         $targetFileName = $this->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath), $targetFolder);
 
         $targetFileName = $this->eventDispatcher->dispatch(

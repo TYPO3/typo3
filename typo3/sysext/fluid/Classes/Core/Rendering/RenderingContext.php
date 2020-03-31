@@ -37,7 +37,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     /**
      * Controller context being passed to the ViewHelper
      *
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext|null
      */
     protected $controllerContext;
 

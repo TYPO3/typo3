@@ -116,7 +116,7 @@ class TypoScriptFrontendHook
             // Group list
             'gr_list' => implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])),
             // page arguments array
-            'staticPageArguments' => $pageArguments ? $pageArguments->getStaticArguments() : [],
+            'staticPageArguments' => $pageArguments->getStaticArguments(),
             // The creation date of the TYPO3 page
             'crdate' => $tsfe->page['crdate'],
             'rootline_uids' => [],

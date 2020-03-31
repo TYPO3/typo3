@@ -26,7 +26,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * The Controller associated to this widget.
      * This needs to be filled by the individual subclass by an inject method.
      *
-     * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+     * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController|null
      */
     protected $controller;
 
