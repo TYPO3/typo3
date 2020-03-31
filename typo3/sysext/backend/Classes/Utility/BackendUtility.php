@@ -3703,7 +3703,7 @@ class BackendUtility
      *
      * @param string $table Name of the table
      * @param int $uid Uid of the offline/draft record
-     * @return int The id of the live version of the record (or NULL if nothing was found)
+     * @return int|null The id of the live version of the record (or NULL if nothing was found)
      */
     public static function getLiveVersionIdOfRecord($table, $uid)
     {

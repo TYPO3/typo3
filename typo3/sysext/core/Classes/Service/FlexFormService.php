@@ -67,9 +67,9 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Parses a flexForm node recursively and takes care of sections etc
      *
-     * @param array $nodeArray The flexForm node to parse
+     * @param mixed $nodeArray The flexForm node to parse
      * @param string $valuePointer The valuePointer to use for value retrieval
-     * @return array
+     * @return mixed
      */
     public function walkFlexFormNode($nodeArray, $valuePointer = 'vDEF')
     {

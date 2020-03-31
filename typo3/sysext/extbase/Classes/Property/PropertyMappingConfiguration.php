@@ -359,7 +359,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Return the type converter set for this configuration.
      *
-     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface
+     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface|null
      */
     public function getTypeConverter()
     {

@@ -42,7 +42,7 @@ abstract class AbstractTypolinkBuilder
     protected $contentObjectRenderer;
 
     /**
-     * @var TypoScriptFrontendController
+     * @var TypoScriptFrontendController|null
      */
     protected $typoScriptFrontendController;
 
@@ -55,7 +55,7 @@ abstract class AbstractTypolinkBuilder
     public function __construct(ContentObjectRenderer $contentObjectRenderer, TypoScriptFrontendController $typoScriptFrontendController = null)
     {
         $this->contentObjectRenderer = $contentObjectRenderer;
-        $this->typoScriptFrontendController = $typoScriptFrontendController ?? $GLOBALS['TSFE'];
+        $this->typoScriptFrontendController = $typoScriptFrontendController ?? $GLOBALS['TSFE'] ?? null;
     }
 
     /**

@@ -27,14 +27,14 @@ interface OrInterface extends ConstraintInterface
     /**
      * Gets the first constraint.
      *
-     * @return ConstraintInterface the constraint; non-null
+     * @return ConstraintInterface|null the constraint
      */
     public function getConstraint1();
 
     /**
      * Gets the second constraint.
      *
-     * @return ConstraintInterface the constraint; non-null
+     * @return ConstraintInterface|null the constraint
      */
     public function getConstraint2();
 }

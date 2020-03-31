@@ -346,7 +346,7 @@ class DeletedRecords
     /**
      * Delete element from any table
      *
-     * @param array $recordsArray Representation of the records
+     * @param array|null $recordsArray Representation of the records
      * @return bool
      */
     public function deleteData($recordsArray)

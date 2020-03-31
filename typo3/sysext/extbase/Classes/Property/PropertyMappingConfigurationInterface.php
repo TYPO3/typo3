@@ -62,7 +62,7 @@ interface PropertyMappingConfigurationInterface
     /**
      * This method can be used to explicitly force a TypeConverter to be used for this Configuration.
      *
-     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface The type converter to be used for this particular PropertyMappingConfiguration, or NULL if the system-wide configured type converter should be used.
+     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface|null The type converter to be used for this particular PropertyMappingConfiguration, or NULL if the system-wide configured type converter should be used.
      */
     public function getTypeConverter();
 }

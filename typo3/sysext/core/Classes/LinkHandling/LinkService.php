@@ -157,7 +157,8 @@ class LinkService implements SingletonInterface
      */
     public function asString(array $parameters): string
     {
-        if (is_object($this->handlers[$parameters['type']])) {
+        $linkHandler = $this->handlers[$parameters['type']] ?? null;
+        if ($linkHandler !== null) {
             return $this->handlers[$parameters['type']]->asString($parameters);
         }
         if (isset($parameters['url']) && !empty($parameters['url'])) {

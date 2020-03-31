@@ -100,3 +100,29 @@ parameters:
       message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Processing\\\\ImageCropScaleMaskTask\\:\\:fileNeedsProcessing\\(\\) should return bool but return statement is missing\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Resource/Processing/ImageCropScaleMaskTask.php
+
+    # Ignored errors for level 4
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      count: 1
+      path: typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/Aspect/FileMetadataOverlayAspect.php
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      count: 1
+      path: typo3/sysext/indexed_search/Classes/Lexer.php
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      count: 1
+      path: typo3/sysext/scheduler/Classes/Task/FileStorageIndexingAdditionalFieldProvider.php

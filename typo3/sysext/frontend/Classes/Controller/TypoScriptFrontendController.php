@@ -2217,7 +2217,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
                         );
                         throw new ImmediateResponseException($response, 1533931395);
-                        break;
                     case 'fallback':
                     case 'content_fallback':
                         // Setting content uid (but leaving the sys_language_uid) when a content_fallback
@@ -4011,7 +4010,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->cHash_array is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 $value = $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments);
                 return !empty($value);
-                break;
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
@@ -4049,7 +4047,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'cHash_array':
                 trigger_error('Property $TSFE->cHash_array is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments);
-                break;
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return $this->sys_language_isocode ?? $this->language->getTwoLetterIsoCode();

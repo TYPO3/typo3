@@ -136,7 +136,7 @@ class RecyclerAjaxController
 
                 /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
-                $success = $model->deleteData($this->conf['records']);
+                $success = $model->deleteData($this->conf['records'] ?? null);
                 $affectedRecords = count($this->conf['records']);
                 $messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [

@@ -313,7 +313,6 @@ class GridDataService implements LoggerAwareInterface
         $this->eventDispatcher->dispatch($event);
         $this->dataArray = $event->getData();
         return $event->getDataArrayPart();
-        return $dataArrayPart;
     }
 
     /**
