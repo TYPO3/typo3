@@ -1137,6 +1137,47 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expectation, $this->subject->stdWrap($content, $configuration));
     }
 
+    public function stdWrapDoesOnlyCallIfEmptyIfTheTrimmedContentIsEmptyOrZeroDataProvider(): array
+    {
+        return [
+            'ifEmpty is not called if content is present as an non-empty string' => [
+                'content' => 'some content',
+                'ifEmptyShouldBeCalled' => false,
+            ],
+            'ifEmpty is not called if content is present as the string "1"' => [
+                'content' => '1',
+                'ifEmptyShouldBeCalled' => false,
+            ],
+            'ifEmpty is called if content is present as an empty string' => [
+                'content' => '',
+                'ifEmptyShouldBeCalled' => true,
+            ],
+            'ifEmpty is called if content is present as the string "0"' => [
+                'content' => '0',
+                'ifEmptyShouldBeCalled' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider stdWrapDoesOnlyCallIfEmptyIfTheTrimmedContentIsEmptyOrZeroDataProvider
+     * @test
+     */
+    public function stdWrapDoesOnlyCallIfEmptyIfTheTrimmedContentIsEmptyOrZero(string $content, bool $ifEmptyShouldBeCalled): void
+    {
+        $conf = [
+            'ifEmpty.' => [
+                'cObject' => 'TEXT',
+            ],
+        ];
+
+        $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap_ifEmpty']);
+        $subject->expects(self::exactly(($ifEmptyShouldBeCalled ? 1 : 0)))
+            ->method('stdWrap_ifEmpty');
+
+        $subject->stdWrap($content, $conf);
+    }
+
     /**
      * Data provider for substring
      *
