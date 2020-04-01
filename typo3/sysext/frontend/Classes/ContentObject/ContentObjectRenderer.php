@@ -25,12 +25,12 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -349,13 +349,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @var array
      */
     public $parentRecord = [];
-
-    /**
-     * This is used by checkPid, that checks if pages are accessible. The $checkPid_cache['page_uid'] is set TRUE or FALSE upon this check featuring a caching function for the next request.
-     *
-     * @var array
-     */
-    public $checkPid_cache = [];
 
     /**
      * @var string|int
@@ -6727,81 +6720,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Removes Page UID numbers from the input array which are not available due to enableFields() or the list of bad doktype numbers ($this->checkPid_badDoktypeList)
      *
-     * @param array $listArr Array of Page UID numbers for select and for which pages with enablefields and bad doktypes should be removed.
+     * @param int[] $pageIds Array of Page UID numbers for select and for which pages with enablefields and bad doktypes should be removed.
      * @return array Returns the array of remaining page UID numbers
      * @internal
-     * @see checkPid()
      */
-    public function checkPidArray($listArr)
+    public function checkPidArray($pageIds)
     {
-        if (!is_array($listArr) || empty($listArr)) {
+        if (!is_array($pageIds) || empty($pageIds)) {
             return [];
         }
-        $outArr = [];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-        $queryBuilder->select('uid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->in(
-                    'uid',
-                    $queryBuilder->createNamedParameter($listArr, Connection::PARAM_INT_ARRAY)
-                ),
-                $queryBuilder->expr()->notIn(
-                    'doktype',
-                    $queryBuilder->createNamedParameter(
-                        GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true),
-                        Connection::PARAM_INT_ARRAY
-                    )
-                )
-            );
-        try {
-            $result = $queryBuilder->execute();
-            while ($row = $result->fetch()) {
-                $outArr[] = $row['uid'];
-            }
-        } catch (DBALException $e) {
-            $this->getTimeTracker()->setTSlogMessage($e->getMessage() . ': ' . $queryBuilder->getSQL(), 3);
-        }
-
-        return $outArr;
-    }
-
-    /**
-     * Checks if a page UID is available due to enableFields() AND the list of bad doktype numbers ($this->checkPid_badDoktypeList)
-     *
-     * @param int $uid Page UID to test
-     * @return bool TRUE if OK
-     * @internal
-     * @see checkPidArray()
-     */
-    public function checkPid($uid)
-    {
-        $uid = (int)$uid;
-        if (!isset($this->checkPid_cache[$uid])) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            $count = $queryBuilder->count('*')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->notIn(
-                        'doktype',
-                        $queryBuilder->createNamedParameter(
-                            GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true),
-                            Connection::PARAM_INT_ARRAY
-                        )
-                    )
-                )
-                ->execute()
-                ->fetchColumn(0);
-
-            $this->checkPid_cache[$uid] = (bool)$count;
-        }
-        return $this->checkPid_cache[$uid];
+        $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
+        $restrictionContainer->add(GeneralUtility::makeInstance(
+            DocumentTypeExclusionRestriction::class,
+            GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true)
+        ));
+        return $this->getTypoScriptFrontendController()->sys_page->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
 
     /**

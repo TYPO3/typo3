@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -1116,6 +1117,40 @@ class PageRepository implements LoggerAwareInterface
         return $result;
     }
 
+    /**
+     * Removes Page UID numbers from the input array which are not available due to QueryRestrictions
+     * This is also very helpful to add a custom RestrictionContainer to add custom Restrictions such as "bad doktypes" e.g. RECYCLER doktypes
+     *
+     * @param int[] $pageIds Array of Page UID numbers to check
+     * @param QueryRestrictionContainerInterface|null $restrictionContainer
+     * @return int[] Returns the array of remaining page UID numbers
+     */
+    public function filterAccessiblePageIds(array $pageIds, QueryRestrictionContainerInterface $restrictionContainer = null): array
+    {
+        if ($pageIds === []) {
+            return [];
+        }
+        $validPageIds = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        if ($restrictionContainer instanceof QueryRestrictionContainerInterface) {
+            $queryBuilder->setRestrictions($restrictionContainer);
+        } else {
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
+        }
+        $statement = $queryBuilder->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                )
+            )
+            ->execute();
+        while ($row = $statement->fetch()) {
+            $validPageIds[] = (int)$row['uid'];
+        }
+        return $validPageIds;
+    }
     /********************************
      *
      * Selecting records in general
