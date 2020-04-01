@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
@@ -339,9 +340,7 @@ class CrawlerHook
                 // Get root line (need to provide this when indexing external files)
                 $rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
                 // (Re)-Indexing file on page.
-                $indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
-                $indexerObj->backend_initIndexer($cfgRec['pid'], 0, 0, '', $rl);
-                $indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
+                $indexerObj = $this->initializeIndexer($cfgRec['pid'], 0, 0, '', $rl, $cfgRec['uid'], $cfgRec['set_id']);
                 $indexerObj->hash['phash'] = -1;
                 // EXPERIMENT - but to avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)
                 // Index document:
@@ -613,9 +612,7 @@ class CrawlerHook
     public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)
     {
         // Index external URL:
-        $indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
-        $indexerObj->backend_initIndexer($pageId, 0, 0, '', $rl);
-        $indexerObj->backend_setFreeIndexUid($cfgUid, $setId);
+        $indexerObj = $this->initializeIndexer($pageId, 0, 0, '', $rl, [], $cfgUid, $setId);
         $indexerObj->hash['phash'] = -1;
         // To avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)
         $indexerObj->indexExternalUrl($url);
@@ -658,16 +655,13 @@ class CrawlerHook
      */
     public function indexSingleRecord($r, $cfgRec, $rl = null)
     {
-        // Init:
         $rl = is_array($rl) ? $rl : $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
         $fieldList = GeneralUtility::trimExplode(',', $cfgRec['fieldlist'], true);
         $languageField = $GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['languageField'];
         $sys_language_uid = $languageField ? $r[$languageField] : 0;
-        // (Re)-Indexing a row from a table:
-        $indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
         parse_str(str_replace('###UID###', $r['uid'], $cfgRec['get_params']), $GETparams);
-        $indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams);
-        $indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
+        // (Re)-Indexing a row from a table
+        $indexerObj = $this->initializeIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, $cfgRec['uid'], $cfgRec['set_id']);
         $indexerObj->forceIndexing = true;
         $theContent = '';
         $theTitle = '';
@@ -678,8 +672,15 @@ class CrawlerHook
                 $theContent .= $r[$v] . ' ';
             }
         }
-        // Indexing the record as a page (but with parameters set, see ->backend_setFreeIndexUid())
-        $indexerObj->backend_indexAsTYPO3Page(strip_tags(str_replace('<', ' <', $theTitle)), '', '', strip_tags(str_replace('<', ' <', $theContent)), 'utf-8', $r[$GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['tstamp']], $r[$GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['crdate']], $r['uid']);
+        // Indexing the record as a page (but with parameters set)
+        $this->indexAsTYPO3Page(
+            $indexerObj,
+            strip_tags(str_replace('<', ' <', $theTitle)),
+            strip_tags(str_replace('<', ' <', $theContent)),
+            $r[$GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['tstamp']],
+            $r[$GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['crdate']],
+            $r['uid']
+        );
     }
 
     /**
@@ -909,5 +910,92 @@ class CrawlerHook
                 $this->indexSingleRecord($currentRecord, $cfgRec);
             }
         }
+    }
+
+    /**
+     * Initializing the "combined ID" of the page (phash) being indexed (or for which external media is attached)
+     *
+     * @param int $id The page uid, &id=
+     * @param int $type The page type, &type=
+     * @param int $sys_language_uid sys_language uid, typically &L=
+     * @param string $MP The MP variable (Mount Points), &MP=
+     * @param array $uidRL Rootline array of only UIDs.
+     * @param array $queryArguments Array of GET variables to register with this indexing
+     * @param int $freeIndexUid Free index UID
+     * @param int $freeIndexSetId Set id - an integer identifying the "set" of indexing operations.
+     * @return Indexer
+     */
+    protected function initializeIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $queryArguments = [], $freeIndexUid = 0, $freeIndexSetId = 0): Indexer
+    {
+        $indexerObj = GeneralUtility::makeInstance(Indexer::class);
+        // Setting up internal configuration from config array:
+        // Information about page for which the indexing takes place
+        $configuration = [
+            // Page id	(int)
+            'id' => $id,
+            // Page type (int)
+            'type' => $type,
+            // sys_language UID of the language of the indexing (int)
+            'sys_language_uid' => $sys_language_uid,
+            // MP variable, if any (Mount Points) (string)
+            'MP' => $MP,
+            // Group list (hardcoded for now...)
+            'gr_list' => '0,-1',
+            'staticPageArguments' => $queryArguments,
+            // Set to defaults
+            'freeIndexUid' => $freeIndexUid,
+            'freeIndexSetId' => $freeIndexSetId,
+            // Root line uids
+            'rootline_uids' => $uidRL,
+
+            // Configuration of behavior
+            // Whether to index external documents like PDF, DOC etc. (if possible)
+            'index_externals' => 1,
+            // Length of description text (max 250, default 200)
+            'index_descrLgd' => 200,
+            // Whether to index document keywords and description (if present)
+            'index_metatags' => true
+        ];
+        $indexerObj->init($configuration);
+        return $indexerObj;
+    }
+
+    /**
+     * Indexing records as the content of a TYPO3 page.
+     *
+     * @param Indexer $indexer
+     * @param string $title Title equivalent
+     * @param string $content The main content to index
+     * @param int $mtime Last modification time, in seconds
+     * @param int $crdate The creation date of the content, in seconds
+     * @param int $recordUid The record UID that the content comes from (for registration with the indexed rows)
+     */
+    protected function indexAsTYPO3Page(Indexer $indexer, $title, $content, $mtime, $crdate = 0, $recordUid = 0)
+    {
+        // Content of page:
+        $indexer->conf['mtime'] = $mtime;
+        // Most recent modification time (seconds) of the content
+        $indexer->conf['crdate'] = $crdate;
+        // The creation date of the TYPO3 content
+        $indexer->conf['recordUid'] = $recordUid;
+        // UID of the record, if applicable
+        // Construct fake HTML for parsing:
+        $indexer->conf['content'] = '
+		<html>
+			<head>
+				<title>' . htmlspecialchars($title) . '</title>
+			</head>
+			<body>
+				' . htmlspecialchars($content) . '
+			</body>
+		</html>';
+        // Content string (HTML of TYPO3 page)
+        // Initializing charset:
+        $indexer->conf['metaCharset'] = 'utf-8';
+        // Character set of content (will be converted to utf-8 during indexing)
+        $indexer->conf['indexedDocTitle'] = '';
+        // Alternative title for indexing
+        // Index content as if it was a TYPO3 page:
+        $indexer->indexTypo3PageContent();
     }
 }

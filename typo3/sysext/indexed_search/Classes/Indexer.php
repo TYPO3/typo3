@@ -14,14 +14,10 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -98,13 +94,6 @@ class Indexer
      * @var bool
      */
     public $forceIndexing = false;
-
-    /**
-     * If TRUE, indexing is forced despite of hashes etc.
-     *
-     * @var bool
-     */
-    public $crawlerActive = false;
 
     /**
      * Set when crawler is detected (internal)
@@ -235,221 +224,7 @@ class Indexer
     public function __construct()
     {
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * Parent Object (TSFE) Initialization
-     *
-     * @param TypoScriptFrontendController $pObj Parent Object, passed by reference
-     */
-    public function hook_indexContent(&$pObj)
-    {
-        // Indexer configuration from Extension Manager interface:
-        $disableFrontendIndexing = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'disableFrontendIndexing');
-        // Crawler activation:
-        // Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])) {
-            // Setting simple log message:
-            $pObj->applicationData['tx_crawler']['log'][] = 'Forced Re-indexing enabled';
-            // Setting variables:
-            $this->crawlerActive = true;
-            // Crawler active flag
-            $this->forceIndexing = true;
-        }
-        // Determine if page should be indexed, and if so, configure and initialize indexer
-        if ($pObj->config['config']['index_enable']) {
-            $this->log_push('Index page', '');
-            if (!$disableFrontendIndexing || $this->crawlerActive) {
-                if (!$pObj->page['no_search']) {
-                    if (!$pObj->no_cache) {
-                        /** @var LanguageAspect $languageAspect */
-                        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-                        if ($languageAspect->getId() === $languageAspect->getContentId()) {
-                            // Setting up internal configuration from config array:
-                            $this->conf = [];
-                            // Information about page for which the indexing takes place
-                            $this->conf['id'] = $pObj->id;
-                            // Page id
-                            $this->conf['type'] = $pObj->type;
-                            // Page type
-                            $this->conf['sys_language_uid'] = $languageAspect->getId();
-                            // sys_language UID of the language of the indexing.
-                            $this->conf['MP'] = $pObj->MP;
-                            // MP variable, if any (Mount Points)
-                            // Group list
-                            $this->conf['gr_list'] = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
-                            // page arguments array
-                            $this->conf['staticPageArguments'] = [];
-                            if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-                                /** @var PageArguments $pageArguments */
-                                $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing', null);
-                                if ($pageArguments instanceof PageArguments) {
-                                    $this->conf['staticPageArguments'] = $pageArguments->getStaticArguments();
-                                }
-                            }
-                            // Array of the additional parameters
-                            $this->conf['crdate'] = $pObj->page['crdate'];
-                            // The creation date of the TYPO3 page
-
-                            // Root line uids
-                            $this->conf['rootline_uids'] = [];
-                            foreach ($pObj->config['rootLine'] as $rlkey => $rldat) {
-                                $this->conf['rootline_uids'][$rlkey] = $rldat['uid'];
-                            }
-                            // Content of page:
-                            $this->conf['content'] = $pObj->content;
-                            // Content string (HTML of TYPO3 page)
-                            $this->conf['indexedDocTitle'] = $pObj->convOutputCharset($pObj->indexedDocTitle);
-                            // Alternative title for indexing
-                            $this->conf['metaCharset'] = $pObj->metaCharset;
-                            // Character set of content (will be converted to utf-8 during indexing)
-                            $this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'] ?? $pObj->page['SYS_LASTCHANGED'];
-                            // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
-                            // Configuration of behavior:
-                            $this->conf['index_externals'] = $pObj->config['config']['index_externals'];
-                            // Whether to index external documents like PDF, DOC etc. (if possible)
-                            $this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];
-                            // Length of description text (max 250, default 200)
-                            $this->conf['index_metatags'] = $pObj->config['config']['index_metatags'] ?? true;
-                            // Set to zero:
-                            $this->conf['recordUid'] = 0;
-                            $this->conf['freeIndexUid'] = 0;
-                            $this->conf['freeIndexSetId'] = 0;
-                            // Init and start indexing:
-                            $this->init();
-                            $this->indexTypo3PageContent();
-                        } else {
-                            $this->log_setTSlogMessage('Index page? No, languageId was different from contentId which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
-                        }
-                    } else {
-                        $this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
-                    }
-                } else {
-                    $this->log_setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
-                }
-            } else {
-                $this->log_setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
-            }
-            $this->log_pull();
-        }
-    }
-
-    /****************************
-     *
-     * Backend API
-     *
-     ****************************/
-    /**
-     * Initializing the "combined ID" of the page (phash) being indexed (or for which external media is attached)
-     *
-     * @param int $id The page uid, &id=
-     * @param int $type The page type, &type=
-     * @param int $sys_language_uid sys_language uid, typically &L=
-     * @param string $MP The MP variable (Mount Points), &MP=
-     * @param array $uidRL Rootline array of only UIDs.
-     * @param array $queryArguments Array of GET variables to register with this indexing
-     */
-    public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $queryArguments = [])
-    {
-        // Setting up internal configuration from config array:
-        $this->conf = [];
-        // Information about page for which the indexing takes place
-        $this->conf['id'] = $id;
-        // Page id	(int)
-        $this->conf['type'] = $type;
-        // Page type (int)
-        $this->conf['sys_language_uid'] = $sys_language_uid;
-        // sys_language UID of the language of the indexing (int)
-        $this->conf['MP'] = $MP;
-        // MP variable, if any (Mount Points) (string)
-        $this->conf['gr_list'] = '0,-1';
-        // Group list (hardcoded for now...)
-        $this->conf['staticPageArguments'] = $queryArguments;
-        // Set to defaults
-        $this->conf['freeIndexUid'] = 0;
-        $this->conf['freeIndexSetId'] = 0;
-
-        // Root line uids
-        $this->conf['rootline_uids'] = $uidRL;
-        // Configuration of behavior:
-        $this->conf['index_externals'] = 1;
-        // Whether to index external documents like PDF, DOC etc. (if possible)
-        $this->conf['index_descrLgd'] = 200;
-        // Length of description text (max 250, default 200)
-        $this->conf['index_metatags'] = true;
-        // Whether to index document keywords and description (if present)
-        // Init and start indexing:
-        $this->init();
-    }
-
-    /**
-     * Sets the free-index uid. Can be called right after backend_initIndexer()
-     *
-     * @param int $freeIndexUid Free index UID
-     * @param int $freeIndexSetId Set id - an integer identifying the "set" of indexing operations.
-     */
-    public function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId = 0)
-    {
-        $this->conf['freeIndexUid'] = $freeIndexUid;
-        $this->conf['freeIndexSetId'] = $freeIndexSetId;
-    }
-
-    /**
-     * Indexing records as the content of a TYPO3 page.
-     *
-     * @param string $title Title equivalent
-     * @param string $keywords Keywords equivalent
-     * @param string $description Description equivalent
-     * @param string $content The main content to index
-     * @param string $charset The charset of the title, keyword, description and body-content. MUST BE VALID, otherwise nothing is indexed!
-     * @param int $mtime Last modification time, in seconds
-     * @param int $crdate The creation date of the content, in seconds
-     * @param int $recordUid The record UID that the content comes from (for registration with the indexed rows)
-     */
-    public function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate = 0, $recordUid = 0)
-    {
-        // Content of page:
-        $this->conf['mtime'] = $mtime;
-        // Most recent modification time (seconds) of the content
-        $this->conf['crdate'] = $crdate;
-        // The creation date of the TYPO3 content
-        $this->conf['recordUid'] = $recordUid;
-        // UID of the record, if applicable
-        // Construct fake HTML for parsing:
-        $this->conf['content'] = '
-		<html>
-			<head>
-				<title>' . htmlspecialchars($title) . '</title>
-				<meta name="keywords" content="' . htmlspecialchars($keywords) . '" />
-				<meta name="description" content="' . htmlspecialchars($description) . '" />
-			</head>
-			<body>
-				' . htmlspecialchars($content) . '
-			</body>
-		</html>';
-        // Content string (HTML of TYPO3 page)
-        // Initializing charset:
-        $this->conf['metaCharset'] = $charset;
-        // Character set of content (will be converted to utf-8 during indexing)
-        $this->conf['indexedDocTitle'] = '';
-        // Alternative title for indexing
-        // Index content as if it was a TYPO3 page:
-        $this->indexTypo3PageContent();
-    }
-
-    /********************************
-     *
-     * Initialization
-     *
-     *******************************/
-    /**
-     * Initializes the object. $this->conf MUST be set with proper values prior to this call!!!
-     */
-    public function init()
-    {
-        // Setting phash / phash_grouping which identifies the indexed page based on some of these variables:
-        $this->setT3Hashes();
-        // Indexer configuration from Extension Manager interface:
+        // Indexer configuration from Extension Manager interface
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->tstamp_minAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['minAge'] ?? 0) * 3600, 0);
         $this->tstamp_maxAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxAge'] ?? 0) * 3600, 0);
@@ -458,6 +233,25 @@ class Indexer
         // Workaround: If the extension configuration was not updated yet, the value is not existing
         $this->enableMetaphoneSearch = !isset($this->indexerConfig['enableMetaphoneSearch']) || $this->indexerConfig['enableMetaphoneSearch'];
         $this->storeMetaphoneInfoAsWords = !IndexedSearchUtility::isTableUsed('index_words') && $this->enableMetaphoneSearch;
+    }
+
+    /********************************
+     *
+     * Initialization
+     *
+     *******************************/
+
+    /**
+     * Initializes the object.
+     * @param array|null $configuration will be used to set $this->conf, otherwise $this->conf MUST be set with proper values prior to this call
+     */
+    public function init(array $configuration = null)
+    {
+        if (is_array($configuration)) {
+            $this->conf = $configuration;
+        }
+        // Setting phash / phash_grouping which identifies the indexed page based on some of these variables:
+        $this->setT3Hashes();
         // Initialize external document parsers:
         // Example configuration, see ext_localconf.php of this file!
         if ($this->conf['index_externals']) {

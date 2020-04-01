@@ -14,6 +14,9 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\IndexedSearch\Indexer;
+
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
  * This hook is specifically used to index external files found on pages through the crawler extension.
@@ -34,10 +37,8 @@ class CrawlerFilesHook
         if (!is_array($params['conf'])) {
             return;
         }
-        // Initialize the indexer class:
-        $indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
-        $indexerObj->conf = $params['conf'];
-        $indexerObj->init();
+        $indexerObj = GeneralUtility::makeInstance(Indexer::class);
+        $indexerObj->init($params['conf']);
         // Index document:
         if ($params['alturl']) {
             $fI = pathinfo($params['document']);

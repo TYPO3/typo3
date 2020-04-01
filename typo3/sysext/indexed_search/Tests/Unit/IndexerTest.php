@@ -37,7 +37,7 @@ class IndexerTest extends UnitTestCase
     public function extractHyperLinksDoesNotReturnNonExistingLocalPath()
     {
         $html = 'test <a href="' . StringUtility::getUniqueId() . '">test</a> test';
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
         self::assertEquals(1, count($result));
         self::assertEquals('', $result[0]['localPath']);
@@ -50,7 +50,7 @@ class IndexerTest extends UnitTestCase
     {
         $baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
         self::assertEquals(1, count($result));
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
@@ -62,7 +62,7 @@ class IndexerTest extends UnitTestCase
     public function extractHyperLinksFindsCorrectPathWithAbsolutePath()
     {
         $html = 'test <a href="index.php">test</a> test';
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
         self::assertEquals(1, count($result));
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
@@ -74,7 +74,7 @@ class IndexerTest extends UnitTestCase
     public function extractHyperLinksFindsCorrectPathForPathWithinTypo3Directory()
     {
         $html = 'test <a href="typo3/index.php">test</a> test';
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
         self::assertEquals(1, count($result));
         self::assertEquals(Environment::getPublicPath() . '/typo3/index.php', $result[0]['localPath']);
@@ -94,7 +94,7 @@ class IndexerTest extends UnitTestCase
             ],
         ];
         $GLOBALS['TSFE']->config = $config;
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
         self::assertEquals(1, count($result));
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
@@ -107,7 +107,7 @@ class IndexerTest extends UnitTestCase
     {
         $baseHref = 'http://example.com/';
         $html = '<html><head><Base Href="' . $baseHref . '" /></head></html>';
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractBaseHref($html);
         self::assertEquals($baseHref, $result);
     }
@@ -150,7 +150,7 @@ EOT;
 
 EOT;
 
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->typoSearchTags($body);
         self::assertTrue($result);
         self::assertEquals($expected, $body);
@@ -206,7 +206,7 @@ EOT;
 
 EOT;
 
-        $subject = new Indexer();
+        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->typoSearchTags($body);
         self::assertTrue($result);
         self::assertEquals($expected, $body);
