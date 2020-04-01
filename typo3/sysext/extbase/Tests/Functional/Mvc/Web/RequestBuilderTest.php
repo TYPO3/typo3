@@ -443,7 +443,7 @@ class RequestBuilderTest extends FunctionalTestCase
     {
         static::expectException(Exception\InvalidActionNameException::class);
         static::expectExceptionCode(1313855175);
-        static::expectExceptionMessage('The action "NonExistentAction" (controller "ExtbaseTeam\BlogExample\Controller\BlogController") is not allowed by this plugin. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
+        static::expectExceptionMessage('The action "NonExistentAction" (controller "ExtbaseTeam\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule() in your ext_tables.php.');
 
         $_GET['tx_blog_example_blog']['action'] = 'NonExistentAction';
 
