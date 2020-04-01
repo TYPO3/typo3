@@ -126,6 +126,7 @@ class DocumentationFile
         $entry['version'] = PathUtility::basename(PathUtility::dirname($file));
         $entry['headline'] = $headline;
         $entry['filepath'] = $file;
+        $entry['filename'] = pathinfo($file)['filename'];
         $entry['tags'] = $this->extractTags($lines);
         $entry['class'] = 'default';
         foreach ($entry['tags'] as $key => $tag) {
@@ -139,6 +140,17 @@ class DocumentationFile
         $entry['content'] = file_get_contents($file);
         $entry['parsedContent'] = $this->parseContent($entry['content']);
         $entry['file_hash'] = md5($entry['content']);
+        if ($entry['version'] !== '') {
+            $entry['url']['documentation'] = sprintf(
+                'https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/%s/%s.html',
+                $entry['version'],
+                $entry['filename']
+            );
+        }
+        $entry['url']['issue'] = sprintf(
+            'https://forge.typo3.org/issues/%s',
+            $this->parseIssueId($entry['filename'])
+        );
 
         return [md5($file) => $entry];
     }
@@ -325,6 +337,16 @@ class DocumentationFile
         $content = preg_replace('/.. index::(.*)/', '', $content);
         $content = preg_replace('/.. include::(.*)/', '', $content);
         return trim($content);
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return string
+     */
+    protected function parseIssueId(string $filename): string
+    {
+        return GeneralUtility::trimExplode('-', $filename)[1];
     }
 
     /**

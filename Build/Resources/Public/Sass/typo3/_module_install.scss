@@ -151,6 +151,13 @@
             }
         }
 
+        .rst-links {
+            position: absolute;
+            bottom: 0.5em;
+            right: 1.2em;
+            padding-left: (($line-height-computed - 1) / 2);
+        }
+
         pre {
             margin: 0;
             border-radius: 0;
@@ -159,6 +166,14 @@
             white-space: pre-wrap;
             word-break: normal;
             word-wrap: normal;
+        }
+
+        .rst-links + pre {
+            padding-bottom: (($line-height-computed - 1) * 3);
+
+            @media (min-width: $screen-sm-min) {
+                padding-bottom: (($line-height-computed - 1) * 2);
+            }
         }
     }
 
