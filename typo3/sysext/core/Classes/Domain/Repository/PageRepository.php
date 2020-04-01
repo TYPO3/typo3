@@ -166,7 +166,7 @@ class PageRepository implements LoggerAwareInterface
                     $expressionBuilder->eq('pages.t3ver_wsid', 0),
                     $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
                 ),
-                $expressionBuilder->lt('pages.doktype', 200)
+                $expressionBuilder->neq('pages.doktype', self::DOKTYPE_RECYCLER)
             );
         } else {
             // add starttime / endtime, and check for hidden/deleted
@@ -176,7 +176,7 @@ class PageRepository implements LoggerAwareInterface
                 QueryHelper::stripLogicalOperatorPrefix(
                     $this->enableFields('pages', $show_hidden, ['fe_group' => true])
                 ),
-                $expressionBuilder->lt('pages.doktype', 200)
+                $expressionBuilder->neq('pages.doktype', self::DOKTYPE_RECYCLER)
             );
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] ?? false)) {

@@ -340,7 +340,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
 
         $expectedSQL = sprintf(
-            ' AND (%s = 0) AND ((%s = 0) OR (%s = 2)) AND (%s < 200)',
+            ' AND (%s = 0) AND ((%s = 0) OR (%s = 2)) AND (%s <> 255)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_wsid'),
             $connection->quoteIdentifier('pages.t3ver_wsid'),
@@ -361,7 +361,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $expectedSQL = sprintf(
-            ' AND ((%s = 0) AND (%s <= 0) AND (%s <> -1) AND (%s = 0) AND (%s <= 1451779200) AND ((%s = 0) OR (%s > 1451779200))) AND (%s < 200)',
+            ' AND ((%s = 0) AND (%s <= 0) AND (%s <> -1) AND (%s = 0) AND (%s <= 1451779200) AND ((%s = 0) OR (%s > 1451779200))) AND (%s <> 255)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_state'),
             $connection->quoteIdentifier('pages.pid'),

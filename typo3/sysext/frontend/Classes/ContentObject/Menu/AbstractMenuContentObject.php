@@ -61,7 +61,7 @@ abstract class AbstractMenuContentObject
      *
      * @var int[]
      */
-    protected $excludedDoktypes = [PageRepository::DOKTYPE_BE_USER_SECTION];
+    protected $excludedDoktypes = [PageRepository::DOKTYPE_BE_USER_SECTION, PageRepository::DOKTYPE_SYSFOLDER];
 
     /**
      * @var int[]
@@ -501,6 +501,7 @@ abstract class AbstractMenuContentObject
         if (isset($this->mconf['additionalWhere.'])) {
             $additionalWhere = $this->parent_cObj->stdWrap($additionalWhere, $this->mconf['additionalWhere.']);
         }
+        $additionalWhere .= $this->getDoktypeExcludeWhere();
 
         // ... only for the FIRST level of a HMENU
         if ($this->menuNumber == 1 && $this->conf['special']) {
