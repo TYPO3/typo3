@@ -790,16 +790,8 @@ class GeneralUtility
             }
             $labelArr = explode('|', str_replace('"', '', $labels));
         }
-        // @todo find out which locale is used for current BE user to cover the BE case as well
-        $oldLocale = setlocale(LC_NUMERIC, 0);
-        $newLocale = $GLOBALS['TSFE']->config['config']['locale_all'] ?? '';
-        if ($newLocale) {
-            setlocale(LC_NUMERIC, $newLocale);
-        }
+        // This is set via Site Handling and in the Locales class via setlocale()
         $localeInfo = localeconv();
-        if ($newLocale) {
-            setlocale(LC_NUMERIC, $oldLocale);
-        }
         $sizeInBytes = max($sizeInBytes, 0);
         $multiplier = floor(($sizeInBytes ? log($sizeInBytes) : 0) / log($base));
         $sizeInUnits = $sizeInBytes / $base ** $multiplier;
