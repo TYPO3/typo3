@@ -322,8 +322,9 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     {
         try {
             // ensure no previous site configuration influences the test
-            GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $site->getIdentifier(), true);
-            GeneralUtility::makeInstance(SiteConfiguration::class)->write($site->getIdentifier(), $site->getConfiguration());
+            $path = $this->instancePath . '/typo3conf/sites';
+            GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
+            GeneralUtility::makeInstance(SiteConfiguration::class, $path)->write($site->getIdentifier(), $site->getConfiguration());
         } catch (\Exception $exception) {
             self::markTestSkipped($exception->getMessage());
         }
