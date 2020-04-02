@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Localization;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,6 +42,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LanguageService
 {
+    use PublicPropertyDeprecationTrait;
+    use PublicMethodDeprecationTrait;
+
+    protected $deprecatedPublicProperties = [
+        'LL_files_cache' => 'The runtime cache variable is only used for internal purposes, and should never be accessed from the outside. Accessing this property will stop working in TYPO3 v11.0.',
+        'LL_labels_cache' => 'The runtime cache variable is only used for internal purposes, and should never be accessed from the outside. Accessing this property will stop working in TYPO3 v11.0.'
+    ];
+
+    protected $deprecatedPublicMethods = [
+        'debugLL' => 'Should never be called directly. use the "debugKey" to actually access the method.',
+        'getLLL' => 'Use "getLL()" or "sL()" instead as API methods.',
+    ];
+
     /**
      * This is set to the language that is currently running for the user
      *
@@ -59,14 +74,14 @@ class LanguageService
      *
      * @var array
      */
-    public $LL_files_cache = [];
+    protected $LL_files_cache = [];
 
     /**
      * Internal cache for ll-labels (filled as labels are requested)
      *
      * @var array
      */
-    public $LL_labels_cache = [];
+    protected $LL_labels_cache = [];
 
     /**
      * List of language dependencies for actual language. This is used for local variants of a language
@@ -103,6 +118,7 @@ class LanguageService
      *
      * @throws \RuntimeException
      * @param string $languageKey The language key (two character string from backend users profile)
+     * @internal use one of the factory methods instead
      */
     public function init($languageKey)
     {
@@ -125,7 +141,7 @@ class LanguageService
      * @param string $value value to debug
      * @return string
      */
-    public function debugLL($value)
+    protected function debugLL($value)
     {
         return $this->debugKey ? '[' . $value . ']' : '';
     }
@@ -149,7 +165,7 @@ class LanguageService
      * @param array $localLanguage $LOCAL_LANG array to get label key from
      * @return string
      */
-    public function getLLL($index, $localLanguage)
+    protected function getLLL($index, $localLanguage)
     {
         // Get Local Language. Special handling for all extensions that
         // read PHP LL files and pass arrays here directly.
@@ -213,6 +229,7 @@ class LanguageService
      * $TCA_DESCR is a global var
      *
      * @param string $table Table name found as key in global array $TCA_DESCR
+     * @internal
      */
     public function loadSingleTableDescription($table)
     {
@@ -386,10 +403,11 @@ class LanguageService
      * @param string $prefix Prefix to select the correct labels
      * @param string $strip Sub-prefix to be removed from label names in the result
      * @return array Processed labels
-     * @todo: deprecate
+     * @deprecated will be removed in TYPO3 v11.0
      */
     public function getLabelsWithPrefix($prefix, $strip = '')
     {
+        trigger_error('LanguageService->getLabelsWithPrefix() will be removed in TYPO3 v11.0. Prefixing labels was used for various Backend-related JavaScript calls, which is not supported anymore. Prefixes should be applied to the label keys / ids directly instead.', E_USER_DEPRECATED);
         $extraction = [];
         if (!empty($GLOBALS['LOCAL_LANG']['default'])) {
             $labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$this->lang]);

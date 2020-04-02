@@ -4462,4 +4462,25 @@ return [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Localization\LanguageService->getLabelsWithPrefix' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Localization\LanguageService->getLLL' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Localization\LanguageService->debugLL' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
+        ],
+    ],
 ];
