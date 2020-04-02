@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional cObjGetSingle processing
+ *
+ * @deprecated will be removed in TYPO3 v11, as this functionality has been moved into `$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']`
  */
 interface ContentObjectGetSingleHookInterface
 {

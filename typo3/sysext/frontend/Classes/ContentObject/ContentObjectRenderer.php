@@ -392,11 +392,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Additionally registered content object types and class names
      *
      * @var array
+     * @deprecated - will be removed in TYPO3 v11.0
      */
     protected $cObjHookObjectsRegistry = [];
 
     /**
      * @var array
+     * @deprecated - will be removed in TYPO3 v11.0
      */
     public $cObjHookObjectsArr = [];
 
@@ -565,6 +567,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             : '';
         $this->parameters = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] ?? [] as $classArr) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][cObjTypeAndClass] for adding custom cObjects will be removed in TYPO3 v11.0. Use a custom cObject which you can register directly instead.', E_USER_DEPRECATED);
             $this->cObjHookObjectsRegistry[$classArr[0]] = $classArr[1];
         }
         $this->stdWrapHookObjects = [];
@@ -721,6 +724,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             } else {
                 $hooked = false;
                 // Application defined cObjects
+                // @deprecated since TYPO3 v10.4 - will be removed in TYPO3 v11.0
                 if (!empty($this->cObjHookObjectsRegistry[$name])) {
                     if (empty($this->cObjHookObjectsArr[$name])) {
                         $this->cObjHookObjectsArr[$name] = GeneralUtility::makeInstance($this->cObjHookObjectsRegistry[$name]);
@@ -738,6 +742,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     } else {
                         // Call hook functions for extra processing
                         if ($name) {
+                            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
+                                trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][cObjTypeAndClassDefault] for adding custom processing will be removed. Use a custom cObject which you can register directly instead.', E_USER_DEPRECATED);
+                            }
                             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] ?? [] as $className) {
                                 $hookObject = GeneralUtility::makeInstance($className);
                                 if (!$hookObject instanceof ContentObjectGetSingleHookInterface) {
@@ -1552,11 +1559,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $URL URL of the website
      * @param string $TYPE
      * @return string The additional tag properties
+     * @internal This method will be removed as it serves no purpose anymore in TYPO3 v11.0
      */
     public function extLinkATagParams($URL, $TYPE)
     {
         $out = '';
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler'])) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][extLinkATagParamsHandler] will be removed in TYPO3 v11.0. Use a custom LinkHandler instead.', E_USER_DEPRECATED);
             $extLinkATagParamsHandler = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
             if (method_exists($extLinkATagParamsHandler, 'main')) {
                 $out .= trim($extLinkATagParamsHandler->main($URL, $TYPE, $this));
@@ -4963,6 +4972,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword])
             && (string)$linkHandlerValue !== ''
         ) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][typolinkLinkHandler] will be removed in TYPO3 v11.0. Use a custom LinkHandler instead. The used link handler keyword was: ' . $linkHandlerKeyword, E_USER_DEPRECATED);
             $linkHandlerObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
             if (method_exists($linkHandlerObj, 'main')) {
                 return $linkHandlerObj->main($linkText, $configuration, $linkHandlerKeyword, $linkHandlerValue, $mixedLinkParameter, $this);

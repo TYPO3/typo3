@@ -371,4 +371,24 @@ return [
             'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClass\']' => [
+        'restFiles' => [
+            'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClassDefault\']' => [
+        'restFiles' => [
+            'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'extLinkATagParamsHandler\']' => [
+        'restFiles' => [
+            'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'typolinkLinkHandler\']' => [
+        'restFiles' => [
+            'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+        ],
+    ],
 ];

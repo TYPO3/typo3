@@ -1407,4 +1407,9 @@ return [
             'Deprecation-90692-DeprecateFileCollectionModels.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface' => [
+        'restFiles' => [
+            'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+        ],
+    ],
 ];
