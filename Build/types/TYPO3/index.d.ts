@@ -155,10 +155,7 @@ interface JQuery {
 
   t3FormEngineFlexFormElement(options?: any): JQuery;
 
-  // To be able to use twbs/bootstrap-slider we have to override the definition of jquerui
-  slider(options: { [key: string]: any }): any;
-
-  // To be able to use jquery/autocomplete-slider we have to override the definition of jquerui
+  // To be able to use devbridge-autocomplete we have to override the definition of jquerui
   autocomplete(options?: { [key: string]: any }): any;
   disablePagingAction(): void;
 }

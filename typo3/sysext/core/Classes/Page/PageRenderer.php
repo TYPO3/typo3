@@ -1338,7 +1338,6 @@ class PageRenderer implements SingletonInterface
             'twbs/bootstrap-datetimepicker' => $corePath . 'bootstrap-datetimepicker',
             'autosize' => $corePath . 'autosize',
             'taboverride' => $corePath . 'taboverride.min',
-            'twbs/bootstrap-slider' => $corePath . 'bootstrap-slider.min',
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             'd3' => $corePath . 'd3/d3',
             'Sortable' => $corePath . 'Sortable.min',

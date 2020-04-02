@@ -510,7 +510,6 @@ module.exports = function (grunt) {
           'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
           */
           'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
-          'bootstrap-slider.min.js': 'bootstrap-slider/dist/bootstrap-slider.min.js',
           'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
           /* disabled until autocomplete formatGroup is fixed to pass on the index too
