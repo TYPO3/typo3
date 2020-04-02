@@ -104,14 +104,28 @@ class ContentFetcher
         return empty($contentRecords) ? [] : array_merge(...$contentRecords);
     }
 
+    /**
+     * A hook allows to decide whether a custom type has children which were rendered or should not be rendered.
+     *
+     * @return iterable
+     */
     public function getUnusedRecords(): iterable
     {
         $unrendered = [];
+        $hookArray = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['record_is_used'] ?? [];
+        $pageLayoutView = PageLayoutView::createFromDrawingConfiguration($this->backendLayout->getDrawingConfiguration());
+
         $knownColumnPositionNumbers = $this->backendLayout->getColumnPositionNumbers();
         $rememberer = $this->backendLayout->getRecordRememberer();
         foreach ($this->fetchedContentRecords[$this->backendLayout->getDrawingConfiguration()->getLanguageColumnsPointer()] ?? [] as $contentRecordsInColumn) {
             foreach ($contentRecordsInColumn as $contentRecord) {
-                if (!$rememberer->isRemembered((int)$contentRecord['uid']) && !in_array($contentRecord['colPos'], $knownColumnPositionNumbers)) {
+                $used = $rememberer->isRemembered((int)$contentRecord['uid']);
+                // A hook mentioned that this record is used somewhere, so this is in fact "rendered" already
+                foreach ($hookArray as $hookFunction) {
+                    $_params = ['columns' => $knownColumnPositionNumbers, 'record' => $contentRecord, 'used' => $used];
+                    $used = GeneralUtility::callUserFunction($hookFunction, $_params, $pageLayoutView);
+                }
+                if (!$used) {
                     $unrendered[] = $contentRecord;
                 }
             }
