@@ -3477,7 +3477,7 @@ class TcaSelectItemsTest extends UnitTestCase
             24
         ];
 
-        $relationHandlerProphecy->start(2, 'foreignTable', 'aTable_foreignTable_mm', 42, 'aTable', $fieldConfig)->shouldBeCalled();
+        $relationHandlerProphecy->start('', 'foreignTable', 'aTable_foreignTable_mm', 42, 'aTable', $fieldConfig)->shouldBeCalled();
         $relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
 
         $expected = $input;
@@ -3919,8 +3919,8 @@ class TcaSelectItemsTest extends UnitTestCase
                     'command' => 'edit',
                     'effectivePid' => 42,
                     'databaseRow' => [
-                        'uid' => 'NEW1234',
-                        'aField' => '24,35',
+                        'uid' => 42,
+                        'aField' => '2',
                     ],
                     'processedTca' => [
                         'columns' => [
@@ -3937,7 +3937,9 @@ class TcaSelectItemsTest extends UnitTestCase
                         ],
                     ],
                 ],
-                [],
+                [
+                    'relationHandlerStartItemList' => '',
+                ],
                 []
             ],
             'Relation with MM table and maxitems = 1 processes field value (item count)' => [
@@ -3965,7 +3967,9 @@ class TcaSelectItemsTest extends UnitTestCase
                         ],
                     ],
                 ],
-                [],
+                [
+                    'relationHandlerStartItemList' => '',
+                ],
                 [
                     24
                 ]
@@ -3995,7 +3999,9 @@ class TcaSelectItemsTest extends UnitTestCase
                         ],
                     ],
                 ],
-                [],
+                [
+                    'relationHandlerStartItemList' => '',
+                ],
                 []
             ]
         ];
@@ -4011,7 +4017,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     public function processSelectFieldSetsCorrectValuesForMmRelations(array $input, array $overrideRelationHandlerSettings, array $relationHandlerUids)
     {
-        $field = $input['databaseRow']['aField'];
+        $field = $overrideRelationHandlerSettings['relationHandlerStartItemList'] ?? $input['databaseRow']['aField'];
         $foreignTable = $overrideRelationHandlerSettings['foreign_table'] ?? $input['processedTca']['columns']['aField']['config']['foreign_table'];
         $mmTable = $overrideRelationHandlerSettings['MM'] ?? $input['processedTca']['columns']['aField']['config']['MM'];
         $uid = $input['databaseRow']['uid'];

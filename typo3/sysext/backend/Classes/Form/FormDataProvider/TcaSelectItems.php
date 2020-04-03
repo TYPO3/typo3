@@ -78,8 +78,14 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
             $removedItems = array_diff_key($removedItems, $fieldConfig['config']['items']);
 
-            // needed to determine the items for invalid values
             $currentDatabaseValuesArray = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
+            // Check if it's a new record to respect TCAdefaults
+            if (!empty($fieldConfig['config']['MM']) && $result['command'] !== 'new') {
+                // Getting the current database value on a mm relation doesn't make sense since the amount of selected
+                // relations is stored in the field and not the uids of the items
+                $currentDatabaseValuesArray = [];
+            }
+
             $result['databaseRow'][$fieldName] = $currentDatabaseValuesArray;
 
             // add item values as keys to determine which items are stored in the database and should be preselected
