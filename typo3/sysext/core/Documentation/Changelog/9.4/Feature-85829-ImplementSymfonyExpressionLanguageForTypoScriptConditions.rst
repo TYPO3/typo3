@@ -33,10 +33,11 @@ Here are some examples to understand the power of the expression language:
    # This condition does match if "foo" **not** matches the regExp: `/bar/`
    [END]
 
-   [applicationContext == "Production"] && [userId == 15]
-   # This condition match if application context is "Production" AND logged in user has the uid 15
-   # This condition could also be combined in one condition:
-   # [applicationContext == "Production" && userId == 15]
+   [applicationContext == "Production" && userId == 15]
+   # This condition matches if application context is "Production" AND logged in user has the uid 15
+   # Note that the old syntax with two blocks combined with && is deprecated
+   # and will not work in v10:
+   # [applicationContext == "Production"] && [userId == 15]
    [END]
 
    [request.getNormalizedParams().getHttpHost() == 'typo3.org']
