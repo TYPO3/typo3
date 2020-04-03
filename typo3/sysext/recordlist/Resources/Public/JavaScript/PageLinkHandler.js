@@ -48,6 +48,12 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
       return;
     }
 
+    // make sure we use proper link syntax if this is an integer only
+    var valueAsNumber = parseInt(value, 10);
+    if (!isNaN(valueAsNumber)) {
+      value = 't3://page?uid=' + valueAsNumber;
+    }
+
     LinkBrowser.finalizeFunction(value);
   };
 
