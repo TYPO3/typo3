@@ -13,6 +13,8 @@
 
 import 'bootstrap';
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Popover = require('./Popover');
 
 interface HelpData {
@@ -148,13 +150,14 @@ class ContextHelp {
     // If a table is defined, use ajax call to get the tooltip's content
     if (table) {
       // Load content
-      $.getJSON(this.ajaxUrl, {
+      new AjaxRequest(this.ajaxUrl).withQueryArguments({
         params: {
           action: 'getContextHelp',
           table: table,
           field: field,
-        },
-      }).done((data: HelpData): void => {
+        }
+      }).get().then(async (response: AjaxResponse): Promise<any> => {
+        const data: HelpData = await response.resolve();
         const title = data.title || '';
         const content = data.content || '<p></p>';
         Popover.setOptions($trigger, {

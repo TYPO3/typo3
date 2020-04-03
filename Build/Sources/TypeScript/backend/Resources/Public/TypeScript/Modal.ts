@@ -11,13 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractAction} from './ActionButton/AbstractAction';
-import {SeverityEnum} from './Enum/Severity';
 import 'bootstrap';
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {AbstractAction} from './ActionButton/AbstractAction';
+import {SeverityEnum} from './Enum/Severity';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 import Icons = require('./Icons');
 import Severity = require('./Severity');
-import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 
 enum Identifiers {
   modal = '.t3js-modal',
@@ -415,19 +417,15 @@ class Modal {
       const $loaderTarget = currentModal.find(contentTarget);
       Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
         $loaderTarget.html('<div class="modal-loading">' + icon + '</div>');
-        $.get(
-          <string>configuration.content,
-          (response: string): void => {
-            this.currentModal.find(contentTarget)
-              .empty()
-              .append(response);
-            if (configuration.ajaxCallback) {
-              configuration.ajaxCallback();
-            }
-            this.currentModal.trigger('modal-loaded');
-          },
-          'html',
-        );
+        new AjaxRequest(configuration.content as string).get().then(async (response: AjaxResponse): Promise<void> => {
+          this.currentModal.find(contentTarget)
+            .empty()
+            .append(await response.raw().text());
+          if (configuration.ajaxCallback) {
+            configuration.ajaxCallback();
+          }
+          this.currentModal.trigger('modal-loaded');
+        });
       });
     } else if (configuration.type === 'iframe') {
       currentModal.find(Identifiers.body).append(

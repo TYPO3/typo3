@@ -11,13 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {KeyTypesEnum} from './Enum/KeyTypes';
 import * as $ from 'jquery';
+import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {KeyTypesEnum} from './Enum/KeyTypes';
 import NProgress = require('nprogress');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 import Modal = require('./Modal');
 import Severity = require('./Severity');
-import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
-import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 
 interface Response {
   file?: number;
@@ -54,40 +56,37 @@ class OnlineMedia {
     const irreObjectUid = $trigger.data('file-irre-object');
 
     NProgress.start();
-    $.post(
-      TYPO3.settings.ajaxUrls.online_media_create,
-      {
-        url: url,
-        targetFolder: target,
-        allowed: allowed,
-      },
-      (data: Response): void => {
-        if (data.file) {
-          const message = {
-            actionName: 'typo3:foreignRelation:insert',
-            objectGroup: irreObjectUid,
-            table: 'sys_file',
-            uid: data.file,
-          };
-          MessageUtility.send(message);
-        } else {
-          const $confirm = Modal.confirm(
-            'ERROR',
-            data.error,
-            Severity.error,
-            [{
-              text: TYPO3.lang['button.ok'] || 'OK',
-              btnClass: 'btn-' + Severity.getCssClass(Severity.error),
-              name: 'ok',
-              active: true,
-            }],
-          ).on('confirm.button.ok', (): void => {
-            $confirm.modal('hide');
-          });
-        }
-        NProgress.done();
-      },
-    );
+    new AjaxRequest(TYPO3.settings.ajaxUrls.online_media_create).post({
+      url: url,
+      targetFolder: target,
+      allowed: allowed,
+    }).then(async (response: AjaxResponse): Promise<void> => {
+      const data: Response = await response.resolve();
+      if (data.file) {
+        const message = {
+          actionName: 'typo3:foreignRelation:insert',
+          objectGroup: irreObjectUid,
+          table: 'sys_file',
+          uid: data.file,
+        };
+        MessageUtility.send(message);
+      } else {
+        const $confirm = Modal.confirm(
+          'ERROR',
+          data.error,
+          Severity.error,
+          [{
+            text: TYPO3.lang['button.ok'] || 'OK',
+            btnClass: 'btn-' + Severity.getCssClass(Severity.error),
+            name: 'ok',
+            active: true,
+          }],
+        ).on('confirm.button.ok', (): void => {
+          $confirm.modal('hide');
+        });
+      }
+      NProgress.done();
+    });
   }
 
   /**

@@ -13,11 +13,11 @@
 
 import * as $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import Typo3Notification = require('TYPO3/CMS/Backend/Notification');
 import Modal = require('TYPO3/CMS/Backend/Modal');
+import Typo3Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Client = require('TYPO3/CMS/Backend/Storage/Client');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
@@ -458,8 +458,9 @@ class LoginRefresh {
    * and opens a dialog.
    */
   protected checkActiveSession = (): void => {
-    $.getJSON(TYPO3.settings.ajaxUrls.login_timedout, [], (response: { [key: string ]: any }) => {
-      if (response.login.locked) {
+    new AjaxRequest(TYPO3.settings.ajaxUrls.login_timedout).get().then(async (response: AjaxResponse): Promise<void> => {
+      const data = await response.resolve();
+      if (data.login.locked) {
         if (!this.backendIsLocked) {
           this.backendIsLocked = true;
           this.showBackendLockedModal();
@@ -472,8 +473,8 @@ class LoginRefresh {
       }
 
       if (!this.backendIsLocked) {
-        if (response.login.timed_out || response.login.will_time_out) {
-          response.login.timed_out
+        if (data.login.timed_out || data.login.will_time_out) {
+          data.login.timed_out
             ? this.showLoginForm()
             : this.showTimeoutModal();
         }

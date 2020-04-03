@@ -14,10 +14,12 @@
 import * as $ from 'jquery';
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import ImagesLoaded = require('TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min');
 import Icons = require('./Icons');
 import Modal = require('./Modal');
-import ImagesLoaded = require('TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min');
 
 interface Area {
   x: number;
@@ -262,12 +264,9 @@ class ImageManipulation {
           },
         ],
         callback: (currentModal: JQuery): void => {
-          $.post({
-            url: imageUri,
-            data: payload,
-          }).done((response: string): void => {
+          new AjaxRequest(imageUri).post(payload).then(async (response: AjaxResponse): Promise<void> => {
             initCropperModal();
-            currentModal.find('.t3js-modal-body').append(response).addClass('cropper');
+            currentModal.find('.t3js-modal-body').append(await response.resolve()).addClass('cropper');
           });
         },
         content: $('<div class="modal-loading">').append(icon),
