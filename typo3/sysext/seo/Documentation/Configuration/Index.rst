@@ -156,13 +156,23 @@ If you want to have a fallback og:image or twitter:image, you can use this littl
 
    page {
      meta {
-       og:image.stdWrap.cObject = IMG_RESOURCE
+       og:image.stdWrap.cObject = TEXT
        og:image.stdWrap.cObject {
-         file = EXT:your_extension/Resources/Public/Backend/OgImage.svg
+         stdWrap.typolink {
+           parameter.stdWrap.cObject = IMG_RESOURCE
+           parameter.stdWrap.cObject.file = EXT:your_extension/Resources/Public/Backend/OgImage.svg
+           returnLast = url
+           forceAbsoluteUrl = 1
+         }
        }
-       twitter:image.stdWrap.cObject = IMG_RESOURCE
+       twitter:image.stdWrap.cObject = TEXT
        twitter:image.stdWrap.cObject {
-         file = EXT:your_extension/Resources/Public/Backend/TwitterCardImage.svg
+         stdWrap.typolink {
+           parameter.stdWrap.cObject = IMG_RESOURCE
+           parameter.stdWrap.cObject.file = EXT:your_extension/Resources/Public/Backend/TwitterCardImage.svg
+           returnLast = url
+           forceAbsoluteUrl = 1
+         }
        }
      }
    }
