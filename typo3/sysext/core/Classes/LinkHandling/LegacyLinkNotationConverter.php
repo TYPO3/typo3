@@ -64,8 +64,6 @@ class LegacyLinkNotationConverter
         }
 
         $result = [];
-        // Parse URL scheme
-        $scheme = parse_url($linkParameter, PHP_URL_SCHEME);
 
         // Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
         if (stripos($linkParameter, 'file:') === 0) {
@@ -131,12 +129,8 @@ class LegacyLinkNotationConverter
             // url (external): If doubleSlash or if a '.' comes before a '/'.
             if (!$isIdOrAlias && $isLocalFile !== 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
                 $result['type'] = LinkService::TYPE_URL;
-                if (!$scheme) {
-                    $result['url'] = 'http://' . $linkParameter;
-                } else {
-                    $result['url'] = $linkParameter;
-                }
-                // file (internal) or folder
+                $result['url'] = 'http://' . $linkParameter;
+            // file (internal) or folder
             } elseif ($containsSlash || $isLocalFile) {
                 $result = $this->getFileOrFolderObjectFromMixedIdentifier($linkParameter);
             } else {
