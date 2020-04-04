@@ -23,7 +23,7 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Routing\Aspect\AspectFactory' => [
+    'TYPO3\CMS\Core\Routing\Aspect\AspectFactory->createAspects' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
