@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -43,10 +46,14 @@ class BackendLayoutTest extends UnitTestCase
      */
     public function objectIsCreated()
     {
+        $backendLayoutView = $this->prophesize(BackendLayoutView::class);
+        $backendLayoutView->parseStructure(Argument::any())->willReturn([]);
+        GeneralUtility::setSingletonInstance(BackendLayoutView::class, $backendLayoutView->reveal());
+
         $identifier = StringUtility::getUniqueId('identifier');
         $title = StringUtility::getUniqueId('title');
         $configuration = StringUtility::getUniqueId('configuration');
-        $backendLayout = $this->getMockBuilder(BackendLayout::class)->onlyMethods(['parseConfigurationStringAndSetConfigurationArray'])->setConstructorArgs([$identifier, $title, $configuration])->getMock();
+        $backendLayout = new BackendLayout($identifier, $title, $configuration);
 
         self::assertEquals($identifier, $backendLayout->getIdentifier());
         self::assertEquals($title, $backendLayout->getTitle());
