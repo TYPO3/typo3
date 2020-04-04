@@ -44,7 +44,7 @@ class TableList extends AbstractNode
         $itemName = $parameterArray['itemFormElName'];
 
         if (empty($config['allowed']) || !is_string($config['allowed']) || !isset($config['internal_type']) || $config['internal_type'] !== 'db') {
-            // No handling if the field has no, or funny "allowed" setting, and if internal_type is not "db"
+            // No handling if the field has no, or funny "allowed" setting and if internal_type is not "db"
             return $result;
         }
 
@@ -59,10 +59,18 @@ class TableList extends AbstractNode
                 $allowedTablesHtml[] = '</span>';
             } else {
                 $label = $languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']);
-                $allowedTablesHtml[] = '<a href="#" class="btn btn-default t3js-element-browser" data-mode="db" data-params="' . htmlspecialchars($itemName . '|||' . $tableName) . '">';
-                $allowedTablesHtml[] =  $iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
-                $allowedTablesHtml[] =  htmlspecialchars($label);
-                $allowedTablesHtml[] = '</a>';
+                $icon = $iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
+                if ((bool)($config['fieldControl']['elementBrowser']['disabled'] ?? false)) {
+                    $allowedTablesHtml[] = '<span class="tablelist-item-nolink">';
+                    $allowedTablesHtml[] =  $icon;
+                    $allowedTablesHtml[] =  htmlspecialchars($label);
+                    $allowedTablesHtml[] = '</span>';
+                } else {
+                    $allowedTablesHtml[] = '<a href="#" class="btn btn-default t3js-element-browser" data-mode="db" data-params="' . htmlspecialchars($itemName . '|||' . $tableName) . '">';
+                    $allowedTablesHtml[] =  $icon;
+                    $allowedTablesHtml[] =  htmlspecialchars($label);
+                    $allowedTablesHtml[] = '</a>';
+                }
             }
         }
 
