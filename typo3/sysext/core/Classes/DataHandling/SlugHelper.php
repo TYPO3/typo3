@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordState;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -548,7 +549,7 @@ class SlugHelper
     }
 
     /**
-     * Fetch a parent page, but exclude spacers, recyclers and sys-folders and all doktypes > 200
+     * Fetch a parent page, but exclude spacers, recyclers and sys-folders
      * @param int $pid
      * @param int $languageId
      * @return array|null
@@ -557,10 +558,15 @@ class SlugHelper
     {
         $parentPageRecord = null;
         $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
+        $excludeDokTypes = [
+            PageRepository::DOKTYPE_SPACER,
+            PageRepository::DOKTYPE_RECYCLER,
+            PageRepository::DOKTYPE_SYSFOLDER
+        ];
         do {
             $parentPageRecord = array_shift($rootLine);
-            // do not use spacers (199), recyclers and folders and everything else
-        } while (!empty($rootLine) && (int)$parentPageRecord['doktype'] >= 199);
+            // exclude spacers, recyclers and folders
+        } while (!empty($rootLine) && in_array((int)$parentPageRecord['doktype'], $excludeDokTypes, true));
         if ($languageId > 0) {
             $languageIds = [$languageId];
             $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
