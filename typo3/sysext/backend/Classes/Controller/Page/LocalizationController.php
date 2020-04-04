@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\Page;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Controller\Event\AfterPageColumnsSelectedForLocalizationEvent;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
@@ -59,12 +61,18 @@ class LocalizationController
     protected $localizationRepository;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->localizationRepository = GeneralUtility::makeInstance(LocalizationRepository::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**
@@ -141,6 +149,7 @@ class LocalizationController
             '*'
         );
 
+        $flatRecords = [];
         while ($row = $result->fetch()) {
             BackendUtility::workspaceOL('tt_content', $row, -99, true);
             if (!$row || VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
@@ -155,11 +164,12 @@ class LocalizationController
                 'title' => $row[$GLOBALS['TCA']['tt_content']['ctrl']['label']],
                 'uid' => $row['uid']
             ];
+            $flatRecords[] = $row;
         }
 
         return (new JsonResponse())->setPayload([
             'records' => $records,
-            'columns' => $this->getPageColumns($pageId),
+            'columns' => $this->getPageColumns($pageId, $flatRecords, $params),
         ]);
     }
 
@@ -255,9 +265,11 @@ class LocalizationController
 
     /**
      * @param int $pageId
+     * @param array $flatRecords
+     * @param array $params
      * @return array
      */
-    protected function getPageColumns(int $pageId): array
+    protected function getPageColumns(int $pageId, array $flatRecords, array $params): array
     {
         $columns = [];
         $backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
@@ -267,9 +279,12 @@ class LocalizationController
             $columns[$columnPos] = $GLOBALS['LANG']->sL($columnLabel);
         }
 
+        $event = GeneralUtility::makeInstance(AfterPageColumnsSelectedForLocalizationEvent::class, $columns, array_values($backendLayout->getColumnPositionNumbers()), $backendLayout, $flatRecords, $params);
+        $this->eventDispatcher->dispatch($event);
+
         return [
-            'columns' => $columns,
-            'columnList' => array_values($backendLayout->getColumnPositionNumbers()),
+            'columns' => $event->getColumns(),
+            'columnList' => $event->getColumnList()
         ];
     }
 }
