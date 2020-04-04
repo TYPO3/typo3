@@ -21,7 +21,7 @@ return [
             'Deprecation-86046-AdditionalArgumentsInSeveralTypoScriptFrontendControllerMethods.rst'
         ],
     ],
-    'TYPO3\CMS\Core\Routing\Aspect\AspectFactory' => [
+    'TYPO3\CMS\Core\Routing\Aspect\AspectFactory->createAspects' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
