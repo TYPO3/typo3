@@ -38,6 +38,19 @@ class TcaColumnsOverrides implements FormDataProviderInterface
                 $result['processedTca']['columns'],
                 $result['processedTca']['types'][$type]['columnsOverrides']
             );
+            if ($result['command'] === 'new') {
+                $tableNameWithDot = $result['tableName'] . '.';
+                foreach ($result['processedTca']['types'][$type]['columnsOverrides'] as $field => $columnsOverrideConfig) {
+                    $overridenDefault = $columnsOverrideConfig['config']['default'] ?? '';
+                    if ($overridenDefault !== ''
+                        && !isset($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot][$field])
+                        && !isset($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot][$field])
+                        && ($result['databaseRow'][$field] ?? '') !== $overridenDefault
+                    ) {
+                        $result['databaseRow'][$field] = $overridenDefault;
+                    }
+                }
+            }
             unset($result['processedTca']['types'][$type]['columnsOverrides']);
         }
         return $result;
