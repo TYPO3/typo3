@@ -20,12 +20,13 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
 
   /**
    *
-   * @type {{plugin: null, CKEditor: null, siteUrl: string}}
+   * @type {{plugin: null, CKEditor: null, ranges: null, siteUrl: string}}
    * @exports TYPO3/CMS/RteCkeditor/RteLinkBrowser
    */
   var RteLinkBrowser = {
     plugin: null,
     CKEditor: null,
+    ranges: null,
     siteUrl: ''
   };
 
@@ -50,6 +51,9 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
         }
       });
     }
+
+    // Backup all ranges that are active when the Link Browser is requested
+    RteLinkBrowser.ranges = RteLinkBrowser.CKEditor.getSelection().getRanges();
 
     // siteUrl etc are added as data attributes to the body tag
     $.extend(RteLinkBrowser, $('body').data());
@@ -116,6 +120,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
     linkElement.setAttribute('href', link);
 
     var selection = RteLinkBrowser.CKEditor.getSelection();
+    selection.selectRanges(RteLinkBrowser.ranges);
     if (selection && selection.getSelectedText() === '') {
       selection.selectElement(selection.getStartElement());
     }
