@@ -23,6 +23,7 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
 class RteLinkBrowser {
   protected plugin: any = null;
   protected CKEditor: CKEDITOR.editor = null;
+  protected ranges: CKEDITOR.dom.range[] = null;
   protected siteUrl: string = '';
 
   /**
@@ -46,6 +47,9 @@ class RteLinkBrowser {
         }
       });
     }
+
+    // Backup all ranges that are active when the Link Browser is requested
+    this.ranges = this.CKEditor.getSelection().getRanges();
 
     // siteUrl etc are added as data attributes to the body tag
     $.extend(RteLinkBrowser, $('body').data());
@@ -111,6 +115,7 @@ class RteLinkBrowser {
     linkElement.setAttribute('href', link);
 
     const selection = this.CKEditor.getSelection();
+    selection.selectRanges(this.ranges);
     if (selection && selection.getSelectedText() === '') {
       selection.selectElement(selection.getStartElement());
     }
@@ -119,6 +124,7 @@ class RteLinkBrowser {
     } else {
       linkElement.setText(linkElement.getAttribute('href'));
     }
+
     this.CKEditor.insertElement(linkElement);
 
     Modal.dismiss();
