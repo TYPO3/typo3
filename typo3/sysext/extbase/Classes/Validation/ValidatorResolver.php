@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Validation;
  */
 
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
@@ -165,7 +166,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                             ]
                         );
                         $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
-                    } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
+                    } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && !in_array(SingletonInterface::class, class_implements($propertyTargetClassName, true), true)) {
                         /*
                          * class_exists($propertyTargetClassName) checks, if the type of the property is an object
                          * instead of a simple type. Like DateTime or another model.
@@ -174,14 +175,8 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                          * is not a core type, which are Enums and File objects for example.
                          * todo: check why these types should not be validated
                          *
-                         * $this->objectManager->isRegistered($propertyTargetClassName) checks if the type is a class
-                         * which can be loaded.
-                         * todo: this could be dropped as it's the same check as the first one.
-                         *
-                         * $this->objectManager->getScope($propertyTargetClassName) ===
-                         * \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE checks, if the type of the
-                         * property is a prototype, meaning that it's a class which does not implement the
-                         * SingletonInterface
+                         * !in_array(SingletonInterface::class, class_implements($propertyTargetClassName, true), true)
+                         * checks if the class is an instance of a Singleton
                          * todo: check why Singletons shouldn't be validated.
                          */
 

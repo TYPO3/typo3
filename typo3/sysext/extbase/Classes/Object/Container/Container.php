@@ -20,7 +20,6 @@ use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
@@ -33,9 +32,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 class Container implements SingletonInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    const SCOPE_PROTOTYPE = 1;
-    const SCOPE_SINGLETON = 2;
 
     /**
      * @var ContainerInterface
@@ -189,7 +185,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
         if ($classIsSingleton && !empty($givenConstructorArguments)) {
             throw new \TYPO3\CMS\Extbase\Object\Exception('Object "' . $className . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
         }
-        $constructorArguments = $this->getConstructorArguments($className, $classSchema, $givenConstructorArguments);
+        $constructorArguments = $this->getConstructorArguments($classSchema, $givenConstructorArguments);
         $instance = GeneralUtility::makeInstance($className, ...$constructorArguments);
         if ($classIsSingleton) {
             $this->singletonInstances[$className] = $instance;
@@ -210,8 +206,8 @@ class Container implements SingletonInterface, LoggerAwareInterface
         }
         foreach ($classSchema->getInjectMethods() as $injectMethodName => $injectMethod) {
             $instanceToInject = $this->getInstanceInternal($injectMethod->getFirstParameter()->getDependency());
-            if ($classSchema->isSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-                $this->getLogger()->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.');
+            if ($classSchema->isSingleton() && !$instanceToInject instanceof SingletonInterface) {
+                $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
             if (is_callable([$instance, $injectMethodName])) {
                 $instance->{$injectMethodName}($instanceToInject);
@@ -221,8 +217,8 @@ class Container implements SingletonInterface, LoggerAwareInterface
             $classNameToInject = $injectProperty->getType();
 
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
-            if ($classSchema->isSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-                $this->getLogger()->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
+            if ($classSchema->isSingleton() && !$instanceToInject instanceof SingletonInterface) {
+                $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
 
             if ($classSchema->getProperty($injectPropertyName)->isPublic()) {
@@ -263,18 +259,13 @@ class Container implements SingletonInterface, LoggerAwareInterface
     /**
      * gets array of parameter that can be used to call a constructor
      *
-     * @param string $className
      * @param ClassSchema $classSchema
      * @param array $givenConstructorArguments
      * @throws \InvalidArgumentException
      * @return array
      */
-    private function getConstructorArguments(string $className, ClassSchema $classSchema, array $givenConstructorArguments): array
+    private function getConstructorArguments(ClassSchema $classSchema, array $givenConstructorArguments): array
     {
-        // @todo: drop the $className argument here.
-        // @todo: 1) we have that via the $classSchema object
-        // @todo: 2) if we drop the log message, the argument is superfluous
-        //
         // @todo: -> private function getConstructorArguments(Method $constructor, array $givenConstructorArguments)
 
         if (!$classSchema->hasConstructor()) {
@@ -295,8 +286,8 @@ class Container implements SingletonInterface, LoggerAwareInterface
             } else {
                 if ($methodParameter->getDependency() !== null && !$methodParameter->hasDefaultValue()) {
                     $argument = $this->getInstanceInternal($methodParameter->getDependency());
-                    if ($classSchema->isSingleton() && !$argument instanceof \TYPO3\CMS\Core\SingletonInterface) {
-                        $this->getLogger()->notice('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
+                    if ($classSchema->isSingleton() && !$argument instanceof SingletonInterface) {
+                        $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
                         // todo: the whole injection is flawed anyway, why would we care about injecting prototypes? so, wayne?
                         // todo: btw: if this is important, we can already detect this case in the class schema.
                     }
@@ -327,34 +318,6 @@ class Container implements SingletonInterface, LoggerAwareInterface
             $className = substr($className, 0, -9);
         }
         return $className;
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
-    public function isSingleton(string $className): bool
-    {
-        return in_array(SingletonInterface::class, class_implements($className, true), true);
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
-    public function isPrototype(string $className): bool
-    {
-        return !$this->isSingleton($className);
-    }
-
-    /**
-     * @return LoggerInterface
-     */
-    protected function getLogger(): LoggerInterface
-    {
-        return $this->logger;
     }
 
     /**

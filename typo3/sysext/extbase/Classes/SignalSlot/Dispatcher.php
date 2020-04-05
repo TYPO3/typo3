@@ -360,7 +360,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($slotInformation['object'])) {
                 $object = $slotInformation['object'];
             } else {
-                if (!$this->objectManager->isRegistered($slotInformation['class'])) {
+                if (!class_exists($slotInformation['class'])) {
                     throw new Exception\InvalidSlotException('The given class "' . $slotInformation['class'] . '" is not a registered object.', 1245673367);
                 }
                 $object = $this->objectManager->get($slotInformation['class']);

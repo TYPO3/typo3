@@ -22,15 +22,6 @@ namespace TYPO3\CMS\Extbase\Object;
 interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * Returns TRUE if an object with the given name is registered
-     *
-     * @param string $objectName Name of the object
-     * @return bool TRUE if the object has been registered, otherwise FALSE
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function isRegistered(string $objectName): bool;
-
-    /**
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
      * @param string $objectName The name of the object to return an instance of
@@ -46,13 +37,4 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
      * @return object
      */
     public function getEmptyObject(string $className): object;
-
-    /**
-     * Returns the scope of the specified object.
-     *
-     * @param string $objectName The object name
-     * @return int One of the Container::SCOPE_ constants
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getScope(string $objectName): int;
 }

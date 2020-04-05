@@ -66,7 +66,7 @@ class ContainerTest extends UnitTestCase
             ->setConstructorArgs([$psrContainer])
             ->setMethods(['getLogger', 'getReflectionService'])
             ->getMock();
-        $this->subject->expects(self::any())->method('getLogger')->willReturn($this->logger);
+        $this->subject->setLogger($this->logger);
         $this->subject->expects(self::any())->method('getReflectionService')->willReturn($reflectionService);
     }
 
@@ -355,24 +355,6 @@ class ContainerTest extends UnitTestCase
         $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
-    }
-
-    /**
-     * @test
-     */
-    public function isSingletonReturnsTrueForSingletonInstancesAndFalseForPrototypes()
-    {
-        self::assertTrue($this->subject->isSingleton(Container::class));
-        self::assertFalse($this->subject->isSingleton(\TYPO3\CMS\Extbase\Core\Bootstrap::class));
-    }
-
-    /**
-     * @test
-     */
-    public function isPrototypeReturnsFalseForSingletonInstancesAndTrueForPrototypes()
-    {
-        self::assertFalse($this->subject->isPrototype(Container::class));
-        self::assertTrue($this->subject->isPrototype(\TYPO3\CMS\Extbase\Core\Bootstrap::class));
     }
 
     /************************************************

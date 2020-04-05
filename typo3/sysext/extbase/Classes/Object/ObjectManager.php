@@ -88,18 +88,6 @@ class ObjectManager implements ObjectManagerInterface
     }
 
     /**
-     * Returns TRUE if an object with the given name is registered
-     *
-     * @param string $objectName Name of the object
-     * @return bool TRUE if the object has been registered, otherwise FALSE
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function isRegistered(string $objectName): bool
-    {
-        return class_exists($objectName, true);
-    }
-
-    /**
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
      * @param string $objectName The name of the object to return an instance of
@@ -124,21 +112,6 @@ class ObjectManager implements ObjectManagerInterface
         }
 
         return $this->objectContainer->getInstance($objectName, $constructorArguments);
-    }
-
-    /**
-     * Returns the scope of the specified object.
-     *
-     * @param string $objectName The object name
-     * @return int One of the ExtbaseContainer::SCOPE_ constants
-     * @throws \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
-     */
-    public function getScope(string $objectName): int
-    {
-        if (!$this->isRegistered($objectName)) {
-            throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException('Object "' . $objectName . '" is not registered.', 1265367590);
-        }
-        return $this->objectContainer->isSingleton($objectName) ? ExtbaseContainer::SCOPE_SINGLETON : ExtbaseContainer::SCOPE_PROTOTYPE;
     }
 
     /**

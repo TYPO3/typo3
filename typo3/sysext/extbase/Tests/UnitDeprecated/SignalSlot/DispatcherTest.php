@@ -131,7 +131,6 @@ class DispatcherTest extends UnitTestCase
     {
         $slotClassName = OnlyClassNameSpecifiedFixture::class;
         $mockSlot = new OnlyClassNameSpecifiedFixture();
-        $this->objectManagerProphecy->isRegistered($slotClassName)->willReturn(true);
         $this->objectManagerProphecy->get($slotClassName)->willReturn($mockSlot);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
@@ -267,7 +266,6 @@ class DispatcherTest extends UnitTestCase
     {
         $this->expectException(InvalidSlotException::class);
         $this->expectExceptionCode(1245673367);
-        $this->objectManagerProphecy->isRegistered('NonExistingClassName')->willReturn(false);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', 'NonExistingClassName', 'slot', true);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', []);
     }
@@ -281,7 +279,6 @@ class DispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1245673368);
         $slotClassName = SlotMethodDoesNotExistFixture::class;
         $mockSlot = new SlotMethodDoesNotExistFixture();
-        $this->objectManagerProphecy->isRegistered($slotClassName)->willReturn(true);
         $this->objectManagerProphecy->get($slotClassName)->willReturn($mockSlot);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'unknownMethodName', true);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
