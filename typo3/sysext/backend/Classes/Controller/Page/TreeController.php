@@ -248,6 +248,9 @@ class TreeController
         if (in_array($pageId, $this->hiddenRecords, true)) {
             return [];
         }
+        if ($pageId === 0 && !$backendUser->isAdmin()) {
+            return [];
+        }
 
         $stopPageTree = !empty($page['php_tree_stop']) && $depth > 0;
         $identifier = $entryPoint . '_' . $pageId;
