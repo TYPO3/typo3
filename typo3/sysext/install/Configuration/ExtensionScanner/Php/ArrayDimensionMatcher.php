@@ -417,4 +417,9 @@ return [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'runtimeActivatedPackages\']' => [
+        'restFiles' => [
+            'Deprecation-91030-Runtime-ActivatedPackages.rst',
+        ],
+    ],
 ];

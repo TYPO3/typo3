@@ -257,6 +257,7 @@ class Bootstrap
     {
         $packages = $GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] ?? [];
         if (!empty($packages)) {
+            trigger_error('Support for runtime activated packages will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
             foreach ($packages as $runtimeAddedPackageKey) {
                 $packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
             }

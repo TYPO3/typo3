@@ -317,6 +317,7 @@ class PackageManager implements SingletonInterface
      *
      * @param string $packageKey
      * @return PackageInterface
+     * @deprecated will be removed in TYPO3 v11.0
      */
     protected function registerPackageDuringRuntime($packageKey)
     {
@@ -576,6 +577,7 @@ class PackageManager implements SingletonInterface
      * Enables packages during runtime, but no class aliases will be available
      *
      * @param string $packageKey
+     * @deprecated will be removed in TYPO3 v11.0
      */
     public function activatePackageDuringRuntime($packageKey)
     {
