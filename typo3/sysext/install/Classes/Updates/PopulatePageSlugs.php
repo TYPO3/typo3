@@ -133,7 +133,7 @@ class PopulatePageSlugs implements UpgradeWizardInterface
         if ($this->checkIfTableExists('tx_realurl_pathdata')) {
             $suggestedSlugs = $this->getSuggestedSlugs('tx_realurl_pathdata');
         } elseif ($this->checkIfTableExists('tx_realurl_pathcache')) {
-            $suggestedSlugs = $this->getSuggestedSlugs('tx_realurl_pathcache');
+            $suggestedSlugs = $this->getSuggestedSlugs('tx_realurl_pathcache', 'cache_id');
         }
 
         $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$this->fieldName]['config'];
@@ -216,9 +216,10 @@ class PopulatePageSlugs implements UpgradeWizardInterface
      * Resolve prepared realurl "pagepath" for pages
      *
      * @param string $tableName
+     * @param string $identityField
      * @return array with pageID (default language) and language ID as two-dimensional array containing the page path
      */
-    protected function getSuggestedSlugs(string $tableName): array
+    protected function getSuggestedSlugs(string $tableName, string $identityField = 'uid'): array
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $currentTimestamp = $context->getPropertyFromAspect('date', 'timestamp');
@@ -234,7 +235,7 @@ class PopulatePageSlugs implements UpgradeWizardInterface
                     $queryBuilder->expr()->gt('expire', $queryBuilder->createNamedParameter($currentTimestamp))
                 )
             )
-            ->orderBy('uid', 'DESC')
+            ->orderBy($identityField, 'DESC')
             ->execute();
         $suggestedSlugs = [];
         while ($row = $statement->fetch()) {
