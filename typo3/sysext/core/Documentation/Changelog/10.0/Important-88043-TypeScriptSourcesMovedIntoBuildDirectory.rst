@@ -15,6 +15,6 @@ structure :file:`typo3/sysext/foobar/Resources/Private/TypeScript` has been supe
 
 .. note::
 
-   Mind that :file:`Public` is now the parent directory of :file:`TypoScript`.
+   Mind that :file:`Public` is now the parent directory of :file:`TypeScript`.
 
 .. index:: JavaScript
