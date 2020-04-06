@@ -28,11 +28,8 @@ import com.atlassian.bamboo.specs.api.builders.task.Task;
 import com.atlassian.bamboo.specs.builders.notification.PlanCompletedNotification;
 import com.atlassian.bamboo.specs.builders.trigger.ScheduledTrigger;
 import com.atlassian.bamboo.specs.util.BambooServer;
-import core.utilities.LimitedChunker;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Core master nightly test plan.
@@ -60,9 +57,6 @@ public class NightlySpec extends AbstractCoreSpec {
     private String[] sqLiteVersions = {"3.15", "3.20", "3.25", "3.30"};
     private String[] postGreSqlVersions = {"9.3", "9.4", "9.5", "9.6", "10.11", "11.6", "12.1"};
 
-    private int totalJobsPerStage = 50;
-    private int mssqlJobsPerStage = 25;
-
     /**
      * Run main to publish plan on Bamboo
      */
@@ -85,51 +79,24 @@ public class NightlySpec extends AbstractCoreSpec {
      * Returns full Plan definition
      */
     Plan createPlan() {
-        Stage stagePreparation = getPreparationStage();
-
-        Stage stageIntegrity = getIntegrityStage();
-        ArrayList<Job> jobs = new ArrayList<Job>();
-        ArrayList<Job> mssqlJobs = new ArrayList<Job>();
-        jobs.addAll(getUnitTestJobs());
-        jobs.addAll(getCodeceptionMySqlJobs());
-        jobs.addAll(getCodeceptionSqLiteJobs());
-        jobs.addAll(getCodeceptionPgSqlJobs());
-        jobs.addAll(getFunctionalMySqlJobs());
-        jobs.addAll(getFunctionalMySqlPdoJobs());
-        jobs.addAll(getFunctionalPGSqlJobs());
-        jobs.addAll(getFunctionalSqliteJobs());
-        mssqlJobs.addAll(getFunctionalMsSqlJobs());
-        mssqlJobs.addAll(getFunctionalMsSqlPdoJobs());
-
-        Collections.shuffle(jobs);
-        Collections.shuffle(mssqlJobs);
-
-        ArrayList<Stage> stages = new ArrayList<Stage>();
-        stages.add(stagePreparation);
-        stages.add(stageIntegrity);
-
-        LimitedChunker<Job> chunker = new LimitedChunker<>(mssqlJobsPerStage, totalJobsPerStage);
-        List<List<Job>> chunks = chunker.chunk(mssqlJobs, jobs);
-
-        int totalNumberOfJobs = jobs.size() + mssqlJobs.size();
-        int stageIndex = 0;
-        for (List<Job> chunk : chunks) {
-            int firstJobIndex = totalJobsPerStage * stageIndex + 1;
-            int lastJobIndex = totalJobsPerStage * (stageIndex + 1);
-            lastJobIndex = Math.min(lastJobIndex, totalNumberOfJobs);
-
-            Collections.shuffle(chunk);
-            Stage stage = new Stage("Stage " + (stageIndex + 1) + ", Jobs " + firstJobIndex + " - " + lastJobIndex);
-            stage.jobs(chunk.toArray(new Job[chunk.size()]));
-            stages.add(stage);
-            System.out.println("Stage " + (stageIndex + 1) + " got " + chunk.size() + " Jobs");
-            stageIndex++;
-        }
+        ArrayList<Stage> stages = new ArrayList<>();
+        stages.add(getPreparationStage());
+        stages.add(getIntegrityStage());
+        stages.addAll(getUnitTestStages());
+        stages.addAll(getCodeceptionMySqlStages());
+        stages.addAll(getCodeceptionSqLiteStages());
+        stages.addAll(getCodeceptionPgSqlStages());
+        stages.addAll(getFunctionalMySqlStages());
+        stages.addAll(getFunctionalMySqlPdoStages());
+        stages.addAll(getFunctionalPGSqlStages());
+        stages.addAll(getFunctionalSqliteStages());
+        stages.addAll(getFunctionalMsSqlStages());
+        stages.addAll(getFunctionalMsSqlPdoStages());
 
         // Compile plan
         return new Plan(project(), planName, planKey).description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
-            .stages(stages.toArray(new Stage[stages.size()]))
+            .stages(stages.toArray(new Stage[0]))
             .linkedRepositories("github TYPO3 TYPO3.CMS")
             .triggers(new ScheduledTrigger().name("Scheduled")
                 .description("once a day")
@@ -144,145 +111,165 @@ public class NightlySpec extends AbstractCoreSpec {
     /**
      * functional tests in all composer install stages, executed with DBMS Sqlite
      */
-    private ArrayList<Job> getFunctionalSqliteJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getFunctionalSqliteStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobsFunctionalTestsSqlite(stageNumber, numberOfFunctionalSqliteJobs, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Functionals sqlite " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * functional tests in all composer install stages, executed with DBMS PostgreSql
      */
-    private ArrayList<Job> getFunctionalPGSqlJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getFunctionalPGSqlStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobsFunctionalTestsPgsql(stageNumber, numberOfFunctionalPgsqlJobs, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Functionals pgsql " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * functional tests in all composer install stages, executed with DBMS MsSQL, driver is pdo_sqlsrv
      */
-    private ArrayList<Job> getFunctionalMsSqlPdoJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getFunctionalMsSqlPdoStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(stageNumber, numberOfFunctionalMssqlJobs, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Functionals mssql pdo " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * functional tests in all composer install stages, executed with DBMS MsSQL, driver is sqlsrv
      */
-    private ArrayList<Job> getFunctionalMsSqlJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getFunctionalMsSqlStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(stageNumber, numberOfFunctionalMssqlJobs, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Functionals mssql " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * functional tests in all composer install stages, executed with DBMS MySQL, driver is mysqli
      */
-    private ArrayList<Job> getFunctionalMySqlJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getFunctionalMySqlStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerJob = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(stageNumber, numberOfFunctionalMysqlJobs, phpVersion, composerJob, false));
             }
+            stages.add(new Stage("Functionals mysql " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * functional tests in all composer install stages, executed with DBMS MySQL, driver is pdo_mysql
      */
-    private ArrayList<Job> getFunctionalMySqlPdoJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getFunctionalMySqlPdoStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerJob = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(stageNumber, numberOfFunctionalMysqlJobs, phpVersion, composerJob, false));
             }
+            stages.add(new Stage("Functionals mysql pdo " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * all tests run via codeception framework on MySql, for all php versions and each with composer max and min install
      */
-    private ArrayList<Job> getCodeceptionMySqlJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getCodeceptionMySqlStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.add(this.getJobAcceptanceTestInstallMysql(stageNumber, phpVersion, composerTask, false));
                 jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(stageNumber, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
                 jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(stageNumber, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Acceptance mysql " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * all tests run via codeception framework on SqLite, for all php versions and each with composer max and min install
      */
-    private ArrayList<Job> getCodeceptionSqLiteJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getCodeceptionSqLiteStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.add(this.getJobAcceptanceTestInstallSqlite(stageNumber, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Acceptance sqlite " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * all tests run via codeception framework on PostGreSql, for all php versions and each with composer max and min install
      */
-    private ArrayList<Job> getCodeceptionPgSqlJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getCodeceptionPgSqlStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.add(this.getJobAcceptanceTestInstallPgsql(stageNumber, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Acceptance pgsql " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
      * all unit tests, for all php versions and each with composer max and min install
      */
-    private ArrayList<Job> getUnitTestJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+    private ArrayList<Stage> getUnitTestStages() {
+        ArrayList<Stage> stages = new ArrayList<>();
         for (String phpVersion : phpVersions) {
+            ArrayList<Job> jobs = new ArrayList<>();
             for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.addAll(this.getJobUnitPhpRandom(stageNumber, numberOfUnitRandomOrderJobs, phpVersion, composerTask, false));
                 jobs.add(this.getJobUnitDeprecatedPhp(stageNumber, phpVersion, composerTask, false));
                 jobs.add(this.getJobUnitPhp(stageNumber, phpVersion, composerTask, false));
             }
+            stages.add(new Stage("Unit Tests " + phpVersion).jobs(jobs.toArray(new Job[0])));
         }
-        return jobs;
+        return stages;
     }
 
     /**
@@ -292,7 +279,7 @@ public class NightlySpec extends AbstractCoreSpec {
      */
     private Stage getIntegrityStage() {
         String phpVersionForIntegrityStage = phpVersions[0]; // the version is not very important, just use one (except for linting!)
-        ArrayList<Job> jobs = new ArrayList<Job>();
+        ArrayList<Job> jobs = new ArrayList<>();
         jobs.add(this.getJobIntegrationAnnotations(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
         jobs.add(this.getJobCglCheckFullCore(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
         jobs.add(this.getJobIntegrationPhpStan(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
@@ -305,15 +292,15 @@ public class NightlySpec extends AbstractCoreSpec {
         for (String phpVersion : phpVersions) {
             jobs.add(this.getJobLintPhp(phpVersion, false));
         }
-        return new Stage("Integrity").jobs(jobs.toArray(new Job[jobs.size()]));
+        return new Stage("Integrity").jobs(jobs.toArray(new Job[0]));
     }
 
     /**
      * preparation stage - this will only define labels for later communication of test results
      */
     private Stage getPreparationStage() {
-        ArrayList<Job> jobs = new ArrayList<Job>();
+        ArrayList<Job> jobs = new ArrayList<>();
         jobs.add(this.getJobBuildLabels());
-        return new Stage("Preparation").jobs(jobs.toArray(new Job[jobs.size()]));
+        return new Stage("Preparation").jobs(jobs.toArray(new Job[0]));
     }
 }

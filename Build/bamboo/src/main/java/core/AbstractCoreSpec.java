@@ -734,7 +734,7 @@ abstract class AbstractCoreSpec {
                                 "        -e typo3DatabaseHost=localhost \\\n" +
                                 "        -e typo3DatabasePort=1433 \\\n" +
                                 "        -e typo3DatabaseCharset=utf-8 \\\n" +
-                                "        -e typo3DatabaseHost=mssql2017cu17 \\\n" +
+                                "        -e typo3DatabaseHost=mssql2019latest \\\n" +
                                 "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
                                 "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
                                 "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -801,7 +801,7 @@ abstract class AbstractCoreSpec {
                                 "        -e typo3DatabaseHost=localhost \\\n" +
                                 "        -e typo3DatabasePort=1433 \\\n" +
                                 "        -e typo3DatabaseCharset=utf-8 \\\n" +
-                                "        -e typo3DatabaseHost=mssql2017cu17 \\\n" +
+                                "        -e typo3DatabaseHost=mssql2019latest \\\n" +
                                 "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
                                 "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
                                 "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
@@ -1603,35 +1603,25 @@ abstract class AbstractCoreSpec {
      * Task definition to cherry pick a patch set from gerrit on top of cloned core
      */
     private Task getTaskGitCherryPick(Boolean isSecurity) {
-        if (isSecurity) {
-            return new ScriptTask()
-                .description("Gerrit cherry pick")
-                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                .inlineBody(
-                    this.getScriptTaskBashInlineBody() +
-                        "CHANGEURL=${bamboo.changeUrl}\n" +
-                        "CHANGEURLID=${CHANGEURL#https://review.typo3.org/}\n" +
-                        "PATCHSET=${bamboo.patchset}\n" +
-                        "\n" +
-                        "if [[ $CHANGEURL ]]; then\n" +
-                        "    gerrit-cherry-pick https://review.typo3.org/Teams/Security/TYPO3v4-Core $CHANGEURLID/$PATCHSET || exit 1\n" +
-                        "fi\n"
-                );
-        } else {
-            return new ScriptTask()
-                .description("Gerrit cherry pick")
-                .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                .inlineBody(
-                    this.getScriptTaskBashInlineBody() +
-                        "CHANGEURL=${bamboo.changeUrl}\n" +
-                        "CHANGEURLID=${CHANGEURL#https://review.typo3.org/}\n" +
-                        "PATCHSET=${bamboo.patchset}\n" +
-                        "\n" +
-                        "if [[ $CHANGEURL ]]; then\n" +
-                        "    gerrit-cherry-pick https://review.typo3.org/Packages/TYPO3.CMS $CHANGEURLID/$PATCHSET || exit 1\n" +
-                        "fi\n"
-                );
-        }
+        String cherryPickRepository = isSecurity ? "Teams/Security/TYPO3v4-Core" : "Packages/TYPO3.CMS";
+
+        return new ScriptTask()
+            .description("Gerrit cherry pick")
+            .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+            .inlineBody(
+                this.getScriptTaskBashInlineBody() +
+                    "CHANGEURL=${bamboo.changeUrl}\n" +
+                    "CHANGEURLID=${CHANGEURL#https://review.typo3.org/}\n" +
+                    "PATCHSET=${bamboo.patchset}\n" +
+                    "\n" +
+                    "if [[ $CHANGEURL ]]; then\n" +
+                    "    NEXT_WAIT_TIME=0\n" +
+                    "    until gerrit-cherry-pick https://review.typo3.org/" + cherryPickRepository + " $CHANGEURLID/$PATCHSET; do\n" +
+                    "        [[ $NEXT_WAIT_TIME -eq 5 ]] && exit 1\n" +
+                    "        sleep $(( NEXT_WAIT_TIME++ ))\n" +
+                    "    done\n" +
+                    "fi\n"
+            );
     }
 
     /**
@@ -1645,8 +1635,11 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "docker-compose down -v\n" +
-                    "docker rm -f ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc\n" +
+                    "docker inspect -f '{{.State.Running}}' ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc > /dev/null 2>&1\n" +
+                    "if [[ $? -eq 0 ]]; then\n" +
+                    "    docker-compose down -v\n" +
+                    "    docker rm -f ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc\n" +
+                    "fi\n" +
                     "exit 0\n"
             );
     }

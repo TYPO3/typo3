@@ -98,7 +98,6 @@ Options:
             - mariadb (default): use mariadb
             - mysql55: use MySQL 5.5 server
             - mssql: use mssql microsoft sql server
-            - mssql2017latest: use latest version of microsoft sql server 2017
             - postgres: use postgres
             - sqlite: use sqlite
 
@@ -413,14 +412,8 @@ case ${TEST_SUITE} in
                 ;;
             mssql)
                 [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mssql2017cu17
-                docker-compose run functional_mssql2017cu17
-                SUITE_EXIT_CODE=$?
-                ;;
-            mssql2017latest)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mssql2017latest
-                docker-compose run functional_mssql2017latest
+                docker-compose run prepare_functional_mssql2019latest
+                docker-compose run functional_mssql2019latest
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
