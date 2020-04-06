@@ -540,7 +540,8 @@ class RecordHistory
             $isDeletedPage = false;
             if (isset($GLOBALS['TCA']['pages']['ctrl']['delete'])) {
                 $deletedField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
-                $pageRecord = BackendUtility::getRecord('pages', $pageId, $deletedField, '', false);
+                $fields = 'pid,' . $deletedField;
+                $pageRecord = BackendUtility::getRecord('pages', $pageId, $fields, '', false);
                 $isDeletedPage = (bool)$pageRecord[$deletedField];
             }
             if ($isDeletedPage) {
