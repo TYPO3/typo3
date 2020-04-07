@@ -527,4 +527,22 @@ class RequestTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         new Request(null, null, 'php://memory', [$name => $value]);
     }
+
+    /**
+     * @test
+     */
+    public function supportedRequestMethodsWork(): void
+    {
+        $request = new Request('some-uri', 'PURGE');
+        self::assertEquals('PURGE', $request->getMethod());
+    }
+
+    /**
+     * @test
+     */
+    public function nonSupportedRequestMethodsRaisesException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Request('some-uri', 'UNSUPPORTED');
+    }
 }
