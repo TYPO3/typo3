@@ -251,4 +251,92 @@ class GeneralUtilityTest extends UnitTestCase
 
         $requestFactory->request(Argument::any(), Argument::any(), ['headers' => $expectedHeaders])->shouldHaveBeenCalled();
     }
+
+    /**
+     * Data provider for IPv6Hex2BinCorrect
+     *
+     * @return array Data sets
+     */
+    public static function IPv6Hex2BinDataProviderCorrect()
+    {
+        return [
+            'empty 1' => ['::', str_pad('', 16, "\x00")],
+            'empty 2, already normalized' => ['0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")],
+            'already normalized' => ['0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"],
+            'expansion in middle 1' => ['1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"],
+            'expansion in middle 2' => ['beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider IPv6Hex2BinDataProviderCorrect
+     */
+    public function IPv6Hex2BinCorrectlyConvertsAddresses($hex, $binary)
+    {
+        self::assertTrue(GeneralUtility::IPv6Hex2Bin($hex) === $binary);
+    }
+
+    /**
+     * Data provider for IPv6Bin2HexCorrect
+     *
+     * @return array Data sets
+     */
+    public static function IPv6Bin2HexDataProviderCorrect()
+    {
+        return [
+            'empty' => [str_pad('', 16, "\x00"), '::'],
+            'non-empty front' => ["\x01" . str_pad('', 15, "\x00"), '100::'],
+            'non-empty back' => [str_pad('', 15, "\x00") . "\x01", '::1'],
+            'normalized' => ["\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78", '102:304::506:78'],
+            'expansion in middle 1' => ["\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02", '1::2'],
+            'expansion in middle 2' => ["\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa", 'beef::fefa'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider IPv6Bin2HexDataProviderCorrect
+     */
+    public function IPv6Bin2HexCorrectlyConvertsAddresses($binary, $hex)
+    {
+        self::assertEquals(GeneralUtility::IPv6Bin2Hex($binary), $hex);
+    }
+
+    /**
+     * Data provider for normalizeIPv6ReturnsCorrectlyNormalizedFormat
+     *
+     * @return array Data sets
+     */
+    public static function normalizeCompressIPv6DataProviderCorrect()
+    {
+        return [
+            'empty' => ['::', '0000:0000:0000:0000:0000:0000:0000:0000'],
+            'localhost' => ['::1', '0000:0000:0000:0000:0000:0000:0000:0001'],
+            'expansion in middle 1' => ['1::2', '0001:0000:0000:0000:0000:0000:0000:0002'],
+            'expansion in middle 2' => ['1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'],
+            'expansion in middle 3' => ['1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'],
+            'expansion in middle 4' => ['1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider normalizeCompressIPv6DataProviderCorrect
+     */
+    public function compressIPv6CorrectlyCompressesAddresses($compressed, $normalized)
+    {
+        self::assertEquals($compressed, GeneralUtility::compressIPv6($normalized));
+    }
+
+    /**
+     * @test
+     */
+    public function compressIPv6CorrectlyCompressesAddressWithSomeAddressOnRightSide()
+    {
+        if (strtolower(PHP_OS) === 'darwin') {
+            self::markTestSkipped('This test does not work on OSX / Darwin OS.');
+        }
+        self::assertEquals('::f0f', GeneralUtility::compressIPv6('0000:0000:0000:0000:0000:0000:0000:0f0f'));
+    }
 }

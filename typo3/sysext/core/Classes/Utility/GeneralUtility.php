@@ -314,8 +314,8 @@ class GeneralUtility
                 } elseif ($maskInt == 128) {
                     $success = $test === $baseIP;
                 } else {
-                    $testBin = self::IPv6Hex2Bin($test);
-                    $baseIPBin = self::IPv6Hex2Bin($baseIP);
+                    $testBin = inet_pton($test);
+                    $baseIPBin = inet_pton($baseIP);
                     $success = true;
                     // Modulo is 0 if this is a 8-bit-boundary
                     $maskIntModulo = $maskInt % 8;
@@ -344,10 +344,11 @@ class GeneralUtility
      *
      * @param string $hex IPv6 address in hex-presentation
      * @return string Binary representation (16 characters, 128 characters)
-     * @see IPv6Bin2Hex()
+     * @deprecated - will be removed in TYPO3 v11.0. Use the native PHP function inet_pton($hex) instead.
      */
     public static function IPv6Hex2Bin($hex)
     {
+        trigger_error('GeneralUtility::IPv6Hex2Bin() will be removed in TYPO3 v11.0. Use the native PHP function inet_pton($hex) instead.', E_USER_DEPRECATED);
         return inet_pton($hex);
     }
 
@@ -356,10 +357,11 @@ class GeneralUtility
      *
      * @param string $bin IPv6 address in hex-presentation
      * @return string Binary representation (16 characters, 128 characters)
-     * @see IPv6Hex2Bin()
+     * @deprecated - will be removed in TYPO3 v11.0. Use the native PHP function inet_ntop($bin) instead.
      */
     public static function IPv6Bin2Hex($bin)
     {
+        trigger_error('GeneralUtility::IPv6Bin2Hex() will be removed in TYPO3 v11.0. Use the native PHP function inet_ntop($bin) instead.', E_USER_DEPRECATED);
         return inet_ntop($bin);
     }
 
@@ -368,7 +370,6 @@ class GeneralUtility
      *
      * @param string $address Given IPv6 address
      * @return string Normalized address
-     * @see compressIPv6()
      */
     public static function normalizeIPv6($address)
     {
@@ -432,9 +433,11 @@ class GeneralUtility
      * @param string $address Given IPv6 address
      * @return string Compressed address
      * @see normalizeIPv6()
+     * @deprecated will be removed in TYPO3 v11.0. Use the native PHP functions inet_ntop(inet_pton($address)) instead.
      */
     public static function compressIPv6($address)
     {
+        trigger_error('GeneralUtility::compressIPv6() will be removed in TYPO3 v11.0. Use the native PHP functions inet_ntop(inet_pton($address)) instead.', E_USER_DEPRECATED);
         return inet_ntop(inet_pton($address));
     }
 
@@ -2104,9 +2107,11 @@ class GeneralUtility
      * @param bool $keepOriginalDirectory Whether to only empty the directory and not remove it
      * @param bool $flushOpcodeCache Also flush the opcode cache right after renaming the directory.
      * @return bool Whether the action was successful
+     * @deprecated will be removed in TYPO3 v11.0. This is a specific logic needed for the caching framework, and should be implemented where needed directly.
      */
     public static function flushDirectory($directory, $keepOriginalDirectory = false, $flushOpcodeCache = false)
     {
+        trigger_error('GeneralUtility::flushDirectory() will be removed in TYPO3 v11.0. This is a specific logic needed for the caching framework, and should be implemented where needed directly.', E_USER_DEPRECATED);
         $result = false;
 
         if (is_link($directory)) {
@@ -2511,9 +2516,11 @@ class GeneralUtility
      * @param string $url URL string
      * @param array $getParams Array of key/value pairs for get parameters to add/overrule with. Can be multidimensional.
      * @return string Output URL with added getParams.
+     * @deprecated will be removed in TYPO3 v11.0. Use PSR-7 URI objects instead.
      */
     public static function linkThisUrl($url, array $getParams = [])
     {
+        trigger_error('GeneralUtility::linkThisUrl() will be removed in TYPO3 v11.0. Use PSR-7 URI objects instead.', E_USER_DEPRECATED);
         $parts = parse_url($url);
         $getP = [];
         if ($parts['query']) {
@@ -2916,9 +2923,11 @@ class GeneralUtility
      * Gets the unixtime as milliseconds.
      *
      * @return int The unixtime as milliseconds
+     * @deprecated will be removed in TYPO3 v11.0. Use the native PHP functions round(microtime(true) * 1000) instead.
      */
     public static function milliseconds()
     {
+        trigger_error('GeneralUtility::milliseconds() will be removed in TYPO3 v11.0. Use the native PHP functions round(microtime(true) * 1000) instead.', E_USER_DEPRECATED);
         return round(microtime(true) * 1000);
     }
 

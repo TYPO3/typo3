@@ -297,10 +297,26 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     /**
      * Removes all cache entries of this cache.
+     * Flushes a directory by first moving to a temporary resource, and then
+     * triggering the remove process. This way directories can be flushed faster
+     * to prevent race conditions on concurrent processes accessing the same directory.
      */
     public function flush()
     {
-        GeneralUtility::flushDirectory($this->cacheDirectory, true);
+        $directory = $this->cacheDirectory;
+        if (is_link($directory)) {
+            // Avoid attempting to rename the symlink see #87367
+            $directory = realpath($directory);
+        }
+
+        if (is_dir($directory)) {
+            $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove');
+            if (rename($directory, $temporaryDirectory)) {
+                GeneralUtility::mkdir($directory);
+                clearstatcache();
+                GeneralUtility::rmdir($temporaryDirectory, true);
+            }
+        }
     }
 
     /**

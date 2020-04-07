@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
  * Index search frontend
@@ -276,20 +277,20 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $resultsets = [];
         foreach ($indexCfgs as $freeIndexUid) {
             // Get result rows
-            $tstamp1 = GeneralUtility::milliseconds();
+            $tstamp1 = IndexedSearchUtility::milliseconds();
             if ($hookObj = $this->hookRequest('getResultRows')) {
                 $resultData = $hookObj->getResultRows($this->searchWords, $freeIndexUid);
             } else {
                 $resultData = $this->searchRepository->doSearch($this->searchWords, $freeIndexUid);
             }
             // Display search results
-            $tstamp2 = GeneralUtility::milliseconds();
+            $tstamp2 = IndexedSearchUtility::milliseconds();
             if ($hookObj = $this->hookRequest('getDisplayResults')) {
                 $resultsets[$freeIndexUid] = $hookObj->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
             } else {
                 $resultsets[$freeIndexUid] = $this->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
             }
-            $tstamp3 = GeneralUtility::milliseconds();
+            $tstamp3 = IndexedSearchUtility::milliseconds();
             // Create header if we are searching more than one indexing configuration
             if (count($indexCfgs) > 1) {
                 if ($freeIndexUid > 0) {

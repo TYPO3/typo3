@@ -347,7 +347,7 @@ class Indexer
                 }
                 $this->log_pull();
                 // Set parsetime
-                $this->updateParsetime($this->hash['phash'], GeneralUtility::milliseconds() - $Pstart);
+                $this->updateParsetime($this->hash['phash'], IndexedSearchUtility::milliseconds() - $Pstart);
                 // Checking external files if configured for.
                 $this->log_push('Checking external files', '');
                 if ($this->conf['index_externals']) {
@@ -926,7 +926,7 @@ class Indexer
                                     }
                                     $this->log_pull();
                                     // Set parsetime
-                                    $this->updateParsetime($phash_arr['phash'], GeneralUtility::milliseconds() - $Pstart);
+                                    $this->updateParsetime($phash_arr['phash'], IndexedSearchUtility::milliseconds() - $Pstart);
                                 } else {
                                     // Update the timestamp
                                     $this->updateTstamp($phash_arr['phash'], $fileInfo['mtime']);

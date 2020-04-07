@@ -980,4 +980,46 @@ return [
             'Deprecation-90147-UnifiedFileNameValidator.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Hex2Bin' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Bin2Hex' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+        ],
+    ],
 ];
