@@ -1381,7 +1381,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Spacer and sysfolders is not accessible in frontend
-        if ($this->page['doktype'] == PageRepository::DOKTYPE_SPACER || $this->page['dokype'] == PageRepository::DOKTYPE_SYSFOLDER) {
+        if ($this->page['doktype'] == PageRepository::DOKTYPE_SPACER || $this->page['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
             $message = 'The requested page does not exist!';
             $this->logger->error($message);
             try {
