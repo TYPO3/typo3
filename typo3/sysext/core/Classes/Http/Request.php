@@ -66,7 +66,10 @@ class Request extends Message implements RequestInterface
         'PROPFIND',
         'PROPPATCH',
         'REPORT',
-        'UNLOCK'
+        'UNLOCK',
+        // Custom methods
+        'PURGE',
+        'BAN'
     ];
 
     /**
