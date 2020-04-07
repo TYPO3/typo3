@@ -285,7 +285,7 @@ class InlineStackProcessorTest extends UnitTestCase
      * @dataProvider structureStringIsParsedDataProvider
      * @test
      */
-    public function getCurrentStructureFormPrefixReturnsExceptedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
+    public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
     {
         /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor;
@@ -297,7 +297,7 @@ class InlineStackProcessorTest extends UnitTestCase
      * @dataProvider structureStringIsParsedDataProvider
      * @test
      */
-    public function getCurrentStructureDomObjectIdPrefixReturnsExceptedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
+    public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
     {
         /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor;
