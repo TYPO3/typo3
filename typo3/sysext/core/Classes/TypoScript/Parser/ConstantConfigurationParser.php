@@ -293,7 +293,7 @@ class ConstantConfigurationParser
             if (isset($editableComments[$const])) {
                 $editableComments[$const]['name'] = $const;
                 $editableComments[$const]['value'] = trim($value);
-                $editableComments[$const]['default_value'] = trim($default[$const]);
+                $editableComments[$const]['default_value'] = trim((string)($default[$const] ?? ''));
             }
         }
         return $editableComments;
