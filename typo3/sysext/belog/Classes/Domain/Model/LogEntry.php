@@ -58,7 +58,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Table name
      *
-     * @var string|int
+     * @var string
      */
     protected $tableName = 0;
 
@@ -135,7 +135,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * New ID
      *
-     * @var string|int
+     * @var string
      */
     protected $newId = 0;
 
