@@ -36,7 +36,6 @@ return [
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => 'Translation parent',
             'config' => [
                 'type' => 'select',
