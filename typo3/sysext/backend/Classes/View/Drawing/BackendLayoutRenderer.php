@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -220,7 +221,7 @@ class BackendLayoutRenderer
         $this->clipboard->endClipboard();
 
         $elFromTable = $this->clipboard->elFromTable('tt_content');
-        if (!empty($elFromTable) && $this->context->isPageEditable()) {
+        if (!empty($elFromTable) && $this->isContentEditable()) {
             $pasteItem = (int)substr(key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
             $pasteTitle = (string)($pasteRecord['header'] ?: $pasteItem);
@@ -263,6 +264,18 @@ class BackendLayoutRenderer
             . '</a>'
         );
         return $pasteIcon;
+    }
+
+    protected function isContentEditable(): bool
+    {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
+
+        $pageRecord = $this->context->getPageRecord();
+        return !$pageRecord['editlock']
+            && $this->getBackendUser()->check('tables_modify', 'tt_content')
+            && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT);
     }
 
     protected function getBackendUser(): BackendUserAuthentication
