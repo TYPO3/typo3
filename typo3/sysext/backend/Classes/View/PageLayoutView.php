@@ -1235,7 +1235,7 @@ class PageLayoutView implements LoggerAwareInterface
             }
         }
         $elFromTable = $this->clipboard->elFromTable('tt_content');
-        if (!empty($elFromTable) && $this->isPageEditable()) {
+        if (!empty($elFromTable) && $this->isContentEditable()) {
             $pasteItem = substr(key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
             $pasteTitle = $pasteRecord['header'] ? $pasteRecord['header'] : $pasteItem;
