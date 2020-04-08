@@ -480,14 +480,14 @@ class Export extends ImportExport
             foreach ($addR as $fI) {
                 // Get and set record:
                 $row = BackendUtility::getRecord($fI['table'], $fI['id']);
-                // Depending on db driver, int fields may or may not be returned as integer or as string. The
-                // loop aligns that detail and forces strings for everything to have exports more db agnostic.
-                foreach ($row as $fieldName => $value) {
-                    // Keep null but force everything else to string
-                    $row[$fieldName] = $value === null ? $value : (string)$value;
-                }
 
                 if (is_array($row)) {
+                    // Depending on db driver, int fields may or may not be returned as integer or as string. The
+                    // loop aligns that detail and forces strings for everything to have exports more db agnostic.
+                    foreach ($row as $fieldName => $value) {
+                        // Keep null but force everything else to string
+                        $row[$fieldName] = $value === null ? $value : (string)$value;
+                    }
                     $this->export_addRecord($fI['table'], $row, $relationLevel + 1);
                 }
                 // Set status message
