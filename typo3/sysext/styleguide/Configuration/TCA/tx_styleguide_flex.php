@@ -53,7 +53,6 @@ return [
             ]
         ],
         'l10n_parent' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation parent',
             'config' => [
