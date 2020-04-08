@@ -68,14 +68,23 @@
             <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Upgrade/TcaMigrationsCheck">Check TCA Migrations</a>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-fixed-small {f:if(condition:'!{extensionFoldersInTypo3conf}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Scan Extension Files', subtitle: 'Extensions', icon: 'Icons/modules/install-scan-extensions.svg'}" />
         <div class="card-content">
             <p class="card-text">Scan extensions for usage of deprecated or outdated TYPO3 API calls.</p>
         </div>
-        <div class="card-footer">
-            <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Upgrade/ExtensionScanner">Scan Extension Files</a>
-        </div>
+        <f:if condition="{extensionFoldersInTypo3conf}">
+            <f:then>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Upgrade/ExtensionScanner">Scan Extension Files</a>
+                </div>
+            </f:then>
+            <f:else>
+                <div class="card-footer text-muted">
+                    You can't use this feature, because no extension folders were found.
+                </div>
+            </f:else>
+        </f:if>
     </div>
 </div>
 
