@@ -23,13 +23,9 @@
     </div>
 </f:section>
 <f:section name="ResetPassword">
-    <div class="form-group forgot-password">
-        <div class="form-control-wrap">
-            <div class="form-control-holder">
-                <div class="pull-right">
-                    <f:be.link route="password_forget" parameters="{loginProvider: loginProviderIdentifier}">{f:translate(key: 'login.password_forget')}</f:be.link>
-                </div>
-            </div>
+    <div class="forgot-password">
+        <div class="text-right">
+            <f:be.link route="password_forget" parameters="{loginProvider: loginProviderIdentifier}">{f:translate(key: 'login.password_forget')}</f:be.link>
         </div>
     </div>
 </f:section>
