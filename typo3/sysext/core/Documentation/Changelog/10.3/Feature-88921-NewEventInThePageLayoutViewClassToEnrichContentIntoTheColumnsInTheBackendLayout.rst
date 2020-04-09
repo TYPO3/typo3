@@ -27,12 +27,13 @@ Example how to register the event listener in your own extension:
 
 .. code-block:: yaml
 
-  Vendor\MyExtension\Backend\View\PageLayoutViewDrawEmptyColposContent:
-    tags:
-      - name: event.listener
-        identifier: 'myColposListener'
-        before: 'backend-empty-colpos'
-        event:  TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent
+  services:
+    Vendor\MyExtension\Backend\View\PageLayoutViewDrawEmptyColposContent:
+      tags:
+        - name: event.listener
+          identifier: 'myColposListener'
+          before: 'backend-empty-colpos'
+          event:  TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent
 
 With :yaml:`before` and :yaml:`after`, you can make sure your own listener is
 executed before or after the given identifiers.
@@ -40,6 +41,9 @@ executed before or after the given identifiers.
 :file:`EXT:my_extension/Classes/Backend/View/PageLayoutViewDrawEmptyColposContent.php`
 
 .. code-block:: php
+
+   <?php
+   namespace Vendor\MyExtension\Backend\View;
 
    class PageLayoutViewDrawEmptyColposContent
    {
