@@ -193,7 +193,14 @@ class FrontendLoginController extends AbstractPlugin
             }
         }
         // Process the redirect
-        if (($this->logintype === LoginType::LOGIN || $this->logintype === LoginType::LOGOUT) && $this->redirectUrl && !$this->noRedirect) {
+        if (
+            $this->redirectUrl
+            && !$this->noRedirect
+            && (
+                ($this->logintype === LoginType::LOGIN && $this->userIsLoggedIn)
+                || $this->logintype === LoginType::LOGOUT
+            )
+        ) {
             if (!$this->frontendController->fe_user->isCookieSet() && $this->userIsLoggedIn) {
                 $content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning'), $this->conf['cookieWarning_stdWrap.']);
             } else {
