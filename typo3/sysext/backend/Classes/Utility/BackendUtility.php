@@ -509,13 +509,14 @@ class BackendUtility
         if ($clearExpansion) {
             $expandedPages = [];
         } else {
-            $expandedPages = json_decode($beUser->uc['browseTrees']['browsePages'], true);
+            $expandedPages = $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
         }
         // Get rootline:
         $rL = self::BEgetRootLine($pid);
         // First, find out what mount index to use (if more than one DB mount exists):
         $mountIndex = 0;
-        $mountKeys = array_flip($beUser->returnWebmounts());
+        $mountKeys = $beUser->returnWebmounts();
+
         foreach ($rL as $rLDat) {
             if (isset($mountKeys[$rLDat['uid']])) {
                 $mountIndex = $mountKeys[$rLDat['uid']];
@@ -524,10 +525,10 @@ class BackendUtility
         }
         // Traverse rootline and open paths:
         foreach ($rL as $rLDat) {
-            $expandedPages[$mountIndex][$rLDat['uid']] = 1;
+            $expandedPages[$mountIndex . '_' . $rLDat['uid']] = '1';
         }
         // Write back:
-        $beUser->uc['browseTrees']['browsePages'] = json_encode($expandedPages);
+        $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'] = $expandedPages;
         $beUser->writeUC();
     }
 
