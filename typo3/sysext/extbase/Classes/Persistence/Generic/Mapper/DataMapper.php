@@ -283,15 +283,14 @@ class DataMapper
                             $this->fetchRelated($object, $propertyName, $row[$columnName])
                         );
                         break;
-                    case is_subclass_of($propertyType, \DateTimeInterface::class):
+                    default:
+                        if (is_subclass_of($propertyType, \DateTimeInterface::class)) {
                             $propertyValue = $this->mapDateTime(
                                 $row[$columnName],
                                 $columnMap->getDateTimeStorageFormat(),
                                 $propertyType
                             );
-                        break;
-                    default:
-                        if (TypeHandlingUtility::isCoreType($propertyType)) {
+                        } elseif (TypeHandlingUtility::isCoreType($propertyType)) {
                             $propertyValue = $this->mapCoreType($propertyType, $row[$columnName]);
                         } else {
                             $propertyValue = $this->mapObjectToClassProperty(
