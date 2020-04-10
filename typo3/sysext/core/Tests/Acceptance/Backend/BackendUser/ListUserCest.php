@@ -29,8 +29,8 @@ class ListUserCest
     {
         $I->useExistingSession('admin');
 
-        $I->see('Backend users');
-        $I->click('Backend users');
+        $I->see('Backend Users');
+        $I->click('Backend Users');
 
         $I->switchToContentFrame();
     }

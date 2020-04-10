@@ -29,8 +29,8 @@ class ListGroupCest
     {
         $I->useExistingSession('admin');
 
-        $I->see('Backend users');
-        $I->click('Backend users');
+        $I->see('Backend Users');
+        $I->click('Backend Users');
 
         $I->switchToContentFrame();
         $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Backend user groups');

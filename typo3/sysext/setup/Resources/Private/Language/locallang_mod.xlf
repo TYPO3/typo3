@@ -10,7 +10,7 @@
 				<source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
 			</trans-unit>
 			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
-				<source>User settings</source>
+				<source>User Settings</source>
 			</trans-unit>
 		</body>
 	</file>
