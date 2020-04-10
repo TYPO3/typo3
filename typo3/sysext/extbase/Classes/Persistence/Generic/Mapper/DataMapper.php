@@ -283,8 +283,8 @@ class DataMapper
             if (empty($property)) {
                 throw new Exception\NonExistentPropertyException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, ' .
-                    'as property ' . $propertyName . ' is unknown to the ' . ClassSchema::class . ' instance of class .' .
-                    $className . '. Please make sure said property exists and that you cleared all caches to trigger' .
+                    'as property ' . $propertyName . ' is unknown to the ' . ClassSchema::class . ' instance of class ' .
+                    $className . '. Please make sure said property exists and that you cleared all caches to trigger ' .
                     'a new build of said ' . ClassSchema::class . ' instance.',
                     1580056272
                 );
