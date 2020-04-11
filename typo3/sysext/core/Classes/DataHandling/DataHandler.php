@@ -756,6 +756,35 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
+     * When a new record is created, all values that haven't been set but are set via PageTSconfig / UserTSconfig
+     * get applied here.
+     *
+     * This is only executed for new records. The most important part is that the pageTS of the actual resolved $pid
+     * is taken, and a new field array with empty defaults is set again.
+     *
+     * @param string $table
+     * @param int $pageId
+     * @param array $prepopulatedFieldArray
+     * @return array
+     */
+    protected function applyDefaultsForFieldArray(string $table, int $pageId, array $prepopulatedFieldArray): array
+    {
+        // First set TCAdefaults respecting the given PageID
+        $tcaDefaults = BackendUtility::getPagesTSconfig($pageId)['TCAdefaults.'] ?? null;
+        // Re-apply $this->defaultValues settings
+        $this->setDefaultsFromUserTS($tcaDefaults);
+        $cleanFieldArray = $this->newFieldArray($table);
+        if (isset($prepopulatedFieldArray['pid'])) {
+            $cleanFieldArray['pid'] = $prepopulatedFieldArray['pid'];
+        }
+        $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? null;
+        if ($sortColumn !== null && isset($prepopulatedFieldArray[$sortColumn])) {
+            $cleanFieldArray[$sortColumn] = $prepopulatedFieldArray[$sortColumn];
+        }
+        return $cleanFieldArray;
+    }
+
+    /**
      * Dummy method formerly used for file handling.
      *
      * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.
@@ -1049,13 +1078,18 @@ class DataHandler implements LoggerAwareInterface
 
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                 [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: $fieldArray['pid']);
-                if ($status === 'new' && $table === 'pages') {
-                    $fieldArray = $this->pagePermissionAssembler->applyDefaults(
-                        $fieldArray,
-                        (int)$tscPID,
-                        (int)$this->userid,
-                        (int)$this->BE_USER->firstMainGroup
-                    );
+                if ($status === 'new') {
+                    // Apply TCAdefaults from pageTS
+                    $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray);
+                    // Apply page permissions as well
+                    if ($table === 'pages') {
+                        $fieldArray = $this->pagePermissionAssembler->applyDefaults(
+                            $fieldArray,
+                            (int)$tscPID,
+                            (int)$this->userid,
+                            (int)$this->BE_USER->firstMainGroup
+                        );
+                    }
                 }
                 // Processing of all fields in incomingFieldArray and setting them in $fieldArray
                 $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
