@@ -210,7 +210,7 @@ class LoginController extends AbstractLoginFormController
         }
 
         if ($this->userAspect->isLoggedIn()) {
-            $this->forward('logout');
+            $this->forward('logout', null, null, ['redirectPageLogout' => $this->settings['redirectPageLogout']]);
         }
     }
 
