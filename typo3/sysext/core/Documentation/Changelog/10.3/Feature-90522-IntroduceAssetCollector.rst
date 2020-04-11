@@ -101,18 +101,25 @@ Currently, JavaScript registered with AssetCollector is not affected by
 Examples
 --------
 
-Add a JavaScript file to the collector with script attribute data-foo="bar"
+Add a JavaScript file to the collector with script attribute data-foo="bar":
 
 .. code-block:: php
 
     GeneralUtility::makeInstance(AssetCollector::class)
-       ->addJavaScript('my_ext_foo', 'EXT:my_ext/Resources/Public/JavaScript/foo.js', ['data-foo' => 'bar']]);
+       ->addJavaScript('my_ext_foo', 'EXT:my_ext/Resources/Public/JavaScript/foo.js', ['data-foo' => 'bar']);
 
-Add a JavaScript file to the collector with script attribute :html:`data-foo="bar"` and priority which means rendering before other script tags
+Add a JavaScript file to the collector with script attribute :html:`data-foo="bar"` and priority which means rendering before other script tags:
 
 .. code-block:: php
 
     GeneralUtility::makeInstance(AssetCollector::class)
-       ->addJavaScript('my_ext_foo', 'EXT:my_ext/Resources/Public/JavaScript/foo.js', ['data-foo' => 'bar'], ['priority' => true]]);
+       ->addJavaScript('my_ext_foo', 'EXT:my_ext/Resources/Public/JavaScript/foo.js', ['data-foo' => 'bar'], ['priority' => true]);
+
+Add a JavaScript file to the collector with :html:`type="module"` (by default, no type= is output for JavaScript):
+
+.. code-block:: php
+
+    GeneralUtility::makeInstance(AssetCollector::class)
+       ->addJavaScript('my_ext_foo', 'EXT:my_ext/Resources/Public/JavaScript/foo.js', ['type' => 'module']);
 
 .. index:: Backend, Frontend, PHP-API, ext:core

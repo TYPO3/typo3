@@ -22,7 +22,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -40,7 +40,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -58,7 +58,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link href="https://typo3.org/foo.ext" rel="stylesheet" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="https://typo3.org/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script src="https://typo3.org/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -82,7 +82,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >' . LF . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext" type="text/javascript"></script>' . LF . '<script src="typo3/sysext/core/Resource/Public/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>' . LF . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -107,7 +107,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/bar.ext" rel="stylesheet" type="text/css" >' . LF . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/bar.ext" type="text/javascript"></script>' . LF . '<script src="typo3/sysext/core/Resource/Public/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/bar.ext"></script>' . LF . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -127,7 +127,27 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link rel="foo" href="fileadmin/foo.ext" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script rel="foo" src="fileadmin/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script rel="foo" src="fileadmin/foo.ext"></script>',
+                    'js_prio' => '',
+                ]
+            ],
+            '1 file with controlled type' => [
+                [
+                    ['file1', 'fileadmin/foo.ext', ['type' => 'module'], []]
+                ],
+                [
+                    'file1' => [
+                        'source' => 'fileadmin/foo.ext',
+                        'attributes' => [
+                            'type' => 'module'
+                        ],
+                        'options' => [],
+                    ]
+                ],
+                [
+                    'css_no_prio' => '<link type="module" href="fileadmin/foo.ext" rel="stylesheet" >',
+                    'css_prio' => '',
+                    'js_no_prio' => '<script type="module" src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -149,7 +169,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link rel="bar" another="keep on override" href="fileadmin/foo.ext" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script rel="bar" another="keep on override" src="fileadmin/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script rel="bar" another="keep on override" src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -170,7 +190,7 @@ class AssetDataProvider
                     'css_no_prio' => '',
                     'css_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >',
                     'js_no_prio' => '',
-                    'js_prio' => '<script src="fileadmin/foo.ext" type="text/javascript"></script>',
+                    'js_prio' => '<script src="fileadmin/foo.ext"></script>',
                 ]
             ],
             '1 file with options override' => [
@@ -191,7 +211,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext" type="text/javascript"></script>',
+                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
                 ]
             ],
@@ -215,7 +235,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<style>foo bar baz</style>',
                     'css_prio' => '',
-                    'js_no_prio' => '<script type="text/javascript">foo bar baz</script>',
+                    'js_no_prio' => '<script>foo bar baz</script>',
                     'js_prio' => '',
                 ]
             ],
@@ -239,7 +259,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<style>foo bar baz</style>' . LF . '<style>bar baz foo</style>',
                     'css_prio' => '',
-                    'js_no_prio' => '<script type="text/javascript">foo bar baz</script>' . LF . '<script type="text/javascript">bar baz foo</script>',
+                    'js_no_prio' => '<script>foo bar baz</script>' . LF . '<script>bar baz foo</script>',
                     'js_prio' => '',
                 ]
             ],
@@ -264,7 +284,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<style>baz foo bar</style>' . LF . '<style>bar baz foo</style>',
                     'css_prio' => '',
-                    'js_no_prio' => '<script type="text/javascript">baz foo bar</script>' . LF . '<script type="text/javascript">bar baz foo</script>',
+                    'js_no_prio' => '<script>baz foo bar</script>' . LF . '<script>bar baz foo</script>',
                     'js_prio' => '',
                 ]
             ],
@@ -284,7 +304,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<style rel="foo">foo bar baz</style>',
                     'css_prio' => '',
-                    'js_no_prio' => '<script rel="foo" type="text/javascript">foo bar baz</script>',
+                    'js_no_prio' => '<script rel="foo">foo bar baz</script>',
                     'js_prio' => '',
                 ]
             ],
@@ -306,7 +326,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<style rel="bar" another="keep on override">foo bar baz</style>',
                     'css_prio' => '',
-                    'js_no_prio' => '<script rel="bar" another="keep on override" type="text/javascript">foo bar baz</script>',
+                    'js_no_prio' => '<script rel="bar" another="keep on override">foo bar baz</script>',
                     'js_prio' => '',
                 ]
             ],
@@ -327,7 +347,7 @@ class AssetDataProvider
                     'css_no_prio' => '',
                     'css_prio' => '<style>foo bar baz</style>',
                     'js_no_prio' => '',
-                    'js_prio' => '<script type="text/javascript">foo bar baz</script>',
+                    'js_prio' => '<script>foo bar baz</script>',
                 ]
             ],
             'simple data with options override' => [
@@ -348,7 +368,7 @@ class AssetDataProvider
                 [
                     'css_no_prio' => '<style>foo bar baz</style>',
                     'css_prio' => '',
-                    'js_no_prio' => '<script type="text/javascript">foo bar baz</script>',
+                    'js_no_prio' => '<script>foo bar baz</script>',
                     'js_prio' => '',
                 ]
             ],

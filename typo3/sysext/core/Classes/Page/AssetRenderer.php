@@ -38,9 +38,6 @@ class AssetRenderer
     {
         $template = '<script%attributes%>%source%</script>';
         $assets = $this->assetCollector->getInlineJavaScripts();
-        foreach ($assets as &$assetData) {
-            $assetData['attributes']['type'] = $assetData['attributes']['type'] ?? 'text/javascript';
-        }
         return $this->render($assets, $template, $priority);
     }
 
@@ -50,7 +47,6 @@ class AssetRenderer
         $assets = $this->assetCollector->getJavaScripts();
         foreach ($assets as &$assetData) {
             $assetData['attributes']['src'] = $this->getAbsoluteWebPath($assetData['source']);
-            $assetData['attributes']['type'] = $assetData['attributes']['type'] ?? 'text/javascript';
         }
         return $this->render($assets, $template, $priority);
     }
@@ -83,7 +79,11 @@ class AssetRenderer
             }
             $attributes = $assetData['attributes'];
             $attributesString = count($attributes) ? ' ' . GeneralUtility::implodeAttributes($attributes, true) : '';
-            $results[] = str_replace(['%attributes%', '%source%'], [$attributesString, $assetData['source']], $template);
+            $results[] = str_replace(
+                ['%attributes%', '%source%'],
+                [$attributesString, $assetData['source']],
+                $template
+            );
         }
         return implode(LF, $results);
     }
