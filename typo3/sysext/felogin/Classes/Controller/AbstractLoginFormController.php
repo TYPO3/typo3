@@ -37,9 +37,9 @@ abstract class AbstractLoginFormController extends ActionController
 
         $recursionDepth = (int)($this->settings['recursive'] ?? 0);
         if ($recursionDepth > 0) {
-            $recursiveStoragePids = [];
+            $recursiveStoragePids = $storagePids;
             foreach ($storagePids as $startPid) {
-                $pids = $this->configurationManager->getContentObject()->getTreeList($startPid, $recursionDepth, 0);
+                $pids = $this->configurationManager->getContentObject()->getTreeList($startPid, $recursionDepth);
                 foreach (GeneralUtility::intExplode(',', $pids, true) as $pid) {
                     $recursiveStoragePids[] = $pid;
                 }
