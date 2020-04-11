@@ -831,6 +831,33 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
+     * When a new record is created, all values that haven't been set but are set via PageTSconfig / UserTSconfig
+     * get applied here.
+     *
+     * This is only executed for new records. The most important part is that the pageTS of the actual resolved $pid
+     * is taken, and a new field array with empty defaults is set again.
+     *
+     * @param string $table
+     * @param array|null $tcaDefaults
+     * @param array $prepopulatedFieldArray
+     * @return array
+     */
+    protected function applyDefaultsForFieldArray(string $table, ?array $tcaDefaults, array $prepopulatedFieldArray): array
+    {
+        // Re-apply $this->defaultValues settings
+        $this->setDefaultsFromUserTS($tcaDefaults);
+        $cleanFieldArray = $this->newFieldArray($table);
+        if (isset($prepopulatedFieldArray['pid'])) {
+            $cleanFieldArray['pid'] = $prepopulatedFieldArray['pid'];
+        }
+        $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? null;
+        if ($sortColumn !== null && isset($prepopulatedFieldArray[$sortColumn])) {
+            $cleanFieldArray[$sortColumn] = $prepopulatedFieldArray[$sortColumn];
+        }
+        return $cleanFieldArray;
+    }
+
+    /**
      * Processing of uploaded files.
      * It turns out that some versions of PHP arranges submitted data for files different if sent in an array. This function will unify this so the internal array $this->uploadedFileArray will always contain files arranged in the same structure.
      *
@@ -1185,9 +1212,12 @@ class DataHandler implements LoggerAwareInterface
 
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                 list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
-                if ($status === 'new' && $table === 'pages') {
-                    $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
-                    if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
+                if ($status === 'new') {
+                    // Apply TCAdefaults from pageTS
+                    $TSConfig = BackendUtility::getPagesTSconfig($tscPID);
+                    $fieldArray = $this->applyDefaultsForFieldArray($table, $TSConfig['TCAdefaults.'] ?? null, $fieldArray);
+                    $TSConfig = $TSConfig['TCEMAIN.'] ?? [];
+                    if ($table === 'pages' && isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
                         $fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
                     }
                 }
