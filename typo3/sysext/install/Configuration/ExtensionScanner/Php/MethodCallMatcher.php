@@ -4483,4 +4483,18 @@ return [
             'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
+        ],
+    ],
 ];

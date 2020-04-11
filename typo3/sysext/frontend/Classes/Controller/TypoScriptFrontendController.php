@@ -2860,6 +2860,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // to utf-8 so the content MUST be in metaCharset already!
         $this->content = $this->convOutputCharset($this->content);
         // Hook for indexing pages
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][pageIndexing] will be removed in TYPO3 v11.0. Use the contentPostProc-all hook and convert the content if the output charset does not match the internal format.', E_USER_DEPRECATED);
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] ?? [] as $className) {
             GeneralUtility::makeInstance($className)->hook_indexContent($this);
         }
@@ -3169,10 +3172,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Determines if content should be outputted.
      * Outputting content is done only if no URL handler is active and no hook disables the output.
      *
+     * @param bool $isCoreCall if set to "true" no deprecation warning will be triggered, because TYPO3 keeps calling this method to keep backwards-compatibility
      * @return bool Returns TRUE if no redirect URL is set and no hook disables the output.
+     * @deprecated will be removed in TYPO3 v11.0. Do not call this method anymore.
      */
-    public function isOutputting()
+    public function isOutputting(bool $isCoreCall = false)
     {
+        if ($isCoreCall !== true) {
+            trigger_error('TypoScriptFrontendController->isOutputting will be removed in TYPO3 v11.0, do not depend on this method anymore. Definition of outputting can be configured via PSR-15 middlewares.', E_USER_DEPRECATED);
+        }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'])) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][isOutputting] will be removed in TYPO3 v11.0. This hook has various side-effects (as the method is called multiple times during one request) and the configuration if TYPO3 is outputting the content is handled via the Emitter / PSR-15 middlewares.', E_USER_DEPRECATED);
+        }
         // Initialize by status if there is a Redirect URL
         $enableOutput = true;
         // Call hook for possible disabling of output:
@@ -3188,15 +3199,24 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * This includes substituting the "username" comment.
      * Works on $this->content.
+     *
+     * @param bool $isCoreCall if set to "true" no deprecation warning will be triggered, because TYPO3 keeps calling this method to keep backwards-compatibility
+     * @deprecated this method will be removed in TYPO3 v11. Use a PSR-15 middleware for processing content.
      */
-    public function processContentForOutput()
+    public function processContentForOutput(bool $isCoreCall = false)
     {
+        if ($isCoreCall !== true) {
+            trigger_error('TypoScriptFrontendController->processContentForOutput will be removed in TYPO3 v11.0, do not depend on this method anymore. Definition of outputting can be configured via PSR-15 middlewares.', E_USER_DEPRECATED);
+        }
         // Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
         if (!$this->isClientCachable) {
             // Substitute various tokens in content. This should happen only if the content is not cached by proxies or client browsers.
             $search = [];
             $replace = [];
             // Hook for supplying custom search/replace data
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'])) {
+                trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][tslib_fe-contentStrReplace] will be removed in TYPO3 v11.0. Use a custom PSR-15 middleware instead.', E_USER_DEPRECATED);
+            }
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'] ?? [] as $_funcRef) {
                 $_params = [
                     'search' => &$search,
@@ -3208,6 +3228,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->content = str_replace($search, $replace, $this->content);
             }
         }
+        // Hook for supplying custom search/replace data
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'])) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][contentPostProc-output] will be removed in TYPO3 v11.0. Use a custom PSR-15 middleware instead.', E_USER_DEPRECATED);
+        }
+
         // Hook for post-processing of page content before output:
         $_params = ['pObj' => &$this];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] ?? [] as $_funcRef) {

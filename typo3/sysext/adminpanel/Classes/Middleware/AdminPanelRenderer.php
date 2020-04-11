@@ -47,7 +47,7 @@ class AdminPanelRenderer implements MiddlewareInterface
         if (
             !($response instanceof NullResponse)
             && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
-            && $GLOBALS['TSFE']->isOutputting()
+            && $GLOBALS['TSFE']->isOutputting(true)
             && StateUtility::isActivatedForUser()
             && StateUtility::isActivatedInTypoScript()
             && !StateUtility::isHiddenForUser()

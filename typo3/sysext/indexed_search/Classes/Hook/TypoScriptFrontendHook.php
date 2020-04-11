@@ -51,9 +51,10 @@ class TypoScriptFrontendHook
     /**
      * Trigger indexing of content, after evaluating if this page could / should be indexed.
      *
+     * @param array $parameters
      * @param TypoScriptFrontendController $tsfe
      */
-    public function hook_indexContent(TypoScriptFrontendController $tsfe)
+    public function indexPageContent(array $parameters, TypoScriptFrontendController $tsfe)
     {
         // Determine if page should be indexed, and if so, configure and initialize indexer
         if (!$tsfe->config['config']['index_enable']) {
@@ -73,10 +74,6 @@ class TypoScriptFrontendHook
 
         if ($tsfe->page['no_search']) {
             $timeTracker->setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
-            return;
-        }
-        if ($tsfe->no_cache) {
-            $timeTracker->setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
             return;
         }
         /** @var LanguageAspect $languageAspect */
@@ -127,7 +124,7 @@ class TypoScriptFrontendHook
             $configuration['rootline_uids'][$rlkey] = $rldat['uid'];
         }
         // Content of page
-        $configuration['content'] = $tsfe->content;
+        $configuration['content'] = $this->convOutputCharset($tsfe->content, $tsfe->metaCharset);
         // Content string (HTML of TYPO3 page)
         $configuration['indexedDocTitle'] = $this->convOutputCharset($tsfe->indexedDocTitle, $tsfe->metaCharset);
         // Alternative title for indexing

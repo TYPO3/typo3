@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -152,19 +153,25 @@ class RequestHandler implements RequestHandlerInterface
         $response = new Response();
 
         // Output content
-        $isOutputting = $controller->isOutputting();
+        // The if() condition can be removed in TYPO3 v11, which means that TYPO3 will not return a NullResponse
+        // by default anymore, which it hasn't done without any extensions anyway already.
+        $isOutputting = $controller->isOutputting(true);
         if ($isOutputting) {
             $this->timeTracker->push('Print Content');
             $response = $controller->applyHttpHeadersToResponse($response);
-            $controller->processContentForOutput();
+            $controller->processContentForOutput(true);
             $this->timeTracker->pull();
         }
 
         // Hook for "end-of-frontend"
         $_params = ['pObj' => &$controller];
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'])) {
+            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][hook_eofe] will be removed in TYPO3 v11.0. The same functionality can be achieved by using a PSR-15 middleware.', E_USER_DEPRECATED);
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $controller);
         }
+        $this->displayPreviewInfoMessage($controller);
 
         if ($isOutputting) {
             $response->getBody()->write($controller->content);
@@ -1056,5 +1063,53 @@ class RequestHandler implements RequestHandlerInterface
             }
             $controller->additionalHeaderData[] = implode(LF, $data);
         }
+    }
+
+    /**
+     * Include the preview block in case we're looking at a hidden page in the LIVE workspace
+     *
+     * @param TypoScriptFrontendController $controller
+     * @internal this method might get moved to a PSR-15 middleware at some point
+     */
+    protected function displayPreviewInfoMessage(TypoScriptFrontendController $controller)
+    {
+        $isInPreviewMode = $controller->getContext()->hasAspect('frontend.preview')
+            && $controller->getContext()->getPropertyFromAspect('frontend.preview', 'isPreview');
+        if (!$isInPreviewMode || $controller->doWorkspacePreview() || ($controller->config['config']['disablePreviewNotification'] ?? false)) {
+            return;
+        }
+        if ($controller->config['config']['message_preview']) {
+            $message = $controller->config['config']['message_preview'];
+        } else {
+            $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tsfe.xlf:preview');
+            $styles = [];
+            $styles[] = 'position: fixed';
+            $styles[] = 'top: 15px';
+            $styles[] = 'right: 15px';
+            $styles[] = 'padding: 8px 18px';
+            $styles[] = 'background: #fff3cd';
+            $styles[] = 'border: 1px solid #ffeeba';
+            $styles[] = 'font-family: sans-serif';
+            $styles[] = 'font-size: 14px';
+            $styles[] = 'font-weight: bold';
+            $styles[] = 'color: #856404';
+            $styles[] = 'z-index: 20000';
+            $styles[] = 'user-select: none';
+            $styles[] = 'pointer-events: none';
+            $styles[] = 'text-align: center';
+            $styles[] = 'border-radius: 2px';
+            $message = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . htmlspecialchars($label) . '</div>';
+        }
+        if (!empty($message)) {
+            $controller->content = str_ireplace('</body>', $message . '</body>', $controller->content);
+        }
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

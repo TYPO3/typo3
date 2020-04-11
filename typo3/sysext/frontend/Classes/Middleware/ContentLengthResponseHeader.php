@@ -46,7 +46,7 @@ class ContentLengthResponseHeader implements MiddlewareInterface
         if (
             !($response instanceof NullResponse)
             && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
-            && $GLOBALS['TSFE']->isOutputting()) {
+            && $GLOBALS['TSFE']->isOutputting(true)) {
             if (
                     (!isset($GLOBALS['TSFE']->config['config']['enableContentLengthHeader']) || $GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
                     && !$GLOBALS['TSFE']->isBackendUserLoggedIn() && !$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']
