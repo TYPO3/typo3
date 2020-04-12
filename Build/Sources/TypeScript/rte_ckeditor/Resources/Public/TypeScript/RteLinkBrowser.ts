@@ -23,7 +23,7 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
 class RteLinkBrowser {
   protected plugin: any = null;
   protected CKEditor: CKEDITOR.editor = null;
-  protected ranges: CKEDITOR.dom.range[] = null;
+  protected ranges: CKEDITOR.dom.range[] = [];
   protected siteUrl: string = '';
 
   /**
@@ -47,6 +47,10 @@ class RteLinkBrowser {
         }
       });
     }
+
+    window.addEventListener('beforeunload', (): void => {
+      this.CKEditor.getSelection().selectRanges(this.ranges);
+    });
 
     // Backup all ranges that are active when the Link Browser is requested
     this.ranges = this.CKEditor.getSelection().getRanges();
