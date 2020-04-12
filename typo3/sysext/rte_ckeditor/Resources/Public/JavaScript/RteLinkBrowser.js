@@ -26,7 +26,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
   var RteLinkBrowser = {
     plugin: null,
     CKEditor: null,
-    ranges: null,
+    ranges: [],
     siteUrl: ''
   };
 
@@ -51,6 +51,10 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
         }
       });
     }
+
+    window.addEventListener('beforeunload', function () {
+      RteLinkBrowser.CKEditor.getSelection().selectRanges(RteLinkBrowser.ranges);
+    });
 
     // Backup all ranges that are active when the Link Browser is requested
     RteLinkBrowser.ranges = RteLinkBrowser.CKEditor.getSelection().getRanges();
