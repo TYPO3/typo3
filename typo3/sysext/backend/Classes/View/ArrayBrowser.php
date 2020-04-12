@@ -150,15 +150,15 @@ class ArrayBrowser
             $deeper = is_array($keyArr[$key]);
             if ($this->regexMode) {
                 if (
-                    is_scalar($keyArr[$key]) && preg_match('/' . $searchString . '/', $keyArr[$key])
-                    || $this->searchKeysToo && preg_match('/' . $searchString . '/', $key)
+                    is_scalar($keyArr[$key]) && preg_match('/' . $searchString . '/', (string)$keyArr[$key])
+                    || $this->searchKeysToo && preg_match('/' . $searchString . '/', (string)$key)
                 ) {
                     $this->searchKeys[$depth] = 1;
                 }
             } else {
                 if (
-                    is_scalar($keyArr[$key]) && stripos($keyArr[$key], $searchString) !== false
-                    || $this->searchKeysToo && stripos($key, $searchString) !== false
+                    is_scalar($keyArr[$key]) && stripos((string)$keyArr[$key], $searchString) !== false
+                    || $this->searchKeysToo && stripos((string)$key, $searchString) !== false
                 ) {
                     $this->searchKeys[$depth] = 1;
                 }
