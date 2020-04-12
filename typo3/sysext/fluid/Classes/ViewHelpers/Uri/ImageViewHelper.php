@@ -27,6 +27,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Resizes a given image (if required) and returns its relative path.
  *
+ * External URLs are not processed and just returned as is.
+ *
  * Examples
  * ========
  *
@@ -124,6 +126,11 @@ class ImageViewHelper extends AbstractViewHelper
 
         if (($src === '' && $image === null) || ($src !== '' && $image !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1460976233);
+        }
+
+        // A URL was given as src, this is kept as is
+        if ($src !== '' && preg_match('/^(https?:)?\/\//', $src)) {
+            return $src;
         }
 
         try {
