@@ -48,6 +48,13 @@ abstract class AbstractCoreSpec {
 
     private String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
+    // will only execute `composer install`
+    public static final int COMPOSER_DEFAULT = 0;
+    // will execute `composer update --with-dependencies`
+    public static final int COMPOSER_MAX = 1;
+    // will execute `composer update --prefer-lowest`
+    public static final int COMPOSER_MIN = 2;
+
     /**
      * Default permissions on core plans
      */
@@ -1487,10 +1494,10 @@ abstract class AbstractCoreSpec {
      */
     Task getComposerTaskByStageNumber(String phpVersion, int stageNumber) {
         Task composerTask = this.getTaskComposerInstall(phpVersion);
-        if (stageNumber == 1) {
+        if (stageNumber == COMPOSER_MAX) {
             composerTask = this.getTaskComposerUpdateMax(phpVersion);
         } else {
-            if (stageNumber == 2) {
+            if (stageNumber == COMPOSER_MIN) {
                 composerTask = this.getTaskComposerUpdateMin(phpVersion);
             }
         }
