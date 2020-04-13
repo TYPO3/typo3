@@ -114,7 +114,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         /** @var SiteLanguage $requestLanguage */
         $requestLanguage = $request->getAttribute('language', null);
         // Try to get the current request language from the site that was found above
-        if ($requestLanguage instanceof SiteLanguage) {
+        if ($requestLanguage instanceof SiteLanguage && $requestLanguage->isEnabled()) {
             try {
                 $language = $site->getLanguageById($requestLanguage->getLanguageId());
             } catch (\InvalidArgumentException $e) {
