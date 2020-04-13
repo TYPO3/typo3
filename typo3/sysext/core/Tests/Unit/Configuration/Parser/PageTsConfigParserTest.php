@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -77,6 +78,49 @@ class PageTsConfigParserTest extends UnitTestCase
             $cache
         );
         $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal());
+        self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
+    }
+
+    /**
+     * @test
+     */
+    public function parseReplacesSiteSettings(): void
+    {
+        $input = 'mod.web_layout = {$numberedThings.1}' . "\n" .
+                 'mod.no-replace = {$styles.content}' . "\n" .
+                 'mod.content = {$styles.content.loginform.pid}';
+        $expectedParsedTsConfig = [
+            'mod.' => [
+                'web_layout' => 'foo',
+                'no-replace' => '{$styles.content}',
+                'content' => '123'
+            ]
+        ];
+
+        $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
+        $cache = new NullFrontend('runtime');
+        $site = new Site('dummy', 13, [
+            'base' => 'https://example.com',
+            'settings' => [
+                'random' => 'value',
+                'styles' => [
+                    'content' => [
+                        'loginform' => [
+                            'pid' => 123
+                        ],
+                    ],
+                ],
+                'numberedThings' => [
+                    1 => 'foo',
+                    99 => 'bar',
+                ]
+            ]
+        ]);
+        $subject = new PageTsConfigParser(
+            new TypoScriptParser(),
+            $cache
+        );
+        $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal(), $site);
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 }

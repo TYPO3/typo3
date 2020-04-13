@@ -24,10 +24,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -65,7 +67,29 @@ class TemplateServiceTest extends UnitTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = time();
         $GLOBALS['ACCESS_TIME'] = time();
         $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $this->templateService = new TemplateService(new Context(), $this->packageManagerProphecy->reveal());
+        $frontendController = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendController->getSite()->willReturn(new Site('dummy', 13, [
+            'base' => 'https://example.com',
+            'settings' => [
+                'random' => 'value',
+                'styles' => [
+                    'content' => [
+                        'loginform' => [
+                            'pid' => 123
+                        ],
+                    ],
+                ],
+                'numberedThings' => [
+                    1 => 'foo',
+                    99 => 'bar',
+                ]
+            ]
+        ]));
+        $this->templateService = new TemplateService(
+            new Context(),
+            $this->packageManagerProphecy->reveal(),
+            $frontendController->reveal()
+        );
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 

@@ -25,7 +25,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -1205,6 +1208,53 @@ class TemplateService
     {
         // Add default TS for all code types, if not done already
         if (!$this->isDefaultTypoScriptAdded) {
+            $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo) - 1]['templateID'] ?? null;
+
+            // adding constants from site settings
+            $siteConstants = '';
+            if ($this->getTypoScriptFrontendController()) {
+                $site = $this->getTypoScriptFrontendController()->getSite();
+            } else {
+                $currentPage = end($this->absoluteRootLine);
+                try {
+                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$currentPage['uid'] ?? 0);
+                } catch (SiteNotFoundException $exception) {
+                    $site = null;
+                }
+            }
+            if ($site instanceof Site) {
+                $siteSettings = $site->getConfiguration()['settings'] ?? [];
+                if (!empty($siteSettings)) {
+                    $siteSettings = ArrayUtility::flatten($siteSettings);
+                    foreach ($siteSettings as $k => $v) {
+                        $siteConstants .= $k . ' = ' . $v . LF;
+                    }
+                }
+            }
+
+            if ($siteConstants !== '') {
+                // the count of elements in ->constants, ->config and ->templateIncludePaths have to be in sync
+                array_unshift($this->constants, $siteConstants);
+                array_unshift($this->config, '');
+                array_unshift($this->templateIncludePaths, '');
+                // prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
+                $defaultTemplateInfo = [
+                    'root' => '',
+                    'clConst' => '',
+                    'clConf' => '',
+                    'templateID' => '_siteConstants_',
+                    'templateParent' => $rootTemplateId,
+                    'title' => 'Site settings',
+                    'uid' => '_siteConstants_',
+                    'pid' => '',
+                    'configLines' => 0
+                ];
+                // push info to information arrays used in BE by TemplateTools (Analyzer)
+                array_unshift($this->clearList_const, $defaultTemplateInfo['uid']);
+                array_unshift($this->clearList_setup, $defaultTemplateInfo['uid']);
+                array_unshift($this->hierarchyInfo, $defaultTemplateInfo);
+            }
+
             // adding default setup and constants
             // defaultTypoScript_setup is *very* unlikely to be empty
             // the count of elements in ->constants, ->config and ->templateIncludePaths have to be in sync
@@ -1212,7 +1262,6 @@ class TemplateService
             array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
             array_unshift($this->templateIncludePaths, '');
             // prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
-            $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo) - 1]['templateID'] ?? null;
             $defaultTemplateInfo = [
                 'root' => '',
                 'clConst' => '',
@@ -1228,6 +1277,7 @@ class TemplateService
             array_unshift($this->clearList_const, $defaultTemplateInfo['uid']);
             array_unshift($this->clearList_setup, $defaultTemplateInfo['uid']);
             array_unshift($this->hierarchyInfo, $defaultTemplateInfo);
+
             $this->isDefaultTypoScriptAdded = true;
         }
     }

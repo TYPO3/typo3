@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Core\Configuration\Parser;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * A TS-Config parsing class which performs condition evaluation.
@@ -51,11 +53,14 @@ class PageTsConfigParser
      * - when an exact on the conditions are there
      * - when a parse is there, then matches are happening anyway, and it is checked if this can be cached as well.
      *
+     * If a site is provided the settings stored in the site's configuration is available as constants for the TSconfig.
+     *
      * @param string $content pageTSconfig, usually accumulated by the PageTsConfigLoader
      * @param ConditionMatcherInterface $matcher an instance to match strings
+     * @param Site|null $site The current site the page TSconfig is parsed for
      * @return array the
      */
-    public function parse(string $content, ConditionMatcherInterface $matcher): array
+    public function parse(string $content, ConditionMatcherInterface $matcher, ?Site $site = null): array
     {
         $hashOfContent = md5('PAGES:' . $content);
         $cachedContent = $this->cache->get($hashOfContent);
@@ -85,6 +90,32 @@ class PageTsConfigParser
             }
             return $result;
         }
+
+        if ($site) {
+            $siteSettings = $site->getConfiguration()['settings'] ?? [];
+            if (!empty($siteSettings)) {
+                $siteSettings = ArrayUtility::flatten($siteSettings);
+            }
+            if (!empty($siteSettings)) {
+                // Recursive substitution of site settings (up to 10 nested levels)
+                // note: this code is more or less a duplicate of \TYPO3\CMS\Core\TypoScript\TemplateService::substituteConstants
+                for ($i = 0; $i < 10; $i++) {
+                    $beforeSubstitution = $content;
+                    $content = preg_replace_callback(
+                        '/\\{\\$(.[^}]*)\\}/',
+                        function (array $matches) use ($siteSettings): string {
+                            return isset($siteSettings[$matches[1]]) && !is_array($siteSettings[$matches[1]])
+                                ? (string)$siteSettings[$matches[1]] : $matches[0];
+                        },
+                        $content
+                    );
+                    if ($beforeSubstitution === $content) {
+                        break;
+                    }
+                }
+            }
+        }
+
         // Nothing found in cache for this content string, let's do everything.
         $parsedAndMatchedData = $this->parseAndMatch($content, $matcher);
         // ALL parts, including the matching part is cached.

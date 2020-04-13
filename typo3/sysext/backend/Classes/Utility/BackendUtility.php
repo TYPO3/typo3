@@ -703,6 +703,12 @@ class BackendUtility
         // Order correctly
         ksort($rootLine);
 
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($id);
+        } catch (SiteNotFoundException $exception) {
+            $site = null;
+        }
+
         // Load PageTS from all pages of the rootLine
         $pageTs = GeneralUtility::makeInstance(PageTsConfigLoader::class)->load($rootLine);
 
@@ -713,7 +719,7 @@ class BackendUtility
             GeneralUtility::makeInstance(CacheManager::class)->getCache('hash')
         );
         $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, null, $id, $rootLine);
-        $tsConfig = $parser->parse($pageTs, $matcher);
+        $tsConfig = $parser->parse($pageTs, $matcher, $site);
         $cacheHash = md5(json_encode($tsConfig));
 
         // Get User TSconfig overlay, if no backend user is logged-in, this needs to be checked as well

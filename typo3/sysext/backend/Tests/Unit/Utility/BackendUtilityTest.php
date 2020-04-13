@@ -37,6 +37,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -1050,6 +1052,12 @@ class BackendUtilityTest extends UnitTestCase
 
         $matcherProphecy = $this->prophesize(ConditionMatcher::class);
         GeneralUtility::addInstance(ConditionMatcher::class, $matcherProphecy->reveal());
+
+        $siteFinder = $this->prophesize(SiteFinder::class);
+        $siteFinder->getSiteByPageId($pageId)->willReturn(
+            new Site('dummy', $pageId, ['base' => 'https://example.com'])
+        );
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);

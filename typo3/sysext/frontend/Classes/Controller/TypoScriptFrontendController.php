@@ -3495,7 +3495,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             );
             $this->pagesTSconfig = $parser->parse(
                 $tsConfigString,
-                GeneralUtility::makeInstance(ConditionMatcher::class, $this->context, $this->id, $this->rootLine)
+                GeneralUtility::makeInstance(ConditionMatcher::class, $this->context, $this->id, $this->rootLine),
+                $this->site
             );
         }
         return $this->pagesTSconfig;
