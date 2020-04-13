@@ -32,7 +32,17 @@ class NewContentElement {
       title,
       type: Modal.types.ajax,
     }).on('modal-loaded', (): void => {
-      new NewContentElementWizard($modal);
+      // This rather works in local environments only
+      $modal.on('shown.bs.modal', (): void => {
+        const wizard = new NewContentElementWizard($modal);
+        wizard.focusSearchField();
+      });
+    }).on('shown.bs.modal', (): void => {
+      // This is the common case with any latency that the modal is rendered before the content is loaded
+      $modal.on('modal-loaded', (): void => {
+        const wizard = new NewContentElementWizard($modal);
+        wizard.focusSearchField();
+      });
     });
   }
 }

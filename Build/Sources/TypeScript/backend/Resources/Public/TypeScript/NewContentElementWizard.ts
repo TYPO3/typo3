@@ -37,6 +37,10 @@ export default class NewContentElementWizard {
     this.registerEvents();
   }
 
+  public focusSearchField(): void {
+    this.searchField.focus();
+  }
+
   private registerClearable(): void {
     this.searchField.clearable({
       onClear: (input: HTMLInputElement): void => {

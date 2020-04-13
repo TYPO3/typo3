@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","../Enum/Severity","../Modal","TYPO3/CMS/Backend/NewContentElementWizard"],(function(e,t,n,a,d){"use strict";return class{static wizard(e,t){const i=a.advanced({callback:e=>{e.find(".t3js-modal-body").addClass("t3-new-content-element-wizard-window")},content:e,severity:n.SeverityEnum.notice,size:a.sizes.medium,title:t,type:a.types.ajax}).on("modal-loaded",()=>{new d.default(i)})}}}));
+define(["require","exports","../Enum/Severity","../Modal","TYPO3/CMS/Backend/NewContentElementWizard"],(function(e,n,t,d,a){"use strict";return class{static wizard(e,n){const o=d.advanced({callback:e=>{e.find(".t3js-modal-body").addClass("t3-new-content-element-wizard-window")},content:e,severity:t.SeverityEnum.notice,size:d.sizes.medium,title:n,type:d.types.ajax}).on("modal-loaded",()=>{o.on("shown.bs.modal",()=>{new a.default(o).focusSearchField()})}).on("shown.bs.modal",()=>{o.on("modal-loaded",()=>{new a.default(o).focusSearchField()})})}}}));
