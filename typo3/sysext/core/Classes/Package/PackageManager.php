@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
@@ -314,13 +313,6 @@ class PackageManager implements SingletonInterface
     public function packagesMayHaveChanged(PackagesMayHaveChangedEvent $event): void
     {
         $this->scanAvailablePackages();
-    }
-
-    public function beforeInstallationEventListener(BeforePackageActivationEvent $event): void
-    {
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
-            $this->scanAvailablePackages();
-        }
     }
 
     /**

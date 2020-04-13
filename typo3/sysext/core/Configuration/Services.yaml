@@ -56,14 +56,6 @@ services:
     arguments:
       $configPath: "%env(TYPO3:configPath)%/sites"
 
-  TYPO3\CMS\Core\Package\PackageManager:
-    autoconfigure: false
-    tags:
-      - name: event.listener
-        identifier: 'typo3-core'
-        method: 'packagesMayHaveChanged'
-        event: TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent
-
   TYPO3\CMS\Core\Package\FailsafePackageManager:
     autoconfigure: false
 

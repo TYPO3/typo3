@@ -53,6 +53,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
+            EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
         ] + parent::getExtensions();
     }
 
@@ -103,6 +104,18 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getEventListenerProvider(ContainerInterface $container): EventDispatcher\ListenerProvider
     {
         return new EventDispatcher\ListenerProvider($container);
+    }
+
+    public static function extendEventListenerProvider(
+        ContainerInterface $container,
+        EventDispatcher\ListenerProvider $listenerProvider
+    ): EventDispatcher\ListenerProvider {
+        $listenerProvider->addListener(
+            Package\Event\PackagesMayHaveChangedEvent::class,
+            Package\PackageManager::class,
+            'packagesMayHaveChanged'
+        );
+        return $listenerProvider;
     }
 
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService
