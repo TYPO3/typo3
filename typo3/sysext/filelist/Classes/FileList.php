@@ -38,7 +38,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
 
 /**
- * Class for rendering of File>Filelist
+ * Class for rendering of File>Filelist (basically used in FileListController)
+ * @see \TYPO3\CMS\Filelist\Controller\FileListController
  * @internal this is a concrete TYPO3 controller implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 class FileList
@@ -240,18 +241,15 @@ class FileList
      */
     public function linkClipboardHeaderIcon($string, $cmd, $warning = '')
     {
-        $jsCode = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd)
-            . ';document.dblistForm.submit();';
-
-        $attributes = [];
         if ($warning) {
             $attributes['class'] = 'btn btn-default t3js-modal-trigger';
-            $attributes['data-href'] = 'javascript:' . $jsCode;
             $attributes['data-severity'] = 'warning';
             $attributes['data-content'] = $warning;
+            $attributes['data-event-name'] = 'filelist:clipboard:cmd';
+            $attributes['data-event-payload'] = $cmd;
         } else {
             $attributes['class'] = 'btn btn-default';
-            $attributes['onclick'] = $jsCode . 'return false;';
+            $attributes['data-filelist-clipboard-cmd'] = $cmd;
         }
 
         return '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $string . '</a>';
@@ -630,12 +628,15 @@ class FileList
     public function linkWrapDir($title, Folder $folderObject)
     {
         $href = (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
-        $onclick = ' onclick="' . htmlspecialchars('top.document.getElementsByName("nav_frame")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)') . '"';
+        $triggerTreeUpdateAttribute = sprintf(
+            ' data-tree-update-request="%s"',
+            htmlspecialchars('folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()))
+        );
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
-            return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
+            return '<a href="' . htmlspecialchars($href) . '"' . $triggerTreeUpdateAttribute . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
         }
-        return '<a href="' . htmlspecialchars($href) . '"' . $onclick . '>' . $title . '</a>';
+        return '<a href="' . htmlspecialchars($href) . '"' . $triggerTreeUpdateAttribute . '>' . $title . '</a>';
     }
 
     /**
@@ -997,9 +998,11 @@ class FileList
 
         // Edit file content (if editable)
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && $fileOrFolderObject->isTextFile()) {
-            $url = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier]);
-            $editOnClick = 'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-            $cells['edit'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent') . '">'
+            $attributes = [
+                'href' => (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier, 'returnUrl' => $this->listURL()]),
+                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent'),
+            ];
+            $cells['edit'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
                 . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
                 . '</a>';
         } else {
@@ -1036,16 +1039,20 @@ class FileList
 
         // replace file
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
-            $url = (string)$this->uriBuilder->buildUriFromRoute('file_replace', ['target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid()]);
-            $replaceOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-            $cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace') . '">' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
+            $attributes = [
+                'href' => $url = (string)$this->uriBuilder->buildUriFromRoute('file_replace', ['target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid(), 'returnUrl' => $this->listURL()]),
+                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'),
+            ];
+            $cells['replace'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
         // rename the file
         if ($fileOrFolderObject->checkActionPermission('rename')) {
-            $url = (string)$this->uriBuilder->buildUriFromRoute('file_rename', ['target' => $fullIdentifier]);
-            $renameOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-            $cells['rename'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($renameOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename') . '">' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
+            $attributes = [
+                'href' => (string)$this->uriBuilder->buildUriFromRoute('file_rename', ['target' => $fullIdentifier]),
+                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'),
+            ];
+            $cells['rename'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['rename'] = $this->spaceIcon;
         }
@@ -1053,20 +1060,24 @@ class FileList
         // upload files
         if ($fileOrFolderObject->getStorage()->checkUserActionPermission('add', 'File') && $fileOrFolderObject->checkActionPermission('write')) {
             if ($fileOrFolderObject instanceof Folder) {
-                $url = (string)$this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $fullIdentifier]);
-                $uploadOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
-                $cells['upload'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($uploadOnClick) . '"  title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload')) . '">' . $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL)->render() . '</a>';
+                $attributes = [
+                    'href' => (string)$this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $fullIdentifier]),
+                    'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'),
+                ];
+                $cells['upload'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL)->render() . '</a>';
             }
         }
 
         if ($fileOrFolderObject->checkActionPermission('read')) {
-            $infoOnClick = '';
-            if ($fileOrFolderObject instanceof Folder) {
-                $infoOnClick = 'top.TYPO3.InfoWindow.showItem(\'_FOLDER\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
-            } elseif ($fileOrFolderObject instanceof File) {
-                $infoOnClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
+            $attributes = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'),
+            ];
+            if ($fileOrFolderObject instanceof Folder || $fileOrFolderObject instanceof File) {
+                $attributes['data-filelist-show-item-type'] = $fileOrFolderObject instanceof File ? '_FILE' : '_FOLDER';
+                $attributes['data-filelist-show-item-identifier'] = $fullIdentifier;
             }
-            $cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info') . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
+            $cells['info'] = '<a href="#" class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
+                . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['info'] = $this->spaceIcon;
         }
@@ -1190,13 +1201,14 @@ class FileList
         if (!$references) {
             return '-';
         }
-        $htmlCode = '<a href="#" onclick="' . htmlspecialchars(
-            'top.TYPO3.InfoWindow.showItem(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileObject->getCombinedIdentifier()) . '); return false;'
-        ) . '" title="' . htmlspecialchars(
-            $this->getLanguageService()->sL(
-                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
-            ) . ' (' . $references . ')'
-        ) . '">';
+        $attributes = [
+            'data-filelist-show-item-type' => '_FILE',
+            'data-filelist-show-item-identifier' => $fileObject->getCombinedIdentifier(),
+            'title' => $this->getLanguageService()
+                ->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references')
+                . ' (' . $references . ')'
+        ];
+        $htmlCode = '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '">';
         $htmlCode .= $references;
         $htmlCode .= '</a>';
         return $htmlCode;

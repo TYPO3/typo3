@@ -1,4 +1,4 @@
-<div>
+<div class="filelist-create-folder-main" data-self-url="{selfUrl}" data-confirm-title="{confirmTitle}" data-confirm-text="{confirmText}">
     <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.pagetitle" /></h1>
     <f:if condition="{moduleUrlTceFile}">
         <h3><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.newfolders" /></h3>
@@ -10,7 +10,7 @@
                             <label for="number-of-new-folders"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.number_of_folders" /></label> {cshFileNewFolder -> f:format.raw()}
                             <div class="form-control-wrap">
                                 <div class="input-group">
-                                    <select class="form-control form-control-adapt" name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
+                                    <select class="form-control form-control-adapt" name="number" id="number-of-new-folders">';
                                         <f:for each="{options}" as="option">
                                             <option value="{option.value}"{option.selected}>{option.value}</option>
                                         </f:for>
@@ -24,7 +24,7 @@
                             <div class="form-group">
                                 <label for="folder_new_{folder.this}"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfolder" /> {folder.next}:</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="folder_new_{folder.this}" name="data[newfolder][{folder.this}][data]" onchange="changed=true;" />
+                                    <input type="text" class="form-control" id="folder_new_{folder.this}" name="data[newfolder][{folder.this}][data]" />
                                     <input type="hidden" name="data[newfolder][{folder.this}][target]" value="{target}" />
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label for="newfile"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfile" /></label> {cshFileNewFile -> f:format.raw()}
                                 <div class="form-control-wrap">
-                                    <input class="form-control" type="text" id="newfile" name="data[newfile][0][data]" onchange="changed=true;" />
+                                    <input class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
                                     <input type="hidden" name="data[newfile][0][target]" value="{target}" />
                                 </div>
                                 <div class="help-block">

@@ -23,7 +23,6 @@ var Tree, DragDrop;
  * @exports TYPO3/CMS/Backend/LegacyTree
  */
 define(['jquery'], function($) {
-
   DragDrop = {
     dragID: null,
     table: null	// can be "pages" or "folders", needed for doing the changes when dropping
@@ -213,6 +212,16 @@ define(['jquery'], function($) {
       }
     }
   };
+
+  // event listener updating current tree state
+  document.addEventListener('typo3:filelist:treeUpdateRequested', (evt) => {
+    var identifier = evt.detail.payload.identifier;
+    // @todo currentBank is not defined unless item was clicked in tree
+    if (top.fsMod && top.fsMod.currentBank) {
+      identifier += '_' + top.fsMod.currentBank;
+    }
+    Tree.highlightActiveItem('file', identifier);
+  });
 
   return Tree;
 });

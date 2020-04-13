@@ -133,10 +133,7 @@ class ReplaceFileController
         ];
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->addJavaScriptCode(
-            'ReplaceFileOnlineJavaScript',
-            'function backToList() {top.goToModule("file_FilelistList");}'
-        );
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/FileReplace');
     }
 
     /**

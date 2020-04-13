@@ -133,12 +133,6 @@ class RenameFileController
         // Setting up the context sensitive menu
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/RenameFile');
-
-        // Add javaScript
-        $this->moduleTemplate->addJavaScriptCode(
-            'RenameFileInlineJavaScript',
-            'function backToList() {top.goToModule("file_FilelistList");}'
-        );
     }
 
     /**

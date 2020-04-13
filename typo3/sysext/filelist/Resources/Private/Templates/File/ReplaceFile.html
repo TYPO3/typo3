@@ -10,30 +10,23 @@
         <label for="file_replace"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.selectfile" /></label>
         <div class="input-group col-xs-6">
             <input type="text" name="fakefile" id="fakefile" class="form-control input-xlarge" readonly>
-            <a class="input-group-addon btn btn-primary" onclick="$('#file_replace').click();">
+            <a class="input-group-addon btn btn-primary" data-filelist-click-target="#file_replace">
                 <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.browse" />
             </a>
         </div>
-        <input class="form-control" type="file" id="file_replace" name="replace_1" style="visibility: hidden;" />
+        <input class="form-control" type="file" id="file_replace" data-filelist-change-target="#fakefile" name="replace_1" style="visibility: hidden;" />
     </div>
-
-    <script>
-        require(['jquery'], function($) {
-            $('#file_replace').change(function() {
-                $('#fakefile').val($(this).val());
-            });
-        });
-    </script>
 
     <input type="hidden" name="overwriteExistingFiles" value="replace" />
     <input type="hidden" name="data[replace][1][data]" value="1" />
     <input type="hidden" name="data[replace][1][uid]" value="{uid}" />
 
     <div class="form-group">
-        <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.submit')}" />
-        <input class="btn btn-danger" type="submit" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
-            onclick="backToList(); return false;" />
         <input type="hidden" name="data[replace][1][redirect]" value="{returnUrl}" />
+        <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.submit')}" />
+        <a href="{returnUrl}" class="btn btn-danger">
+            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel" />
+        </a>
     </div>
     </form>
 </div>

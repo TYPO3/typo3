@@ -15,6 +15,7 @@ import 'bootstrap';
 import * as $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractAction} from './ActionButton/AbstractAction';
+import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
 import {SeverityEnum} from './Enum/Severity';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
@@ -122,6 +123,16 @@ class Modal {
   };
 
   private readonly securityUtility: SecurityUtility;
+
+  private static createModalResponseEventFromElement(element: HTMLElement, result: boolean): ModalResponseEvent | null {
+    if (!element.dataset.eventName) {
+      return null;
+    }
+    return new CustomEvent(
+      element.dataset.eventName, {
+        detail: { result, payload: element.dataset.eventPayload || null }
+      });
+  }
 
   constructor(securityUtility: SecurityUtility) {
     this.securityUtility = securityUtility;
@@ -377,6 +388,10 @@ class Modal {
             btnClass: 'btn-default',
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
+              const event = Modal.createModalResponseEventFromElement(evt.currentTarget as HTMLElement, false);
+              if (event !== null) {
+                evt.currentTarget.dispatchEvent(event);
+              }
             },
           },
           {
@@ -384,7 +399,14 @@ class Modal {
             btnClass: 'btn-' + Severity.getCssClass(severity),
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
-              evt.target.ownerDocument.location.href = $element.data('href') || $element.attr('href');
+              const event = Modal.createModalResponseEventFromElement(evt.currentTarget as HTMLElement, true);
+              if (event !== null) {
+                evt.currentTarget.dispatchEvent(event);
+              }
+              const href = $element.data('href') || $element.attr('href');
+              if (href && href !== '#') {
+                evt.target.ownerDocument.location.href = href;
+              }
             },
           },
         ],

@@ -292,9 +292,17 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         parent::initializeView($view);
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileSearch');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->registerDocHeaderButtons();
+        if ($this->folderObject instanceof Folder) {
+            $view->assign(
+                'currentFolderHash',
+                'folder' . GeneralUtility::md5int($this->folderObject->getCombinedIdentifier())
+            );
+        }
+        $view->assign('currentIdentifier', $this->id);
     }
 
     protected function initializeIndexAction()
@@ -399,8 +407,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                 );
             }
 
-            // Set top JavaScript:
-            $this->addJumpToUrl();
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
             $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf', 'buttons');
@@ -539,10 +545,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
-        $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
-        $pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('show_item'));
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
-
         $thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
         $this->view->assign('thumbnail', [
             'width' => $thumbnailConfiguration->getWidth(),
@@ -557,12 +559,12 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         ]);
         $this->view->assign('moduleSettings', $this->MOD_SETTINGS);
 
+        $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf', 'buttons');
 
         $this->initClipboard();
         $this->buildListOptionCheckboxes($searchWord);
-        $this->addJumpToUrl();
     }
 
     /**
@@ -641,11 +643,11 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             if ($parentFolder->getIdentifier() !== $this->folderObject->getIdentifier()
                 && $currentStorage->isWithinFileMountBoundaries($parentFolder)
             ) {
-                $levelUpClick = 'top.document.getElementsByName("nav_frame")[0].contentWindow.Tree.highlightActiveItem("file","folder'
-                    . GeneralUtility::md5int($parentFolder->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)';
                 $levelUpButton = $buttonBar->makeLinkButton()
+                    ->setDataAttributes([
+                        'tree-update-request' => htmlspecialchars('folder' . GeneralUtility::md5int($parentFolder->getCombinedIdentifier())),
+                    ])
                     ->setHref((string)$uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $parentFolder->getCombinedIdentifier()]))
-                    ->setOnClick($levelUpClick)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel'))
                     ->setIcon($iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -839,17 +841,5 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         $this->view->assign('showClipBoard', (bool)$this->MOD_SETTINGS['clipBoard']);
         $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
-    }
-
-    /**
-     * add javascript jumpToUrl function
-     */
-    protected function addJumpToUrl(): void
-    {
-        $this->view->getModuleTemplate()->addJavaScriptCode(
-            'FileListIndex',
-            'if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";
-                '
-        );
     }
 }

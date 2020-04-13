@@ -85,6 +85,16 @@ class CreateFolderController
     protected $moduleTemplate;
 
     /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    public function __construct()
+    {
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    }
+
+    /**
      * Processes the request, currently everything is handled and put together via "main()"
      *
      * @param ServerRequestInterface $request the current request
@@ -133,44 +143,10 @@ class CreateFolderController
         $pathInfo = [
             'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
         ];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->addJavaScriptCode(
-            'CreateFolderInlineJavaScript',
-            'var path = "' . $this->target . '";
-            var confirmTitle = '
-            . GeneralUtility::quoteJSvalue(
-                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')
-            )
-            . ';
-            var confirmText = '
-            . GeneralUtility::quoteJSvalue(
-                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.redraw')
-            )
-            . ';
-            function reload(a) {
-                var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
-                var url = \'' . (string)$uriBuilder->buildUriFromRoute('file_newfolder') . '\';
-                if (!changed) {
-                    window.location.href = url + params;
-                } else {
-                    var modal = top.TYPO3.Modal.confirm(confirmTitle, confirmText);
-                    modal.on(\'confirm.button.cancel\', function(e) {
-                        top.TYPO3.Modal.currentModal.trigger(\'modal-dismiss\');
-                    });
-                    modal.on(\'confirm.button.ok\', function(e) {
-                        top.TYPO3.Modal.currentModal.trigger(\'modal-dismiss\');
-                        window.location.href = url + params;
-                    });
-                }
-            }
-            function backToList() {
-                top.goToModule("file_FilelistList");
-            }
-            var changed = 0;'
-        );
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/CreateFolder');
     }
 
     /**
@@ -179,11 +155,18 @@ class CreateFolderController
     protected function main()
     {
         $lang = $this->getLanguageService();
-        $assigns = [];
-        $assigns['target'] = $this->target;
+        $assigns = [
+            'target' => $this->target,
+            'confirmTitle' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm'),
+            'confirmText' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.redraw'),
+            'selfUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_newfolder', [
+                'target' => $this->target,
+                'returnUrl' => $this->returnUrl,
+                'number' => 'AMOUNT',
+            ]),
+        ];
         if ($this->folderObject->checkActionPermission('add')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
+            $assigns['moduleUrlTceFile'] = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
             $assigns['cshFileNewFolder'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder');
             // Making the selector box for the number of concurrent folder-creations
             $this->number = MathUtility::forceIntegerInRange($this->number, 1, 10);
@@ -205,8 +188,7 @@ class CreateFolderController
         }
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $assigns['moduleUrlOnlineMedia'] = (string)$uriBuilder->buildUriFromRoute('online_media');
+            $assigns['moduleUrlOnlineMedia'] = (string)$this->uriBuilder->buildUriFromRoute('online_media');
             $assigns['cshFileNewMedia'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia');
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
@@ -219,7 +201,7 @@ class CreateFolderController
             }
             $assigns['fileExtList'] = $fileExtList;
 
-            $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
+            $assigns['moduleUrlTceFile'] = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
             $assigns['cshFileNewFile'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile');
             // Create a list of allowed file extensions with a text format "*.txt, *.css" etc.
             $fileExtList = [];
