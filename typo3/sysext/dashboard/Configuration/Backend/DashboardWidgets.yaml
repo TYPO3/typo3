@@ -170,7 +170,7 @@ services:
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description'
         iconIdentifier: 'content-widget-chart-pie'
         additionalCssClasses: 'dashboard-item--chart'
-        height: 'large'
+        height: 'medium'
 
   dashboard.widget.t3securityAdvisories:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
