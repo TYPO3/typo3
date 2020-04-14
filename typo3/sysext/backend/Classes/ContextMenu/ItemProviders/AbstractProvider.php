@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;

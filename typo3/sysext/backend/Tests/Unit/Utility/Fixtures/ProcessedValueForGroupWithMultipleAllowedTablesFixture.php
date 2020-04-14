@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 
 /**
  * Disable getRecordWSOL and getRecordTitle dependency by returning stable results

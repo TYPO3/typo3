@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
 /**
  * Parser for TYPO3's mirrors.xml file.

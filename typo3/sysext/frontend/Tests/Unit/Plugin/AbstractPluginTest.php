@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Site\Entity\Site;

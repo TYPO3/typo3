@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Install\Updates;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Install\Updates;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Use if wizard may be run multiple times (and should not be disabled after one run)

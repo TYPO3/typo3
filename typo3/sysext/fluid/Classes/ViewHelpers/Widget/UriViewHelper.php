@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
 
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;

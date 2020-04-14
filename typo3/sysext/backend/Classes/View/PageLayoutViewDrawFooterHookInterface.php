@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\View;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\View;
 
 /**
  * Interface for classes which hook into PageLayoutView and do additional

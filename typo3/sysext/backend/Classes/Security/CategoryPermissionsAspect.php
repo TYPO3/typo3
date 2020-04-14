@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Security;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Security;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Security;
 
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;

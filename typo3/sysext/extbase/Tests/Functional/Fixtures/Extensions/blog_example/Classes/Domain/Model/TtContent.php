@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace ExtbaseTeam\BlogExample\Domain\Model;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 

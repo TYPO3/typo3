@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Backend\Security;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Backend\Security;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;

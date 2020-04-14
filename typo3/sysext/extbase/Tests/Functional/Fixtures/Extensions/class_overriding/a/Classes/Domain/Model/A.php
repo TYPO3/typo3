@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace ExtbaseTeam\A\Domain\Model;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace ExtbaseTeam\A\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace ExtbaseTeam\A\Domain\Model;
 
 /**
  * Class ExtbaseTeam\A\Domain\Model\A

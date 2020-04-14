@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Form;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Form;
 
 /**
  * Interface must be implemented by form data group classes.

@@ -1,7 +1,5 @@
 <?php
 
-namespace OliverHader\IrreTutorial\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace OliverHader\IrreTutorial\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace OliverHader\IrreTutorial\Controller;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 

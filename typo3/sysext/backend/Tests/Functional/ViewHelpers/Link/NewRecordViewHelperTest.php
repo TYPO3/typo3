@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Link;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;

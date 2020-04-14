@@ -1,8 +1,6 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
-
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
 
 /**
  * Class ExtendsAbstractEntity

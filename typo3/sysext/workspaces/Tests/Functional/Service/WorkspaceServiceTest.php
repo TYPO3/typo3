@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;

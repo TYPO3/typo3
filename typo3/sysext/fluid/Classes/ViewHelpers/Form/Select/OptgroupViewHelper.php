@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\ViewHelpers\Form\Select;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form\Select;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\ViewHelpers\Form\Select;
 
 /**
  * Adds custom :html:`<optgroup>` tags inside an :ref:`<f:form.select> <typo3-fluid-form-select>`,

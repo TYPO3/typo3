@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Backend\Form\Container\ListOfFieldsContainer;

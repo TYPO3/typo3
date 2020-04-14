@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Prophecy\Argument;

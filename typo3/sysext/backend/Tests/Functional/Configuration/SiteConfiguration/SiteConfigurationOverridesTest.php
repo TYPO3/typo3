@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration;
 
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;

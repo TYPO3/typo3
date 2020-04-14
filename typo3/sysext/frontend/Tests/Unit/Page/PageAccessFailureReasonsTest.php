@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

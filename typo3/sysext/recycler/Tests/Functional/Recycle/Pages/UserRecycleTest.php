@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 
 /**
  * Functional test for the Recycler

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Frontend\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Utility;
 
 /**
  * This class contains compression functions for the TYPO3 Frontend. It can be

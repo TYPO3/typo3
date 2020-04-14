@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;

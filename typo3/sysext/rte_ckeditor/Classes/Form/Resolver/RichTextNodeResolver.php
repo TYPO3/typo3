@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\RteCKEditor\Form\Resolver;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\RteCKEditor\Form\Resolver;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\RteCKEditor\Form\Resolver;
 
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeResolverInterface;

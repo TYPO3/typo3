@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 
 /**
  * Syntax node to represent identifiers used in various parts of a

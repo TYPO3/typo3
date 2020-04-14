@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

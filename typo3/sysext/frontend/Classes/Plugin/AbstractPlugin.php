@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\Plugin;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Frontend\Plugin;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Plugin;
 
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Database\Connection;

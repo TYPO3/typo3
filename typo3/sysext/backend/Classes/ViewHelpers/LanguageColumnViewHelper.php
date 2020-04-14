@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Backend\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\ViewHelpers;
 
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;

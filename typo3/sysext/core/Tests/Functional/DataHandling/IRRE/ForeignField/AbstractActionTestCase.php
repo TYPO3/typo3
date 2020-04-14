@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\ForeignField;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\ForeignField;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\ForeignField;
 
 use TYPO3\CMS\Core\Utility\StringUtility;
 

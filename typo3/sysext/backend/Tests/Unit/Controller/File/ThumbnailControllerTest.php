@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\File\ThumbnailController;

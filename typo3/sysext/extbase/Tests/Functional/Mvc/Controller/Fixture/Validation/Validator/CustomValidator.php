@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\V
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator;
 
 /**
  * Fixture custom validator

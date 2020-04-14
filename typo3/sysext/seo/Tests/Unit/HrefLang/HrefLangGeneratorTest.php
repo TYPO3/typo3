@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
 
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Type\Bitmask;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Type\Bitmask;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Type\Bitmask;
 
 use TYPO3\CMS\Core\Type\Enumeration;
 

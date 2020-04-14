@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Core\Tests\Functional\Session\Backend;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Session\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Functional\Session\Backend;
 
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotCreatedException;

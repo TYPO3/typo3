@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Setup\Tests\Unit\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Setup\Tests\Unit\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Setup\Tests\Unit\Controller;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Setup\Controller\SetupModuleController;

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\IndexedSearch\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\IndexedSearch\Utility;
 
 /**
  * TYPO3: Had to change name to "\TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility" from just "DoubleMetaPhone" because TYPO3 requires a user class to be prefixed so:

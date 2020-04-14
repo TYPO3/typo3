@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use ExtbaseTeam\BlogExample\Domain\Repository\AdministratorRepository;

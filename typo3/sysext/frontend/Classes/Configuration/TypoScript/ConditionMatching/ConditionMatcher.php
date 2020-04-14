@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
 
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;

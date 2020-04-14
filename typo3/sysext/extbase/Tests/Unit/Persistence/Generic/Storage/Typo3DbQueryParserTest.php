@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Context\Context;

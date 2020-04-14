@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Fixture;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Fixture;
 
 /**
  * A dummy class with getters and setters for testing data mapping

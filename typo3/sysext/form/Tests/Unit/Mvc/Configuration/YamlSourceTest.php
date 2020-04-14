@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;

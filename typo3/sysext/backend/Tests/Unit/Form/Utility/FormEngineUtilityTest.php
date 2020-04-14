@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\Utility;
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

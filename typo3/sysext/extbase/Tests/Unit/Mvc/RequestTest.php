@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
+
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Redirects\Tests\Unit\Evaluation;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Evaluation;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Redirects\Tests\Unit\Evaluation;
 
 use TYPO3\CMS\Redirects\Evaluation\SourceHost;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

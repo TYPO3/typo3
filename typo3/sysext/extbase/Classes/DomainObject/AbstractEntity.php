@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\DomainObject;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\DomainObject;
 
 /**
  * An abstract Entity. An Entity is an object fundamentally defined not by its attributes,

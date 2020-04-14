@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
 
 /**
  * Class TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException

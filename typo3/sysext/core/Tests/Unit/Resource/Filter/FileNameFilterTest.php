@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Tests\Unit\Resource\Filter;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Filter;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Filter;
+
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

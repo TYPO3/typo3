@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -43,7 +44,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'numberOfMandatoryArguments' => 4,
                     ]),
                 ],
-                [33, 34, 35, 36, 41, 42],
+                [34, 35, 36, 37, 42, 43],
             ],
             'dropped' => [
                 [
@@ -51,7 +52,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'maximumNumberOfArguments' => 2,
                     ]),
                 ],
-                [33, 34, 35, 36, 41, 42],
+                [34, 35, 36, 37, 42, 43],
             ],
             'called' => [
                 [
@@ -60,7 +61,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'maximumNumberOfArguments' => 3,
                     ]),
                 ],
-                [33, 34, 35, 36, 41, 42],
+                [34, 35, 36, 37, 42, 43],
             ],
             'unused' => [
                 [
@@ -68,7 +69,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'unusedArgumentNumbers' => [2],
                     ]),
                 ],
-                [33, 34, 35, 36],
+                [34, 35, 36, 37],
             ],
         ];
     }

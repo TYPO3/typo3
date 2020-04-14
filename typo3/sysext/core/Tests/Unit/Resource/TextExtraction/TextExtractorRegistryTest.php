@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;

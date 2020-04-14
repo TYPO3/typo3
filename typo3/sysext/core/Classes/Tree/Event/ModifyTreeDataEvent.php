@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Tree\Event;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Core\Tree\Event;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tree\Event;
 
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Core\Tree\TableConfiguration\AbstractTableConfigurationTreeDataProvider;

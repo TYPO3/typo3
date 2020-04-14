@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -50,8 +51,8 @@ class PropertyExistsStaticMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
-            24,
-            35,
+            25,
+            36,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

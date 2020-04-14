@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Domain\Repository;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Domain\Repository;
 
 /**
  * Interface for classes which hook into pageSelect and do additional getPage processing

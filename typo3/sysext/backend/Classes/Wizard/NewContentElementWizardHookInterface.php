@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Wizard;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Wizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Wizard;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController

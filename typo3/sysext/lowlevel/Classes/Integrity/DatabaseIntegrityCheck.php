@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Lowlevel\Integrity;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Lowlevel\Integrity;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Lowlevel\Integrity;
 
 use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

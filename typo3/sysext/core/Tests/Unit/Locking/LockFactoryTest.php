@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Tests\Unit\Locking;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,13 +13,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace TYPO3\CMS\Core\Tests\Unit\Locking;
+
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Tests\Unit\Locking\Fixtures\DummyLock;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\Http;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Frontend\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Http;
 
 /**
  * This interface needs to be implemented by all classes that register for the hook in:

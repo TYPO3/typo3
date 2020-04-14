@@ -1,7 +1,5 @@
 <?php
 
-namespace OliverHader\IrreTutorial\Service;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace OliverHader\IrreTutorial\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace OliverHader\IrreTutorial\Service;
 
 /**
  * ContentController

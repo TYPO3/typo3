@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

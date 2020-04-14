@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Form\Element;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Form\Element;
 
 /**
  * Generation of TCEform elements of the type "input type=hidden"

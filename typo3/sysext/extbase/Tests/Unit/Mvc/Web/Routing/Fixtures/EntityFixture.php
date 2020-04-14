@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures;
+
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**

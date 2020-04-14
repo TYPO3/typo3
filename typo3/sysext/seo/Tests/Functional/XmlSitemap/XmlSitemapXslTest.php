@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;

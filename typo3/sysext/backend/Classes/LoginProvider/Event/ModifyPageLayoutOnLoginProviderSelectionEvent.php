@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\LoginProvider\Event;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\LoginProvider\Event;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\LoginProvider\Event;
 
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Page\PageRenderer;

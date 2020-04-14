@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Linkvalidator\Task;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Linkvalidator\Task;
 
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

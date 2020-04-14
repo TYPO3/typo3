@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Widget\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Widget\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Widget\Controller;
+
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 

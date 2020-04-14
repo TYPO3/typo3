@@ -2,11 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
-
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,6 +14,11 @@ use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
+
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 
 /**
  * @internal This interface is only meant to be used within EXT:install and is not part of the TYPO3 Core API.

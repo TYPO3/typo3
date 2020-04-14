@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Install\Configuration\Cache;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Install\Configuration\Cache;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Install\Configuration\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;

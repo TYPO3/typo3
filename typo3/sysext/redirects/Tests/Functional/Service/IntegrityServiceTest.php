@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\LinkHandling\LinkService;

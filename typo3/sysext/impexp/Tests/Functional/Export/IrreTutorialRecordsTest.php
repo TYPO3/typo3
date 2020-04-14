@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

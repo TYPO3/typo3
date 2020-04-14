@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Backend\Form\Exception;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Backend\Form\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Form\Exception;
 
 /**
  * User is not allowed to edit this page

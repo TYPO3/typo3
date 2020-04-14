@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;

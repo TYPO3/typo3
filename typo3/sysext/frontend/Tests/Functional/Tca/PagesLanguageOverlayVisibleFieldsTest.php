@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\Tests\Functional\Tca;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Tca;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Tests\Functional\Tca;
 
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;

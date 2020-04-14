@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
 
 use TYPO3\CMS\Form\Mvc\Validation\CountValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

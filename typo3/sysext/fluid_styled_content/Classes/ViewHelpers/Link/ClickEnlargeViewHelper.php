@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;

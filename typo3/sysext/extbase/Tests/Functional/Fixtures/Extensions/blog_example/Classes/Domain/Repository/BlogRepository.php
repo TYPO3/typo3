@@ -1,7 +1,5 @@
 <?php
 
-namespace ExtbaseTeam\BlogExample\Domain\Repository;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
 /**
  * A repository for blogs

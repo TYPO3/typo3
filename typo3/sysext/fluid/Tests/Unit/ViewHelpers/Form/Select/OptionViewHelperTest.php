@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Select;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Select;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Select;
 
 use TYPO3\CMS\Fluid\ViewHelpers\Form\Select\OptionViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper;

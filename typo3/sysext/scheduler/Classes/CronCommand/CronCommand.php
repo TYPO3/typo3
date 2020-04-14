@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Scheduler\CronCommand;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Scheduler\CronCommand;
 
 /**
  * This class provides calculations for the cron command format.

@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Console;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Console;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Console;
 
 use org\bovigo\vfs\vfsStream;
 use Prophecy\Prophecy\ObjectProphecy;

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Belog\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Belog\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Belog\Controller;
 
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;

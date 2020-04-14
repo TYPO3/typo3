@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**

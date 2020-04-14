@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Database\Driver;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Core\Database\Driver;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Database\Driver;
 
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Driver\PDOStatement as DoctrineDbalPDOStatement;

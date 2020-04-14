@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
+
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Extbase\Object\Container\Container;

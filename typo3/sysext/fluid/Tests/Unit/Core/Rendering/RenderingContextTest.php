@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;

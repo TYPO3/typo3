@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Type;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Type;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Type;
 
 /**
  * This is an interface that has to be used by all Core Types.

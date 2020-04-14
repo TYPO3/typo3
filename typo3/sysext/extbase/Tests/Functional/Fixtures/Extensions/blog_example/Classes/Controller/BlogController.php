@@ -1,7 +1,5 @@
 <?php
 
-namespace ExtbaseTeam\BlogExample\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace ExtbaseTeam\BlogExample\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace ExtbaseTeam\BlogExample\Controller;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use TYPO3\CMS\Extbase\Annotation as Extbase;

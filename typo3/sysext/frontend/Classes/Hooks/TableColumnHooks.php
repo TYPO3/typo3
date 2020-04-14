@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Frontend\Hooks;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Frontend\Hooks;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Frontend\Hooks;
 
 /**
  * Hooks / manipulation data for TCA columns e.g. to sort items within itemsProcFunc

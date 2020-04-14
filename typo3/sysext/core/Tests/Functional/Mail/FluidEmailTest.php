@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Mail;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;

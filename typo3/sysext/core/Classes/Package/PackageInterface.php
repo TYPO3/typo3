@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Package;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Package;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Package;
 
 /**
  * Interface for a TYPO3 Package class

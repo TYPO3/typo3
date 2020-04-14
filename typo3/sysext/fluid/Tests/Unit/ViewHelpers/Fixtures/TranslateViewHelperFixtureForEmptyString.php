@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
+
 use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 
 /**

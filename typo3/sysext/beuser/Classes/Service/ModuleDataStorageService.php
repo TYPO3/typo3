@@ -1,10 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Beuser\Service;
-
-use TYPO3\CMS\Beuser\Domain\Model\Demand;
-use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,6 +12,11 @@ use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Beuser\Service;
+
+use TYPO3\CMS\Beuser\Domain\Model\Demand;
+use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
 
 /**
  * Module data storage service.

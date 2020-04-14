@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
 
 use TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;

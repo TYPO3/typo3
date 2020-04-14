@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Database\Schema\Parser;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Database\Schema\Parser;
 
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;

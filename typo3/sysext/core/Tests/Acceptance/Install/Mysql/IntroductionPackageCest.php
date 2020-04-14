@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Mysql;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Mysql;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Mysql;
 
 use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Install\AbstractIntroductionPackage;

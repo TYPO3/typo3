@@ -1,12 +1,9 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Form\Domain\Runtime;
 
 /*
  * This file is part of the TYPO3 CMS project.
- *
- * It originated from the Neos.Form package (www.neos.io)
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -17,6 +14,12 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+/*
+ * Inspired by and partially taken from the Neos.Form package (www.neos.io)
+ */
+
+namespace TYPO3\CMS\Form\Domain\Runtime;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;

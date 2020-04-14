@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
+
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 

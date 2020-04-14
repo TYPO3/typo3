@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;

@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\ForeignField\Publish;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\ForeignField\P
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\ForeignField\Publish;
 
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 

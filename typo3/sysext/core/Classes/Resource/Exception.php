@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\Core\Resource;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Resource;
 
 /**
  * An exception when something is wrong with the file handling

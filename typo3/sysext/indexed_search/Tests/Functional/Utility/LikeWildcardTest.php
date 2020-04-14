@@ -1,7 +1,5 @@
 <?php
 
-namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;

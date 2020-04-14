@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Core\Tests\Acceptance\InstallTool;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,9 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\InstallTool;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Core\Tests\Acceptance\InstallTool;
+
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
