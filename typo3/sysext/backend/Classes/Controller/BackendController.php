@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -452,6 +453,8 @@ class BackendController
                 $beUser->writeUC();
             } elseif ($beUser->uc['startModule']) {
                 $startModule = $beUser->uc['startModule'];
+            } else {
+                $startModule = $this->determineFirstAvailableBackendModule();
             }
 
             // check if the start module has additional parameters, so a redirect to a specific
@@ -473,6 +476,28 @@ class BackendController
 				top.startInModule = [' . GeneralUtility::quoteJSvalue($startModule) . ', ' . GeneralUtility::quoteJSvalue($moduleParameters) . '];
 			';
         }
+        return '';
+    }
+
+    protected function determineFirstAvailableBackendModule(): string
+    {
+        $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
+        $loadModules->observeWorkspaces = true;
+        $loadModules->load($GLOBALS['TBE_MODULES']);
+
+        foreach ($loadModules->modules as $mainMod => $modData) {
+            $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
+            $isStandalone = $modData['standalone'] ?? false;
+            if ($isStandalone) {
+                return $modData['name'];
+            }
+
+            if ($hasSubmodules) {
+                $firstSubmodule = reset($modData['sub']);
+                return $firstSubmodule['name'];
+            }
+        }
+
         return '';
     }
 
