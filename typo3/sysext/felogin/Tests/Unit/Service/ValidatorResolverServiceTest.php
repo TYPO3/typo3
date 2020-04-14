@@ -73,7 +73,7 @@ class ValidatorResolverServiceTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->subject = new ValidatorResolverService;
+        $this->subject = new ValidatorResolverService();
 
         parent::setUp();
     }

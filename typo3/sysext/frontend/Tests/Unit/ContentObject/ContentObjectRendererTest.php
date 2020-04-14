@@ -1717,7 +1717,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSiteWithBaseVariants(): void
     {
-        $packageManager = new PackageManager(new DependencyOrderingService);
+        $packageManager = new PackageManager(new DependencyOrderingService());
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));

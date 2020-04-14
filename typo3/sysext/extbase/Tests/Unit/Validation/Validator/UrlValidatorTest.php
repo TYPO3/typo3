@@ -109,7 +109,7 @@ class UrlValidatorTest extends UnitTestCase
                 'isValid' => false,
             ],
             'Invalid value is object' => [
-                'value' => new \stdClass,
+                'value' => new \stdClass(),
                 'isValid' => false,
             ],
             'Invalid value is closure' => [

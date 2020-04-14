@@ -141,7 +141,7 @@ class AbstractFinisherTest extends UnitTestCase
         $finisherContextProphecy->getFormRuntime(Argument::cetera())
             ->willReturn($formRuntimeProphecy->reveal());
         $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())
-            ->willReturn(new FinisherVariableProvider);
+            ->willReturn(new FinisherVariableProvider());
 
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
@@ -420,7 +420,7 @@ class AbstractFinisherTest extends UnitTestCase
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider);
+        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider());
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
@@ -494,7 +494,7 @@ class AbstractFinisherTest extends UnitTestCase
             'date-1' => $date,
         ]);
 
-        $stringableElement = new class implements StringableFormElementInterface {
+        $stringableElement = new class() implements StringableFormElementInterface {
             /**
              * @param \DateTimeInterface $value
              */
@@ -572,7 +572,7 @@ class AbstractFinisherTest extends UnitTestCase
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider);
+        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider());
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
         $this->expectException(FinisherException::class);

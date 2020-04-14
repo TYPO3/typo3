@@ -37,7 +37,7 @@ class TypoScriptServiceTest extends UnitTestCase
             ContentObjectRenderer::class
         )->getMock();
 
-        $fakeTypoScriptFrontendController = new \stdClass;
+        $fakeTypoScriptFrontendController = new \stdClass();
         $fakeTypoScriptFrontendController->cObj = $mockContentObjectRenderer;
 
         $mockContentObjectRenderer

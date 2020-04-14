@@ -130,7 +130,7 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
      */
     public function removeHmacDataRemoveHmacs()
     {
-        $formDefinitionConversionService = new FormDefinitionConversionService;
+        $formDefinitionConversionService = new FormDefinitionConversionService();
         GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);
 
         $input = [

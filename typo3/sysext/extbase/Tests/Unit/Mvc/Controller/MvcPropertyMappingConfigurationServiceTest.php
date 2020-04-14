@@ -182,7 +182,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 
-        $requestHashService = new MvcPropertyMappingConfigurationService;
+        $requestHashService = new MvcPropertyMappingConfigurationService();
         $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
     }
 
@@ -199,7 +199,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 
         $hashService = new \TYPO3\CMS\Extbase\Security\Cryptography\HashService();
-        $requestHashService = new MvcPropertyMappingConfigurationService;
+        $requestHashService = new MvcPropertyMappingConfigurationService();
         $requestHashService->injectHashService($hashService);
         $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
     }

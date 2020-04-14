@@ -76,7 +76,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getNotFoundRequestHandler(ContainerInterface $container): Http\NotFoundRequestHandler
     {
-        return new Http\NotFoundRequestHandler;
+        return new Http\NotFoundRequestHandler();
     }
 
     public static function getLateBootService(ContainerInterface $container): Service\LateBootService

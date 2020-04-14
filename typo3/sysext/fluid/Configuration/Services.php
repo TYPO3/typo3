@@ -11,7 +11,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 return function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
     $containerBuilder->registerForAutoconfiguration(ViewHelperInterface::class)->addTag('fluid.viewhelper');
 
-    $containerBuilder->addCompilerPass(new class implements CompilerPassInterface {
+    $containerBuilder->addCompilerPass(new class() implements CompilerPassInterface {
         public function process(ContainerBuilder $container)
         {
             foreach ($container->findTaggedServiceIds('fluid.viewhelper') as $id => $tags) {

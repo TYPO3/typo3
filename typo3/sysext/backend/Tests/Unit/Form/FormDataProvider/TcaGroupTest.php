@@ -55,7 +55,7 @@ class TcaGroupTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaGroup)->addData($input));
+        self::assertSame($expected, (new TcaGroup())->addData($input));
     }
 
     /**
@@ -78,7 +78,7 @@ class TcaGroupTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438780511);
-        (new TcaGroup)->addData($input);
+        (new TcaGroup())->addData($input);
     }
 
     /**
@@ -120,7 +120,7 @@ class TcaGroupTest extends UnitTestCase
             ]
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
-        self::assertSame($expected, (new TcaGroup)->addData($input));
+        self::assertSame($expected, (new TcaGroup())->addData($input));
     }
 
     /**
@@ -191,6 +191,6 @@ class TcaGroupTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
 
-        self::assertSame($expected, (new TcaGroup)->addData($input));
+        self::assertSame($expected, (new TcaGroup())->addData($input));
     }
 }

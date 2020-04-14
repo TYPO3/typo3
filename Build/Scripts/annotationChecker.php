@@ -95,7 +95,7 @@ class NodeVisitor extends NodeVisitorAbstract
     }
 }
 
-$parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
+$parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
 
 $finder = new Symfony\Component\Finder\Finder();
 $finder->files()

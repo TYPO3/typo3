@@ -179,7 +179,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             'fake', 'tree', 'data',
         ];
-        self::assertEquals($expected, (new TcaSelectTreeItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectTreeItems())->addData($input));
     }
 
     /**
@@ -262,7 +262,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             'selectTreeCompileItems' => true,
         ];
 
-        (new TcaSelectTreeItems)->addData($input);
+        (new TcaSelectTreeItems())->addData($input);
 
         $treeDataProviderProphecy->setRootUid(42)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setExpandAll(true)->shouldHaveBeenCalled();

@@ -65,7 +65,7 @@ class PageResolverTest extends UnitTestCase
         $this->controller = $this->getAccessibleMock(TypoScriptFrontendController::class, ['getSiteScript', 'determineId', 'isBackendUserLoggedIn'], [], '', false);
 
         // A request handler which expects a site with some more details are found.
-        $this->responseOutputHandler = new class implements RequestHandlerInterface {
+        $this->responseOutputHandler = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 /** @var SiteInterface $site */

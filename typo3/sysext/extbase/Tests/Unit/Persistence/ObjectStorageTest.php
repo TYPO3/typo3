@@ -281,9 +281,9 @@ class ObjectStorageTest extends UnitTestCase
     public function allRelationsAreNotDirtyOnAttachingAndRemoving()
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $object1 = new \stdClass;
-        $object2 = new \stdClass;
-        $object3 = new \stdClass;
+        $object1 = new \stdClass();
+        $object2 = new \stdClass();
+        $object3 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2);
         $objectStorage->detach($object2);
@@ -298,8 +298,8 @@ class ObjectStorageTest extends UnitTestCase
     public function theRelationsAreNotDirtyOnReAddingAtSamePosition()
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $object1 = new \stdClass;
-        $object2 = new \stdClass;
+        $object1 = new \stdClass();
+        $object2 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2);
         $clonedStorage = clone $objectStorage;
@@ -316,8 +316,8 @@ class ObjectStorageTest extends UnitTestCase
     public function theRelationsAreDirtyOnReAddingAtOtherPosition()
     {
         $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $object1 = new \stdClass;
-        $object2 = new \stdClass;
+        $object1 = new \stdClass();
+        $object2 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2);
         $clonedStorage = clone $objectStorage;

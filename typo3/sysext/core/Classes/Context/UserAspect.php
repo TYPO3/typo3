@@ -63,7 +63,7 @@ class UserAspect implements AspectInterface
      */
     private function createPseudoUser(): object
     {
-        $user = new \stdClass;
+        $user = new \stdClass();
         $user->user = [];
         return $user;
     }

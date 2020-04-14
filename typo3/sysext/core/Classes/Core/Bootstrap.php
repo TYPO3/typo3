@@ -116,7 +116,7 @@ class Bootstrap
         $assetsCache = static::createCache('assets', $disableCaching);
         $dependencyInjectionContainerCache = static::createCache('di');
 
-        $bootState = new \stdClass;
+        $bootState = new \stdClass();
         $bootState->done = false;
         $bootState->cacheDisabled = $disableCaching;
 

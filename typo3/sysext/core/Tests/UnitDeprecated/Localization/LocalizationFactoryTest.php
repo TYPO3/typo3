@@ -51,7 +51,7 @@ class LocalizationFactoryTest extends UnitTestCase
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
 
-        $subject = new LocalizationFactory;
+        $subject = new LocalizationFactory();
 
         $unique = 'locallangXMLOverrideTest' . substr(StringUtility::getUniqueId(), 0, 10);
         $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>

@@ -41,7 +41,7 @@ class SiteResolverTest extends UnitTestCase
 
         $incomingRequest = new ServerRequest($incomingUrl, 'GET');
         $incomingRequest = $incomingRequest->withQueryParams(['id' => '9831:/styleguide/']);
-        $requestHandler = new class implements RequestHandlerInterface {
+        $requestHandler = new class() implements RequestHandlerInterface {
             public $incomingRequest;
             public function handle(ServerRequestInterface $request): ResponseInterface
             {

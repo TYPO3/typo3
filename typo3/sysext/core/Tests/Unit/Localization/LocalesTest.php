@@ -80,7 +80,7 @@ class LocalesTest extends UnitTestCase
      */
     public function browserLanguageDetectionWorks(string $acceptLanguageHeader, string $expected)
     {
-        $detectedLanguage = (new Locales)->getPreferredClientLanguage(
+        $detectedLanguage = (new Locales())->getPreferredClientLanguage(
             $acceptLanguageHeader
         );
         self::assertSame($expected, $detectedLanguage);

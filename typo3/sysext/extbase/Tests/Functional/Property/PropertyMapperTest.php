@@ -42,7 +42,7 @@ class PropertyMapperTest extends FunctionalTestCase
     {
         static::expectExceptionCode(1297951378);
 
-        $class = new class extends ArrayConverter {
+        $class = new class() extends ArrayConverter {
         };
         ExtensionUtility::registerTypeConverter(get_class($class));
         GeneralUtility::getContainer()->get(PropertyMapper::class);
@@ -138,7 +138,7 @@ class PropertyMapperTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('There exist at least two converters which handle the conversion to an interface with priority "10"');
 
-        $converterOne = new class extends AbstractTypeConverter {
+        $converterOne = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['integer'];
             protected $targetType = \Countable::class;
@@ -149,7 +149,7 @@ class PropertyMapperTest extends FunctionalTestCase
             }
         };
 
-        $converterTwo = new class extends AbstractTypeConverter {
+        $converterTwo = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['integer'];
             protected $targetType = ExtendedCountableInterface::class;
@@ -160,7 +160,7 @@ class PropertyMapperTest extends FunctionalTestCase
             }
         };
 
-        $counter = new class implements ExtendedCountableInterface {
+        $counter = new class() implements ExtendedCountableInterface {
             public function count()
             {
                 return 1;
@@ -194,7 +194,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration()
     {
-        $class = new class extends IntegerConverter {
+        $class = new class() extends IntegerConverter {
             public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
             {
                 return 1575648246;
@@ -250,7 +250,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyFindsConverterFromStringToObject()
     {
-        $converter = new class extends AbstractTypeConverter {
+        $converter = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['string'];
             protected $targetType = Cat::class;
@@ -272,7 +272,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForParentClass()
     {
-        $converter = new class extends AbstractTypeConverter {
+        $converter = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['string'];
             protected $targetType = Animal::class;
@@ -294,7 +294,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForInterfaces()
     {
-        $converter = new class extends AbstractTypeConverter {
+        $converter = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['integer'];
             protected $targetType = \Countable::class;
@@ -305,7 +305,7 @@ class PropertyMapperTest extends FunctionalTestCase
             }
         };
 
-        $counter = new class implements \Countable {
+        $counter = new class() implements \Countable {
             public function count()
             {
                 return 1;

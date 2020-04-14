@@ -65,7 +65,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function dispatchesEvent(callable $callable)
     {
-        $event = new \stdClass;
+        $event = new \stdClass();
         $event->invoked = 0;
 
         $this->listenerProviderProphecy->getListenersForEvent($event)->will(function () use ($callable): iterable {
@@ -83,7 +83,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function doesNotDispatchStoppedEvent(callable $callable)
     {
-        $event = new class implements StoppableEventInterface {
+        $event = new class() implements StoppableEventInterface {
             public $invoked = 0;
 
             public function isPropagationStopped(): bool
@@ -107,7 +107,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function dispatchesMultipleListeners(callable $callable)
     {
-        $event = new \stdClass;
+        $event = new \stdClass();
         $event->invoked = 0;
 
         $this->listenerProviderProphecy->getListenersForEvent($event)->will(function () use ($callable): iterable {
@@ -126,7 +126,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function stopsOnStoppedEvent(callable $callable)
     {
-        $event = new class implements StoppableEventInterface {
+        $event = new class() implements StoppableEventInterface {
             public $invoked = 0;
             public $stopped = false;
 
@@ -158,7 +158,7 @@ class EventDispatcherTest extends UnitTestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionCode(1563270337);
 
-        $event = new \stdClass;
+        $event = new \stdClass();
 
         $this->listenerProviderProphecy->getListenersForEvent($event)->will(function (): iterable {
             yield function (object $event): void {
@@ -178,7 +178,7 @@ class EventDispatcherTest extends UnitTestCase
         return [
             [
                 // Invokable
-                new class {
+                new class() {
                     public function __invoke(object $event): void
                     {
                         $event->invoked += 1;
@@ -188,7 +188,7 @@ class EventDispatcherTest extends UnitTestCase
             [
                 // Class + method
                 [
-                    new class {
+                    new class() {
                         public function onEvent(object $event): void
                         {
                             $event->invoked += 1;

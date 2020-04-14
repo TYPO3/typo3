@@ -129,7 +129,7 @@ class FormRuntimeTest extends UnitTestCase
 
         $objectManagerProphecy
             ->get('fooRenderer')
-            ->willReturn(new \stdClass);
+            ->willReturn(new \stdClass());
 
         $mockFormRuntime->_set('formState', $mockFormState);
         $mockFormRuntime->_set('currentPage', $mockPage);

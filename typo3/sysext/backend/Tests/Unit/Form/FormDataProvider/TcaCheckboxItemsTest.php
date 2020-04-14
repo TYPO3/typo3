@@ -410,7 +410,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
-        self::assertSame($expectedResult, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expectedResult, (new TcaCheckboxItems())->addData($input));
     }
 
     /**
@@ -440,7 +440,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499337);
-        (new TcaCheckboxItems)->addData($input);
+        (new TcaCheckboxItems())->addData($input);
     }
 
     /**
@@ -472,7 +472,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1440499338);
-        (new TcaCheckboxItems)->addData($input);
+        (new TcaCheckboxItems())->addData($input);
     }
 
     /**
@@ -509,7 +509,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        self::assertSame($expected, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
     }
 
     /**
@@ -548,7 +548,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        self::assertSame($expected, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
     }
 
     /**
@@ -623,7 +623,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->enqueue($flashMessage)->shouldNotBeCalled();
 
-        (new TcaCheckboxItems)->addData($input);
+        (new TcaCheckboxItems())->addData($input);
     }
 
     /**
@@ -682,7 +682,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
 
         $flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
 
-        (new TcaCheckboxItems)->addData($input);
+        (new TcaCheckboxItems())->addData($input);
     }
 
     /**
@@ -731,6 +731,6 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        self::assertSame($expected, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
     }
 }

@@ -38,14 +38,14 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $serviceProviderRegistryProphecy = $this->prophesize(ServiceProviderRegistry::class);
         $serviceProviderRegistryProphecy->getIterator()->will(function () use ($serviceProviders): \Generator {
             foreach ($serviceProviders as $id => $serviceProvider) {
-                yield (string)$id => new $serviceProvider;
+                yield (string)$id => new $serviceProvider();
             }
         });
 
         foreach ($serviceProviders as $id => $serviceProvider) {
             $packageKey = (string)$id;
 
-            $instance = new $serviceProvider;
+            $instance = new $serviceProvider();
             $factories = $instance->getFactories();
             $extensions = $instance->getExtensions();
 
@@ -198,7 +198,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $this->expectException(\TypeError::class);
 
         $registry = new ServiceProviderRegistry([
-            new class implements ServiceProviderInterface {
+            new class() implements ServiceProviderInterface {
                 public function getFactories()
                 {
                     return [

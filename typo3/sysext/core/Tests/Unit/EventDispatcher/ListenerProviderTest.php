@@ -80,7 +80,7 @@ class ListenerProviderTest extends UnitTestCase
      */
     public function dispatchesEvent($listener, string $method = null)
     {
-        $event = new \stdClass;
+        $event = new \stdClass();
         $event->invoked = 0;
 
         $this->containerProphecy->get('listener')->willReturn($listener);
@@ -99,7 +99,7 @@ class ListenerProviderTest extends UnitTestCase
      */
     public function associatesToEventParentClass($listener, string $method = null)
     {
-        $extendedEvent = new class extends \stdClass {
+        $extendedEvent = new class() extends \stdClass {
             public $invoked = 0;
         };
 
@@ -118,12 +118,12 @@ class ListenerProviderTest extends UnitTestCase
      */
     public function associatesToImplementedInterfaces($listener, string $method = null)
     {
-        $eventImplementation = new class implements \IteratorAggregate {
+        $eventImplementation = new class() implements \IteratorAggregate {
             public $invoked = 0;
 
             public function getIterator(): \Traversable
             {
-                throw new \BadMethodCallException;
+                throw new \BadMethodCallException('Test', 1586942436);
             }
         };
 
@@ -144,7 +144,7 @@ class ListenerProviderTest extends UnitTestCase
         $this->listenerProvider->addListener(\stdClass::class, 'listener1');
         $this->listenerProvider->addListener(\stdClass::class, 'listener2');
 
-        $event = new \stdClass;
+        $event = new \stdClass();
         $event->sequence = '';
         $this->containerProphecy->get('listener1')->willReturn(function (object $event): void {
             $event->sequence .= 'a';
@@ -167,8 +167,8 @@ class ListenerProviderTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1549988537);
 
-        $event = new \stdClass;
-        $this->containerProphecy->get('listener')->willReturn(new \stdClass);
+        $event = new \stdClass();
+        $this->containerProphecy->get('listener')->willReturn(new \stdClass());
         $this->listenerProvider->addListener(\stdClass::class, 'listener');
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
             $listener($event);
@@ -184,7 +184,7 @@ class ListenerProviderTest extends UnitTestCase
         return [
             [
                 // Invokable
-                'listener' => new class {
+                'listener' => new class() {
                     public function __invoke(object $event): void
                     {
                         $event->invoked = 1;
@@ -194,7 +194,7 @@ class ListenerProviderTest extends UnitTestCase
             ],
             [
                 // Class + method
-                'listener' => new class {
+                'listener' => new class() {
                     public function onEvent(object $event): void
                     {
                         $event->invoked = 1;

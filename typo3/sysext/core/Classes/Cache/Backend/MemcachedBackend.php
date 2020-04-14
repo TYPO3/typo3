@@ -158,7 +158,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
             throw new Exception('No servers were given to Memcache', 1213115903);
         }
         $memcachedPlugin = '\\' . ucfirst($this->usedPeclModule);
-        $this->memcache = new $memcachedPlugin;
+        $this->memcache = new $memcachedPlugin();
         $defaultPort = $this->usedPeclModule === 'memcache' ? ini_get('memcache.default_port') : 11211;
         foreach ($this->servers as $server) {
             if (strpos($server, 'unix://') === 0) {

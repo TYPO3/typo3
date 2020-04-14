@@ -37,7 +37,7 @@ class Typo3StatusTest extends UnitTestCase
     public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [];
-        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
+        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status();
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
         self::assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
@@ -53,7 +53,7 @@ class Typo3StatusTest extends UnitTestCase
                 'className' => 'bar',
             ]
         ];
-        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
+        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status();
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
         self::assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());

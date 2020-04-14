@@ -57,7 +57,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getDefaultIconIdentifierReturnsTheCorrectDefaultIconIdentifierString()
     {
-        $result = (new IconRegistry)->getDefaultIconIdentifier();
+        $result = (new IconRegistry())->getDefaultIconIdentifier();
         self::assertEquals($result, 'default-not-found');
     }
 
@@ -76,7 +76,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function isRegisteredReturnsFalseForNotRegisteredIcon()
     {
-        $result = (new IconRegistry)->isRegistered($this->notRegisteredIconIdentifier);
+        $result = (new IconRegistry())->isRegistered($this->notRegisteredIconIdentifier);
         self::assertEquals($result, false);
     }
 
@@ -103,7 +103,7 @@ class IconRegistryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437425803);
 
-        (new IconRegistry)->registerIcon($this->notRegisteredIconIdentifier, GeneralUtility::class);
+        (new IconRegistry())->registerIcon($this->notRegisteredIconIdentifier, GeneralUtility::class);
     }
 
     /**
@@ -114,7 +114,7 @@ class IconRegistryTest extends UnitTestCase
         $this->expectException(\TYPO3\CMS\Core\Exception::class);
         $this->expectExceptionCode(1437425804);
 
-        (new IconRegistry)->getIconConfigurationByIdentifier($this->notRegisteredIconIdentifier);
+        (new IconRegistry())->getIconConfigurationByIdentifier($this->notRegisteredIconIdentifier);
     }
 
     /**
@@ -122,7 +122,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getIconConfigurationByIdentifierReturnsCorrectConfiguration()
     {
-        $result = (new IconRegistry)->getIconConfigurationByIdentifier('default-not-found');
+        $result = (new IconRegistry())->getIconConfigurationByIdentifier('default-not-found');
         // result must contain at least provider and options array
         self::assertArrayHasKey('provider', $result);
         self::assertArrayHasKey('options', $result);
@@ -135,7 +135,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentifiers()
     {
-        self::assertIsArray((new IconRegistry)->getAllRegisteredIconIdentifiers());
+        self::assertIsArray((new IconRegistry())->getAllRegisteredIconIdentifiers());
     }
 
     /**
@@ -143,7 +143,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers()
     {
-        $result = (new IconRegistry)->getAllRegisteredIconIdentifiers();
+        $result = (new IconRegistry())->getAllRegisteredIconIdentifiers();
         self::assertIsArray($result);
         self::assertContains('default-not-found', $result);
     }
@@ -153,7 +153,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForEmptyFileExtension()
     {
-        $result = (new IconRegistry)->getIconIdentifierForFileExtension('');
+        $result = (new IconRegistry())->getIconIdentifierForFileExtension('');
         self::assertEquals('mimetypes-other-other', $result);
     }
 
@@ -162,7 +162,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForUnknownFileExtension()
     {
-        $result = (new IconRegistry)->getIconIdentifierForFileExtension('xyz');
+        $result = (new IconRegistry())->getIconIdentifierForFileExtension('xyz');
         self::assertEquals('mimetypes-other-other', $result);
     }
 
@@ -171,7 +171,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getIconIdentifierForFileExtensionReturnsImageIconIdentifierForImageFileExtension()
     {
-        $result = (new IconRegistry)->getIconIdentifierForFileExtension('jpg');
+        $result = (new IconRegistry())->getIconIdentifierForFileExtension('jpg');
         self::assertEquals('mimetypes-media-image', $result);
     }
 
@@ -224,7 +224,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getIconIdentifierForMimeTypeWithUnknownMimeTypeReturnNull()
     {
-        $result = (new IconRegistry)->getIconIdentifierForMimeType('bar/foo');
+        $result = (new IconRegistry())->getIconIdentifierForMimeType('bar/foo');
         self::assertNull($result);
     }
 }

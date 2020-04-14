@@ -60,11 +60,11 @@ class FileDumpController
         $parameters = $this->buildParametersFromRequest($request);
 
         if (!$this->isTokenValid($parameters, $request)) {
-            return (new Response)->withStatus(403);
+            return (new Response())->withStatus(403);
         }
         $file = $this->createFileObjectByParameters($parameters);
         if ($file === null) {
-            return (new Response)->withStatus(404);
+            return (new Response())->withStatus(404);
         }
 
         // Hook: allow some other process to do some security/access checks. Hook should return 403 response if access is rejected, void otherwise

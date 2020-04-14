@@ -45,7 +45,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
         $expected = $input;
-        self::assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
     /**
@@ -75,7 +75,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        self::assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
     /**
@@ -110,7 +110,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        self::assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
     /**
@@ -144,7 +144,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        self::assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
     /**
@@ -181,6 +181,6 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
-        self::assertSame($expected, (new TcaColumnsProcessFieldLabels)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 }

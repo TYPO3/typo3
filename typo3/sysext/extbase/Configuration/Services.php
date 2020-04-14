@@ -14,7 +14,7 @@ return function (ContainerConfigurator $containerConfigurator, ContainerBuilder 
     $container->registerForAutoconfiguration(Mvc\Controller\ActionController::class)->addTag('extbase.action_controller');
     $container->registerForAutoconfiguration(Mvc\View\ViewInterface::class)->addTag('extbase.view');
 
-    $container->addCompilerPass(new class implements CompilerPassInterface {
+    $container->addCompilerPass(new class() implements CompilerPassInterface {
         public function process(ContainerBuilder $container): void
         {
             foreach ($container->findTaggedServiceIds('extbase.request_handler') as $id => $tags) {

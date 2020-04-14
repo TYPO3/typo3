@@ -78,8 +78,8 @@ class CommandRegistryTest extends UnitTestCase
         $command1MockClass = $this->getMockClass(Command::class, ['dummy']);
         $command2MockClass = $this->getMockClass(Command::class, ['dummy']);
 
-        $this->containerProphecy->get('command1')->willReturn(new $command1MockClass);
-        $this->containerProphecy->get('command2')->willReturn(new $command2MockClass);
+        $this->containerProphecy->get('command1')->willReturn(new $command1MockClass());
+        $this->containerProphecy->get('command2')->willReturn(new $command2MockClass());
 
         $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal(), $this->containerProphecy->reveal());
         $commandRegistry->addLazyCommand('test:command', 'command1');
@@ -123,7 +123,7 @@ class CommandRegistryTest extends UnitTestCase
 
         $this->packageManagerProphecy->getActivePackages()->willReturn([$package->reveal()]);
 
-        $this->containerProphecy->get($commandMockClass)->willReturn(new $commandMockClass);
+        $this->containerProphecy->get($commandMockClass)->willReturn(new $commandMockClass());
 
         $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal(), $this->containerProphecy->reveal());
         $commandRegistry->addLazyCommand('first:command', $commandMockClass);

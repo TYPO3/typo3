@@ -46,7 +46,7 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct()
     {
-        $this->pageIdStack = new \SplStack;
+        $this->pageIdStack = new \SplStack();
     }
 
     /**

@@ -66,7 +66,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsEmptyMiddlewareStackForZeroPackages()
     {
-        $middlewares = new ArrayObject;
+        $middlewares = new ArrayObject();
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
         $containerProphecy->get('middlewares')->willReturn($middlewares);

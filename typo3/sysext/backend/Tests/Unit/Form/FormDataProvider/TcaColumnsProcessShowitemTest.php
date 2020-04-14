@@ -44,7 +44,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438614542);
-        (new TcaColumnsProcessShowitem)->addData($input);
+        (new TcaColumnsProcessShowitem())->addData($input);
     }
 
     /**
@@ -81,7 +81,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected = $input;
         $expected['columnsToProcess'] = ['keepMe'];
 
-        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
     /**
@@ -123,7 +123,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected = $input;
         $expected['columnsToProcess'] = ['keepMe'];
 
-        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
     /**
@@ -169,7 +169,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected = $input;
         $expected['columnsToProcess'] = ['aField', 'anotherField'];
 
-        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
     /**
@@ -206,7 +206,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             'inlineExpandCollapseStateArray' => [],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
     /**
@@ -250,7 +250,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
     /**
@@ -292,6 +292,6 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['columnsToProcess'] = ['aField'];
-        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 }

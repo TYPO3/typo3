@@ -53,9 +53,9 @@ class ContainerTest extends UnitTestCase
             ->setMethods(['notice'])
             ->disableOriginalConstructor()
             ->getMock();
-        $reflectionService = new \TYPO3\CMS\Extbase\Reflection\ReflectionService;
+        $reflectionService = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
 
-        $notFoundException = new class extends \Exception implements \Psr\Container\NotFoundExceptionInterface {
+        $notFoundException = new class() extends \Exception implements \Psr\Container\NotFoundExceptionInterface {
         };
 
         $psrContainer = $this->getMockBuilder(\Psr\Container\ContainerInterface::class)

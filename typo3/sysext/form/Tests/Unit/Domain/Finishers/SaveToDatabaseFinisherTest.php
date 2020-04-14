@@ -190,7 +190,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
-            'date' => new \DateTime,
+            'date' => new \DateTime(),
         ]);
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);

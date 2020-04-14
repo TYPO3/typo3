@@ -33,10 +33,10 @@ class ClassNameMatcherFixture extends App2 implements App3, Con\Application
     {
         // Matches
         $foo = new \RemoveXSS();
-        $foo = new \RemoveXSS;
+        $foo = new \RemoveXSS();
         (new \RemoveXSS())->foo();
         $foo = new \TYPO3\CMS\Backend\Console\Application();
-        (new \TYPO3\CMS\Backend\Console\Application)->foo();
+        (new \TYPO3\CMS\Backend\Console\Application())->foo();
         Application::foo();
         App1::bar();
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(App2::class)->foo();

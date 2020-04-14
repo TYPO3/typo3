@@ -177,7 +177,7 @@ class DatabaseCheck implements CheckInterface
     {
         if (!empty($this->databaseDriverCheckMap[$databaseDriver])) {
             /** @var CheckInterface $databaseDriverCheck */
-            $databaseDriverCheck = new $this->databaseDriverCheckMap[$databaseDriver];
+            $databaseDriverCheck = new $this->databaseDriverCheckMap[$databaseDriver]();
             foreach ($databaseDriverCheck->getStatus() as $message) {
                 $this->messageQueue->addMessage($message);
             }
@@ -213,7 +213,7 @@ class DatabaseCheck implements CheckInterface
         }
 
         if (!empty(static::$databaseDriverToPlatformMapping[$databaseDriver])) {
-            $platformMessageQueue = (new $databasePlatformClass)->getStatus();
+            $platformMessageQueue = (new $databasePlatformClass())->getStatus();
             foreach ($platformMessageQueue as $message) {
                 $this->messageQueue->enqueue($message);
             }

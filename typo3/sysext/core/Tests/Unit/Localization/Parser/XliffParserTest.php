@@ -72,7 +72,7 @@ class XliffParserTest extends UnitTestCase
      */
     public function canParseXliffInEnglish()
     {
-        $LOCAL_LANG = (new XliffParser)->getParsedData($this->xliffFileNames['locallang'], 'default');
+        $LOCAL_LANG = (new XliffParser())->getParsedData($this->xliffFileNames['locallang'], 'default');
         self::assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'This is label #1',
@@ -89,7 +89,7 @@ class XliffParserTest extends UnitTestCase
      */
     public function canParseXliffInFrench()
     {
-        $LOCAL_LANG = (new XliffParser)->getParsedData($this->xliffFileNames['locallang'], 'fr');
+        $LOCAL_LANG = (new XliffParser())->getParsedData($this->xliffFileNames['locallang'], 'fr');
         self::assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'Ceci est le libellé no. 1',
@@ -107,7 +107,7 @@ class XliffParserTest extends UnitTestCase
     public function canOverrideXliff()
     {
         /** @var $factory LocalizationFactory */
-        $factory = new LocalizationFactory;
+        $factory = new LocalizationFactory();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
@@ -144,7 +144,7 @@ class XliffParserTest extends UnitTestCase
      */
     public function canOverrideXliffWithFrenchOnly()
     {
-        $factory = new LocalizationFactory;
+        $factory = new LocalizationFactory();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
         $LOCAL_LANG = $factory->getParsedData($this->xliffFileNames['locallang'], 'fr');

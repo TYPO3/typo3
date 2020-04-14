@@ -75,7 +75,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools;
+        $flexFormTools = new FlexFormTools();
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
@@ -209,7 +209,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools;
+        $flexFormTools = new FlexFormTools();
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
@@ -359,7 +359,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools;
+        $flexFormTools = new FlexFormTools();
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([

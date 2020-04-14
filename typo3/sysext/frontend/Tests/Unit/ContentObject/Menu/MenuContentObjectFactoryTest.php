@@ -32,7 +32,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $this->expectException(NoSuchMenuTypeException::class);
         $this->expectExceptionCode(1363278130);
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         $factory->getMenuObjectByType(StringUtility::getUniqueId('foo_'));
     }
 
@@ -41,7 +41,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
      */
     public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType()
     {
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         self::assertIsObject($factory->getMenuObjectByType('TMENU'));
     }
 
@@ -50,7 +50,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
      */
     public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType()
     {
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         self::assertIsObject($factory->getMenuObjectByType('tmenu'));
     }
 
@@ -59,7 +59,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
      */
     public function getMenuObjectByTypeReturnsInstanceOfOwnRegisteredTypeInsteadOfInternalType()
     {
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         $selfClassName = static::class;
         $factory->registerMenuType('TMENU', $selfClassName);
         self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType('TMENU'));
@@ -70,7 +70,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
      */
     public function getMenuObjectByTypeReturnsInstanceOfNewRegisteredType()
     {
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         $selfClassName = static::class;
         $uniqueMenuType = StringUtility::getUniqueId('foo_');
         $factory->registerMenuType($uniqueMenuType, $selfClassName);
@@ -84,7 +84,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1363429303);
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         $factory->registerMenuType([], 'foo');
     }
 
@@ -95,7 +95,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1363429303);
-        $factory = new MenuContentObjectFactory;
+        $factory = new MenuContentObjectFactory();
         $factory->registerMenuType('foo', []);
     }
 }

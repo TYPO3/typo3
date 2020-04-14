@@ -199,7 +199,7 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has($target)->willReturn(true);
-        $containerProphecy->get($target)->willReturn(new RouteDispatcherClassInvokeFixture);
+        $containerProphecy->get($target)->willReturn(new RouteDispatcherClassInvokeFixture());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);

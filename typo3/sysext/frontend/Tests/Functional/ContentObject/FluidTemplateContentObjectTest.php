@@ -66,7 +66,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
         ];
         $expectedResult = 'ABC';
 
-        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
         $contentObjectRenderer->setContentObjectClassMap([
             'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
             'TEXT' => TextContentObject::class,
@@ -114,7 +114,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
         ];
         $expectedResult = 'DefaultLayoutLayoutOverride';
 
-        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
         $contentObjectRenderer->setContentObjectClassMap([
             'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
             'TEXT' => TextContentObject::class,

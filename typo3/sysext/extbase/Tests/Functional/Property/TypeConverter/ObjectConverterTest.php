@@ -36,7 +36,7 @@ class ObjectConverterTest extends FunctionalTestCase
     {
         $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
 
-        $model = new class extends AbstractEntity {
+        $model = new class() extends AbstractEntity {
             /**
              * @var string
              */
@@ -86,7 +86,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function getTypeOfChildPropertyReturnsTypeDefinedByPropertyMappingConfiguration()
     {
-        $class = new class {
+        $class = new class() {
             public $name;
         };
 
@@ -146,7 +146,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function getTypeOfChildPropertyReturnsTypeDefinedBySetter()
     {
-        $class = new class {
+        $class = new class() {
             private $name;
             public function setName(string $name)
             {
@@ -176,7 +176,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNotAccessible()
     {
-        $class = new class {
+        $class = new class() {
         };
 
         $className = get_class($class);
@@ -202,7 +202,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromNonExistingConstructorArgument()
     {
-        $class = new class {
+        $class = new class() {
             public function __construct()
             {
             }
@@ -231,7 +231,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromExistingConstructorArgument()
     {
-        $class = new class {
+        $class = new class() {
             public function __construct($name = null)
             {
             }
@@ -264,7 +264,7 @@ class ObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": Setter for property "name" had no type hint or documentation in target object of type "');
 
-        $class = new class {
+        $class = new class() {
             public function setName($name)
             {
             }
@@ -290,7 +290,7 @@ class ObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": Property "name" having a value of type "string" could not be set in target object of type "');
 
-        $class = new class {
+        $class = new class() {
             private $name;
         };
 
@@ -371,7 +371,7 @@ class ObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": Override of target type not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED" to TRUE.');
 
-        $class = new class {
+        $class = new class() {
         };
 
         GeneralUtility::getContainer()->get(PropertyMapper::class)->convert(
@@ -389,7 +389,7 @@ class ObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": The given type "TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal" is not a subtype of "');
 
-        $class = new class {
+        $class = new class() {
         };
 
         $propertyMapperConfiguration = new PropertyMappingConfiguration();

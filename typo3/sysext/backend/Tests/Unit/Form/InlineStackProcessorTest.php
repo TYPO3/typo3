@@ -290,7 +290,7 @@ class InlineStackProcessorTest extends UnitTestCase
     public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
     {
         /** @var InlineStackProcessor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = new InlineStackProcessor;
+        $subject = new InlineStackProcessor();
         $subject->initializeByParsingDomObjectIdString($string);
         self::assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
     }
@@ -302,7 +302,7 @@ class InlineStackProcessorTest extends UnitTestCase
     public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
     {
         /** @var InlineStackProcessor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = new InlineStackProcessor;
+        $subject = new InlineStackProcessor();
         $subject->initializeByParsingDomObjectIdString($string);
         self::assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));
     }

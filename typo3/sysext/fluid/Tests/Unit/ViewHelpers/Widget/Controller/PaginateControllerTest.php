@@ -200,7 +200,7 @@ class PaginateControllerTest extends UnitTestCase
     {
         $objects = new ObjectStorage();
         for ($i = 0; $i <= 25; $i++) {
-            $item = new \stdClass;
+            $item = new \stdClass();
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
@@ -219,7 +219,7 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('currentPage', 2);
         $objects = new ObjectStorage();
         for ($i = 0; $i <= 55; $i++) {
-            $item = new \stdClass;
+            $item = new \stdClass();
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
@@ -238,7 +238,7 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('currentPage', 3);
         $objects = new ObjectStorage();
         for ($i = 0; $i <= 25; $i++) {
-            $item = new \stdClass;
+            $item = new \stdClass();
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
@@ -256,7 +256,7 @@ class PaginateControllerTest extends UnitTestCase
     {
         $objects = [];
         for ($i = 0; $i <= 25; $i++) {
-            $item = new \stdClass;
+            $item = new \stdClass();
             $objects[] = $item;
         }
         $this->controller->_set('objects', $objects);
@@ -275,7 +275,7 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('currentPage', 2);
         $objects = [];
         for ($i = 0; $i <= 55; $i++) {
-            $item = new \stdClass;
+            $item = new \stdClass();
             $objects[] = $item;
         }
         $this->controller->_set('objects', $objects);

@@ -30,7 +30,7 @@ class DummyValidator implements ValidatorInterface
      */
     public function validate($value)
     {
-        return new \TYPO3\CMS\Extbase\Error\Result;
+        return new \TYPO3\CMS\Extbase\Error\Result();
     }
 
     /**

@@ -63,7 +63,7 @@ class TcaRadioItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438594829);
-        (new TcaRadioItems)->addData($input);
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -94,7 +94,7 @@ class TcaRadioItemsTest extends UnitTestCase
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $expected = $input;
-        self::assertSame($expected, (new TcaRadioItems)->addData($input));
+        self::assertSame($expected, (new TcaRadioItems())->addData($input));
     }
 
     /**
@@ -124,7 +124,7 @@ class TcaRadioItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607163);
-        (new TcaRadioItems)->addData($input);
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -156,7 +156,7 @@ class TcaRadioItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607164);
-        (new TcaRadioItems)->addData($input);
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -188,7 +188,7 @@ class TcaRadioItemsTest extends UnitTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1438607165);
-        (new TcaRadioItems)->addData($input);
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -224,8 +224,8 @@ class TcaRadioItemsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
 
-        self::assertSame($expected, (new TcaRadioItems)->addData($input));
-        (new TcaRadioItems)->addData($input);
+        self::assertSame($expected, (new TcaRadioItems())->addData($input));
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -264,7 +264,7 @@ class TcaRadioItemsTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        self::assertSame($expected, (new TcaRadioItems)->addData($input));
+        self::assertSame($expected, (new TcaRadioItems())->addData($input));
     }
 
     /**
@@ -333,7 +333,7 @@ class TcaRadioItemsTest extends UnitTestCase
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->enqueue($flashMessage)->shouldNotBeCalled();
 
-        (new TcaRadioItems)->addData($input);
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -392,7 +392,7 @@ class TcaRadioItemsTest extends UnitTestCase
 
         $flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
 
-        (new TcaRadioItems)->addData($input);
+        (new TcaRadioItems())->addData($input);
     }
 
     /**
@@ -440,7 +440,7 @@ class TcaRadioItemsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
 
-        self::assertSame($expected, (new TcaRadioItems)->addData($input));
-        (new TcaRadioItems)->addData($input);
+        self::assertSame($expected, (new TcaRadioItems())->addData($input));
+        (new TcaRadioItems())->addData($input);
     }
 }

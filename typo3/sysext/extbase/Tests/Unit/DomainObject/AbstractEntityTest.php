@@ -29,7 +29,7 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties()
     {
-        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+        $domainObject = new class() extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
             public $foo = 'Test';
             public $bar = 'It is raining outside';
         };
@@ -43,7 +43,7 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards()
     {
-        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+        $domainObject = new class() extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
             public $foo = 'Test';
             public $bar = 'It is raining outside';
         };
@@ -58,7 +58,7 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties()
     {
-        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+        $domainObject = new class() extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
             public $foo;
             public $bar = 'It is raining outside';
         };
@@ -73,12 +73,12 @@ class AbstractEntityTest extends UnitTestCase
      */
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties()
     {
-        $domainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+        $domainObject = new class() extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
             public $foo;
             public $bar;
         };
 
-        $secondDomainObject = new class extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+        $secondDomainObject = new class() extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
             public $foo;
             public $bar;
         };

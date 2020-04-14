@@ -54,7 +54,7 @@ class FailsafeContainerTest extends UnitTestCase
 
     public function testImplementsInterface(): void
     {
-        self::assertInstanceOf(ContainerInterface::class, new Container);
+        self::assertInstanceOf(ContainerInterface::class, new Container());
     }
 
     public function testWithString(): void
@@ -378,7 +378,7 @@ class FailsafeContainerTest extends UnitTestCase
 
     public function testNullContainer(): void
     {
-        $container = new Container;
+        $container = new Container();
         self::assertFalse($container->has('foo'));
     }
 
@@ -412,7 +412,7 @@ class FailsafeContainerTest extends UnitTestCase
             ],
             [
                 // Invokable
-                new class {
+                new class() {
                     public function __invoke(): Service
                     {
                         return new Service();
@@ -422,7 +422,7 @@ class FailsafeContainerTest extends UnitTestCase
             [
                 // Non static factory
                 [
-                    new class {
+                    new class() {
                         public function factory(): Service
                         {
                             return new Service();

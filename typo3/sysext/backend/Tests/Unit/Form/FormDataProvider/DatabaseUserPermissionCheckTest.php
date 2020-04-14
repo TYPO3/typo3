@@ -54,7 +54,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     {
         $this->beUserProphecy->isAdmin()->willReturn(true);
 
-        $result = (new DatabaseUserPermissionCheck)->addData([]);
+        $result = (new DatabaseUserPermissionCheck())->addData([]);
 
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -73,7 +73,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedTableModifyException::class);
         $this->expectExceptionCode(1437683248);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -97,7 +97,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437679657);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -119,7 +119,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::any())->willReturn(true);
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
@@ -145,7 +145,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -177,7 +177,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -206,7 +206,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
     }
@@ -230,7 +230,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -256,7 +256,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437679856);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -282,7 +282,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedEditInternalsException::class);
         $this->expectExceptionCode(1437687404);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -306,7 +306,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437745759);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -333,7 +333,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageNewException::class);
         $this->expectExceptionCode(1437745640);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -367,7 +367,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedHookException::class);
         $this->expectExceptionCode(1437689705);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 
     /**
@@ -398,7 +398,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             }
         ];
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
@@ -422,7 +422,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
     }
@@ -446,7 +446,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
@@ -467,7 +467,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $result = (new DatabaseUserPermissionCheck)->addData($input);
+        $result = (new DatabaseUserPermissionCheck())->addData($input);
 
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -490,6 +490,6 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437745221);
 
-        (new DatabaseUserPermissionCheck)->addData($input);
+        (new DatabaseUserPermissionCheck())->addData($input);
     }
 }

@@ -221,7 +221,7 @@ class Maintenance implements MiddlewareInterface
             $this->recreatePackageStatesFileIfMissing();
             $className = $this->controllers[$controllerName];
             /** @var AbstractController $controller */
-            $controller = $this->container->has($className) ? $this->container->get($className) : new $className;
+            $controller = $this->container->has($className) ? $this->container->get($className) : new $className();
             if (!method_exists($controller, $action)) {
                 throw new \RuntimeException(
                     'Unknown action method ' . $action . ' in controller ' . $controllerName,

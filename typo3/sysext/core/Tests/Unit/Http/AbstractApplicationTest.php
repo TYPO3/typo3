@@ -31,7 +31,7 @@ class AbstractApplicationTest extends UnitTestCase
             self::markTestSkipped('This test can only be executed if xdebug is present.');
         }
 
-        $application = new class extends AbstractApplication {
+        $application = new class() extends AbstractApplication {
             public function sendResponse(ResponseInterface $response)
             {
                 parent::sendResponse($response);

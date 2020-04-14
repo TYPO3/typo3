@@ -107,17 +107,17 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService
     {
-        return new Service\DependencyOrderingService;
+        return new Service\DependencyOrderingService();
     }
 
     public static function getContext(ContainerInterface $container): Context\Context
     {
-        return new Context\Context;
+        return new Context\Context();
     }
 
     public static function getPasswordHashFactory(ContainerInterface $container): Crypto\PasswordHashing\PasswordHashFactory
     {
-        return new Crypto\PasswordHashing\PasswordHashFactory;
+        return new Crypto\PasswordHashing\PasswordHashFactory();
     }
 
     public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver
