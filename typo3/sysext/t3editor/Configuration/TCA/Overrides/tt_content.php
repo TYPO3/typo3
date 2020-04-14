@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 // Activate t3editor for tt_content type HTML if this type exists

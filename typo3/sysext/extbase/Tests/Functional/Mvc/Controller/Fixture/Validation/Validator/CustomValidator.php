@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator;
 

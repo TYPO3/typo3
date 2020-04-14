@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Web>View',
     'description' => 'Shows the frontend webpage inside the backend frameset.',

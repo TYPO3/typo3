@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Frontend Login for Website Users',
     'description' => 'A template-based plugin to log in Website Users in the Frontend',

@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Workspaces Management',
     'description' => 'Adds versioning of records and workspaces functionality with custom stages to TYPO3.',

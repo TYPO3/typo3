@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->searchWhere' => [
         'numberOfMandatoryArguments' => 3,

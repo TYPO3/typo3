@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 // Do not delete this wizard. This makes sure new installations get the TER repository set in the database.

@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 // You may add PHP code here, which is executed on every request after the configuration is loaded.

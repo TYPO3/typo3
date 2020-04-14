@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'SEO',
     'description' => 'Add basic SEO features to TYPO3',

@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Select\Modify;
 
 /*

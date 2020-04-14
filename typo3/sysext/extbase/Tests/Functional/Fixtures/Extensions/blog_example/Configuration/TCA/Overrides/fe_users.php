@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 if (is_array($GLOBALS['TCA']['fe_users']['columns']['tx_extbase_type'])) {

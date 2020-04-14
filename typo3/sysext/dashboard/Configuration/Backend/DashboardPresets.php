@@ -1,4 +1,5 @@
 <?php
+
 return [
     'default' => [
         'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default',

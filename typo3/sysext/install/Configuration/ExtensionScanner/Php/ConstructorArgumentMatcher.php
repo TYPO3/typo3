@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\CMS\Core\Package\PackageManager' => [
         'required' => [

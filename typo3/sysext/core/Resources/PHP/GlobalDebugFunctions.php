@@ -1,4 +1,5 @@
 <?php
+
 // Short-hand debug function
 // If you wish to use the debug()-function, and it does not output something,
 // please edit the IP mask in TYPO3_CONF_VARS

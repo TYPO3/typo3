@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Fluid Templating Engine',
     'description' => 'Fluid is a next-generation templating engine which makes the life of extension authors a lot easier!',

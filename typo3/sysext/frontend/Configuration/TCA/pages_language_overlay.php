@@ -1,4 +1,5 @@
 <?php
+
 // @deprecated since v9 and will be removed in v11. Remove file and migration wizard "MigratePagesLanguageOverlayUpdate"
 return [
     'ctrl' => [

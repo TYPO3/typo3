@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
 
 /*

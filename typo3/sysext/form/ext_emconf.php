@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Form',
     'description' => 'Form Library, Plugin and Editor',

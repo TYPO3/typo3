@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\\CMS\\Frontend\\Page\\PageRepository' => \TYPO3\CMS\Core\Domain\Repository\PageRepository::class,
     'TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetPageHookInterface' => \TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface::class,

@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 Core',
     'description' => 'The core library of TYPO3.',

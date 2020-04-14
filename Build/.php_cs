@@ -56,6 +56,7 @@ return PhpCsFixer\Config::create()
         '@DoctrineAnnotation' => true,
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'blank_line_after_opening_tag' => true,
         'cast_spaces' => ['space' => 'none'],
         'concat_space' => ['spacing' => 'one'],
         'declare_equal_normalize' => ['space' => 'none'],
@@ -94,6 +95,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
         'return_type_declaration' => ['space_before' => 'none'],
         'single_quote' => true,
+        'single_trait_insert_per_statement' => true,
         'whitespace_after_comma_in_array' => true,
     ])
     ->setFinder($finder);

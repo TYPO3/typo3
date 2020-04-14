@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Beuser\Service;
 
 use TYPO3\CMS\Beuser\Domain\Model\Demand;

@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 Backend',
     'description' => 'Classes for the TYPO3 backend.',

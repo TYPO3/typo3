@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Web>Template',
     'description' => 'Framework for management of TypoScript template records for the CMS frontend.',

@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Fluid Styled Content',
     'description' => 'A set of common content elements based on Fluid for Frontend output.',

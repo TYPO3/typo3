@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Advanced file metadata',
     'description' => 'Add advanced metadata to File.',

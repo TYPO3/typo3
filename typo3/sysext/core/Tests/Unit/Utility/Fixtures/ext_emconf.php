@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => '',
     'description' => 'This is a fixture extension configuration file used for unit tests.',

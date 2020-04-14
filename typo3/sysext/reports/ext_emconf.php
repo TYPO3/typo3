@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'System Reports',
     'description' => 'The reports module groups several system reports.',

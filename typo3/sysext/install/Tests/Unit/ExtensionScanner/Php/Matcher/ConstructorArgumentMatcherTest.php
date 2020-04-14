@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
@@ -42,7 +43,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'numberOfMandatoryArguments' => 4,
                     ]),
                 ],
-                [32, 33, 34, 35, 40, 41],
+                [33, 34, 35, 36, 41, 42],
             ],
             'dropped' => [
                 [
@@ -50,7 +51,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'maximumNumberOfArguments' => 2,
                     ]),
                 ],
-                [32, 33, 34, 35, 40, 41],
+                [33, 34, 35, 36, 41, 42],
             ],
             'called' => [
                 [
@@ -59,7 +60,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'maximumNumberOfArguments' => 3,
                     ]),
                 ],
-                [32, 33, 34, 35, 40, 41],
+                [33, 34, 35, 36, 41, 42],
             ],
             'unused' => [
                 [
@@ -67,7 +68,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'unusedArgumentNumbers' => [2],
                     ]),
                 ],
-                [32, 33, 34, 35],
+                [33, 34, 35, 36],
             ],
         ];
     }

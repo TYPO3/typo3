@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Filemetadata\Tests\Functional\Tca;
 
 /*

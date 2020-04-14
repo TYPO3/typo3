@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
@@ -50,8 +51,8 @@ class ArrayDimensionMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
-            26,
             27,
+            28,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

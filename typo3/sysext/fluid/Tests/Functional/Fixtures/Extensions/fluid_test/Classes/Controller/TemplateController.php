@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3Fluid\FluidTest\Controller;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;

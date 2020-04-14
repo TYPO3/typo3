@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'File>List',
     'description' => 'Listing of files in the directory',

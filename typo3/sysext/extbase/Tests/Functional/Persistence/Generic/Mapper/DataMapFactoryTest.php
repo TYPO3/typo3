@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;

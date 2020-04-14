@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName' => [
         'maximumNumberOfArguments' => 1,

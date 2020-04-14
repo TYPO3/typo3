@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Extension Manager',
     'description' => 'TYPO3 Extension Manager',

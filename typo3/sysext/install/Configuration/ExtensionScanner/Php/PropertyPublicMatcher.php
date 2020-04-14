@@ -1,4 +1,5 @@
 <?php
+
 return [
     // Removed public properties
     'TYPO3\CMS\Backend\Controller\EditDocumentController->localizationMode' => [

@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'User>Open Documents',
     'description' => 'Shows opened documents by the user.',

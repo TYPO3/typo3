@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Backend User Administration',
     'description' => 'Backend user administration and overview. Allows you to compare the settings of users and verify their permissions and see who is online.',

@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 
 /*

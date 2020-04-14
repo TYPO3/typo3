@@ -1,4 +1,5 @@
 <?php
+
 return [
     // Get the content of a widget
     'ext-dashboard-get-widget-content' => [

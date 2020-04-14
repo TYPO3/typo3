@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Redirects',
     'description' => 'Manage redirects for your TYPO3-based website.',

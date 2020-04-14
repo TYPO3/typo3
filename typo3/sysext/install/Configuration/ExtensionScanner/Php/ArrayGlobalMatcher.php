@@ -1,4 +1,5 @@
 <?php
+
 return [
     '$GLOBALS[\'TYPO3_DB\']' => [
         'restFiles' => [

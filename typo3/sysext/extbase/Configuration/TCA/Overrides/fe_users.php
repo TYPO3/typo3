@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 if (!isset($GLOBALS['TCA']['fe_users']['ctrl']['type'])) {

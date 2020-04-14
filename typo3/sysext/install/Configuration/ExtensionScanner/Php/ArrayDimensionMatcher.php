@@ -1,4 +1,5 @@
 <?php
+
 return [
     // LocalConfiguration / AdditionalConfiguration settings
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'GLOBAL\'][\'cliKeys\']' => [

@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3Fluid\FluidTest\ViewHelpers;
 
 /*

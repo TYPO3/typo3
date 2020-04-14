@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
@@ -51,9 +52,9 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
-            28,
-            30,
-            32,
+            29,
+            31,
+            33,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

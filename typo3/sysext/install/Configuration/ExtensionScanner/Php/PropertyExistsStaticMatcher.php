@@ -1,4 +1,5 @@
 <?php
+
 return [
     // Properties changed from public to protected
     'suppressNotices' => [

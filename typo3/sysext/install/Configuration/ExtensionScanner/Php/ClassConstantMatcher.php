@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR' => [
         'restFiles' => [

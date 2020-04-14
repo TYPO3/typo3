@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
@@ -58,11 +59,10 @@ class ClassNameMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
-            28,
-            28,
-            28,
-            30,
-            33,
+            29,
+            29,
+            29,
+            31,
             34,
             35,
             36,
@@ -72,8 +72,9 @@ class ClassNameMatcherTest extends UnitTestCase
             40,
             41,
             42,
-            45,
+            43,
             46,
+            47,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $match) {

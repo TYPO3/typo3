@@ -1,4 +1,5 @@
 <?php
+
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 /*

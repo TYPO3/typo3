@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Dashboard',
     'description' => 'Add dashboard to TYPO3',

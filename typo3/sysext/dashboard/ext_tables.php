@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 $GLOBALS['TBE_MODULES']['_configuration']['dashboard'] = [

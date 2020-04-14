@@ -1,4 +1,5 @@
 <?php
+
 return [
     'dashboard' => [
         'path' => '/ext/dashboard',

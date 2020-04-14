@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 
 /*

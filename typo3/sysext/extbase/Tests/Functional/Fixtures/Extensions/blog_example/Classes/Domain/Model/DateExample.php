@@ -1,4 +1,5 @@
 <?php
+
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;

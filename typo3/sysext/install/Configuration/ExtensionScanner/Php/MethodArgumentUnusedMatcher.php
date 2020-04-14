@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform' => [
         'unusedArgumentNumbers' => [ 2 ],

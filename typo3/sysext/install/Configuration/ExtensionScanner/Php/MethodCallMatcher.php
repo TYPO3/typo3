@@ -1,4 +1,5 @@
 <?php
+
 return [
     // Removed methods
     'TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg' => [

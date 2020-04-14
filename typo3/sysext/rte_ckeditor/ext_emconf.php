@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'CKEditor Rich Text Editor',
     'description' => 'Integration of CKEditor as Rich Text Editor.',

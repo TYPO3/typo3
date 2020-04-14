@@ -1,4 +1,5 @@
 <?php
+
 namespace OliverHader\IrreTutorial\Domain\Model;
 
 /*

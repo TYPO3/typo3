@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3_DLOG' => [
         'restFiles' => [

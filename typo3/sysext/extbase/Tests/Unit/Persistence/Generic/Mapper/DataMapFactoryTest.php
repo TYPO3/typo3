@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
 /*

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping' => [
         'maximumNumberOfArguments' => 2,

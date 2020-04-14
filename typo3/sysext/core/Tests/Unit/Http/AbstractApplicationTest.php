@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use Psr\Http\Message\ResponseInterface;

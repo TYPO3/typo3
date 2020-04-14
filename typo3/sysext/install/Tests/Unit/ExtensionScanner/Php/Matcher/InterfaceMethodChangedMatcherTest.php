@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
@@ -69,8 +70,8 @@ class InterfaceMethodChangedMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
-            30,
-            33,
+            31,
+            34,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $match) {
