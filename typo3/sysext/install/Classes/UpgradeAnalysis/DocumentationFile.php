@@ -147,10 +147,10 @@ class DocumentationFile
                 $entry['filename']
             );
         }
-        $entry['url']['issue'] = sprintf(
-            'https://forge.typo3.org/issues/%s',
-            $this->parseIssueId($entry['filename'])
-        );
+        $issueId = $this->parseIssueId($entry['filename']);
+        if ($issueId) {
+            $entry['url']['issue'] = sprintf('https://forge.typo3.org/issues/%s', $issueId);
+        }
 
         return [md5($file) => $entry];
     }
@@ -342,11 +342,11 @@ class DocumentationFile
     /**
      * @param string $filename
      *
-     * @return string
+     * @return string|null
      */
-    protected function parseIssueId(string $filename): string
+    protected function parseIssueId(string $filename): ?string
     {
-        return GeneralUtility::trimExplode('-', $filename)[1];
+        return GeneralUtility::trimExplode('-', $filename)[1] ?? null;
     }
 
     /**
