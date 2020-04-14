@@ -2099,7 +2099,7 @@ class GeneralUtility
      * and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup']
      *
      * @param string $newFolder Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
-     * @return bool TRUE if @mkdir went well!
+     * @return bool TRUE if operation was successful
      */
     public static function mkdir($newFolder)
     {
@@ -2177,7 +2177,7 @@ class GeneralUtility
      *
      * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
      * @param bool $removeNonEmpty Allow deletion of non-empty directories
-     * @return bool TRUE if @rmdir went well!
+     * @return bool TRUE if operation was successful
      */
     public static function rmdir($path, $removeNonEmpty = false)
     {
