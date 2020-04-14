@@ -416,10 +416,7 @@ class TreeController
                 }
             }
 
-            $entryPoint = $repository->getTree($entryPoint, function ($page) use ($backendUser) {
-                // Check each page if the user has permission to access it
-                return $backendUser->doesUserHaveAccess($page, Permission::PAGE_SHOW);
-            });
+            $entryPoint = $repository->getTree($entryPoint);
             if (!is_array($entryPoint)) {
                 unset($entryPoints[$k]);
             }

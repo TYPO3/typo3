@@ -72,6 +72,8 @@ class PageTreeRepository
         'shortcut_mode',
         'mount_pid_ol',
         'url',
+        'sys_language_uid',
+        'l10n_parent',
     ];
 
     /**
