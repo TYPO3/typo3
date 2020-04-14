@@ -44,12 +44,4 @@ class EnvironmentService implements SingletonInterface
     {
         return (defined('TYPO3_MODE') && TYPO3_MODE === 'BE') ?: false;
     }
-
-    /**
-     * @return string
-     */
-    public function getServerRequestMethod(): string
-    {
-        return isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-    }
 }

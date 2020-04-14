@@ -83,7 +83,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getExtensionService(ContainerInterface $container): Service\ExtensionService
     {
         $extensionService = self::new($container, Service\ExtensionService::class);
-        $extensionService->injectObjectManager($container->get(Object\ObjectManager::class));
         $extensionService->injectConfigurationManager($container->get(Configuration\ConfigurationManager::class));
         return $extensionService;
     }

@@ -225,7 +225,7 @@ class RequestBuilder implements SingletonInterface
         // @todo Use Environment
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri($baseUri);
-        $request->setMethod($this->environmentService->getServerRequestMethod());
+        $request->setMethod($this->getServerRequestMethod($typo3Request));
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
         } else {
@@ -371,5 +371,13 @@ class RequestBuilder implements SingletonInterface
             }
         }
         return $fieldPaths;
+    }
+
+    protected function getServerRequestMethod(?ServerRequestInterface $typo3Request): string
+    {
+        if ($typo3Request instanceof ServerRequestInterface) {
+            return $typo3Request->getMethod();
+        }
+        return isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
     }
 }

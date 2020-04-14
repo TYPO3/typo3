@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -26,29 +25,16 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class FrontendRequestHandler extends AbstractRequestHandler
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-     */
-    protected $extensionService;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @param ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
-     */
-    public function injectExtensionService(ExtensionService $extensionService)
-    {
-        $this->extensionService = $extensionService;
     }
 
     /**
@@ -59,7 +45,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
     public function handleRequest()
     {
         $request = $this->requestBuilder->build();
-        if ($this->extensionService->isActionCacheable(null, null, $request->getControllerObjectName(), $request->getControllerActionName())) {
+        if ($this->isActionCacheable($request->getControllerObjectName(), $request->getControllerActionName())) {
             $request->setIsCached(true);
         } else {
             $contentObject = $this->configurationManager->getContentObject();
@@ -89,5 +75,20 @@ class FrontendRequestHandler extends AbstractRequestHandler
     public function canHandleRequest()
     {
         return $this->environmentService->isEnvironmentInFrontendMode();
+    }
+
+    protected function isActionCacheable(string $controllerClassName, string $actionName): bool
+    {
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
+        );
+
+        $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'] ?? null;
+
+        if (!is_array($nonCacheableActions)) {
+            return true;
+        }
+
+        return !in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'], true);
     }
 }

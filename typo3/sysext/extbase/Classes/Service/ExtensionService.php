@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Service for determining basic extension params
@@ -32,23 +31,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  */
 class ExtensionService implements SingletonInterface
 {
-    /**
-     * todo: Deprecate this constant in favor of the following one:
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN
-     */
-    const PLUGIN_TYPE_PLUGIN = 'list_type';
-
-    /**
-     * todo: Deprecate this constant in favor of the following one:
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
-     */
-    const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -59,14 +41,6 @@ class ExtensionService implements SingletonInterface
      * @var array
      */
     protected $targetPidPluginCache = [];
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager): void
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
@@ -143,32 +117,6 @@ class ExtensionService implements SingletonInterface
             throw new Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument', 1280825466);
         }
         return !empty($pluginNames) ? $pluginNames[0] : null;
-    }
-
-    /**
-     * Checks if the given action is cacheable or not.
-     *
-     * @param string|null $extensionName Name of the target extension, without underscores
-     * @param string|null $pluginName Name of the target plugin
-     * @param string $controllerClassName Name of the target controller
-     * @param string $actionName Name of the action to be called
-     * @return bool TRUE if the specified plugin action is cacheable, otherwise FALSE
-     */
-    public function isActionCacheable(?string $extensionName, ?string $pluginName, string $controllerClassName, string $actionName): bool
-    {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-            $extensionName,
-            $pluginName
-        );
-
-        $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'] ?? null;
-
-        if (!is_array($nonCacheableActions)) {
-            return true;
-        }
-
-        return !in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'], true);
     }
 
     /**

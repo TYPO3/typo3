@@ -225,34 +225,6 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActionCacheableReturnsTrueByDefault()
-    {
-        $mockConfiguration = [];
-        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($mockConfiguration);
-        $actualResult = $this->extensionService->isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
-        self::assertTrue($actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function isActionCacheableReturnsFalseIfActionIsNotCacheable()
-    {
-        $mockConfiguration = [
-            'controllerConfiguration' => [
-                'SomeController' => [
-                    'nonCacheableActions' => ['someAction']
-                ]
-            ]
-        ];
-        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($mockConfiguration);
-        $actualResult = $this->extensionService->isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
-        self::assertFalse($actualResult);
-    }
-
-    /**
-     * @test
-     */
     public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized()
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn([]);
