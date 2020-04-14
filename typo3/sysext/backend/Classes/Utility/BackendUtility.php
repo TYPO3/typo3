@@ -167,6 +167,7 @@ class BackendUtility
      *
      * @param array $record
      * @return array
+     * @internal should only be used from within TYPO3 Core
      */
     public static function purgeComputedPropertiesFromRecord(array $record): array
     {
@@ -184,6 +185,7 @@ class BackendUtility
      *
      * @param array $propertyNames
      * @return array
+     * @internal should only be used from within TYPO3 Core
      */
     public static function purgeComputedPropertyNames(array $propertyNames): array
     {
@@ -201,6 +203,7 @@ class BackendUtility
      *
      * @param string $str [tablename]_[uid] string to explode
      * @return array
+     * @internal should only be used from within TYPO3 Core
      */
     public static function splitTable_Uid($str)
     {
@@ -217,6 +220,7 @@ class BackendUtility
      * @param string $table The table from which to return enableFields WHERE clause. Table name must have a 'ctrl' section in $GLOBALS['TCA'].
      * @param bool $inv Means that the query will select all records NOT VISIBLE records (inverted selection)
      * @return string WHERE clause part
+     * @internal should only be used from within TYPO3 Core, but DefaultRestrictionHandler is recommended as alternative
      */
     public static function BEenableFields($table, $inv = false)
     {
@@ -491,6 +495,7 @@ class BackendUtility
      *
      * @param int $pid Page id.
      * @param bool $clearExpansion If set, then other open branches are closed.
+     * @internal should only be used from within TYPO3 Core
      */
     public static function openPageTree($pid, $clearExpansion)
     {
@@ -796,6 +801,7 @@ class BackendUtility
      * @param string $fields Optional $fields list (default: username,usergroup,usergroup_cached_list,uid) can be used to set the selected fields
      * @param string $where Optional $where clause (fx. "AND username='pete'") can be used to limit query
      * @return array
+     * @internal should only be used from within TYPO3 Core, use a direct SQL query instead to ensure proper DBAL where statements
      */
     public static function getUserNames($fields = 'username,usergroup,usergroup_cached_list,uid', $where = '')
     {
@@ -813,6 +819,7 @@ class BackendUtility
      * @param string $fields Field list
      * @param string $where WHERE clause
      * @return array
+     * @internal should only be used from within TYPO3 Core, use a direct SQL query instead to ensure proper DBAL where statements
      */
     public static function getGroupNames($fields = 'title,uid', $where = '')
     {
@@ -877,6 +884,7 @@ class BackendUtility
      * @param array $groupArray Group names
      * @param bool $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
      * @return array User names, blinded
+     * @internal
      */
     public static function blindUserNames($usernames, $groupArray, $excludeBlindedFlag = false)
     {
@@ -911,6 +919,7 @@ class BackendUtility
      * @param array $groupArray Group names (reference)
      * @param bool $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
      * @return array
+     * @internal
      */
     public static function blindGroupNames($groups, $groupArray, $excludeBlindedFlag = false)
     {
@@ -2112,6 +2121,7 @@ class BackendUtility
      * @param string $prefix Table prefix
      * @param array $fields Preset fields (must include prefix if that is used)
      * @return string List of fields.
+     * @internal should only be used from within TYPO3 Core
      */
     public static function getCommonSelectFields($table, $prefix = '', $fields = [])
     {
@@ -2163,6 +2173,7 @@ class BackendUtility
      * @param string $table Table name
      * @param string $field Field name
      * @return array With keys 'description' (raw, as available in locallang), 'title' (optional), 'moreInfo'
+     * @internal should only be used from within TYPO3 Core
      */
     public static function helpTextArray($table, $field)
     {
@@ -2201,6 +2212,7 @@ class BackendUtility
      * @param string $field Field name
      * @return string HTML content for help text
      * @see cshItem()
+     * @internal should only be used from within TYPO3 Core
      */
     public static function helpText($table, $field)
     {
@@ -2233,6 +2245,7 @@ class BackendUtility
      * @param string $text The text which should be wrapped with the help text
      * @param array $overloadHelpText Array with text to overload help text
      * @return string the HTML code ready to render
+     * @internal should only be used from within TYPO3 Core
      */
     public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = [])
     {
@@ -3182,6 +3195,7 @@ class BackendUtility
      *
      * @param string $spKey softRef parser key
      * @return mixed If available, returns Soft link parser object, otherwise false.
+     * @internal should only be used from within TYPO3 Core
      */
     public static function softRefParserObj($spKey)
     {
@@ -3208,6 +3222,7 @@ class BackendUtility
      * @param string $parserList softRef parser list
      * @return array|bool Array where the parser key is the key and the value is the parameter string, FALSE if no parsers were found
      * @throws \InvalidArgumentException
+     * @internal should only be used from within TYPO3 Core
      */
     public static function explodeSoftRefParserList($parserList)
     {
@@ -3371,6 +3386,7 @@ class BackendUtility
      * @param bool $includeDeletedRecords If set, deleted-flagged versions are included! (Only for clean-up script!)
      * @param array $row The current record
      * @return array|null Array of versions of table/uid
+     * @internal should only be used from within TYPO3 Core
      */
     public static function selectVersionsOfRecord(
         $table,
@@ -3465,6 +3481,7 @@ class BackendUtility
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
      * @param bool $ignoreWorkspaceMatch Ignore workspace match
      * @see PageRepository::fixVersioningPid()
+     * @internal should only be used from within TYPO3 Core
      */
     public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
     {
@@ -3612,6 +3629,7 @@ class BackendUtility
      * @param array $row Row (passed by reference) - must be online record!
      * @return bool TRUE if overlay is made.
      * @see PageRepository::movePlhOl()
+     * @internal should only be used from within TYPO3 Core
      */
     public static function movePlhOL($table, &$row)
     {
@@ -3707,6 +3725,7 @@ class BackendUtility
      * @param string $table Name of the table
      * @param int $uid Uid of the offline/draft record
      * @return int|null The id of the live version of the record (or NULL if nothing was found)
+     * @internal should only be used from within TYPO3 Core
      */
     public static function getLiveVersionIdOfRecord($table, $uid)
     {
@@ -3729,6 +3748,7 @@ class BackendUtility
      *
      * @param string $table Table name
      * @return string Where clause if applicable.
+     * @internal should only be used from within TYPO3 Core
      */
     public static function versioningPlaceholderClause($table)
     {
@@ -3745,6 +3765,7 @@ class BackendUtility
      * @param string $table Table name
      * @param int $workspaceId Workspace ID
      * @return string Workspace where clause
+     * @internal should only be used from within TYPO3 Core
      */
     public static function getWorkspaceWhereClause($table, $workspaceId = null)
     {
@@ -3766,6 +3787,7 @@ class BackendUtility
      * @param string $table Table name
      * @param int $uid Record uid (of live record placeholder)
      * @return int Uid of offline version if any, otherwise live uid.
+     * @internal should only be used from within TYPO3 Core
      */
     public static function wsMapId($table, $uid)
     {
@@ -3789,6 +3811,7 @@ class BackendUtility
      * @param string $fields Field list, default is *
      * @param int|null $workspace The workspace to be used
      * @return array|bool If found, the record, otherwise false
+     * @internal should only be used from within TYPO3 Core
      */
     public static function getMovePlaceholder($table, $uid, $fields = '*', $workspace = null)
     {
@@ -3912,6 +3935,7 @@ class BackendUtility
      *
      * @param string $interface Name of the backend interface  (backend, frontend) to look up the script name for. If no interface is given, the interface for the current backend user is used.
      * @return string The name of the backend script relative to the TYPO3 main directory.
+     * @internal should only be used from within TYPO3 Core
      */
     public static function getBackendScript($interface = '')
     {

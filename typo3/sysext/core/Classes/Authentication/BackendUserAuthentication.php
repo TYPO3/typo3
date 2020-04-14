@@ -142,6 +142,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * List of group_id's in the order they are processed.
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $includeGroupArray = [];
 
@@ -157,6 +158,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Contains last error message
+     * @internal should only be used from within TYPO3 Core
      * @var string
      */
     public $errorMsg = '';
@@ -255,11 +257,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * The value must be at least 180 to avoid side effects.
      *
      * @var int
+     * @internal should only be used from within TYPO3 Core
      */
     public $sessionTimeout = 28800;
 
     /**
      * @var int
+     * @internal should only be used from within TYPO3 Core
      */
     public $firstMainGroup = 0;
 
@@ -277,6 +281,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * moduleData
      * moduleSessionID
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $uc_default = [
         'interfaceSetup' => '',
@@ -329,6 +334,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int $groupId Group ID to look for in $this->groupList
      * @return bool
+     * @internal should only be used from within TYPO3 Core, use Context API for quicker access
      */
     public function isMemberOfGroup($groupId)
     {
@@ -521,6 +527,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int $perms Permission mask to use, see function description
      * @return string Part of where clause. Prefix " AND " to this.
+     * @internal should only be used from within TYPO3 Core, use PagePermissionDatabaseRestriction instead.
      */
     public function getPagePermsClause($perms)
     {
@@ -631,6 +638,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Returns TRUE if the RTE (Rich Text Editor) is enabled for the user.
      *
      * @return bool
+     * @internal should only be used from within TYPO3 Core
      */
     public function isRTE()
     {
@@ -800,6 +808,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param bool $deletedRecord Set, if testing a deleted record array.
      * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
      * @return bool TRUE if OK, otherwise FALSE
+     * @internal should only be used from within TYPO3 Core
      */
     public function recordEditAccessInternals($table, $idOrRow, $newRecord = false, $deletedRecord = false, $checkFullLanguageAccess = false)
     {
@@ -915,6 +924,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $table Table of record
      * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_oid, t3ver_stage (if versioningWS is set)
      * @return string String error code, telling the failure state. FALSE=All ok
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceCannotEditRecord($table, $recData)
     {
@@ -992,6 +1002,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param int $pid PID value to check for. OBSOLETE!
      * @param string $table Table name
      * @return mixed Returns FALSE if a live record cannot be created and must be versionized in order to do so. 2 means a) Workspace is "Live" or workspace allows "live edit" of records from non-versionized tables (and the $table is not versionizable). 1 and -1 means the pid is inside a versionized branch where -1 means that the branch-point did NOT allow a new record according to its state.
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceAllowLiveRecordsInPID($pid, $table)
     {
@@ -1016,6 +1027,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $table
      * @return bool
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceAllowsLiveEditingInTable(string $table): bool
     {
@@ -1044,6 +1056,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param int $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
      * @param string $table Table name
      * @return bool TRUE if OK.
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceCreateNewRecord($pid, $table)
     {
@@ -1062,6 +1075,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $table Table name
      * @return bool
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceCanCreateNewRecord(string $table): bool
     {
@@ -1082,6 +1096,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param int $id UID of record
      * @param int $recpid PID of record
      * @return bool TRUE if ok.
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceAllowAutoCreation($table, $id, $recpid)
     {
@@ -1111,6 +1126,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int $stage Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
      * @return bool TRUE if user is allowed access
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceCheckStageForCurrent($stage)
     {
@@ -2038,6 +2054,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * Called from within this function, see fetchGroupData()
      *
      * @see fetchGroupData()
+     * @internal should only be used from within TYPO3 Core
      */
     public function workspaceInit()
     {
@@ -2085,6 +2102,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
      * @param string $fields List of fields to select. Default fields are all
      * @return array Output will also show how access was granted. Admin users will have a true output regardless of input.
+     * @internal should only be used from within TYPO3 Core
      */
     public function checkWorkspace($wsRec, $fields = '*')
     {
@@ -2155,6 +2173,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      *
      * @return array See checkWorkspace()
      * @see checkWorkspace()
+     * @internal should only be used from within TYPO3 Core
      */
     public function checkWorkspaceCurrent()
     {
@@ -2168,6 +2187,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * Setting workspace ID
      *
      * @param int $workspaceId ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
+     * @internal should only be used from within TYPO3 Core
      */
     public function setWorkspace($workspaceId)
     {
@@ -2194,6 +2214,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      *
      * @param int $workspaceId
      * @return bool
+     * @internal should only be used from within TYPO3 Core
      */
     public function setTemporaryWorkspace($workspaceId)
     {
@@ -2211,6 +2232,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
 
     /**
      * Sets the default workspace in the context of the current backend user.
+     * @internal should only be used from within TYPO3 Core
      */
     public function setDefaultWorkspace()
     {
@@ -2224,6 +2246,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * Live workspace, if he has access to. If no workspace is available for the user, the workspace ID is set to "-99"
      *
      * @return int Default workspace id.
+     * @internal should only be used from within TYPO3 Core
      */
     public function getDefaultWorkspace()
     {
@@ -2456,6 +2479,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * then make an IP comparison with REMOTE_ADDR and check if the IP address matches
      *
      * @return bool TRUE, if IP address validates OK (or no check is done at all because no restriction is set)
+     * @internal should only be used from within TYPO3 Core
      */
     public function checkLockToIP()
     {

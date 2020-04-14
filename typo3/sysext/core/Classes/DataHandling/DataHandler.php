@@ -116,6 +116,7 @@ class DataHandler implements LoggerAwareInterface
      * is similar, it's not saved then.
      *
      * @var bool
+     * @internal should only be used from within TYPO3 Core
      */
     public $checkSimilar = true;
 
@@ -177,6 +178,7 @@ class DataHandler implements LoggerAwareInterface
      * YOU MUST KNOW what you do if you use this feature!
      *
      * @var bool
+     * @internal should only be used from within TYPO3 Core
      */
     public $bypassWorkspaceRestrictions = false;
 
@@ -193,6 +195,7 @@ class DataHandler implements LoggerAwareInterface
      * If '*' then all will (that the user has permission to of course)
      *
      * @var string
+     * @internal should only be used from within TYPO3 Core
      */
     public $copyWhichTables = '*';
 
@@ -212,6 +215,7 @@ class DataHandler implements LoggerAwareInterface
      * (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $defaultValues = [];
 
@@ -221,6 +225,7 @@ class DataHandler implements LoggerAwareInterface
      * found in the table, because it's not checked. All columns can be set by this array!
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $overrideValues = [];
 
@@ -230,6 +235,7 @@ class DataHandler implements LoggerAwareInterface
      * Then an empty checkbox will disable the field.
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $data_disableFields = [];
 
@@ -249,6 +255,7 @@ class DataHandler implements LoggerAwareInterface
      * iteration functions inside DataHandler for traversing a FlexForm structure.
      *
      * @var object
+     * @internal should only be used from within TYPO3 Core
      */
     public $callBackObj;
 
@@ -267,6 +274,7 @@ class DataHandler implements LoggerAwareInterface
      * Contains mapping of auto-versionized records.
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $autoVersionIdMap = [];
 
@@ -281,6 +289,7 @@ class DataHandler implements LoggerAwareInterface
      * Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $substNEWwithIDs_table = [];
 
@@ -288,13 +297,15 @@ class DataHandler implements LoggerAwareInterface
      * Holds the tables and there the ids of newly created child records from IRRE
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $newRelatedIDs = [];
 
     /**
-     * This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
+     * This array is the sum of all copying operations in this class.
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $copyMappingArray_merged = [];
 
@@ -309,6 +320,7 @@ class DataHandler implements LoggerAwareInterface
      * Errors are collected in this variable.
      *
      * @var array
+     * @internal should only be used from within TYPO3 Core
      */
     public $errorLog = [];
 
@@ -323,6 +335,7 @@ class DataHandler implements LoggerAwareInterface
      * Indicates whether the pagetree needs a refresh because of important changes
      *
      * @var bool
+     * @internal should only be used from within TYPO3 Core
      */
     public $pagetreeNeedsRefresh = false;
 
@@ -343,6 +356,7 @@ class DataHandler implements LoggerAwareInterface
      * Will be set to uid of be_user executing this script
      *
      * @var int
+     * @internal should only be used from within TYPO3 Core
      */
     public $userid;
 
@@ -350,6 +364,7 @@ class DataHandler implements LoggerAwareInterface
      * Will be set to username of be_user executing this script
      *
      * @var string
+     * @internal should only be used from within TYPO3 Core
      */
     public $username;
 
@@ -357,6 +372,7 @@ class DataHandler implements LoggerAwareInterface
      * Will be set if user is admin
      *
      * @var bool
+     * @internal should only be used from within TYPO3 Core
      */
     public $admin;
 
@@ -445,6 +461,7 @@ class DataHandler implements LoggerAwareInterface
      * Min 1, should be power of 2
      *
      * @var int
+     * @internal should only be used from within TYPO3 Core
      */
     public $sortIntervals = 256;
 
@@ -482,6 +499,7 @@ class DataHandler implements LoggerAwareInterface
      * For accumulation of MM relations that must be written after new records are created.
      *
      * @var array
+     * @internal
      */
     public $dbAnalysisStore = [];
 
@@ -489,6 +507,7 @@ class DataHandler implements LoggerAwareInterface
      * Used for tracking references that might need correction after operations
      *
      * @var array
+     * @internal
      */
     public $registerDBList = [];
 
@@ -496,6 +515,7 @@ class DataHandler implements LoggerAwareInterface
      * Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
      *
      * @var array
+     * @internal
      */
     public $registerDBPids = [];
 
@@ -508,6 +528,7 @@ class DataHandler implements LoggerAwareInterface
      * are only available after an action has been completed.
      *
      * @var array
+     * @internal
      */
     public $copyMappingArray = [];
 
@@ -515,6 +536,7 @@ class DataHandler implements LoggerAwareInterface
      * Array used for remapping uids and values at the end of process_datamap
      *
      * @var array
+     * @internal
      */
     public $remapStack = [];
 
@@ -523,6 +545,7 @@ class DataHandler implements LoggerAwareInterface
      * (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
      *
      * @var array
+     * @internal
      */
     public $remapStackRecords = [];
 
@@ -551,6 +574,7 @@ class DataHandler implements LoggerAwareInterface
      * Array used for additional calls to $this->updateRefIndex
      *
      * @var array
+     * @internal
      */
     public $updateRefIndexStack = [];
 
@@ -559,6 +583,7 @@ class DataHandler implements LoggerAwareInterface
      * This variable is set by \TYPO3\CMS\Impext\ImportExport
      *
      * @var bool
+     * @internal only used within TYPO3 Core
      */
     public $callFromImpExp = false;
 
@@ -568,6 +593,7 @@ class DataHandler implements LoggerAwareInterface
      * Set to "currentRecord" during checking of values.
      *
      * @var array
+     * @internal
      */
     public $checkValue_currentRecord = [];
 
@@ -638,6 +664,7 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * @param array $control
+     * @internal
      */
     public function setControl(array $control)
     {
@@ -706,6 +733,7 @@ class DataHandler implements LoggerAwareInterface
      * Example: $mirror[table][11] = '22,33' will look for content in $this->datamap[table][11] and copy it to $this->datamap[table][22] and $this->datamap[table][33]
      *
      * @param array $mirror This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
+     * @internal
      */
     public function setMirror($mirror)
     {
@@ -735,6 +763,7 @@ class DataHandler implements LoggerAwareInterface
      * Initializes default values coming from User TSconfig
      *
      * @param array $userTS User TSconfig array
+     * @internal should only be used from within DataHandler
      */
     public function setDefaultsFromUserTS($userTS)
     {
@@ -812,6 +841,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table (reference) The table currently processing data for
      * @param string $id (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
      * @param array $fieldArray (reference) The field array of a record
+     * @internal should only be used from within DataHandler
      */
     public function hook_processDatamap_afterDatabaseOperations(&$hookObjectsArr, &$status, &$table, &$id, &$fieldArray)
     {
@@ -1279,6 +1309,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $id Record uid
+     * @internal should only be used from within DataHandler
      */
     public function placeholderShadowing($table, $id)
     {
@@ -1335,6 +1366,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table The table name
      * @param string $placeholderContent Placeholder content to be used
      * @return string placeholder value
+     * @internal should only be used from within DataHandler
      */
     public function getPlaceholderTitleForTableLabel($table, $placeholderContent = null)
     {
@@ -1364,6 +1396,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $status Is 'new' or 'update'
      * @param int $tscPID TSconfig PID
      * @return array Field Array
+     * @internal should only be used from within DataHandler
      */
     public function fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $realPid, $status, $tscPID)
     {
@@ -1517,6 +1550,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $tscPID TSconfig PID
      * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray)
      * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
+     * @internal should only be used from within DataHandler
      */
     public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID, $incomingFieldArray = [])
     {
@@ -1644,6 +1678,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $tscPID TSconfig PID
      * @param array $additionalData Additional data to be forwarded to sub-processors
      * @return array Returns the evaluated $value as key "value" in this array.
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID, array $additionalData = null)
     {
@@ -2249,6 +2284,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $array Array with FlexForm data
      * @param bool $addPrologue If set, the XML prologue is returned as well.
      * @return string Input array converted to XML
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_flexArray2Xml($array, $addPrologue = false)
     {
@@ -2304,6 +2340,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
      * @param string $field Field name
      * @param array $additionalData Additional data to be forwarded to sub-processors
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = null)
     {
@@ -2324,6 +2361,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name
      * @param array $additionalData Additional data to be forwarded to sub-processors
      * @return array|bool Modified $res array
+     * @internal should only be used from within DataHandler
      */
     public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, array $additionalData = null)
     {
@@ -2362,6 +2400,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $tcaFieldConf Field configuration from TCA
      * @param array $valueArray Current value array of items
      * @return array The truncated value array of items
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_checkMax($tcaFieldConf, $valueArray)
     {
@@ -2389,6 +2428,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $newPid If set, the value will be unique for this PID
      * @return string Modified value (if not-unique). Will be the value appended with a number (until 100, then the function just breaks).
      * @todo: consider workspaces, especially when publishing a unique value which has a unique value already in live
+     * @internal should only be used from within DataHandler
      */
     public function getUnique($table, $field, $value, $id, $newPid = 0)
     {
@@ -2496,6 +2536,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value Value string.
      * @param int $pageId If set, the value will be unique for this PID
      * @return array
+     * @internal should only be used from within DataHandler
      */
     public function getRecordsWithSameValue($tableName, $uid, $fieldName, $value, $pageId = 0)
     {
@@ -2542,6 +2583,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $evalArray Array of evaluations to traverse.
      * @param string $is_in The "is_in" value of the field configuration from TCA
      * @return array
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_text_Eval($value, $evalArray, $is_in)
     {
@@ -2582,6 +2624,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $is_in Is-in string for 'is_in' evaluation
      * @param string $table Table name the eval is evaluated on
      * @return array Modified $value in key 'value' or empty array
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_input_Eval($value, $evalArray, $is_in, string $table = ''): array
     {
@@ -2771,6 +2814,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $currentTable Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
      * @param string $currentField field name, needs to be set for writing to sys_history
      * @return array Modified value array
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $type, $currentTable, $currentField)
     {
@@ -2822,6 +2866,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $value Input string, comma separated values. For each part it will also be detected if a '|' is found and the first part will then be used if that is the case. Further the value will be rawurldecoded.
      * @return array The value array.
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_group_select_explodeSelectGroupValue($value)
     {
@@ -2848,6 +2893,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $workspaceOptions
      * @return array The modified 'data' part.
      * @see checkValue_flex_procInData_travDS()
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
     {
@@ -2885,6 +2931,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $structurePath
      * @param array $workspaceOptions
      * @see checkValue_flex_procInData()
+     * @internal should only be used from within DataHandler
      */
     public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = [])
     {
@@ -3192,6 +3239,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $language Language ID (from sys_language table)
      * @param bool $ignoreLocalization If TRUE, any localization routine is skipped
      * @return int|null ID of new record, if any
+     * @internal should only be used from within DataHandler
      */
     public function copyRecord($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = '', $language = 0, $ignoreLocalization = false)
     {
@@ -3317,6 +3365,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $uid Page UID to copy
      * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+     * @internal should only be used from within DataHandler
      */
     public function copyPages($uid, $destPid)
     {
@@ -3388,6 +3437,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $copyTablesArray Table on pages to copy along with the page.
      * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
      * @return int|null The id of the new page, if applicable.
+     * @internal should only be used from within DataHandler
      */
     public function copySpecificPage($uid, $destPid, $copyTablesArray, $first = false)
     {
@@ -3498,6 +3548,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $overrideArray Override array - must NOT contain any fields not in the table!
      * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
      * @return int Returns the new ID of the record (if applicable)
+     * @internal should only be used from within DataHandler
      */
     public function copyRecord_raw($table, $uid, $pid, $overrideArray = [], array $workspaceOptions = [])
     {
@@ -3569,6 +3620,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $fieldArray Field array to insert as a record
      * @param int $realPid The value of PID field.
      * @return int Returns the new ID of the record (if applicable)
+     * @internal should only be used from within DataHandler
      */
     public function insertNewCopyVersion($table, $fieldArray, $realPid)
     {
@@ -3804,6 +3856,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array Result array with key "value" containing the value of the processing.
      * @see copyRecord()
      * @see checkValue_flex_procInData_travDS()
+     * @internal should only be used from within DataHandler
      */
     public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $_3, $workspaceOptions)
     {
@@ -3827,6 +3880,7 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $first
      * @param array $overrideValues
      * @param string $excludeFields
+     * @internal should only be used from within DataHandler
      */
     public function copyL10nOverlayRecords($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = '')
     {
@@ -3940,6 +3994,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name to move
      * @param int $uid Record uid to move
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+     * @internal should only be used from within DataHandler
      */
     public function moveRecord($table, $uid, $destPid)
     {
@@ -4017,6 +4072,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Record uid to move
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
      * @see moveRecord()
+     * @internal should only be used from within DataHandler
      */
     public function moveRecord_raw($table, $uid, $destPid)
     {
@@ -4183,6 +4239,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Record Table
      * @param int $uid Record UID
      * @param int $destPid Position to move to
+     * @internal should only be used from within DataHandler
      */
     public function moveRecord_procFields($table, $uid, $destPid)
     {
@@ -4204,6 +4261,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Record field
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
+     * @internal should only be used from within DataHandler
      */
     public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf)
     {
@@ -4241,6 +4299,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $uid Record UID
      * @param string $destPid Position to move to
      * @param string $originalRecordDestinationPid Position to move the original record to
+     * @internal should only be used from within DataHandler
      */
     public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid)
     {
@@ -4304,6 +4363,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Record uid (to be localized)
      * @param int $language Language ID (from sys_language table)
      * @return int|bool The uid (int) of the new translated record or FALSE (bool) if something went wrong
+     * @internal should only be used from within DataHandler
      */
     public function localize($table, $uid, $language)
     {
@@ -4619,6 +4679,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $id Record UID
+     * @internal should only be used from within DataHandler
      */
     public function deleteAction($table, $id)
     {
@@ -4646,6 +4707,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Record UID
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+     * @internal should only be used from within DataHandler
      */
     public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false)
     {
@@ -4663,6 +4725,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $uid Record UID
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+     * @internal should only be used from within DataHandler
      */
     public function deleteVersionsForRecord($table, $uid, $forceHardDelete)
     {
@@ -4694,6 +4757,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $uid Record UID
+     * @internal should only be used from within DataHandler
      */
     public function undeleteRecord($table, $uid)
     {
@@ -4713,6 +4777,7 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      * @param bool $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
+     * @internal should only be used from within DataHandler
      */
     public function deleteRecord($table, $uid, $noRecordCheck = false, $forceHardDelete = false, $undeleteRecord = false)
     {
@@ -4849,6 +4914,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Page id
      * @param bool $force If TRUE, pages are not checked for permission.
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+     * @internal should only be used from within DataHandler
      */
     public function deletePages($uid, $force = false, $forceHardDelete = false)
     {
@@ -4973,6 +5039,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $uid Page id
      * @return int[]|string If array: List of page uids to traverse and delete (means OK), if string: error message.
+     * @internal should only be used from within DataHandler
      */
     public function canDeletePage($uid)
     {
@@ -5030,6 +5097,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Record Table
      * @param int $id Record UID
      * @return string Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
+     * @internal should only be used from within DataHandler
      */
     public function cannotDeleteRecord($table, $id)
     {
@@ -5052,6 +5120,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name of the record
      * @param int $uid uid of the record
      * @return bool Whether the record can be undeleted
+     * @internal should only be used from within DataHandler
      */
     public function isRecordUndeletable($table, $uid)
     {
@@ -5080,6 +5149,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $uid Record UID
      * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
      * @see deleteRecord()
+     * @internal should only be used from within DataHandler
      */
     public function deleteRecord_procFields($table, $uid, $undeleteRecord = false)
     {
@@ -5104,6 +5174,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $conf TCA configuration of current field
      * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
      * @see deleteRecord()
+     * @internal should only be used from within DataHandler
      */
     public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = false)
     {
@@ -5150,6 +5221,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record Table
      * @param string $uid Record UID
+     * @internal should only be used from within DataHandler
      */
     public function deleteL10nOverlayRecords($table, $uid)
     {
@@ -5202,6 +5274,7 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $delete If TRUE, the version is created to delete the record.
      * @return int|null Returns the id of the new version (if any)
      * @see copyRecord()
+     * @internal should only be used from within DataHandler
      */
     public function versionizeRecord($table, $id, $label, $delete = false)
     {
@@ -5289,6 +5362,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Current record (about to go offline)
      * @param int $swapWith Swap record (about to go online)
      * @see version_swap()
+     * @internal should only be used from within DataHandler
      */
     public function version_remapMMForVersionSwap($table, $id, $swapWith)
     {
@@ -5358,6 +5432,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $path Path in flexforms
      * @see version_remapMMForVersionSwap()
      * @see checkValue_flex_procInData_travDS()
+     * @internal should only be used from within DataHandler
      */
     public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
     {
@@ -5383,6 +5458,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Current record (about to go offline)
      * @param int $swapWith Swap record (about to go online)
      * @see version_remapMMForVersionSwap()
+     * @internal should only be used from within DataHandler
      */
     public function version_remapMMForVersionSwap_execSwap($table, $id, $swapWith)
     {
@@ -5431,6 +5507,7 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Processes the fields with references as registered during the copy process. This includes all FlexForm fields which had references.
+     * @internal should only be used from within DataHandler
      */
     public function remapListedDBRecords()
     {
@@ -5502,6 +5579,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array Array where the "value" key carries the value.
      * @see checkValue_flex_procInData_travDS()
      * @see remapListedDBRecords()
+     * @internal should only be used from within DataHandler
      */
     public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
     {
@@ -5527,6 +5605,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @return array|null Returns array of items ready to implode for field content.
      * @see remapListedDBRecords()
+     * @internal should only be used from within DataHandler
      */
     public function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table)
     {
@@ -5593,6 +5672,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value Field value
      * @param int $uid The uid of the ORIGINAL record
      * @param string $table Table name
+     * @internal should only be used from within DataHandler
      */
     public function remapListedDBRecords_procInline($conf, $value, $uid, $table)
     {
@@ -5659,6 +5739,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Processes the $this->remapStack at the end of copying, inserting, etc. actions.
      * The remapStack takes care about the correct mapping of new and old uids in case of relational data.
+     * @internal should only be used from within DataHandler
      */
     public function processRemapStack()
     {
@@ -5883,6 +5964,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id The affected ID
      * @param array $callback The callback information (object and method)
      * @param array $arguments The arguments to be used with the callback
+     * @internal should only be used from within DataHandler
      */
     public function addRemapAction($table, $id, array $callback, array $arguments)
     {
@@ -5901,6 +5983,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table
      * @param int $id
+     * @internal should only be used from within DataHandler
      */
     public function addRemapStackRefIndex($table, $id)
     {
@@ -5917,6 +6000,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Uid of the parent record
      * @param array $incomingFieldArray Reference to the incomingFieldArray of process_datamap
      * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to DataHandler in process_datamap.
+     * @internal should only be used from within DataHandler
      */
     public function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList)
     {
@@ -5952,6 +6036,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @return bool Returns TRUE if the user has general access to modify the $table
+     * @internal should only be used from within DataHandler
      */
     public function checkModifyAccessList($table)
     {
@@ -5970,6 +6055,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $id UID of record
      * @return bool Returns TRUE if OK. Cached results.
+     * @internal should only be used from within DataHandler
      */
     public function isRecordInWebMount($table, $id)
     {
@@ -5985,6 +6071,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $pid Page ID to check
      * @return bool TRUE if OK. Cached results.
+     * @internal should only be used from within DataHandler
      */
     public function isInWebMount($pid)
     {
@@ -6002,6 +6089,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array|bool $data Record data
      * @param array $hookObjectsArr Hook objects
      * @return bool Returns TRUE if the user may update the record given by $table and $id
+     * @internal should only be used from within DataHandler
      */
     public function checkRecordUpdateAccess($table, $id, $data = false, $hookObjectsArr = null)
     {
@@ -6050,6 +6138,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $pid Integer PID
      * @param int $action For logging: Action number.
      * @return bool Returns TRUE if the user may insert a record from table $insertTable on page $pid
+     * @internal should only be used from within DataHandler
      */
     public function checkRecordInsertAccess($insertTable, $pid, $action = SystemLogDatabaseAction::INSERT)
     {
@@ -6096,6 +6185,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
      * @param string $checkTable Table name to check
      * @return bool TRUE if OK
+     * @internal should only be used from within DataHandler
      */
     public function isTableAllowedForThisPage($page_uid, $checkTable)
     {
@@ -6133,6 +6223,7 @@ class DataHandler implements LoggerAwareInterface
      * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
      *
      * @throws \RuntimeException
+     * @internal should only be used from within DataHandler
      */
     public function doesRecordExist($table, $id, $perms)
     {
@@ -6203,6 +6294,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $perms Perms integer to check each page record for.
      * @param bool $recurse Recursion flag: If set, it will go out through the branch.
      * @return string|int List of page IDs in branch, if there are subpages, empty string if there are none or -1 if no permission
+     * @internal should only be used from within DataHandler
      */
     public function doesBranchExist($inList, $pid, $perms, $recurse)
     {
@@ -6240,6 +6332,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @return bool TRUE, if readonly
+     * @internal should only be used from within DataHandler
      */
     public function tableReadOnly($table)
     {
@@ -6252,6 +6345,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @return bool TRUE, if readonly
+     * @internal should only be used from within DataHandler
      */
     public function tableAdminOnly($table)
     {
@@ -6266,6 +6360,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $destinationId Destination Page ID to test
      * @param int $id Page ID to test for presence inside Destination
      * @return bool Returns FALSE if ID is inside destination (including equal to)
+     * @internal should only be used from within DataHandler
      */
     public function destNotInsideSelf($destinationId, $id)
     {
@@ -6302,6 +6397,7 @@ class DataHandler implements LoggerAwareInterface
      * Will also generate this list for admin-users so they must be check for before calling the function
      *
      * @return array Array of [table]-[field] pairs to exclude from editing.
+     * @internal should only be used from within DataHandler
      */
     public function getExcludeListArray()
     {
@@ -6328,6 +6424,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $page_uid Page ID
      * @param int $doktype Page doktype
      * @return bool|array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
+     * @internal should only be used from within DataHandler
      */
     public function doesPageHaveUnallowedTables($page_uid, $doktype)
     {
@@ -6379,6 +6476,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Page uid
      * @param string $field Field name for which to return value
      * @return string Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
+     * @internal should only be used from within DataHandler
      */
     public function pageInfo($id, $field)
     {
@@ -6406,6 +6504,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id UID of the record from $table
      * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,...
      * @return array|null Returns the selected record on success, otherwise NULL.
+     * @internal should only be used from within DataHandler
      */
     public function recordInfo($table, $id, $fieldList)
     {
@@ -6517,6 +6616,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Uid of record
      * @param bool $noWSOL If set, no workspace overlay is performed
      * @return array Properties of record
+     * @internal should only be used from within DataHandler
      */
     public function getRecordProperties($table, $id, $noWSOL = false)
     {
@@ -6533,6 +6633,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param array $row Input row
      * @return array|null Output array
+     * @internal should only be used from within DataHandler
      */
     public function getRecordPropertiesFromRow($table, $row)
     {
@@ -6555,6 +6656,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid
      * @param int $pid
      * @return int
+     * @internal should only be used from within DataHandler
      */
     public function eventPid($table, $uid, $pid)
     {
@@ -6573,6 +6675,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Record table name
      * @param int $id Record uid
      * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
+     * @internal should only be used from within DataHandler
      */
     public function updateDB($table, $id, $fieldArray)
     {
@@ -6646,6 +6749,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
      * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
      * @return int|null Returns ID on success.
+     * @internal should only be used from within DataHandler
      */
     public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0, $dontSetNewIdIndex = false)
     {
@@ -6748,6 +6852,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array|null Selected row
      * @see insertDB()
      * @see updateDB()
+     * @internal should only be used from within DataHandler
      */
     public function checkStoredRecord($table, $id, $fieldArray, $action)
     {
@@ -6817,6 +6922,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $id Record ID
      * @param int $logId Log entry ID, important for linking between log and history views
+     * @internal should only be used from within DataHandler
      */
     public function setHistory($table, $id, $logId)
     {
@@ -6851,6 +6957,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $id Record UID
+     * @internal should only be used from within DataHandler
      */
     public function updateRefIndex($table, $id)
     {
@@ -6897,6 +7004,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Uid of record to find sorting number for. May be zero in case of new.
      * @param int $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
      * @return int|array|bool|null Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
+     * @internal should only be used from within DataHandler
      */
     public function getSortNumber($table, $uid, $pid)
     {
@@ -7182,6 +7290,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name for which to set default values.
      * @return array Array with default values.
+     * @internal should only be used from within DataHandler
      */
     public function newFieldArray($table)
     {
@@ -7203,6 +7312,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $incomingFieldArray Incoming array (passed by reference)
+     * @internal should only be used from within DataHandler
      */
     public function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray)
     {
@@ -7236,6 +7346,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param array $data Data array with fields from table. These will be overlaid with values in $this->overrideValues[$table]
      * @return array Data array, processed.
+     * @internal should only be used from within DataHandler
      */
     public function overrideFieldArray($table, $data)
     {
@@ -7253,6 +7364,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Record uid
      * @param array $fieldArray Array of field=>value pairs intended to be inserted into the database. All keys with values matching exactly the current value will be unset!
      * @return array Returns $fieldArray. If the returned array is empty, then the record should not be updated!
+     * @internal should only be used from within DataHandler
      */
     public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray)
     {
@@ -7366,6 +7478,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $input Input string
      * @return string Output string
+     * @internal should only be used from within DataHandler
      */
     public function convNumEntityToByteValue($input)
     {
@@ -7398,6 +7511,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @return string Delete clause
+     * @internal should only be used from within DataHandler
      */
     public function deleteClause($table)
     {
@@ -7443,6 +7557,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param array $TSconfig TSconfig for page
      * @return array TSconfig merged
+     * @internal should only be used from within DataHandler
      */
     public function getTableEntries($table, $TSconfig)
     {
@@ -7458,6 +7573,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $uid Record uid
      * @return int|false PID value (unless the record did not exist in which case FALSE is returned)
+     * @internal should only be used from within DataHandler
      */
     public function getPID($table, $uid)
     {
@@ -7476,6 +7592,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Executing dbAnalysisStore
      * This will save MM relations for new records but is executed after records are created because we need to know the ID of them
+     * @internal should only be used from within DataHandler
      */
     public function dbAnalysisStoreExec()
     {
@@ -7496,6 +7613,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $counter Number of levels to go down.
      * @param int $rootID ID of root point for new copied branch: The idea seems to be that a copy is not made of the already new page!
      * @return array Return array.
+     * @internal should only be used from within DataHandler
      */
     public function int_pageTreeInfo($CPtable, $pid, $counter, $rootID)
     {
@@ -7558,6 +7676,7 @@ class DataHandler implements LoggerAwareInterface
      * List of all tables (those administrators has access to = array_keys of $GLOBALS['TCA'])
      *
      * @return array Array of all TCA table names
+     * @internal should only be used from within DataHandler
      */
     public function compileAdminTables()
     {
@@ -7569,6 +7688,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $uid Record UID
+     * @internal should only be used from within DataHandler
      */
     public function fixUniqueInPid($table, $uid)
     {
@@ -7655,6 +7775,7 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $update If set, updates the record
      * @param array $newData Input array. If fields are already specified AND $update is not set, values are not set in output array.
      * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
+     * @internal should only be used from within DataHandler
      */
     public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = [])
     {
@@ -7707,6 +7828,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param array $conf Config array for TCA/columns field
      * @return bool TRUE if DB reference field (group/db or select with foreign-table)
+     * @internal should only be used from within DataHandler
      */
     public function isReferenceField($conf)
     {
@@ -7719,6 +7841,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param array $conf Config array for TCA/columns field
      * @return string|bool string Inline subtype (field|mm|list), boolean: FALSE
+     * @internal should only be used from within DataHandler
      */
     public function getInlineFieldType($conf)
     {
@@ -7747,6 +7870,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $count Counter (number of recursions)
      * @param string $prevTitle Previous title we checked for (in previous recursion)
      * @return string The field value, possibly appended with a "copy label
+     * @internal should only be used from within DataHandler
      */
     public function getCopyHeader($table, $pid, $field, $value, $count, $prevTitle = '')
     {
@@ -7782,6 +7906,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @return string Label to append, containing "%s" for the number
      * @see getCopyHeader()
+     * @internal should only be used from within DataHandler
      */
     public function prependLabel($table)
     {
@@ -7794,6 +7919,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $pid "Destination pid" : If the value is >= 0 it's just returned directly (through (int)though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
      * @return int
+     * @internal should only be used from within DataHandler
      */
     public function resolvePid($table, $pid)
     {
@@ -7819,6 +7945,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param string $value The value to fix
      * @return string Clean name
+     * @internal should only be used from within DataHandler
      */
     public function clearPrefixFromValue($table, $value)
     {
@@ -7868,6 +7995,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table The tablename of the record
      * @param int $uid The uid of the record
      * @return bool Returns TRUE if the record is copied or is the result of a copy action
+     * @internal should only be used from within DataHandler
      */
     public function isRecordCopied($table, $uid)
     {
@@ -8214,6 +8342,7 @@ class DataHandler implements LoggerAwareInterface
      * @return int Log entry UID (0 if no log entry was written or logging is disabled)
      * @see \TYPO3\CMS\Core\SysLog\Action\Database for all available values of argument $action
      * @see \TYPO3\CMS\Core\SysLog\Error for all available values of argument $error
+     * @internal should only be used from within TYPO3 Core
      */
     public function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = [], $event_pid = -1, $NEWid = '')
     {
@@ -8241,6 +8370,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $error Error code, see log()
      * @return int Log entry UID
      * @see log()
+     * @internal should only be used from within TYPO3 Core
      */
     public function newlog($message, $error = SystemLogErrorClassification::MESSAGE)
     {
@@ -8249,6 +8379,7 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Print log error messages from the operations of this script instance
+     * @internal should only be used from within TYPO3 Core
      */
     public function printLogErrorMessages()
     {
@@ -8315,6 +8446,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table	Table name
      * @param array $fieldArray	Field array to check
      * @return array Updated field array
+     * @internal should only be used from within TYPO3 Core
      */
     public function insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray)
     {
@@ -8336,6 +8468,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $tableName
      * @param string $uid
      * @return bool
+     * @internal should only be used from within TYPO3 Core
      */
     public function hasDeletedRecord($tableName, $uid)
     {
@@ -8351,6 +8484,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Name of the table
      * @param int $id Uid of the record
      * @return int|null
+     * @internal should only be used from within TYPO3 Core
      */
     public function getAutoVersionId($table, $id): ?int
     {
@@ -8790,6 +8924,10 @@ class DataHandler implements LoggerAwareInterface
         return $GLOBALS['LANG'];
     }
 
+    /**
+     * @internal should only be used from within TYPO3 Core
+     * @return array
+     */
     public function getHistoryRecords(): array
     {
         return $this->historyRecords;
