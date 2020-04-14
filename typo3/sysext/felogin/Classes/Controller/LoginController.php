@@ -64,6 +64,11 @@ class LoginController extends AbstractLoginFormController
     protected $loginType = '';
 
     /**
+     * @var string
+     */
+    protected $redirectUrl = '';
+
+    /**
      * @var ServerRequestHandler
      */
     protected $requestHandler;
@@ -120,15 +125,11 @@ class LoginController extends AbstractLoginFormController
                 return;
             }
 
-            $redirectUrl = $this->redirectHandler->processRedirect(
+            $this->redirectUrl = $this->redirectHandler->processRedirect(
                 $this->loginType,
                 $this->configuration,
                 $this->request->hasArgument('redirectReferrer') ? $this->request->getArgument('redirectReferrer') : ''
             );
-            if ($redirectUrl !== '') {
-                $this->eventDispatcher->dispatch(new BeforeRedirectEvent($this->loginType, $redirectUrl));
-                $this->redirectToUri($redirectUrl);
-            }
         }
     }
 
@@ -144,6 +145,7 @@ class LoginController extends AbstractLoginFormController
         }
 
         $this->handleLoginForwards();
+        $this->handleRedirect();
 
         $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view));
 
@@ -174,6 +176,7 @@ class LoginController extends AbstractLoginFormController
         }
 
         $this->eventDispatcher->dispatch(new LoginConfirmedEvent($this, $this->view));
+        $this->handleRedirect();
 
         $this->view->assignMultiple(
             [
@@ -190,6 +193,8 @@ class LoginController extends AbstractLoginFormController
      */
     public function logoutAction(int $redirectPageLogout = 0): void
     {
+        $this->handleRedirect();
+
         $this->view->assignMultiple(
             [
                 'cookieWarning' => $this->showCookieWarning,
@@ -199,6 +204,17 @@ class LoginController extends AbstractLoginFormController
                 'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl($this->configuration, $redirectPageLogout, $this->isRedirectDisabled()),
             ]
         );
+    }
+
+    /**
+     * Handles the redirect when $this->redirectUrl is not empty
+     */
+    protected function handleRedirect(): void
+    {
+        if ($this->redirectUrl !== '') {
+            $this->eventDispatcher->dispatch(new BeforeRedirectEvent($this->loginType, $this->redirectUrl));
+            $this->redirectToUri($this->redirectUrl);
+        }
     }
 
     /**
