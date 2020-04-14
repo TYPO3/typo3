@@ -5597,7 +5597,7 @@ class DataHandler implements LoggerAwareInterface
                 foreach ($dbAnalysis->itemArray as &$item) {
                     $updatePidForRecords[$item['table']][] = $item['id'];
                     $versionedId = $this->getAutoVersionId($item['table'], $item['id']);
-                    if (!empty($versionedId)) {
+                    if ($versionedId !== null) {
                         $updatePidForRecords[$item['table']][] = $versionedId;
                         $item['id'] = $versionedId;
                     }
@@ -5628,14 +5628,13 @@ class DataHandler implements LoggerAwareInterface
                     }
                     $updateValues = ['pid' => $thePidToUpdate];
                     foreach ($updatePidForRecords as $tableName => $uids) {
-                        $uids = array_map('trim', $uids);
                         if (empty($tableName) || empty($uids)) {
                             continue;
                         }
                         $conn = GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getConnectionForTable($tableName);
-                        foreach ($uids as $uid) {
-                            $conn->update($tableName, $updateValues, ['uid' => (int)$uid]);
+                        foreach ($uids as $updateUid) {
+                            $conn->update($tableName, $updateValues, ['uid' => $updateUid]);
                         }
                     }
                 }
@@ -8337,13 +8336,13 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Name of the table
      * @param int $id Uid of the record
-     * @return int
+     * @return int|null
      */
-    public function getAutoVersionId($table, $id)
+    public function getAutoVersionId($table, $id): ?int
     {
         $result = null;
         if (isset($this->autoVersionIdMap[$table][$id])) {
-            $result = $this->autoVersionIdMap[$table][$id];
+            $result = (int)trim($this->autoVersionIdMap[$table][$id]);
         }
         return $result;
     }
