@@ -29,7 +29,9 @@
     <div id="collapse{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{id}">
         <div class="rst-tags t3js-tags"></div>
         <div class="rst-links">
-            <a href="{fileArray.url.issue}" target="_blank" rel="noreferrer" class="nowrap"><core:icon identifier="actions-window-open" /> Open issue</a>
+            <f:if condition="{fileArray.url.issue}">
+                <a href="{fileArray.url.issue}" target="_blank" rel="noreferrer" class="nowrap"><core:icon identifier="actions-window-open" /> Open issue</a>
+            </f:if>
             <f:if condition="{fileArray.url.documentation}">
                 <a href="{fileArray.url.documentation}" target="_blank" rel="noreferrer" class="nowrap"><core:icon identifier="actions-window-open" /> Open rendered version</a>
             </f:if>
