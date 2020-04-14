@@ -71,7 +71,7 @@ services:
     tags:
       - name: dashboard.widget
         identifier: 't3news'
-        groupNames: 'typo3'
+        groupNames: 'news'
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description'
         iconIdentifier: 'content-widget-rss'
@@ -183,7 +183,7 @@ services:
     tags:
       - name: dashboard.widget
         identifier: 't3securityAdvisories'
-        groupNames: 'typo3'
+        groupNames: 'news'
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.title'
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.description'
         iconIdentifier: 'content-widget-rss'

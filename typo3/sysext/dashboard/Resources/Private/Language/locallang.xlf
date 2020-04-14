@@ -128,11 +128,11 @@
 				<source>More TYPO3 news</source>
 			</trans-unit>
 
-			<trans-unit id="widgets.t3information.title" xml:space="preserve" translate="no">
-				<source>TYPO3</source>
+			<trans-unit id="widgets.t3information.title" xml:space="preserve">
+				<source>About TYPO3</source>
 			</trans-unit>
 			<trans-unit id="widgets.t3information.description" xml:space="preserve">
-				<source>Some background information about TYPO3 and the version used</source>
+				<source>Some general information about TYPO3 and the version used</source>
 			</trans-unit>
 
 			<trans-unit id="widgets.sysLogErrors.title" xml:space="preserve">
@@ -184,8 +184,11 @@
 			<trans-unit id="widget_group.general" xml:space="preserve">
 				<source>General</source>
  			</trans-unit>
-			<trans-unit id="widget_group.typo3" xml:space="preserve" translate="no">
-				<source>TYPO3</source>
+			<trans-unit id="widget_group.typo3" xml:space="preserve">
+				<source>TYPO3 community</source>
+ 			</trans-unit>
+			<trans-unit id="widget_group.news" xml:space="preserve">
+				<source>News</source>
  			</trans-unit>
 			<trans-unit id="widget_group.documentation" xml:space="preserve">
 				<source>Documentation</source>
