@@ -406,8 +406,9 @@ class FileListController extends ActionController
                 if (!empty($items)) {
                     // Make command array:
                     $FILE = [];
-                    foreach ($items as $v) {
-                        $FILE['delete'][] = ['data' => $v];
+                    foreach ($items as $clipboardIdentifier => $combinedIdentifier) {
+                        $FILE['delete'][] = ['data' => $combinedIdentifier];
+                        $this->filelist->clipObj->removeElement($clipboardIdentifier);
                     }
                     // Init file processing object for deleting and pass the cmd array.
                     /** @var ExtendedFileUtility $fileProcessor */
@@ -416,6 +417,9 @@ class FileListController extends ActionController
                     $fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
                     $fileProcessor->start($FILE);
                     $fileProcessor->processData();
+                    // Clean & Save clipboard state
+                    $this->filelist->clipObj->cleanCurrent();
+                    $this->filelist->clipObj->endClipboard();
                 }
             }
             // Start up filelisting object, include settings.
