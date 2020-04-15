@@ -442,7 +442,7 @@ class LanguagePacks extends AbstractInteractableModule {
     const $tbody = $('<tbody>');
     data.extensions.forEach((extension: any): void => {
       rowCount++;
-      if (extension.icon !== '') {
+      if (typeof extension.icon !== 'undefined') {
         extensionTitle = $('<span>').append(
           $('<img>', {
             'style': 'max-height: 16px; max-width: 16px;',

@@ -173,8 +173,10 @@ class LanguagePackService implements LoggerAwareInterface
             $extension = [
                 'key' => $key,
                 'title' => $title,
-                'icon' => PathUtility::stripPathSitePrefix(ExtensionManagementUtility::getExtensionIcon($path, true)),
             ];
+            if (!empty(ExtensionManagementUtility::getExtensionIcon($path, false))) {
+                $extension['icon'] = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::getExtensionIcon($path, true));
+            }
             $extension['packs'] = [];
             foreach ($activeLanguages as $iso) {
                 $isLanguagePackDownloaded = is_dir(Environment::getLabelsPath() . '/' . $iso . '/' . $key . '/');
