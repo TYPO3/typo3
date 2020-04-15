@@ -789,6 +789,8 @@ class UpgradeController extends AbstractController
         $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
         $loadTcaService->loadExtensionTablesWithoutMigration();
         $baseTca = $GLOBALS['TCA'];
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
         foreach ($this->packageManager->getActivePackages() as $package) {
             $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
 
@@ -807,6 +809,7 @@ class UpgradeController extends AbstractController
                 $baseTca = $newTca;
             }
         }
+        $this->lateBootService->makeCurrent(null, $backup);
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,

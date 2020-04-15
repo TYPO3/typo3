@@ -85,15 +85,16 @@ class LateBootService
      * is specified
      *
      * @param ContainerInterface $container
-     * @param array $oldBackup
+     * @param array $backup
      * @return array
      */
-    public function makeCurrent(ContainerInterface $container = null, array $oldBackup = []): array
+    public function makeCurrent(ContainerInterface $container = null, array $backup = []): array
     {
-        $container = $container ?? $this->failsafeContainer;
+        $container = $container ?? $backup['container'] ?? $this->failsafeContainer;
 
-        $backup = [
-            'singletonInstances', GeneralUtility::getSingletonInstances(),
+        $newBackup = [
+            'singletonInstances' => GeneralUtility::getSingletonInstances(),
+            'container' => GeneralUtility::getContainer(),
         ];
 
         GeneralUtility::purgeInstances();
@@ -102,12 +103,12 @@ class LateBootService
         GeneralUtility::setContainer($container);
         ExtensionManagementUtility::setPackageManager($container->get(PackageManager::class));
 
-        $backupSingletonInstances = $oldBackup['singletonInstances'] ?? [];
+        $backupSingletonInstances = $backup['singletonInstances'] ?? [];
         foreach ($backupSingletonInstances as $className => $instance) {
             GeneralUtility::setSingletonInstance($className, $instance);
         }
 
-        return $backup;
+        return $newBackup;
     }
 
     /**
