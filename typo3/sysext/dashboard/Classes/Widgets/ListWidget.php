@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use TYPO3\CMS\Dashboard\Utility\ButtonUtility;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\ListDataProviderInterface;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
@@ -80,7 +81,7 @@ class ListWidget implements WidgetInterface
         $this->view->assignMultiple([
             'items' => $this->getItems(),
             'options' => $this->options,
-            'button' => $this->getButton(),
+            'button' => ButtonUtility::generateButtonConfig($this->buttonProvider),
             'configuration' => $this->configuration,
         ]);
         return $this->view->render();
@@ -89,20 +90,5 @@ class ListWidget implements WidgetInterface
     protected function getItems(): array
     {
         return $this->dataProvider->getItems();
-    }
-
-    private function getButton(): array
-    {
-        $button = [];
-
-        if ($this->buttonProvider instanceof ButtonProviderInterface && $this->buttonProvider->getTitle() && $this->buttonProvider->getLink()) {
-            $button = [
-                'text' => $this->buttonProvider->getTitle(),
-                'link' => $this->buttonProvider->getLink(),
-                'target' => $this->buttonProvider->getTarget(),
-            ];
-        }
-
-        return $button;
     }
 }

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as Cache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Utility\ButtonUtility;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
@@ -91,7 +92,7 @@ class RssWidget implements WidgetInterface
         $this->view->assignMultiple([
             'items' => $this->getRssItems(),
             'options' => $this->options,
-            'button' => $this->getButton(),
+            'button' => ButtonUtility::generateButtonConfig($this->buttonProvider),
             'configuration' => $this->configuration,
         ]);
         return $this->view->render();
@@ -126,20 +127,5 @@ class RssWidget implements WidgetInterface
         $this->cache->set($cacheHash, $items, ['dashboard_rss'], $this->options['lifeTime']);
 
         return $items;
-    }
-
-    private function getButton(): array
-    {
-        $button = [];
-
-        if ($this->buttonProvider instanceof ButtonProviderInterface && $this->buttonProvider->getTitle() && $this->buttonProvider->getLink()) {
-            $button = [
-                'text' => $this->buttonProvider->getTitle(),
-                'link' => $this->buttonProvider->getLink(),
-                'target' => $this->buttonProvider->getTarget(),
-            ];
-        }
-
-        return $button;
     }
 }
