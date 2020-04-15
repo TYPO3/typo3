@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Functional\RowUpdater;
+namespace TYPO3\CMS\Install\Tests\Functional\Updates\RowUpdater;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceVersionRecordsMigration;

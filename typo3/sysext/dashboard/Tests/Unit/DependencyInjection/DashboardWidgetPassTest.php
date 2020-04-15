@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Tests\Unit;
+namespace TYPO3\CMS\Dashboard\Tests\Unit\DependencyInjection;
 
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
