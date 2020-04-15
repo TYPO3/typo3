@@ -39,8 +39,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  * You are encouraged to use this library in your own scripts!
  *
  * USE:
- * The class is intended to be used without creating an instance of it.
- * So: Don't instantiate - call functions with "\TYPO3\CMS\Core\Utility\GeneralUtility::" prefixed the function name.
+ * All methods in this class are meant to be called statically.
  * So use \TYPO3\CMS\Core\Utility\GeneralUtility::[method-name] to refer to the functions, eg. '\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()'
  */
 class GeneralUtility
@@ -95,6 +94,10 @@ class GeneralUtility
      * @var array
      */
     protected static $indpEnvCache = [];
+
+    final private function __construct()
+    {
+    }
 
     /*************************
      *
