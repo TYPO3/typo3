@@ -84,8 +84,8 @@ a little bit.
          title: 'LLL:EXT:extension/Resources/Private/Language/locallang.xlf:widgets.myOwnRSSWidget.title'
          description: 'LLL:EXT:extension/Resources/Private/Language/locallang.xlf:widgets.myOwnRSSWidget.description'
          iconIdentifier: 'content-widget-rss'
-         height: 4
-         width: 4
+         height: 'medium'
+         width: 'medium'
 
 It starts with the name of the service. Best practise is to use a dot-styled
 name as there will be now class with that name. On the second line, we define
@@ -102,6 +102,9 @@ You can still use translatable strings like
 ``LLL:EXT:extension/Resources/Private/Language/locallang.xlf:widgets.myOwnRSSWidget.title``.
 Important to remember is that the :yaml:`widgetGroups`` property changed to :yaml:`groupNames`
 to stay consistent with other service registrations.
+
+Please note that valid values for height and width are now: `small`, `medium`,
+and `large`.
 
 In the following table you can see which WidgetType to use now based on the
 abstract you used previously.
