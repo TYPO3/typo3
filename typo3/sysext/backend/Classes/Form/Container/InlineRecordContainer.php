@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -540,7 +541,7 @@ class InlineRecordContainer extends AbstractContainer
                     ->execute()
                     ->fetch();
                 if (!empty($recordInDatabase)) {
-                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
                         'returnUrl' => $this->data['returnUrl']

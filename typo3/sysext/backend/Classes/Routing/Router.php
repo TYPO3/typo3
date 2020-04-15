@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Implementation of a class for adding routes, collecting throughout the Bootstrap
@@ -29,7 +30,7 @@ use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
  *
  * The architecture is inspired by the Symfony Routing Component.
  */
-class Router implements \TYPO3\CMS\Core\SingletonInterface
+class Router implements SingletonInterface
 {
     /**
      * All routes used in the Backend

@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Backend\Tree;
 
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Tree Node Collection
  */
@@ -53,7 +56,7 @@ class TreeNodeCollection extends \ArrayObject
      * @param TreeNode $otherNode
      * @return int
      */
-    public function nodeCompare(\TYPO3\CMS\Backend\Tree\TreeNode $node, \TYPO3\CMS\Backend\Tree\TreeNode $otherNode)
+    public function nodeCompare(TreeNode $node, TreeNode $otherNode)
     {
         return $node->compareTo($otherNode);
     }
@@ -78,7 +81,7 @@ class TreeNodeCollection extends \ArrayObject
     {
         $arrayRepresentation = unserialize($serializedString);
         if ($arrayRepresentation['serializeClassName'] !== static::class) {
-            throw new \TYPO3\CMS\Core\Exception('Deserialized object type is not identical!', 1294586647);
+            throw new Exception('Deserialized object type is not identical!', 1294586647);
         }
         $this->dataFromArray($arrayRepresentation);
     }
@@ -110,7 +113,7 @@ class TreeNodeCollection extends \ArrayObject
     {
         unset($data['serializeClassName']);
         foreach ($data as $index => $nodeArray) {
-            $node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($nodeArray['serializeClassName'], $nodeArray);
+            $node = GeneralUtility::makeInstance($nodeArray['serializeClassName'], $nodeArray);
             $this->offsetSet($index, $node);
         }
     }

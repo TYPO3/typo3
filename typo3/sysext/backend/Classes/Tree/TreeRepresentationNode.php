@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 /**
  * Representation Tree Node
  */
-class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
+class TreeRepresentationNode extends TreeNode
 {
     /**
      * Node Label

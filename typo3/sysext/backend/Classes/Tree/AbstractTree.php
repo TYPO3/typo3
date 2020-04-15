@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Tree;
 
+use TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer;
+
 /**
  * Abstract Tree
  */
@@ -37,7 +39,7 @@ abstract class AbstractTree
     /**
      * @param \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider
      */
-    public function setDataProvider(\TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider)
+    public function setDataProvider(AbstractTreeDataProvider $dataProvider)
     {
         $this->dataProvider = $dataProvider;
     }
@@ -53,7 +55,7 @@ abstract class AbstractTree
     /**
      * @param \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $nodeRenderer
      */
-    public function setNodeRenderer(\TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $nodeRenderer)
+    public function setNodeRenderer(AbstractTreeRenderer $nodeRenderer)
     {
         $this->nodeRenderer = $nodeRenderer;
     }

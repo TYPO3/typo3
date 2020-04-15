@@ -30,5 +30,5 @@ interface PageLayoutViewDrawItemHookInterface
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
      */
-    public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row);
+    public function preProcess(PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row);
 }

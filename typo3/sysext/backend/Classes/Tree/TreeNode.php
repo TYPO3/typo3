@@ -15,12 +15,13 @@
 
 namespace TYPO3\CMS\Backend\Tree;
 
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tree Node
  */
-class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Serializable
+class TreeNode implements ComparableNodeInterface, \Serializable
 {
     /**
      * Node Identifier
@@ -63,7 +64,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $childNodes
      */
-    public function setChildNodes(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $childNodes)
+    public function setChildNodes(TreeNodeCollection $childNodes)
     {
         $this->childNodes = $childNodes;
     }
@@ -233,7 +234,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
     {
         $arrayRepresentation = unserialize($serializedString);
         if ($arrayRepresentation['serializeClassName'] !== static::class) {
-            throw new \TYPO3\CMS\Core\Exception('Deserialized object type is not identical!', 1294586646);
+            throw new Exception('Deserialized object type is not identical!', 1294586646);
         }
         $this->dataFromArray($arrayRepresentation);
     }

@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Backend\Tree\Renderer;
 
+use TYPO3\CMS\Backend\Tree\AbstractTree;
+use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
+use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
+
 /**
  * Abstract Renderer
  */
@@ -27,7 +31,7 @@ abstract class AbstractTreeRenderer
      * @param bool $recursive
      * @return mixed
      */
-    abstract public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = true);
+    abstract public function renderNode(TreeRepresentationNode $node, $recursive = true);
 
     /**
      * Renders a node collection recursive or just a single instance
@@ -36,7 +40,7 @@ abstract class AbstractTreeRenderer
      * @param bool $recursive
      * @return mixed
      */
-    abstract public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = true);
+    abstract public function renderNodeCollection(TreeNodeCollection $collection, $recursive = true);
 
     /**
      * Renders a tree recursively or just a single instance
@@ -45,5 +49,5 @@ abstract class AbstractTreeRenderer
      * @param bool $recursive
      * @return mixed
      */
-    abstract public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = true);
+    abstract public function renderTree(AbstractTree $tree, $recursive = true);
 }

@@ -23,6 +23,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\AbstractFile;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -384,11 +387,11 @@ class Clipboard
                         $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($v);
                         if ($fileObject) {
                             $thumb = [];
-                            $folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
+                            $folder = $fileObject instanceof Folder;
                             $size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
                             if (!$folder && $fileObject->isImage()) {
                                 $thumb = [
-                                    'image' => $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(true),
+                                    'image' => $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(true),
                                     'title' => htmlspecialchars($fileObject->getName())
                                 ];
                             }
@@ -834,7 +837,7 @@ class Clipboard
                     } else {
                         try {
                             GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($v);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+                        } catch (ResourceDoesNotExistException $e) {
                             // The file has been deleted in the meantime, so just remove it silently
                             unset($this->clipData[$this->current]['el'][$k]);
                         }

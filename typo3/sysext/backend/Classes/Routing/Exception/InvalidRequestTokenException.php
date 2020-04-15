@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Backend\Routing\Exception;
 
+use TYPO3\CMS\Core\Exception;
+
 /**
  * Exception thrown when request token was invalid
  */
-class InvalidRequestTokenException extends \TYPO3\CMS\Core\Exception
+class InvalidRequestTokenException extends Exception
 {
 }

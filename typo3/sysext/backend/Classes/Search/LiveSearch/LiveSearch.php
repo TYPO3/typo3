@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -438,7 +439,7 @@ class LiveSearch
      */
     protected function getAvailablePageIds($id, $depth)
     {
-        $tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
+        $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $this->userPermissions);
         $tree->makeHTML = 0;
         $tree->fieldArray = ['uid', 'php_tree_stop'];

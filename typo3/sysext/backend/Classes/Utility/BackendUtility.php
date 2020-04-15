@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Utility;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Backend\Controller\File\ThumbnailController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -45,6 +46,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -1077,7 +1079,7 @@ class BackendUtility
                     $workspaceId === 0
                 );
                 $fileReferences[$fileReference->getUid()] = $fileReference;
-            } catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $e) {
+            } catch (FileDoesNotExistException $e) {
                 /**
                  * We just catch the exception here
                  * Reasoning: There is nothing an editor or even admin could do
@@ -1205,7 +1207,7 @@ class BackendUtility
             'parameters' => $parameters,
             'hmac' => GeneralUtility::hmac(
                 $parameters,
-                \TYPO3\CMS\Backend\Controller\File\ThumbnailController::class
+                ThumbnailController::class
             ),
         ];
         return (string)GeneralUtility::makeInstance(UriBuilder::class)
@@ -2737,7 +2739,7 @@ class BackendUtility
         }
 
         if ($routePath = GeneralUtility::_GP('route')) {
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $scriptUrl = (string)$uriBuilder->buildUriFromRoutePath($routePath, $mainParams);
             $scriptUrl .= $addParams;
         } else {

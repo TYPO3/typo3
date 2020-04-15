@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Backend\Routing\Exception;
 
+use TYPO3\CMS\Core\Exception;
+
 /**
  * Exception thrown when a resource was not found.
  */
-class ResourceNotFoundException extends \TYPO3\CMS\Core\Exception
+class ResourceNotFoundException extends Exception
 {
 }

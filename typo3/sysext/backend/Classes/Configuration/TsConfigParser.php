@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Backend\Configuration;
 
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @deprecated Should not be used anymore. See the PageTsConfigParser class, which has a more straightforward API. This class will be removed in TYPO3 v11.0.
  */
-class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+class TsConfigParser extends TypoScriptParser
 {
     /**
      * @var array
@@ -119,7 +121,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
     protected function parseWithConditions($TSconfig)
     {
         /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $matchObj */
-        $matchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
+        $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         $matchObj->setRootline($this->rootLine);
         $matchObj->setPageId($this->id);
         $this->parse($TSconfig, $matchObj);
@@ -140,7 +142,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
     {
         if (is_array($cc['sections'])) {
             /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $matchObj */
-            $matchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
+            $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
             $matchObj->setRootline($this->rootLine);
             $matchObj->setPageId($this->id);
             foreach ($cc['sections'] as $key => $pre) {

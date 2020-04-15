@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -498,7 +499,6 @@ class ModuleTemplate
      * Do not use these methods within own extensions if possible or
      * be prepared to change this later again.
      *******************************************/
-
     /**
      * Returns a linked shortcut-icon which will call the shortcut frame and set a
      * shortcut there back to the calling page/module
@@ -709,7 +709,7 @@ class ModuleTemplate
         }
         /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            FlashMessage::class,
             $messageBody,
             $messageTitle,
             $severity,

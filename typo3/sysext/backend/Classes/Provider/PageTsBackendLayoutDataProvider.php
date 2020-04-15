@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -177,7 +178,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
             $backendLayout['title'] = $data['title'] ?: $backendLayout['uid'];
             $backendLayout['icon'] = $data['icon'] ?: '';
             // Convert PHP array back to plain TypoScript so it can be processed
-            $config = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($data['config.']);
+            $config = ArrayUtility::flatten($data['config.']);
             $backendLayout['config'] = '';
             foreach ($config as $row => $value) {
                 $backendLayout['config'] .= $row . ' = ' . $value . "\r\n";

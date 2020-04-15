@@ -734,9 +734,11 @@ class EditDocumentController
         }
         // If a preview is requested
         if (isset($parsedBody['_savedokview'])) {
+            $array_keys = array_keys($this->data);
             // Get the first table and id of the data array from DataHandler
-            $table = reset(array_keys($this->data));
-            $id = reset(array_keys($this->data[$table]));
+            $table = reset($array_keys);
+            $array_keys = array_keys($this->data[$table]);
+            $id = reset($array_keys);
             if (!MathUtility::canBeInterpretedAsInteger($id)) {
                 $id = $tce->substNEWwithIDs[$id];
             }

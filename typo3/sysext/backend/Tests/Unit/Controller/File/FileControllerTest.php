@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -60,15 +63,15 @@ class FileControllerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->fileResourceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\File::class)
+        $this->fileResourceMock = $this->getMockBuilder(File::class)
             ->setMethods(['toArray', 'getModificationTime', 'getExtension'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->folderResourceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Folder::class)
+        $this->folderResourceMock = $this->getMockBuilder(Folder::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockFileProcessor = $this->getMockBuilder(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class)
+        $this->mockFileProcessor = $this->getMockBuilder(ExtendedFileUtility::class)
             ->setMethods(['getErrorMessages'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -124,7 +127,7 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData()
     {
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
+        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
 
         $fileData = ['delete' => [true]];
         $subject->_set('fileProcessor', $this->mockFileProcessor);
@@ -141,7 +144,7 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData()
     {
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
+        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
 
         $fileData = ['editfile' => [true]];
         $subject->_set('fileProcessor', $this->mockFileProcessor);
@@ -158,7 +161,7 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestReturnsStatus200IfNoErrorOccurs()
     {
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, ['init', 'main']);
+        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
 
         $fileData = ['editfile' => [true]];
         $subject->_set('fileProcessor', $this->mockFileProcessor);

@@ -17,18 +17,20 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
 
 use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleStorage;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for backend module menu
  * compiles all data from $GLOBALS[TBE_MODULES]
  */
-class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
+class BackendModuleRepository implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Backend\Module\ModuleStorage
@@ -40,7 +42,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct()
     {
-        $this->moduleStorage = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleStorage::class);
+        $this->moduleStorage = GeneralUtility::makeInstance(ModuleStorage::class);
 
         $rawData = $this->getRawModuleMenuData();
 
@@ -152,7 +154,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
     protected function createEntryFromRawData(array $module)
     {
         /** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $entry */
-        $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class);
+        $entry = GeneralUtility::makeInstance(BackendModule::class);
         if (!empty($module['name']) && is_string($module['name'])) {
             $entry->setName($module['name']);
         }

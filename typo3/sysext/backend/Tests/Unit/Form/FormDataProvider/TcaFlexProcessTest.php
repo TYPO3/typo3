@@ -18,7 +18,9 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -827,7 +829,7 @@ class TcaFlexProcessTest extends UnitTestCase
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => [],
+            TcaRadioItems::class => [],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -915,7 +917,7 @@ class TcaFlexProcessTest extends UnitTestCase
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
+            DatabaseRowDefaultValues::class => [],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -1117,7 +1119,7 @@ class TcaFlexProcessTest extends UnitTestCase
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
+            DatabaseRowDefaultValues::class => [],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */

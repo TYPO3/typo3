@@ -28,5 +28,5 @@ interface PageLayoutViewDrawFooterHookInterface
      * @param array $info Processed values
      * @param array $row Record row of tt_content
      */
-    public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$info, array &$row);
+    public function preProcess(PageLayoutView &$parentObject, &$info, array &$row);
 }

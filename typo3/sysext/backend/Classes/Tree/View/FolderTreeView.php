@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -373,7 +374,7 @@ class FolderTreeView extends AbstractTreeView
             $subFolders = [];
         } else {
             $subFolders = $folderObject->getSubfolders();
-            $subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
+            $subFolders = ListUtility::resolveSpecialFolderNames($subFolders);
             uksort($subFolders, 'strnatcasecmp');
         }
 

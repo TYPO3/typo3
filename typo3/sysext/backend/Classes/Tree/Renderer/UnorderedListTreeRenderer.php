@@ -15,10 +15,14 @@
 
 namespace TYPO3\CMS\Backend\Tree\Renderer;
 
+use TYPO3\CMS\Backend\Tree\AbstractTree;
+use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
+use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
+
 /**
  * Renderer for unordered lists
  */
-class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
+class UnorderedListTreeRenderer extends AbstractTreeRenderer
 {
     /**
      * recursion level
@@ -34,7 +38,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
      * @param bool $recursive
      * @return string
      */
-    public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = true)
+    public function renderNode(TreeRepresentationNode $node, $recursive = true)
     {
         $code = '<li><span class="' . htmlspecialchars($node->getIcon()) . '">&nbsp;</span>' . htmlspecialchars($node->getLabel());
         if ($recursive && $node->getChildNodes() !== null) {
@@ -53,7 +57,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
      * @param bool $recursive
      * @return string
      */
-    public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = true)
+    public function renderTree(AbstractTree $tree, $recursive = true)
     {
         $this->recursionLevel = 0;
         $code = '<ul class="level' . $this->recursionLevel . '" style="margin-left:10px">';
@@ -69,7 +73,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
      * @param bool $recursive
      * @return string
      */
-    public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = true)
+    public function renderNodeCollection(TreeNodeCollection $collection, $recursive = true)
     {
         $code = '<ul class="level' . $this->recursionLevel . '" style="margin-left:10px">';
         foreach ($collection as $node) {

@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Disable getRecordWSOL and getRecordTitle dependency by returning stable results
  */
-class LabelFromItemListMergedReturnsCorrectFieldsFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility
+class LabelFromItemListMergedReturnsCorrectFieldsFixture extends BackendUtility
 {
     /**
      * @return array

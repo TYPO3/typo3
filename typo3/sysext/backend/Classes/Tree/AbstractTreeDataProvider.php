@@ -40,5 +40,5 @@ abstract class AbstractTreeDataProvider
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection
      */
-    abstract public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node);
+    abstract public function getNodes(TreeNode $node);
 }

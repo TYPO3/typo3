@@ -39,7 +39,7 @@ class BackendLayoutTest extends UnitTestCase
         $identifier = StringUtility::getUniqueId('identifier__');
         $title = StringUtility::getUniqueId('title');
         $configuration = StringUtility::getUniqueId('configuration');
-        new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
+        new BackendLayout($identifier, $title, $configuration);
     }
 
     /**

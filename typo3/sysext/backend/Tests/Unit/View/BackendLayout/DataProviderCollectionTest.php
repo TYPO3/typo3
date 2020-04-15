@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
+use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -34,7 +37,7 @@ class DataProviderCollectionTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->dataProviderCollection = new \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection();
+        $this->dataProviderCollection = new DataProviderCollection();
     }
 
     /**
@@ -70,11 +73,11 @@ class DataProviderCollectionTest extends UnitTestCase
     {
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class)
+        $dataProviderMock = $this->getMockBuilder(DefaultDataProvider::class)
             ->setMethods(['getBackendLayout'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
+        $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -96,11 +99,11 @@ class DataProviderCollectionTest extends UnitTestCase
         $dataProviderIdentifier = StringUtility::getUniqueId('custom');
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class)
+        $dataProviderMock = $this->getMockBuilder(DefaultDataProvider::class)
             ->setMethods(['getBackendLayout'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
+        $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();

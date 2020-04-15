@@ -16,11 +16,12 @@
 namespace TYPO3\CMS\Backend\Module;
 
 use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Model for the module storage
  */
-class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface
+class ModuleStorage implements SingletonInterface
 {
     /**
      * @var \SplObjectStorage

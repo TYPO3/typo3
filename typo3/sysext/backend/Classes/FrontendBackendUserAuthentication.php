@@ -91,7 +91,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
     /**
      * Edit Access
      */
-
     /**
      * Checks whether the user has access to edit the language for the
      * requested record.

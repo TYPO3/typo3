@@ -26,8 +26,10 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -244,7 +246,7 @@ function jumpToUrl(URL) {
             // Make copy
             $ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];
             // merge styles.
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TBE_STYLES'], $ovr);
+            ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TBE_STYLES'], $ovr);
             // Have to unset - otherwise the second instantiation will do it again!
             unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);
         }
@@ -644,7 +646,6 @@ function jumpToUrl(URL) {
      * Tables, buttons, formatting dimmed/red strings
      *
      ******************************************/
-
     /**
      * Function to load a HTML template file with markers.
      * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
@@ -736,7 +737,7 @@ function jumpToUrl(URL) {
     public function getFlashMessages()
     {
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         return $defaultFlashMessageQueue->renderFlashMessages();

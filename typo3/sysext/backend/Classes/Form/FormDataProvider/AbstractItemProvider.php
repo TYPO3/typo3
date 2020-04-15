@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -731,7 +732,7 @@ abstract class AbstractItemProvider
         }
 
         $allowedStorageIds = array_map(
-            function (\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
+            function (ResourceStorage $storage) {
                 return $storage->getUid();
             },
             $this->getBackendUser()->getFileStorages()
@@ -1329,7 +1330,7 @@ abstract class AbstractItemProvider
             }
             $value = strlen((string)$item[1]) > 0 ? $item[1] : '';
             $icon = !empty($item[2]) ? $item[2] : null;
-            $groupId = isset($item[3]) ? $item[3] : null;
+            $groupId = $item[3] ?? null;
             $helpText = null;
             if (!empty($item[4])) {
                 if (\is_string($item[4])) {

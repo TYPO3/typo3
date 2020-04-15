@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Collection of backend layout data providers.
  */
-class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface
+class DataProviderCollection implements SingletonInterface
 {
     /**
      * @var array|DataProviderInterface[]
@@ -52,12 +55,12 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface
             $dataProvider = $classNameOrObject;
         } else {
             $className = $classNameOrObject;
-            $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($classNameOrObject);
+            $dataProvider = GeneralUtility::makeInstance($classNameOrObject);
         }
 
         if (!$dataProvider instanceof DataProviderInterface) {
             throw new \LogicException(
-                $className . ' must implement interface ' . \TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface::class,
+                $className . ' must implement interface ' . DataProviderInterface::class,
                 1381269811
             );
         }
@@ -122,7 +125,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function createBackendLayoutCollection($identifier)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        return GeneralUtility::makeInstance(
             BackendLayoutCollection::class,
             $identifier
         );

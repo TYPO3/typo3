@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
+use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -288,7 +289,7 @@ class BackendUtilityTest extends UnitTestCase
         $relationHandlerInstance->tableArray['sys_category'] = [1, 2];
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_category');
-        $statementProphet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
+        $statementProphet = $this->prophesize(Statement::class);
         $statementProphet->fetch()->shouldBeCalled()->willReturn(
             [
                 'uid' => 1,
@@ -466,7 +467,7 @@ class BackendUtilityTest extends UnitTestCase
                 ]
             ]
         ];
-        $languageServiceProphecy = $this->prophesize(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
@@ -496,7 +497,7 @@ class BackendUtilityTest extends UnitTestCase
                 ]
             ]
         ];
-        $languageServiceProphecy = $this->prophesize(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();

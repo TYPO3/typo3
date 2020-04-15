@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\File\ThumbnailController;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -68,7 +69,7 @@ class ThumbnailControllerTest extends UnitTestCase
             'hmac' => $hmac,
         ];
 
-        $request = (new \TYPO3\CMS\Core\Http\ServerRequest())
+        $request = (new ServerRequest())
             ->withQueryParams($queryParameters);
         $this->subject->render($request);
     }
@@ -105,7 +106,7 @@ class ThumbnailControllerTest extends UnitTestCase
             ),
         ];
 
-        $request = (new \TYPO3\CMS\Core\Http\ServerRequest())
+        $request = (new ServerRequest())
             ->withQueryParams($queryParameters);
         self::assertInstanceOf(
             Response::class,

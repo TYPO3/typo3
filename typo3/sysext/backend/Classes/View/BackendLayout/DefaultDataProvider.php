@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -93,7 +94,7 @@ class DefaultDataProvider implements DataProviderInterface
         return BackendLayout::create(
             'default',
             'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.default',
-            \TYPO3\CMS\Backend\View\BackendLayoutView::getDefaultColumnLayout()
+            BackendLayoutView::getDefaultColumnLayout()
         );
     }
 

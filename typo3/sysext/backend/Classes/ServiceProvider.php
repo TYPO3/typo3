@@ -19,6 +19,11 @@ namespace TYPO3\CMS\Backend;
 
 use ArrayObject;
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Backend\Http\Application;
+use TYPO3\CMS\Backend\Http\RequestHandler;
+use TYPO3\CMS\Backend\Http\RouteDispatcher;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -42,9 +47,9 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Http\Application::class => [ static::class, 'getApplication' ],
-            Http\RequestHandler::class => [ static::class, 'getRequestHandler' ],
-            Http\RouteDispatcher::class => [ static::class, 'getRouteDispatcher' ],
+            Application::class => [ static::class, 'getApplication' ],
+            RequestHandler::class => [ static::class, 'getRequestHandler' ],
+            RouteDispatcher::class => [ static::class, 'getRouteDispatcher' ],
             'backend.middlewares' => [ static::class, 'getBackendMiddlewares' ],
             'backend.routes' => [ static::class, 'getBackendRoutes' ],
         ];
@@ -53,32 +58,32 @@ class ServiceProvider extends AbstractServiceProvider
     public function getExtensions(): array
     {
         return [
-            Routing\Router::class => [ static::class, 'configureBackendRouter' ],
+            Router::class => [ static::class, 'configureBackendRouter' ],
         ] + parent::getExtensions();
     }
 
-    public static function getApplication(ContainerInterface $container): Http\Application
+    public static function getApplication(ContainerInterface $container): Application
     {
         $requestHandler = new MiddlewareDispatcher(
-            $container->get(Http\RequestHandler::class),
+            $container->get(RequestHandler::class),
             $container->get('backend.middlewares'),
             $container
         );
-        return new Http\Application(
+        return new Application(
             $requestHandler,
             $container->get(ConfigurationManager::class),
             $container->get(Context::class)
         );
     }
 
-    public static function getRequestHandler(ContainerInterface $container): Http\RequestHandler
+    public static function getRequestHandler(ContainerInterface $container): RequestHandler
     {
-        return new Http\RequestHandler($container->get(Http\RouteDispatcher::class));
+        return new RequestHandler($container->get(RouteDispatcher::class));
     }
 
-    public static function getRouteDispatcher(ContainerInterface $container): Http\RouteDispatcher
+    public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
     {
-        return self::new($container, Http\RouteDispatcher::class, [$container]);
+        return self::new($container, RouteDispatcher::class, [$container]);
     }
 
     /**
@@ -92,9 +97,9 @@ class ServiceProvider extends AbstractServiceProvider
         return new ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('backend'));
     }
 
-    public static function configureBackendRouter(ContainerInterface $container, Routing\Router $router = null): Routing\Router
+    public static function configureBackendRouter(ContainerInterface $container, Router $router = null): Router
     {
-        $router = $router ?? self::new($container, Routing\Router::class);
+        $router = $router ?? self::new($container, Router::class);
         $cache = $container->get('cache.core');
 
         $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');
@@ -107,7 +112,7 @@ class ServiceProvider extends AbstractServiceProvider
         foreach ($routesFromPackages as $name => $options) {
             $path = $options['path'];
             unset($options['path']);
-            $route = new Routing\Route($path, $options);
+            $route = new Route($path, $options);
             $router->addRoute($name, $route);
         }
 

@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -52,7 +53,7 @@ class ThumbnailController
                 $parameters['fileId'] ?? null,
                 $parameters['configuration'] ?? []
             );
-        } catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+        } catch (Exception $exception) {
             // catch and handle only resource related exceptions
             $response = $this->generateNotFoundResponse();
         }
