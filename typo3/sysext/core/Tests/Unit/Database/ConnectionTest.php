@@ -17,8 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\DBAL\Driver\Mysqli\MysqliConnection;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\VersionAwarePlatformDriver;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -496,12 +499,12 @@ class ConnectionTest extends UnitTestCase
     public function getServerVersionReportsPlatformVersion()
     {
         /** @var MysqliConnection|ObjectProphecy $driverProphet */
-        $driverProphet = $this->prophesize(\Doctrine\DBAL\Driver\Mysqli\Driver::class);
-        $driverProphet->willImplement(\Doctrine\DBAL\VersionAwarePlatformDriver::class);
+        $driverProphet = $this->prophesize(Driver::class);
+        $driverProphet->willImplement(VersionAwarePlatformDriver::class);
 
         /** @var MysqliConnection|ObjectProphecy $wrappedConnectionProphet */
-        $wrappedConnectionProphet = $this->prophesize(\Doctrine\DBAL\Driver\Mysqli\MysqliConnection::class);
-        $wrappedConnectionProphet->willImplement(\Doctrine\DBAL\Driver\ServerInfoAwareConnection::class);
+        $wrappedConnectionProphet = $this->prophesize(MysqliConnection::class);
+        $wrappedConnectionProphet->willImplement(ServerInfoAwareConnection::class);
         $wrappedConnectionProphet->requiresQueryForServerVersion()->willReturn(false);
         $wrappedConnectionProphet->getServerVersion()->willReturn('5.7.11');
 

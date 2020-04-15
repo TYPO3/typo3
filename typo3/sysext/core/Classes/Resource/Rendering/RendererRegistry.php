@@ -16,12 +16,13 @@
 namespace TYPO3\CMS\Core\Resource\Rendering;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class RendererRegistry
  */
-class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class RendererRegistry implements SingletonInterface
 {
     /**
      * Registered class names

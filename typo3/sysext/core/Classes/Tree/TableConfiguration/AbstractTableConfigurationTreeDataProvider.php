@@ -15,10 +15,14 @@
 
 namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
+use TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider;
+use TYPO3\CMS\Backend\Tree\TreeNode;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * An abstract TCA tree data provider
  */
-abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
+abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDataProvider
 {
     /**
      * @var bool
@@ -135,9 +139,9 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @return bool
      */
-    protected function isExpanded(\TYPO3\CMS\Backend\Tree\TreeNode $node)
+    protected function isExpanded(TreeNode $node)
     {
-        return $this->getExpandAll() || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->expandedList, $node->getId());
+        return $this->getExpandAll() || GeneralUtility::inList($this->expandedList, $node->getId());
     }
 
     /**

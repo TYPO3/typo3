@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendConfigurationOptionFixture;
@@ -43,7 +45,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier()
     {
-        $this->expectException(\TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException::class);
+        $this->expectException(DuplicateIdentifierException::class);
         $this->expectExceptionCode(1203698223);
 
         $manager = new CacheManager();
@@ -87,7 +89,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheThrowsExceptionForNonExistingIdentifier()
     {
-        $this->expectException(\TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException::class);
+        $this->expectException(NoSuchCacheException::class);
         $this->expectExceptionCode(1203699034);
 
         $manager = new CacheManager();

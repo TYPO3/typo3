@@ -39,7 +39,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Error\ProductionExceptionHandler::class)
+        $this->subject = $this->getMockBuilder(ProductionExceptionHandler::class)
             ->setMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();

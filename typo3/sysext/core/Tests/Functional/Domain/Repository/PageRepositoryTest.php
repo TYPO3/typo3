@@ -25,11 +25,12 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class PageRepositoryTest extends FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['frontend'];
 

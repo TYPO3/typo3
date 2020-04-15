@@ -42,6 +42,7 @@ class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
      */
     public function deletePageCausesNoErrorsWithTranslatedSubpage(): void
     {
+        $cmd = null;
         $uid = 1;
         $cmd['pages'][$uid]['delete'] = 1;
 

@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -64,7 +67,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     {
         parent::setUp();
         $this->processor = $this->getAccessibleMock(
-            \TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class,
+            IntrospectionProcessor::class,
             ['getDebugBacktrace', 'formatDebugBacktrace']
         );
     }
@@ -75,7 +78,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     public function introspectionProcessorAddsLastBacktraceItemToLogRecord()
     {
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
         self::assertEquals($this->dummyBacktrace[0]['file'], $logRecord['data']['file']);
@@ -107,7 +110,7 @@ class IntrospectionProcessorTest extends UnitTestCase
         );
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($dummyBacktrace);
 
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
         self::assertEquals($this->dummyBacktrace[0]['file'], $logRecord['data']['file']);
@@ -137,7 +140,7 @@ class IntrospectionProcessorTest extends UnitTestCase
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel($number);
 
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
         self::assertEquals($this->dummyBacktrace[$number]['file'], $logRecord['data']['file']);
@@ -154,7 +157,7 @@ class IntrospectionProcessorTest extends UnitTestCase
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel(4);
 
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
         self::assertEquals($this->dummyBacktrace[3]['file'], $logRecord['data']['file']);
@@ -172,7 +175,7 @@ class IntrospectionProcessorTest extends UnitTestCase
 
         $this->processor->setAppendFullBackTrace(true);
 
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
         self::assertContains($this->dummyBacktrace[0], $logRecord['data']['backtrace']);

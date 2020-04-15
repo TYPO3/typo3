@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Core\Error\Http;
 
+use TYPO3\CMS\Core\Error\Exception;
+
 /**
  * HTTP Status Exception
  */
-class StatusException extends \TYPO3\CMS\Core\Error\Exception
+class StatusException extends Exception
 {
     /**
      * @var array HTTP Status Header lines

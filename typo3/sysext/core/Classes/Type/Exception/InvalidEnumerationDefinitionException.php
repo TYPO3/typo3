@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Type\Exception;
 
+use TYPO3\CMS\Core\Type\Exception;
+
 /**
  * Exception for an invalid enumeration definition
  */
-class InvalidEnumerationDefinitionException extends \TYPO3\CMS\Core\Type\Exception
+class InvalidEnumerationDefinitionException extends Exception
 {
 }

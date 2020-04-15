@@ -17,6 +17,17 @@ namespace TYPO3\CMS\Core\Resource\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
+use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
+use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
+use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -57,7 +68,7 @@ class FileProcessingService
      * @param Resource\Driver\DriverInterface $driver
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(Resource\ResourceStorage $storage, Resource\Driver\DriverInterface $driver, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(ResourceStorage $storage, DriverInterface $driver, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->storage = $storage;
         $this->driver = $driver;
@@ -75,13 +86,13 @@ class FileProcessingService
      * @return Resource\ProcessedFile
      * @throws \InvalidArgumentException
      */
-    public function processFile(Resource\FileInterface $fileObject, Resource\ResourceStorage $targetStorage, $taskType, $configuration)
+    public function processFile(FileInterface $fileObject, ResourceStorage $targetStorage, $taskType, $configuration)
     {
         // Enforce default configuration for preview processing here,
         // to be sure we find already processed files below,
         // which we wouldn't if we would change the configuration later, as configuration is part of the lookup.
-        if ($taskType === Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW) {
-            $configuration = Resource\Processing\LocalPreviewHelper::preProcessConfiguration($configuration);
+        if ($taskType === ProcessedFile::CONTEXT_IMAGEPREVIEW) {
+            $configuration = LocalPreviewHelper::preProcessConfiguration($configuration);
         }
         // Ensure that the processing configuration which is part of the hash sum is properly cast, so
         // unnecessary duplicate images are not produced, see #80942
@@ -92,7 +103,7 @@ class FileProcessingService
         }
 
         /** @var Resource\ProcessedFileRepository $processedFileRepository */
-        $processedFileRepository = GeneralUtility::makeInstance(Resource\ProcessedFileRepository::class);
+        $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
 
         $processedFile = $processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($fileObject, $taskType, $configuration);
 
@@ -100,7 +111,7 @@ class FileProcessingService
         // Pre-process the file
         /** @var Resource\Event\BeforeFileProcessingEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            new Resource\Event\BeforeFileProcessingEvent($this->driver, $processedFile, $fileObject, $taskType, $configuration)
+            new BeforeFileProcessingEvent($this->driver, $processedFile, $fileObject, $taskType, $configuration)
         );
         $processedFile = $event->getProcessedFile();
 
@@ -114,7 +125,7 @@ class FileProcessingService
         // Post-process (enrich) the file
         /** @var Resource\Event\AfterFileProcessingEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            new Resource\Event\AfterFileProcessingEvent($this->driver, $processedFile, $fileObject, $taskType, $configuration)
+            new AfterFileProcessingEvent($this->driver, $processedFile, $fileObject, $taskType, $configuration)
         );
 
         return $event->getProcessedFile();
@@ -126,7 +137,7 @@ class FileProcessingService
      * @param Resource\ProcessedFile $processedFile
      * @param Resource\ResourceStorage $targetStorage The storage to put the processed file into
      */
-    protected function process(Resource\ProcessedFile $processedFile, Resource\ResourceStorage $targetStorage)
+    protected function process(ProcessedFile $processedFile, ResourceStorage $targetStorage)
     {
         // We only have to trigger the file processing if the file either is new, does not exist or the
         // original file has changed since the last processing run (the last case has to trigger a reprocessing
@@ -139,7 +150,7 @@ class FileProcessingService
 
             if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
                 /** @var Resource\ProcessedFileRepository $processedFileRepository */
-                $processedFileRepository = GeneralUtility::makeInstance(Resource\ProcessedFileRepository::class);
+                $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
                 $processedFileRepository->add($processedFile);
             }
         }
@@ -149,9 +160,9 @@ class FileProcessingService
      * @param Resource\Processing\TaskInterface $task
      * @return Resource\Processing\ProcessorInterface
      */
-    protected function getProcessorByTask(Resource\Processing\TaskInterface $task): Resource\Processing\ProcessorInterface
+    protected function getProcessorByTask(TaskInterface $task): ProcessorInterface
     {
-        $processorRegistry = GeneralUtility::makeInstance(Resource\Processing\ProcessorRegistry::class);
+        $processorRegistry = GeneralUtility::makeInstance(ProcessorRegistry::class);
 
         return $processorRegistry->getProcessorByTask($task);
     }

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\TypoScript;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -282,7 +284,7 @@ class ExtendedTemplateService extends TemplateService
         // These vars are also set later on...
         $this->setup['sitetitle'] = $this->sitetitle;
         // Parse constants
-        $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
+        $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
         // Register comments!
         $constants->regComments = true;
         /** @var ConditionMatcher $matchObj */
@@ -347,7 +349,7 @@ class ExtendedTemplateService extends TemplateService
         $keyArr_num = [];
         $keyArr_alpha = [];
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
             if (substr($key, -2) !== '..') {
@@ -593,7 +595,7 @@ class ExtendedTemplateService extends TemplateService
         $a = 0;
         $c = count($keyArr);
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         foreach ($keyArr as $key => $value) {
@@ -694,7 +696,7 @@ class ExtendedTemplateService extends TemplateService
             $all .= '[GLOBAL]' . LF . $str;
         }
         if ($syntaxHL) {
-            $tsparser = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
+            $tsparser = GeneralUtility::makeInstance(TypoScriptParser::class);
             $tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
             $tsparser->parentObject = $this;
             return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '', $syntaxHLBlockmode);

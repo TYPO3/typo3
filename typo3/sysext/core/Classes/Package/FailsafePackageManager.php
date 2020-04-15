@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
+
 /**
  * This is an intermediate package manager that loads just
  * the required extensions for the install in case the package
@@ -35,7 +37,7 @@ class FailsafePackageManager extends PackageManager
     {
         try {
             parent::loadPackageStates();
-        } catch (Exception\PackageStatesUnavailableException $exception) {
+        } catch (PackageStatesUnavailableException $exception) {
             $this->inFailsafeMode = true;
             $this->packageStatesConfiguration = [];
             $this->scanAvailablePackages();

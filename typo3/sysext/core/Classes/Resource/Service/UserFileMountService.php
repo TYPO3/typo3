@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,7 +43,7 @@ class UserFileMountService
     public function renderTceformsSelectDropdown(&$PA)
     {
         $allowedStorageIds = array_map(
-            function (\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
+            function (ResourceStorage $storage) {
                 return $storage->getUid();
             },
             $this->getBackendUserAuthentication()->getFileStorages()

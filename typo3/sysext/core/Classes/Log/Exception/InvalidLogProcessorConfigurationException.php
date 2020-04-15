@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Log\Exception;
 
+use TYPO3\CMS\Core\Log\Exception;
+
 /**
  * An exception when something is wrong with the configuration for a LogProcessor
  */
-class InvalidLogProcessorConfigurationException extends \TYPO3\CMS\Core\Log\Exception
+class InvalidLogProcessorConfigurationException extends Exception
 {
 }

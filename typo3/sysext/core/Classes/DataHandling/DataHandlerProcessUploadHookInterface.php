@@ -27,5 +27,5 @@ interface DataHandlerProcessUploadHookInterface
      * @param string $filename The uploaded file
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject
      */
-    public function processUpload_postProcessAction(&$filename, \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject);
+    public function processUpload_postProcessAction(&$filename, DataHandler $parentObject);
 }

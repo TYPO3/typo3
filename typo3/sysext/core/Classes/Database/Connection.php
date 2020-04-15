@@ -20,11 +20,14 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform;
+use Doctrine\DBAL\VersionAwarePlatformDriver;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -217,7 +220,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function bulkInsert(string $tableName, array $data, array $columns = [], array $types = []): int
     {
-        $query = GeneralUtility::makeInstance(Query\BulkInsertQuery::class, $this, $tableName, $columns);
+        $query = GeneralUtility::makeInstance(BulkInsertQuery::class, $this, $tableName, $columns);
         foreach ($data as $values) {
             $query->addValues($values, $types);
         }
@@ -394,11 +397,11 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         }
 
         // Driver does not support version specific platforms.
-        if (!$this->getDriver() instanceof \Doctrine\DBAL\VersionAwarePlatformDriver) {
+        if (!$this->getDriver() instanceof VersionAwarePlatformDriver) {
             return $version;
         }
 
-        if ($this->getWrappedConnection() instanceof \Doctrine\DBAL\Driver\ServerInfoAwareConnection
+        if ($this->getWrappedConnection() instanceof ServerInfoAwareConnection
             && !$this->getWrappedConnection()->requiresQueryForServerVersion()
         ) {
             $version .= ' ' . $this->getWrappedConnection()->getServerVersion();

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Collection;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -369,7 +370,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
             $data[trim(static::$storageTableName)][$uid]['pid'] = 0;
         }
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
-        $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
         $tce->start($data, []);
         $tce->process_datamap();
     }

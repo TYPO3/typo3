@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -123,7 +125,7 @@ class Folder implements FolderInterface
         if ($this->identifier !== $rootId) {
             try {
                 $readablePath = $this->getParentFolder()->getReadablePath($rootId);
-            } catch (Exception\InsufficientFolderAccessPermissionsException $e) {
+            } catch (InsufficientFolderAccessPermissionsException $e) {
                 // May no access to parent folder (e.g. because of mount point)
                 $readablePath = '/';
             }
@@ -426,7 +428,7 @@ class Folder implements FolderInterface
     {
         try {
             return $this->getStorage()->checkFolderActionPermission($action, $this);
-        } catch (Exception\ResourcePermissionsUnavailableException $e) {
+        } catch (ResourcePermissionsUnavailableException $e) {
             return false;
         }
     }

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
@@ -133,8 +134,8 @@ class FileWriterTest extends UnitTestCase
      */
     public function logsToFileDataProvider(): array
     {
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
-        $recordWithData = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
+        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $recordWithData = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
         return [
             'simple record' => [$simpleRecord, trim((string)$simpleRecord)],
             'record with data' => [$recordWithData, trim((string)$recordWithData)]
@@ -165,7 +166,7 @@ class FileWriterTest extends UnitTestCase
         $recordWithData = GeneralUtility::makeInstance(
             LogRecord::class,
             StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'),
-            \TYPO3\CMS\Core\Log\LogLevel::INFO,
+            LogLevel::INFO,
             'test record with unicode and slash in data to encode',
             ['foo' => ['bar' => 'I paid 0.00€ for open source projects/code']]
         );

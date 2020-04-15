@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
+use TYPO3\CMS\Backend\Tree\AbstractTree;
+
 /**
  * Class for tca tree
  */
-class TableConfigurationTree extends \TYPO3\CMS\Backend\Tree\AbstractTree
+class TableConfigurationTree extends AbstractTree
 {
     /**
      * Returns the root node

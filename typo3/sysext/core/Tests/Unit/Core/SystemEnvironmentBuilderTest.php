@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -34,7 +35,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, ['dummy']);
+        $this->subject = $this->getAccessibleMock(SystemEnvironmentBuilder::class, ['dummy']);
     }
 
     /**

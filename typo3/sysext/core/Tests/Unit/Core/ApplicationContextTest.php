@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -72,7 +73,7 @@ class ApplicationContextTest extends UnitTestCase
      */
     public function constructorThrowsExceptionIfMainContextIsForbidden($forbiddenContext)
     {
-        $this->expectException(\TYPO3\CMS\Core\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1335436551);
 
         new ApplicationContext($forbiddenContext);

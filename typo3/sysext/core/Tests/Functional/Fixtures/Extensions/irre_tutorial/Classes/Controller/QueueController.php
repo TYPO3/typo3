@@ -16,6 +16,10 @@
 namespace OliverHader\IrreTutorial\Controller;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 
 /**
  * ContentController
@@ -31,7 +35,7 @@ class QueueController extends AbstractController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
+    protected $defaultViewObjectName = JsonView::class;
 
     public function indexAction()
     {
@@ -72,12 +76,12 @@ class QueueController extends AbstractController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
      */
-    protected function resolveController(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request)
+    protected function resolveController(RequestInterface $request)
     {
         $controllerObjectName = $request->getControllerObjectName();
         $controller = $this->objectManager->get($controllerObjectName);
-        if (!$controller instanceof \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
+        if (!$controller instanceof ControllerInterface) {
+            throw new InvalidControllerException('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
         }
         return $controller;
     }

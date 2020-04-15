@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,7 +73,7 @@ abstract class AbstractTask implements TaskInterface
      * @param Resource\ProcessedFile $targetFile
      * @param array $configuration
      */
-    public function __construct(Resource\ProcessedFile $targetFile, array $configuration)
+    public function __construct(ProcessedFile $targetFile, array $configuration)
     {
         $this->targetFile = $targetFile;
         $this->sourceFile = $targetFile->getOriginalFile();
@@ -158,7 +160,7 @@ abstract class AbstractTask implements TaskInterface
     /**
      * @param Resource\ProcessedFile $targetFile
      */
-    public function setTargetFile(Resource\ProcessedFile $targetFile)
+    public function setTargetFile(ProcessedFile $targetFile)
     {
         $this->targetFile = $targetFile;
     }
@@ -174,7 +176,7 @@ abstract class AbstractTask implements TaskInterface
     /**
      * @param Resource\File $sourceFile
      */
-    public function setSourceFile(Resource\File $sourceFile)
+    public function setSourceFile(File $sourceFile)
     {
         $this->sourceFile = $sourceFile;
     }

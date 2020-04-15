@@ -94,7 +94,7 @@ abstract class AbstractApplication implements ApplicationInterface
     {
         try {
             $response = $this->handle(
-                \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals()
+                ServerRequestFactory::fromGlobals()
             );
             if ($execute !== null) {
                 call_user_func($execute);

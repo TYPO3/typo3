@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Database;
 
 use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -698,7 +699,7 @@ class QueryView
         }
         $out .= '<td>';
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         if (!$row['deleted']) {
             $out .= '<div class="btn-group" role="group">';

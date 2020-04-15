@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing;
 
+use TYPO3\CMS\Core\Exception;
+
 /**
  * Exception thrown when a route does not exist
  */
-class RouteNotFoundException extends \TYPO3\CMS\Core\Exception
+class RouteNotFoundException extends Exception
 {
 }

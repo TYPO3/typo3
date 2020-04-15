@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassLoader;
 use Composer\Autoload\ClassMapGenerator;
+use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -179,7 +180,7 @@ class ClassLoadingInformationGenerator
         if (!empty($manifest->extra->{'typo3/class-alias-loader'}->{'class-alias-maps'})) {
             $possibleClassAliasFiles = $manifest->extra->{'typo3/class-alias-loader'}->{'class-alias-maps'};
             if (!is_array($possibleClassAliasFiles)) {
-                throw new \TYPO3\CMS\Core\Error\Exception('"typo3/class-alias-loader"/"class-alias-maps" must return an array!', 1444142481);
+                throw new Exception('"typo3/class-alias-loader"/"class-alias-maps" must return an array!', 1444142481);
             }
         } else {
             $possibleClassAliasFiles[] = 'Migrations/Code/ClassAliasMap.php';
@@ -190,7 +191,7 @@ class ClassLoadingInformationGenerator
             if (file_exists($possiblePathToClassAliasFile)) {
                 $packageAliasMap = require $possiblePathToClassAliasFile;
                 if (!is_array($packageAliasMap)) {
-                    throw new \TYPO3\CMS\Core\Error\Exception('"class alias maps" must return an array', 1422625075);
+                    throw new Exception('"class alias maps" must return an array', 1422625075);
                 }
                 foreach ($packageAliasMap as $aliasClassName => $className) {
                     $lowerCasedAliasClassName = strtolower($aliasClassName);

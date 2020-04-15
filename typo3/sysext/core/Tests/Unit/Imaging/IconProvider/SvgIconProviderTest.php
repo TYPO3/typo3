@@ -41,7 +41,7 @@ class SvgIconProviderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider();
+        $this->subject = new SvgIconProvider();
         $this->icon = GeneralUtility::makeInstance(Icon::class);
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(Icon::SIZE_SMALL);

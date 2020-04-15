@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Domain\Repository;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -78,7 +79,7 @@ class PageRepositoryTest extends UnitTestCase
      */
     public function getExtUrlForDokType3PrependsSiteUrl()
     {
-        self::assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL([
+        self::assertEquals(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => 'hello/world/'
         ]));

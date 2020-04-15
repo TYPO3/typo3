@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Core\Resource\Exception;
 
+use TYPO3\CMS\Core\Resource\Exception;
+
 /**
  * An exception when something is wrong with fetching the permissions for a file or a folder.
  *
  * Extending \RuntimeException for backwards compatibility.
  */
-class ResourcePermissionsUnavailableException extends \TYPO3\CMS\Core\Resource\Exception
+class ResourcePermissionsUnavailableException extends Exception
 {
 }

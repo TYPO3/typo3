@@ -28,8 +28,10 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 
 /**
  * Extension Management functions
@@ -166,7 +168,7 @@ class ExtensionManagementUtility
         }
         $version = static::$packageManager->getPackage($key)->getPackageMetaData()->getVersion();
         if (empty($version)) {
-            throw new \TYPO3\CMS\Core\Package\Exception('Version number in composer manifest of package "' . $key . '" is missing or invalid', 1395614959);
+            throw new Exception('Version number in composer manifest of package "' . $key . '" is missing or invalid', 1395614959);
         }
         return $version;
     }
@@ -576,7 +578,7 @@ class ExtensionManagementUtility
             ],
             'filter' => [
                 [
-                    'userFunc' => \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class . '->filterInlineChildren',
+                    'userFunc' => FileExtensionFilter::class . '->filterInlineChildren',
                     'parameters' => [
                         'allowedFileExtensions' => $allowedFileExtensions,
                         'disallowedFileExtensions' => $disallowedFileExtensions

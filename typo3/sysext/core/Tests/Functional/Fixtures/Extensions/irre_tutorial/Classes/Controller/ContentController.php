@@ -15,7 +15,9 @@
 
 namespace OliverHader\IrreTutorial\Controller;
 
+use OliverHader\IrreTutorial\Domain\Model\Content;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 
 /**
  * ContentController
@@ -31,7 +33,7 @@ class ContentController extends AbstractController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
+    protected $defaultViewObjectName = JsonView::class;
 
     public function listAction()
     {
@@ -43,7 +45,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      */
-    public function showAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
+    public function showAction(Content $content)
     {
         $value = $this->getStructure($content);
         $this->process($value);
@@ -53,7 +55,7 @@ class ContentController extends AbstractController
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
      * @Extbase\IgnoreValidation("newContent")
      */
-    public function newAction(\OliverHader\IrreTutorial\Domain\Model\Content $newContent = null)
+    public function newAction(Content $newContent = null)
     {
         $this->view->assign('newContent', $newContent);
     }
@@ -61,7 +63,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
      */
-    public function createAction(\OliverHader\IrreTutorial\Domain\Model\Content $newContent)
+    public function createAction(Content $newContent)
     {
         $this->contentRepository->add($newContent);
         $this->redirect('list');
@@ -71,7 +73,7 @@ class ContentController extends AbstractController
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      * @Extbase\IgnoreValidation("content")
      */
-    public function editAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
+    public function editAction(Content $content)
     {
         $this->view->assign('content', $content);
     }
@@ -79,7 +81,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      */
-    public function updateAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
+    public function updateAction(Content $content)
     {
         $this->contentRepository->update($content);
         $this->redirect('list');
@@ -88,7 +90,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      */
-    public function deleteAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
+    public function deleteAction(Content $content)
     {
         $this->contentRepository->remove($content);
         $this->redirect('list');

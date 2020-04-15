@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Core\Resource\Driver;
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Registry for driver classes.
  */
-class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class DriverRegistry implements SingletonInterface
 {
     /**
      * @var array

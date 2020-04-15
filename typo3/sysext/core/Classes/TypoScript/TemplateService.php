@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -981,7 +982,7 @@ class TemplateService
         // ****************************
         // Initialize parser and match-condition classes:
         /** @var Parser\TypoScriptParser $constants */
-        $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
+        $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
         $constants->breakPointLN = (int)$this->ext_constants_BRP;
         /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
@@ -1000,7 +1001,7 @@ class TemplateService
         // ***********************************************
         // Initialize parser and match-condition classes:
         /** @var Parser\TypoScriptParser $config */
-        $config = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
+        $config = GeneralUtility::makeInstance(TypoScriptParser::class);
         $config->breakPointLN = (int)$this->ext_config_BRP;
         $config->regLinenumbers = $this->ext_regLinenumbers;
         $config->regComments = $this->ext_regComments;
@@ -1093,14 +1094,14 @@ class TemplateService
         $paths = $this->templateIncludePaths;
         $files = [];
         foreach ($this->constants as &$value) {
-            $includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
+            $includeData = TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
             $files = array_merge($files, $includeData['files']);
             $value = $includeData['typoscript'];
         }
         unset($value);
         $paths = $this->templateIncludePaths;
         foreach ($this->config as &$value) {
-            $includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
+            $includeData = TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
             $files = array_merge($files, $includeData['files']);
             $value = $includeData['typoscript'];
         }
@@ -1193,7 +1194,6 @@ class TemplateService
      * Functions for creating links
      *
      *******************************************************************/
-
     /**
      * Adds the TypoScript from the global array.
      * The class property isDefaultTypoScriptAdded ensures

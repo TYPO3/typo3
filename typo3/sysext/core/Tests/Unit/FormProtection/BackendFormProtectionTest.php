@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -46,7 +47,7 @@ class BackendFormProtectionTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backendUserMock = $this->createMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $this->backendUserMock->user['uid'] = 1;
         $this->registryMock = $this->createMock(Registry::class);
         $this->subject = new BackendFormProtection(
@@ -81,7 +82,7 @@ class BackendFormProtectionTest extends UnitTestCase
         $action = 'edit';
         $formInstanceName = '42';
 
-        $tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
+        $tokenId = GeneralUtility::hmac(
             $formName . $action . $formInstanceName . $sessionToken
         );
 

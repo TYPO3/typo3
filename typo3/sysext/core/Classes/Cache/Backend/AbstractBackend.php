@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -91,7 +92,7 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
      */
-    public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache)
     {
         $this->cache = $cache;
         $this->cacheIdentifier = $this->cache->getIdentifier();

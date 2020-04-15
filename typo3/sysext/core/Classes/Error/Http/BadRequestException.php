@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Error\Http;
 
+use TYPO3\CMS\Core\Utility\HttpUtility;
+
 /**
  * Exception for Error 400 - Bad Request
  */
@@ -23,7 +25,7 @@ class BadRequestException extends AbstractClientErrorException
     /**
      * @var array HTTP Status Header lines
      */
-    protected $statusHeaders = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_400];
+    protected $statusHeaders = [HttpUtility::HTTP_STATUS_400];
 
     /**
      * @var string Title of the message

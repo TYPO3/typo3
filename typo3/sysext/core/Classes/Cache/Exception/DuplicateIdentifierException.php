@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Cache\Exception;
 
+use TYPO3\CMS\Core\Cache\Exception;
+
 /**
  * A "Duplicate Identifier" exception
  */
-class DuplicateIdentifierException extends \TYPO3\CMS\Core\Cache\Exception
+class DuplicateIdentifierException extends Exception
 {
 }

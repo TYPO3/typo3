@@ -22,11 +22,12 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ExtractorService;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class ExtractorServiceTest
  */
-class ExtractorServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ExtractorServiceTest extends UnitTestCase
 {
     /**
      * @test

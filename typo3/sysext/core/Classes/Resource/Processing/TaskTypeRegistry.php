@@ -16,12 +16,13 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The registry for task types.
  */
-class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class TaskTypeRegistry implements SingletonInterface
 {
     /**
      * @var array

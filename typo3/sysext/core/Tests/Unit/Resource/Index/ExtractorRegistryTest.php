@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
 
+use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
+use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,7 +30,7 @@ class ExtractorRegistryTest extends UnitTestCase
     public function registeredExtractorClassCanBeRetrieved()
     {
         $extractorClass = 'a9f4d5e4ebb4b03547a2a6094e1170ac';
-        $extractorObject = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
+        $extractorObject = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass)
             ->getMock();
 
@@ -70,19 +72,19 @@ class ExtractorRegistryTest extends UnitTestCase
     public function registerExtractorClassWithHighestPriorityIsFirstInResult()
     {
         $extractorClass1 = 'db76010e5c24658c35ea1605cce2391d';
-        $extractorObject1 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
+        $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
         $extractorObject1->expects(self::any())->method('getPriority')->willReturn(1);
 
         $extractorClass2 = 'ad9195e2487eea33c8a2abd5cf33cba4';
-        $extractorObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
+        $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
         $extractorObject2->expects(self::any())->method('getPriority')->willReturn(10);
 
         $extractorClass3 = 'cef9aa4e1cd3aa7ff05dcdccb117156a';
-        $extractorObject3 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
+        $extractorObject3 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass3)
             ->getMock();
         $extractorObject3->expects(self::any())->method('getPriority')->willReturn(2);
@@ -111,13 +113,13 @@ class ExtractorRegistryTest extends UnitTestCase
     public function registeredExtractorClassWithSamePriorityAreAllReturned()
     {
         $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
-        $extractorObject1 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
+        $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
         $extractorObject1->expects(self::any())->method('getPriority')->willReturn(1);
 
         $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
-        $extractorObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
+        $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
         $extractorObject2->expects(self::any())->method('getPriority')->willReturn(1);
@@ -144,7 +146,7 @@ class ExtractorRegistryTest extends UnitTestCase
      */
     protected function getMockExtractorRegistry(array $createsExtractorInstances = [])
     {
-        $extractorRegistry = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class)
+        $extractorRegistry = $this->getMockBuilder(ExtractorRegistry::class)
             ->setMethods(['createExtractorInstance'])
             ->getMock();
 

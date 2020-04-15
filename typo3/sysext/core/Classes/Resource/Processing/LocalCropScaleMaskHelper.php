@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -128,7 +130,7 @@ class LocalCropScaleMaskHelper
             $temporaryFileName = Environment::getPublicPath() . '/typo3temp/' . $targetFileName;
             $maskImage = $configuration['maskImages']['maskImage'];
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
-            if ($maskImage instanceof Resource\FileInterface && $maskBackgroundImage instanceof Resource\FileInterface) {
+            if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
                 $temporaryExtension = 'png';
                 if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowTemporaryMasksAsPng']) {
                     // If ImageMagick version 5+
@@ -145,7 +147,7 @@ class LocalCropScaleMaskHelper
                 );
                 if (is_array($tempFileInfo)) {
                     $maskBottomImage = $configuration['maskImages']['maskBottomImage'];
-                    if ($maskBottomImage instanceof Resource\FileInterface) {
+                    if ($maskBottomImage instanceof FileInterface) {
                         $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'];
                     } else {
                         $maskBottomImageMask = null;
@@ -163,7 +165,7 @@ class LocalCropScaleMaskHelper
                     $tempScale['m_bgImg'] = $tmpStr . '_bgImg.miff';
                     $gifBuilder->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
                     //	m_bottomImg / m_bottomImg_mask
-                    if ($maskBottomImage instanceof Resource\FileInterface && $maskBottomImageMask instanceof Resource\FileInterface) {
+                    if ($maskBottomImage instanceof FileInterface && $maskBottomImageMask instanceof FileInterface) {
                         $tempScale['m_bottomImg'] = $tmpStr . '_bottomImg.' . $temporaryExtension;
                         $gifBuilder->imageMagickExec($maskBottomImage->getForLocalProcessing(), $tempScale['m_bottomImg'], $command);
                         $tempScale['m_bottomImg_mask'] = ($tmpStr . '_bottomImg_mask.') . $temporaryExtension;
@@ -252,7 +254,7 @@ class LocalCropScaleMaskHelper
      *
      * @return array
      */
-    protected function getConfigurationForImageCropScaleMask(Resource\ProcessedFile $processedFile, \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder)
+    protected function getConfigurationForImageCropScaleMask(ProcessedFile $processedFile, GifBuilder $gifBuilder)
     {
         $configuration = $processedFile->getProcessingConfiguration();
 

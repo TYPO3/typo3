@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Collection;
 
+use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -22,7 +23,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 /**
  * Abstract collection.
  */
-abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection
+abstract class AbstractFileCollection extends AbstractRecordCollection
 {
     /**
      * The table name collections are stored to

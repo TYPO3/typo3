@@ -15,12 +15,14 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Functional test for the DataHandler
  */
-abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
+abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
     const VALUE_PageId = 89;
     const VALUE_PageIdTarget = 90;
@@ -207,7 +209,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
             unset($GLOBALS['TCA'][self::TABLE_Content]['columns'][$integrityFieldName]);
         }
         // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
-        $GLOBALS['TCA'] = (new \TYPO3\CMS\Core\Migrations\TcaMigration())->migrate($GLOBALS['TCA']);
+        $GLOBALS['TCA'] = (new TcaMigration())->migrate($GLOBALS['TCA']);
         // perform actions to be tested
         self::localizeContent();
     }

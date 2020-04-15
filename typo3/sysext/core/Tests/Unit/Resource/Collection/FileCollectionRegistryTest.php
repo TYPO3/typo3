@@ -15,12 +15,16 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
+use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
+use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
+use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
+use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test cases for FileCollectionRegistry
  */
-class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
+class FileCollectionRegistryTest extends BaseTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry
@@ -35,7 +39,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 
     protected function initializeTestSubject()
     {
-        $this->testSubject = new \TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry();
+        $this->testSubject = new FileCollectionRegistry();
     }
 
     /**
@@ -43,7 +47,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     public function registeredFileCollectionClassesCanBeRetrieved()
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
         $returnedClassName = $this->testSubject->getFileCollectionClass('foobar');
         self::assertEquals($className, $returnedClassName);
@@ -68,7 +72,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295611);
 
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = str_pad('', 40);
         $this->testSubject->registerFileCollectionClass($className, $type);
     }
@@ -81,8 +85,8 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295643);
 
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
-        $className2 = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
         $this->testSubject->registerFileCollectionClass($className2, 'foobar');
     }
@@ -92,8 +96,8 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass()
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
-        $className2 = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
+        $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
         $this->testSubject->registerFileCollectionClass($className2, 'foobar', true);
     }
@@ -114,7 +118,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     public function getFileCollectionClassAcceptsClassNameIfClassIsRegistered()
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
         self::assertEquals($className, $this->testSubject->getFileCollectionClass('foobar'));
     }
@@ -124,7 +128,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections()
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = substr(StringUtility::getUniqueId('type_'), 0, 30);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className
@@ -138,7 +142,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     public function fileCollectionExistsReturnsTrueForAllExistingFileCollections()
     {
-        $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
+        $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = 'foo';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className

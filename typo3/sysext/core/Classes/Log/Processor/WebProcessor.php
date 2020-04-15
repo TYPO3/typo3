@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Core\Log\Processor;
 
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Web log processor to automatically add web request related data to a log
  * record.
@@ -29,9 +32,9 @@ class WebProcessor extends AbstractProcessor
      * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()
      */
-    public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord)
+    public function processLogRecord(LogRecord $logRecord)
     {
-        $logRecord->addData(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY'));
+        $logRecord->addData(GeneralUtility::getIndpEnv('_ARRAY'));
         return $logRecord;
     }
 }

@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Core\Service;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Utilities to process flexForms
  */
-class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
+class FlexFormService implements SingletonInterface
 {
     /**
      * Parses the flexForm content and converts it to an array
@@ -35,7 +38,7 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
     public function convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
     {
         $settings = [];
-        $flexFormArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexFormContent);
+        $flexFormArray = GeneralUtility::xml2array($flexFormContent);
         $flexFormArray = $flexFormArray['data'] ?? [];
         foreach (array_values($flexFormArray) as $languages) {
             if (!is_array($languages[$languagePointer])) {

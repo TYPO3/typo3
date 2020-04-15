@@ -21,8 +21,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,7 +39,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageService::class)
+        $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)
             ->setMethods(['sL'])
             ->getMock();
     }
@@ -65,7 +67,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
             );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class)
+        $subject = $this->getMockBuilder(ExtendedFileUtility::class)
             ->setMethods(['addFlashMessage'])
             ->getMock();
 
@@ -113,7 +115,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class)
+        $subject = $this->getMockBuilder(ExtendedFileUtility::class)
             ->setMethods(['addFlashMessage'])
             ->getMock();
         self::assertFalse($subject->folderHasFilesInUse($folder));

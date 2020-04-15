@@ -50,9 +50,9 @@ class SemaphoreLockStrategyTest extends UnitTestCase
      */
     public function setPriority()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\SemaphoreLockStrategy::class]['priority'] = 10;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = 10;
 
         self::assertEquals(10, SemaphoreLockStrategy::getPriority());
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\SemaphoreLockStrategy::class]['priority']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority']);
     }
 }

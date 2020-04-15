@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource\Index;
 
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\File;
 
 /**
  * An Interface for MetaData extractors the FAL Indexer uses
@@ -69,7 +70,7 @@ interface ExtractorInterface
      * @param Resource\File $file
      * @return bool
      */
-    public function canProcess(Resource\File $file);
+    public function canProcess(File $file);
 
     /**
      * The actual processing TASK
@@ -80,5 +81,5 @@ interface ExtractorInterface
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(Resource\File $file, array $previousExtractedData = []);
+    public function extractMetaData(File $file, array $previousExtractedData = []);
 }

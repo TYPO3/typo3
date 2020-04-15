@@ -141,7 +141,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 TestServiceProviderFactoryOverride::class,
             ],
             function (ContainerBuilder $container) {
-                $definition = new \Symfony\Component\DependencyInjection\Definition('stdClass');
+                $definition = new Definition('stdClass');
                 // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
                 // property should not be "deleted" by service provider
@@ -165,7 +165,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 TestServiceProviderFactoryOverride::class,
             ],
             function (ContainerBuilder $container) {
-                $definition = new \Symfony\Component\DependencyInjection\Definition('stdClass');
+                $definition = new Definition('stdClass');
                 // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
                 // property should not be "deleted" by service provider

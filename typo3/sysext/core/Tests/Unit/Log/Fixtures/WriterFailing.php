@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
 
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Log\Writer\WriterInterface;
+
 /**
  * A log writer that always fails to write (for testing purposes ;-))
  */
-class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface
+class WriterFailing implements WriterInterface
 {
     /**
      * Try to write the log entry - but throw an exception in our case
@@ -27,7 +30,7 @@ class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface
      * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface|void
      * @throws \RuntimeException
      */
-    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record)
+    public function writeLog(LogRecord $record)
     {
         throw new \RuntimeException('t3lib_log_writer_Failing failed', 1476122125);
     }

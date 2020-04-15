@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -123,7 +124,7 @@ class ProcessedFile extends AbstractFile
         if (is_array($databaseRow)) {
             $this->reconstituteFromDatabaseRecord($databaseRow);
         }
-        $this->taskTypeRegistry = GeneralUtility::makeInstance(Processing\TaskTypeRegistry::class);
+        $this->taskTypeRegistry = GeneralUtility::makeInstance(TaskTypeRegistry::class);
     }
 
     /**

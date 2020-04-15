@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+
 /**
  * A caching backend which forgets everything immediately
  * Used in FactoryTest
  */
-class MockBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend
+class MockBackend extends NullBackend
 {
     /**
      * @var mixed

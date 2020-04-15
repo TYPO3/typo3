@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Frontend Timetracking functions
@@ -497,14 +498,14 @@ class TimeTracker implements SingletonInterface
         // First, find number of entries
         foreach ($arr as $k => $v) {
             //do not count subentries (the one ending with dot, eg. '9.'
-            if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
+            if (MathUtility::canBeInterpretedAsInteger($k)) {
                 $entriesCount++;
             }
         }
         // Traverse through entries
         $subtime = 0;
         foreach ($arr as $k => $v) {
-            if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
+            if (MathUtility::canBeInterpretedAsInteger($k)) {
                 $c++;
                 $hasChildren = isset($arr[$k . '.']);
                 $lastEntry = $entriesCount === $c;
@@ -534,7 +535,7 @@ class TimeTracker implements SingletonInterface
         $content = $this->fixCLen($content, $this->tsStackLog[$vKey]['value']);
         // Traverse array again, this time substitute the unique hash with the red key
         foreach ($arr as $k => $v) {
-            if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
+            if (MathUtility::canBeInterpretedAsInteger($k)) {
                 if ($this->tsStackLog[$v]['content'] !== '') {
                     $content = str_replace($v, '<strong style="color:red;">[' . $this->tsStackLog[$v]['key'] . ']</strong>', $content);
                 }

@@ -20,9 +20,14 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
+use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -97,7 +102,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
     public function getDriverObject($driverIdentificationString, array $driverConfiguration)
     {
         /** @var Driver\DriverRegistry $driverRegistry */
-        $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
+        $driverRegistry = GeneralUtility::makeInstance(DriverRegistry::class);
         $driverClass = $driverRegistry->getDriverClass($driverIdentificationString);
         $driverObject = GeneralUtility::makeInstance($driverClass, $driverConfiguration);
         return $driverObject;
@@ -307,7 +312,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
     public function createCollectionObject(array $collectionData)
     {
         /** @var Collection\FileCollectionRegistry $registry */
-        $registry = GeneralUtility::makeInstance(Collection\FileCollectionRegistry::class);
+        $registry = GeneralUtility::makeInstance(FileCollectionRegistry::class);
 
         /** @var \TYPO3\CMS\Core\Collection\AbstractRecordCollection $class */
         $class = $registry->getFileCollectionClass($collectionData['type']);
@@ -366,7 +371,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
             if (empty($fileData)) {
                 $fileData = $this->getFileIndexRepository()->findOneByUid($uid);
                 if ($fileData === false) {
-                    throw new Exception\FileDoesNotExistException('No file found for given UID: ' . $uid, 1317178604);
+                    throw new FileDoesNotExistException('No file found for given UID: ' . $uid, 1317178604);
                 }
             }
             $this->fileInstances[$uid] = $this->createFileObject($fileData);
@@ -549,7 +554,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
         if ($storage->hasFolder($objectIdentifier)) {
             return $storage->getFolder($objectIdentifier);
         }
-        throw new Exception\ResourceDoesNotExistException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
+        throw new ResourceDoesNotExistException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
     }
 
     /**
@@ -599,7 +604,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
             if (empty($fileReferenceData)) {
                 $fileReferenceData = $this->getFileReferenceData($uid, $raw);
                 if (!is_array($fileReferenceData)) {
-                    throw new Exception\ResourceDoesNotExistException(
+                    throw new ResourceDoesNotExistException(
                         'No file reference (sys_file_reference) was found for given UID: "' . $uid . '"',
                         1317178794
                     );
@@ -683,6 +688,6 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
      */
     protected function getIndexer(ResourceStorage $storage)
     {
-        return GeneralUtility::makeInstance(Index\Indexer::class, $storage);
+        return GeneralUtility::makeInstance(Indexer::class, $storage);
     }
 }

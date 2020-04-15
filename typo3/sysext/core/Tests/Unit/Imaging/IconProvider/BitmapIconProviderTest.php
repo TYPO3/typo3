@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -40,7 +41,7 @@ class BitmapIconProviderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider();
+        $this->subject = new BitmapIconProvider();
         $this->icon = GeneralUtility::makeInstance(Icon::class);
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(Icon::SIZE_SMALL);

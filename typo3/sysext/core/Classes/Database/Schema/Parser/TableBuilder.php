@@ -30,6 +30,37 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BigIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BinaryDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\CharDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DateDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DateTimeDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DecimalDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DoubleDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\EnumDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\FloatDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\IntegerDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\JsonDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\LongBlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\LongTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumBlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\NumericDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\RealDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\SetDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\SmallIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TimeDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TimestampDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyBlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarBinaryDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarCharDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\YearDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\IndexColumnName;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
@@ -160,8 +191,8 @@ class TableBuilder
             $column->setFixed(true);
         }
 
-        if ($item->dataType instanceof DataType\EnumDataType
-            || $item->dataType instanceof DataType\SetDataType
+        if ($item->dataType instanceof EnumDataType
+            || $item->dataType instanceof SetDataType
         ) {
             $column->setPlatformOption('unquotedValues', $item->dataType->getValues());
         }
@@ -296,76 +327,76 @@ class TableBuilder
      * @return string
      * @throws \RuntimeException
      */
-    protected function getDoctrineColumnTypeName(DataType\AbstractDataType $dataType): string
+    protected function getDoctrineColumnTypeName(AbstractDataType $dataType): string
     {
         $doctrineType = null;
         switch (get_class($dataType)) {
-            case DataType\TinyIntDataType::class:
+            case TinyIntDataType::class:
                 // TINYINT is MySQL specific and mapped to a standard SMALLINT
-            case DataType\SmallIntDataType::class:
+            case SmallIntDataType::class:
                 $doctrineType = Types::SMALLINT;
                 break;
-            case DataType\MediumIntDataType::class:
+            case MediumIntDataType::class:
                 // MEDIUMINT is MySQL specific and mapped to a standard INT
-            case DataType\IntegerDataType::class:
+            case IntegerDataType::class:
                 $doctrineType = Types::INTEGER;
                 break;
-            case DataType\BigIntDataType::class:
+            case BigIntDataType::class:
                 $doctrineType = Types::BIGINT;
                 break;
-            case DataType\BinaryDataType::class:
-            case DataType\VarBinaryDataType::class:
+            case BinaryDataType::class:
+            case VarBinaryDataType::class:
                 // CHAR/VARCHAR is determined by "fixed" column property
                 $doctrineType = Types::BINARY;
                 break;
-            case DataType\TinyBlobDataType::class:
-            case DataType\MediumBlobDataType::class:
-            case DataType\BlobDataType::class:
-            case DataType\LongBlobDataType::class:
+            case TinyBlobDataType::class:
+            case MediumBlobDataType::class:
+            case BlobDataType::class:
+            case LongBlobDataType::class:
                 // Actual field type is determined by field length
                 $doctrineType = Types::BLOB;
                 break;
-            case DataType\DateDataType::class:
+            case DateDataType::class:
                 $doctrineType = Types::DATE_MUTABLE;
                 break;
-            case DataType\TimestampDataType::class:
-            case DataType\DateTimeDataType::class:
+            case TimestampDataType::class:
+            case DateTimeDataType::class:
                 // TIMESTAMP or DATETIME are determined by "version" column property
                 $doctrineType = Types::DATETIME_MUTABLE;
                 break;
-            case DataType\NumericDataType::class:
-            case DataType\DecimalDataType::class:
+            case NumericDataType::class:
+            case DecimalDataType::class:
                 $doctrineType = Types::DECIMAL;
                 break;
-            case DataType\RealDataType::class:
-            case DataType\FloatDataType::class:
-            case DataType\DoubleDataType::class:
+            case RealDataType::class:
+            case FloatDataType::class:
+            case DoubleDataType::class:
                 $doctrineType = Types::FLOAT;
                 break;
-            case DataType\TimeDataType::class:
+            case TimeDataType::class:
                 $doctrineType = Types::TIME_MUTABLE;
                 break;
-            case DataType\TinyTextDataType::class:
-            case DataType\MediumTextDataType::class:
-            case DataType\TextDataType::class:
-            case DataType\LongTextDataType::class:
+            case TinyTextDataType::class:
+            case MediumTextDataType::class:
+            case TextDataType::class:
+            case LongTextDataType::class:
                 $doctrineType = Types::TEXT;
                 break;
-            case DataType\CharDataType::class:
-            case DataType\VarCharDataType::class:
+            case CharDataType::class:
+            case VarCharDataType::class:
                 $doctrineType = Types::STRING;
                 break;
-            case DataType\EnumDataType::class:
+            case EnumDataType::class:
                 $doctrineType = EnumType::TYPE;
                 break;
-            case DataType\SetDataType::class:
+            case SetDataType::class:
                 $doctrineType = SetType::TYPE;
                 break;
-            case DataType\JsonDataType::class:
+            case JsonDataType::class:
                 // JSON is not supported in Doctrine 2.5, mapping to the more generic TEXT type
                 $doctrineType = Types::TEXT;
                 break;
-            case DataType\YearDataType::class:
+            case YearDataType::class:
                 // The YEAR data type is MySQL specific and offers little to no benefit.
                 // The two-digit year logic implemented in this data type (1-69 mapped to
                 // 2001-2069, 70-99 mapped to 1970-1999) can be easily implemented in the

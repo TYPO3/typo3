@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Site;
 
+use TYPO3\CMS\Core\Site\Entity\Site;
+
 /**
  * Interface for SiteAware features of TYPO3
  */
@@ -25,10 +27,10 @@ interface SiteAwareInterface
     /**
      * @param Entity\Site $site
      */
-    public function setSite(Entity\Site $site): void;
+    public function setSite(Site $site): void;
 
     /**
      * @return Entity\Site
      */
-    public function getSite(): Entity\Site;
+    public function getSite(): Site;
 }

@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,8 +30,8 @@ class MemoryUsageProcessorTest extends UnitTestCase
      */
     public function memoryUsageProcessorAddsMemoryUsageDataToLogRecord()
     {
-        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-        $processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();
+        $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
+        $processor = new MemoryUsageProcessor();
         $logRecord = $processor->processLogRecord($logRecord);
         self::assertArrayHasKey('memoryUsage', $logRecord['data']);
     }

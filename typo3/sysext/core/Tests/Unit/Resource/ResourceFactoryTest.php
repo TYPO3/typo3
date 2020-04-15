@@ -17,7 +17,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -69,7 +73,7 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function createStorageCollectionObjectCreatesCollectionWithCorrectArguments()
     {
-        $mockedMount = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $mockedMount = $this->createMock(ResourceStorage::class);
         $path = StringUtility::getUniqueId('path_');
         $name = StringUtility::getUniqueId('name_');
         $storageCollection = $this->subject->createFolderObject($mockedMount, $path, $name, 0);
@@ -86,14 +90,14 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function getDriverObjectAcceptsDriverClassName()
     {
-        $mockedDriver = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class);
+        $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
         $driverFixtureClass = get_class($mockedDriver);
-        \TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
-        $mockedRegistry = $this->createMock(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
+        GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
+        $mockedRegistry = $this->createMock(DriverRegistry::class);
         $mockedRegistry->expects(self::once())->method('getDriverClass')->with(self::equalTo($driverFixtureClass))->willReturn($driverFixtureClass);
-        \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class, $mockedRegistry);
+        GeneralUtility::setSingletonInstance(DriverRegistry::class, $mockedRegistry);
         $obj = $this->subject->getDriverObject($driverFixtureClass, []);
-        self::assertInstanceOf(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, $obj);
+        self::assertInstanceOf(AbstractDriver::class, $obj);
     }
 
     /***********************************
@@ -151,7 +155,7 @@ class ResourceFactoryTest extends UnitTestCase
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
-        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
+        GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
         $this->filesCreated[] = Environment::getPublicPath() . '/' . $filename;
         $this->subject->retrieveFileOrFolderObject($filename);
     }

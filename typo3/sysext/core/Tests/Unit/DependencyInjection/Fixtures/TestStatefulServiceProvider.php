@@ -18,12 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures;
 
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
+use TYPO3\CMS\Core\Package\Package;
 
 class TestStatefulServiceProvider implements ServiceProviderInterface
 {
     public $package;
 
-    public function __construct(\TYPO3\CMS\Core\Package\Package $package)
+    public function __construct(Package $package)
     {
         $this->package = $package;
     }

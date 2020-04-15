@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Represents a URI based on the PSR-7 Standard.
@@ -436,7 +437,7 @@ class Uri implements UriInterface
     public function withPort($port)
     {
         if ($port !== null) {
-            if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($port) === false) {
+            if (MathUtility::canBeInterpretedAsInteger($port) === false) {
                 $argumentType = is_object($port) ? get_class($port) : gettype($port);
                 throw new \InvalidArgumentException('Invalid port "' . $argumentType . '" specified, must be an integer.', 1436717324);
             }

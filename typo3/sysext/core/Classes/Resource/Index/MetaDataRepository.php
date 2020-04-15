@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Type\File as FileType;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -80,7 +80,7 @@ class MetaDataRepository implements SingletonInterface
             if ($file->getType() === File::FILETYPE_IMAGE && $file->getStorage()->getDriverType() === 'Local') {
                 $fileNameAndPath = $file->getForLocalProcessing(false);
 
-                $imageInfo = GeneralUtility::makeInstance(FileType\ImageInfo::class, $fileNameAndPath);
+                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fileNameAndPath);
 
                 $additionalMetaInformation = [
                     'width' => $imageInfo->getWidth(),

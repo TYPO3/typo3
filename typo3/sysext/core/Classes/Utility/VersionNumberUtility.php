@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
 
 /**
@@ -188,7 +189,7 @@ class VersionNumberUtility
         trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
 
         if (!in_array($raise, ['main', 'sub', 'dev'])) {
-            throw new \TYPO3\CMS\Core\Exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
+            throw new Exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
         }
         $parts = GeneralUtility::intExplode('.', $version . '..');
         $parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);

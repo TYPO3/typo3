@@ -37,7 +37,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Error\DebugExceptionHandler::class)
+        $this->subject = $this->getMockBuilder(DebugExceptionHandler::class)
             ->setMethods(['sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();

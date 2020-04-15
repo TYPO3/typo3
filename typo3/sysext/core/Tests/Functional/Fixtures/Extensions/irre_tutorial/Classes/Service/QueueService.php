@@ -15,10 +15,12 @@
 
 namespace OliverHader\IrreTutorial\Service;
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * ContentController
  */
-class QueueService implements \TYPO3\CMS\Core\SingletonInterface
+class QueueService implements SingletonInterface
 {
     /**
      * @var array

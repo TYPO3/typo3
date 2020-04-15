@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
+use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
+
 /**
  * A Package representing the details of an extension and/or a composer package
  */
@@ -92,13 +96,13 @@ class Package implements PackageInterface
     public function __construct(PackageManager $packageManager, $packageKey, $packagePath)
     {
         if (!$packageManager->isPackageKeyValid($packageKey)) {
-            throw new Exception\InvalidPackageKeyException('"' . $packageKey . '" is not a valid package key.', 1217959511);
+            throw new InvalidPackageKeyException('"' . $packageKey . '" is not a valid package key.', 1217959511);
         }
         if (!(@is_dir($packagePath) || (is_link($packagePath) && is_dir($packagePath)))) {
-            throw new Exception\InvalidPackagePathException(sprintf('Tried to instantiate a package object for package "%s" with a non-existing package path "%s". Either the package does not exist anymore, or the code creating this object contains an error.', $packageKey, $packagePath), 1166631890);
+            throw new InvalidPackagePathException(sprintf('Tried to instantiate a package object for package "%s" with a non-existing package path "%s". Either the package does not exist anymore, or the code creating this object contains an error.', $packageKey, $packagePath), 1166631890);
         }
         if (substr($packagePath, -1, 1) !== '/') {
-            throw new Exception\InvalidPackagePathException(sprintf('The package path "%s" provided for package "%s" has no trailing forward slash.', $packagePath, $packageKey), 1166633722);
+            throw new InvalidPackagePathException(sprintf('The package path "%s" provided for package "%s" has no trailing forward slash.', $packagePath, $packageKey), 1166633722);
         }
         $this->packageKey = $packageKey;
         $this->packagePath = $packagePath;
@@ -143,7 +147,7 @@ class Package implements PackageInterface
                     trigger_error('Extension "' . $this->packageKey . '" defines a dependency on ext:cms, which has been removed. Please remove the dependency.', E_USER_DEPRECATED);
                     $packageKey = 'core';
                 }
-                $constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_DEPENDS, $packageKey);
+                $constraint = new PackageConstraint(MetaData::CONSTRAINT_TYPE_DEPENDS, $packageKey);
                 $this->packageMetaData->addConstraint($constraint);
             }
         }
@@ -151,7 +155,7 @@ class Package implements PackageInterface
         if ($suggestions !== null) {
             foreach ($suggestions as $suggestion => $version) {
                 $packageKey = $packageManager->getPackageKeyFromComposerName($suggestion);
-                $constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_SUGGESTS, $packageKey);
+                $constraint = new PackageConstraint(MetaData::CONSTRAINT_TYPE_SUGGESTS, $packageKey);
                 $this->packageMetaData->addConstraint($constraint);
             }
         }

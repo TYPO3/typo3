@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Core\Type;
 
+use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationDefinitionException;
+use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
+
 /**
  * Abstract class for Enumeration.
  * Inspired by SplEnum.
@@ -41,7 +44,7 @@ abstract class Enumeration implements TypeInterface
     public function __construct($value = null)
     {
         if ($value === null && !defined('static::__default')) {
-            throw new Exception\InvalidEnumerationValueException(
+            throw new InvalidEnumerationValueException(
                 sprintf('A value for enumeration "%s" is required if no __default is defined.', static::class),
                 1381512753
             );
@@ -51,7 +54,7 @@ abstract class Enumeration implements TypeInterface
         }
         static::loadValues();
         if (!$this->isValid($value)) {
-            throw new Exception\InvalidEnumerationValueException(
+            throw new InvalidEnumerationValueException(
                 sprintf('Invalid value "%s" for enumeration "%s"', $value, static::class),
                 1381512761
             );
@@ -80,7 +83,7 @@ abstract class Enumeration implements TypeInterface
             unset($constants['__default']);
         }
         if (empty($constants)) {
-            throw new Exception\InvalidEnumerationValueException(
+            throw new InvalidEnumerationValueException(
                 sprintf(
                     'No constants defined in enumeration "%s"',
                     $class
@@ -90,7 +93,7 @@ abstract class Enumeration implements TypeInterface
         }
         foreach ($constants as $constant => $value) {
             if (!is_int($value) && !is_string($value)) {
-                throw new Exception\InvalidEnumerationDefinitionException(
+                throw new InvalidEnumerationDefinitionException(
                     sprintf(
                         'Constant value "%s" of enumeration "%s" must be of type integer or string, got "%s" instead',
                         $constant,
@@ -106,7 +109,7 @@ abstract class Enumeration implements TypeInterface
         $constantValueCount = current($constantValueCounts);
         $constant = key($constantValueCounts);
         if ($constantValueCount > 1) {
-            throw new Exception\InvalidEnumerationDefinitionException(
+            throw new InvalidEnumerationDefinitionException(
                 sprintf(
                     'Constant value "%s" of enumeration "%s" is not unique (defined %d times)',
                     $constant,
@@ -133,7 +136,7 @@ abstract class Enumeration implements TypeInterface
     {
         $enumKey = array_search((string)$value, static::$enumConstants[static::class]);
         if ($enumKey === false) {
-            throw new Exception\InvalidEnumerationValueException(
+            throw new InvalidEnumerationValueException(
                 sprintf('Invalid value "%s" for enumeration "%s"', $value, __CLASS__),
                 1381615295
             );

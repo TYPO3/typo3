@@ -15,10 +15,12 @@
 
 namespace OliverHader\IrreTutorial\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Price
  */
-class Price extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Price extends AbstractEntity
 {
     /**
      * @var string

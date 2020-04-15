@@ -28,6 +28,8 @@ use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Client\ClientException;
+use TYPO3\CMS\Core\Http\Client\NetworkException;
 
 /**
  * PSR-18 adapter for Guzzle\ClientInterface
@@ -65,11 +67,11 @@ class Client implements ClientInterface
                 RequestOptions::ALLOW_REDIRECTS => false,
             ]);
         } catch (ConnectException $e) {
-            throw new Client\NetworkException($e->getMessage(), 1566909446, $e->getRequest(), $e);
+            throw new NetworkException($e->getMessage(), 1566909446, $e->getRequest(), $e);
         } catch (RequestException $e) {
             throw new Client\RequestException($e->getMessage(), 1566909447, $e->getRequest(), $e);
         } catch (GuzzleException $e) {
-            throw new Client\ClientException($e->getMessage(), 1566909448, $e);
+            throw new ClientException($e->getMessage(), 1566909448, $e);
         }
     }
 }

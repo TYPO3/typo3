@@ -21,7 +21,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types;
+use Doctrine\DBAL\Types\BlobType;
+use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -116,7 +117,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
         $properties1 = $column1->toArray();
         $properties2 = $column2->toArray();
 
-        if ($properties1['type'] instanceof Types\BlobType || $properties1['type'] instanceof Types\TextType) {
+        if ($properties1['type'] instanceof BlobType || $properties1['type'] instanceof TextType) {
             // Doctrine does not provide a length for LONGTEXT/LONGBLOB columns
             $length1 = $properties1['length'] ?: 2147483647;
             $length2 = $properties2['length'] ?: 2147483647;

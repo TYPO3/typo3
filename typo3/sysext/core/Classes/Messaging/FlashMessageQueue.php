@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Messaging;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -58,7 +59,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     public function enqueue($message): FlashMessageQueue
     {
         if (!($message instanceof FlashMessage)) {
-            throw new \TYPO3\CMS\Core\Exception(
+            throw new Exception(
                 'FlashMessageQueue::enqueue() expects an object of type \TYPO3\CMS\Core\Messaging\FlashMessage but got type "' . (is_object($message) ? get_class($message) : gettype($message)) . '"',
                 1376833554
             );

@@ -15,13 +15,15 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures;
 
+use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
+
 /**
  * Class \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting.
  *
  * This is a testing subclass of the abstract \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
  * class.
  */
-class FormProtectionTesting extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
+class FormProtectionTesting extends AbstractFormProtection
 {
     /**
      * Retrieves all saved tokens.

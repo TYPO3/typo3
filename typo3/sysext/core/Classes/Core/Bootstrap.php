@@ -20,6 +20,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -39,6 +41,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\PharStreamWrapper\Behavior;
@@ -238,7 +241,7 @@ class Bootstrap
      */
     public static function createPackageManager($packageManagerClassName, FrontendInterface $coreCache): PackageManager
     {
-        $dependencyOrderingService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class);
+        $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
         /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
         $packageManager = new $packageManagerClassName($dependencyOrderingService);
         $packageManager->injectCoreCache($coreCache);
@@ -552,7 +555,7 @@ class Bootstrap
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] ?? [] as $className) {
             /** @var \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface $hookObject */
             $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface) {
+            if (!$hookObject instanceof TableConfigurationPostProcessingHookInterface) {
                 throw new \UnexpectedValueException(
                     '$hookObject "' . $className . '" must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
                     1320585902
@@ -581,7 +584,7 @@ class Bootstrap
      * @param string $className usually \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class but can be used for CLI
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function initializeBackendUser($className = \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class)
+    public static function initializeBackendUser($className = BackendUserAuthentication::class)
     {
         /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);

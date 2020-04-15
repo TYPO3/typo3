@@ -23,6 +23,17 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
+use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
+use TYPO3\CMS\Core\Package\Exception\MissingPackageManifestException;
+use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
+use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
+use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
+use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
+use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -132,7 +143,7 @@ class PackageManager implements SingletonInterface
     {
         try {
             $this->loadPackageManagerStatesFromCache();
-        } catch (Exception\PackageManagerCacheUnavailableException $exception) {
+        } catch (PackageManagerCacheUnavailableException $exception) {
             $this->loadPackageStates();
             $this->initializePackageObjects();
             $this->saveToPackageCache();
@@ -195,11 +206,11 @@ class PackageManager implements SingletonInterface
     {
         $cacheEntryIdentifier = $this->getCacheEntryIdentifier();
         if ($cacheEntryIdentifier === null || ($packageCache = $this->coreCache->require($cacheEntryIdentifier)) === false) {
-            throw new Exception\PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883342);
+            throw new PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883342);
         }
         $this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
         if ($this->packageStatesConfiguration['version'] < 5) {
-            throw new Exception\PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883341);
+            throw new PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883341);
         }
         $this->packageAliasMap = $packageCache['packageAliasMap'];
         $this->composerNameToPackageKeyMap = $packageCache['composerNameToPackageKeyMap'];
@@ -207,7 +218,7 @@ class PackageManager implements SingletonInterface
             'allowed_classes' => [
                 Package::class,
                 MetaData::class,
-                MetaData\PackageConstraint::class,
+                PackageConstraint::class,
                 \stdClass::class,
             ]
         ]);
@@ -223,7 +234,7 @@ class PackageManager implements SingletonInterface
     {
         $this->packageStatesConfiguration = @include $this->packageStatesPathAndFilename ?: [];
         if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 5) {
-            throw new Exception\PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
+            throw new PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
         }
         $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false);
     }
@@ -281,11 +292,11 @@ class PackageManager implements SingletonInterface
                 $packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath);
                 $this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
                 $packages[$packageKey] = ['packagePath' => str_replace($this->packagesBasePath, '', $packagePath)];
-            } catch (Exception\MissingPackageManifestException $exception) {
+            } catch (MissingPackageManifestException $exception) {
                 if (!$this->isPackageKeyValid($packageKey)) {
                     continue;
                 }
-            } catch (Exception\InvalidPackageKeyException $exception) {
+            } catch (InvalidPackageKeyException $exception) {
                 continue;
             }
         }
@@ -392,7 +403,7 @@ class PackageManager implements SingletonInterface
             try {
                 $packagePath = PathUtility::sanitizeTrailingSeparator($this->packagesBasePath . $stateConfiguration['packagePath']);
                 $package = new Package($this, $packageKey, $packagePath);
-            } catch (Exception\InvalidPackagePathException|Exception\InvalidPackageKeyException|Exception\InvalidPackageManifestException $exception) {
+            } catch (InvalidPackagePathException|InvalidPackageKeyException|InvalidPackageManifestException $exception) {
                 $this->unregisterPackageByPackageKey($packageKey);
                 $packageStatesHasChanged = true;
                 continue;
@@ -417,7 +428,7 @@ class PackageManager implements SingletonInterface
     {
         $packageKey = $package->getPackageKey();
         if ($this->isPackageRegistered($packageKey)) {
-            throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is already registered.', 1338996122);
+            throw new InvalidPackageStateException('Package "' . $packageKey . '" is already registered.', 1338996122);
         }
 
         $this->packages[$packageKey] = $package;
@@ -444,7 +455,7 @@ class PackageManager implements SingletonInterface
                     unset($this->packageAliasMap[strtolower($packageToReplace)]);
                 }
             }
-        } catch (Exception\UnknownPackageException $e) {
+        } catch (UnknownPackageException $e) {
         }
         unset($this->packages[$packageKey]);
         unset($this->packageStatesConfiguration['packages'][$packageKey]);
@@ -480,7 +491,7 @@ class PackageManager implements SingletonInterface
     public function getPackage($packageKey)
     {
         if (!$this->isPackageRegistered($packageKey) && !$this->isPackageAvailable($packageKey)) {
-            throw new Exception\UnknownPackageException('Package "' . $packageKey . '" is not available. Please check if the package exists and that the package key is correct (package keys are case sensitive).', 1166546734);
+            throw new UnknownPackageException('Package "' . $packageKey . '" is not available. Please check if the package exists and that the package key is correct (package keys are case sensitive).', 1166546734);
         }
         return $this->packages[$packageKey];
     }
@@ -548,7 +559,7 @@ class PackageManager implements SingletonInterface
 
         $package = $this->getPackage($packageKey);
         if ($package->isProtected()) {
-            throw new Exception\ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be deactivated.', 1308662891);
+            throw new ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be deactivated.', 1308662891);
         }
 
         $this->activePackages = [];
@@ -610,12 +621,12 @@ class PackageManager implements SingletonInterface
     public function deletePackage($packageKey)
     {
         if (!$this->isPackageAvailable($packageKey)) {
-            throw new Exception\UnknownPackageException('Package "' . $packageKey . '" is not available and cannot be removed.', 1166543253);
+            throw new UnknownPackageException('Package "' . $packageKey . '" is not available and cannot be removed.', 1166543253);
         }
 
         $package = $this->getPackage($packageKey);
         if ($package->isProtected()) {
-            throw new Exception\ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be removed.', 1220722120);
+            throw new ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be removed.', 1220722120);
         }
 
         if ($this->isPackageActive($packageKey)) {
@@ -719,7 +730,7 @@ class PackageManager implements SingletonInterface
         $suggestedPackageKeys = [];
         $suggestedPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(MetaData::CONSTRAINT_TYPE_SUGGESTS);
         foreach ($suggestedPackageConstraints as $constraint) {
-            if ($constraint instanceof MetaData\PackageConstraint) {
+            if ($constraint instanceof PackageConstraint) {
                 $suggestedPackageKey = $constraint->getValue();
                 if (isset($this->packages[$suggestedPackageKey])) {
                     $suggestedPackageKeys[] = $suggestedPackageKey;
@@ -749,7 +760,7 @@ class PackageManager implements SingletonInterface
             // If file does not exist, try to create it
             $fileHandle = @fopen($this->packageStatesPathAndFilename, 'x');
             if (!$fileHandle) {
-                throw new Exception\PackageStatesFileNotWritableException(
+                throw new PackageStatesFileNotWritableException(
                     sprintf('We could not update the list of installed packages because the file %s is not writable. Please, check the file system permissions for this file and make sure that the web server can update it.', $this->packageStatesPathAndFilename),
                     1382449759
                 );
@@ -811,7 +822,7 @@ class PackageManager implements SingletonInterface
     {
         $packageKey = $package->getPackageKey();
         if (!$this->isPackageRegistered($packageKey)) {
-            throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1338996142);
+            throw new InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1338996142);
         }
         $this->unregisterPackageByPackageKey($packageKey);
     }
@@ -826,7 +837,7 @@ class PackageManager implements SingletonInterface
     public function reloadPackageInformation($packageKey)
     {
         if (!$this->isPackageRegistered($packageKey)) {
-            throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1436201329);
+            throw new InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1436201329);
         }
 
         /** @var PackageInterface $package */
@@ -852,7 +863,7 @@ class PackageManager implements SingletonInterface
             $json = file_get_contents($manifestPath . 'composer.json');
             $composerManifest = json_decode($json);
             if (!$composerManifest instanceof \stdClass) {
-                throw new Exception\InvalidPackageManifestException('The composer.json found for extension "' . PathUtility::basename($manifestPath) . '" is invalid!', 1439555561);
+                throw new InvalidPackageManifestException('The composer.json found for extension "' . PathUtility::basename($manifestPath) . '" is invalid!', 1439555561);
             }
         }
 
@@ -886,7 +897,7 @@ class PackageManager implements SingletonInterface
                 return $EM_CONF[$_EXTKEY];
             }
         }
-        throw new Exception\InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
+        throw new InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
     }
 
     /**
@@ -917,7 +928,7 @@ class PackageManager implements SingletonInterface
                         $composerManifest->require->{$requiredPackageKey} = $requiredPackageVersion;
                     }
                 } else {
-                    throw new Exception\InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in depends section. Extension key is missing!', $packageKey), 1439552058);
+                    throw new InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in depends section. Extension key is missing!', $packageKey), 1439552058);
                 }
             }
         }
@@ -927,7 +938,7 @@ class PackageManager implements SingletonInterface
                 if (!empty($conflictingPackageKey)) {
                     $composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
                 } else {
-                    throw new Exception\InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in conflicts section. Extension key is missing!', $packageKey), 1439552059);
+                    throw new InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in conflicts section. Extension key is missing!', $packageKey), 1439552059);
                 }
             }
         }
@@ -937,7 +948,7 @@ class PackageManager implements SingletonInterface
                 if (!empty($suggestedPackageKey)) {
                     $composerManifest->suggest->$suggestedPackageKey = $suggestedPackageVersion;
                 } else {
-                    throw new Exception\InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in suggests section. Extension key is missing!', $packageKey), 1439552060);
+                    throw new InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in suggests section. Extension key is missing!', $packageKey), 1439552060);
                 }
             }
         }
@@ -990,7 +1001,7 @@ class PackageManager implements SingletonInterface
         $trace[] = $packageKey;
         $dependentPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(MetaData::CONSTRAINT_TYPE_DEPENDS);
         foreach ($dependentPackageConstraints as $constraint) {
-            if ($constraint instanceof MetaData\PackageConstraint) {
+            if ($constraint instanceof PackageConstraint) {
                 $dependentPackageKey = $constraint->getValue();
                 if (in_array($dependentPackageKey, $dependentPackageKeys, true) === false && in_array($dependentPackageKey, $trace, true) === false) {
                     $dependentPackageKeys[] = $dependentPackageKey;
@@ -1019,7 +1030,7 @@ class PackageManager implements SingletonInterface
     protected function getPackageKeyFromManifest($manifest, $packagePath)
     {
         if (!is_object($manifest)) {
-            throw new Exception\InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
+            throw new InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
         }
         if (isset($manifest->type) && strpos($manifest->type, 'typo3-cms-') === 0) {
             $packageKey = PathUtility::basename($packagePath);

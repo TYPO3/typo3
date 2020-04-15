@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,8 +32,8 @@ class FileReferenceTest extends UnitTestCase
      */
     protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties)
     {
-        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\FileReference::class, ['dummy'], [], '', false);
-        $originalFileMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, [], [], '', false);
+        $fixture = $this->getAccessibleMock(FileReference::class, ['dummy'], [], '', false);
+        $originalFileMock = $this->getAccessibleMock(File::class, [], [], '', false);
         $originalFileMock->expects(self::any())
             ->method('getProperties')
             ->willReturn(

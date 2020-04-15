@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\Parser;
 
+use Doctrine\Common\Lexer\AbstractLexer;
+
 /**
  * Scans a MySQL CREATE TABLE statement for tokens.
  */
-class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
+class Lexer extends AbstractLexer
 {
     // All tokens that are not valid identifiers must be < 100
     const T_NONE = 1;

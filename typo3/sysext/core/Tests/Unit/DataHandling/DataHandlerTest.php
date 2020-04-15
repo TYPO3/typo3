@@ -22,7 +22,10 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -387,7 +390,7 @@ class DataHandlerTest extends UnitTestCase
     public function doesCheckModifyAccessListHookGetsCalled()
     {
         $hookClass = StringUtility::getUniqueId('tx_coretest');
-        $hookMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface::class)
+        $hookMock = $this->getMockBuilder(DataHandlerCheckModifyAccessListHookInterface::class)
             ->setMethods(['checkModifyAccessList'])
             ->setMockClassName($hookClass)
             ->getMock();
@@ -866,7 +869,7 @@ class DataHandlerTest extends UnitTestCase
         ];
 
         /** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
-        $mockRelationHandler = $this->createMock(\TYPO3\CMS\Core\Database\RelationHandler::class);
+        $mockRelationHandler = $this->createMock(RelationHandler::class);
         $mockRelationHandler->itemArray = [
             '1' => ['table' => StringUtility::getUniqueId('bar_'), 'id' => 67]
         ];
@@ -940,7 +943,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function checkValueForInputConvertsNullToEmptyString()
     {
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
         $GLOBALS['LANG']->init('default');
         $expectedResult = ['value' => ''];
         self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'string', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
@@ -1020,7 +1023,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function clearPrefixFromValueRemovesPrefix(string $input, string $expected)
     {
-        $languageServiceProphecy = $this->prophesize(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('testLabel')->willReturn('(copy %s)');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';

@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * "Unknown Package" Exception
  */
-class UnknownPackageException extends \TYPO3\CMS\Core\Package\Exception
+class UnknownPackageException extends Exception
 {
 }

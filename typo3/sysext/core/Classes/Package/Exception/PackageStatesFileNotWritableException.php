@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * "Package states file not writable" Exception
  */
-class PackageStatesFileNotWritableException extends \TYPO3\CMS\Core\Package\Exception
+class PackageStatesFileNotWritableException extends Exception
 {
 }

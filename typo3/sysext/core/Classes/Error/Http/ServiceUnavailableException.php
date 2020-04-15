@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Error\Http;
 
+use TYPO3\CMS\Core\Utility\HttpUtility;
+
 /**
  * Exception for Error 503 - Service Unavailable
  */
@@ -23,7 +25,7 @@ class ServiceUnavailableException extends AbstractServerErrorException
     /**
      * @var array HTTP Status Header lines
      */
-    protected $statusHeaders = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_503];
+    protected $statusHeaders = [HttpUtility::HTTP_STATUS_503];
 
     /**
      * @var string Title of the message

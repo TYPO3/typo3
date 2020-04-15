@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -111,7 +112,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getIconConfigurationByIdentifierThrowsExceptionWithUnregisteredIconIdentifier()
     {
-        $this->expectException(\TYPO3\CMS\Core\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1437425804);
 
         (new IconRegistry())->getIconConfigurationByIdentifier($this->notRegisteredIconIdentifier);

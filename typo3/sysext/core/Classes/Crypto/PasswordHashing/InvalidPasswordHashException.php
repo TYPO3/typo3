@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
 
+use TYPO3\CMS\Core\Exception;
+
 /**
  * InvalidPasswordHashException thrown if salting went wrong.
  */
-class InvalidPasswordHashException extends \TYPO3\CMS\Core\Exception
+class InvalidPasswordHashException extends Exception
 {
 }

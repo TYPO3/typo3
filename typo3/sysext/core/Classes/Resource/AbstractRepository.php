@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 /**
@@ -239,7 +240,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @throws \BadMethodCallException
      */
-    public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings)
+    public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
     {
         throw new \BadMethodCallException('Repository does not support the setDefaultQuerySettings() method.', 1313185907);
     }

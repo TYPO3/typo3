@@ -15,12 +15,19 @@
 
 namespace OliverHader\IrreTutorial\Controller;
 
+use OliverHader\IrreTutorial\Service\QueueService;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Property\Exception;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * ContentController
  */
-abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+abstract class AbstractController extends ActionController
 {
     /**
      * @Extbase\Inject
@@ -33,11 +40,11 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
      * @throws \RuntimeException
      */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
         try {
             parent::processRequest($request, $response);
-        } catch (\TYPO3\CMS\Extbase\Property\Exception $exception) {
+        } catch (Exception $exception) {
             throw new \RuntimeException(
                 $this->getRuntimeIdentifier() . ': ' . $exception->getMessage() . ' (' . $exception->getCode() . ')',
                 1476049553
@@ -61,7 +68,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
             $dataMap = $this->dataMapFactory->buildDataMap(get_class($entity));
             $tableName = $dataMap->getTableName();
             $identifier = $tableName . ':' . $entity->getUid();
-            $properties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($entity);
+            $properties = ObjectAccess::getGettableProperties($entity);
 
             $structureItem = [];
             foreach ($properties as $propertyName => $propertyValue) {
@@ -110,7 +117,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
      */
     protected function getPersistenceManager()
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        return $this->objectManager->get(PersistenceManagerInterface::class);
     }
 
     /**
@@ -118,6 +125,6 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
      */
     protected function getQueueService()
     {
-        return $this->objectManager->get(\OliverHader\IrreTutorial\Service\QueueService::class);
+        return $this->objectManager->get(QueueService::class);
     }
 }

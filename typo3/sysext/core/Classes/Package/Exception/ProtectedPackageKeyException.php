@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * A "Protected Package Key" exception
  */
-class ProtectedPackageKeyException extends \TYPO3\CMS\Core\Package\Exception
+class ProtectedPackageKeyException extends Exception
 {
 }

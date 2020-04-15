@@ -21,11 +21,12 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class PageRendererTest extends FunctionalTestCase
 {
     /**
      * @test

@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
+use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
+
 /**
  * Represents a node in a TCA database setup
  */
-class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
+class DatabaseTreeNode extends TreeRepresentationNode
 {
     /**
      * @var bool

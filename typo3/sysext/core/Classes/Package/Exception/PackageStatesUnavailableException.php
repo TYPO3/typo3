@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * A package unavailable exception
  */
-class PackageStatesUnavailableException extends \TYPO3\CMS\Core\Package\Exception
+class PackageStatesUnavailableException extends Exception
 {
 }

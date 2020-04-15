@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * "Invalid Package Path" Exception
  */
-class InvalidPackagePathException extends \TYPO3\CMS\Core\Package\Exception
+class InvalidPackagePathException extends Exception
 {
 }

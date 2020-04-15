@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * An "Invalid Package Key" exception
  */
-class InvalidPackageKeyException extends \TYPO3\CMS\Core\Package\Exception
+class InvalidPackageKeyException extends Exception
 {
 }

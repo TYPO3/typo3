@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
+use TYPO3\CMS\Core\Mail\Rfc822AddressesParser;
+
 /**
  * Class to handle mail specific functionality
  */
@@ -170,7 +172,7 @@ class MailUtility
     {
         /** @var \TYPO3\CMS\Core\Mail\Rfc822AddressesParser $addressParser */
         $addressParser = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class,
+            Rfc822AddressesParser::class,
             $rawAddresses
         );
         $addresses = $addressParser->parseAddressList();

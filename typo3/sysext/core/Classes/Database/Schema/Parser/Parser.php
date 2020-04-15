@@ -19,7 +19,49 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser;
 
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateDefinition;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableClause;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BigIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BinaryDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BitDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\CharDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DateDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DateTimeDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DecimalDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DoubleDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\EnumDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\FloatDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\IntegerDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\JsonDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\LongBlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\LongTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumBlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\NumericDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\RealDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\SetDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\SmallIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TimeDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TimestampDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyBlobDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyIntDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarBinaryDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarCharDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\YearDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\IndexColumnName;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
 
 /**
  * An LL(*) recursive-descent parser for MySQL CREATE TABLE statements.
@@ -68,7 +110,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function getAST(): AST\AbstractCreateStatement
+    public function getAST(): AbstractCreateStatement
     {
         // Parse & build AST
         return $this->queryLanguage();
@@ -259,7 +301,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function queryLanguage(): AST\AbstractCreateStatement
+    public function queryLanguage(): AbstractCreateStatement
     {
         $this->lexer->moveNext();
 
@@ -284,7 +326,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function createStatement(): AST\AbstractCreateStatement
+    public function createStatement(): AbstractCreateStatement
     {
         $statement = null;
         $this->match(Lexer::T_CREATE);
@@ -310,9 +352,9 @@ class Parser
      *
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createTableStatement(): AST\CreateTableStatement
+    protected function createTableStatement(): CreateTableStatement
     {
-        $createTableStatement = new AST\CreateTableStatement($this->createTableClause(), $this->createDefinition());
+        $createTableStatement = new CreateTableStatement($this->createTableClause(), $this->createDefinition());
 
         if (!$this->lexer->isNextToken(Lexer::T_SEMICOLON)) {
             $createTableStatement->tableOptions = $this->tableOptions();
@@ -326,7 +368,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableClause
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createTableClause(): AST\CreateTableClause
+    protected function createTableClause(): CreateTableClause
     {
         $isTemporary = false;
         // Check for TEMPORARY
@@ -347,7 +389,7 @@ class Parser
         // Process schema object name (table name)
         $tableName = $this->schemaObjectName();
 
-        return new AST\CreateTableClause($tableName, $isTemporary);
+        return new CreateTableClause($tableName, $isTemporary);
     }
 
     /**
@@ -366,7 +408,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateDefinition
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createDefinition(): AST\CreateDefinition
+    protected function createDefinition(): CreateDefinition
     {
         $createDefinitions = [];
 
@@ -391,7 +433,7 @@ class Parser
         // Process closing parenthesis
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
-        return new AST\CreateDefinition($createDefinitions);
+        return new CreateDefinition($createDefinitions);
     }
 
     /**
@@ -401,7 +443,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createDefinitionItem(): AST\AbstractCreateDefinitionItem
+    protected function createDefinitionItem(): AbstractCreateDefinitionItem
     {
         $definitionItem = null;
 
@@ -441,14 +483,14 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createIndexDefinitionItem(): AST\CreateIndexDefinitionItem
+    protected function createIndexDefinitionItem(): CreateIndexDefinitionItem
     {
         $indexName = null;
         $isPrimary = false;
         $isFulltext = false;
         $isSpatial = false;
         $isUnique = false;
-        $indexDefinition = new AST\CreateIndexDefinitionItem();
+        $indexDefinition = new CreateIndexDefinitionItem();
 
         switch ($this->lexer->lookahead['type']) {
             case Lexer::T_PRIMARY:
@@ -498,7 +540,7 @@ class Parser
             $indexName = $this->indexName();
         }
 
-        $indexDefinition = new AST\CreateIndexDefinitionItem(
+        $indexDefinition = new CreateIndexDefinitionItem(
             $indexName,
             $isPrimary,
             $isUnique,
@@ -533,7 +575,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createForeignKeyDefinitionItem(): AST\CreateForeignKeyDefinitionItem
+    protected function createForeignKeyDefinitionItem(): CreateForeignKeyDefinitionItem
     {
         $this->match(Lexer::T_FOREIGN);
         $this->match(Lexer::T_KEY);
@@ -552,7 +594,7 @@ class Parser
 
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
-        $foreignKeyDefinition = new AST\CreateForeignKeyDefinitionItem(
+        $foreignKeyDefinition = new CreateForeignKeyDefinitionItem(
             $indexName,
             $indexColumns,
             $this->referenceDefinition()
@@ -568,9 +610,9 @@ class Parser
      * @return AST\Identifier
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function indexName(): AST\Identifier
+    public function indexName(): Identifier
     {
-        $indexName = new AST\Identifier(null);
+        $indexName = new Identifier(null);
         if (!$this->lexer->isNextTokenAny([Lexer::T_USING, Lexer::T_OPEN_PARENTHESIS])) {
             $indexName = $this->schemaObjectName();
         }
@@ -667,12 +709,12 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function createColumnDefinitionItem(): AST\CreateColumnDefinitionItem
+    protected function createColumnDefinitionItem(): CreateColumnDefinitionItem
     {
         $columnName = $this->schemaObjectName();
         $dataType = $this->columnDataType();
 
-        $columnDefinitionItem = new AST\CreateColumnDefinitionItem($columnName, $dataType);
+        $columnDefinitionItem = new CreateColumnDefinitionItem($columnName, $dataType);
 
         while ($this->lexer->lookahead && !$this->lexer->isNextTokenAny([Lexer::T_COMMA, Lexer::T_CLOSE_PARENTHESIS])) {
             switch ($this->lexer->lookahead['type']) {
@@ -793,62 +835,62 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function columnDataType(): AST\DataType\AbstractDataType
+    protected function columnDataType(): AbstractDataType
     {
         $dataType = null;
 
         switch ($this->lexer->lookahead['type']) {
             case Lexer::T_BIT:
                 $this->match(Lexer::T_BIT);
-                $dataType = new AST\DataType\BitDataType(
+                $dataType = new BitDataType(
                     $this->dataTypeLength()
                 );
                 break;
             case Lexer::T_TINYINT:
                 $this->match(Lexer::T_TINYINT);
-                $dataType = new AST\DataType\TinyIntDataType(
+                $dataType = new TinyIntDataType(
                     $this->dataTypeLength(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_SMALLINT:
                 $this->match(Lexer::T_SMALLINT);
-                $dataType = new AST\DataType\SmallIntDataType(
+                $dataType = new SmallIntDataType(
                     $this->dataTypeLength(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_MEDIUMINT:
                 $this->match(Lexer::T_MEDIUMINT);
-                $dataType = new AST\DataType\MediumIntDataType(
+                $dataType = new MediumIntDataType(
                     $this->dataTypeLength(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_INT:
                 $this->match(Lexer::T_INT);
-                $dataType = new AST\DataType\IntegerDataType(
+                $dataType = new IntegerDataType(
                     $this->dataTypeLength(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_INTEGER:
                 $this->match(Lexer::T_INTEGER);
-                $dataType = new AST\DataType\IntegerDataType(
+                $dataType = new IntegerDataType(
                     $this->dataTypeLength(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_BIGINT:
                 $this->match(Lexer::T_BIGINT);
-                $dataType = new AST\DataType\BigIntDataType(
+                $dataType = new BigIntDataType(
                     $this->dataTypeLength(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_REAL:
                 $this->match(Lexer::T_REAL);
-                $dataType = new AST\DataType\RealDataType(
+                $dataType = new RealDataType(
                     $this->dataTypeDecimals(),
                     $this->numericDataTypeOptions()
                 );
@@ -858,14 +900,14 @@ class Parser
                 if ($this->lexer->isNextToken(Lexer::T_PRECISION)) {
                     $this->match(Lexer::T_PRECISION);
                 }
-                $dataType = new AST\DataType\DoubleDataType(
+                $dataType = new DoubleDataType(
                     $this->dataTypeDecimals(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_FLOAT:
                 $this->match(Lexer::T_FLOAT);
-                $dataType = new AST\DataType\FloatDataType(
+                $dataType = new FloatDataType(
                     $this->dataTypeDecimals(),
                     $this->numericDataTypeOptions()
                 );
@@ -873,103 +915,103 @@ class Parser
                 break;
             case Lexer::T_DECIMAL:
                 $this->match(Lexer::T_DECIMAL);
-                $dataType = new AST\DataType\DecimalDataType(
+                $dataType = new DecimalDataType(
                     $this->dataTypeDecimals(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_NUMERIC:
                 $this->match(Lexer::T_NUMERIC);
-                $dataType = new AST\DataType\NumericDataType(
+                $dataType = new NumericDataType(
                     $this->dataTypeDecimals(),
                     $this->numericDataTypeOptions()
                 );
                 break;
             case Lexer::T_DATE:
                 $this->match(Lexer::T_DATE);
-                $dataType = new AST\DataType\DateDataType();
+                $dataType = new DateDataType();
                 break;
             case Lexer::T_TIME:
                 $this->match(Lexer::T_TIME);
-                $dataType = new AST\DataType\TimeDataType($this->fractionalSecondsPart());
+                $dataType = new TimeDataType($this->fractionalSecondsPart());
                 break;
             case Lexer::T_TIMESTAMP:
                 $this->match(Lexer::T_TIMESTAMP);
-                $dataType = new AST\DataType\TimestampDataType($this->fractionalSecondsPart());
+                $dataType = new TimestampDataType($this->fractionalSecondsPart());
                 break;
             case Lexer::T_DATETIME:
                 $this->match(Lexer::T_DATETIME);
-                $dataType = new AST\DataType\DateTimeDataType($this->fractionalSecondsPart());
+                $dataType = new DateTimeDataType($this->fractionalSecondsPart());
                 break;
             case Lexer::T_YEAR:
                 $this->match(Lexer::T_YEAR);
-                $dataType = new AST\DataType\YearDataType();
+                $dataType = new YearDataType();
                 break;
             case Lexer::T_CHAR:
                 $this->match(Lexer::T_CHAR);
-                $dataType = new AST\DataType\CharDataType(
+                $dataType = new CharDataType(
                     $this->dataTypeLength(),
                     $this->characterDataTypeOptions()
                 );
                 break;
             case Lexer::T_VARCHAR:
                 $this->match(Lexer::T_VARCHAR);
-                $dataType = new AST\DataType\VarCharDataType(
+                $dataType = new VarCharDataType(
                     $this->dataTypeLength(true),
                     $this->characterDataTypeOptions()
                 );
                 break;
             case Lexer::T_BINARY:
                 $this->match(Lexer::T_BINARY);
-                $dataType = new AST\DataType\BinaryDataType($this->dataTypeLength());
+                $dataType = new BinaryDataType($this->dataTypeLength());
                 break;
             case Lexer::T_VARBINARY:
                 $this->match(Lexer::T_VARBINARY);
-                $dataType = new AST\DataType\VarBinaryDataType($this->dataTypeLength(true));
+                $dataType = new VarBinaryDataType($this->dataTypeLength(true));
                 break;
             case Lexer::T_TINYBLOB:
                 $this->match(Lexer::T_TINYBLOB);
-                $dataType = new AST\DataType\TinyBlobDataType();
+                $dataType = new TinyBlobDataType();
                 break;
             case Lexer::T_BLOB:
                 $this->match(Lexer::T_BLOB);
-                $dataType = new AST\DataType\BlobDataType();
+                $dataType = new BlobDataType();
                 break;
             case Lexer::T_MEDIUMBLOB:
                 $this->match(Lexer::T_MEDIUMBLOB);
-                $dataType = new AST\DataType\MediumBlobDataType();
+                $dataType = new MediumBlobDataType();
                 break;
             case Lexer::T_LONGBLOB:
                 $this->match(Lexer::T_LONGBLOB);
-                $dataType = new AST\DataType\LongBlobDataType();
+                $dataType = new LongBlobDataType();
                 break;
             case Lexer::T_TINYTEXT:
                 $this->match(Lexer::T_TINYTEXT);
-                $dataType = new AST\DataType\TinyTextDataType($this->characterDataTypeOptions());
+                $dataType = new TinyTextDataType($this->characterDataTypeOptions());
                 break;
             case Lexer::T_TEXT:
                 $this->match(Lexer::T_TEXT);
-                $dataType = new AST\DataType\TextDataType($this->characterDataTypeOptions());
+                $dataType = new TextDataType($this->characterDataTypeOptions());
                 break;
             case Lexer::T_MEDIUMTEXT:
                 $this->match(Lexer::T_MEDIUMTEXT);
-                $dataType = new AST\DataType\MediumTextDataType($this->characterDataTypeOptions());
+                $dataType = new MediumTextDataType($this->characterDataTypeOptions());
                 break;
             case Lexer::T_LONGTEXT:
                 $this->match(Lexer::T_LONGTEXT);
-                $dataType = new AST\DataType\LongTextDataType($this->characterDataTypeOptions());
+                $dataType = new LongTextDataType($this->characterDataTypeOptions());
                 break;
             case Lexer::T_ENUM:
                 $this->match(Lexer::T_ENUM);
-                $dataType = new AST\DataType\EnumDataType($this->valueList(), $this->enumerationDataTypeOptions());
+                $dataType = new EnumDataType($this->valueList(), $this->enumerationDataTypeOptions());
                 break;
             case Lexer::T_SET:
                 $this->match(Lexer::T_SET);
-                $dataType = new AST\DataType\SetDataType($this->valueList(), $this->enumerationDataTypeOptions());
+                $dataType = new SetDataType($this->valueList(), $this->enumerationDataTypeOptions());
                 break;
             case Lexer::T_JSON:
                 $this->match(Lexer::T_JSON);
-                $dataType = new AST\DataType\JsonDataType();
+                $dataType = new JsonDataType();
                 break;
             default:
                 $this->syntaxError(
@@ -1241,7 +1283,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function referenceDefinition(): AST\ReferenceDefinition
+    protected function referenceDefinition(): ReferenceDefinition
     {
         $this->match(Lexer::T_REFERENCES);
         $tableName = $this->schemaObjectName();
@@ -1257,7 +1299,7 @@ class Parser
 
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
-        $referenceDefinition = new AST\ReferenceDefinition($tableName, $referenceColumns);
+        $referenceDefinition = new ReferenceDefinition($tableName, $referenceColumns);
 
         while (!$this->lexer->isNextTokenAny([Lexer::T_COMMA, Lexer::T_CLOSE_PARENTHESIS])) {
             switch ($this->lexer->lookahead['type']) {
@@ -1290,7 +1332,7 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\IndexColumnName
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function indexColumnName(): AST\IndexColumnName
+    protected function indexColumnName(): IndexColumnName
     {
         $columnName = $this->schemaObjectName();
         $length = $this->dataTypeLength();
@@ -1304,7 +1346,7 @@ class Parser
             $direction = 'DESC';
         }
 
-        return new AST\IndexColumnName($columnName, $length, $direction);
+        return new IndexColumnName($columnName, $length, $direction);
     }
 
     /**
@@ -1555,6 +1597,6 @@ class Parser
         $schemaObjectName = $this->lexer->lookahead['value'];
         $this->lexer->moveNext();
 
-        return new AST\Identifier((string)$schemaObjectName);
+        return new Identifier((string)$schemaObjectName);
     }
 }

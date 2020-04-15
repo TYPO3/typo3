@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -44,7 +45,7 @@ class FileCollectionRepository extends RecordCollectionRepository
     {
         $object = parent::findByUid($uid);
         if ($object === null) {
-            throw new Exception\ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
+            throw new ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
         }
         return $object;
     }

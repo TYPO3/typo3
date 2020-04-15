@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Core\Resource\Service;
 
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -44,7 +46,7 @@ class MagicImageService
      * @param array $fileConfiguration (width, height)
      * @return Resource\ProcessedFile
      */
-    public function createMagicImage(Resource\File $imageFileObject, array $fileConfiguration)
+    public function createMagicImage(File $imageFileObject, array $fileConfiguration)
     {
         // Process dimensions
         $maxWidth = MathUtility::forceIntegerInRange($fileConfiguration['width'], 0, $this->magicImageMaximumWidth);
@@ -57,7 +59,7 @@ class MagicImageService
         }
         // Create the magic image
         $magicImage = $imageFileObject->process(
-            Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
             [
                 'width' => $maxWidth . 'm',
                 'height' => $maxHeight . 'm'

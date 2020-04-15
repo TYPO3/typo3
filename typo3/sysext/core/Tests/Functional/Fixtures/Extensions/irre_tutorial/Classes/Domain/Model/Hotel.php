@@ -16,11 +16,13 @@
 namespace OliverHader\IrreTutorial\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Hotel
  */
-class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Hotel extends AbstractEntity
 {
     /**
      * @var string
@@ -38,7 +40,7 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function __construct()
     {
-        $this->offers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->offers = new ObjectStorage();
     }
 
     /**
@@ -68,7 +70,7 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers
      */
-    public function setOffers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers)
+    public function setOffers(ObjectStorage $offers)
     {
         $this->offers = $offers;
     }

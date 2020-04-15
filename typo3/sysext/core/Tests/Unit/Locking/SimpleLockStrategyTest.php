@@ -140,9 +140,9 @@ class SimpleLockStrategyTest extends UnitTestCase
      */
     public function setPriority()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\SimpleLockStrategy::class]['priority'] = 10;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SimpleLockStrategy::class]['priority'] = 10;
 
         self::assertEquals(10, SimpleLockStrategy::getPriority());
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\SimpleLockStrategy::class]['priority']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SimpleLockStrategy::class]['priority']);
     }
 }

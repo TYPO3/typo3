@@ -32,8 +32,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -44,6 +48,7 @@ use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -1585,7 +1590,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     {
         $this->fileStorages = [];
         /** @var \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository */
-        $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         // Admin users have all file storages visible, without any filters
         if ($this->isAdmin()) {
             $storageObjects = $storageRepository->findAll();
@@ -1814,7 +1819,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     {
         // Add the option for also displaying the non-hidden files
         if ($this->uc['showHiddenFilesAndFolders']) {
-            \TYPO3\CMS\Core\Resource\Filter\FileNameFilter::setShowHiddenFilesAndFolders(true);
+            FileNameFilter::setShowHiddenFilesAndFolders(true);
         }
     }
 
@@ -1911,7 +1916,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
      * @return array
      */
-    public function getFilePermissionsForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject)
+    public function getFilePermissionsForStorage(ResourceStorage $storageObject)
     {
         $finalUserPermissions = $this->getFilePermissions();
         if (!$this->isAdmin()) {
@@ -1959,13 +1964,13 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                             break;
                         }
                         $uploadFolder = null;
-                    } catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+                    } catch (Exception $folderAccessException) {
                         // If the folder is not accessible (no permissions / does not exist) we skip this one.
                     }
                     break;
                 }
             }
-            if (!$uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+            if (!$uploadFolder instanceof Folder) {
                 /** @var ResourceStorage $storage */
                 foreach ($this->getFileStorages() as $storage) {
                     if ($storage->isWritable()) {
@@ -1975,7 +1980,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                                 break;
                             }
                             $uploadFolder = null;
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+                        } catch (Exception $folderAccessException) {
                             // If the folder is not accessible (no permissions / does not exist) try the next one.
                         }
                     }
@@ -1994,7 +1999,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $uploadFolder = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
 
-        if ($uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+        if ($uploadFolder instanceof Folder) {
             return $uploadFolder;
         }
         return false;
@@ -2019,7 +2024,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             if ($createFolder === true) {
                 try {
                     $defaultTemporaryFolder = $defaultFolder->createFolder($tempFolderName);
-                } catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+                } catch (Exception $folderAccessException) {
                 }
             } else {
                 $defaultTemporaryFolder = $defaultFolder->getSubfolder($tempFolderName);
@@ -2479,7 +2484,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         if (empty($this->user['uid'])) {
             if ($proceedIfNoUserIsLoggedIn === false) {
                 $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
-                \TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
+                HttpUtility::redirect($url);
             }
         } else {
             // ...and if that's the case, call these functions

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Error\Http;
 
+use TYPO3\CMS\Core\Utility\HttpUtility;
+
 /**
  * Exception for Error 404 - Page Not Found
  */
@@ -23,7 +25,7 @@ class PageNotFoundException extends AbstractClientErrorException
     /**
      * @var array HTTP Status Header lines
      */
-    protected $statusHeaders = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_404];
+    protected $statusHeaders = [HttpUtility::HTTP_STATUS_404];
 
     /**
      * @var string Title of the message

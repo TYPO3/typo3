@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * An "Invalid Package State" exception
  */
-class InvalidPackageStateException extends \TYPO3\CMS\Core\Package\Exception
+class InvalidPackageStateException extends Exception
 {
 }

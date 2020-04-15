@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Frontend;
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class VariableFrontendTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class VariableFrontendTest extends FunctionalTestCase
 {
     public function insertSerializedArrayIntoLobAndRetrieveItDataProvider()
     {

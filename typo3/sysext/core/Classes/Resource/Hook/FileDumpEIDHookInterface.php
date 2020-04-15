@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource\Hook;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 
 /**
  * Interface for FileDumpEID Hook to perform some custom security/access checks
@@ -32,5 +33,5 @@ interface FileDumpEIDHookInterface
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $file
      * @return ResponseInterface|null
      */
-    public function checkFileAccess(\TYPO3\CMS\Core\Resource\ResourceInterface $file);
+    public function checkFileAccess(ResourceInterface $file);
 }

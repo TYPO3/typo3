@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
+use Symfony\Polyfill\Intl\Idn\Idn;
+
 /**
  * HTTP Utility class
  */
@@ -203,6 +205,6 @@ class HttpUtility
             define('INTL_IDNA_VARIANT_UTS46', 1);
         }
         $result = [];
-        return \Symfony\Polyfill\Intl\Idn\Idn::idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $result);
+        return Idn::idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $result);
     }
 }

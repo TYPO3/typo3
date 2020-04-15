@@ -33,8 +33,8 @@ class ImageInfoTest extends UnitTestCase
      */
     public function classImageInfoCanBeInstantiated()
     {
-        $className = \TYPO3\CMS\Core\Type\File\ImageInfo::class;
-        $classInstance = new \TYPO3\CMS\Core\Type\File\ImageInfo('FooFileName');
+        $className = ImageInfo::class;
+        $classInstance = new ImageInfo('FooFileName');
         self::assertInstanceOf($className, $classInstance);
     }
 

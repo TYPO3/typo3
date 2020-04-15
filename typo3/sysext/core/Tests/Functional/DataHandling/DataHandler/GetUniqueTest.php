@@ -21,11 +21,12 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Tests related to DataHandler::getUnique()
  */
-class GetUniqueTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class GetUniqueTest extends FunctionalTestCase
 {
     protected function setUp(): void
     {

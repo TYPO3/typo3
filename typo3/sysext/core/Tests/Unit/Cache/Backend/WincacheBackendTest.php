@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Backend\WincacheBackend;
+use TYPO3\CMS\Core\Cache\Exception;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -31,7 +33,7 @@ class WincacheBackendTest extends UnitTestCase
      */
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
-        $this->expectException(\TYPO3\CMS\Core\Cache\Exception::class);
+        $this->expectException(Exception::class);
         //@todo Add exception code with wincache extension
 
         $backend = new WincacheBackend('Testing');
@@ -200,13 +202,13 @@ class WincacheBackendTest extends UnitTestCase
     public function flushRemovesOnlyOwnEntries()
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
-        $thisCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        $thisCache = $this->createMock(FrontendInterface::class);
         $thisCache->expects(self::any())->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = new WincacheBackend('Testing');
         $thisBackend->setCache($thisCache);
 
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
-        $thatCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        $thatCache = $this->createMock(FrontendInterface::class);
         $thatCache->expects(self::any())->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = new WincacheBackend('Testing');
         $thatBackend->setCache($thatCache);
@@ -263,7 +265,7 @@ class WincacheBackendTest extends UnitTestCase
     protected function setUpBackend($accessible = false)
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
-        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
+        $cache = $this->createMock(FrontendInterface::class);
         if ($accessible) {
             $backend = $this->getAccessibleMock(WincacheBackend::class, ['dummy'], ['Testing']);
         } else {

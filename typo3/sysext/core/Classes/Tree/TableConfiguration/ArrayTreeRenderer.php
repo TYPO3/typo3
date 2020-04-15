@@ -15,12 +15,15 @@
 
 namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
+use TYPO3\CMS\Backend\Tree\AbstractTree;
+use TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
+use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
 
 /**
  * Renders a tca tree array for the SelectElementTree
  */
-class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
+class ArrayTreeRenderer extends AbstractTreeRenderer
 {
     /**
      * recursion level
@@ -36,7 +39,7 @@ class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRen
      * @param bool $recursive
      * @return array
      */
-    public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = true)
+    public function renderNode(TreeRepresentationNode $node, $recursive = true)
     {
         $nodeArray = [];
         $nodeArray[] = $this->getNodeArray($node);
@@ -57,7 +60,7 @@ class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRen
      * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode|DatabaseTreeNode $node
      * @return array
      */
-    protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
+    protected function getNodeArray(TreeRepresentationNode $node)
     {
         $overlayIconName = '';
         if (is_object($node->getIcon())) {
@@ -95,7 +98,7 @@ class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRen
      * @param bool $recursive
      * @return array
      */
-    public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = true)
+    public function renderTree(AbstractTree $tree, $recursive = true)
     {
         $this->recursionLevel = 0;
         return $this->renderNode($tree->getRoot(), $recursive);

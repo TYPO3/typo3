@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Driver;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -131,7 +132,7 @@ abstract class AbstractDriver implements DriverInterface
      */
     protected function getTemporaryPathForFile($fileIdentifier)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('fal-tempfile-', '.' . PathUtility::pathinfo($fileIdentifier, PATHINFO_EXTENSION));
+        return GeneralUtility::tempnam('fal-tempfile-', '.' . PathUtility::pathinfo($fileIdentifier, PATHINFO_EXTENSION));
     }
 
     /**

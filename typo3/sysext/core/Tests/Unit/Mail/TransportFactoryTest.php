@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeFileSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeInvalidSpoolFixture;
+use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeMemorySpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -58,7 +59,7 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         // Register fixture class
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FileSpool::class]['className'] = Fixtures\FakeFileSpoolFixture::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FileSpool::class]['className'] = FakeFileSpoolFixture::class;
 
         $transport = (new TransportFactory())->get($mailSettings);
         self::assertInstanceOf(DelayedTransportInterface::class, $transport);
@@ -88,7 +89,7 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         // Register fixture class
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][MemorySpool::class]['className'] = Fixtures\FakeMemorySpoolFixture::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][MemorySpool::class]['className'] = FakeMemorySpoolFixture::class;
 
         $transport = (new TransportFactory())->get($mailSettings);
         self::assertInstanceOf(DelayedTransportInterface::class, $transport);
@@ -116,7 +117,7 @@ class TransportFactoryTest extends UnitTestCase
 
         $transport = (new TransportFactory())->get($mailSettings);
         self::assertInstanceOf(DelayedTransportInterface::class, $transport);
-        self::assertInstanceOf(Fixtures\FakeValidSpoolFixture::class, $transport);
+        self::assertInstanceOf(FakeValidSpoolFixture::class, $transport);
 
         self::assertSame($mailSettings, $transport->getSettings());
     }

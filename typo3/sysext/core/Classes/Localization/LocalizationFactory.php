@@ -16,13 +16,15 @@
 namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides a language parser factory.
  */
-class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
+class LocalizationFactory implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
@@ -87,7 +89,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
             $parser = $this->store->getParserInstance($fileReference);
             // Get parsed data
             $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);
-        } catch (Exception\FileNotFoundException $exception) {
+        } catch (FileNotFoundException $exception) {
             // Source localization file not found, set empty data as there could be an override
             $this->store->setData($fileReference, $languageKey, []);
             $LOCAL_LANG = $this->store->getData($fileReference);

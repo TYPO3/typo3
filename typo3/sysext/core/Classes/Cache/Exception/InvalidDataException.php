@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Cache\Exception;
 
+use TYPO3\CMS\Core\Cache\Exception;
+
 /**
  * An "Invalid Data" exception
  */
-class InvalidDataException extends \TYPO3\CMS\Core\Cache\Exception
+class InvalidDataException extends Exception
 {
 }

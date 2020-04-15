@@ -16,6 +16,9 @@
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -50,7 +53,7 @@ abstract class BaseTestCase extends UnitTestCase
 
     protected function mergeToVfsContents($contents)
     {
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->vfsContents, $contents);
+        ArrayUtility::mergeRecursiveWithOverrule($this->vfsContents, $contents);
     }
 
     protected function initializeVfs()
@@ -136,7 +139,7 @@ abstract class BaseTestCase extends UnitTestCase
      */
     protected function getSimpleFileMock($identifier, $mockedMethods = [])
     {
-        return $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\File::class, $identifier, $mockedMethods);
+        return $this->_createFileFolderMock(File::class, $identifier, $mockedMethods);
     }
 
     /**
@@ -148,7 +151,7 @@ abstract class BaseTestCase extends UnitTestCase
      */
     protected function getSimpleFolderMock($identifier, $mockedMethods = [])
     {
-        return $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, $mockedMethods);
+        return $this->_createFileFolderMock(Folder::class, $identifier, $mockedMethods);
     }
 
     /**
@@ -162,7 +165,7 @@ abstract class BaseTestCase extends UnitTestCase
      */
     protected function getFolderMock($identifier, $mockedMethods = [], $subfolders = [], $files = [])
     {
-        $folder = $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
+        $folder = $this->_createFileFolderMock(Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
         $folder->expects(self::any())->method('getSubfolders')->willReturn($subfolders);
         $folder->expects(self::any())->method('getFiles')->willReturn($files);
         return $folder;

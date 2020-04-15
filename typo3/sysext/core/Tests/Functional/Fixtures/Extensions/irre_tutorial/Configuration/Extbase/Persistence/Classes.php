@@ -1,9 +1,13 @@
 <?php
 
 declare(strict_types=1);
+use OliverHader\IrreTutorial\Domain\Model\Content;
+use OliverHader\IrreTutorial\Domain\Model\Hotel;
+use OliverHader\IrreTutorial\Domain\Model\Offer;
+use OliverHader\IrreTutorial\Domain\Model\Price;
 
 return [
-    \OliverHader\IrreTutorial\Domain\Model\Content::class => [
+    Content::class => [
         'tableName' => 'tt_content',
         'properties' => [
             'hotels' => [
@@ -11,13 +15,13 @@ return [
             ],
         ]
     ],
-    \OliverHader\IrreTutorial\Domain\Model\Hotel::class => [
+    Hotel::class => [
         'tableName' => 'tx_irretutorial_1nff_hotel',
     ],
-    \OliverHader\IrreTutorial\Domain\Model\Offer::class => [
+    Offer::class => [
         'tableName' => 'tx_irretutorial_1nff_offer',
     ],
-    \OliverHader\IrreTutorial\Domain\Model\Price::class => [
+    Price::class => [
         'tableName' => 'tx_irretutorial_1nff_price',
     ],
 ];

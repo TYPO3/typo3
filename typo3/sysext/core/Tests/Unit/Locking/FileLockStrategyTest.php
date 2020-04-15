@@ -57,9 +57,9 @@ class FileLockStrategyTest extends UnitTestCase
      */
     public function setPriority()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\FileLockStrategy::class]['priority'] = 10;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority'] = 10;
 
         self::assertEquals(10, FileLockStrategy::getPriority());
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][\TYPO3\CMS\Core\Locking\FileLockStrategy::class]['priority']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority']);
     }
 }

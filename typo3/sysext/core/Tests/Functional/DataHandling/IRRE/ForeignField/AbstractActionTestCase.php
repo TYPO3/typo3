@@ -15,12 +15,13 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\ForeignField;
 
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Functional test for the DataHandler
  */
-abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
+abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
     const VALUE_PageId = 89;
     const VALUE_PageIdTarget = 90;

@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package\Exception;
 
+use TYPO3\CMS\Core\Package\Exception;
+
 /**
  * An "Invalid Package Manifest" exception
  */
-class InvalidPackageManifestException extends \TYPO3\CMS\Core\Package\Exception
+class InvalidPackageManifestException extends Exception
 {
 }

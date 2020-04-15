@@ -15,13 +15,14 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Modify;
 
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\AbstractActionTestCase;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 /**
  * Functional test for the DataHandler
  */
-class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\AbstractActionTestCase
+class ActionTest extends AbstractActionTestCase
 {
     /**
      * @var string

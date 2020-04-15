@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
 use Composer\Autoload\ClassLoader;
 use TYPO3\CMS\Core\Core\ClassLoadingInformationGenerator;
+use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\AnotherTestFile;
+use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,15 +33,15 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      */
     public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation()
     {
-        $this->expectException(\TYPO3\CMS\Core\Error\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1444142481);
 
         $packageMock = $this->createPackageMock([
             'extra' => [
                 'typo3/class-alias-loader' => [
                     'class-alias-maps' => [
-                        'foo' => Fixtures\test_extension\Resources\PHP\Test::class,
-                        'bar' => Fixtures\test_extension\Resources\PHP\AnotherTestFile::class,
+                        'foo' => Test::class,
+                        'bar' => AnotherTestFile::class,
                     ],
                 ],
             ],
@@ -54,7 +57,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      */
     public function buildClassAliasMapForPackageThrowsExceptionForWrongClassAliasMapFile()
     {
-        $this->expectException(\TYPO3\CMS\Core\Error\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1422625075);
 
         $packageMock = $this->createPackageMock([
@@ -79,14 +82,14 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     {
         $expectedClassMap = [
             'aliasToClassNameMapping' => [
-                'foo' => Fixtures\test_extension\Resources\PHP\Test::class,
-                'bar' => Fixtures\test_extension\Resources\PHP\AnotherTestFile::class,
+                'foo' => Test::class,
+                'bar' => AnotherTestFile::class,
             ],
             'classNameToAliasMapping' => [
-                Fixtures\test_extension\Resources\PHP\Test::class => [
+                Test::class => [
                     'foo' => 'foo',
                 ],
-                Fixtures\test_extension\Resources\PHP\AnotherTestFile::class => [
+                AnotherTestFile::class => [
                     'bar' => 'bar',
                 ]
             ],
@@ -105,14 +108,14 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     {
         $expectedClassMap = [
             'aliasToClassNameMapping' => [
-                'foo' => Fixtures\test_extension\Resources\PHP\Test::class,
-                'bar' => Fixtures\test_extension\Resources\PHP\AnotherTestFile::class,
+                'foo' => Test::class,
+                'bar' => AnotherTestFile::class,
             ],
             'classNameToAliasMapping' => [
-                Fixtures\test_extension\Resources\PHP\Test::class => [
+                Test::class => [
                     'foo' => 'foo',
                 ],
-                Fixtures\test_extension\Resources\PHP\AnotherTestFile::class => [
+                AnotherTestFile::class => [
                     'bar' => 'bar',
                 ]
             ],

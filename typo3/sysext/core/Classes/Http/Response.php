@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Default implementation for the ResponseInterface of the PSR-7 standard.
@@ -136,7 +137,7 @@ class Response extends Message implements ResponseInterface
         }
         $this->body = $body;
 
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($statusCode) === false || !array_key_exists((int)$statusCode, $this->availableStatusCodes)) {
+        if (MathUtility::canBeInterpretedAsInteger($statusCode) === false || !array_key_exists((int)$statusCode, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code.', 1436717278);
         }
         $this->statusCode = (int)$statusCode;
@@ -183,7 +184,7 @@ class Response extends Message implements ResponseInterface
      */
     public function withStatus($code, $reasonPhrase = '')
     {
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($code) === false || !array_key_exists((int)$code, $this->availableStatusCodes)) {
+        if (MathUtility::canBeInterpretedAsInteger($code) === false || !array_key_exists((int)$code, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code', 1436717279);
         }
         $clonedObject = clone $this;

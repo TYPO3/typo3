@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 
 /**
  * A task is a unit of work that can be performed by a file processor. This may include multiple steps in any order,
@@ -34,7 +35,7 @@ interface TaskInterface
      * @param \TYPO3\CMS\Core\Resource\ProcessedFile $targetFile
      * @param array $configuration
      */
-    public function __construct(Resource\ProcessedFile $targetFile, array $configuration);
+    public function __construct(ProcessedFile $targetFile, array $configuration);
 
     /**
      * Returns the name of this task.

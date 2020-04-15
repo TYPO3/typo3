@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Core\Log\Processor;
 
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Memory peak usage processor methods.
  */
@@ -27,11 +30,11 @@ class MemoryPeakUsageProcessor extends AbstractMemoryProcessor
      * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
      * @see memory_get_peak_usage()
      */
-    public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord)
+    public function processLogRecord(LogRecord $logRecord)
     {
         $bytes = memory_get_peak_usage($this->getRealMemoryUsage());
         if ($this->formatSize) {
-            $size = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($bytes);
+            $size = GeneralUtility::formatSize($bytes);
         } else {
             $size = $bytes;
         }

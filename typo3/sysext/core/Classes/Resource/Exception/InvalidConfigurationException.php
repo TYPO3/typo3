@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Resource\Exception;
 
+use TYPO3\CMS\Core\Resource\Exception;
+
 /**
  * An exception when something is wrong with the configuration
  */
-class InvalidConfigurationException extends \TYPO3\CMS\Core\Resource\Exception
+class InvalidConfigurationException extends Exception
 {
 }
