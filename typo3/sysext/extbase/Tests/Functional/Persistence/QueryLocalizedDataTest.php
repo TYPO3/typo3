@@ -17,18 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
+use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class QueryLocalizedDataTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -65,7 +72,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translatedBlogExampleData.csv');
         $this->setUpBasicFrontendEnvironment();
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
@@ -76,9 +83,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 ]
             ]
         ];
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
-        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        $this->postRepository = $this->objectManager->get(PostRepository::class);
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
     }
 
@@ -99,7 +106,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON, []));
 
         $pageRepositoryFixture = new PageRepository();
-        $frontendControllerMock = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $frontendControllerMock->sys_page = $pageRepositoryFixture;
         $GLOBALS['TSFE'] = $frontendControllerMock;
     }
@@ -1159,7 +1166,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
 
-        $blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+        $blogRepository = $this->objectManager->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectSysLanguage(false);
@@ -1211,7 +1218,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                     $subject = iterator_to_array(clone $subject, false);
                 }
             }
-        } catch (\TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException $error) {
+        } catch (PropertyNotAccessibleException $error) {
             return null;
         }
         return $subject;

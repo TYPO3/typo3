@@ -15,14 +15,17 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * A repository for blogs
  */
-class BlogRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class BlogRepository extends Repository
 {
     protected $defaultOrderings = [
-        'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
-        'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+        'crdate' => QueryInterface::ORDER_DESCENDING,
+        'uid' => QueryInterface::ORDER_DESCENDING
     ];
 
     /**

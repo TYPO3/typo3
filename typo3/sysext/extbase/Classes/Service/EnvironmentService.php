@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Service;
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Service for determining environment params
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
+class EnvironmentService implements SingletonInterface
 {
     /**
      * Detects if TYPO3_MODE is defined and its value is "FE"

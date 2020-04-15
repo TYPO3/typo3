@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /**
  * A Frontend User
  */
-class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class FrontendUser extends AbstractEntity
 {
     /**
      * @var string
@@ -130,8 +133,8 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->username = $username;
         $this->password = $password;
-        $this->usergroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->image = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->usergroup = new ObjectStorage();
+        $this->image = new ObjectStorage();
     }
 
     /**
@@ -180,7 +183,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroup
      */
-    public function setUsergroup(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroup)
+    public function setUsergroup(ObjectStorage $usergroup)
     {
         $this->usergroup = $usergroup;
     }
@@ -190,7 +193,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
      */
-    public function addUsergroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup)
+    public function addUsergroup(FrontendUserGroup $usergroup)
     {
         $this->usergroup->attach($usergroup);
     }
@@ -200,7 +203,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
      */
-    public function removeUsergroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup)
+    public function removeUsergroup(FrontendUserGroup $usergroup)
     {
         $this->usergroup->detach($usergroup);
     }
@@ -521,7 +524,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $image
      */
-    public function setImage(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $image)
+    public function setImage(ObjectStorage $image)
     {
         $this->image = $image;
     }

@@ -21,14 +21,16 @@ use ExtbaseTeam\BlogExample\Controller\BlogController;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class ControllerArgumentsMappingTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ControllerArgumentsMappingTest extends FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
@@ -72,7 +74,7 @@ class ControllerArgumentsMappingTest extends \TYPO3\TestingFramework\Core\Functi
                 ]
             ]
         ];
-        $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
         $this->request = $objectManager->get(Request::class);
         $this->request->setPluginName('Pi1');

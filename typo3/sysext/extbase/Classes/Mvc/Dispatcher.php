@@ -18,7 +18,12 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
+use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
@@ -77,12 +82,12 @@ class Dispatcher implements SingletonInterface
         $dispatchLoopCount = 0;
         while (!$request->isDispatched()) {
             if ($dispatchLoopCount++ > 99) {
-                throw new Exception\InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @' . \TYPO3\CMS\Extbase\Annotation\IgnoreValidation::class . ' annotation is missing on re-displaying a form with validation errors.', 1217839467);
+                throw new InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @' . IgnoreValidation::class . ' annotation is missing on re-displaying a form with validation errors.', 1217839467);
             }
             $controller = $this->resolveController($request);
             try {
                 $controller->processRequest($request, $response);
-            } catch (Exception\StopActionException $ignoredException) {
+            } catch (StopActionException $ignoredException) {
             }
         }
 
@@ -105,8 +110,8 @@ class Dispatcher implements SingletonInterface
         } else {
             $controller = $this->objectManager->get($controllerObjectName);
         }
-        if (!$controller instanceof Controller\ControllerInterface) {
-            throw new Exception\InvalidControllerException(
+        if (!$controller instanceof ControllerInterface) {
+            throw new InvalidControllerException(
                 'Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.',
                 1476109646
             );

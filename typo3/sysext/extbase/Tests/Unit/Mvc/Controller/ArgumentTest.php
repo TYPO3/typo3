@@ -15,6 +15,13 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
+use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -41,13 +48,13 @@ class ArgumentTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('someName', 'string');
-        $this->objectArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('someName', 'DateTime');
-        $this->mockPropertyMapper = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class);
+        $this->simpleValueArgument = new Argument('someName', 'string');
+        $this->objectArgument = new Argument('someName', 'DateTime');
+        $this->mockPropertyMapper = $this->createMock(PropertyMapper::class);
         $this->simpleValueArgument->injectPropertyMapper($this->mockPropertyMapper);
         $this->objectArgument->injectPropertyMapper($this->mockPropertyMapper);
-        $this->mockConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
-        $propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
+        $this->mockConfiguration = new MvcPropertyMappingConfiguration();
+        $propertyMappingConfiguration = new MvcPropertyMappingConfiguration();
         $this->simpleValueArgument->injectPropertyMappingConfiguration($propertyMappingConfiguration);
         $this->objectArgument->injectPropertyMappingConfiguration($propertyMappingConfiguration);
     }
@@ -59,7 +66,7 @@ class ArgumentTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1232551853);
-        new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('', 'Text');
+        new Argument('', 'Text');
     }
 
     /**
@@ -69,7 +76,7 @@ class ArgumentTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1187951688);
-        new \TYPO3\CMS\Extbase\Mvc\Controller\Argument(new \ArrayObject(), 'Text');
+        new Argument(new \ArrayObject(), 'Text');
     }
 
     /**
@@ -148,7 +155,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function setValidatorShouldProvideFluentInterfaceAndReallySetValidator(): void
     {
-        $mockValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
+        $mockValidator = $this->createMock(ValidatorInterface::class);
         $returnedArgument = $this->simpleValueArgument->setValidator($mockValidator);
         self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
         self::assertSame($mockValidator, $this->simpleValueArgument->getValidator());
@@ -168,7 +175,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function setValueUsesNullAsIs(): void
     {
-        $this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'string');
+        $this->simpleValueArgument = new Argument('dummy', 'string');
         $this->simpleValueArgument->setValue(null);
         self::assertNull($this->simpleValueArgument->getValue());
     }
@@ -185,10 +192,10 @@ class ArgumentTest extends UnitTestCase
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
      */
-    protected function setupPropertyMapperAndSetValue(): \TYPO3\CMS\Extbase\Mvc\Controller\Argument
+    protected function setupPropertyMapperAndSetValue(): Argument
     {
         $this->mockPropertyMapper->expects(self::once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->willReturn('convertedValue');
-        $this->mockPropertyMapper->expects(self::once())->method('getMessages')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
+        $this->mockPropertyMapper->expects(self::once())->method('getMessages')->willReturn(new Result());
         return $this->simpleValueArgument->setValue('someRawValue');
     }
 
@@ -215,11 +222,11 @@ class ArgumentTest extends UnitTestCase
      */
     public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed(): void
     {
-        $error = new \TYPO3\CMS\Extbase\Error\Error('Some Error', 1234);
-        $mockValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $error = new Error('Some Error', 1234);
+        $mockValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validationMessages = new \TYPO3\CMS\Extbase\Error\Result();
+        $validationMessages = new Result();
         $validationMessages->addError($error);
         $mockValidator->expects(self::once())->method('validate')->with('convertedValue')->willReturn($validationMessages);
         $this->simpleValueArgument->setValidator($mockValidator);
@@ -233,7 +240,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function defaultPropertyMappingConfigurationDoesNotAllowCreationOrModificationOfObjects(): void
     {
-        self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
     }
 }

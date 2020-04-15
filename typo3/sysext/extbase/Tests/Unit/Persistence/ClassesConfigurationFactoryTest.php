@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
+use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\A;
+use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\B;
+use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\C;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -33,14 +36,14 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
         $classesConfigurationFactory = new ClassesConfigurationFactory();
 
         $classes = [
-            Fixture\Domain\Model\A::class => [
+            A::class => [
                 'properties' => [
                     'propertiesFromA' => [
                         'fieldName' => 'field_name_a'
                     ]
                 ]
             ],
-            Fixture\Domain\Model\B::class => [
+            B::class => [
                 'properties' => [
                     'propertiesFromA' => [
                         'fieldName' => 'field_name_z'
@@ -50,7 +53,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                     ]
                 ]
             ],
-            Fixture\Domain\Model\C::class => [
+            C::class => [
                 'properties' => [
                     'columnNameC' => [
                         'fieldName' => 'field_name_c'
@@ -66,14 +69,14 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
 
         self::assertSame(
             [
-                Fixture\Domain\Model\A::class => [
+                A::class => [
                     'properties' => [
                         'propertiesFromA' => [
                             'fieldName' => 'field_name_a'
                         ],
                     ]
                 ],
-                Fixture\Domain\Model\B::class => [
+                B::class => [
                     'properties' => [
                         'propertiesFromA' => [
                             // todo: this is flawed, we'd actually expect field_name_z here
@@ -85,7 +88,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                         ],
                     ]
                 ],
-                Fixture\Domain\Model\C::class => [
+                C::class => [
                     'properties' => [
                         'columnNameC' => [
                             'fieldName' => 'field_name_c'

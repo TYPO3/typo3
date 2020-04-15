@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Evaluates to the value of a bind variable.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class BindVariableValue implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValueInterface
+class BindVariableValue implements BindVariableValueInterface
 {
     /**
      * @var string

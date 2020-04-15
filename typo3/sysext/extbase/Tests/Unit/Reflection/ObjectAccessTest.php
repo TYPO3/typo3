@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -148,7 +149,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfAnObjectStorageObject()
     {
-        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $objectStorage = new ObjectStorage();
         $object = new \stdClass();
         $objectStorage->attach($object);
         $actual = ObjectAccess::getProperty($objectStorage, 0);
@@ -160,7 +161,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfAnObjectImplementingArrayAccess()
     {
-        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(['key' => 'value']);
+        $arrayAccessInstance = new ArrayAccessClass(['key' => 'value']);
         $actual = ObjectAccess::getProperty($arrayAccessInstance, 'key');
         self::assertEquals('value', $actual, 'getProperty does not work with Array Access property.');
     }
@@ -170,7 +171,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfArrayAccessWithGetterMethodWhenOffsetNotExists()
     {
-        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass([]);
+        $arrayAccessInstance = new ArrayAccessClass([]);
         $actual = ObjectAccess::getProperty($arrayAccessInstance, 'virtual');
         self::assertEquals('default-value', $actual, 'getProperty does not work with Array Access property.');
     }
@@ -180,7 +181,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getPropertyCanAccessPropertiesOfArrayAccessWithPriorityForOffsetIfOffsetExists()
     {
-        $arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(['virtual' => 'overridden-value']);
+        $arrayAccessInstance = new ArrayAccessClass(['virtual' => 'overridden-value']);
         $actual = ObjectAccess::getProperty($arrayAccessInstance, 'virtual');
         self::assertEquals('overridden-value', $actual, 'getProperty does not work with Array Access property.');
     }

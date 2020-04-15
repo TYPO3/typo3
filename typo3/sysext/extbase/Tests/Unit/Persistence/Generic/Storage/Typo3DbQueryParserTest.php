@@ -27,14 +27,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class Typo3DbQueryParserTest extends UnitTestCase
@@ -353,7 +357,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'languageField' => 'sys_language_uid'
         ];
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit\Framework\MockObject\MockObject $querySettings */
-        $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings = $this->createMock(Typo3QuerySettings::class);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -372,7 +376,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'languageField' => 'sys_language_uid'
         ];
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit\Framework\MockObject\MockObject $querySettings */
-        $querySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
+        $querySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->setMethods(['dummy'])
             ->getMock();
         $querySettings->setLanguageUid('1');
@@ -393,7 +397,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
-        $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings();
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -412,7 +416,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'delete' => 'deleted'
         ];
-        $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings();
         $querySettings->setLanguageUid(0);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
@@ -431,7 +435,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
-        $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
@@ -451,7 +455,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent'
         ];
-        $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
@@ -475,7 +479,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'transOrigPointerField' => 'l10n_parent',
             'delete' => 'deleted'
         ];
-        $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
@@ -496,7 +500,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'transOrigPointerField' => 'l10n_parent',
             'delete' => 'deleted'
         ];
-        $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings();
         $querySettings->setLanguageUid(2);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
@@ -513,12 +517,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function orderStatementGenerationWorks()
     {
-        $mockSource = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector::class)
+        $mockSource = $this->getMockBuilder(Selector::class)
             ->setMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('foo');
-        $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
+        $mockDataMapper = $this->getMockBuilder(DataMapper::class)
             ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -541,12 +545,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         $this->expectException(UnsupportedOrderException::class);
         $this->expectExceptionCode(1242816074);
-        $mockSource = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector::class)
+        $mockSource = $this->getMockBuilder(Selector::class)
             ->setMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSource->expects(self::never())->method('getNodeTypeName');
-        $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
+        $mockDataMapper = $this->getMockBuilder(DataMapper::class)
             ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -564,12 +568,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function orderStatementGenerationWorksWithMultipleOrderings()
     {
-        $mockSource = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector::class)
+        $mockSource = $this->getMockBuilder(Selector::class)
             ->setMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('Tx_MyExt_ClassName');
-        $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
+        $mockDataMapper = $this->getMockBuilder(DataMapper::class)
             ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -646,7 +650,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $mockQuerySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
+        $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->setMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -655,7 +659,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->willReturn($deletedValue);
 
         /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit\Framework\MockObject\MockObject */
-        $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
+        $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
         $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn($mode === 'FE');
@@ -716,7 +720,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $mockQuerySettings */
-        $mockQuerySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
+        $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -724,7 +728,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockQuerySettings->setIncludeDeleted(!$respectEnableFields);
 
         /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit\Framework\MockObject\MockObject */
-        $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
+        $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
         $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn($mode === 'FE');
@@ -750,7 +754,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ],
             'delete' => 'deleted_column'
         ];
-        $mockQuerySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)
+        $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->setMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -759,7 +763,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->willReturn(true);
 
         /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit\Framework\MockObject\MockObject */
-        $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
+        $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
         $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);

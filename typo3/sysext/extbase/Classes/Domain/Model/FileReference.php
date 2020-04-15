@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal experimental! This class is experimental and subject to change!
  */
-class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+class FileReference extends AbstractFileFolder
 {
     /**
      * Uid of the referenced sys_file. Needed for extbase to serialize the
@@ -36,7 +37,7 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
     /**
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
      */
-    public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource)
+    public function setOriginalResource(ResourceInterface $originalResource)
     {
         $this->originalResource = $originalResource;
         $this->uidLocal = (int)$originalResource->getOriginalFile()->getUid();

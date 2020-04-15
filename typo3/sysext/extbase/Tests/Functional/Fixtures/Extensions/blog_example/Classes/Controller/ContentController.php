@@ -18,11 +18,18 @@ declare(strict_types=1);
 namespace ExtbaseTeam\BlogExample\Controller;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Property\Exception;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * ContentController
  */
-class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ContentController extends ActionController
 {
     /**
      * @Extbase\Inject
@@ -33,7 +40,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * @var string
      */
-    protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
+    protected $defaultViewObjectName = JsonView::class;
 
     /**
      * @Extbase\Inject
@@ -71,11 +78,11 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
      * @throws \RuntimeException
      */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
         try {
             parent::processRequest($request, $response);
-        } catch (\TYPO3\CMS\Extbase\Property\Exception $exception) {
+        } catch (Exception $exception) {
             throw new \RuntimeException(
                 $this->getRuntimeIdentifier() . ': ' . $exception->getMessage() . ' (' . $exception->getCode() . ')',
                 1476122223
@@ -99,7 +106,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $dataMap = $this->dataMapFactory->buildDataMap(get_class($entity));
             $tableName = $dataMap->getTableName();
             $identifier = $tableName . ':' . $entity->getUid();
-            $properties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($entity);
+            $properties = ObjectAccess::getGettableProperties($entity);
 
             $structureItem = [];
             foreach ($properties as $propertyName => $propertyValue) {
@@ -114,7 +121,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 }
             }
             //let's flatten the structure and put file reference properties level up, so we can use StructureHasRecordConstraint
-            if ($entity instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference
+            if ($entity instanceof FileReference
                 && isset($structureItem['originalResource'])
                 && $structureItem['originalResource'] instanceof \TYPO3\CMS\Core\Resource\FileReference
             ) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
@@ -50,7 +51,7 @@ final class ClassesConfigurationFactory implements SingletonInterface
         if ($cacheManager !== null) {
             try {
                 $cacheFrontend = $cacheManager->getCache($cacheIdentifier);
-            } catch (\TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException $e) {
+            } catch (NoSuchCacheException $e) {
                 // Handling this exception is not needed as $cacheFrontend is
                 // a NullFrontend at this moment.
             }

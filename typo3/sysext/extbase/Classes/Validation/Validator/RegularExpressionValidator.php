@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
+
 /**
  * Validator based on regular expressions.
  */
@@ -46,7 +48,7 @@ class RegularExpressionValidator extends AbstractValidator
             );
         }
         if ($result === false) {
-            throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('regularExpression "' . $this->options['regularExpression'] . '" in RegularExpressionValidator contained an error.', 1298273089);
+            throw new InvalidValidationOptionsException('regularExpression "' . $this->options['regularExpression'] . '" in RegularExpressionValidator contained an error.', 1298273089);
         }
     }
 }

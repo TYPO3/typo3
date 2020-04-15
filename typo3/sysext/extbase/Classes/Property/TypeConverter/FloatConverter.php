@@ -17,12 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+
 /**
  * Converter which transforms a simple type to a float.
  *
  * This is basically done by simply casting it.
  */
-class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+class FloatConverter extends AbstractTypeConverter
 {
     /**
      * @var string
@@ -58,7 +61,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return float|\TYPO3\CMS\Extbase\Error\Error
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || (string)$source === '') {
             return null;
@@ -73,7 +76,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
         }
 
         if (!is_numeric($source)) {
-            return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, [$source]);
+            return new Error('"%s" cannot be converted to a float value.', 1332934124, [$source]);
         }
         return (float)$source;
     }

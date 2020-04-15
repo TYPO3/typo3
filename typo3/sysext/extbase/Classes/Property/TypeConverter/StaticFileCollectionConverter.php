@@ -17,13 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
+use TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection;
+
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\FileCollection.
  *
  * @internal experimental! This class is experimental and subject to change!
  * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
-class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter
+class StaticFileCollectionConverter extends AbstractFileCollectionConverter
 {
     /**
      * @var string[]
@@ -33,7 +36,7 @@ class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConv
     /**
      * @var string
      */
-    protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection::class;
+    protected $targetType = StaticFileCollection::class;
 
     /**
      * @var string
@@ -44,7 +47,7 @@ class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConv
      * @param int $source
      * @return \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection
      */
-    protected function getObject($source): \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+    protected function getObject($source): AbstractFileCollection
     {
         return $this->fileFactory->getCollectionObject($source);
     }

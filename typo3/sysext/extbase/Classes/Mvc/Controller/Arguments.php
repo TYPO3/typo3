@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+
 /**
  * A composite of controller arguments
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -39,7 +43,7 @@ class Arguments extends \ArrayObject
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -122,7 +126,7 @@ class Arguments extends \ArrayObject
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
         if ($translatedOffset === '') {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException('The argument "' . $offset . '" does not exist.', 1216909923);
+            throw new NoSuchArgumentException('The argument "' . $offset . '" does not exist.', 1216909923);
         }
         return parent::offsetGet($translatedOffset);
     }
@@ -141,7 +145,7 @@ class Arguments extends \ArrayObject
     public function addNewArgument($name, $dataType = 'Text', $isRequired = false, $defaultValue = null)
     {
         /** @var Argument $argument */
-        $argument = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, $name, $dataType);
+        $argument = $this->objectManager->get(Argument::class, $name, $dataType);
         $argument->setRequired($isRequired);
         $argument->setDefaultValue($defaultValue);
         $this->addArgument($argument);
@@ -172,7 +176,7 @@ class Arguments extends \ArrayObject
     public function getArgument($argumentName)
     {
         if (!$this->offsetExists($argumentName)) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException('An argument "' . $argumentName . '" does not exist.', 1195815178);
+            throw new NoSuchArgumentException('An argument "' . $argumentName . '" does not exist.', 1195815178);
         }
         return $this->offsetGet($argumentName);
     }
@@ -276,9 +280,9 @@ class Arguments extends \ArrayObject
     /**
      * @return \TYPO3\CMS\Extbase\Error\Result
      */
-    public function validate(): \TYPO3\CMS\Extbase\Error\Result
+    public function validate(): Result
     {
-        $results = new \TYPO3\CMS\Extbase\Error\Result();
+        $results = new Result();
         /** @var Argument $argument */
         foreach ($this as $argument) {
             $argumentValidationResults = $argument->validate();

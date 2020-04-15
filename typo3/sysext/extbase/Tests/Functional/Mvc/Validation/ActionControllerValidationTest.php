@@ -16,9 +16,13 @@
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 
 use ExtbaseTeam\BlogExample\Controller\BlogController;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -63,7 +67,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes)
     {
-        $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
+        $GLOBALS['LANG'] = new LanguageService();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
@@ -71,8 +75,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 
         $objectManager = $this->getObjectManager();
-        $response = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
-        $request = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
+        $response = $objectManager->get(Response::class);
+        $request = $objectManager->get(Request::class);
 
         $request->setControllerActionName('testForward');
         $request->setArgument('blogPost', $blogPostArgument);
@@ -89,7 +93,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
             try {
                 $blogController = $objectManager->get(BlogController::class);
                 $blogController->processRequest($request, $response);
-            } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $e) {
+            } catch (StopActionException $e) {
             }
         }
 
@@ -111,7 +115,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function validationResultsAreProvidedForTheSameObjectInDifferentArguments()
     {
-        $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
+        $GLOBALS['LANG'] = new LanguageService();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
@@ -119,8 +123,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 
         $objectManager = $this->getObjectManager();
-        $response = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
-        $request = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
+        $response = $objectManager->get(Response::class);
+        $request = $objectManager->get(Request::class);
 
         $request->setControllerActionName('testRelatedObject');
         $request->setArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
@@ -153,7 +157,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
             try {
                 $blogController = $objectManager->get(BlogController::class);
                 $blogController->processRequest($request, $response);
-            } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $e) {
+            } catch (StopActionException $e) {
             }
         }
 

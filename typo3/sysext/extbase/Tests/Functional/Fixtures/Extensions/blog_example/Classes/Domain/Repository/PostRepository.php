@@ -15,16 +15,18 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * A repository for blog posts
  *
  * @method Post findByUid($uid)
  */
-class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class PostRepository extends Repository
 {
     protected $defaultOrderings = ['date' => QueryInterface::ORDER_DESCENDING];
 
@@ -34,7 +36,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
      * @return QueryResultInterface The posts
      */
-    public function findAllByBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog)
+    public function findAllByBlog(Blog $blog)
     {
         $query = $this->createQuery();
         return $query
@@ -51,7 +53,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
      * @return QueryResultInterface The posts
      */
-    public function findByTagAndBlog($tag, \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog)
+    public function findByTagAndBlog($tag, Blog $blog)
     {
         $query = $this->createQuery();
         return $query
@@ -127,7 +129,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param int $limit The number of posts to return at max
      * @return QueryResultInterface The posts
      */
-    public function findRecentByBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog, $limit = 5)
+    public function findRecentByBlog(Blog $blog, $limit = 5)
     {
         $query = $this->createQuery();
         return $query

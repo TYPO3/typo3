@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -310,14 +311,14 @@ class JsonViewTest extends UnitTestCase
                 ],
             ],
         ];
-        $reflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
+        $reflectionService = $this->getMockBuilder(ReflectionService::class)
             ->setMethods([ 'getClassNameByObject' ])
             ->getMock();
         $reflectionService->expects(self::any())->method('getClassNameByObject')->willReturnCallback(function ($object) {
             return get_class($object);
         });
 
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, ['dummy'], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->injectReflectionService($reflectionService);
         $actual = $jsonView->_call('transformValue', $object, $configuration);
         self::assertSame($expected, $actual);

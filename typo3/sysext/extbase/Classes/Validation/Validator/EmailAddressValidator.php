@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Validator for email addresses
  */
@@ -46,6 +48,6 @@ class EmailAddressValidator extends AbstractValidator
      */
     protected function validEmail($emailAddress)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($emailAddress);
+        return GeneralUtility::validEmail($emailAddress);
     }
 }

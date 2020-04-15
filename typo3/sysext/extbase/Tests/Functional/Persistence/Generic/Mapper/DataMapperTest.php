@@ -20,8 +20,11 @@ use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
 use ExtbaseTeam\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class DataMapperTest extends FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
@@ -50,8 +53,8 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
     {
         parent::setUp();
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }

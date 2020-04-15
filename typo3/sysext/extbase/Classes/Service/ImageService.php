@@ -24,13 +24,14 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Service for processing images
  */
-class ImageService implements \TYPO3\CMS\Core\SingletonInterface
+class ImageService implements SingletonInterface
 {
     /**
      * @var ResourceFactory

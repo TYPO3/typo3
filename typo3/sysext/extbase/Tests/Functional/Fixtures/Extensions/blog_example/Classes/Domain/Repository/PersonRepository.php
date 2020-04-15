@@ -16,11 +16,12 @@
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * A repository for persons
  */
-class PersonRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class PersonRepository extends Repository
 {
     protected $defaultOrderings = ['lastname' => QueryInterface::ORDER_ASCENDING];
 }

@@ -19,11 +19,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class BackendConfigurationManagerTest extends FunctionalTestCase
 {
     /**
      * Warning: white box test

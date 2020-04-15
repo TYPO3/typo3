@@ -15,10 +15,12 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+
 /**
  * A blog post tag
  */
-class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
+class Tag extends AbstractValueObject
 {
     /**
      * @var string

@@ -15,15 +15,18 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the not empty validator
  */
-class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class NotEmptyValidatorTest extends UnitTestCase
 {
     /**
      * @var string
      */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator::class;
+    protected $validatorClassName = NotEmptyValidator::class;
 
     public function setup(): void
     {

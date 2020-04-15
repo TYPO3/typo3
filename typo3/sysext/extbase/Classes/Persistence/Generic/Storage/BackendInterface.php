@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * Storage backend interface
  */
@@ -74,7 +77,7 @@ interface BackendInterface
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return int
      */
-    public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query): int;
+    public function getObjectCountByQuery(QueryInterface $query): int;
 
     /**
      * Returns the object data matching the $query.
@@ -82,7 +85,7 @@ interface BackendInterface
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return array
      */
-    public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query): array;
+    public function getObjectDataByQuery(QueryInterface $query): array;
 
     /**
      * Checks if a Value Object equal to the given Object exists in the data base
@@ -91,5 +94,5 @@ interface BackendInterface
      * @return int|null The matching uid if an object was found, else null
      * @todo this is the last monster in this persistence series. refactor!
      */
-    public function getUidOfAlreadyPersistedValueObject(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object): ?int;
+    public function getUidOfAlreadyPersistedValueObject(AbstractValueObject $object): ?int;
 }

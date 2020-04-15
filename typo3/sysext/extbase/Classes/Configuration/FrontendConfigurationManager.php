@@ -17,8 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
  * A general purpose configuration manager used in frontend mode.
@@ -26,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Should NOT be singleton, as a new configuration manager is needed per plugin.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
+class FrontendConfigurationManager extends AbstractConfigurationManager
 {
     /**
      * @var \TYPO3\CMS\Core\Service\FlexFormService
@@ -40,10 +45,10 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService,
-        \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService,
-        \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
+        ObjectManagerInterface $objectManager,
+        TypoScriptService $typoScriptService,
+        EnvironmentService $environmentService,
+        FlexFormService $flexFormService
     ) {
         parent::__construct($objectManager, $typoScriptService, $environmentService);
 
@@ -245,7 +250,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
             [$controller, $action] = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
             if (empty($controller) || empty($action)) {
-                throw new \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
+                throw new ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
             }
             $overriddenControllerConfiguration[$controller][] = $action;
         }

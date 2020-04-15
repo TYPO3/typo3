@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,7 +30,7 @@ class DebuggerUtilityTest extends UnitTestCase
     public function debuggerRewindsInstancesOfIterator()
     {
         /** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
-        $objectStorage = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class)
+        $objectStorage = $this->getMockBuilder(ObjectStorage::class)
             ->setMethods(['dummy'])
             ->getMock();
         for ($i = 0; $i < 5; $i++) {

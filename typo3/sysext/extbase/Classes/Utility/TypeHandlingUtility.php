@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Utility;
 
+use TYPO3\CMS\Core\Type\TypeInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException;
+
 /**
  * PHP type handling functions
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -36,7 +40,7 @@ class TypeHandlingUtility
     /**
      * @var array
      */
-    protected static $collectionTypes = ['array', \ArrayObject::class, \SplObjectStorage::class, \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class];
+    protected static $collectionTypes = ['array', \ArrayObject::class, \SplObjectStorage::class, ObjectStorage::class];
 
     /**
      * Returns an array with type information, including element type for
@@ -54,7 +58,7 @@ class TypeHandlingUtility
             $elementType = isset($matches['elementType']) ? self::normalizeType($matches['elementType']) : null;
 
             if ($elementType !== null && !self::isCollectionType($type)) {
-                throw new \TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException('Found an invalid element type declaration in %s. Type "' . $type . '" must not have an element type hint (' . $elementType . ').', 1264093642);
+                throw new InvalidTypeException('Found an invalid element type declaration in %s. Type "' . $type . '" must not have an element type hint (' . $elementType . ').', 1264093642);
             }
 
             return [
@@ -62,7 +66,7 @@ class TypeHandlingUtility
                 'elementType' => $elementType
             ];
         }
-        throw new \TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException('Found an invalid element type declaration in %s. A type "' . var_export($type, true) . '" does not exist.', 1264093630);
+        throw new InvalidTypeException('Found an invalid element type declaration in %s. A type "' . var_export($type, true) . '" does not exist.', 1264093630);
     }
 
     /**
@@ -120,7 +124,7 @@ class TypeHandlingUtility
      */
     public static function isCoreType($type): bool
     {
-        return is_subclass_of($type, \TYPO3\CMS\Core\Type\TypeInterface::class);
+        return is_subclass_of($type, TypeInterface::class);
     }
 
     /**

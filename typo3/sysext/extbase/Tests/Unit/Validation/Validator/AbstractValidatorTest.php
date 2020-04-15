@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractValidatorClass;
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -57,7 +58,7 @@ class AbstractValidatorTest extends UnitTestCase
     public function validatorThrowsExceptionOnNotSupportedOptions(): void
     {
         $inputOptions = ['invalidoption' => 42];
-        $this->expectException(\TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException::class);
+        $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1379981890);
         new AbstractValidatorClass($inputOptions);
     }
@@ -68,7 +69,7 @@ class AbstractValidatorTest extends UnitTestCase
     public function validatorThrowsExceptionOnMissingRequiredOptions(): void
     {
         $inputOptions = [];
-        $this->expectException(\TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException::class);
+        $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1379981891);
         new AbstractValidatorClass($inputOptions);
     }

@@ -17,18 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
+class DataMapFactory implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -74,10 +84,10 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService,
-        \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
-        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Core\Cache\CacheManager $cacheManager,
+        ReflectionService $reflectionService,
+        ConfigurationManagerInterface $configurationManager,
+        ObjectManagerInterface $objectManager,
+        CacheManager $cacheManager,
         ClassesConfigurationFactory $classesConfigurationFactory
     ) {
         $this->reflectionService = $reflectionService;
@@ -126,7 +136,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     protected function buildDataMapInternal(string $className): DataMap
     {
         if (!class_exists($className)) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException(
+            throw new InvalidClassException(
                 'Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.',
                 1476045117
             );
@@ -149,12 +159,12 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap */
-        $dataMap = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, $className, $tableName, $recordType, $subclasses);
+        $dataMap = $this->objectManager->get(DataMap::class, $className, $tableName, $recordType, $subclasses);
         $dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
         foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
             $propertyName = $fieldNameToPropertyNameMapping[$columnName]
-                ?? \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
+                ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
 
             // @todo: shall we really create column maps for non existing properties?
             // @todo: check why this could happen in the first place. TCA definitions for non existing model properties?
@@ -223,7 +233,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $tableName
      * @return DataMap
      */
-    protected function addMetaDataColumnNames(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap, string $tableName): DataMap
+    protected function addMetaDataColumnNames(DataMap $dataMap, string $tableName): DataMap
     {
         $controlSection = $GLOBALS['TCA'][$tableName]['ctrl'];
         $dataMap->setPageIdColumnName('pid');
@@ -285,9 +295,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         // todo: take place outside this method.
 
         $tableColumnType = $columnConfiguration['type'] ?? null;
-        $columnMap->setType(\TYPO3\CMS\Core\DataHandling\TableColumnType::cast($tableColumnType));
+        $columnMap->setType(TableColumnType::cast($tableColumnType));
         $tableColumnSubType = $columnConfiguration['internal_type'] ?? null;
-        $columnMap->setInternalType(\TYPO3\CMS\Core\DataHandling\TableColumnSubType::cast($tableColumnSubType));
+        $columnMap->setInternalType(TableColumnSubType::cast($tableColumnSubType));
 
         return $columnMap;
     }
@@ -348,7 +358,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
         // todo: take place outside this method.
 
         if (!empty($columnConfiguration['eval'])) {
-            $fieldEvaluations = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['eval'], true);
+            $fieldEvaluations = GeneralUtility::trimExplode(',', $columnConfiguration['eval'], true);
             $dateTimeTypes = QueryHelper::getDateTimeTypes();
 
             if (!empty(array_intersect($dateTimeTypes, $fieldEvaluations)) && !empty($columnConfiguration['dbType'])) {
@@ -448,7 +458,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             // todo: this else part is actually superfluous because \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::setRelations
             // todo: only calls this method if $columnConfiguration['MM'] is set.
 
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
+            throw new UnsupportedRelationException('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
         }
         $relationTableName = $columnMap->getRelationTableName();
         if ($relationTableName !== null && $this->getControlSection($relationTableName) !== null) {
@@ -467,6 +477,6 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function createColumnMap(string $columnName, string $propertyName): ColumnMap
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, $columnName, $propertyName);
+        return $this->objectManager->get(ColumnMap::class, $columnName, $propertyName);
     }
 }

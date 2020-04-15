@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class StringConverterTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter();
+        $this->converter = new StringConverter();
     }
 
     /**

@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 
 /**
@@ -95,7 +98,7 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     public function validate($value)
     {
-        $this->result = new \TYPO3\CMS\Extbase\Error\Result();
+        $this->result = new Result();
         if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
             $this->isValid($value);
         }
@@ -120,7 +123,7 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function addError($message, $code, array $arguments = [], $title = '')
     {
-        $this->result->addError(new \TYPO3\CMS\Extbase\Validation\Error((string)$message, (int)$code, $arguments, (string)$title));
+        $this->result->addError(new Error((string)$message, (int)$code, $arguments, (string)$title));
     }
 
     /**
@@ -153,7 +156,7 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function translateErrorMessage($translateKey, $extensionName, $arguments = [])
     {
-        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+        return LocalizationUtility::translate(
             $translateKey,
             $extensionName,
             $arguments

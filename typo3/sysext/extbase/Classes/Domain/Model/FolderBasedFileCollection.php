@@ -21,6 +21,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * @internal experimental! This class is experimental and subject to change!
  * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
-class FolderBasedFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
+class FolderBasedFileCollection extends AbstractFileCollection
 {
 }

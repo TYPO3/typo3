@@ -19,11 +19,12 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 
 /**
  * Converter which transforms strings/arrays to arrays.
  */
-class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+class ArrayConverter extends AbstractTypeConverter
 {
     public const CONFIGURATION_DELIMITER = 'delimiter';
     public const CONFIGURATION_REMOVE_EMPTY_VALUES = 'removeEmptyValues';
@@ -68,7 +69,7 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return array|string
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
         if (!is_string($source)) {
             return $source;

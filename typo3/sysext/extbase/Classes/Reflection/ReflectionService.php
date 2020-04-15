@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
 /**
  * Reflection service for acquiring reflection based information.
@@ -113,7 +114,7 @@ class ReflectionService implements SingletonInterface
         try {
             $classSchema = new ClassSchema($className);
         } catch (\ReflectionException $e) {
-            throw new Exception\UnknownClassException($e->getMessage() . '. Reflection failed.', 1278450972, $e);
+            throw new UnknownClassException($e->getMessage() . '. Reflection failed.', 1278450972, $e);
         }
         $this->classSchemata[$className] = $classSchema;
         $this->dataCacheNeedsUpdate = true;

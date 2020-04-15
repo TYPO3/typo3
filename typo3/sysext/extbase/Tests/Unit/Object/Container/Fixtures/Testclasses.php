@@ -13,10 +13,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+
 /**
  * a  singleton class
  */
-class t3lib_object_tests_singleton implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_singleton implements SingletonInterface
 {
 }
 
@@ -115,7 +118,7 @@ class t3lib_object_tests_amixed_null
 /**
  * test class A that depends on B and C and has a third default parameter in constructor
  */
-class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_amixed_array_singleton implements SingletonInterface
 {
     /**
      * @var \t3lib_object_tests_b
@@ -148,7 +151,7 @@ class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\Singl
 /**
  * test class B that depends on C
  */
-class t3lib_object_tests_b implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_b implements SingletonInterface
 {
     /**
      * @var \t3lib_object_tests_c
@@ -167,7 +170,7 @@ class t3lib_object_tests_b implements \TYPO3\CMS\Core\SingletonInterface
 /**
  * test class C without dependencies
  */
-class t3lib_object_tests_c implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_c implements SingletonInterface
 {
 }
 
@@ -178,7 +181,7 @@ class t3lib_object_tests_b_child extends \t3lib_object_tests_b
 {
 }
 
-interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInterface
+interface t3lib_object_tests_someinterface extends SingletonInterface
 {
 }
 
@@ -318,7 +321,7 @@ class t3lib_object_tests_injectsettings
     }
 }
 
-class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_resolveablecyclic1 implements SingletonInterface
 {
     /**
      * @var \t3lib_object_tests_resolveablecyclic2
@@ -334,7 +337,7 @@ class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\Singleton
     }
 }
 
-class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_resolveablecyclic2 implements SingletonInterface
 {
     /**
      * @var \t3lib_object_tests_resolveablecyclic1
@@ -363,7 +366,7 @@ class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\Singleton
     }
 }
 
-class t3lib_object_tests_resolveablecyclic3 implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_tests_resolveablecyclic3 implements SingletonInterface
 {
     /**
      * @var \t3lib_object_tests_resolveablecyclic1
@@ -410,7 +413,7 @@ If a Prototype requires a Prototype for Injection -> allowed, autowiring active
 If a Prototype requires a Singleton for Injection -> allowed, autowiring active
  */
 
-class t3lib_object_singleton implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_singleton implements SingletonInterface
 {
 }
 
@@ -418,7 +421,7 @@ class t3lib_object_prototype
 {
 }
 
-class t3lib_object_singletonNeedsPrototype implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_singletonNeedsPrototype implements SingletonInterface
 {
     /**
      * @var \t3lib_object_prototype
@@ -434,7 +437,7 @@ class t3lib_object_singletonNeedsPrototype implements \TYPO3\CMS\Core\SingletonI
     }
 }
 
-class t3lib_object_singletonNeedsSingleton implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_singletonNeedsSingleton implements SingletonInterface
 {
     /**
      * @var \t3lib_object_singleton
@@ -482,7 +485,7 @@ class t3lib_object_prototypeNeedsSingleton
     }
 }
 
-class t3lib_object_singletonNeedsPrototypeInConstructor implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_singletonNeedsPrototypeInConstructor implements SingletonInterface
 {
     /**
      * @param \t3lib_object_prototype $dependency
@@ -493,7 +496,7 @@ class t3lib_object_singletonNeedsPrototypeInConstructor implements \TYPO3\CMS\Co
     }
 }
 
-class t3lib_object_singletonNeedsSingletonInConstructor implements \TYPO3\CMS\Core\SingletonInterface
+class t3lib_object_singletonNeedsSingletonInConstructor implements SingletonInterface
 {
     /**
      * @param \t3lib_object_singleton $dependency
@@ -529,7 +532,7 @@ class t3lib_object_prototypeNeedsSingletonInConstructor
 /**
  * Class that needs initialization after instantiation
  */
-class t3lib_object_tests_initializable extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject
+class t3lib_object_tests_initializable extends AbstractDomainObject
 {
     /**
      * @var bool

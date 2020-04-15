@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * A repository for tt_contents
  */
-class TtContentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class TtContentRepository extends Repository
 {
 }

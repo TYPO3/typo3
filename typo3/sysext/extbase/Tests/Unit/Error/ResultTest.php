@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class ResultTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->result = new \TYPO3\CMS\Extbase\Error\Result();
+        $this->result = new Result();
     }
 
     /**
@@ -107,7 +108,7 @@ class ResultTest extends UnitTestCase
     public function forPropertyShouldReturnSubResult()
     {
         $container2 = $this->result->forProperty('foo.bar');
-        self::assertInstanceOf(\TYPO3\CMS\Extbase\Error\Result::class, $container2);
+        self::assertInstanceOf(Result::class, $container2);
         self::assertSame($container2, $this->result->forProperty('foo')->forProperty('bar'));
     }
 
@@ -237,7 +238,7 @@ class ResultTest extends UnitTestCase
         $error1 = $this->getMockMessage('Error');
         $error2 = $this->getMockMessage('Error');
         $error3 = $this->getMockMessage('Error');
-        $otherResult = new \TYPO3\CMS\Extbase\Error\Result();
+        $otherResult = new Result();
         $otherResult->addNotice($notice1);
         $otherResult->forProperty('foo.bar')->addNotice($notice2);
         $this->result->forProperty('foo')->addNotice($notice3);

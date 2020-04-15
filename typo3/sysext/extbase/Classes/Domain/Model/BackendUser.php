@@ -16,11 +16,12 @@
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * This model represents a back-end user.
  */
-class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class BackendUser extends AbstractEntity
 {
     /**
      * @var string

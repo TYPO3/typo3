@@ -25,11 +25,15 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class RelationTest extends FunctionalTestCase
 {
     /**
      * @var Blog
@@ -67,8 +71,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->persistentManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->persistentManager = $this->objectManager->get(PersistenceManager::class);
         /* @var $blogRepository \TYPO3\CMS\Extbase\Persistence\Repository */
         $blogRepository = $this->objectManager->get(BlogRepository::class);
         $this->blog = $blogRepository->findByUid(1);
@@ -935,7 +939,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $post = $postRepository->findByUid(1);
 
         /** @var \TYPO3\CMS\Extbase\Domain\Model\Category $newCategory */
-        $newCategory = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Model\Category::class);
+        $newCategory = $this->objectManager->get(Category::class);
         $newCategory->setTitle('New Category');
 
         $post->addCategory($newCategory);

@@ -17,13 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Security\Cryptography;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
+use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
+
 /**
  * A hash service which should be used to generate and validate hashes.
  *
  * It will use some salt / encryption key in the future.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class HashService implements \TYPO3\CMS\Core\SingletonInterface
+class HashService implements SingletonInterface
 {
     /**
      * Generate a hash (HMAC) for a given string
@@ -36,7 +40,7 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
     {
         $encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         if (!$encryptionKey) {
-            throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('Encryption Key was empty!', 1255069597);
+            throw new InvalidArgumentForHashGenerationException('Encryption Key was empty!', 1255069597);
         }
         return hash_hmac('sha1', $string, $encryptionKey);
     }
@@ -83,11 +87,11 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface
     public function validateAndStripHmac(string $string): string
     {
         if (strlen($string) < 40) {
-            throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
+            throw new InvalidArgumentForHashGenerationException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
         }
         $stringWithoutHmac = substr($string, 0, -40);
         if ($this->validateHmac($stringWithoutHmac, substr($string, -40)) !== true) {
-            throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidHashException('The given string was not appended with a valid HMAC.', 1320830018);
+            throw new InvalidHashException('The given string was not appended with a valid HMAC.', 1320830018);
         }
         return $stringWithoutHmac;
     }

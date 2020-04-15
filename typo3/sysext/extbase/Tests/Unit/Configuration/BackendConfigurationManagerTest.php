@@ -16,8 +16,11 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -42,13 +45,13 @@ class BackendConfigurationManagerTest extends UnitTestCase
     {
         parent::setUp();
         $this->backendConfigurationManager = $this->getAccessibleMock(
-            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            BackendConfigurationManager::class,
             ['getTypoScriptSetup'],
             [],
             '',
             false
         );
-        $this->mockTypoScriptService = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class)->getMock();
+        $this->mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 
@@ -255,18 +258,18 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $recursive = 99;
 
         /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
-        $beUserAuthentication = $this->prophesize(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $beUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
         $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
         $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
 
         $abstractConfigurationManager = $this->getAccessibleMock(
-            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            BackendConfigurationManager::class,
             ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false
         );
-        $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+        $queryGenerator = $this->createMock(QueryGenerator::class);
         $queryGenerator->expects(self::any())
             ->method('getTreeList')
             ->will(self::onConsecutiveCalls('4', '', '5,6'));
@@ -286,18 +289,18 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $recursive = 99;
 
         /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
-        $beUserAuthentication = $this->prophesize(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $beUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
         $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
         $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
 
         $abstractConfigurationManager = $this->getAccessibleMock(
-            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            BackendConfigurationManager::class,
             ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration', 'getQueryGenerator'],
             [],
             '',
             false
         );
-        $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+        $queryGenerator = $this->createMock(QueryGenerator::class);
         $queryGenerator->expects(self::any())
             ->method('getTreeList')
             ->will(self::onConsecutiveCalls('4', '', '3,5,6'));
@@ -316,7 +319,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $storagePids = [1, 2, 3];
 
         $abstractConfigurationManager = $this->getAccessibleMock(
-            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            BackendConfigurationManager::class,
             ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
@@ -337,7 +340,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $recursive = 0;
 
         $abstractConfigurationManager = $this->getAccessibleMock(
-            \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
+            BackendConfigurationManager::class,
             ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',

@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
@@ -108,7 +109,7 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments->expects(self::at(2))->method('addNewArgument')->with('objectArgument', 'F3_Foo_Bar', true);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
 
-        $classSchemaMethod = new ClassSchema\Method(
+        $classSchemaMethod = new Method(
             'fooAction',
             [
                 'params' => [
@@ -176,7 +177,7 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments->expects(self::at(2))->method('addNewArgument')->with('arg3', 'string', false, 42);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
 
-        $classSchemaMethod = new ClassSchema\Method(
+        $classSchemaMethod = new Method(
             'fooAction',
             [
                 'params' => [
@@ -244,7 +245,7 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments = $this->createMock(Arguments::class);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction'], [], '', false);
 
-        $classSchemaMethod = new ClassSchema\Method(
+        $classSchemaMethod = new Method(
             'fooAction',
             [
                 'params' => [

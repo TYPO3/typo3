@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Fixture;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+
 /**
  * An entity
  */
-class ValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
+class ValueObject extends AbstractValueObject
 {
     /**
      * The value object's name

@@ -32,7 +32,7 @@ class BackendRequestHandler extends AbstractRequestHandler
     {
         $request = $this->requestBuilder->build();
         /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
-        $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
+        $response = $this->objectManager->get(Response::class);
         $this->dispatcher->dispatch($request, $response);
         return $response;
     }

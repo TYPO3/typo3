@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+
 /**
  * Interface of a view
  */
@@ -26,7 +28,7 @@ interface ViewInterface
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @internal
      */
-    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext);
+    public function setControllerContext(ControllerContext $controllerContext);
 
     /**
      * Add a variable to the view data collection.
@@ -52,7 +54,7 @@ interface ViewInterface
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
      */
-    public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext);
+    public function canRender(ControllerContext $controllerContext);
 
     /**
      * Renders the view

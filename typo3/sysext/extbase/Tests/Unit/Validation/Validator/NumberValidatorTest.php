@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Validation\Error;
+use TYPO3\CMS\Extbase\Validation\Validator\NumberValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,7 +28,7 @@ class NumberValidatorTest extends UnitTestCase
     /**
      * @var string
      */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator::class;
+    protected $validatorClassName = NumberValidator::class;
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
@@ -53,9 +56,9 @@ class NumberValidatorTest extends UnitTestCase
      */
     public function numberValidatorReturnsFalseForAString()
     {
-        $expectedResult = new \TYPO3\CMS\Extbase\Error\Result();
+        $expectedResult = new Result();
         // we only test for the error code, after the message translation method is mocked
-        $expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error('', 1221563685));
+        $expectedResult->addError(new Error('', 1221563685));
         self::assertEquals($expectedResult, $this->validator->validate('not a number'));
     }
 }

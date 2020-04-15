@@ -84,7 +84,7 @@ interface TypeConverterInterface
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string the type of $propertyName in $targetType
      */
-    public function getTypeOfChildProperty(string $targetType, string $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration): string;
+    public function getTypeOfChildProperty(string $targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string;
 
     /**
      * Actually convert from $source to $targetType, taking into account the fully
@@ -104,5 +104,5 @@ interface TypeConverterInterface
      * @return mixed|\TYPO3\CMS\Extbase\Error\Error the target type, or an error object if a user-error occurred
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException thrown in case a developer error occurred
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null);
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null);
 }

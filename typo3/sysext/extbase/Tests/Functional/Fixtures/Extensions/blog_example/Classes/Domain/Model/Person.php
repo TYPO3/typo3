@@ -15,10 +15,13 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /**
  * A person - acting as author
  */
-class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Person extends AbstractEntity
 {
     /**
      * @var string
@@ -54,8 +57,8 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->setLastname($lastname);
         $this->setEmail($email);
 
-        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->tagsSpecial = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->tags = new ObjectStorage();
+        $this->tagsSpecial = new ObjectStorage();
     }
 
     /**
@@ -139,7 +142,7 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags
      */
-    public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags)
     {
         $this->tags = $tags;
     }
@@ -171,7 +174,7 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial
      */
-    public function setTagsSpecial(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial)
+    public function setTagsSpecial(ObjectStorage $tagsSpecial)
     {
         $this->tagsSpecial = $tagsSpecial;
     }

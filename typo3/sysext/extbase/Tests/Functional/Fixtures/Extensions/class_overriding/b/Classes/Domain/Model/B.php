@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\B\Domain\Model;
 
+use ExtbaseTeam\A\Domain\Model\A;
+
 /**
  * Class ExtbaseTeam\B\Domain\Model\B
  */
-class B extends \ExtbaseTeam\A\Domain\Model\A
+class B extends A
 {
     /**
      * @var string

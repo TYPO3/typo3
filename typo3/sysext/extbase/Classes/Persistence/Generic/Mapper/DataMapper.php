@@ -17,14 +17,29 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
 use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\NonExistentPropertyException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Session;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -85,12 +100,12 @@ class DataMapper
      * @param QueryInterface|null $query
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
-        \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory,
-        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        ReflectionService $reflectionService,
+        QueryObjectModelFactory $qomFactory,
+        Session $persistenceSession,
+        DataMapFactory $dataMapFactory,
+        QueryFactoryInterface $queryFactory,
+        ObjectManagerInterface $objectManager,
         EventDispatcherInterface $eventDispatcher,
         ?QueryInterface $query = null
     ) {
@@ -193,7 +208,7 @@ class DataMapper
     {
         // Note: The class_implements() function also invokes autoload to assure that the interfaces
         // and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
-        if (!in_array(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class, class_implements($className))) {
+        if (!in_array(DomainObjectInterface::class, class_implements($className))) {
             throw new CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className
                 . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
         }
@@ -206,8 +221,8 @@ class DataMapper
      *
      * @param DomainObjectInterface $object The object to set properties on
      * @param array $row
-     * @throws Exception\NonExistentPropertyException
-     * @throws Exception\UnknownPropertyTypeException
+     * @throws NonExistentPropertyException
+     * @throws UnknownPropertyTypeException
      */
     protected function thawProperties(DomainObjectInterface $object, array $row)
     {
@@ -238,7 +253,7 @@ class DataMapper
             try {
                 $property = $classSchema->getProperty($propertyName);
             } catch (NoSuchPropertyException $e) {
-                throw new Exception\NonExistentPropertyException(
+                throw new NonExistentPropertyException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, ' .
                     'as property ' . $propertyName . ' is unknown to the ' . ClassSchema::class . ' instance of class ' .
                     $className . '. Please make sure said property exists and that you cleared all caches to trigger ' .
@@ -249,7 +264,7 @@ class DataMapper
 
             $propertyType = $property->getType();
             if ($propertyType === null) {
-                throw new Exception\UnknownPropertyTypeException(
+                throw new UnknownPropertyTypeException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
                     var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via php doc blocks. ' .
                     'Make sure the property has a valid @var tag set which defines the type.',
@@ -277,7 +292,7 @@ class DataMapper
                         // $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
                         break;
                     case \SplObjectStorage::class:
-                    case Persistence\ObjectStorage::class:
+                    case ObjectStorage::class:
                         $propertyValue = $this->mapResultToPropertyValue(
                             $object,
                             $propertyName,
@@ -341,12 +356,12 @@ class DataMapper
         if (in_array($storageFormat, $dateTimeTypes, true)) {
             // native date/datetime/time values are stored in UTC
             $utcTimeZone = new \DateTimeZone('UTC');
-            $utcDateTime = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, $value, $utcTimeZone);
+            $utcDateTime = GeneralUtility::makeInstance($targetType, $value, $utcTimeZone);
             $currentTimeZone = new \DateTimeZone(date_default_timezone_get());
             return $utcDateTime->setTimezone($currentTimeZone);
         }
         // integer timestamps are local server time
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, date('c', (int)$value));
+        return GeneralUtility::makeInstance($targetType, date('c', (int)$value));
     }
 
     /**
@@ -362,13 +377,13 @@ class DataMapper
     {
         $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
         if ($enableLazyLoading === true && $property->isLazy()) {
-            if ($property->getType() === Persistence\ObjectStorage::class) {
-                $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
+            if ($property->getType() === ObjectStorage::class) {
+                $result = $this->objectManager->get(LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
             } else {
                 if (empty($fieldValue)) {
                     $result = null;
                 } else {
-                    $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
+                    $result = $this->objectManager->get(LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
                 }
             }
         } else {
@@ -428,7 +443,7 @@ class DataMapper
         $columnMap = $dataMap->getColumnMap($propertyName);
         $type = $this->getType(get_class($parentObject), $propertyName);
         $query = $this->queryFactory->create($type);
-        if ($this->query && $query instanceof Persistence\Generic\Query) {
+        if ($this->query && $query instanceof Query) {
             $query->setParentQuery($this->query);
         }
         $query->getQuerySettings()->setRespectStoragePage(false);
@@ -450,12 +465,12 @@ class DataMapper
 
         if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
             if ($columnMap->getChildSortByFieldName() !== null) {
-                $query->setOrderings([$columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING]);
+                $query->setOrderings([$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING]);
             }
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
             $query->setSource($this->getSource($parentObject, $propertyName));
             if ($columnMap->getChildSortByFieldName() !== null) {
-                $query->setOrderings([$columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING]);
+                $query->setOrderings([$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING]);
             }
         }
         $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
@@ -472,7 +487,7 @@ class DataMapper
      * @param array $relationTableMatchFields
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
      */
-    protected function getConstraint(Persistence\QueryInterface $query, DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = [])
+    protected function getConstraint(QueryInterface $query, DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = [])
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
         if ($columnMap->getParentKeyFieldName() !== null) {
@@ -484,7 +499,7 @@ class DataMapper
                 );
             }
         } else {
-            $constraint = $query->in('uid', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $fieldValue));
+            $constraint = $query->in('uid', GeneralUtility::intExplode(',', $fieldValue));
         }
         if (!empty($relationTableMatchFields)) {
             foreach ($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
@@ -508,7 +523,7 @@ class DataMapper
         $childClassName = $this->getType(get_class($parentObject), $propertyName);
         $right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
         $joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
-        $source = $this->qomFactory->join($left, $right, Persistence\Generic\Query::JCR_JOIN_TYPE_INNER, $joinCondition);
+        $source = $this->qomFactory->join($left, $right, Query::JCR_JOIN_TYPE_INNER, $joinCondition);
         return $source;
     }
 
@@ -573,19 +588,19 @@ class DataMapper
     public function mapResultToPropertyValue(DomainObjectInterface $parentObject, $propertyName, $result)
     {
         $propertyValue = null;
-        if ($result instanceof Persistence\Generic\LoadingStrategyInterface) {
+        if ($result instanceof LoadingStrategyInterface) {
             $propertyValue = $result;
         } else {
             $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if (in_array($property->getType(), ['array', \ArrayObject::class, \SplObjectStorage::class, Persistence\ObjectStorage::class], true)) {
+            if (in_array($property->getType(), ['array', \ArrayObject::class, \SplObjectStorage::class, ObjectStorage::class], true)) {
                 $objects = [];
                 foreach ($result as $value) {
                     $objects[] = $value;
                 }
                 if ($property->getType() === \ArrayObject::class) {
                     $propertyValue = new \ArrayObject($objects);
-                } elseif ($property->getType() === Persistence\ObjectStorage::class) {
-                    $propertyValue = new Persistence\ObjectStorage();
+                } elseif ($property->getType() === ObjectStorage::class) {
+                    $propertyValue = new ObjectStorage();
                     foreach ($objects as $object) {
                         $propertyValue->attach($object);
                     }
@@ -595,7 +610,7 @@ class DataMapper
                 }
             } elseif (strpbrk($property->getType(), '_\\') !== false) {
                 // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
-                if (is_object($result) && $result instanceof Persistence\QueryResultInterface) {
+                if (is_object($result) && $result instanceof QueryResultInterface) {
                     $propertyValue = $result->getFirst();
                 } else {
                     $propertyValue = $result;
@@ -643,7 +658,7 @@ class DataMapper
     public function getDataMap($className)
     {
         if (!is_string($className) || $className === '') {
-            throw new Persistence\Generic\Exception('No class name was given to retrieve the Data Map for.', 1251315965);
+            throw new Exception('No class name was given to retrieve the Data Map for.', 1251315965);
         }
         return $this->dataMapFactory->buildDataMap($className);
     }
@@ -677,7 +692,7 @@ class DataMapper
                 }
             }
         }
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($propertyName);
+        return GeneralUtility::camelCaseToLowerCaseUnderscored($propertyName);
     }
 
     /**
@@ -721,7 +736,7 @@ class DataMapper
         if ($input === null) {
             return 'NULL';
         }
-        if ($input instanceof Persistence\Generic\LazyLoadingProxy) {
+        if ($input instanceof LazyLoadingProxy) {
             $input = $input->_loadRealInstance();
         }
 

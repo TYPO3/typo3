@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
 /**
@@ -30,7 +31,7 @@ class DummyValidator implements ValidatorInterface
      */
     public function validate($value)
     {
-        return new \TYPO3\CMS\Extbase\Error\Result();
+        return new Result();
     }
 
     /**

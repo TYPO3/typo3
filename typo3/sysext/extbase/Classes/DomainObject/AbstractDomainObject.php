@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\DomainObject;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 
 /**
  * A generic Domain Object.
@@ -25,7 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
  * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface
+abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMonitoringInterface
 {
     /**
      * @var int The uid of the record. The uid is only unique in the context of the database table.
@@ -250,7 +252,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     public function _isDirty($propertyName = null)
     {
         if ($this->uid !== null && $this->_getCleanProperty('uid') !== null && $this->uid != $this->_getCleanProperty('uid')) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+            throw new TooDirtyException('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
         }
 
         if ($propertyName === null) {
@@ -295,7 +297,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
                 }
 
                 $result = $currentTypeString !== $previousTypeString;
-            } elseif ($currentValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface) {
+            } elseif ($currentValue instanceof ObjectMonitoringInterface) {
                 $result = !is_object($previousValue) || $currentValue->_isDirty() || get_class($previousValue) !== get_class($currentValue);
             } else {
                 // For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.

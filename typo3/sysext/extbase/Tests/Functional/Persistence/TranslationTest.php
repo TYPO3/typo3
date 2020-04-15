@@ -18,15 +18,19 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
+use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class TranslationTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -74,8 +78,8 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
         $this->setUpBasicFrontendEnvironment();
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->postRepository = $this->objectManager->get(PostRepository::class);
     }
 
     /**
@@ -97,7 +101,7 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentServiceMock);
 
         $pageRepositoryFixture = new PageRepository();
-        $frontendControllerMock = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $frontendControllerMock->sys_page = $pageRepositoryFixture;
         $GLOBALS['TSFE'] = $frontendControllerMock;
     }

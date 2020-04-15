@@ -15,10 +15,12 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * A post additional info (1:1 inline relation to post)
  */
-class Info extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Info extends AbstractEntity
 {
 
     /**

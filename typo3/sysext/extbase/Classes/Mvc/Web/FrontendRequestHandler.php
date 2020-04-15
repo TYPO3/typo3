@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * A request handler which can handle web requests invoked by the frontend.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -34,7 +38,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
@@ -42,7 +46,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
     /**
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      */
-    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    public function injectExtensionService(ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
     }
@@ -59,7 +63,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
             $request->setIsCached(true);
         } else {
             $contentObject = $this->configurationManager->getContentObject();
-            if ($contentObject->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
+            if ($contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER) {
                 $contentObject->convertToUserIntObject();
                 // \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::convertToUserIntObject() will recreate the object, so we have to stop the request here
                 return null;
@@ -72,7 +76,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
         }
 
         /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
-        $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
+        $response = $this->objectManager->get(Response::class);
         $this->dispatcher->dispatch($request, $response);
         return $response;
     }

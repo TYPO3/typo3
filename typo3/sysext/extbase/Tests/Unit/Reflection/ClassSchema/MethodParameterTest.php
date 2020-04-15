@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithConstructorAndConstructorArgumentsWithDependencies;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
@@ -99,7 +100,7 @@ class MethodParameterTest extends UnitTestCase
         self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
         self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
 
-        static::expectException(ClassSchema\Exception\NoSuchMethodParameterException::class);
+        static::expectException(NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
     }
 

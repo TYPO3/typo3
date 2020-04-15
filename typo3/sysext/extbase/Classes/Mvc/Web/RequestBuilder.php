@@ -16,17 +16,25 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
  * Builds a web request.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
+class RequestBuilder implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -108,7 +116,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -116,7 +124,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
@@ -124,7 +132,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      */
-    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    public function injectExtensionService(ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
     }
@@ -132,7 +140,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
+    public function injectEnvironmentService(EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
     }
@@ -191,7 +199,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             $parameters = $getParameters;
             ArrayUtility::mergeRecursiveWithOverrule($parameters, $bodyParameters);
         } else {
-            $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($pluginNamespace);
+            $parameters = GeneralUtility::_GPmerged($pluginNamespace);
         }
 
         $files = $this->untangleFilesArray($_FILES);
@@ -202,20 +210,20 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $controllerClassName = $this->resolveControllerClassName($parameters);
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
 
-        $baseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $baseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         if ($this->environmentService->isEnvironmentInBackendMode()) {
             $baseUri .= TYPO3_mainDir;
         }
 
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
-        $request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
+        $request = $this->objectManager->get(Request::class);
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
         $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $request->setControllerActionName($actionName);
         // @todo Use Environment
-        $request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri($baseUri);
         $request->setMethod($this->environmentService->getServerRequestMethod());
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
@@ -252,12 +260,12 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         if (!in_array($controllerClassName, array_keys($this->allowedControllerActions))) {
             $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-                throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
+                throw new PageNotFoundException('The requested resource was not found', 1313857897);
             }
             if (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
                 return $this->defaultControllerClassName;
             }
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException(
+            throw new InvalidControllerNameException(
                 'The controller "' . $parameters['controller'] . '" is not allowed by plugin "' . $this->pluginName . '". Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.',
                 1313855173
             );
@@ -291,12 +299,12 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         if (!in_array($actionName, $allowedActionNames)) {
             $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-                throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857898);
+                throw new PageNotFoundException('The requested resource was not found', 1313857898);
             }
             if (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
                 return $defaultActionName;
             }
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin / module. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configureModule() in your ext_tables.php.', 1313855175);
+            throw new InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin / module. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configureModule() in your ext_tables.php.', 1313855175);
         }
         return filter_var($actionName, FILTER_SANITIZE_STRING);
     }

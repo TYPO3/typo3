@@ -17,6 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Tests\Fixture\Entity;
+use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,7 +35,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @var string
      */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class;
+    protected $validatorClassName = CollectionValidator::class;
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
@@ -53,7 +61,7 @@ class CollectionValidatorTest extends UnitTestCase
     {
         parent::setUp();
         $this->mockValidatorResolver = $this->getAccessibleMock(
-            \TYPO3\CMS\Extbase\Validation\ValidatorResolver::class,
+            ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction']
         );
         $this->validator = $this->getValidator();
@@ -88,7 +96,7 @@ class CollectionValidatorTest extends UnitTestCase
             ->method('createValidator')
             ->with('EmailAddress')
             ->willReturn(
-                $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
+                $this->getMockBuilder(EmailAddressValidator::class)
                     ->setMethods(['translateErrorMessage'])
                     ->getMock()
             );
@@ -129,12 +137,12 @@ class CollectionValidatorTest extends UnitTestCase
         $B->c = [$A];
 
         // Create validators
-        $aValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class)
+        $aValidator = $this->getMockBuilder(GenericObjectValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([[]])
             ->getMock();
         $this->validator->_set('options', ['elementValidator' => 'Integer']);
-        $integerValidator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class)
+        $integerValidator = $this->getMockBuilder(IntegerValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([[]])
             ->getMock();
@@ -162,9 +170,9 @@ class CollectionValidatorTest extends UnitTestCase
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
-        $parentObject  = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
-        $elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
-        $lazyObjectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage(
+        $parentObject  = new Entity('Foo');
+        $elementType = Entity::class;
+        $lazyObjectStorage = new LazyObjectStorage(
             $parentObject,
             'someProperty',
             ['someNotEmptyValue']
@@ -183,11 +191,11 @@ class CollectionValidatorTest extends UnitTestCase
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
-        $entity = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
-        $elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
-        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $entity = new Entity('Foo');
+        $elementType = Entity::class;
+        $objectStorage = new ObjectStorage();
         $objectStorage->attach($entity);
-        $aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator([]);
+        $aValidator = new GenericObjectValidator([]);
 
         $this->mockValidatorResolver->expects(self::never())->method('createValidator');
         $this->mockValidatorResolver->expects(self::once())

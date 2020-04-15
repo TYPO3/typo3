@@ -22,13 +22,16 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController;
+use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ActionControllerTest extends FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
@@ -60,7 +63,7 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
 
         $this->response = $objectManager->get(Response::class);
 
-        $this->controller = $objectManager->get(Fixture\Controller\TestController::class);
+        $this->controller = $objectManager->get(TestController::class);
     }
 
     /**
@@ -88,7 +91,7 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         self::assertInstanceOf(\SplObjectStorage::class, $validators);
 
         $validators->rewind();
-        self::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $validators->current());
+        self::assertInstanceOf(CustomValidator::class, $validators->current());
     }
 
     /**

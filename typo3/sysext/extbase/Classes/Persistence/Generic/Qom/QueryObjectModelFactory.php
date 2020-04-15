@@ -15,11 +15,15 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * The Query Object Model Factory
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
+class QueryObjectModelFactory implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -29,7 +33,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -47,7 +51,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
         if ($selectorName === '') {
             $selectorName = $nodeTypeName;
         }
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector::class, $selectorName, $nodeTypeName);
+        return $this->objectManager->get(Selector::class, $selectorName, $nodeTypeName);
     }
 
     /**
@@ -59,7 +63,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function statement($statement, array $boundVariables = [])
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement::class, $statement, $boundVariables);
+        return $this->objectManager->get(Statement::class, $statement, $boundVariables);
     }
 
     /**
@@ -73,7 +77,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function join(SourceInterface $left, SourceInterface $right, $joinType, JoinConditionInterface $joinCondition)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Join::class, $left, $right, $joinType, $joinCondition);
+        return $this->objectManager->get(Join::class, $left, $right, $joinType, $joinCondition);
     }
 
     /**
@@ -88,7 +92,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\EquiJoinCondition::class, $selector1Name, $property1Name, $selector2Name, $property2Name);
+        return $this->objectManager->get(EquiJoinCondition::class, $selector1Name, $property1Name, $selector2Name, $property2Name);
     }
 
     /**
@@ -101,7 +105,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function _and(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalAnd::class, $constraint1, $constraint2);
+        return $this->objectManager->get(LogicalAnd::class, $constraint1, $constraint2);
     }
 
     /**
@@ -114,7 +118,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function _or(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalOr::class, $constraint1, $constraint2);
+        return $this->objectManager->get(LogicalOr::class, $constraint1, $constraint2);
     }
 
     /**
@@ -126,7 +130,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function not(ConstraintInterface $constraint)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalNot::class, $constraint);
+        return $this->objectManager->get(LogicalNot::class, $constraint);
     }
 
     /**
@@ -140,7 +144,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function comparison(PropertyValueInterface $operand1, $operator, $operand2)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison::class, $operand1, $operator, $operand2);
+        return $this->objectManager->get(Comparison::class, $operand1, $operator, $operand2);
     }
 
     /**
@@ -153,7 +157,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function propertyValue($propertyName, $selectorName = '')
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValue::class, $propertyName, $selectorName);
+        return $this->objectManager->get(PropertyValue::class, $propertyName, $selectorName);
     }
 
     /**
@@ -165,7 +169,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function lowerCase(PropertyValueInterface $operand)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCase::class, $operand);
+        return $this->objectManager->get(LowerCase::class, $operand);
     }
 
     /**
@@ -177,7 +181,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function upperCase(PropertyValueInterface $operand)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCase::class, $operand);
+        return $this->objectManager->get(UpperCase::class, $operand);
     }
 
     /**
@@ -191,7 +195,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function ascending(DynamicOperandInterface $operand)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Ordering::class, $operand, \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING);
+        return $this->objectManager->get(Ordering::class, $operand, QueryInterface::ORDER_ASCENDING);
     }
 
     /**
@@ -205,7 +209,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function descending(DynamicOperandInterface $operand)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Ordering::class, $operand, \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING);
+        return $this->objectManager->get(Ordering::class, $operand, QueryInterface::ORDER_DESCENDING);
     }
 
     /**
@@ -217,6 +221,6 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function bindVariable($bindVariableName)
     {
-        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValue::class, $bindVariableName);
+        return $this->objectManager->get(BindVariableValue::class, $bindVariableName);
     }
 }

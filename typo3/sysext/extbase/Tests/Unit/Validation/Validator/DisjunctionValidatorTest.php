@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,14 +32,14 @@ class DisjunctionValidatorTest extends UnitTestCase
      */
     public function validateReturnsNoErrorsIfOneValidatorReturnsNoError()
     {
-        $validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator([]);
-        $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorDisjunction = new DisjunctionValidator([]);
+        $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
-        $errors = new \TYPO3\CMS\Extbase\Error\Result();
-        $errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
-        $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject->expects(self::any())->method('validate')->willReturn(new Result());
+        $errors = new Result();
+        $errors->addError(new Error('Error', 123));
+        $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $secondValidatorObject->expects(self::any())->method('validate')->willReturn($errors);
@@ -49,18 +53,18 @@ class DisjunctionValidatorTest extends UnitTestCase
      */
     public function validateReturnsAllErrorsIfAllValidatorsReturnErrors()
     {
-        $validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator([]);
-        $error1 = new \TYPO3\CMS\Extbase\Error\Error('Error', 123);
-        $error2 = new \TYPO3\CMS\Extbase\Error\Error('Error2', 123);
-        $errors1 = new \TYPO3\CMS\Extbase\Error\Result();
+        $validatorDisjunction = new DisjunctionValidator([]);
+        $error1 = new Error('Error', 123);
+        $error2 = new Error('Error2', 123);
+        $errors1 = new Result();
         $errors1->addError($error1);
-        $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorObject->expects(self::any())->method('validate')->willReturn($errors1);
-        $errors2 = new \TYPO3\CMS\Extbase\Error\Result();
+        $errors2 = new Result();
         $errors2->addError($error2);
-        $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $secondValidatorObject->expects(self::any())->method('validate')->willReturn($errors2);

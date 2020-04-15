@@ -18,13 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Type\Exception\InvalidValueExceptionInterface;
+use TYPO3\CMS\Core\Type\TypeInterface;
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * Converter which transforms simple types to a core type
  * implementing \TYPO3\CMS\Core\Type\TypeInterface.
  */
-class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+class CoreTypeConverter extends AbstractTypeConverter
 {
     /**
      * @var string[]
@@ -34,7 +37,7 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * @var string
      */
-    protected $targetType = \TYPO3\CMS\Core\Type\TypeInterface::class;
+    protected $targetType = TypeInterface::class;
 
     /**
      * @var int
@@ -62,12 +65,12 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      * @return object the target type
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): object
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): object
     {
         try {
             return new $targetType($source);
         } catch (InvalidValueExceptionInterface $exception) {
-            return new \TYPO3\CMS\Extbase\Error\Error($exception->getMessage(), 1381680012);
+            return new Error($exception->getMessage(), 1381680012);
         }
     }
 }

@@ -15,12 +15,17 @@
 
 namespace TYPO3\CMS\Extbase\Persistence;
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /**
  * The base repository - will usually be extended by a more concrete repository.
  */
-class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface
+class Repository implements RepositoryInterface, SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
@@ -50,7 +55,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
-    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
     }
@@ -60,7 +65,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function __construct(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
         $this->objectType = ClassNamingUtility::translateRepositoryNameToModelName($this->getRepositoryClassName());
@@ -75,7 +80,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     public function add($object)
     {
         if (!$object instanceof $this->objectType) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+            throw new IllegalObjectTypeException('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
         }
         $this->persistenceManager->add($object);
     }
@@ -89,7 +94,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     public function remove($object)
     {
         if (!$object instanceof $this->objectType) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363336);
+            throw new IllegalObjectTypeException('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363336);
         }
         $this->persistenceManager->remove($object);
     }
@@ -104,7 +109,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
     public function update($modifiedObject)
     {
         if (!$modifiedObject instanceof $this->objectType) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
+            throw new IllegalObjectTypeException('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
         }
         $this->persistenceManager->update($modifiedObject);
     }
@@ -182,7 +187,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
      */
-    public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings)
+    public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
     {
         $this->defaultQuerySettings = $defaultQuerySettings;
     }
@@ -237,7 +242,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
             return $result;
         }
-        throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+        throw new UnsupportedMethodException('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
     }
 
     /**

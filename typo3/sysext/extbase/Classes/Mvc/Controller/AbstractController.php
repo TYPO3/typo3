@@ -16,11 +16,24 @@
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\CacheService;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * An abstract base class for Controllers
@@ -96,7 +109,7 @@ abstract class AbstractController implements ControllerInterface
     /**
      * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
      */
-    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
     {
         $this->signalSlotDispatcher = $signalSlotDispatcher;
     }
@@ -104,7 +117,7 @@ abstract class AbstractController implements ControllerInterface
     /**
      * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
      */
-    public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver)
+    public function injectValidatorResolver(ValidatorResolver $validatorResolver)
     {
         $this->validatorResolver = $validatorResolver;
     }
@@ -155,10 +168,10 @@ abstract class AbstractController implements ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->arguments = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class);
+        $this->arguments = $this->objectManager->get(Arguments::class);
     }
 
     /**
@@ -172,7 +185,7 @@ abstract class AbstractController implements ControllerInterface
      * @see \TYPO3\CMS\Core\Messaging\FlashMessage
      * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
-    public function addFlashMessage($messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, $storeInSession = true)
+    public function addFlashMessage($messageBody, $messageTitle = '', $severity = AbstractMessage::OK, $storeInSession = true)
     {
         trigger_error(
             __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
@@ -183,8 +196,8 @@ abstract class AbstractController implements ControllerInterface
             throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1243258395);
         }
         /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-        $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+        $flashMessage = GeneralUtility::makeInstance(
+            FlashMessage::class,
             (string)$messageBody,
             (string)$messageTitle,
             $severity,
@@ -204,7 +217,7 @@ abstract class AbstractController implements ControllerInterface
      * @return bool TRUE if this request type is supported, otherwise FALSE
      * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
-    public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request)
+    public function canProcessRequest(RequestInterface $request)
     {
         trigger_error(
             __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
@@ -227,7 +240,7 @@ abstract class AbstractController implements ControllerInterface
      * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
      * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
         trigger_error(
             __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
@@ -237,13 +250,13 @@ abstract class AbstractController implements ControllerInterface
         if (!$this->canProcessRequest($request)) {
             throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701132);
         }
-        if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response && $request instanceof WebRequest) {
+        if ($response instanceof Response && $request instanceof WebRequest) {
             $response->setRequest($request);
         }
         $this->request = $request;
         $this->request->setDispatched(true);
         $this->response = $response;
-        $this->uriBuilder = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
+        $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
         $this->uriBuilder->setRequest($request);
         $this->initializeControllerArgumentsBaseValidators();
         $this->mapRequestArgumentsToControllerArguments();
@@ -264,7 +277,7 @@ abstract class AbstractController implements ControllerInterface
         );
 
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
-        $controllerContext = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
+        $controllerContext = $this->objectManager->get(ControllerContext::class);
         $controllerContext->setRequest($this->request);
         $controllerContext->setResponse($this->response);
         if ($this->arguments !== null) {
@@ -349,7 +362,7 @@ abstract class AbstractController implements ControllerInterface
         if (MathUtility::canBeInterpretedAsInteger($pageUid)) {
             $this->uriBuilder->setTargetPageUid((int)$pageUid);
         }
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+        if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
             $this->uriBuilder->setAbsoluteUriScheme('https');
         }
         $uri = $this->uriBuilder->uriFor($actionName, $arguments, $controllerName, $extensionName);
@@ -379,12 +392,12 @@ abstract class AbstractController implements ControllerInterface
             throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539735);
         }
 
-        $this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
+        $this->objectManager->get(CacheService::class)->clearCachesOfRegisteredPageIds();
 
         $uri = $this->addBaseUriIfNecessary($uri);
         $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
         $this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
-        if ($this->response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
+        if ($this->response instanceof Response) {
             $this->response->setStatus($statusCode);
             $this->response->setHeader('Location', (string)$uri);
         }
@@ -392,7 +405,7 @@ abstract class AbstractController implements ControllerInterface
         // This means that even when an action is configured as cachable
         // we avoid the plugin to be cached, but keep the page cache untouched
         $contentObject = $this->configurationManager->getContentObject();
-        if ($contentObject->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
+        if ($contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER) {
             $contentObject->convertToUserIntObject();
         }
 
@@ -413,7 +426,7 @@ abstract class AbstractController implements ControllerInterface
             E_USER_DEPRECATED
         );
 
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl((string)$uri);
+        return GeneralUtility::locationHeaderUrl((string)$uri);
     }
 
     /**
@@ -438,7 +451,7 @@ abstract class AbstractController implements ControllerInterface
         if (!$this->request instanceof WebRequest) {
             throw new UnsupportedRequestTypeException('throwStatus() only supports web requests.', 1220539739);
         }
-        if ($this->response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
+        if ($this->response instanceof Response) {
             $this->response->setStatus($statusCode, $statusMessage);
             if ($content === null) {
                 $content = $this->response->getStatus();
@@ -488,7 +501,7 @@ abstract class AbstractController implements ControllerInterface
             if ($this->request->hasArgument($argumentName)) {
                 $argument->setValue($this->request->getArgument($argumentName));
             } elseif ($argument->isRequired()) {
-                throw new \TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException('Required argument "' . $argumentName . '" is not set for ' . $this->request->getControllerObjectName() . '->' . $this->request->getControllerActionName() . '.', 1298012500);
+                throw new RequiredArgumentMissingException('Required argument "' . $argumentName . '" is not set for ' . $this->request->getControllerObjectName() . '->' . $this->request->getControllerActionName() . '.', 1298012500);
             }
         }
     }

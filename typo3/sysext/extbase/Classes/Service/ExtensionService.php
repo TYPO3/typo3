@@ -20,14 +20,17 @@ namespace TYPO3\CMS\Extbase\Service;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Exception;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Service for determining basic extension params
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
+class ExtensionService implements SingletonInterface
 {
     /**
      * todo: Deprecate this constant in favor of the following one:
@@ -60,7 +63,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager): void
+    public function injectObjectManager(ObjectManagerInterface $objectManager): void
     {
         $this->objectManager = $objectManager;
     }
@@ -137,7 +140,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         if (count($pluginNames) > 1) {
-            throw new \TYPO3\CMS\Extbase\Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument', 1280825466);
+            throw new Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument', 1280825466);
         }
         return !empty($pluginNames) ? $pluginNames[0] : null;
     }
@@ -216,7 +219,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
                     ->fetchAll();
 
                 if (count($pages) > 1) {
-                    throw new \TYPO3\CMS\Extbase\Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
+                    throw new Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
                 }
                 $this->targetPidPluginCache[$pluginSignature] = !empty($pages) ? (int)$pages[0]['pid'] : null;
             }

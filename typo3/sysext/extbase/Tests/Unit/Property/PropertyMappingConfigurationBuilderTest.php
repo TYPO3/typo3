@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +32,7 @@ class PropertyMappingConfigurationBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->propertyMappingConfigurationBuilder = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder();
+        $this->propertyMappingConfigurationBuilder = new PropertyMappingConfigurationBuilder();
     }
 
     /**
@@ -39,10 +41,10 @@ class PropertyMappingConfigurationBuilderTest extends UnitTestCase
     public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration()
     {
         $defaultConfiguration = $this->propertyMappingConfigurationBuilder->build();
-        self::assertTrue($defaultConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        self::assertTrue($defaultConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        self::assertTrue($defaultConfiguration->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        self::assertTrue($defaultConfiguration->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 
-        self::assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        self::assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        self::assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        self::assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
     }
 }

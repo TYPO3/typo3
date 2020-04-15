@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+
 /**
  * Converter which transforms simple types to an ObjectStorage.
  *
@@ -32,7 +36,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    protected $targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class;
+    protected $targetType = ObjectStorage::class;
 
     /**
      * @var int
@@ -49,9 +53,9 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ObjectStorage
     {
-        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $objectStorage = new ObjectStorage();
         foreach ($convertedChildProperties as $subProperty) {
             $objectStorage->attach($subProperty);
         }
@@ -80,9 +84,9 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
-    public function getTypeOfChildProperty($targetType, string $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration): string
+    public function getTypeOfChildProperty($targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string
     {
-        $parsedTargetType = \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::parseType($targetType);
+        $parsedTargetType = TypeHandlingUtility::parseType($targetType);
         return $parsedTargetType['elementType'];
     }
 }

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +32,7 @@ class IntegerConverterTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter();
+        $this->converter = new IntegerConverter();
     }
 
     /**
@@ -73,7 +75,7 @@ class IntegerConverterTest extends UnitTestCase
      */
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
     {
-        self::assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'integer'));
+        self::assertInstanceOf(Error::class, $this->converter->convertFrom('not numeric', 'integer'));
     }
 
     /**

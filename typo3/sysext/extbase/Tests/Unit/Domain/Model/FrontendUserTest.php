@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,7 +34,7 @@ class FrontendUserTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
+        $this->subject = new FrontendUser();
     }
 
     /**
@@ -76,8 +78,8 @@ class FrontendUserTest extends UnitTestCase
      */
     public function setUsergroupSetsUsergroup()
     {
-        $usergroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $usergroup->attach(new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo'));
+        $usergroup = new ObjectStorage();
+        $usergroup->attach(new FrontendUserGroup('foo'));
         $this->subject->setUsergroup($usergroup);
         self::assertSame($usergroup, $this->subject->getUsergroup());
     }
@@ -87,7 +89,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function addUsergroupAddsUserGroup()
     {
-        $usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
+        $usergroup = new FrontendUserGroup('foo');
         self::assertEquals(count($this->subject->getUsergroup()), 0);
         $this->subject->addUsergroup($usergroup);
         self::assertEquals(count($this->subject->getUsergroup()), 1);
@@ -98,7 +100,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function removeUsergroupRemovesUsergroup()
     {
-        $usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
+        $usergroup = new FrontendUserGroup('foo');
         $this->subject->addUsergroup($usergroup);
         self::assertEquals(count($this->subject->getUsergroup()), 1);
         $this->subject->removeUsergroup($usergroup);
@@ -380,7 +382,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getImageInitiallyReturnsObjectStorage()
     {
-        self::assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, $this->subject->getImage());
+        self::assertInstanceOf(ObjectStorage::class, $this->subject->getImage());
     }
 
     /**

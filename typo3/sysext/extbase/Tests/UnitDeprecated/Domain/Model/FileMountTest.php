@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Domain\Model;
 
+use TYPO3\CMS\Extbase\Domain\Model\FileMount;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class FileMountTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+        $this->subject = new FileMount();
     }
 
     /**

@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture;
 
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
+
 /**
  * Testcase for the abstract base-class of validators
  */
-class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator
+class AbstractCompositeValidatorClass extends AbstractCompositeValidator
 {
     /**
      * @var array
@@ -49,6 +52,6 @@ class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Vali
      */
     public function validate($value)
     {
-        return new \TYPO3\CMS\Extbase\Error\Result();
+        return new Result();
     }
 }

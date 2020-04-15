@@ -15,8 +15,11 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +33,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     public function addingValidatorsToAJunctionValidatorWorks()
     {
         $conjunctionValidator = new ConjunctionValidator();
-        $mockValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
+        $mockValidator = $this->createMock(ValidatorInterface::class);
         $conjunctionValidator->addValidator($mockValidator);
         self::assertTrue($conjunctionValidator->getValidators()->contains($mockValidator));
     }
@@ -41,20 +44,20 @@ class ConjunctionValidatorTest extends UnitTestCase
     public function allValidatorsInTheConjunctionAreCalledEvenIfOneReturnsError()
     {
         $validatorConjunction = new ConjunctionValidator();
-        $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::once())->method('validate')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
-        $errors = new \TYPO3\CMS\Extbase\Error\Result();
-        $errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
-        $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject->expects(self::once())->method('validate')->willReturn(new Result());
+        $errors = new Result();
+        $errors->addError(new Error('Error', 123));
+        $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $secondValidatorObject->expects(self::once())->method('validate')->willReturn($errors);
-        $thirdValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $thirdValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $thirdValidatorObject->expects(self::once())->method('validate')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
+        $thirdValidatorObject->expects(self::once())->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
         $validatorConjunction->addValidator($secondValidatorObject);
         $validatorConjunction->addValidator($thirdValidatorObject);
@@ -67,14 +70,14 @@ class ConjunctionValidatorTest extends UnitTestCase
     public function validatorConjunctionReturnsNoErrorsIfAllJunctionedValidatorsReturnNoErrors()
     {
         $validatorConjunction = new ConjunctionValidator([]);
-        $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
-        $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject->expects(self::any())->method('validate')->willReturn(new Result());
+        $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $secondValidatorObject->expects(self::any())->method('validate')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
+        $secondValidatorObject->expects(self::any())->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
         $validatorConjunction->addValidator($secondValidatorObject);
         self::assertFalse($validatorConjunction->validate('some subject')->hasErrors());
@@ -86,11 +89,11 @@ class ConjunctionValidatorTest extends UnitTestCase
     public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors()
     {
         $validatorConjunction = new ConjunctionValidator([]);
-        $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $errors = new \TYPO3\CMS\Extbase\Error\Result();
-        $errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
+        $errors = new Result();
+        $errors->addError(new Error('Error', 123));
         $validatorObject->expects(self::any())->method('validate')->willReturn($errors);
         $validatorConjunction->addValidator($validatorObject);
         self::assertTrue($validatorConjunction->validate('some subject')->hasErrors());
@@ -102,10 +105,10 @@ class ConjunctionValidatorTest extends UnitTestCase
     public function removingAValidatorOfTheValidatorConjunctionWorks()
     {
         $validatorConjunction = new ConjunctionValidator();
-        $validator1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validator1 = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validator2 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validator2 = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorConjunction->addValidator($validator1);
@@ -123,7 +126,7 @@ class ConjunctionValidatorTest extends UnitTestCase
         $this->expectException(NoSuchValidatorException::class);
         $this->expectExceptionCode(1207020177);
         $validatorConjunction = new ConjunctionValidator();
-        $validator = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validator = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorConjunction->removeValidator($validator);
@@ -135,10 +138,10 @@ class ConjunctionValidatorTest extends UnitTestCase
     public function countReturnsTheNumberOfValidatorsContainedInTheConjunction()
     {
         $validatorConjunction = new ConjunctionValidator();
-        $validator1 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validator1 = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validator2 = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
+        $validator2 = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         self::assertSame(0, count($validatorConjunction));

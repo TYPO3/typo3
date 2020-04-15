@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Validator\UrlValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,7 +28,7 @@ class UrlValidatorTest extends UnitTestCase
     /**
      * @var string
      */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\UrlValidator::class;
+    protected $validatorClassName = UrlValidator::class;
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\Validator\UrlValidator

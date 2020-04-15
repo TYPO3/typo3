@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Web;
 
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Web\Fixture\DummyWebResponse;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ResponseTest extends UnitTestCase
@@ -32,7 +33,7 @@ class ResponseTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->response = new Fixture\DummyWebResponse();
+        $this->response = new DummyWebResponse();
         $this->response->injectEnvironmentService($this->createMock(EnvironmentService::class));
     }
 

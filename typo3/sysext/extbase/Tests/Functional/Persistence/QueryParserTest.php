@@ -15,9 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class QueryParserTest extends FunctionalTestCase
 {
 
     /**
@@ -58,8 +61,8 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->blogRepository = $this->objectManager->get(BlogRepository::class);
     }
 
     /**

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -315,7 +316,7 @@ class LocalizationUtility
     /**
      * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
-    protected static function getLanguageService(): \TYPO3\CMS\Core\Localization\LanguageService
+    protected static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

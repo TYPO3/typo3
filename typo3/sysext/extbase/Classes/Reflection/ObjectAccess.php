@@ -23,6 +23,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 
 /**
  * Provides methods to call appropriate getter/setter on an object given the
@@ -142,7 +143,7 @@ class ObjectAccess
             foreach (new PropertyPath($propertyPath) as $pathSegment) {
                 $subject = self::getPropertyInternal($subject, $pathSegment);
             }
-        } catch (Exception\PropertyNotAccessibleException $error) {
+        } catch (PropertyNotAccessibleException $error) {
             return null;
         }
         return $subject;
@@ -410,11 +411,11 @@ class ObjectAccess
         $propertyName = (string)$propertyPath;
 
         if (!$forceDirectAccess) {
-            throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1476109666);
+            throw new PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1476109666);
         }
 
         if (!property_exists($subject, $propertyName)) {
-            throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
+            throw new PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
         }
 
         $propertyReflection = new \ReflectionProperty($subject, $propertyName);

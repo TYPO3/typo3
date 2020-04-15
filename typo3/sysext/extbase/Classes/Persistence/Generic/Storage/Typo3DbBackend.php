@@ -34,6 +34,10 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
@@ -340,14 +344,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     {
         $statement = $query->getStatement();
         // todo: remove instanceof checks as soon as getStatement() strictly returns Qom\Statement only
-        if ($statement instanceof Qom\Statement
+        if ($statement instanceof Statement
             && !$statement->getStatement() instanceof QueryBuilder
         ) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
             /** @var Typo3DbQueryParser $queryParser */
             $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
-            if ($statement instanceof Qom\Statement
+            if ($statement instanceof Statement
                 && $statement->getStatement() instanceof QueryBuilder
             ) {
                 $queryBuilder = $statement->getStatement();
@@ -386,7 +390,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @return array
      * @throws SqlErrorException when the raw SQL statement fails in the database
      */
-    protected function getObjectDataByRawQuery(Qom\Statement $statement): array
+    protected function getObjectDataByRawQuery(Statement $statement): array
     {
         $realStatement = $statement->getStatement();
         $parameters = $statement->getBoundVariables();
@@ -434,12 +438,12 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     public function getObjectCountByQuery(QueryInterface $query): int
     {
-        if ($query->getConstraint() instanceof Qom\Statement) {
+        if ($query->getConstraint() instanceof Statement) {
             throw new BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
         }
 
         $statement = $query->getStatement();
-        if ($statement instanceof Qom\Statement
+        if ($statement instanceof Statement
             && !$statement->getStatement() instanceof QueryBuilder
         ) {
             $rows = $this->getObjectDataByQuery($query);
@@ -539,11 +543,11 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @return array
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    protected function overlayLanguageAndWorkspace(Qom\SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array
+    protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array
     {
-        if ($source instanceof Qom\SelectorInterface) {
+        if ($source instanceof SelectorInterface) {
             $tableName = $source->getSelectorName();
-        } elseif ($source instanceof Qom\JoinInterface) {
+        } elseif ($source instanceof JoinInterface) {
             $tableName = $source->getRight()->getSelectorName();
         } else {
             // No proper source, so we do not have a table name here

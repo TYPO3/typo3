@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
+
 /**
  * An abstract composite validator consisting of other validators
  */
@@ -52,7 +55,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     {
         // check for options given but not supported
         if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== []) {
-            throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1339079804);
+            throw new InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1339079804);
         }
 
         // check for required options being set
@@ -60,7 +63,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
             $this->supportedOptions,
             function ($supportedOptionData, $supportedOptionName, $options) {
                 if (isset($supportedOptionData[3]) && !array_key_exists($supportedOptionName, $options)) {
-                    throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1339163922);
+                    throw new InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1339163922);
                 }
             },
             $options
@@ -84,7 +87,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      *
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator that should be added
      */
-    public function addValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator)
+    public function addValidator(ValidatorInterface $validator)
     {
         if ($validator instanceof ObjectValidatorInterface) {
             // @todo: provide bugfix as soon as it is fixed in TYPO3.Flow (http://forge.typo3.org/issues/48093)
@@ -99,10 +102,10 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator to remove
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
-    public function removeValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator)
+    public function removeValidator(ValidatorInterface $validator)
     {
         if (!$this->validators->contains($validator)) {
-            throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException('Cannot remove validator because its not in the conjunction.', 1207020177);
+            throw new NoSuchValidatorException('Cannot remove validator because its not in the conjunction.', 1207020177);
         }
         $this->validators->detach($validator);
     }

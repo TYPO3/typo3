@@ -16,11 +16,14 @@
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Domain\Model\Category;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * A blog post
  */
-class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Post extends AbstractEntity
 {
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Model\Blog
@@ -106,12 +109,12 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function __construct()
     {
-        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->comments = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->relatedPosts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->tags = new ObjectStorage();
+        $this->categories = new ObjectStorage();
+        $this->comments = new ObjectStorage();
+        $this->relatedPosts = new ObjectStorage();
         $this->date = new \DateTime();
-        $this->additionalComments = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->additionalComments = new ObjectStorage();
     }
 
     /**
@@ -119,7 +122,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog
      */
-    public function setBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog)
+    public function setBlog(Blog $blog)
     {
         $this->blog = $blog;
     }
@@ -180,7 +183,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags One or more Tag objects
      */
-    public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags)
     {
         $this->tags = $tags;
     }
@@ -210,7 +213,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function removeAllTags()
     {
-        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->tags = new ObjectStorage();
     }
 
     /**
@@ -229,7 +232,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
      */
-    public function addCategory(\TYPO3\CMS\Extbase\Domain\Model\Category $category)
+    public function addCategory(Category $category)
     {
         $this->categories->attach($category);
     }
@@ -259,7 +262,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
      */
-    public function removeCategory(\TYPO3\CMS\Extbase\Domain\Model\Category $category)
+    public function removeCategory(Category $category)
     {
         $this->categories->detach($category);
     }
@@ -269,7 +272,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $author
      */
-    public function setAuthor(\ExtbaseTeam\BlogExample\Domain\Model\Person $author)
+    public function setAuthor(Person $author)
     {
         $this->author = $author;
     }
@@ -287,7 +290,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
      */
-    public function getSecondAuthor(): ?\ExtbaseTeam\BlogExample\Domain\Model\Person
+    public function getSecondAuthor(): ?Person
     {
         return $this->secondAuthor;
     }
@@ -295,7 +298,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $secondAuthor
      */
-    public function setSecondAuthor(\ExtbaseTeam\BlogExample\Domain\Model\Person $secondAuthor): void
+    public function setSecondAuthor(Person $secondAuthor): void
     {
         $this->secondAuthor = $secondAuthor;
     }
@@ -311,7 +314,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $reviewer
      */
-    public function setReviewer(\ExtbaseTeam\BlogExample\Domain\Model\Person $reviewer)
+    public function setReviewer(Person $reviewer)
     {
         $this->reviewer = $reviewer;
     }
@@ -341,7 +344,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $comments An Object Storage of related Comment instances
      */
-    public function setComments(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $comments)
+    public function setComments(ObjectStorage $comments)
     {
         $this->comments = $comments;
     }
@@ -390,7 +393,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $relatedPosts An Object Storage containing related Posts instances
      */
-    public function setRelatedPosts(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $relatedPosts)
+    public function setRelatedPosts(ObjectStorage $relatedPosts)
     {
         $this->relatedPosts = $relatedPosts;
     }
@@ -459,7 +462,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getAdditionalComments(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+    public function getAdditionalComments(): ObjectStorage
     {
         return $this->additionalComments;
     }
@@ -467,7 +470,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $additionalComments
      */
-    public function setAdditionalComments(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $additionalComments): void
+    public function setAdditionalComments(ObjectStorage $additionalComments): void
     {
         $this->additionalComments = $additionalComments;
     }

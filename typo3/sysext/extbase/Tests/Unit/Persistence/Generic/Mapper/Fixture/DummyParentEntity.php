@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper\Fixture;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Fixture
  */
-class DummyParentEntity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class DummyParentEntity extends AbstractEntity
 {
     /**
      * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper\Fixture\DummyChildEntity

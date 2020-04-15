@@ -17,12 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\FileReference.
  *
  * @internal experimental! This class is experimental and subject to change!
  */
-class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter
+class FileReferenceConverter extends AbstractFileFolderConverter
 {
     /**
      * @var string[]
@@ -32,7 +35,7 @@ class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
     /**
      * @var string
      */
-    protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\FileReference::class;
+    protected $targetType = FileReference::class;
 
     /**
      * @var string
@@ -43,7 +46,7 @@ class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
      * @param string|int $source
      * @return \TYPO3\CMS\Core\Resource\FileReference
      */
-    protected function getOriginalResource($source): ?\TYPO3\CMS\Core\Resource\ResourceInterface
+    protected function getOriginalResource($source): ?ResourceInterface
     {
         return $this->fileFactory->getFileReferenceObject($source);
     }

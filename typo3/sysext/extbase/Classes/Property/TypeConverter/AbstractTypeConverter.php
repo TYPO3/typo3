@@ -17,6 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
+
 /**
  * Type converter which provides sensible default implementations for most methods. If you extend this class
  * you only need to do the following:
@@ -25,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * - set $priority
  * - implement convertFrom()
  */
-abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\TypeConverterInterface, \TYPO3\CMS\Core\SingletonInterface
+abstract class AbstractTypeConverter implements TypeConverterInterface, SingletonInterface
 {
     /**
      * The source types this converter can convert.
@@ -57,7 +62,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager): void
+    public function injectObjectManager(ObjectManagerInterface $objectManager): void
     {
         $this->objectManager = $objectManager;
     }
@@ -92,7 +97,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): string
+    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
     {
         return $originalTargetType;
     }
@@ -144,7 +149,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
      * @return string
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      */
-    public function getTypeOfChildProperty(string $targetType, string $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration): string
+    public function getTypeOfChildProperty(string $targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string
     {
         return '';
     }

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Persistence;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+
 /**
  * Contract for a repository
  */
@@ -94,7 +96,7 @@ interface RepositoryInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
      */
-    public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings);
+    public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings);
 
     /**
      * Returns a query for objects of this repository

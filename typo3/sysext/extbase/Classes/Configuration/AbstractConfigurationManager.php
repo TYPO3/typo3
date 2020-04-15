@@ -17,11 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * Abstract base class for a general purpose configuration manager
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface
+abstract class AbstractConfigurationManager implements SingletonInterface
 {
     /**
      * Default backend storage PID
@@ -82,9 +91,9 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService,
-        \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+        ObjectManagerInterface $objectManager,
+        TypoScriptService $typoScriptService,
+        EnvironmentService $environmentService
     ) {
         $this->objectManager = $objectManager;
         $this->typoScriptService = $typoScriptService;
@@ -94,7 +103,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     /**
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
      */
-    public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject): void
+    public function setContentObject(ContentObjectRenderer $contentObject): void
     {
         $this->contentObject = $contentObject;
     }
@@ -102,7 +111,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     /**
      * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|null
      */
-    public function getContentObject(): ?\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+    public function getContentObject(): ?ContentObjectRenderer
     {
         return $this->contentObject;
     }
@@ -146,7 +155,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
         // only merge $this->configuration and override controller configuration when retrieving configuration of the current plugin
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
             $pluginConfiguration = $this->getPluginConfiguration((string)$this->extensionName, (string)$this->pluginName);
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
+            ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
             $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$this->extensionName, (string)$this->pluginName);
             if (isset($this->configuration['switchableControllerActions'])) {
                 $this->overrideControllerConfigurationWithSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
@@ -155,7 +164,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
             $pluginConfiguration = $this->getPluginConfiguration((string)$extensionName, (string)$pluginName);
             $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$extensionName, (string)$pluginName);
         }
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, $pluginConfiguration);
+        ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, $pluginConfiguration);
         // only load context specific configuration when retrieving configuration of the current plugin
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
             $frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
@@ -167,19 +176,19 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
                 // stdWrap. Than we convert the configuration to normal TypoScript
                 // and apply the stdWrap to the storagePid
                 if (!$this->environmentService->isEnvironmentInFrontendMode()) {
-                    \TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
+                    FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
                 }
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
                 $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
                 if (!$this->environmentService->isEnvironmentInFrontendMode()) {
-                    \TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::resetFrontendEnvironment();
+                    FrontendSimulatorUtility::resetFrontendEnvironment();
                 }
             }
 
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {
                 // All implementations of getTreeList allow to pass the ids negative to include them into the result
                 // otherwise only childpages are returned
-                $storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
+                $storagePids = GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
                 array_walk($storagePids, function (&$storagePid) {
                     if ($storagePid > 0) {
                         $storagePid = -$storagePid;

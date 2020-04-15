@@ -13,6 +13,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters
+use TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters;
+
+class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends ClassWithGettersAndSetters
 {
 }

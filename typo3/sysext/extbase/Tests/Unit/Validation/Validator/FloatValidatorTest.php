@@ -15,15 +15,18 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Validator\FloatValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the float validator
  */
-class FloatValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class FloatValidatorTest extends UnitTestCase
 {
     /**
      * @var string
      */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator::class;
+    protected $validatorClassName = FloatValidator::class;
 
     public function setup(): void
     {

@@ -17,6 +17,17 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithConstructorAndConstructorArguments;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInjectDoctrineAnnotation;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyEntity;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummySingleton;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyValueObject;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -32,8 +43,8 @@ class ClassSchemaTest extends UnitTestCase
     public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses()
     {
         $this->resetSingletonInstances = true;
-        $service = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $classSchema = $service->getClassSchema(Fixture\DummyModel::class);
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
+        $classSchema = $service->getClassSchema(DummyModel::class);
         self::assertTrue($classSchema->isAggregateRoot());
     }
 
@@ -42,7 +53,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaHasConstructor()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArguments::class);
+        $classSchema = new ClassSchema(DummyClassWithConstructorAndConstructorArguments::class);
         self::assertTrue($classSchema->hasConstructor());
     }
 
@@ -74,7 +85,7 @@ class ClassSchemaTest extends UnitTestCase
                 '_versionedUid',
                 'pid',
             ],
-            array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->getProperties())
+            array_keys((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->getProperties())
         );
     }
 
@@ -83,7 +94,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaHasMethod()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
+        $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
         self::assertTrue($classSchema->hasMethod('publicMethod'));
         self::assertFalse($classSchema->hasMethod('nonExistentMethod'));
     }
@@ -110,7 +121,7 @@ class ClassSchemaTest extends UnitTestCase
                 'methodWithTypeHintedParam',
                 'methodWithDocBlockTypeHintOnly',
             ],
-            array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class))->getMethods())
+            array_keys((new ClassSchema(DummyClassWithAllTypesOfMethods::class))->getMethods())
         );
     }
 
@@ -119,15 +130,15 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsInjectProperties()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithInjectDoctrineAnnotation::class);
+        $classSchema = new ClassSchema(DummyClassWithInjectDoctrineAnnotation::class);
         self::assertTrue($classSchema->hasInjectProperties());
 
         $injectProperties = $classSchema->getInjectProperties();
         self::assertArrayHasKey('propertyWithFullQualifiedClassName', $injectProperties);
-        self::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']->getType());
+        self::assertSame(DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']->getType());
 
         self::assertArrayHasKey('propertyWithRelativeClassName', $injectProperties);
-        self::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithRelativeClassName']->getType());
+        self::assertSame(DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithRelativeClassName']->getType());
 
         self::assertArrayHasKey('propertyWithImportedClassName', $injectProperties);
         self::assertSame(self::class, $injectProperties['propertyWithImportedClassName']->getType());
@@ -141,7 +152,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsPropertyDefaultValue()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+        $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
 
         $propertyDefinition = $classSchema->getProperty('publicPropertyWithDefaultValue');
         self::assertSame('foo', $propertyDefinition->getDefaultValue());
@@ -152,7 +163,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaSkipsDetectionOfDefaultValuesOfStaticClassProperties()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+        $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
 
         $propertyDefinition = $classSchema->getProperty('publicStaticPropertyWithDefaultValue');
         self::assertNull($propertyDefinition->getDefaultValue());
@@ -163,7 +174,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsSingletons()
     {
-        self::assertTrue((new ClassSchema(Fixture\DummySingleton::class))->isSingleton());
+        self::assertTrue((new ClassSchema(DummySingleton::class))->isSingleton());
     }
 
     /**
@@ -171,8 +182,8 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsModels()
     {
-        self::assertTrue((new ClassSchema(Fixture\DummyEntity::class))->isModel());
-        self::assertTrue((new ClassSchema(Fixture\DummyValueObject::class))->isModel());
+        self::assertTrue((new ClassSchema(DummyEntity::class))->isModel());
+        self::assertTrue((new ClassSchema(DummyValueObject::class))->isModel());
     }
 
     /**
@@ -180,7 +191,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsEntities()
     {
-        self::assertTrue((new ClassSchema(Fixture\DummyEntity::class))->isEntity());
+        self::assertTrue((new ClassSchema(DummyEntity::class))->isEntity());
     }
 
     /**
@@ -188,7 +199,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsValueObjects()
     {
-        self::assertTrue((new ClassSchema(Fixture\DummyValueObject::class))->isValueObject());
+        self::assertTrue((new ClassSchema(DummyValueObject::class))->isValueObject());
     }
 
     /**
@@ -197,7 +208,7 @@ class ClassSchemaTest extends UnitTestCase
     public function classSchemaDetectsClassName()
     {
         $this->resetSingletonInstances = true;
-        self::assertSame(Fixture\DummyModel::class, (new ClassSchema(Fixture\DummyModel::class))->getClassName());
+        self::assertSame(DummyModel::class, (new ClassSchema(DummyModel::class))->getClassName());
     }
 
     /**
@@ -205,9 +216,9 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsNonStaticProperties()
     {
-        self::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
-        self::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
-        self::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
+        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
+        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
+        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
     }
 
     /**
@@ -215,9 +226,9 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsStaticProperties()
     {
-        self::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
-        self::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedStaticProperty'));
-        self::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('privateStaticProperty'));
+        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
+        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedStaticProperty'));
+        self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateStaticProperty'));
     }
 
     /**
@@ -230,7 +241,7 @@ class ClassSchemaTest extends UnitTestCase
         $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint->methodWithValidateAnnotationsAction(): Either use an @param annotation or use a type hint.');
         $this->expectExceptionCode(1515075192);
 
-        new ClassSchema(Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint::class);
+        new ClassSchema(DummyControllerWithValidateAnnotationWithoutParamTypeHint::class);
     }
 
     /**
@@ -243,7 +254,7 @@ class ClassSchemaTest extends UnitTestCase
         $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam->methodWithValidateAnnotationsAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
         $this->expectExceptionCode(1515073585);
 
-        new ClassSchema(Fixture\DummyControllerWithValidateAnnotationWithoutParam::class);
+        new ClassSchema(DummyControllerWithValidateAnnotationWithoutParam::class);
     }
 
     /**
@@ -289,7 +300,7 @@ class ClassSchemaTest extends UnitTestCase
      */
     public function classSchemaDetectsMethodParameterTypeDetectionViaDocBlocksIfNoTypeHintIsGiven(): void
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
-        self::assertSame(Fixture\DummyClassWithAllTypesOfMethods::class, $classSchema->getMethod('methodWithDocBlockTypeHintOnly')->getParameter('param')->getType());
+        $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
+        self::assertSame(DummyClassWithAllTypesOfMethods::class, $classSchema->getMethod('methodWithDocBlockTypeHintOnly')->getParameter('param')->getType());
     }
 }

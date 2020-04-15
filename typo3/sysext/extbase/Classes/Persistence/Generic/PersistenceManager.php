@@ -15,13 +15,17 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * The Extbase Persistence Manager
  */
-class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface
+class PersistenceManager implements PersistenceManagerInterface, SingletonInterface
 {
     /**
      * @var array
@@ -66,9 +70,9 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * @param Session $persistenceSession
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory,
-        \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
+        QueryFactoryInterface $queryFactory,
+        BackendInterface $backend,
+        Session $persistenceSession
     ) {
         $this->queryFactory = $queryFactory;
         $this->backend = $backend;
@@ -213,7 +217,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
     public function update($object)
     {
         if ($this->isNewObject($object)) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The object of type "' . get_class($object) . '" given to update must be persisted already, but is new.', 1249479819);
+            throw new UnknownObjectException('The object of type "' . get_class($object) . '" given to update must be persisted already, but is new.', 1249479819);
         }
         $this->changedObjects->attach($object);
     }
@@ -226,7 +230,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      */
     public function injectSettings(array $settings)
     {
-        throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__, 1476108078);
+        throw new NotImplementedException(__METHOD__, 1476108078);
     }
 
     /**
@@ -293,7 +297,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      */
     public function convertObjectToIdentityArray($object)
     {
-        throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__, 1476108103);
+        throw new NotImplementedException(__METHOD__, 1476108103);
     }
 
     /**
@@ -306,7 +310,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      */
     public function convertObjectsToIdentityArrays(array $array)
     {
-        throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__, 1476108111);
+        throw new NotImplementedException(__METHOD__, 1476108111);
     }
 
     /**

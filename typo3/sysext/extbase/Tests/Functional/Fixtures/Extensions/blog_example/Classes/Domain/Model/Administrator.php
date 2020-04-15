@@ -15,9 +15,11 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+
 /**
  * An Administrator of a Blog
  */
-class Administrator extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+class Administrator extends FrontendUser
 {
 }

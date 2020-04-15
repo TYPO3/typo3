@@ -15,11 +15,18 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * The QueryFactory used to create queries against the storage backend
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonInterface
+class QueryFactory implements QueryFactoryInterface, SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -42,9 +49,9 @@ class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonIn
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
-        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
+        ObjectManagerInterface $objectManager,
+        ConfigurationManagerInterface $configurationManager,
+        DataMapFactory $dataMapFactory
     ) {
         $this->objectManager = $objectManager;
         $this->configurationManager = $configurationManager;
@@ -60,16 +67,16 @@ class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonIn
      */
     public function create($className)
     {
-        $query = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class, $className);
-        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+        $query = $this->objectManager->get(QueryInterface::class, $className);
+        $querySettings = $this->objectManager->get(QuerySettingsInterface::class);
 
         $dataMap = $this->dataMapFactory->buildDataMap($className);
         if ($dataMap->getIsStatic() || $dataMap->getRootLevel()) {
             $querySettings->setRespectStoragePage(false);
         }
 
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid'] ?? ''));
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $querySettings->setStoragePageIds(GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid'] ?? ''));
         $query->setQuerySettings($querySettings);
         return $query;
     }

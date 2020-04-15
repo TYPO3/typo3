@@ -15,8 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
@@ -65,7 +69,7 @@ class QueryResult implements QueryResultInterface
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
-    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
     }
@@ -75,7 +79,7 @@ class QueryResult implements QueryResultInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      */
-    public function __construct(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query)
+    public function __construct(QueryInterface $query)
     {
         $this->query = $query;
     }
@@ -266,8 +270,8 @@ class QueryResult implements QueryResultInterface
      */
     public function __wakeup()
     {
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->persistenceManager = $objectManager->get(PersistenceManagerInterface::class);
         $this->dataMapper = $objectManager->get(DataMapper::class);
     }
 

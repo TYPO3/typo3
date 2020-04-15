@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Evaluates to the value of a bind variable.
  */
-interface BindVariableValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface
+interface BindVariableValueInterface extends StaticOperandInterface
 {
     /**
      * Gets the name of the bind variable.

@@ -16,6 +16,13 @@
 namespace TYPO3\CMS\Extbase\Mvc;
 
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 
 /**
  * Represents a generic request.
@@ -223,7 +230,7 @@ class Request implements RequestInterface
      */
     public function getControllerExtensionKey()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+        return GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
     }
 
     /**
@@ -275,7 +282,7 @@ class Request implements RequestInterface
     public function setControllerName($controllerName)
     {
         if (!is_string($controllerName) && $controllerName !== null) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
+            throw new InvalidControllerNameException('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
         }
         if ($controllerName !== null) {
             $this->controllerName = $controllerName;
@@ -307,10 +314,10 @@ class Request implements RequestInterface
     public function setControllerActionName($actionName)
     {
         if (!is_string($actionName) && $actionName !== null) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176359);
+            throw new InvalidActionNameException('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176359);
         }
         if ($actionName[0] !== strtolower($actionName[0]) && $actionName !== null) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
+            throw new InvalidActionNameException('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
         }
         if ($actionName !== null) {
             $this->controllerActionName = $actionName;
@@ -354,7 +361,7 @@ class Request implements RequestInterface
     public function setArgument($argumentName, $value)
     {
         if (!is_string($argumentName) || $argumentName === '') {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException('Invalid argument name.', 1210858767);
+            throw new InvalidArgumentNameException('Invalid argument name.', 1210858767);
         }
         if ($argumentName[0] === '_' && $argumentName[1] === '_') {
             $this->internalArguments[$argumentName] = $value;
@@ -401,7 +408,7 @@ class Request implements RequestInterface
     public function getArgument($argumentName)
     {
         if (!isset($this->arguments[$argumentName])) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
+            throw new NoSuchArgumentException('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
         }
         return $this->arguments[$argumentName];
     }
@@ -468,7 +475,7 @@ class Request implements RequestInterface
     public function getOriginalRequestMappingResults()
     {
         if ($this->originalRequestMappingResults === null) {
-            return new \TYPO3\CMS\Extbase\Error\Result();
+            return new Result();
         }
         return $this->originalRequestMappingResults;
     }
@@ -477,7 +484,7 @@ class Request implements RequestInterface
      * @param \TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function setOriginalRequestMappingResults(\TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults)
+    public function setOriginalRequestMappingResults(Result $originalRequestMappingResults)
     {
         $this->originalRequestMappingResults = $originalRequestMappingResults;
     }
@@ -519,7 +526,7 @@ class Request implements RequestInterface
     public function setMethod($method)
     {
         if ($method === '' || strtoupper($method) !== $method) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException('The request method "' . $method . '" is not supported.', 1217778382);
+            throw new InvalidRequestMethodException('The request method "' . $method . '" is not supported.', 1217778382);
         }
         $this->method = $method;
     }

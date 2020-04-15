@@ -17,13 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection;
+use TYPO3\CMS\Extbase\Property\Exception;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\File.
  *
  * @internal experimental! This class is experimental and subject to change!
  * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
-abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+abstract class AbstractFileCollectionConverter extends AbstractTypeConverter
 {
     /**
      * @var int
@@ -43,7 +48,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
     /**
      * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
      */
-    public function injectFileFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory): void
+    public function injectFileFactory(ResourceFactory $fileFactory): void
     {
         $this->fileFactory = $fileFactory;
     }
@@ -59,11 +64,11 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
      * @throws \TYPO3\CMS\Extbase\Property\Exception
      * @return \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): AbstractFileCollection
     {
         $object = $this->getObject($source);
         if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
-            throw new \TYPO3\CMS\Extbase\Property\Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object), 1342895976);
+            throw new Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object), 1342895976);
         }
         /** @var \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection $subject */
         $subject = $this->objectManager->get($targetType);

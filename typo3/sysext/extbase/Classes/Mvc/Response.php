@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * A generic and very basic response implementation
  */
-class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+class Response implements ResponseInterface
 {
     /**
      * @var string The response content
@@ -347,7 +347,7 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * @param \TYPO3\CMS\Extbase\Mvc\Request $request
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request)
+    public function setRequest(Request $request)
     {
         $this->request = $request;
     }

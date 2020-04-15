@@ -16,10 +16,12 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extbase\Core\Bootstrap;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -366,17 +368,17 @@ class ExtensionUtilityTest extends UnitTestCase
      */
     public function sameTypeConvertersRegisteredAreAddedOnlyOnce()
     {
-        $typeConverterClassName = \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter::class;
+        $typeConverterClassName = ArrayConverter::class;
 
         // the Extbase EXTCONF is not set at all at this point
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
+        ExtensionUtility::registerTypeConverter($typeConverterClassName);
 
         self::assertEquals($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][0]);
         self::assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
+        ExtensionUtility::registerTypeConverter($typeConverterClassName);
         self::assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
     }
 
@@ -404,7 +406,7 @@ class ExtensionUtilityTest extends UnitTestCase
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Paginate',
                 ],
-                \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
+                PaginateController::class,
             ],
             'Vendor VENDOR, extension, controller given' => [
                 [

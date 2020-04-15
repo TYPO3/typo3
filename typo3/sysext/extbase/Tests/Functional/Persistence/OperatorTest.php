@@ -15,10 +15,14 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
+use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class OperatorTest extends FunctionalTestCase
 {
     /**
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
@@ -58,9 +62,9 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
-        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->blogRepository = $this->objectManager->get(BlogRepository::class);
+        $this->postRepository = $this->objectManager->get(PostRepository::class);
     }
 
     /**

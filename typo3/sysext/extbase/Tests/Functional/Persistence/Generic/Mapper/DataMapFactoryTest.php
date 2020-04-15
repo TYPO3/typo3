@@ -15,10 +15,17 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
+use ExtbaseTeam\BlogExample\Domain\Model\TtContent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class DataMapFactoryTest extends FunctionalTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
@@ -47,8 +54,8 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         parent::setUp();
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->dataMapFactory = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->dataMapFactory = $this->objectManager->get(DataMapFactory::class);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
@@ -58,9 +65,9 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function classSettingsAreResolved()
     {
-        $dataMap = $this->dataMapFactory->buildDataMap(\ExtbaseTeam\BlogExample\Domain\Model\Administrator::class);
+        $dataMap = $this->dataMapFactory->buildDataMap(Administrator::class);
 
-        self::assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, $dataMap);
+        self::assertInstanceOf(DataMap::class, $dataMap);
         self::assertEquals('ExtbaseTeam\BlogExample\Domain\Model\Administrator', $dataMap->getRecordType());
         self::assertEquals('fe_users', $dataMap->getTableName());
     }
@@ -70,14 +77,14 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function columnMapPropertiesAreResolved()
     {
-        $dataMap = $this->dataMapFactory->buildDataMap(\ExtbaseTeam\BlogExample\Domain\Model\TtContent::class);
+        $dataMap = $this->dataMapFactory->buildDataMap(TtContent::class);
 
-        self::assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, $dataMap);
+        self::assertInstanceOf(DataMap::class, $dataMap);
         self::assertNull($dataMap->getColumnMap('thisPropertyDoesNotExist'));
 
         $headerColumnMap = $dataMap->getColumnMap('header');
 
-        self::assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, $headerColumnMap);
+        self::assertInstanceOf(ColumnMap::class, $headerColumnMap);
         self::assertEquals('header', $headerColumnMap->getPropertyName());
         self::assertEquals('header', $headerColumnMap->getColumnName());
     }

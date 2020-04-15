@@ -15,12 +15,15 @@
 
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
+use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * A file object (File Abstraction Layer)
  *
  * @internal experimental! This class is experimental and subject to change!
  */
-abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+abstract class AbstractFileFolder extends AbstractEntity
 {
     /**
      * @var \TYPO3\CMS\Core\Resource\ResourceInterface
@@ -30,7 +33,7 @@ abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\Abstra
     /**
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
      */
-    public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource)
+    public function setOriginalResource(ResourceInterface $originalResource)
     {
         $this->originalResource = $originalResource;
     }

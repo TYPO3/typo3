@@ -15,9 +15,14 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
+use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class CountTest extends FunctionalTestCase
 {
     /**
      * @var int number of all records
@@ -70,9 +75,9 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/persons.xml');
 
-        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->persistentManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
-        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->persistentManager = $this->objectManager->get(PersistenceManager::class);
+        $this->postRepository = $this->objectManager->get(PostRepository::class);
     }
 
     /**
@@ -211,7 +216,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
     public function queryWithAndConditionsToTheSameTableReturnExpectedCount()
     {
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository $personRepository */
-        $personRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository::class);
+        $personRepository = $this->objectManager->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -228,7 +233,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
     public function queryWithOrConditionsToTheSameTableReturnExpectedCount()
     {
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository $personRepository */
-        $personRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository::class);
+        $personRepository = $this->objectManager->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
             $query->logicalOr(

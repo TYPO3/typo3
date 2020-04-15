@@ -35,6 +35,19 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\EquiJoinCondition;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -182,7 +195,7 @@ class Typo3DbQueryParser
         $this->initializeQueryBuilder($source);
 
         $constraint = $query->getConstraint();
-        if ($constraint instanceof Qom\ConstraintInterface) {
+        if ($constraint instanceof ConstraintInterface) {
             $wherePredicates = $this->parseConstraint($constraint, $source);
             if (!empty($wherePredicates)) {
                 $this->queryBuilder->andWhere($wherePredicates);
@@ -200,9 +213,9 @@ class Typo3DbQueryParser
      *
      * @param Qom\SourceInterface $source The source
      */
-    protected function initializeQueryBuilder(Qom\SourceInterface $source)
+    protected function initializeQueryBuilder(SourceInterface $source)
     {
-        if ($source instanceof Qom\SelectorInterface) {
+        if ($source instanceof SelectorInterface) {
             $className = $source->getNodeTypeName();
             $tableName = $this->dataMapper->getDataMap($className)->getTableName();
             $this->tableName = $tableName;
@@ -221,7 +234,7 @@ class Typo3DbQueryParser
                 ->from($tableName, $tableAlias);
 
             $this->addRecordTypeConstraint($className);
-        } elseif ($source instanceof Qom\JoinInterface) {
+        } elseif ($source instanceof JoinInterface) {
             $leftSource = $source->getLeft();
             $leftTableName = $leftSource->getSelectorName();
 
@@ -243,13 +256,13 @@ class Typo3DbQueryParser
      * @return CompositeExpression|string
      * @throws \RuntimeException
      */
-    protected function parseConstraint(Qom\ConstraintInterface $constraint, Qom\SourceInterface $source)
+    protected function parseConstraint(ConstraintInterface $constraint, SourceInterface $source)
     {
-        if ($constraint instanceof Qom\AndInterface) {
+        if ($constraint instanceof AndInterface) {
             $constraint1 = $constraint->getConstraint1();
             $constraint2 = $constraint->getConstraint2();
-            if (($constraint1 instanceof Qom\ConstraintInterface)
-                && ($constraint2 instanceof Qom\ConstraintInterface)
+            if (($constraint1 instanceof ConstraintInterface)
+                && ($constraint2 instanceof ConstraintInterface)
             ) {
                 return $this->queryBuilder->expr()->andX(
                     $this->parseConstraint($constraint1, $source),
@@ -258,11 +271,11 @@ class Typo3DbQueryParser
             }
             return '';
         }
-        if ($constraint instanceof Qom\OrInterface) {
+        if ($constraint instanceof OrInterface) {
             $constraint1 = $constraint->getConstraint1();
             $constraint2 = $constraint->getConstraint2();
-            if (($constraint1 instanceof Qom\ConstraintInterface)
-                && ($constraint2 instanceof Qom\ConstraintInterface)
+            if (($constraint1 instanceof ConstraintInterface)
+                && ($constraint2 instanceof ConstraintInterface)
             ) {
                 return $this->queryBuilder->expr()->orX(
                     $this->parseConstraint($constraint->getConstraint1(), $source),
@@ -271,10 +284,10 @@ class Typo3DbQueryParser
             }
             return '';
         }
-        if ($constraint instanceof Qom\NotInterface) {
+        if ($constraint instanceof NotInterface) {
             return ' NOT(' . $this->parseConstraint($constraint->getConstraint(), $source) . ')';
         }
-        if ($constraint instanceof Qom\ComparisonInterface) {
+        if ($constraint instanceof ComparisonInterface) {
             return $this->parseComparison($constraint, $source);
         }
         throw new \RuntimeException('not implemented', 1476199898);
@@ -287,7 +300,7 @@ class Typo3DbQueryParser
      * @param Qom\SourceInterface $source The source
      * @throws UnsupportedOrderException
      */
-    protected function parseOrderings(array $orderings, Qom\SourceInterface $source)
+    protected function parseOrderings(array $orderings, SourceInterface $source)
     {
         foreach ($orderings as $propertyName => $order) {
             if ($order !== QueryInterface::ORDER_ASCENDING && $order !== QueryInterface::ORDER_DESCENDING) {
@@ -295,14 +308,14 @@ class Typo3DbQueryParser
             }
             $className = null;
             $tableName = '';
-            if ($source instanceof Qom\SelectorInterface) {
+            if ($source instanceof SelectorInterface) {
                 $className = $source->getNodeTypeName();
                 $tableName = $this->dataMapper->convertClassNameToTableName($className);
                 $fullPropertyPath = '';
                 while (strpos($propertyName, '.') !== false) {
                     $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
-            } elseif ($source instanceof Qom\JoinInterface) {
+            } elseif ($source instanceof JoinInterface) {
                 $tableName = $source->getLeft()->getSelectorName();
             }
             $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
@@ -360,14 +373,14 @@ class Typo3DbQueryParser
      * @throws RepositoryException
      * @throws BadConstraintException
      */
-    protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
+    protected function parseComparison(ComparisonInterface $comparison, SourceInterface $source)
     {
         if ($comparison->getOperator() === QueryInterface::OPERATOR_CONTAINS) {
             if ($comparison->getOperand2() === null) {
                 throw new BadConstraintException('The value for the CONTAINS operator must not be null.', 1484828468);
             }
             $value = $this->dataMapper->getPlainValue($comparison->getOperand2());
-            if (!$source instanceof Qom\SelectorInterface) {
+            if (!$source instanceof SelectorInterface) {
                 throw new \RuntimeException('Source is not of type "SelectorInterface"', 1395362539);
             }
             $className = $source->getNodeTypeName();
@@ -447,7 +460,7 @@ class Typo3DbQueryParser
      * @throws Exception
      * @throws BadConstraintException
      */
-    protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
+    protected function parseDynamicOperand(ComparisonInterface $comparison, SourceInterface $source)
     {
         $value = $comparison->getOperand2();
         $fieldName = $this->parseOperand($comparison->getOperand1(), $source);
@@ -580,24 +593,24 @@ class Typo3DbQueryParser
      * @return string
      * @throws \InvalidArgumentException
      */
-    protected function parseOperand(Qom\DynamicOperandInterface $operand, Qom\SourceInterface $source)
+    protected function parseOperand(DynamicOperandInterface $operand, SourceInterface $source)
     {
         $tableName = null;
-        if ($operand instanceof Qom\LowerCaseInterface) {
+        if ($operand instanceof LowerCaseInterface) {
             $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
-        } elseif ($operand instanceof Qom\UpperCaseInterface) {
+        } elseif ($operand instanceof UpperCaseInterface) {
             $constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
-        } elseif ($operand instanceof Qom\PropertyValueInterface) {
+        } elseif ($operand instanceof PropertyValueInterface) {
             $propertyName = $operand->getPropertyName();
             $className = '';
-            if ($source instanceof Qom\SelectorInterface) {
+            if ($source instanceof SelectorInterface) {
                 $className = $source->getNodeTypeName();
                 $tableName = $this->dataMapper->convertClassNameToTableName($className);
                 $fullPropertyPath = '';
                 while (strpos($propertyName, '.') !== false) {
                     $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
-            } elseif ($source instanceof Qom\JoinInterface) {
+            } elseif ($source instanceof JoinInterface) {
                 $tableName = $source->getJoinCondition()->getSelector1Name();
             }
             $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
@@ -922,13 +935,13 @@ class Typo3DbQueryParser
      * @param Qom\JoinInterface $join The join
      * @param string $leftTableAlias The alias from the table to main
      */
-    protected function parseJoin(Qom\JoinInterface $join, $leftTableAlias)
+    protected function parseJoin(JoinInterface $join, $leftTableAlias)
     {
         $leftSource = $join->getLeft();
         $leftClassName = $leftSource->getNodeTypeName();
         $this->addRecordTypeConstraint($leftClassName);
         $rightSource = $join->getRight();
-        if ($rightSource instanceof Qom\JoinInterface) {
+        if ($rightSource instanceof JoinInterface) {
             $left = $rightSource->getLeft();
             $rightClassName = $left->getNodeTypeName();
             $rightTableName = $left->getSelectorName();
@@ -942,7 +955,7 @@ class Typo3DbQueryParser
         $joinCondition = $join->getJoinCondition();
         $joinConditionExpression = null;
         $this->unionTableAliasCache[] = $rightTableAlias;
-        if ($joinCondition instanceof Qom\EquiJoinCondition) {
+        if ($joinCondition instanceof EquiJoinCondition) {
             $column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
             $column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
 
@@ -952,7 +965,7 @@ class Typo3DbQueryParser
             );
         }
         $this->queryBuilder->leftJoin($leftTableAlias, $rightTableName, $rightTableAlias, $joinConditionExpression);
-        if ($rightSource instanceof Qom\JoinInterface) {
+        if ($rightSource instanceof JoinInterface) {
             $this->parseJoin($rightSource, $rightTableAlias);
         }
     }

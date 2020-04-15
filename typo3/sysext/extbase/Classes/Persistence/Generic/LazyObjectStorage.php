@@ -17,14 +17,16 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage implements \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface
+class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterface
 {
     /**
      * This field is only needed to make debugging easier:
@@ -149,7 +151,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::addAll
      */
-    public function addAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage)
+    public function addAll(ObjectStorage $storage)
     {
         $this->initialize();
         parent::addAll($storage);
@@ -189,14 +191,14 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
     {
         $columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
         $numberOfElements = null;
-        if (!$this->isInitialized && $columnMap->getTypeOfRelation() === Mapper\ColumnMap::RELATION_HAS_MANY) {
+        if (!$this->isInitialized && $columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
             $numberOfElements = $this->dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
         } else {
             $this->initialize();
             $numberOfElements = count($this->storage);
         }
         if ($numberOfElements === null) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('The number of elements could not be determined.', 1252514486);
+            throw new Exception('The number of elements could not be determined.', 1252514486);
         }
         return $numberOfElements;
     }
@@ -295,7 +297,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::removeAll
      */
-    public function removeAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage)
+    public function removeAll(ObjectStorage $storage)
     {
         $this->initialize();
         parent::removeAll($storage);

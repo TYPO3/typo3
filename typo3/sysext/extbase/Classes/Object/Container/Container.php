@@ -17,12 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Object\Container;
 
+use Doctrine\Instantiator\Instantiator;
 use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\Exception;
+use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
@@ -87,7 +91,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
     protected function getInstantiator(): InstantiatorInterface
     {
         if ($this->instantiator == null) {
-            $this->instantiator = new \Doctrine\Instantiator\Instantiator();
+            $this->instantiator = new Instantiator();
         }
         return $this->instantiator;
     }
@@ -139,15 +143,15 @@ class Container implements SingletonInterface, LoggerAwareInterface
         if ($givenConstructorArguments === [] && $this->psrContainer->has($className)) {
             $instance = $this->psrContainer->get($className);
             if (!is_object($instance)) {
-                throw new \TYPO3\CMS\Extbase\Object\Exception('PSR-11 container returned non object for class name "' . $className . '".', 1562240407);
+                throw new Exception('PSR-11 container returned non object for class name "' . $className . '".', 1562240407);
             }
             return $instance;
         }
 
-        $className = \TYPO3\CMS\Core\Core\ClassLoadingInformation::getClassNameForAlias($className);
+        $className = ClassLoadingInformation::getClassNameForAlias($className);
         if (isset($this->singletonInstances[$className])) {
             if (!empty($givenConstructorArguments)) {
-                throw new \TYPO3\CMS\Extbase\Object\Exception('Object "' . $className . '" fetched from singleton cache, thus, explicit constructor arguments are not allowed.', 1292857934);
+                throw new Exception('Object "' . $className . '" fetched from singleton cache, thus, explicit constructor arguments are not allowed.', 1292857934);
             }
             return $this->singletonInstances[$className];
         }
@@ -156,7 +160,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
         $classIsSingleton = $classSchema->isSingleton();
         if (!$classIsSingleton) {
             if (array_key_exists($className, $this->prototypeObjectsWhichAreCurrentlyInstanciated) !== false) {
-                throw new \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException('Cyclic dependency in prototype object, for class "' . $className . '".', 1295611406);
+                throw new CannotBuildObjectException('Cyclic dependency in prototype object, for class "' . $className . '".', 1295611406);
             }
             $this->prototypeObjectsWhichAreCurrentlyInstanciated[$className] = true;
         }
@@ -184,7 +188,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
         $className = $classSchema->getClassName();
         $classIsSingleton = $classSchema->isSingleton();
         if ($classIsSingleton && !empty($givenConstructorArguments)) {
-            throw new \TYPO3\CMS\Extbase\Object\Exception('Object "' . $className . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
+            throw new Exception('Object "' . $className . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
         }
         $constructorArguments = $this->getConstructorArguments($classSchema, $givenConstructorArguments);
         $instance = GeneralUtility::makeInstance($className, ...$constructorArguments);

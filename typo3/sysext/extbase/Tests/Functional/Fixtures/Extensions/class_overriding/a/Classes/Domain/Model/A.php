@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\A\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Class ExtbaseTeam\A\Domain\Model\A
  */
-class A extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class A extends AbstractEntity
 {
     /**
      * @var string

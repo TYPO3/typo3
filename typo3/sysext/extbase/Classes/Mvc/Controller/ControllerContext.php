@@ -15,6 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Response;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
+
 /**
  * The controller context contains information from the controller
  */
@@ -58,7 +64,7 @@ class ControllerContext
     /**
      * @param \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService
      */
-    public function injectFlashMessageService(\TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService)
+    public function injectFlashMessageService(FlashMessageService $flashMessageService)
     {
         $this->flashMessageService = $flashMessageService;
     }
@@ -66,7 +72,7 @@ class ControllerContext
     /**
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      */
-    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    public function injectExtensionService(ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
     }
@@ -76,7 +82,7 @@ class ControllerContext
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Request $request
      */
-    public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request)
+    public function setRequest(Request $request)
     {
         $this->request = $request;
     }
@@ -96,7 +102,7 @@ class ControllerContext
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Response $response
      */
-    public function setResponse(\TYPO3\CMS\Extbase\Mvc\Response $response)
+    public function setResponse(Response $response)
     {
         $this->response = $response;
     }
@@ -116,7 +122,7 @@ class ControllerContext
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments
      */
-    public function setArguments(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments)
+    public function setArguments(Arguments $arguments)
     {
         $this->arguments = $arguments;
     }
@@ -134,7 +140,7 @@ class ControllerContext
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
      */
-    public function setUriBuilder(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder)
+    public function setUriBuilder(UriBuilder $uriBuilder)
     {
         $this->uriBuilder = $uriBuilder;
     }

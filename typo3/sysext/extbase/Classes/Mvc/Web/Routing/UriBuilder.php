@@ -22,7 +22,14 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
  * An URI Builder
@@ -137,7 +144,7 @@ class UriBuilder
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
@@ -146,7 +153,7 @@ class UriBuilder
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService): void
+    public function injectExtensionService(ExtensionService $extensionService): void
     {
         $this->extensionService = $extensionService;
     }
@@ -155,7 +162,7 @@ class UriBuilder
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService): void
+    public function injectEnvironmentService(EnvironmentService $environmentService): void
     {
         $this->environmentService = $environmentService;
     }
@@ -811,7 +818,7 @@ class UriBuilder
     {
         foreach ($arguments as $argumentKey => $argumentValue) {
             // if we have a LazyLoadingProxy here, make sure to get the real instance for further processing
-            if ($argumentValue instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+            if ($argumentValue instanceof LazyLoadingProxy) {
                 $argumentValue = $argumentValue->_loadRealInstance();
                 // also update the value in the arguments array, because the lazyLoaded object could be
                 // hidden and thus the $argumentValue would be NULL.
@@ -820,13 +827,13 @@ class UriBuilder
             if ($argumentValue instanceof \Iterator) {
                 $argumentValue = $this->convertIteratorToArray($argumentValue);
             }
-            if ($argumentValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
+            if ($argumentValue instanceof AbstractDomainObject) {
                 if ($argumentValue->getUid() !== null) {
                     $arguments[$argumentKey] = $argumentValue->getUid();
-                } elseif ($argumentValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
+                } elseif ($argumentValue instanceof AbstractValueObject) {
                     $arguments[$argumentKey] = $this->convertTransientObjectToArray($argumentValue);
                 } else {
-                    throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException('Could not serialize Domain Object ' . get_class($argumentValue) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
+                    throw new InvalidArgumentValueException('Could not serialize Domain Object ' . get_class($argumentValue) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
                 }
             } elseif (is_array($argumentValue)) {
                 $arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
@@ -857,14 +864,14 @@ class UriBuilder
      * @todo Refactor this into convertDomainObjectsToIdentityArrays()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object): array
+    public function convertTransientObjectToArray(AbstractDomainObject $object): array
     {
         $result = [];
         foreach ($object->_getProperties() as $propertyName => $propertyValue) {
             if ($propertyValue instanceof \Iterator) {
                 $propertyValue = $this->convertIteratorToArray($propertyValue);
             }
-            if ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
+            if ($propertyValue instanceof AbstractDomainObject) {
                 if ($propertyValue->getUid() !== null) {
                     $result[$propertyName] = $propertyValue->getUid();
                 } else {

@@ -87,6 +87,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactoryInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -104,6 +105,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
@@ -119,7 +122,7 @@ use TYPO3\CMS\Extensionmanager\ViewHelpers\ProcessAvailableActionsViewHelper;
  *
  * @deprecated will be removed in TYPO3 v12.0. Use PSR-14 based events and EventDispatcherInterface instead.
  */
-class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
+class Dispatcher implements SingletonInterface
 {
     /**
      * @var ObjectManagerInterface
@@ -362,13 +365,13 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
                 $object = $slotInformation['object'];
             } else {
                 if (!class_exists($slotInformation['class'])) {
-                    throw new Exception\InvalidSlotException('The given class "' . $slotInformation['class'] . '" is not a registered object.', 1245673367);
+                    throw new InvalidSlotException('The given class "' . $slotInformation['class'] . '" is not a registered object.', 1245673367);
                 }
                 $object = $this->objectManager->get($slotInformation['class']);
             }
 
             if (!method_exists($object, $slotInformation['method'])) {
-                throw new Exception\InvalidSlotException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() does not exist.', 1245673368);
+                throw new InvalidSlotException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() does not exist.', 1245673368);
             }
 
             $preparedSlotArguments = $signalArguments;
@@ -380,11 +383,11 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
 
             if ($slotReturn) {
                 if (!is_array($slotReturn)) {
-                    throw new Exception\InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '()\'s return value is of an not allowed type ('
+                    throw new InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '()\'s return value is of an not allowed type ('
                         . gettype($slotReturn) . ').', 1376683067);
                 }
                 if (count($slotReturn) !== count($signalArguments)) {
-                    throw new Exception\InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() returned a different number ('
+                    throw new InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() returned a different number ('
                         . count($slotReturn) . ') of arguments, than it received (' . count($signalArguments) . ').', 1376683066);
                 }
                 $signalArguments = $slotReturn;

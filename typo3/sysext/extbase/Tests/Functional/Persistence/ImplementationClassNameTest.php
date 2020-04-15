@@ -17,13 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\A\Domain\Model\ARepository;
+use ExtbaseTeam\B\Domain\Model\BRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Class TYPO3\CMS\Extbase\Tests\Functional\ImplementationClassNameTest
  */
-class ImplementationClassNameTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ImplementationClassNameTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -59,7 +62,7 @@ class ImplementationClassNameTest extends \TYPO3\TestingFramework\Core\Functiona
     */
     public function testARepositoryObjectsAreTakenFromSession(): void
     {
-        $aRepository = $this->objectManager->get(\ExtbaseTeam\A\Domain\Model\ARepository::class);
+        $aRepository = $this->objectManager->get(ARepository::class);
         $a1 = $aRepository->findByUid(1);
         $a2 = $aRepository->findByUid(1);
 
@@ -71,7 +74,7 @@ class ImplementationClassNameTest extends \TYPO3\TestingFramework\Core\Functiona
     */
     public function testBRepositoryObjectsAreTakenFromSession(): void
     {
-        $bRepository = $this->objectManager->get(\ExtbaseTeam\B\Domain\Model\BRepository::class);
+        $bRepository = $this->objectManager->get(BRepository::class);
         $b1 = $bRepository->findByUid(1);
         $b2 = $bRepository->findByUid(1);
 

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
  * A web specific response implementation
@@ -43,7 +44,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      * @deprecated since TYPO3 10.2, will be removed in 11.0
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
+    public function injectEnvironmentService(EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
     }

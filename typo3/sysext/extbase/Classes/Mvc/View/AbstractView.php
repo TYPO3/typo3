@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+
 /**
  * An abstract View
  */
-abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
+abstract class AbstractView implements ViewInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
@@ -38,7 +40,7 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      */
-    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    public function setControllerContext(ControllerContext $controllerContext)
     {
         $this->controllerContext = $controllerContext;
     }
@@ -80,7 +82,7 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
      */
-    public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    public function canRender(ControllerContext $controllerContext)
     {
         return true;
     }

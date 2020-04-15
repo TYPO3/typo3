@@ -16,13 +16,14 @@
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * This model represents a file mount.
  *
  * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
-class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class FileMount extends AbstractEntity
 {
     public function __construct()
     {

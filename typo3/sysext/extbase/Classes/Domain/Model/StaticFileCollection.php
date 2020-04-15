@@ -21,6 +21,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * @internal experimental! This class is experimental and subject to change!
  * @deprecated since TYPO3 10.4, will be removed in version 11.0
  */
-class StaticFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
+class StaticFileCollection extends AbstractFileCollection
 {
 }

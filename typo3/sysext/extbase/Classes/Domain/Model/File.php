@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal experimental! This class is experimental and subject to change!
  */
-class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+class File extends AbstractFileFolder
 {
     /**
      * @return \TYPO3\CMS\Core\Resource\File

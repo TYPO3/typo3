@@ -98,14 +98,14 @@ class ObjectManager implements ObjectManagerInterface
     public function get(string $objectName, ...$constructorArguments): object
     {
         if ($objectName === \DateTime::class) {
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($objectName, ...$constructorArguments);
+            return GeneralUtility::makeInstance($objectName, ...$constructorArguments);
         }
 
         if ($this->container->has($objectName)) {
             if ($constructorArguments === []) {
                 $instance = $this->container->get($objectName);
                 if (!is_object($instance)) {
-                    throw new \TYPO3\CMS\Extbase\Object\Exception('Invalid object name "' . $objectName . '". The PSR-11 container entry resolves to a non object.', 1562357346);
+                    throw new Exception('Invalid object name "' . $objectName . '". The PSR-11 container entry resolves to a non object.', 1562357346);
                 }
                 return $instance;
             }

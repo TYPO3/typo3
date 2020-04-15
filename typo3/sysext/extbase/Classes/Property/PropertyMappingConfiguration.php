@@ -373,7 +373,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * @param \TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
      */
-    public function setTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter)
+    public function setTypeConverter(TypeConverterInterface $typeConverter)
     {
         $this->typeConverter = $typeConverter;
         return $this;

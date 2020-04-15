@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Object;
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Interface for the TYPO3 Object Manager
  */
-interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
+interface ObjectManagerInterface extends SingletonInterface
 {
     /**
      * Returns a fresh or existing instance of the object specified by $objectName.

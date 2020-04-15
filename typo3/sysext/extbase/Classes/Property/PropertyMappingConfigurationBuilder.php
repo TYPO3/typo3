@@ -15,11 +15,14 @@
 
 namespace TYPO3\CMS\Extbase\Property;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+
 /**
  * This builder creates the default configuration for Property Mapping, if no configuration has been passed to the Property Mapper.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonInterface
+class PropertyMappingConfigurationBuilder implements SingletonInterface
 {
     /**
      * Builds the default property mapping configuration.
@@ -27,14 +30,14 @@ class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonIn
      * @param string $type the implementation class name of the PropertyMappingConfiguration to instantiate; must be a subclass of \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
      */
-    public function build($type = \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::class)
+    public function build($type = PropertyMappingConfiguration::class)
     {
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $configuration */
         $configuration = new $type();
 
-        $configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, [
-            \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true,
-            \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => true
+        $configuration->setTypeConverterOptions(PersistentObjectConverter::class, [
+            PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true,
+            PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => true
         ]);
         $configuration->allowAllProperties();
 

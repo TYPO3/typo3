@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Mvc;
 
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Analyzes the raw request and delivers a request handler which can handle it.
@@ -36,7 +37,7 @@ class RequestHandlerResolver
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -65,13 +66,13 @@ class RequestHandlerResolver
             if ($requestHandler->canHandleRequest()) {
                 $priority = $requestHandler->getPriority();
                 if (isset($suitableRequestHandlers[$priority])) {
-                    throw new \TYPO3\CMS\Extbase\Mvc\Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176475350);
+                    throw new Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176475350);
                 }
                 $suitableRequestHandlers[$priority] = $requestHandler;
             }
         }
         if (empty($suitableRequestHandlers)) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception('No suitable request handler found.', 1205414233);
+            throw new Exception('No suitable request handler found.', 1205414233);
         }
         ksort($suitableRequestHandlers);
         return array_pop($suitableRequestHandlers);

@@ -15,15 +15,18 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Testcase for the integer validator
  */
-class IntegerValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class IntegerValidatorTest extends UnitTestCase
 {
     /**
      * @var string
      */
-    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class;
+    protected $validatorClassName = IntegerValidator::class;
 
     public function setup(): void
     {

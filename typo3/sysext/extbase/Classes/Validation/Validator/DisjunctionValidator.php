@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Error\Result;
+
 /**
  * Validator to chain many validators in a disjunction (logical or).
  */
@@ -53,7 +55,7 @@ class DisjunctionValidator extends AbstractCompositeValidator
                 }
             }
         } else {
-            $result = new \TYPO3\CMS\Extbase\Error\Result();
+            $result = new Result();
         }
 
         return $result;

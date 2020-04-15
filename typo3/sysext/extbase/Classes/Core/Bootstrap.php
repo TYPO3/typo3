@@ -31,6 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\Response as ExtbaseResponse;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Creates a request and dispatches it to the controller which was specified
@@ -38,7 +39,7 @@ use TYPO3\CMS\Extbase\Service\CacheService;
  *
  * This class is the main entry point for extbase extensions.
  */
-class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
+class Bootstrap implements BootstrapInterface
 {
     /**
      * @var array
@@ -127,7 +128,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     public function initializeConfiguration(array $configuration): void
     {
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
-        $contentObject = $this->cObj ?? $this->container->get(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $contentObject = $this->cObj ?? $this->container->get(ContentObjectRenderer::class);
         $this->configurationManager->setContentObject($contentObject);
         $this->configurationManager->setConfiguration($configuration);
         // todo: Shouldn't the configuration manager object – which is a singleton – be stateless?

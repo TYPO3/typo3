@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Hook\DataHandler;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -49,11 +51,11 @@ class CheckFlexFormValueTest extends UnitTestCase
         ];
 
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
-        $dataHandler = $this->createMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $dataHandler = $this->createMock(DataHandler::class);
 
         $newFlexFormDataArray = [];
         /** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
-        $checkFlexFormValue = $this->getMockBuilder(\TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class)
+        $checkFlexFormValue = $this->getMockBuilder(CheckFlexFormValue::class)
             ->setMethods(['dummy'])
             ->getMock();
         $checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);

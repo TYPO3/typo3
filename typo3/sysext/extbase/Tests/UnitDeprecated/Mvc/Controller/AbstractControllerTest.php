@@ -15,7 +15,11 @@
 
 namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Controller;
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\AbstractController;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,46 +34,46 @@ class AbstractControllerTest extends UnitTestCase
     {
         return [
             [
-                new \TYPO3\CMS\Core\Messaging\FlashMessage('Simple Message'),
+                new FlashMessage('Simple Message'),
                 'Simple Message',
                 '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+                FlashMessage::OK,
                 false
             ],
             [
-                new \TYPO3\CMS\Core\Messaging\FlashMessage('Some OK', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::OK, true),
+                new FlashMessage('Some OK', 'Message Title', FlashMessage::OK, true),
                 'Some OK',
                 'Message Title',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+                FlashMessage::OK,
                 true
             ],
             [
-                new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Info', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO, true),
+                new FlashMessage('Some Info', 'Message Title', FlashMessage::INFO, true),
                 'Some Info',
                 'Message Title',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO,
+                FlashMessage::INFO,
                 true
             ],
             [
-                new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Notice', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE, true),
+                new FlashMessage('Some Notice', 'Message Title', FlashMessage::NOTICE, true),
                 'Some Notice',
                 'Message Title',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE,
+                FlashMessage::NOTICE,
                 true
             ],
 
             [
-                new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Warning', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, true),
+                new FlashMessage('Some Warning', 'Message Title', FlashMessage::WARNING, true),
                 'Some Warning',
                 'Message Title',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
+                FlashMessage::WARNING,
                 true
             ],
             [
-                new \TYPO3\CMS\Core\Messaging\FlashMessage('Some Error', 'Message Title', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, true),
+                new FlashMessage('Some Error', 'Message Title', FlashMessage::ERROR, true),
                 'Some Error',
                 'Message Title',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+                FlashMessage::ERROR,
                 true
             ]
         ];
@@ -79,22 +83,22 @@ class AbstractControllerTest extends UnitTestCase
      * @test
      * @dataProvider addFlashMessageDataProvider
      */
-    public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK, $storeInSession = true)
+    public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = FlashMessage::OK, $storeInSession = true)
     {
-        $flashMessageQueue = $this->getMockBuilder(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class)
+        $flashMessageQueue = $this->getMockBuilder(FlashMessageQueue::class)
             ->setMethods(['enqueue'])
             ->setConstructorArgs([StringUtility::getUniqueId('identifier_')])
             ->getMock();
 
         $flashMessageQueue->expects(self::once())->method('enqueue')->with(self::equalTo($expectedMessage));
 
-        $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
+        $controllerContext = $this->getMockBuilder(ControllerContext::class)
             ->setMethods(['getFlashMessageQueue'])
             ->getMock();
         $controllerContext->expects(self::once())->method('getFlashMessageQueue')->willReturn($flashMessageQueue);
 
         $controller = $this->getAccessibleMockForAbstractClass(
-            \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
+            AbstractController::class,
             [],
             '',
             false,
@@ -115,7 +119,7 @@ class AbstractControllerTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1243258395);
         $controller = $this->getMockForAbstractClass(
-            \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
+            AbstractController::class,
             [],
             '',
             false,

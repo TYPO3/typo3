@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+
 /**
  * An empty view - a special case.
  */
-class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
+class EmptyView implements ViewInterface
 {
     /**
      * Dummy method to satisfy the ViewInterface
@@ -26,7 +28,7 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @internal
      */
-    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    public function setControllerContext(ControllerContext $controllerContext)
     {
     }
 
@@ -59,7 +61,7 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return bool TRUE
      */
-    public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    public function canRender(ControllerContext $controllerContext)
     {
         return true;
     }

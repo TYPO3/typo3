@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Validation\Validator;
 
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+
 /**
  * Fixture custom validator
  */
-class CustomValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+class CustomValidator extends AbstractValidator
 {
     /**
      * @param mixed $value

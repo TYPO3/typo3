@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
 /**
  * A controller argument
@@ -98,7 +100,7 @@ class Argument
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
      */
-    public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper)
+    public function injectPropertyMapper(PropertyMapper $propertyMapper)
     {
         $this->propertyMapper = $propertyMapper;
     }
@@ -228,7 +230,7 @@ class Argument
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The actual validator object
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument Returns $this (used for fluent interface)
      */
-    public function setValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator)
+    public function setValidator(ValidatorInterface $validator)
     {
         $this->validator = $validator;
         return $this;
@@ -318,7 +320,7 @@ class Argument
     /**
      * @return \TYPO3\CMS\Extbase\Error\Result
      */
-    public function validate(): \TYPO3\CMS\Extbase\Error\Result
+    public function validate(): Result
     {
         if ($this->hasBeenValidated) {
             return $this->validationResults;

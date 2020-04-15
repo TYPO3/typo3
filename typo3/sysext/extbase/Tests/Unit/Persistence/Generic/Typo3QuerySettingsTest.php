@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -33,7 +35,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->typo3QuerySettings = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class, ['dummy']);
+        $this->typo3QuerySettings = $this->getAccessibleMock(Typo3QuerySettings::class, ['dummy']);
     }
 
     /**
@@ -86,7 +88,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setRespectStoragePageAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setRespectStoragePage(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setRespectStoragePage(true) instanceof QuerySettingsInterface);
     }
 
     /**
@@ -106,7 +108,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setStoragePageIdsAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setStoragePageIds([1, 2, 3]) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setStoragePageIds([1, 2, 3]) instanceof QuerySettingsInterface);
     }
 
     /**
@@ -126,7 +128,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setRespectSysLanguageAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setRespectSysLanguage(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setRespectSysLanguage(true) instanceof QuerySettingsInterface);
     }
 
     /**
@@ -134,7 +136,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setLanguageUidAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setLanguageUid(42) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setLanguageUid(42) instanceof QuerySettingsInterface);
     }
 
     /**
@@ -154,7 +156,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setIgnoreEnableFieldsAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setIgnoreEnableFields(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setIgnoreEnableFields(true) instanceof QuerySettingsInterface);
     }
 
     /**
@@ -174,7 +176,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setEnableFieldsToBeIgnoredAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof QuerySettingsInterface);
     }
 
     /**
@@ -194,6 +196,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setIncludeDeletedAllowsChaining()
     {
-        self::assertTrue($this->typo3QuerySettings->setIncludeDeleted(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setIncludeDeleted(true) instanceof QuerySettingsInterface);
     }
 }
