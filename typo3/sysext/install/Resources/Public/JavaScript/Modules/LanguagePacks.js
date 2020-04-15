@@ -453,14 +453,14 @@ define([
       var $tbody = $('<tbody>');
       data.extensions.forEach(function(extension) {
         rowCount++;
-        if (extension.icon !== '') {
+        if (typeof extension.icon !== 'undefined') {
           extensionTitle = $('<span>').append(
             $('<img>', {
               'style': 'max-height: 16px; max-width: 16px;',
               'src': '../' + extension.icon,
               'alt': extension.title
             }),
-            $('<span>').text(extension.title)
+            $('<span>').text(' ' + extension.title)
           );
         } else {
           extensionTitle = $('<span>').text(extension.title)
