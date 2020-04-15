@@ -169,17 +169,14 @@ class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface, Repe
                 ->fetchAll();
 
             foreach ($rows as $row) {
-                $logData = $row['log_data'] !== null ? unserialize($row['log_data'], ['allowed_classes' => false]) : [];
+                $logData = $this->unserializeToArray((string)($row['log_data'] ?? ''));
+                $historyData = $this->unserializeToArray((string)($row['history_data'] ?? ''));
                 $updateData = [
                     'actiontype' => RecordHistoryStore::ACTION_MODIFY,
                     'usertype' => 'BE',
                     'userid' => $row['userid'],
                     'sys_log_uid' => 0,
-                    'history_data' => json_encode(
-                        $row['history_data'] !== null
-                            ? unserialize($row['history_data'], ['allowed_classes' => false])
-                            : []
-                    ),
+                    'history_data' => json_encode($historyData),
                     'originaluserid' => empty($logData['originalUser']) ? null : $logData['originalUser']
                 ];
 
@@ -311,8 +308,7 @@ class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface, Repe
                 ->execute();
 
             foreach ($result as $row) {
-                $logData = (array)unserialize($row['log_data'], ['allowed_classes' => false]);
-
+                $logData = $this->unserializeToArray((string)($row['log_data'] ?? ''));
                 $store = GeneralUtility::makeInstance(
                     RecordHistoryStore::class,
                     RecordHistoryStore::USER_BACKEND,
@@ -388,5 +384,11 @@ class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface, Repe
         }
 
         return $startPosition;
+    }
+
+    protected function unserializeToArray(string $serialized): array
+    {
+        $unserialized = unserialize($serialized, ['allowed_classes' => false]);
+        return is_array($unserialized) ? $unserialized : [];
     }
 }
