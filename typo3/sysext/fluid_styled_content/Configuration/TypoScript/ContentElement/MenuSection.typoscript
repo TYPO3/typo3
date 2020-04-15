@@ -9,6 +9,9 @@ tt_content.menu_section {
     dataProcessing {
         10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
         10 {
+            // Always activate includeNotInMenu for a section menu of the current page
+            includeNotInMenu.override = 1
+            includeNotInMenu.override.if.isFalse.field = pages
             special = list
             special {
                 value {

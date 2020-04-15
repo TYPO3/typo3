@@ -241,6 +241,12 @@ abstract class AbstractMenuContentObject
                 }
                 $this->alwaysActivePIDlist = GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
             }
+            // includeNotInMenu initialized:
+            $includeNotInMenu = $this->conf['includeNotInMenu'];
+            $includeNotInMenuConf = $this->conf['includeNotInMenu.'] ?? null;
+            $this->conf['includeNotInMenu'] = is_array($includeNotInMenuConf)
+                ? $this->parent_cObj->stdWrap($includeNotInMenu, $includeNotInMenuConf)
+                : $includeNotInMenu;
             // exclude doktypes that should not be shown in menu (e.g. backend user section)
             if ($this->conf['excludeDoktypes']) {
                 $this->excludedDoktypes = GeneralUtility::intExplode(',', $this->conf['excludeDoktypes']);
