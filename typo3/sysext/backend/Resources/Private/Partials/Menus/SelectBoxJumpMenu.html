@@ -1,5 +1,8 @@
 <f:if condition="{menu.menuItems -> f:count()} > 1">
-    {menu.label} <select class="form-control t3-js-jumpMenuBox" name="{menu.identifier}" data-menu-identifier="{menu.dataIdentifier}" onchange="if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}">
+    {menu.label} <select class="form-control t3-js-jumpMenuBox"
+                        name="{menu.identifier}"
+                        data-menu-identifier="{menu.dataIdentifier}"
+                        data-global-event="change" data-action-navigate="$value">
         <f:for each="{menu.menuItems}" as="menuItem">
             <option value="{menuItem.href}" {f:if(condition: '{menuItem.active}', then: ' selected="selected"')}>{menuItem.title}</option>
         </f:for>

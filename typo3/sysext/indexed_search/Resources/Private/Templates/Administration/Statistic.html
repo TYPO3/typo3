@@ -10,8 +10,8 @@
                         <f:form.select name="mode" options="{
                             overview:'{f:translate(key:\'administration.statistics.view.overview\')}',
                             content:'{f:translate(key:\'administration.statistics.view.content\')}'
-                            }" value="{mode}" additionalAttributes="{onchange:'this.form.submit();'}" />
-                        <f:form.select name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{onchange:'this.form.submit();'}" />
+                            }" value="{mode}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
+                        <f:form.select name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
                     </div>
                 </div>
             </f:form>

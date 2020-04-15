@@ -20,7 +20,7 @@
         <f:form.select
             property="userOrGroup"
             options="{userGroups}"
-            additionalAttributes="{onchange : 'submit()'}"
+            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
             class="form-control input-sm"
             id="belog-users"
         />
@@ -32,7 +32,7 @@
             property="number"
             options="{settings.selectableNumberOfLogEntries}"
             optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-            additionalAttributes="{onchange : 'submit()'}"
+            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
             class="form-control input-sm"
             id="belog-max"
         />
@@ -45,7 +45,7 @@
                     <f:form.select
                         property="workspaceUid"
                         options="{workspaces}"
-                        additionalAttributes="{onchange : 'submit()'}"
+                        additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
                         class="form-control input-sm"
                         id="belog-workspaces"
                     />
@@ -59,7 +59,7 @@
             <f:form.select
                 property="depth"
                 options="{pageDepths}"
-                additionalAttributes="{onchange : 'submit()'}"
+                additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
                 class="form-control input-sm"
                 id="belog-depth"
             />
@@ -72,7 +72,7 @@
             property="timeFrame"
             options="{settings.selectableTimeFrames}"
             optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-            additionalAttributes="{onchange : 'submit()'}"
+            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
             class="form-control input-sm"
             id="belog-time"
         />
@@ -84,7 +84,7 @@
             property="action"
             options="{settings.selectableActions}"
             optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-            additionalAttributes="{onchange : 'submit()'}"
+            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
             class="form-control input-sm"
             id="belog-action"
         />
@@ -96,7 +96,7 @@
             <f:form.checkbox
                 property="groupByPage"
                 value="1"
-                additionalAttributes="{onchange : 'submit()'}"
+                additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
                 id="belog-group"
             />
         </div>

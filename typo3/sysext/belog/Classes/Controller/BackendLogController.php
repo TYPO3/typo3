@@ -15,10 +15,11 @@
 
 namespace TYPO3\CMS\Belog\Controller;
 
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -70,11 +71,6 @@ class BackendLogController extends ActionController
     protected $logEntryRepository;
 
     /**
-     * @var BackendTemplateView
-     */
-    protected $view;
-
-    /**
      * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
      */
     public function injectLogEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository)
@@ -95,6 +91,8 @@ class BackendLogController extends ActionController
         }
         $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
+        GeneralUtility::makeInstance(PageRenderer::class)
+            ->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
     }
 
     /**
