@@ -103,6 +103,7 @@ class MenuProcessor implements DataProcessorInterface
         'excludeUidList.',
         'excludeDoktypes',
         'includeNotInMenu',
+        'includeNotInMenu.',
         'alwaysActivePIDlist',
         'alwaysActivePIDlist.',
         'protectLvar',
