@@ -308,12 +308,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * the template. If $this->all is empty it's because the template-data is not
      * cached, which it must be.
      * @var array
+     * @internal
      */
     public $all = [];
 
     /**
      * Toplevel - objArrayName, eg 'page'
      * @var string
+     * @internal should only be used by TYPO3 Core
      */
     public $sPre = '';
 
@@ -321,6 +323,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * TypoScript configuration of the page-object pointed to by sPre.
      * $this->tmpl->setup[$this->sPre.'.']
      * @var array|string
+     * @internal should only be used by TYPO3 Core
      */
     public $pSetup = '';
 
@@ -390,6 +393,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * additionalHeaderData. Reserved keys at 'openPic' and 'mouseOver'
      *
      * @var array
+     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add JavaScript
      */
     public $additionalJavaScript = [];
 
@@ -397,16 +401,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Used to accumulate additional Style code. Works like additionalHeaderData.
      *
      * @var array
+     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add CSS
      */
     public $additionalCSS = [];
 
     /**
      * @var string
+     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add inline JavaScript
      */
     public $JSCode;
 
     /**
      * @var string
+     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add inline JavaScript
      */
     public $inlineJS;
 
@@ -583,6 +590,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This value will be used as the title for the page in the indexer (if
      * indexing happens)
      * @var string
+     * @internal only used by TYPO3 Core, use PageTitle API instead.
      */
     public $indexedDocTitle = '';
 
@@ -3499,6 +3507,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $key is the key in the array, for num-key let the value be empty. Note reserved key: 'openPic'
      * @param string $content is the content if you want any
      * @see ContentObjectRenderer::imageLinkWrap()
+     * @internal only used by TYPO3 Core, use PageRenderer or AssetCollector API instead.
      */
     public function setJS($key, $content = '')
     {
