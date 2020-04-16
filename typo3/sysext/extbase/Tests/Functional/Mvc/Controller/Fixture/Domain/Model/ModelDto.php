@@ -15,12 +15,10 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-
 /**
- * Fixture model
+ * Fixture model data transfer object
  */
-class Model extends AbstractEntity
+class ModelDto
 {
     /**
      * @var string
@@ -28,7 +26,7 @@ class Model extends AbstractEntity
     protected $value;
 
     /**
-     * @var Model
+     * @var ModelDto
      */
     protected $model;
 
@@ -51,18 +49,18 @@ class Model extends AbstractEntity
     }
 
     /**
-     * @return Model
+     * @return ModelDto
      */
-    public function getModel(): Model
+    public function getModel(): ModelDto
     {
         return $this->model;
     }
 
     /**
-     * @param Model $model
+     * @param ModelDto $model
      * @return self
      */
-    public function setModel(Model $model): self
+    public function setModel(ModelDto $model): self
     {
         $this->model = $model;
         return $this;

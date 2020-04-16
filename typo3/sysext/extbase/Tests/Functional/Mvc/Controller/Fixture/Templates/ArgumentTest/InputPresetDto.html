@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<main>
+    <f:form.validationResults>
+        <f:if condition="{validationResults.flattenedErrors}">
+            <div id="validationResults">
+                <f:format.json value="{validationResults.flattenedErrors}" />
+            </div>
+        </f:if>
+    </f:form.validationResults>
+
+    <f:form object="{dto}" name="dto" action="validate">
+        <div class="form-group">
+            <label>Name</label>
+            <f:form.textfield property="value" class="form-control" />
+        </div>
+        <f:form.button class="btn btn-primary">Send</f:form.button>
+    </f:form>
+</main>
+</html>
