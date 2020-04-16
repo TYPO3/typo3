@@ -94,7 +94,6 @@
     "sortablejs": "^1.10.1",
     "tablesort": "^5.2.0",
     "taboverride": "^4.0.3",
-    "tagsort": "1.4.0",
-    "web-animations-js": "^2.3.2"
+    "tagsort": "1.4.0"
   }
 }

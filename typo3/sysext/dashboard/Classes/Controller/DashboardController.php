@@ -290,13 +290,13 @@ class DashboardController extends AbstractController
             [
                 'paths' => [
                     'muuri' => $publicResourcesPath . 'JavaScript/Contrib/muuri',
-                    'web-animations' => $publicResourcesPath . 'JavaScript/Contrib/web-animations.min',
+                    'web-animate' => $publicResourcesPath . 'JavaScript/Contrib/web-animate',
                 ],
             ]
         );
 
         $pageRenderer->loadRequireJsModule('muuri');
-        $pageRenderer->loadRequireJsModule('web-animations');
+        $pageRenderer->loadRequireJsModule('web-animate');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/Grid');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetContentCollector');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetSelector');
