@@ -787,11 +787,11 @@ class GeneralUtilityTest extends UnitTestCase
                 ''
             ],
             'number without operator returns array with plus and number' => [
-                [['+', 42]],
+                [['+', '42']],
                 '42'
             ],
             'two numbers with asterisk return first number with plus and second number with asterisk' => [
-                [['+', 42], ['*', 31]],
+                [['+', '42'], ['*', '31']],
                 '42 * 31'
             ]
         ];
@@ -801,9 +801,9 @@ class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider splitCalcDataProvider
      */
-    public function splitCalcCorrectlySplitsExpression($expected, $expression)
+    public function splitCalcCorrectlySplitsExpression(array $expected, string $expression): void
     {
-        self::assertEquals($expected, GeneralUtility::splitCalc($expression, '+-*/'));
+        self::assertSame($expected, GeneralUtility::splitCalc($expression, '+-*/'));
     }
 
     ///////////////////////////////
