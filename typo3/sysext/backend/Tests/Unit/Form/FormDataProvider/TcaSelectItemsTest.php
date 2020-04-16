@@ -355,7 +355,7 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
     /**
