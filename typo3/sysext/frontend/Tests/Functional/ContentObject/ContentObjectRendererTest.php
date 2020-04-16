@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -229,7 +230,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
         foreach ($expected as $field => $value) {
-            if (!($databasePlatform instanceof \Doctrine\DBAL\Platforms\SQLServerPlatform)) {
+            if (!($databasePlatform instanceof SQLServerPlatform)) {
                 // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
                 if ($field === 'SELECT') {
                     $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();

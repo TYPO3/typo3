@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
@@ -95,7 +96,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * -> getFallbackChain()
  *    if the page is not available in a specific language, apply other language Ids in the given order until the page translation can be found.
  */
-class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
+class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCase
 {
     use SiteBasedTestTrait;
 

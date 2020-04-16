@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Imaging;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -696,7 +697,7 @@ class GifBuilder extends GraphicalFunctions
     {
         try {
             return GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
-        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

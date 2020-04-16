@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -63,7 +64,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ]
             ]
         ]);
-        $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', [])])
             ->setMethods(['initCaches'])
             ->getMock();

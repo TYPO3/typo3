@@ -15,11 +15,14 @@
 
 namespace TYPO3\CMS\Frontend\Hooks\PageLayoutView;
 
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
+
 /**
  * Contains a preview rendering for the page module of CType="text"
  * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-class TextPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+class TextPreviewRenderer implements PageLayoutViewDrawItemHookInterface
 {
     /**
      * Preprocesses the preview rendering of the content element "text".
@@ -31,7 +34,7 @@ class TextPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawI
      * @param array $row Record row of tt_content
      */
     public function preProcess(
-        \TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
+        PageLayoutView &$parentObject,
         &$drawItem,
         &$headerContent,
         &$itemContent,

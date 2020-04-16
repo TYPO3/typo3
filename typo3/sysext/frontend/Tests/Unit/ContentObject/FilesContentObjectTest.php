@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -244,7 +245,7 @@ class FilesContentObjectTest extends UnitTestCase
             $fileReferenceMap[] = [$i, $fileReference];
         }
 
-        $fileRepository = $this->createMock(\TYPO3\CMS\Core\Resource\FileRepository::class);
+        $fileRepository = $this->createMock(FileRepository::class);
         $fileRepository->expects(self::any())
             ->method('findFileReferenceByUid')
             ->willReturnMap($fileReferenceMap);

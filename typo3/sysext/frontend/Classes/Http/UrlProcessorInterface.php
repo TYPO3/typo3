@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\Http;
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * This interface needs to be implemented by all classes that register for the hook in:
  * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors']
@@ -39,5 +41,5 @@ interface UrlProcessorInterface
      * @param bool $keepProcessing If this is set to FALSE no further hooks will be processed after the current one.
      * @return string|null
      */
-    public function process($context, $url, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer, &$keepProcessing);
+    public function process($context, $url, array $configuration, ContentObjectRenderer $contentObjectRenderer, &$keepProcessing);
 }

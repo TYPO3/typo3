@@ -15,11 +15,15 @@
 
 namespace TYPO3\CMS\Frontend\Hooks\PageLayoutView;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
+
 /**
  * Contains a preview rendering for the page module of CType="image"
  * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-class ImagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+class ImagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
 {
     /**
      * Preprocesses the preview rendering of the content element "image".
@@ -31,7 +35,7 @@ class ImagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDraw
      * @param array $row Record row of tt_content
      */
     public function preProcess(
-        \TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
+        PageLayoutView &$parentObject,
         &$drawItem,
         &$headerContent,
         &$itemContent,
@@ -41,7 +45,7 @@ class ImagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDraw
             if ($row['image']) {
                 $itemContent .= $parentObject->linkEditContent($parentObject->getThumbCodeUnlinked($row, 'tt_content', 'image'), $row);
 
-                $fileReferences = \TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences('tt_content', 'image', $row);
+                $fileReferences = BackendUtility::resolveFileReferences('tt_content', 'image', $row);
 
                 if (!empty($fileReferences)) {
                     $linkedContent = '';

@@ -15,13 +15,17 @@
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class FluidTemplateContentObjectTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -43,7 +47,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
     public function renderWorksWithNestedFluidtemplate()
     {
         /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $tsfe = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+        $tsfe = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE'] = $tsfe;
 
         $configuration = [
@@ -66,12 +70,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
         ];
         $expectedResult = 'ABC';
 
-        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
+        $contentObjectRenderer = new ContentObjectRenderer();
         $contentObjectRenderer->setContentObjectClassMap([
             'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
             'TEXT' => TextContentObject::class,
         ]);
-        $fluidTemplateContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject(
+        $fluidTemplateContentObject = new ContentObjectArrayContentObject(
             $contentObjectRenderer
         );
         $result = $fluidTemplateContentObject->render($configuration);
@@ -85,7 +89,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
     public function renderWorksWithNestedFluidtemplateWithLayouts()
     {
         /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $tsfe = $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+        $tsfe = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE'] = $tsfe;
 
         $configuration = [
@@ -114,12 +118,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
         ];
         $expectedResult = 'DefaultLayoutLayoutOverride';
 
-        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
+        $contentObjectRenderer = new ContentObjectRenderer();
         $contentObjectRenderer->setContentObjectClassMap([
             'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
             'TEXT' => TextContentObject::class,
         ]);
-        $fluidTemplateContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject(
+        $fluidTemplateContentObject = new ContentObjectArrayContentObject(
             $contentObjectRenderer
         );
         $result = preg_replace('/\s+/', '', strip_tags($fluidTemplateContentObject->render($configuration)));

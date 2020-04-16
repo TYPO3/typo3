@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\Resource;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
@@ -141,7 +142,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
             try {
                 $fileCollection = $this->getFileCollectionRepository()->findByUid($fileCollectionUid);
 
-                if ($fileCollection instanceof \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection) {
+                if ($fileCollection instanceof AbstractFileCollection) {
                     $fileCollection->loadContents();
                     $files = $fileCollection->getItems();
 

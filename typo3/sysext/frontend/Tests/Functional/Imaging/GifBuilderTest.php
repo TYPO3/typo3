@@ -20,11 +20,12 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\Imaging\GifBuilder
  */
-class GifBuilderTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class GifBuilderTest extends FunctionalTestCase
 {
     /**
      * Check hashes of Images overlayed with other images are idempotent

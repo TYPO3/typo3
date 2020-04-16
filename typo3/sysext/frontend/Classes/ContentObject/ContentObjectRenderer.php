@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -791,7 +792,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Functions rendering content objects (cObjects)
      *
      ********************************************/
-
     /**
      * Renders a content object by taking exception and cache handling
      * into consideration
@@ -4439,7 +4439,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
                 $info['origFile_mtime'] = @filemtime($theImage);
                 $imageResource = $info;
-            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+            } catch (Exception $e) {
                 // do nothing in case the file path is invalid
             }
         }
@@ -4677,7 +4677,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'path':
                         try {
                             $retVal = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($key);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             // do nothing in case the file path is invalid
                             $retVal = null;
                         }
@@ -4937,7 +4937,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Link functions (typolink)
      *
      ***********************************************/
-
     /**
      * called from the typoLink() function
      *
@@ -5039,7 +5038,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $linkService = GeneralUtility::makeInstance(LinkService::class);
         try {
             $linkDetails = $linkService->resolve($linkParameter);
-        } catch (UnknownLinkHandlerException | Exception\InvalidPathException $exception) {
+        } catch (UnknownLinkHandlerException | InvalidPathException $exception) {
             $this->logger->warning('The link could not be generated', ['exception' => $exception]);
             return $linkText;
         }
@@ -5833,7 +5832,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Database functions, making of queries
      *
      ***********************************************/
-
     /**
      * Generates a list of Page-uid's from $id. List does not include $id itself
      * (unless the id specified is negative in which case it does!)

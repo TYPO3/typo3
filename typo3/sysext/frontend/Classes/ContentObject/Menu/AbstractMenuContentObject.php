@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 
@@ -1538,7 +1539,7 @@ abstract class AbstractMenuContentObject
                     $tsfe->register['count_menuItems'] = count($this->menuArr);
                     return $content;
                 }
-            } catch (Exception\NoSuchMenuTypeException $e) {
+            } catch (NoSuchMenuTypeException $e) {
             }
         }
         return '';

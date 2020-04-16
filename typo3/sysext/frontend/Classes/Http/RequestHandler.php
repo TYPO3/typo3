@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -256,7 +257,7 @@ class RequestHandler implements RequestHandlerInterface
             try {
                 $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($controller->config['config']['pageRendererTemplateFile']);
                 $pageRenderer->setTemplateFile($file);
-            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+            } catch (Exception $e) {
                 // do nothing
             }
         }
@@ -402,7 +403,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($controller->absRefPrefix . $favIcon));
                 }
-            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+            } catch (Exception $e) {
                 // do nothing
             }
         }
@@ -448,7 +449,7 @@ class RequestHandler implements RequestHandlerInterface
                     } else {
                         try {
                             $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             $ss = null;
                         }
                     }
@@ -491,7 +492,7 @@ class RequestHandler implements RequestHandlerInterface
                     } else {
                         try {
                             $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             $ss = null;
                         }
                     }
@@ -541,7 +542,7 @@ class RequestHandler implements RequestHandlerInterface
                     } else {
                         try {
                             $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             $ss = null;
                         }
                     }
@@ -583,7 +584,7 @@ class RequestHandler implements RequestHandlerInterface
                     } else {
                         try {
                             $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             $ss = null;
                         }
                     }
@@ -626,7 +627,7 @@ class RequestHandler implements RequestHandlerInterface
                     } else {
                         try {
                             $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             $ss = null;
                         }
                     }
@@ -667,7 +668,7 @@ class RequestHandler implements RequestHandlerInterface
                     } else {
                         try {
                             $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             $ss = null;
                         }
                     }

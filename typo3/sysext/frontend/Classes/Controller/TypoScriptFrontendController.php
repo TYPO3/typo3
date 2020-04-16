@@ -55,6 +55,7 @@ use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -725,7 +726,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Various initialize methods used for fallback, which can be simplified in TYPO3 v11.0
      */
-
     /**
      * Used to set $this->context. The first argument was $GLOBALS[TYPO3_CONF_VARS] (array) until TYPO3 v8,
      * so no type hint possible.
@@ -1740,7 +1740,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Template and caching related functions.
      *
      *******************************************/
-
     /**
      * Will disable caching if the cHash value was not set when having dynamic arguments in GET query parameters.
      * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cacheable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
@@ -2128,7 +2127,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             $file = GeneralUtility::makeInstance(FilePathSanitizer::class)
                                 ->sanitize((string)$this->pSetup['pageHeaderFooterTemplateFile']);
                             $this->pageRenderer->setTemplateFile($file);
-                        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                        } catch (Exception $e) {
                             // do nothing
                         }
                     }
@@ -2171,7 +2170,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Further initialization and data processing
      *
      *******************************************/
-
     /**
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
@@ -3349,7 +3347,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Various internal API functions
      *
      *******************************************/
-
     /**
      * Creates an instance of ContentObjectRenderer in $this->cObj
      * This instance is used to start the rendering of the TypoScript template structure
@@ -4011,7 +4008,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Deprecation messages for TYPO3 10 - public properties of TSFE which have been (re)moved
      */
-
     /**
      * Checks if the property of the given name is set.
      *

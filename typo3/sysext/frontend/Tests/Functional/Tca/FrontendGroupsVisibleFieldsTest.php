@@ -18,8 +18,9 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Tca;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FrontendGroupsVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class FrontendGroupsVisibleFieldsTest extends FunctionalTestCase
 {
     protected static $frontendGroupFields = [
         'hidden',
