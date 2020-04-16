@@ -599,13 +599,18 @@ class ActionController implements ControllerInterface
     protected function forwardToReferringRequest()
     {
         $referringRequest = null;
-        $referringRequestArguments = $this->request->getInternalArguments()['__referrer']['@request'] ?? null;
-        if (is_string($referringRequestArguments)) {
+        $referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
+        if (is_string($referringRequestArguments['@request'] ?? null)) {
             $referrerArray = json_decode(
-                $this->hashService->validateAndStripHmac($referringRequestArguments),
+                $this->hashService->validateAndStripHmac($referringRequestArguments['@request']),
                 true
             );
             $arguments = [];
+            if (is_string($referringRequestArguments['arguments'] ?? null)) {
+                $arguments = unserialize(
+                    base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments']))
+                );
+            }
             $referringRequest = new ReferringRequest();
             $referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
         }
