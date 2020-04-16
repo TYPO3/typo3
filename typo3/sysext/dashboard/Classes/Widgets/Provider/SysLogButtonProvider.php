@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
 
 /**
  * Provide link for sys log button.

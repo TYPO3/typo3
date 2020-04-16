@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
 {

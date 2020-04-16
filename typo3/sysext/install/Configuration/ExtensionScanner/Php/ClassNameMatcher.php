@@ -1478,4 +1478,59 @@ return [
             'Breaking-90660-RegistrationOfWidgetsChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalCssInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalJavascriptInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\EventDataProviderInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\ListDataProviderInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\NumberWithIconDataProviderInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\RequireJsModuleInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface' => [
+        'restFiles' => [
+            'Breaking-91066-MovedInterfacesOfDashboard.rst',
+        ],
+    ],
+    'TYPO3\CMS\Dashboard\Utility\ButtonUtility' => [
+        'restFiles' => [
+            'Breaking-91066-RemovedButtonUtility.rst',
+        ],
+    ],
 ];

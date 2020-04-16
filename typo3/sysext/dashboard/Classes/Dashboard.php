@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Dashboard;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
 class Dashboard
 {

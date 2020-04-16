@@ -23,8 +23,8 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\EventDataInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\EventDataInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
 class WidgetAjaxController extends AbstractController
 {

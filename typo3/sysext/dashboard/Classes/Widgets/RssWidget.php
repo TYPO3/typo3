@@ -19,10 +19,6 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as Cache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Dashboard\Utility\ButtonUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -92,7 +88,7 @@ class RssWidget implements WidgetInterface
         $this->view->assignMultiple([
             'items' => $this->getRssItems(),
             'options' => $this->options,
-            'button' => ButtonUtility::generateButtonConfig($this->buttonProvider),
+            'button' => $this->buttonProvider,
             'configuration' => $this->configuration,
         ]);
         return $this->view->render();

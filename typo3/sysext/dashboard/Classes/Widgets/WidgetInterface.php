@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * The WidgetInterface is the base interface for all kind of widgets.

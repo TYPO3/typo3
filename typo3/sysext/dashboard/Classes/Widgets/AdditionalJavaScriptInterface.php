@@ -15,17 +15,18 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
- * In case a widget should provide additional data as JSON payload, the widget must implement this interface.
+ * In case a widget should provide additional JavaScript files, the widget must implement this interface.
  */
-interface EventDataInterface
+interface AdditionalJavaScriptInterface
 {
     /**
-     * This method returns data which should be send to the widget as JSON encoded value.
+     * This method returns an array with paths to required JS files.
+     * e.g. ['EXT:myext/Resources/Public/JavaScript/my_widget.js']
      *
      * @return array
      */
-    public function getEventData(): array;
+    public function getJsFiles(): array;
 }

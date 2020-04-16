@@ -21,7 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
 class WidgetRegistry implements SingletonInterface
 {

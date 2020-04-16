@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
-
 class WidgetConfiguration implements WidgetConfigurationInterface
 {
     /**

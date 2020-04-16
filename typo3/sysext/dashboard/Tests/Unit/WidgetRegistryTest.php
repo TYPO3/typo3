@@ -22,7 +22,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class WidgetRegistryTest extends UnitTestCase

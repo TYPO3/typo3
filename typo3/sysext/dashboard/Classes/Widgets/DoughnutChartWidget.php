@@ -17,14 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use TYPO3\CMS\Dashboard\Utility\ButtonUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalCssInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\EventDataInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\RequireJsModuleInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -83,7 +75,7 @@ class DoughnutChartWidget implements WidgetInterface, EventDataInterface, Additi
     {
         $this->view->setTemplate('Widget/ChartWidget');
         $this->view->assignMultiple([
-            'button' => ButtonUtility::generateButtonConfig($this->buttonProvider),
+            'button' => $this->buttonProvider,
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);

@@ -17,10 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use TYPO3\CMS\Dashboard\Utility\ButtonUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -75,7 +71,7 @@ class CtaWidget implements WidgetInterface
         $this->view->assignMultiple([
             'text' => $this->options['text'],
             'options' => $this->options,
-            'button' => ButtonUtility::generateButtonConfig($this->buttonProvider),
+            'button' => $this->buttonProvider,
             'configuration' => $this->configuration
         ]);
         return $this->view->render();

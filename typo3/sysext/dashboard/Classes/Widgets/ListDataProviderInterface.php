@@ -15,21 +15,18 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
- * In case a widget should provide additional requireJS modules, the widget must implement this interface.
+ * The dataprovider of a ListWidget, should implement this interface
  */
-interface RequireJsModuleInterface
+interface ListDataProviderInterface
 {
     /**
-     * This method returns an array with requireJs modules.
-     * e.g. [
-     *   'TYPO3/CMS/Backend/Modal',
-     *   'TYPO3/CMS/MyExt/FooBar' => 'function(FooBar) { ... }'
-     * ]
+     * Return the items to be shown. This should be an array like ['item 1', 'item 2', 'item 3']. This is a
+     * real simple list of items.
      *
      * @return array
      */
-    public function getRequireJsModules(): array;
+    public function getItems(): array;
 }

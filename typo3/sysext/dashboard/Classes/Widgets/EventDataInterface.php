@@ -15,18 +15,17 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
- * The dataprovider of a ListWidget, should implement this interface
+ * In case a widget should provide additional data as JSON payload, the widget must implement this interface.
  */
-interface ListDataProviderInterface
+interface EventDataInterface
 {
     /**
-     * Return the items to be shown. This should be an array like ['item 1', 'item 2', 'item 3']. This is a
-     * real simple list of items.
+     * This method returns data which should be send to the widget as JSON encoded value.
      *
      * @return array
      */
-    public function getItems(): array;
+    public function getEventData(): array;
 }

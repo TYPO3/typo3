@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**

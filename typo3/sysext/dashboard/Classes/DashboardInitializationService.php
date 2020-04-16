@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Dashboard;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalCssInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\AdditionalJavaScriptInterface;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\RequireJsModuleInterface;
+use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
+use TYPO3\CMS\Dashboard\Widgets\AdditionalJavaScriptInterface;
+use TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface;
 
 class DashboardInitializationService
 {

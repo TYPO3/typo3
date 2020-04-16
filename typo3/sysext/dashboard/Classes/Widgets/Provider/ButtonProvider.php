@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ButtonProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
 
 /**
  * Provide link for sys log button.

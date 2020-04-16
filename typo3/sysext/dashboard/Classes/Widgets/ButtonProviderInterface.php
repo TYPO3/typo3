@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * In case a widget should have a button in the footer of the widget, this button must implement this interface.

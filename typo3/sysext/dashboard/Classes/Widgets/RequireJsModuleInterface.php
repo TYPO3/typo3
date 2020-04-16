@@ -15,17 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
+namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
- * The dataprovider of a NumberWithIcon widget should implement this interface
+ * In case a widget should provide additional requireJS modules, the widget must implement this interface.
  */
-interface NumberWithIconDataProviderInterface
+interface RequireJsModuleInterface
 {
     /**
-     * Return the number that should be shown in the widget
+     * This method returns an array with requireJs modules.
+     * e.g. [
+     *   'TYPO3/CMS/Backend/Modal',
+     *   'TYPO3/CMS/MyExt/FooBar' => 'function(FooBar) { ... }'
+     * ]
      *
-     * @return int
+     * @return array
      */
-    public function getNumber(): int;
+    public function getRequireJsModules(): array;
 }

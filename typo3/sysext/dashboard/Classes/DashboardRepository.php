@@ -22,7 +22,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
 class DashboardRepository
 {
