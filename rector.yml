@@ -14,6 +14,7 @@ parameters:
     - 'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/'
     - 'ClassAliasMap.php'
     - 'class.ext_update.php'
+    - 'ServiceProvider.php' # avoid auto_import_names because of relative class name usage
   exclude_rectors:
     - Rector\Php55\Rector\String_\StringClassNameToClassConstantRector
     - Rector\Php70\Rector\List_\ListSwapArrayOrderRector
