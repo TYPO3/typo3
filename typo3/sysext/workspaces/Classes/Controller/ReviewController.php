@@ -164,9 +164,11 @@ class ReviewController
             'activeWorkspaceTitle' => $activeWorkspaceTitle,
             'availableLanguages' => $this->getSystemLanguages($this->pageId),
             'availableStages' => $this->stagesService->getStagesForWSUser(),
+            'availableSelectStages' => $this->getAvailableSelectStages(),
             'stageActions' => $this->getStageActions(),
             'selectedLanguage' => $this->getLanguageSelection(),
             'selectedDepth' => $this->getDepthSelection(),
+            'selectedStage' => $this->getStageSelection(),
         ]);
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -322,6 +324,12 @@ class ReviewController
         return (int)($moduleData['settings']['depth'] ?? ($this->pageId === 0 ? 999 : 1));
     }
 
+    protected function getStageSelection(): int
+    {
+        $moduleData = $this->getBackendUser()->getModuleData('workspaces') ?? [];
+        return (int)($moduleData['settings']['stage'] ?? -99);
+    }
+
     /**
      * Returns true if at least one custom workspace next to live workspace exists.
      *
@@ -395,5 +403,21 @@ class ReviewController
             }
         }
         return $actions;
+    }
+
+    /**
+     * Get stages to be used in the review filter. This basically
+     * adds -99 (all stages) and removes -20 (publish).
+     */
+    protected function getAvailableSelectStages(): array
+    {
+        $stages = $this->stagesService->getStagesForWSUser();
+
+        return array_merge([
+            [
+                'uid' => -99,
+                'label' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all')
+            ]
+        ], array_filter($stages, static fn (array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
     }
 }

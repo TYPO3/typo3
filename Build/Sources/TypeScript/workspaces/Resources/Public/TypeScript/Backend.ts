@@ -32,6 +32,7 @@ enum Identifiers {
   searchSubmitBtn = '#workspace-settings-form button[type="submit"]',
   depthSelector = '#workspace-settings-form [name="depth"]',
   languageSelector = '#workspace-settings-form select[name="languages"]',
+  stagesSelector = '#workspace-settings-form select[name="stages"]',
   workspaceActions = '.workspace-actions',
   chooseStageAction = '.workspace-actions [name="stage-action"]',
   chooseSelectionAction = '.workspace-actions [name="selection-action"]',
@@ -246,6 +247,7 @@ class Backend extends Workspaces {
       // Set the depth from the main element
       this.settings.depth = this.elements.$depthSelector.val();
       this.settings.language = this.elements.$languageSelector.val();
+      this.settings.stage = this.elements.$stagesSelector.val();
 
       // Fetch workspace info (listing) if workspace is accessible
       if (this.elements.$container.length) {
@@ -283,6 +285,7 @@ class Backend extends Workspaces {
     this.elements.$searchSubmitBtn = $(Identifiers.searchSubmitBtn);
     this.elements.$depthSelector = $(Identifiers.depthSelector);
     this.elements.$languageSelector = $(Identifiers.languageSelector);
+    this.elements.$stagesSelector = $(Identifiers.stagesSelector);
     this.elements.$container = $(Identifiers.container);
     this.elements.$contentsContainer = $(Identifiers.contentsContainer);
     this.elements.$noContentsContainer = $(Identifiers.noContentsContainer);
@@ -431,6 +434,13 @@ class Backend extends Workspaces {
         this.elements.$languageSelector.prev().html($me.find(':selected').data('icon'));
         this.renderWorkspaceInfos(actionResponse[0].result);
       });
+    });
+
+    this.elements.$stagesSelector.on('change', (e: JQueryEventObject): void => {
+      const stage = (<HTMLSelectElement>e.target).value;
+      Persistent.set('moduleData.workspaces.settings.stage', stage);
+      this.settings.stage = stage;
+      this.getWorkspaceInfos();
     });
 
     // Listen for actions

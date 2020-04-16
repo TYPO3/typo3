@@ -102,9 +102,13 @@ class RemoteServer
         if (!isset($parameter->language) || !MathUtility::canBeInterpretedAsInteger($parameter->language)) {
             $parameter->language = null;
         }
+        if (!isset($parameter->stage) || !MathUtility::canBeInterpretedAsInteger($parameter->stage)) {
+            // -99 disables stage filtering
+            $parameter->stage = -99;
+        }
         $versions = $this->workspaceService->selectVersionsInWorkspace(
             $this->getCurrentWorkspace(),
-            -99,
+            $parameter->stage,
             $pageId,
             $parameter->depth,
             'tables_select',
