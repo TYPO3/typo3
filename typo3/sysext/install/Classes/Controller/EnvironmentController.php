@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
@@ -48,6 +49,17 @@ use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
  */
 class EnvironmentController extends AbstractController
 {
+    /**
+     * @var LateBootService
+     */
+    private $lateBootService;
+
+    public function __construct(
+        LateBootService $lateBootService
+    ) {
+        $this->lateBootService = $lateBootService;
+    }
+
     /**
      * Main "show the cards" view
      *
@@ -239,6 +251,8 @@ class EnvironmentController extends AbstractController
      */
     public function mailTestAction(ServerRequestInterface $request): ResponseInterface
     {
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
         $messages = new FlashMessageQueue('install');
         $recipient = $request->getParsedBody()['install']['email'];
         if (empty($recipient) || !GeneralUtility::validEmail($recipient)) {
@@ -283,6 +297,7 @@ class EnvironmentController extends AbstractController
                 ));
             }
         }
+        $this->lateBootService->makeCurrent(null, $backup);
         return new JsonResponse([
             'success' => true,
             'status' => $messages,

@@ -47,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider
             Service\ClearCacheService::class => [ static::class, 'getClearCacheService' ],
             Service\LoadTcaService::class => [ static::class, 'getLoadTcaService' ],
             Middleware\Maintenance::class => [ static::class, 'getMaintenanceMiddleware' ],
+            Controller\EnvironmentController::class => [ static::class, 'getEnvironmentController' ],
             Controller\UpgradeController::class => [ static::class, 'getUpgradeController' ],
             Command\LanguagePackCommand::class => [ static::class, 'getLanguagePackCommand' ],
             Command\UpgradeWizardRunCommand::class => [ static::class, 'getUpgradeWizardRunCommand' ],
@@ -104,6 +105,13 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container
+        );
+    }
+
+    public static function getEnvironmentController(ContainerInterface $container): Controller\EnvironmentController
+    {
+        return new Controller\EnvironmentController(
+            $container->get(Service\LateBootService::class)
         );
     }
 
