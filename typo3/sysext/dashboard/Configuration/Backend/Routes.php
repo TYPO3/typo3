@@ -2,7 +2,7 @@
 
 return [
     'dashboard' => [
-        'path' => '/ext/dashboard',
+        'path' => '/dashboard',
         'target' => \TYPO3\CMS\Dashboard\Controller\DashboardController::class . '::handleRequest',
     ],
 ];

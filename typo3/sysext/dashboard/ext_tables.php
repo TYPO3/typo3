@@ -2,10 +2,6 @@
 
 defined('TYPO3_MODE') or die();
 
-$GLOBALS['TBE_MODULES']['_configuration']['dashboard'] = [
-    'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
-    'name' => 'dashboard'
-];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
     'dashboard',
     '',
