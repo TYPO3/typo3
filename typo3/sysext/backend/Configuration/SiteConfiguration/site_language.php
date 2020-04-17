@@ -207,7 +207,7 @@ return [
                     ['eg', 'eg', 'flags-eg'],
                     ['eh', 'eh', 'flags-eh'],
                     ['en-us-gb', 'en-us-gb', 'flags-en-us-gb'],
-                    ['england', 'england', 'flags-gb-eng'],
+                    ['gb-eng', 'gb-eng', 'flags-gb-eng'],
                     ['er', 'er', 'flags-er'],
                     ['es', 'es', 'flags-es'],
                     ['et', 'et', 'flags-et'],
