@@ -94,7 +94,6 @@ Together with :file:`Services.yaml`:
          # …
        tags:
          - name: dashboard.widget
-            additionalCssClasses: 'dashboard-item--chart'
 
 The configuration adds necessary CSS classes, as well as the ``dataProvider`` to use.
 The provider implements :php:class:`ChartDataProviderInterface` and could look like the following.

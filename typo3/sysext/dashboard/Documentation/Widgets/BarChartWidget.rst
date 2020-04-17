@@ -37,7 +37,6 @@ Example
            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title'
            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description'
            iconIdentifier: 'content-widget-chart-bar'
-           additionalCssClasses: 'dashboard-item--chart'
            height: 'medium'
            width: 'medium'
 

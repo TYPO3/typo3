@@ -91,7 +91,6 @@ services:
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title'
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description'
         iconIdentifier: 'content-widget-chart-bar'
-        additionalCssClasses: 'dashboard-item--chart'
         height: 'medium'
         width: 'medium'
 
@@ -169,7 +168,6 @@ services:
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title'
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description'
         iconIdentifier: 'content-widget-chart-pie'
-        additionalCssClasses: 'dashboard-item--chart'
         height: 'medium'
 
   dashboard.widget.t3securityAdvisories:

@@ -16,7 +16,7 @@ import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class ChartInitializer {
 
-  private readonly selector: string = '.dashboard-item--chart';
+  private readonly selector: string = '.dashboard-item';
 
   constructor() {
     this.initialize();
@@ -27,7 +27,7 @@ class ChartInitializer {
       e.preventDefault();
       const config: any = e.detail;
 
-      if (typeof undefined === config.graphConfig) {
+      if (undefined === config || undefined === config.graphConfig) {
         return;
       }
 
@@ -38,7 +38,7 @@ class ChartInitializer {
         context = _canvas.getContext('2d');
       }
 
-      if (typeof undefined === context) {
+      if (undefined === context) {
         return;
       }
 

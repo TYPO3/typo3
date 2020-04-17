@@ -33,7 +33,6 @@ Example
            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title'
            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description'
            iconIdentifier: 'content-widget-chart-pie'
-           additionalCssClasses: 'dashboard-item--chart'
            height: 'medium'
 
 Options
