@@ -67,7 +67,7 @@ class Presets extends AbstractInteractableModule {
         },
         (error: ResponseError): void => {
           Router.handleAjaxError(error, modalContent);
-        }
+        },
       );
   }
 
@@ -97,11 +97,13 @@ class Presets extends AbstractInteractableModule {
         },
         (error: ResponseError): void => {
           Router.handleAjaxError(error, modalContent);
-        }
+        },
       );
   }
 
   private activate(): void {
+    this.setModalButtonsState(false);
+
     const modalContent: JQuery = this.getModalBody();
     const executeToken: string = this.getModuleContent().data('presets-activate-token');
     const postData: any = {};
@@ -110,23 +112,23 @@ class Presets extends AbstractInteractableModule {
     });
     postData['install[action]'] = 'presetsActivate';
     postData['install[token]'] = executeToken;
-    (new AjaxRequest(Router.getUrl()))
-      .post(postData)
-      .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              Notification.showMessage(element.title, element.message, element.severity);
-            });
-          } else {
-            Notification.error('Something went wrong');
-          }
-        },
-        (error: ResponseError): void => {
-          Router.handleAjaxError(error, modalContent);
+    (new AjaxRequest(Router.getUrl())).post(postData).then(
+      async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
+        if (data.success === true && Array.isArray(data.status)) {
+          data.status.forEach((element: any): void => {
+            Notification.showMessage(element.title, element.message, element.severity);
+          });
+        } else {
+          Notification.error('Something went wrong');
         }
-      );
+      },
+      (error: ResponseError): void => {
+        Router.handleAjaxError(error, modalContent);
+      },
+    ).finally((): void => {
+      this.setModalButtonsState(true);
+    });
   }
 }
 

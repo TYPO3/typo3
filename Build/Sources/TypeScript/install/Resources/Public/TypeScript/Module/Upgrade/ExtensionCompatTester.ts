@@ -52,7 +52,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private getLoadedExtensionList(): void {
-    this.findInModal(this.selectorCheckTrigger).addClass('disabled').prop('disabled', true);
+    this.setModalButtonsState(false);
     this.findInModal('.modal-loading').hide();
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);

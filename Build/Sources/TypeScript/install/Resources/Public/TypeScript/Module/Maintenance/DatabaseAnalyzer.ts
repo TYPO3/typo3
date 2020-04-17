@@ -75,6 +75,8 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
   }
 
   private analyze(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const modalFooter = this.getModalFooter();
     const outputContainer = modalContent.find(this.selectorOutputContainer);
@@ -82,13 +84,9 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     const analyzeTrigger = modalFooter.find(this.selectorAnalyzeTrigger);
 
     outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Analyzing current database schema...', ''));
-
-    analyzeTrigger.prop('disabled', true);
-    executeTrigger.prop('disabled', true);
-
     outputContainer.on('change', 'input[type="checkbox"]', (): void => {
       const hasCheckedCheckboxes = outputContainer.find(':checked').length > 0;
-      executeTrigger.prop('disabled', !hasCheckedCheckboxes);
+      this.setModalButtonState(executeTrigger, hasCheckedCheckboxes);
     });
 
     (new AjaxRequest(Router.getUrl('databaseAnalyzerAnalyze')))
@@ -138,9 +136,8 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
                 outputContainer.append(aBlock.html());
               });
 
-              const isInitiallyDisabled = outputContainer.find(':checked').length === 0;
-              analyzeTrigger.prop('disabled', false);
-              executeTrigger.prop('disabled', isInitiallyDisabled);
+              this.setModalButtonState(analyzeTrigger, true);
+              this.setModalButtonState(executeTrigger, outputContainer.find(':checked').length > 0);
             }
             if (data.suggestions.length === 0 && data.status.length === 0) {
               outputContainer.append(InfoBox.render(Severity.ok, 'Database schema is up to date. Good job!', ''));
@@ -156,18 +153,17 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
   }
 
   private execute(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
-    const modalFooter = this.getModalFooter();
     const executeToken = this.getModuleContent().data('database-analyzer-execute-token');
     const outputContainer = modalContent.find(this.selectorOutputContainer);
-    const selectedHashes: Array<any> = [];
 
+    const selectedHashes: Array<any> = [];
     outputContainer.find('.t3js-databaseAnalyzer-suggestion-line input:checked').each((index: number, element: any): void => {
       selectedHashes.push($(element).data('hash'));
     });
     outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Executing database updates...', ''));
-    modalFooter.find(this.selectorExecuteTrigger).prop('disabled', true);
-    modalFooter.find(this.selectorAnalyzeTrigger).prop('disabled', true);
 
     (new AjaxRequest(Router.getUrl()))
       .post({

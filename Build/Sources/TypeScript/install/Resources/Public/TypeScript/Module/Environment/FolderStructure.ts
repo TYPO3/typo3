@@ -49,7 +49,6 @@ class FolderStructure extends AbstractInteractableModule {
 
     currentModal.on('click', this.selectorErrorFixTrigger, (e: JQueryEventObject): void => {
       e.preventDefault();
-      $(e.currentTarget).addClass('disabled').prop('disabled', true);
       this.fix();
     });
   }
@@ -111,6 +110,8 @@ class FolderStructure extends AbstractInteractableModule {
   }
 
   private fix(): void {
+    this.setModalButtonsState(false);
+
     const modalContent: JQuery = this.getModalBody();
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');

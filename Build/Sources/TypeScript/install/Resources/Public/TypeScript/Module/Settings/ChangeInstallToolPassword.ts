@@ -60,35 +60,32 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
   }
 
   private change(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('install-tool-token');
-    (new AjaxRequest(Router.getUrl()))
-      .post({
-        install: {
-          action: 'changeInstallToolPassword',
-          token: executeToken,
-          password: this.findInModal('.t3js-changeInstallToolPassword-password').val(),
-          passwordCheck: this.findInModal('.t3js-changeInstallToolPassword-password-check').val(),
-        },
-      })
-      .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              Notification.showMessage('', element.message, element.severity);
-            });
-          } else {
-            Notification.error('Something went wrong');
-          }
-        },
-        (error: ResponseError): void => {
-          Router.handleAjaxError(error, modalContent);
-        }
-      )
-      .finally((): void => {
-        this.findInModal('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('');
-      });
+    (new AjaxRequest(Router.getUrl())).post({
+      install: {
+        action: 'changeInstallToolPassword',
+        token: executeToken,
+        password: this.findInModal('.t3js-changeInstallToolPassword-password').val(),
+        passwordCheck: this.findInModal('.t3js-changeInstallToolPassword-password-check').val(),
+      },
+    }).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      if (data.success === true && Array.isArray(data.status)) {
+        data.status.forEach((element: any): void => {
+          Notification.showMessage('', element.message, element.severity);
+        });
+      } else {
+        Notification.error('Something went wrong');
+      }
+    }, (error: ResponseError): void => {
+      Router.handleAjaxError(error, modalContent);
+    }).finally((): void => {
+      this.findInModal('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('');
+      this.setModalButtonsState(true);
+    });
   }
 }
 

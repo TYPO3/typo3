@@ -45,12 +45,13 @@ class EnvironmentCheck extends AbstractInteractableModule {
   }
 
   private runTests(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const $errorBadge = $(this.selectorGridderBadge);
     $errorBadge.text('').hide();
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     modalContent.find(this.selectorOutputContainer).empty().append(message);
-    this.findInModal(this.selectorExecuteTrigger).addClass('disabled').prop('disabled', true);
 
     (new AjaxRequest(Router.getUrl('environmentCheckGetStatus')))
       .get({cache: 'no-cache'})

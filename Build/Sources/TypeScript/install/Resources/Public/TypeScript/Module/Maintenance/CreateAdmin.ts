@@ -56,49 +56,53 @@ class CreateAdmin extends AbstractInteractableModule {
         },
         (error: ResponseError): void => {
           Router.handleAjaxError(error, modalContent);
-        }
+        },
       );
   }
 
   private create(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('create-admin-token');
-    (new AjaxRequest(Router.getUrl()))
-      .post({
-        install: {
-          action: 'createAdmin',
-          token: executeToken,
-          userName: this.findInModal('.t3js-createAdmin-user').val(),
-          userPassword: this.findInModal('.t3js-createAdmin-password').val(),
-          userPasswordCheck: this.findInModal('.t3js-createAdmin-password-check').val(),
-          userEmail: this.findInModal('.t3js-createAdmin-email').val(),
-          userSystemMaintainer: (this.findInModal('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0,
-        },
-      })
-      .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              if (element.severity === 2) {
-                Notification.error(element.message);
-              } else {
-                Notification.success(element.title);
-              }
-            });
+    const payload = {
+      install: {
+        action: 'createAdmin',
+        token: executeToken,
+        userName: this.findInModal('.t3js-createAdmin-user').val(),
+        userPassword: this.findInModal('.t3js-createAdmin-password').val(),
+        userPasswordCheck: this.findInModal('.t3js-createAdmin-password-check').val(),
+        userEmail: this.findInModal('.t3js-createAdmin-email').val(),
+        userSystemMaintainer: (this.findInModal('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0,
+      },
+    };
+    this.getModuleContent().find(':input').prop('disabled', true);
+
+    (new AjaxRequest(Router.getUrl())).post(payload).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      if (data.success === true && Array.isArray(data.status)) {
+        data.status.forEach((element: any): void => {
+          if (element.severity === 2) {
+            Notification.error(element.message);
           } else {
-            Notification.error('Something went wrong');
+            Notification.success(element.title);
           }
-        },
-        (error: ResponseError): void => {
-          Router.handleAjaxError(error, modalContent);
-        }
-      );
-    this.findInModal('.t3js-createAdmin-user').val('');
-    this.findInModal('.t3js-createAdmin-password').val('');
-    this.findInModal('.t3js-createAdmin-password-check').val('');
-    this.findInModal('.t3js-createAdmin-email').val('');
-    this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
+        });
+      } else {
+        Notification.error('Something went wrong');
+      }
+    }, (error: ResponseError): void => {
+      Router.handleAjaxError(error, modalContent);
+    }).finally((): void => {
+      this.setModalButtonsState(true);
+
+      this.getModuleContent().find(':input').prop('disabled', false);
+      this.findInModal('.t3js-createAdmin-user').val('');
+      this.findInModal('.t3js-createAdmin-password').val('');
+      this.findInModal('.t3js-createAdmin-password-check').val('');
+      this.findInModal('.t3js-createAdmin-email').val('');
+      this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
+    });
   }
 }
 

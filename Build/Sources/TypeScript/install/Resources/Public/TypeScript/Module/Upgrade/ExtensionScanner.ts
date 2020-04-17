@@ -78,7 +78,7 @@ class ExtensionScanner extends AbstractInteractableModule {
     }).on('click', this.selectorExtensionScanButton, (e: JQueryEventObject): void => {
       // Scan all button
       e.preventDefault();
-      $(e.currentTarget).addClass('disabled').prop('disabled', true);
+      this.setModalButtonsState(false);
       const $extensions = currentModal.find(this.selectorExtensionContainer);
       this.scanAll($extensions);
     });

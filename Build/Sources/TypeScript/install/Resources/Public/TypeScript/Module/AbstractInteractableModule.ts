@@ -33,5 +33,15 @@ export abstract class AbstractInteractableModule {
     return this.currentModal.find(selector);
   }
 
+  protected setModalButtonsState(interactable: boolean): void {
+    this.getModalFooter().find('button').each((_: number, elem: Element): void => {
+      this.setModalButtonState($(elem), interactable)
+    });
+  }
+
+  protected setModalButtonState(button: JQuery, interactable: boolean): void {
+    button.toggleClass('disabled', !interactable).prop('disabled', !interactable);
+  }
+
   public abstract initialize(currentModal: JQuery): void;
 }

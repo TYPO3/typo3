@@ -114,6 +114,8 @@ class LocalConfiguration extends AbstractInteractableModule {
   }
 
   private write(): void {
+    this.setModalButtonsState(false);
+
     const modalContent: JQuery = this.getModalBody();
     const executeToken: JQuery = this.getModuleContent().data('local-configuration-write-token');
     const configurationValues: any = {};
@@ -129,29 +131,26 @@ class LocalConfiguration extends AbstractInteractableModule {
         configurationValues[$element.data('path')] = $element.val();
       }
     });
-    (new AjaxRequest(Router.getUrl()))
-      .post({
-        install: {
-          action: 'localConfigurationWrite',
-          token: executeToken,
-          configurationValues: configurationValues,
-        },
-      })
-      .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              Notification.showMessage(element.title, element.message, element.severity);
-            });
-          } else {
-            Notification.error('Something went wrong');
-          }
-        },
-        (error: ResponseError): void => {
-          Router.handleAjaxError(error, modalContent);
-        }
-      );
+    (new AjaxRequest(Router.getUrl())).post({
+      install: {
+        action: 'localConfigurationWrite',
+        token: executeToken,
+        configurationValues: configurationValues,
+      },
+    }).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      if (data.success === true && Array.isArray(data.status)) {
+        data.status.forEach((element: any): void => {
+          Notification.showMessage(element.title, element.message, element.severity);
+        });
+      } else {
+        Notification.error('Something went wrong');
+      }
+    }, (error: ResponseError): void => {
+      Router.handleAjaxError(error, modalContent);
+    }).finally((): void => {
+      this.setModalButtonsState(true);
+    });
   }
 }
 

@@ -40,6 +40,8 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
   }
 
   private check(): void {
+    this.setModalButtonsState(false);
+
     const $outputContainer: JQuery = $(this.selectorOutputContainer);
     const modalContent: JQuery = this.getModalBody();
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');

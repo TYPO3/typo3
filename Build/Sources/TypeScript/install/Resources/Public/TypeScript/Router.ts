@@ -16,7 +16,7 @@ import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from './Module/AbstractInteractableModule';
-import {InlineModuleInterface} from './Module/InlineModuleInterface';
+import {AbstractInlineModule} from './Module/AbstractInlineModule';
 import Icons = require('TYPO3/CMS/Backend/Icons');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import InfoBox = require('./Renderable/InfoBox');
@@ -59,7 +59,7 @@ class Router {
       const inlineState = $me.data('inline');
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
-        require([requireModule], (aModule: InlineModuleInterface): void => {
+        require([requireModule], (aModule: AbstractInlineModule): void => {
           aModule.initialize($me);
         });
       } else {

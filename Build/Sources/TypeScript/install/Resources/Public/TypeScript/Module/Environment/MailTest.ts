@@ -59,41 +59,43 @@ class MailTest extends AbstractInteractableModule {
         },
         (error: ResponseError): void => {
           Router.handleAjaxError(error, modalContent);
-        }
+        },
       );
   }
 
   private send(): void {
+    this.setModalButtonsState(false);
+
     const executeToken: string = this.getModuleContent().data('mail-test-token');
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
-    (new AjaxRequest(Router.getUrl()))
-      .post({
-        install: {
-          action: 'mailTest',
-          token: executeToken,
-          email: this.findInModal('.t3js-mailTest-email').val(),
-        },
-      })
-      .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          $outputContainer.empty();
-          if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              const aMessage: any = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.html(aMessage);
-            });
-          } else {
-            Notification.error('Something went wrong');
-          }
-        },
-        (): void => {
-          // 500 can happen here if the mail configuration is broken
+    (new AjaxRequest(Router.getUrl())).post({
+      install: {
+        action: 'mailTest',
+        token: executeToken,
+        email: this.findInModal('.t3js-mailTest-email').val(),
+      },
+    }).then(
+      async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
+        $outputContainer.empty();
+        if (Array.isArray(data.status)) {
+          data.status.forEach((element: any): void => {
+            const aMessage: any = InfoBox.render(element.severity, element.title, element.message);
+            $outputContainer.html(aMessage);
+          });
+        } else {
           Notification.error('Something went wrong');
         }
-      );
+      },
+      (): void => {
+        // 500 can happen here if the mail configuration is broken
+        Notification.error('Something went wrong');
+      },
+    ).finally((): void => {
+      this.setModalButtonsState(true);
+    });
   }
 }
 

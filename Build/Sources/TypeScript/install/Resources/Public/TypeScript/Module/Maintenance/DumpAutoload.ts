@@ -15,14 +15,14 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Router = require('../../Router');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {InlineModuleInterface} from './../InlineModuleInterface';
+import {AbstractInlineModule} from '../AbstractInlineModule';
 
 /**
  * Module: TYPO3/CMS/Install/Module/DumpAutoload
  */
-class DumpAutoload implements InlineModuleInterface {
+class DumpAutoload extends AbstractInlineModule {
   public initialize($trigger: JQuery): void {
-    $trigger.addClass('disabled').prop('disabled', true);
+    this.setButtonState($trigger, false);
 
     (new AjaxRequest(Router.getUrl('dumpAutoload')))
       .get({cache: 'no-cache'})
@@ -46,7 +46,7 @@ class DumpAutoload implements InlineModuleInterface {
         }
       )
       .finally((): void => {
-        $trigger.removeClass('disabled').prop('disabled', false);
+        this.setButtonState($trigger, true);
       });
   }
 }

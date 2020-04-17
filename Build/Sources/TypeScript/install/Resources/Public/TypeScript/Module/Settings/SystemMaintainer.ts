@@ -99,34 +99,33 @@ class SystemMaintainer extends AbstractInteractableModule {
   }
 
   private write(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('system-maintainer-write-token');
     const selectedUsers = this.findInModal(this.selectorChosenField).val();
-    (new AjaxRequest(Router.getUrl()))
-      .post({
-        install: {
-          users: selectedUsers,
-          token: executeToken,
-          action: 'systemMaintainerWrite',
-        },
-      })
-      .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          if (data.success === true) {
-            if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
-                Notification.success(element.title, element.message);
-              });
-            }
-          } else {
-            Notification.error('Something went wrong');
-          }
-        },
-        (error: ResponseError): void => {
-          Router.handleAjaxError(error, modalContent);
+    (new AjaxRequest(Router.getUrl())).post({
+      install: {
+        users: selectedUsers,
+        token: executeToken,
+        action: 'systemMaintainerWrite',
+      },
+    }).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      if (data.success === true) {
+        if (Array.isArray(data.status)) {
+          data.status.forEach((element: any): void => {
+            Notification.success(element.title, element.message);
+          });
         }
-      );
+      } else {
+        Notification.error('Something went wrong');
+      }
+    }, (error: ResponseError): void => {
+      Router.handleAjaxError(error, modalContent);
+    }).finally((): void => {
+      this.setModalButtonsState(true);
+    });
   }
 }
 

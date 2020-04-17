@@ -50,6 +50,8 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
   }
 
   private getStats(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('clearTypo3tempFilesStats')))
       .get({cache: 'no-cache'})

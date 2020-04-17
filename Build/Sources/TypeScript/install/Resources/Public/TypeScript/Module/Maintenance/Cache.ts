@@ -15,14 +15,14 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Router = require('../../Router');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {InlineModuleInterface} from './../InlineModuleInterface';
+import {AbstractInlineModule} from '../AbstractInlineModule';
 
 /**
  * Module: TYPO3/CMS/Install/Module/Cache
  */
-class Cache implements InlineModuleInterface {
+class Cache extends AbstractInlineModule {
   public initialize($trigger: JQuery): void {
-    $trigger.addClass('disabled').prop('disabled', true);
+    this.setButtonState($trigger, false);
 
     (new AjaxRequest(Router.getUrl('cacheClearAll', 'maintenance')))
       .get({cache: 'no-cache'})
@@ -45,10 +45,10 @@ class Cache implements InlineModuleInterface {
           Notification.error(
             'Clearing caches went wrong on the server side. Check the system for broken extensions or missing database tables and try again',
           );
-        }
+        },
       )
       .finally((): void => {
-        $trigger.removeClass('disabled').prop('disabled', false);
+        this.setButtonState($trigger, true);
       });
   }
 }

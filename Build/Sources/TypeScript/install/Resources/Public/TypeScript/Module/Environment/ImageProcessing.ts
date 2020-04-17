@@ -68,7 +68,7 @@ class ImageProcessing extends AbstractInteractableModule {
   private runTests(): void {
     const modalContent = this.getModalBody();
     const $triggerButton = this.findInModal(this.selectorExecuteTrigger);
-    $triggerButton.addClass('disabled').prop('disabled', true);
+    this.setModalButtonsState(false);
 
     const $twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
     const promises: Array<Promise<any>> = [];

@@ -57,6 +57,8 @@ class Features extends AbstractInteractableModule {
   }
 
   private save(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('features-save-token');
     const postData: any = {};

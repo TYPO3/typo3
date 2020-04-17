@@ -51,6 +51,8 @@ class ClearTables extends AbstractInteractableModule {
   }
 
   private getStats(): void {
+    this.setModalButtonsState(false);
+
     const modalContent: JQuery = this.getModalBody();
     (new AjaxRequest(Router.getUrl('clearTablesStats')))
       .get({cache: 'no-cache'})

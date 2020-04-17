@@ -11,6 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-export interface InlineModuleInterface {
-  initialize($trigger: JQuery): void;
+export abstract class AbstractInlineModule {
+  protected setButtonState(button: JQuery, interactable: boolean): void {
+    button.toggleClass('disabled', !interactable).prop('disabled', !interactable);
+  }
+
+  abstract initialize($trigger: JQuery): void;
 }

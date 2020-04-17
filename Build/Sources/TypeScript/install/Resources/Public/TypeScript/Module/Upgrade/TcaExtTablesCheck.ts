@@ -40,6 +40,8 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
   }
 
   private check(): void {
+    this.setModalButtonsState(false);
+
     const modalContent = this.getModalBody();
     const $outputContainer = $(this.selectorOutputContainer);
     const m: any = ProgressBar.render(Severity.loading, 'Loading...', '');

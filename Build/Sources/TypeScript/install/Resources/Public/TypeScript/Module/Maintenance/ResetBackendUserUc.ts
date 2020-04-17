@@ -13,16 +13,16 @@
 
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {InlineModuleInterface} from './../InlineModuleInterface';
+import {AbstractInlineModule} from '../AbstractInlineModule';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ResetBackendUserUc
  */
-class ResetBackendUserUc implements InlineModuleInterface {
+class ResetBackendUserUc extends AbstractInlineModule {
   public initialize($trigger: JQuery): void {
-    $trigger.addClass('disabled').prop('disabled', true);
+    this.setButtonState($trigger, false);
 
     (new AjaxRequest(Router.getUrl('resetBackendUserUc')))
       .get({cache: 'no-cache'})
@@ -46,7 +46,7 @@ class ResetBackendUserUc implements InlineModuleInterface {
         }
       )
       .finally((): void => {
-        $trigger.removeClass('disabled').prop('disabled', false);
+        this.setButtonState($trigger, true);
       });
   }
 }
