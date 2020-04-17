@@ -32,6 +32,7 @@ class VisibilityAspectTest extends UnitTestCase
         self::assertFalse($subject->includeHiddenPages());
         self::assertFalse($subject->includeHiddenContent());
         self::assertFalse($subject->includeDeletedRecords());
+        self::assertFalse($subject->includeScheduledRecords());
     }
 
     /**
@@ -39,10 +40,11 @@ class VisibilityAspectTest extends UnitTestCase
      */
     public function getterReturnsProperValues(): void
     {
-        $subject = new VisibilityAspect(true, true, true);
+        $subject = new VisibilityAspect(true, true, true, true);
         self::assertTrue($subject->includeHiddenPages());
         self::assertTrue($subject->includeHiddenContent());
         self::assertTrue($subject->includeDeletedRecords());
+        self::assertTrue($subject->includeScheduledRecords());
     }
 
     /**
@@ -50,10 +52,11 @@ class VisibilityAspectTest extends UnitTestCase
      */
     public function getReturnsProperValues(): void
     {
-        $subject = new VisibilityAspect(true, true, true);
+        $subject = new VisibilityAspect(true, true, true, true);
         self::assertTrue($subject->get('includeHiddenPages'));
         self::assertTrue($subject->get('includeHiddenContent'));
         self::assertTrue($subject->get('includeDeletedRecords'));
+        self::assertTrue($subject->get('includeScheduledRecords'));
     }
 
     /**

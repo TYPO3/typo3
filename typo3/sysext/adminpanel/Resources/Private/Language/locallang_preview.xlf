@@ -14,6 +14,9 @@
             <trans-unit id="showHiddenRecords" resname="showHiddenRecords">
                 <source>Show hidden records</source>
             </trans-unit>
+            <trans-unit id="showScheduledRecords" resname="showScheduledRecords">
+                <source>Ignore start and end time</source>
+            </trans-unit>
             <trans-unit id="showFluidDebug" resname="showFluidDebug">
                 <source>Show fluid debug output</source>
             </trans-unit>

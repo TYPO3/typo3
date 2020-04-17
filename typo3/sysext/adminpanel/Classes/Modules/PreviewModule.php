@@ -70,6 +70,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             'showHiddenPages' => (bool)$this->getConfigOptionForModule('showHiddenPages'),
             'simulateDate' => $simulateTimeByRequest ?: (int)$this->getConfigOptionForModule('simulateDate'),
             'showHiddenRecords' => (bool)$this->getConfigOptionForModule('showHiddenRecords'),
+            'showScheduledRecords' => (bool)$this->getConfigOptionForModule('showScheduledRecords'),
             'simulateUserGroup' => $simulateGroupByRequest ?: (int)$this->getConfigOptionForModule('simulateUserGroup'),
             'showFluidDebug' => (bool)$this->getConfigOptionForModule('showFluidDebug'),
         ];
@@ -81,6 +82,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         $this->initializeFrontendPreview(
             $this->config['showHiddenPages'],
             $this->config['showHiddenRecords'],
+            $this->config['showScheduledRecords'],
             $this->config['simulateDate'],
             $this->config['simulateUserGroup'],
             $request
@@ -110,6 +112,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                     'pageId' => $pageId,
                     'hiddenPages' => $this->config['showHiddenPages'],
                     'hiddenRecords' => $this->config['showHiddenRecords'],
+                    'showScheduledRecords' => $this->config['showScheduledRecords'],
                     'fluidDebug' => $this->config['showFluidDebug'],
                 ],
                 'simulateDate' => $this->config['simulateDate'],
@@ -141,6 +144,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      *
      * @param bool $showHiddenPages
      * @param bool $showHiddenRecords
+     * @param bool $showScheduledRecords
      * @param int $simulateDate
      * @param int $simulateUserGroup UID of the fe_group to simulate
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -149,6 +153,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
     protected function initializeFrontendPreview(
         bool $showHiddenPages,
         bool $showHiddenRecords,
+        bool $showScheduledRecords,
         int $simulateDate,
         int $simulateUserGroup,
         ServerRequestInterface $request
@@ -159,7 +164,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         // Modify visibility settings (hidden pages + hidden content)
         $context->setAspect(
             'visibility',
-            GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords)
+            GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords, false, $showScheduledRecords)
         );
 
         // Simulate date
@@ -194,7 +199,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                 )
             );
         }
-        $isPreview = $simulateUserGroup || $simTime || $showHiddenPages || $showHiddenRecords;
+        $isPreview = $simulateUserGroup || $simTime || $showHiddenPages || $showHiddenRecords || $showScheduledRecords;
         if ($context->hasAspect('frontend.preview')) {
             $existingPreviewAspect = $context->getAspect('frontend.preview');
             $isPreview = $existingPreviewAspect->isPreview() || $isPreview;

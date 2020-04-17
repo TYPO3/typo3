@@ -42,18 +42,25 @@ class VisibilityAspect implements AspectInterface
     /**
      * @var bool
      */
+    protected $includeScheduledRecords;
+
+    /**
+     * @var bool
+     */
     protected $includeDeletedRecords;
 
     /**
      * @param bool $includeHiddenPages whether to include hidden=1 in pages tables
      * @param bool $includeHiddenContent whether to include hidden=1 in tables except for pages
+     * @param bool $includeScheduledRecords whether to ignore access time in tables except for pages
      * @param bool $includeDeletedRecords whether to include deleted=1 records (only for use in recycler)
      */
-    public function __construct(bool $includeHiddenPages = false, bool $includeHiddenContent = false, bool $includeDeletedRecords = false)
+    public function __construct(bool $includeHiddenPages = false, bool $includeHiddenContent = false, bool $includeDeletedRecords = false, bool $includeScheduledRecords = false)
     {
         $this->includeHiddenPages = $includeHiddenPages;
         $this->includeHiddenContent = $includeHiddenContent;
         $this->includeDeletedRecords = $includeDeletedRecords;
+        $this->includeScheduledRecords = $includeScheduledRecords;
     }
 
     /**
@@ -72,6 +79,8 @@ class VisibilityAspect implements AspectInterface
                 return $this->includeHiddenContent;
             case 'includeDeletedRecords':
                 return $this->includeDeletedRecords;
+            case 'includeScheduledRecords':
+                return $this->includeScheduledRecords;
         }
         throw new AspectPropertyNotFoundException('Property "' . $name . '" not found in Aspect "' . __CLASS__ . '".', 1527780439);
     }
@@ -89,6 +98,11 @@ class VisibilityAspect implements AspectInterface
     public function includeHiddenContent(): bool
     {
         return $this->includeHiddenContent;
+    }
+
+    public function includeScheduledRecords(): bool
+    {
+        return $this->includeScheduledRecords;
     }
 
     public function includeDeletedRecords(): bool

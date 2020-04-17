@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,14 +73,18 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         foreach ($this->restrictions as $restriction) {
             foreach ($queriedTables as $tableAlias => $tableName) {
                 $disableRestriction = false;
-                if ($restriction instanceof HiddenRestriction) {
-                    /** @var VisibilityAspect $visibilityAspect */
+                if ($restriction instanceof HiddenRestriction || $restriction instanceof StartTimeRestriction || $restriction instanceof EndTimeRestriction) {
                     $visibilityAspect = $this->context->getAspect('visibility');
-                    // If display of hidden records is requested, we must disable the hidden restriction.
-                    if ($tableName === 'pages') {
-                        $disableRestriction = $visibilityAspect->includeHiddenPages();
-                    } else {
-                        $disableRestriction = $visibilityAspect->includeHiddenContent();
+                    if ($restriction instanceof HiddenRestriction) {
+                        // If display of hidden records is requested, we must disable the hidden restriction.
+                        if ($tableName === 'pages') {
+                            $disableRestriction = $visibilityAspect->includeHiddenPages();
+                        } else {
+                            $disableRestriction = $visibilityAspect->includeHiddenContent();
+                        }
+                    }
+                    if ($restriction instanceof StartTimeRestriction || $restriction instanceof EndTimeRestriction) {
+                        $disableRestriction = $visibilityAspect->includeScheduledRecords();
                     }
                 }
                 if (!$disableRestriction) {

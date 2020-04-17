@@ -86,6 +86,7 @@ class PreviewModuleTest extends UnitTestCase
         $configurationService->getConfigurationOption('preview', 'showHiddenPages')->willReturn('0');
         $configurationService->getConfigurationOption('preview', 'simulateDate')->willReturn('0');
         $configurationService->getConfigurationOption('preview', 'showHiddenRecords')->willReturn('0');
+        $configurationService->getConfigurationOption('preview', 'showScheduledRecords')->willReturn('0');
         $configurationService->getConfigurationOption('preview', 'showFluidDebug')->willReturn('0');
         $configurationService->getConfigurationOption('preview', 'simulateUserGroup')->willReturn('1');
         $context = $this->prophesize(Context::class);

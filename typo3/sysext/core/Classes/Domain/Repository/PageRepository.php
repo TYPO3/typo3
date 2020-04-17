@@ -1411,6 +1411,8 @@ class PageRepository implements LoggerAwareInterface
      */
     public function enableFields($table, $show_hidden = -1, $ignore_array = [])
     {
+        $showInaccessible = $this->context->getPropertyFromAspect('visibility', 'includeScheduledRecords', false);
+
         if ($show_hidden === -1) {
             // If show_hidden was not set from outside, use the current context
             $show_hidden = (int)$this->context->getPropertyFromAspect('visibility', $table === 'pages' ? 'includeHiddenPages' : 'includeHiddenContent', false);
@@ -1464,14 +1466,14 @@ class PageRepository implements LoggerAwareInterface
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);
                     }
-                    if (($ctrl['enablecolumns']['starttime'] ?? false) && !($ignore_array['starttime'] ?? false)) {
+                    if (($ctrl['enablecolumns']['starttime'] ?? false) && !$showInaccessible && !($ignore_array['starttime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
                         $constraints[] = $expressionBuilder->lte(
                             $field,
                             $this->context->getPropertyFromAspect('date', 'accessTime', 0)
                         );
                     }
-                    if (($ctrl['enablecolumns']['endtime'] ?? false) && !($ignore_array['endtime'] ?? false)) {
+                    if (($ctrl['enablecolumns']['endtime'] ?? false) && !$showInaccessible && !($ignore_array['endtime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
                         $constraints[] = $expressionBuilder->or(
                             $expressionBuilder->eq($field, 0),
@@ -1493,6 +1495,7 @@ class PageRepository implements LoggerAwareInterface
                     $_params = [
                         'table' => $table,
                         'show_hidden' => $show_hidden,
+                        'showInaccessible' => $showInaccessible,
                         'ignore_array' => $ignore_array,
                         'ctrl' => $ctrl,
                     ];
