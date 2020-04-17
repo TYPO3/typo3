@@ -261,11 +261,10 @@ class Clipboard
     {
         $languageService = $this->getLanguageService();
         $elementCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
-        // Copymode Selector menu
-        $copymodeUrl = GeneralUtility::linkThisScript();
-
-        $this->view->assign('actionCopyModeUrl', htmlspecialchars(GeneralUtility::quoteJSvalue($copymodeUrl . '&CB[setCopyMode]=')));
-        $this->view->assign('actionCopyModeUrl1', htmlspecialchars(GeneralUtility::quoteJSvalue($copymodeUrl . '&CB[setCopyMode]=1')));
+        // CopyMode Selector menu
+        $copyModeUrl = GeneralUtility::linkThisScript();
+        $this->view->assign('actionCopyModeUrl', $copyModeUrl . '&CB[setCopyMode]=#clip_head');
+        $this->view->assign('actionCopyModeUrl1', $copyModeUrl . '&CB[setCopyMode]=1#clip_head');
         $this->view->assign('currentMode', $this->currentMode());
         $this->view->assign('elementCount', $elementCount);
 

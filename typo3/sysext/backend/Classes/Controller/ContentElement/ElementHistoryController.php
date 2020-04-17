@@ -151,7 +151,6 @@ class ElementHistoryController
             }
         }
 
-        $this->view->assign('TYPO3_REQUEST_URI', $normalizedParams->getRequestUrl());
         $this->view->assign('editLock', $this->editLock);
 
         // Setting up the buttons and markers for docheader
@@ -275,7 +274,7 @@ class ElementHistoryController
 
         foreach ($selector as $key => $values) {
             foreach ($values as $singleKey => $singleVal) {
-                $selector[$key][$singleKey]['scriptUrl'] = htmlspecialchars(GeneralUtility::quoteJSvalue($scriptUrl . '&settings[' . $key . ']=' . $singleKey));
+                $selector[$key][$singleKey]['scriptUrl'] = $scriptUrl . '&settings[' . $key . ']=' . $singleKey;
             }
         }
         $this->view->assign('settings', $selector);

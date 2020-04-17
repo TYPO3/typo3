@@ -5,7 +5,7 @@
             <a href="{fullHistoryUrl}" class="btn btn-default" style="margin-bottom: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory_link')}</a>
         </f:if>
     </f:if>
-    <form name="settings" action="{TYPO3_REQUEST_URI}" method="post">
+    <div id="element-history-settings">
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="panel panel-default">
@@ -54,8 +54,7 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="copymodeSelector">
                                             <f:for each="{values}" as="singleValue" key="singleKey">
-                                                <li><a href="#"
-                                                            onclick="document.settings.method='POST'; document.settings.action={singleValue.scriptUrl}; document.settings.submit()">
+                                                <li><a href="{singleValue.scriptUrl}">
                                                     <f:if condition="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}">
                                                         <f:then>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
                                                         <f:else>{singleValue.value}</f:else>
@@ -71,5 +70,5 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
