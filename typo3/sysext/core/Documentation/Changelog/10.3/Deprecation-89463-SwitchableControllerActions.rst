@@ -91,4 +91,18 @@ This configuration would lead to the creation configuration of two different plu
         ]
     );
 
+
+Advantages of Separate Plugins
+------------------------------
+
+When using separate plugins for each switchable controller action combination,
+it is possible to properly define which action should be cached.
+
+In addition, TYPO3 v10 LTS allows to group plugins in FormEngine directly
+to semantically register various plugins in one specific group.
+
+See https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.4/Feature-91008-ItemGroupingForTCASelectItems.html
+for more details.
+
+
 .. index:: FlexForm, PHP-API, TypoScript, NotScanned, ext:extbase
