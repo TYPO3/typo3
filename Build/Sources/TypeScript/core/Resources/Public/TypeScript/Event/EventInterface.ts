@@ -11,7 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-export type Listener = Function & EventListenerOrEventListenerObject;
+export type Listener = Function & (EventListenerWithTarget | EventListener | EventListenerObject);
+
+export interface EventListenerWithTarget {
+  (evt: Event, target?: Element): void;
+}
 
 export interface EventInterface {
   bindTo(element: EventTarget): void;
