@@ -219,6 +219,10 @@ class DragDrop {
 
       DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction).then((): void => {
         const $languageDescriber = $(`.t3-page-column-lang-name[data-language-uid="${language}"]`);
+        if ($languageDescriber.length === 0) {
+          return;
+        }
+
         const newFlagIdentifier = $languageDescriber.data('flagIdentifier');
         const newLanguageTitle = $languageDescriber.data('languageTitle');
 
