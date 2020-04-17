@@ -16,6 +16,9 @@
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
+use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
+use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -68,7 +71,7 @@ class UploadExtensionFileControllerTest extends UnitTestCase
     public function getExtensionFromZipFileExtractsExtensionKey($filename, $expectedKey)
     {
         /** @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService|MockObject $managementServiceMock */
-        $managementServiceMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class)
+        $managementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)
             ->setMethods(['isAvailable'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -78,10 +81,10 @@ class UploadExtensionFileControllerTest extends UnitTestCase
             ->willReturn(false);
 
         /** @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|MockObject $fileHandlingUtilityMock */
-        $fileHandlingUtilityMock = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class);
+        $fileHandlingUtilityMock = $this->createMock(FileHandlingUtility::class);
         $fileHandlingUtilityMock->expects(self::once())->method('unzipExtensionFromFile');
 
-        $fixture = new \TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController();
+        $fixture = new UploadExtensionFileController();
         $fixture->injectManagementService($managementServiceMock);
         $fixture->injectFileHandlingUtility($fileHandlingUtilityMock);
 

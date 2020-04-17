@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException;
+use TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException;
+use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -71,8 +74,8 @@ class RenderChildrenViewHelper extends AbstractViewHelper
     protected static function getWidgetRenderingContext(RenderingContextInterface $renderingContext)
     {
         $subRenderingContext = static::getWidgetContext($renderingContext)->getViewHelperChildNodeRenderingContext();
-        if (!$subRenderingContext instanceof \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface) {
-            throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException('Rendering Context not found inside Widget. <f:renderChildren> has been used in an AJAX Request, but is only usable in non-ajax mode.', 1284986604);
+        if (!$subRenderingContext instanceof RenderingContextInterface) {
+            throw new RenderingContextNotFoundException('Rendering Context not found inside Widget. <f:renderChildren> has been used in an AJAX Request, but is only usable in non-ajax mode.', 1284986604);
         }
         return $subRenderingContext;
     }
@@ -94,8 +97,8 @@ class RenderChildrenViewHelper extends AbstractViewHelper
     protected static function getWidgetContext(RenderingContextInterface $renderingContext)
     {
         $request = $renderingContext->getControllerContext()->getRequest();
-        if (!$request instanceof \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest) {
-            throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException('The Request is not a WidgetRequest! <f:renderChildren> must be called inside a Widget Template.', 1284986120);
+        if (!$request instanceof WidgetRequest) {
+            throw new WidgetRequestNotFoundException('The Request is not a WidgetRequest! <f:renderChildren> must be called inside a Widget Template.', 1284986120);
         }
         return $request->getWidgetContext();
     }

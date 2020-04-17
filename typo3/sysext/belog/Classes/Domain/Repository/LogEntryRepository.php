@@ -15,16 +15,23 @@
 
 namespace TYPO3\CMS\Belog\Domain\Repository;
 
+use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Belog\Domain\Model\Workspace;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Sys log entry repository
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class LogEntryRepository extends Repository
 {
     /**
      * Backend users, with UID as key
@@ -40,7 +47,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $this->beUserList = $this->getBackendUsers();
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
@@ -51,14 +58,14 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function findByConstraint(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
+    public function findByConstraint(Constraint $constraint)
     {
         $query = $this->createQuery();
         $queryConstraints = $this->createQueryConstraints($query, $constraint);
         if (!empty($queryConstraints)) {
             $query->matching($query->logicalAnd($queryConstraints));
         }
-        $query->setOrderings(['uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
+        $query->setOrderings(['uid' => QueryInterface::ORDER_DESCENDING]);
         $query->setLimit($constraint->getNumber());
         return $query->execute();
     }
@@ -70,13 +77,13 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
      * @return array|\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface[]
      */
-    protected function createQueryConstraints(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
+    protected function createQueryConstraints(QueryInterface $query, Constraint $constraint)
     {
         $queryConstraints = [];
         // User / group handling
         $this->addUsersAndGroupsToQueryConstraints($constraint, $query, $queryConstraints);
         // Workspace
-        if ($constraint->getWorkspaceUid() != \TYPO3\CMS\Belog\Domain\Model\Workspace::UID_ANY_WORKSPACE) {
+        if ($constraint->getWorkspaceUid() != Workspace::UID_ANY_WORKSPACE) {
             $queryConstraints[] = $query->equals('workspace', $constraint->getWorkspaceUid());
         }
         // Action (type):
@@ -102,13 +109,13 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @param array $queryConstraints the query constraints to add to, will be modified
      */
-    protected function addPageTreeConstraintsToQuery(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint, \TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$queryConstraints)
+    protected function addPageTreeConstraintsToQuery(Constraint $constraint, QueryInterface $query, array &$queryConstraints)
     {
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
             /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTree */
-            $pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
+            $pageTree = GeneralUtility::makeInstance(PageTreeView::class);
             $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
             $pageTree->makeHTML = 0;
             $pageTree->fieldArray = ['uid'];
@@ -130,7 +137,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @param array $queryConstraints the query constraints to add to, will be modified
      */
-    protected function addUsersAndGroupsToQueryConstraints(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint, \TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$queryConstraints)
+    protected function addUsersAndGroupsToQueryConstraints(Constraint $constraint, QueryInterface $query, array &$queryConstraints)
     {
         $userOrGroup = $constraint->getUserOrGroup();
         if ($userOrGroup === '') {
@@ -141,7 +148,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $groupId = (int)substr($userOrGroup, 3);
             $userIds = [];
             foreach ($this->beUserList as $userId => $userData) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($userData['usergroup_cached_list'], $groupId)) {
+                if (GeneralUtility::inList($userData['usergroup_cached_list'], $groupId)) {
                     $userIds[] = $userId;
                 }
             }
@@ -187,6 +194,6 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected function getBackendUsers()
     {
-        return \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+        return BackendUtility::getUserNames();
     }
 }

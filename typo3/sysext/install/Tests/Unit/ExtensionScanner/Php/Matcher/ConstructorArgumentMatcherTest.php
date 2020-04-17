@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
 use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
 /**
  * Test case
  */
-class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
+class ConstructorArgumentMatcherTest extends TestCase
 {
     public function hitsFromFixtureAreFoundDataProvider(): array
     {

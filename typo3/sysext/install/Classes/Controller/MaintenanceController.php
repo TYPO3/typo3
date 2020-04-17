@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
@@ -817,7 +818,7 @@ class MaintenanceController extends AbstractController
         // cacheManager implements SingletonInterface, so the only way to get a "fresh"
         // instance is by circumventing makeInstance and/or the objectManager and
         // using new directly!
-        $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
+        $cacheManager = new CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         $cacheManager->getCache('l10n')->flush();
 

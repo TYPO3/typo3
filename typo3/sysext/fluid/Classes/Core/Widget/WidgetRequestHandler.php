@@ -15,6 +15,12 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler;
+use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+
 /**
  * Widget request handler, which handles the request if
  * f3-fluid-widget-id is found.
@@ -22,7 +28,7 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * This Request Handler gets the WidgetRequestBuilder injected.
  * @internal It is a purely internal class which should not be used outside of Fluid.
  */
-class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler
+class WidgetRequestHandler extends AbstractRequestHandler
 {
     /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder
@@ -42,7 +48,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
      */
-    public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder)
+    public function injectAjaxWidgetContextHolder(AjaxWidgetContextHolder $ajaxWidgetContextHolder)
     {
         $this->ajaxWidgetContextHolder = $ajaxWidgetContextHolder;
     }
@@ -50,7 +56,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
@@ -58,7 +64,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder
      */
-    public function injectRequestBuilder(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder)
+    public function injectRequestBuilder(RequestBuilder $requestBuilder)
     {
         // This method intentionally left blank
     }
@@ -66,7 +72,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder $requestBuilder
      */
-    public function injectWidgetRequestBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder $requestBuilder)
+    public function injectWidgetRequestBuilder(WidgetRequestBuilder $requestBuilder)
     {
         $this->requestBuilder = $requestBuilder;
     }
@@ -79,7 +85,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
     public function handleRequest()
     {
         $request = $this->requestBuilder->build();
-        $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
+        $response = $this->objectManager->get(Response::class);
         $this->dispatcher->dispatch($request, $response);
         return $response;
     }
@@ -89,7 +95,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
      */
     public function canHandleRequest()
     {
-        $rawGetArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+        $rawGetArguments = GeneralUtility::_GET();
         return isset($rawGetArguments['fluid-widget-id']);
     }
 

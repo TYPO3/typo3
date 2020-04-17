@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
 
+use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class LogEntryTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Belog\Domain\Model\LogEntry();
+        $this->subject = new LogEntry();
     }
 
     /**

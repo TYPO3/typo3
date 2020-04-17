@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
+use TYPO3\CMS\Extbase\Mvc\Request;
+
 /**
  * Represents a widget request.
  * @internal It is a purely internal class which should not be used outside of Fluid.
  */
-class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Request
+class WidgetRequest extends Request
 {
     /**
      * @var string The requested representation format
@@ -42,7 +44,7 @@ class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Request
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
      */
-    public function setWidgetContext(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext)
+    public function setWidgetContext(WidgetContext $widgetContext)
     {
         $this->widgetContext = $widgetContext;
         $this->setControllerObjectName($widgetContext->getControllerObjectName());

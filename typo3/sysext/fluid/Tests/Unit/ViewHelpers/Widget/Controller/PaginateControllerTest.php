@@ -15,7 +15,16 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Widget\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -59,22 +68,22 @@ class PaginateControllerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, ['dummy'], ['someType']);
-        $this->querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+        $this->query = $this->getAccessibleMock(Query::class, ['dummy'], ['someType']);
+        $this->querySettings = $this->createMock(QuerySettingsInterface::class);
         $this->query->_set('querySettings', $this->querySettings);
-        $this->persistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-        $this->backend = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
+        $this->persistenceManager = $this->createMock(PersistenceManagerInterface::class);
+        $this->backend = $this->createMock(BackendInterface::class);
         $this->query->_set('persistenceManager', $this->persistenceManager);
-        $this->dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        $this->dataMapper = $this->createMock(DataMapper::class);
         $this->query->_set('dataMapper', $this->dataMapper);
         $this->controller = $this->getAccessibleMock(
-            \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
+            PaginateController::class,
             ['dummy'],
             [],
             '',
             false
         );
-        $this->controller->_set('view', $this->createMock(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface::class));
+        $this->controller->_set('view', $this->createMock(ViewInterface::class));
     }
 
     /**
@@ -160,8 +169,8 @@ class PaginateControllerTest extends UnitTestCase
      */
     public function acceptQueryResultInterfaceAsObjects()
     {
-        $mockQueryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
-        $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
+        $mockQueryResult = $this->createMock(QueryResultInterface::class);
+        $mockQuery = $this->createMock(QueryInterface::class);
         $mockQueryResult->expects(self::any())->method('getQuery')->willReturn($mockQuery);
         $this->controller->_set('objects', $mockQueryResult);
         $this->controller->_set('widgetConfiguration', ['as' => 'paginatedObjects']);

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\Configuration\Image;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 
 /**
  * Preset for ImageMagick version 6 or higher
@@ -80,7 +81,7 @@ class ImageMagick6Preset extends AbstractImagePreset
             if (@is_file($path . $executable)) {
                 $command = escapeshellarg($path . $executable) . ' -version';
                 $executingResult = false;
-                \TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $executingResult);
+                CommandUtility::exec($command, $executingResult);
                 // First line of exec command should contain string GraphicsMagick
                 $firstResultLine = array_shift($executingResult);
                 // Example: "Version: ImageMagick 6.6.0-4 2012-05-02 Q16 http://www.imagemagick.org"

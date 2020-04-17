@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -311,7 +312,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $bulkCheckBox = '';
             }
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // Create link to showing details about the file in a window:
             $Ahref = (string)$uriBuilder->buildUriFromRoute('show_item', [
                 'type' => 'file',

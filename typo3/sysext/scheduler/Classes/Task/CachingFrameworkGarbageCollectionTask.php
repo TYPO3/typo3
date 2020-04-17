@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Garbage collection of caching framework cache backends.
  *
@@ -23,7 +26,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * is configured to be cleaned.
  * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
-class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class CachingFrameworkGarbageCollectionTask extends AbstractTask
 {
     /**
      * Backend types that should be cleaned up,
@@ -49,7 +52,7 @@ class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\Ab
                 // The cache backend used for this cache
                 $usedCacheBackend = $cacheConfiguration['backend'];
                 if (in_array($usedCacheBackend, $this->selectedBackends)) {
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache($cacheName)->collectGarbage();
+                    GeneralUtility::makeInstance(CacheManager::class)->getCache($cacheName)->collectGarbage();
                 }
             }
         }

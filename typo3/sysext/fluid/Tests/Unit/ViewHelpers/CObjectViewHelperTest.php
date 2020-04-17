@@ -25,6 +25,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Test case
@@ -147,7 +148,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
 
-        $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode($exceptionCode);
         $this->viewHelper->initializeArgumentsAndRender();
     }

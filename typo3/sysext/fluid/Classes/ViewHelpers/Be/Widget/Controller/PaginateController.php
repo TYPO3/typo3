@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller;
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
+
 /**
  * Class PaginateController
  */
-class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+class PaginateController extends AbstractWidgetController
 {
     /**
      * @var array
@@ -61,7 +64,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     public function initializeAction()
     {
         $this->objects = $this->widgetConfiguration['objects'];
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], false);
+        ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], false);
         $this->numberOfObjects = count($this->objects);
         $itemsPerPage = (int)$this->configuration['itemsPerPage'];
         $this->numberOfPages = $itemsPerPage > 0 ? ceil($this->numberOfObjects / $itemsPerPage) : 0;

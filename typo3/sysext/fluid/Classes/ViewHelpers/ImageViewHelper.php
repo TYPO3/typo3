@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -101,7 +102,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     /**
      * @param \TYPO3\CMS\Extbase\Service\ImageService $imageService
      */
-    public function injectImageService(\TYPO3\CMS\Extbase\Service\ImageService $imageService)
+    public function injectImageService(ImageService $imageService)
     {
         $this->imageService = $imageService;
     }

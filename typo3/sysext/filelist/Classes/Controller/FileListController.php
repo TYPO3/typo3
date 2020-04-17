@@ -29,8 +29,11 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -144,7 +147,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     /**
      * @param \TYPO3\CMS\Core\Resource\FileRepository $fileRepository
      */
-    public function injectFileRepository(\TYPO3\CMS\Core\Resource\FileRepository $fileRepository)
+    public function injectFileRepository(FileRepository $fileRepository)
     {
         $this->fileRepository = $fileRepository;
     }
@@ -180,7 +183,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                 $this->folderObject = $resourceFactory->getFolderObjectFromCombinedIdentifier($storage->getUid() . ':' . $identifier);
                 // Disallow access to fallback storage 0
                 if ($storage->getUid() === 0) {
-                    throw new Exception\InsufficientFolderAccessPermissionsException(
+                    throw new InsufficientFolderAccessPermissionsException(
                         'You are not allowed to access files outside your storages',
                         1434539815
                     );
@@ -203,7 +206,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             if ($this->folderObject && !$this->folderObject->getStorage()->isWithinFileMountBoundaries($this->folderObject)) {
                 throw new \RuntimeException('Folder not accessible.', 1430409089);
             }
-        } catch (Exception\InsufficientFolderAccessPermissionsException $permissionException) {
+        } catch (InsufficientFolderAccessPermissionsException $permissionException) {
             $this->folderObject = null;
             $this->errorMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
@@ -220,7 +223,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             // Take the first object of the first storage
             $fileStorages = $this->getBackendUser()->getFileStorages();
             $fileStorage = reset($fileStorages);
-            if ($fileStorage instanceof \TYPO3\CMS\Core\Resource\ResourceStorage) {
+            if ($fileStorage instanceof ResourceStorage) {
                 $this->folderObject = $fileStorage->getRootLevelFolder();
                 if (!$fileStorage->isWithinFileMountBoundaries($this->folderObject)) {
                     $this->folderObject = null;

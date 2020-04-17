@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Beuser\Hook;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Backend user switchback, for logoff_pre_processing hook within
@@ -37,11 +40,11 @@ class SwitchBackUserHook
     public function switchBack($params, AbstractUserAuthentication $authentication)
     {
         if ($this->isAHandledBackendSession($authentication)) {
-            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-            $backendUserSessionRepository = $objectManager->get(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository::class);
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $backendUserSessionRepository = $objectManager->get(BackendUserSessionRepository::class);
             $backendUserSessionRepository->switchBackToOriginalUser($authentication);
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             HttpUtility::redirect((string)$uriBuilder->buildUriFromRoute('main'));
         }
     }

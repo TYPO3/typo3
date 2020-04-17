@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Form\Mvc;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
 /**
@@ -64,7 +66,7 @@ class ProcessingRule
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration
      * @internal
      */
-    public function injectPropertyMappingConfiguration(\TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration)
+    public function injectPropertyMappingConfiguration(PropertyMappingConfiguration $propertyMappingConfiguration)
     {
         $this->propertyMappingConfiguration = $propertyMappingConfiguration;
     }
@@ -73,7 +75,7 @@ class ProcessingRule
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator $validator
      * @internal
      */
-    public function injectConjunctionValidator(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator $validator)
+    public function injectConjunctionValidator(ConjunctionValidator $validator)
     {
         $this->validator = $validator;
     }
@@ -82,7 +84,7 @@ class ProcessingRule
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
      * @internal
      */
-    public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper)
+    public function injectPropertyMapper(PropertyMapper $propertyMapper)
     {
         $this->propertyMapper = $propertyMapper;
     }

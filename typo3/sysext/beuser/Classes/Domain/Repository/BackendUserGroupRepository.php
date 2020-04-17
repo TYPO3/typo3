@@ -15,17 +15,20 @@
 
 namespace TYPO3\CMS\Beuser\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class BackendUserGroupRepository extends Repository
 {
     /**
      * @var array Default order is by title ascending
      */
     protected $defaultOrderings = [
-        'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'title' => QueryInterface::ORDER_ASCENDING
     ];
 
     /**

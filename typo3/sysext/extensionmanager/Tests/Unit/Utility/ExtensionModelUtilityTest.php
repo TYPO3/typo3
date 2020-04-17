@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -43,7 +44,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
         ]);
         /** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
         $dependencyUtility = new ExtensionModelUtility();
-        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManagerMock = $this->createMock(ObjectManager::class);
         $objectManagerMock->method('get')->willReturn(new Dependency());
         $dependencyUtility->injectObjectManager($objectManagerMock);
         $objectStorage = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
@@ -64,7 +65,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
         ]);
 
         $dependencyUtility = new ExtensionModelUtility();
-        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManagerMock = $this->createMock(ObjectManager::class);
         // ensure we get a new dependency on subsequent calls
         $objectManagerMock->method('get')->willReturnCallback(
             static function () {
@@ -143,7 +144,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
     {
         $serializedDependencies = serialize($dependencies);
         $dependencyUtility = new ExtensionModelUtility();
-        $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManagerMock = $this->createMock(ObjectManager::class);
         // ensure we get a new dependency on subsequent calls
         $objectManagerMock->method('get')->willReturnCallback(
             static function () {

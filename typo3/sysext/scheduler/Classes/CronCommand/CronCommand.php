@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Scheduler\CronCommand;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class provides calculations for the cron command format.
  */
@@ -55,7 +57,7 @@ class CronCommand
     {
         $cronCommand = NormalizeCommand::normalize($cronCommand);
         // Explode cron command to sections
-        $this->cronCommandSections = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $cronCommand);
+        $this->cronCommandSections = GeneralUtility::trimExplode(' ', $cronCommand);
         // Initialize the values with the starting time
         // This takes care that the calculated time is always in the future
         if ($timestamp === false) {
@@ -188,7 +190,7 @@ class CronCommand
         if ((string)$commandExpression === '*') {
             $inList = true;
         } else {
-            $inList = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($commandExpression, $numberToMatch);
+            $inList = GeneralUtility::inList($commandExpression, $numberToMatch);
         }
         return $inList;
     }

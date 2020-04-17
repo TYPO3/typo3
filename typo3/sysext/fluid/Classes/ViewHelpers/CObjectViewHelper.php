@@ -20,10 +20,12 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -136,7 +138,7 @@ class CObjectViewHelper extends AbstractViewHelper
         }
         $currentValue = null;
         if (is_object($data)) {
-            $data = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($data);
+            $data = ObjectAccess::getGettableProperties($data);
         } elseif (is_string($data) || is_numeric($data)) {
             $currentValue = (string)$data;
             $data = [$data];
@@ -152,7 +154,7 @@ class CObjectViewHelper extends AbstractViewHelper
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
-                throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
+                throw new Exception(
                     'TypoScript object path "' . $typoscriptObjectPath . '" does not exist',
                     1253191023
                 );
@@ -160,7 +162,7 @@ class CObjectViewHelper extends AbstractViewHelper
             $setup = $setup[$segment . '.'];
         }
         if (!isset($setup[$lastSegment])) {
-            throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
+            throw new Exception(
                 'No Content Object definition found at TypoScript object path "' . $typoscriptObjectPath . '"',
                 1540246570
             );

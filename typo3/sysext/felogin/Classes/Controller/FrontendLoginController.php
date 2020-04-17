@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
@@ -216,7 +217,7 @@ class FrontendLoginController extends AbstractPlugin
                         GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
                     }
                 }
-                \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirectUrl);
+                HttpUtility::redirect($this->redirectUrl);
             }
         }
         // Adds hook for processing of extra item markers / special
@@ -1041,7 +1042,7 @@ class FrontendLoginController extends AbstractPlugin
             $preserveQueryStringProperties = GeneralUtility::trimExplode(',', $this->conf['preserveGETvars']);
             $preserveQueryParts = [];
             parse_str(implode('=1&', $preserveQueryStringProperties) . '=1', $preserveQueryParts);
-            $preserveQueryParts = \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($getVars, $preserveQueryParts);
+            $preserveQueryParts = ArrayUtility::intersectRecursive($getVars, $preserveQueryParts);
         }
         return $preserveQueryParts;
     }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
  * Abstract node implements common methods
@@ -214,7 +215,7 @@ abstract class AbstractNode
         }
         $projectPath = Environment::getProjectPath();
         if (strpos($path, $projectPath, 0) !== 0) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Public path is not first part of given path',
                 1366398198
             );

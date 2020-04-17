@@ -46,7 +46,7 @@ class WidgetRequestBuilder extends RequestBuilder
      */
     public function build(): RequestInterface
     {
-        $baseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $baseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         if ($this->environmentService->isEnvironmentInBackendMode()) {
             $baseUri .= TYPO3_mainDir;
         }

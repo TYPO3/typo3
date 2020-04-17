@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 
+use Prophecy\Argument;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
+use TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -39,7 +41,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, ['dummy'], [], '', false);
+        $this->widgetRequestHandler = $this->getAccessibleMock(WidgetRequestHandler::class, ['dummy'], [], '', false);
     }
 
     /**
@@ -65,7 +67,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
      */
     public function priorityIsHigherThanDefaultRequestHandler()
     {
-        $defaultWebRequestHandler = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class)
+        $defaultWebRequestHandler = $this->getMockBuilder(AbstractRequestHandler::class)
             ->setMethods(['handleRequest'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -85,7 +87,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
         $requestBuilder->expects(self::once())->method('build')->willReturn($request);
         $objectManager = $this->prophesize(ObjectManager::class);
         $handler->injectObjectManager($objectManager->reveal());
-        $objectManager->get(\Prophecy\Argument::any())->willReturn($this->createMock(Response::class));
+        $objectManager->get(Argument::any())->willReturn($this->createMock(Response::class));
         $requestDispatcher = $this->getMockBuilder(Dispatcher::class)
             ->setMethods(['dispatch'])
             ->disableOriginalConstructor()

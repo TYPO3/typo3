@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
@@ -98,7 +100,7 @@ class UpdateFromTerController extends AbstractController
         if ($this->extensionRepository->countAll() === 0 || $forceUpdateCheck) {
             try {
                 $updated = $this->repositoryHelper->updateExtList();
-            } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
+            } catch (ExtensionManagerException $e) {
                 $errorMessage = $e->getMessage();
             }
         }
@@ -110,7 +112,7 @@ class UpdateFromTerController extends AbstractController
             $lastUpdatedSince = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never');
             $lastUpdateTime = date($timeFormat);
         } else {
-            $lastUpdatedSince = \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
+            $lastUpdatedSince = BackendUtility::calcAge(
                 time() - $lastUpdateTime->format('U'),
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
             );

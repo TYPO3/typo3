@@ -15,14 +15,16 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This task which indexes files in storage
  * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
-class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class FileStorageExtractionTask extends AbstractTask
 {
     /**
      * Storage Uid
@@ -69,8 +71,8 @@ class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
      * @return \TYPO3\CMS\Core\Resource\Index\Indexer
      */
-    protected function getIndexer(\TYPO3\CMS\Core\Resource\ResourceStorage $storage)
+    protected function getIndexer(ResourceStorage $storage)
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
+        return GeneralUtility::makeInstance(Indexer::class, $storage);
     }
 }

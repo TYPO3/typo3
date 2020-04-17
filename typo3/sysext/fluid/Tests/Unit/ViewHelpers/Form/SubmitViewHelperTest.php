@@ -15,12 +15,13 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
+use TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Test for the "Submit" Form view helper
  */
-class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+class SubmitViewHelperTest extends FormFieldViewHelperBaseTestcase
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper
@@ -30,7 +31,7 @@ class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
     protected function setUp(): void
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper::class, ['dummy']);
+        $this->viewHelper = $this->getAccessibleMock(SubmitViewHelper::class, ['dummy']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }

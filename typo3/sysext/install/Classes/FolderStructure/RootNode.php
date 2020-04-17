@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
+use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
 
 /**
  * Root node of structure
@@ -34,7 +36,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface
     public function __construct(array $structure, NodeInterface $parent = null)
     {
         if ($parent !== null) {
-            throw new Exception\RootNodeException(
+            throw new RootNodeException(
                 'Root node must not have parent',
                 1366140117
             );
@@ -44,7 +46,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface
             || ($this->isWindowsOs() && substr($structure['name'], 1, 2) !== ':/')
             || (!$this->isWindowsOs() && $structure['name'][0] !== '/')
         ) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Root node expects absolute path as name',
                 1366141329
             );

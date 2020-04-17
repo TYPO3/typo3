@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
@@ -49,7 +50,7 @@ abstract class AbstractElementRenderer implements RendererInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      */
-    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    public function setControllerContext(ControllerContext $controllerContext)
     {
         $this->controllerContext = $controllerContext;
     }

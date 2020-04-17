@@ -18,6 +18,10 @@ namespace TYPO3\CMS\Workspaces\Service\Dependency;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Dependency;
+use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
+use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
+use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
+use TYPO3\CMS\Workspaces\Dependency\EventCallback;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
@@ -56,22 +60,22 @@ class CollectionService implements SingletonInterface
     public function getDependencyResolver()
     {
         if (!isset($this->dependencyResolver)) {
-            $this->dependencyResolver = GeneralUtility::makeInstance(Dependency\DependencyResolver::class);
+            $this->dependencyResolver = GeneralUtility::makeInstance(DependencyResolver::class);
             $this->dependencyResolver->setOuterMostParentsRequireReferences(true);
             $this->dependencyResolver->setWorkspace($this->getWorkspace());
 
             $this->dependencyResolver->setEventCallback(
-                Dependency\ElementEntity::EVENT_Construct,
+                ElementEntity::EVENT_Construct,
                 $this->getDependencyCallback('createNewDependentElementCallback')
             );
 
             $this->dependencyResolver->setEventCallback(
-                Dependency\ElementEntity::EVENT_CreateChildReference,
+                ElementEntity::EVENT_CreateChildReference,
                 $this->getDependencyCallback('createNewDependentElementChildReferenceCallback')
             );
 
             $this->dependencyResolver->setEventCallback(
-                Dependency\ElementEntity::EVENT_CreateParentReference,
+                ElementEntity::EVENT_CreateParentReference,
                 $this->getDependencyCallback('createNewDependentElementParentReferenceCallback')
             );
         }
@@ -89,7 +93,7 @@ class CollectionService implements SingletonInterface
     protected function getDependencyCallback($method, array $targetArguments = [])
     {
         return GeneralUtility::makeInstance(
-            Dependency\EventCallback::class,
+            EventCallback::class,
             $this->getElementEntityProcessor(),
             $method,
             $targetArguments
@@ -104,7 +108,7 @@ class CollectionService implements SingletonInterface
     protected function getElementEntityProcessor()
     {
         if (!isset($this->elementEntityProcessor)) {
-            $this->elementEntityProcessor = GeneralUtility::makeInstance(Dependency\ElementEntityProcessor::class);
+            $this->elementEntityProcessor = GeneralUtility::makeInstance(ElementEntityProcessor::class);
             $this->elementEntityProcessor->setWorkspace($this->getWorkspace());
         }
         return $this->elementEntityProcessor;
@@ -188,7 +192,7 @@ class CollectionService implements SingletonInterface
      * @param string $nextParentIdentifier
      * @param int $collectionLevel
      */
-    protected function resolveDataArrayChildDependencies(Dependency\ElementEntity $parent, $collection, $nextParentIdentifier = '', $collectionLevel = 0)
+    protected function resolveDataArrayChildDependencies(ElementEntity $parent, $collection, $nextParentIdentifier = '', $collectionLevel = 0)
     {
         $parentIdentifier = $parent->__toString();
         $parentIsSet = isset($this->dataArray[$parentIdentifier]);

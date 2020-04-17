@@ -25,8 +25,11 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility;
+use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
+use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 
 /**
  * Index search abstraction to search through the index
@@ -500,7 +503,7 @@ class IndexSearchRepository
             $idList = [];
             foreach ($searchRootPageIdList as $rootId) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-                $cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $idList[] = $cObj->getTreeList(-1 * $rootId, 9999);
             }
             $idList = GeneralUtility::intExplode(',', implode(',', $idList));
@@ -598,15 +601,15 @@ class IndexSearchRepository
             switch ($theType) {
                 case '1':
                     // Part of word
-                    $res = $this->searchWord($sWord, Utility\LikeWildcard::BOTH);
+                    $res = $this->searchWord($sWord, LikeWildcard::BOTH);
                     break;
                 case '2':
                     // First part of word
-                    $res = $this->searchWord($sWord, Utility\LikeWildcard::RIGHT);
+                    $res = $this->searchWord($sWord, LikeWildcard::RIGHT);
                     break;
                 case '3':
                     // Last part of word
-                    $res = $this->searchWord($sWord, Utility\LikeWildcard::LEFT);
+                    $res = $this->searchWord($sWord, LikeWildcard::LEFT);
                     break;
                 case '10':
                     // Sounds like
@@ -701,7 +704,7 @@ class IndexSearchRepository
      */
     protected function searchWord($sWord, $wildcard)
     {
-        $likeWildcard = Utility\LikeWildcard::cast($wildcard);
+        $likeWildcard = LikeWildcard::cast($wildcard);
         $wSel = $likeWildcard->getLikeQueryPart(
             'index_words',
             'IW.baseword',
@@ -736,7 +739,7 @@ class IndexSearchRepository
     protected function searchSentence($sWord)
     {
         $this->wSelClauses[] = '1=1';
-        $likeWildcard = Utility\LikeWildcard::cast(Utility\LikeWildcard::BOTH);
+        $likeWildcard = LikeWildcard::cast(LikeWildcard::BOTH);
         $likePart = $likeWildcard->getLikeQueryPart(
             'index_fulltext',
             'IFT.fulltextdata',
@@ -1239,7 +1242,7 @@ class IndexSearchRepository
      */
     protected function md5inthash($str)
     {
-        return Utility\IndexedSearchUtility::md5inthash($str);
+        return IndexedSearchUtility::md5inthash($str);
     }
 
     /**
@@ -1252,7 +1255,7 @@ class IndexSearchRepository
      */
     protected function isTableUsed($table_list)
     {
-        return Utility\IndexedSearchUtility::isTableUsed($table_list);
+        return IndexedSearchUtility::isTableUsed($table_list);
     }
 
     /**

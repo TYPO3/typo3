@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget\Exception;
 
+use TYPO3\CMS\Fluid\Core\Widget\Exception;
+
 /**
  * An exception if no widget Request could be found inside <f:renderChildren>.
  *
  * @internal
  */
-class WidgetRequestNotFoundException extends \TYPO3\CMS\Fluid\Core\Widget\Exception
+class WidgetRequestNotFoundException extends Exception
 {
 }

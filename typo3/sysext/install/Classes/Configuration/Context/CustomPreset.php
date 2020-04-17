@@ -16,12 +16,14 @@
 namespace TYPO3\CMS\Install\Configuration\Context;
 
 use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractCustomPreset;
+use TYPO3\CMS\Install\Configuration\CustomPresetInterface;
 
 /**
  * Custom preset is a fallback if no other preset fits
  * @internal only to be used within EXT:install
  */
-class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface
+class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
 {
     /**
      * @var array Configuration values handled by this preset

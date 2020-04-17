@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Exception;
 use TYPO3\CMS\Install\Service\Session\FileSessionHandler;
 
 /**
@@ -80,12 +81,12 @@ class SessionService implements SingletonInterface
             $sessionCreationError = 'Error: session.auto-start is enabled.<br />';
             $sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
             $sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
-            throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587485);
+            throw new Exception($sessionCreationError, 1294587485);
         }
         if (defined('SID')) {
             $sessionCreationError = 'Session already started by session_start().<br />';
             $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
-            throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587486);
+            throw new Exception($sessionCreationError, 1294587486);
         }
         session_start();
         if (!$this->hasSameSiteCookieSupport()) {

@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 
+use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
+
 /**
  * Functional test for the Recycler
  */
-class UserRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase
+class UserRecycleTest extends AbstractRecycleTestCase
 {
     /**
      * Directory which contains data sets for assertions

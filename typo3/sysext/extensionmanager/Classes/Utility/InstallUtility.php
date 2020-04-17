@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Finder\Finder;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -27,12 +28,16 @@ use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
 use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
@@ -96,7 +101,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
      */
-    public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility)
+    public function injectDependencyUtility(DependencyUtility $dependencyUtility)
     {
         $this->dependencyUtility = $dependencyUtility;
     }
@@ -104,7 +109,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
      */
-    public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility)
+    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
     {
         $this->fileHandlingUtility = $fileHandlingUtility;
     }
@@ -112,7 +117,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
      */
-    public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility)
+    public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
     }
@@ -120,7 +125,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
      */
-    public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository)
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
@@ -128,7 +133,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
      */
-    public function injectPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager)
+    public function injectPackageManager(PackageManager $packageManager)
     {
         $this->packageManager = $packageManager;
     }
@@ -136,7 +141,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
      */
-    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+    public function injectCacheManager(CacheManager $cacheManager)
     {
         $this->cacheManager = $cacheManager;
     }
@@ -144,7 +149,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * @param \TYPO3\CMS\Core\Registry $registry
      */
-    public function injectRegistry(\TYPO3\CMS\Core\Registry $registry)
+    public function injectRegistry(Registry $registry)
     {
         $this->registry = $registry;
     }
@@ -205,7 +210,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $dependentExtensions = $this->dependencyUtility->findInstalledExtensionsThatDependOnMe($extensionKey);
         if (is_array($dependentExtensions) && !empty($dependentExtensions)) {
             throw new ExtensionManagerException(
-                \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                LocalizationUtility::translate(
                     'extensionList.uninstall.dependencyError',
                     'extensionmanager',
                     [$extensionKey, implode(',', $dependentExtensions)]

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Filelist\ViewHelpers\Uri;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -33,7 +34,7 @@ class ReplaceFileViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('file', \TYPO3\CMS\Core\Resource\AbstractFile::class, '', true);
+        $this->registerArgument('file', AbstractFile::class, '', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
     }
 

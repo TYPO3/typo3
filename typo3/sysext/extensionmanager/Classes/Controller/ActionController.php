@@ -15,10 +15,15 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Package\Exception;
+use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
@@ -104,8 +109,8 @@ class ActionController extends AbstractController
                     $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
-        } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException|\TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException $e) {
-            $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+        } catch (ExtensionManagerException|PackageStatesFileNotWritableException $e) {
+            $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
         }
         $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
@@ -135,7 +140,7 @@ class ActionController extends AbstractController
         try {
             $this->installUtility->removeExtension($extension);
             $this->addFlashMessage(
-                \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                LocalizationUtility::translate(
                     'extensionList.remove.message',
                     'extensionmanager',
                     [
@@ -143,8 +148,8 @@ class ActionController extends AbstractController
                     ]
                 )
             );
-        } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException|\TYPO3\CMS\Core\Package\Exception $e) {
-            $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+        } catch (ExtensionManagerException|Exception $e) {
+            $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
         }
 
         return '';

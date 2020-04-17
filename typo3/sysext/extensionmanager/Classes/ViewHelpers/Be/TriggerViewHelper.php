@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Be;
 
 use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Special ViewHelper for the BE module of the Extension Manager. Loads JS code for triggering
@@ -32,7 +33,7 @@ use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
  *
  * @internal
  */
-class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+class TriggerViewHelper extends AbstractBackendViewHelper
 {
     /**
      * Initializes the arguments

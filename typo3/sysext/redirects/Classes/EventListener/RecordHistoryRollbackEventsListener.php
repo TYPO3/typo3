@@ -17,13 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\EventListener;
 
+use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
+
 class RecordHistoryRollbackEventsListener
 {
     public function afterHistoryRollbackFinishedEvent(): void
     {
         // Re-Enable hook to after rollback finished
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects'] =
-            \TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook::class;
+            DataHandlerSlugUpdateHook::class;
     }
 
     public function beforeHistoryRollbackStartEvent(): void

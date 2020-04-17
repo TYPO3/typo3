@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -125,7 +126,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         try {
             $input = new ArrayInput($this->getParameters(true), $schedulableCommand->getDefinition());
             $arguments = $input->__toString();
-        } catch (\Symfony\Component\Console\Exception\RuntimeException|\Symfony\Component\Console\Exception\InvalidArgumentException $e) {
+        } catch (\Symfony\Component\Console\Exception\RuntimeException|InvalidArgumentException $e) {
             return $label . "\n"
                 . sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingArguments'),

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Category\CategoryRegistry;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
@@ -110,7 +111,7 @@ class LoadTcaService
         $packageManager = $container->get(PackageManager::class);
         try {
             $package = $packageManager->getPackage($extensionKey);
-        } catch (\TYPO3\CMS\Core\Package\Exception\UnknownPackageException $e) {
+        } catch (UnknownPackageException $e) {
             throw new \RuntimeException(
                 'Extension ' . $extensionKey . ' is not active',
                 1477217619

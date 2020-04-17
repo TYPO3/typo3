@@ -16,12 +16,13 @@
 namespace TYPO3\CMS\Install\Configuration\Mail;
 
 use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * Sendmail path handling preset
  * @internal only to be used within EXT:install
  */
-class SendmailPreset extends Configuration\AbstractPreset
+class SendmailPreset extends AbstractPreset
 {
     /**
      * @var string Name of preset

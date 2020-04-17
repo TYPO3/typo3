@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * The WidgetContext stores all information a widget needs to know about the
  * environment.
@@ -242,7 +245,7 @@ class WidgetContext
      * @param \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext
      */
-    public function setViewHelperChildNodes(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes, \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext)
+    public function setViewHelperChildNodes(RootNode $viewHelperChildNodes, RenderingContextInterface $viewHelperChildNodeRenderingContext)
     {
         $this->viewHelperChildNodes = $viewHelperChildNodes;
         $this->viewHelperChildNodeRenderingContext = $viewHelperChildNodeRenderingContext;

@@ -40,7 +40,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $GLOBALS['TSFE']->cObj = $this->createMock(ContentObjectRenderer::class);
         $this->viewHelper = $this->getAccessibleMock(EmailViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }

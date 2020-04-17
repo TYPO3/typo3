@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\ContextMenu\ItemProviders;
 
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Provides click menu items for files and folders
  */
-class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider
+class FileProvider extends AbstractProvider
 {
     /**
      * @var File|Folder

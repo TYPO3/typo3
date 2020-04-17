@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 
 use TYPO3\CMS\Fluid\Core\Widget\WidgetContext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Test case
@@ -31,7 +33,7 @@ class WidgetContextTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->widgetContext = new \TYPO3\CMS\Fluid\Core\Widget\WidgetContext();
+        $this->widgetContext = new WidgetContext();
     }
 
     /**
@@ -117,8 +119,8 @@ class WidgetContextTest extends UnitTestCase
      */
     public function viewHelperChildNodesCanBeReadAgain()
     {
-        $viewHelperChildNodes = $this->createMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
-        $renderingContext = $this->createMock(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class);
+        $viewHelperChildNodes = $this->createMock(RootNode::class);
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
         $this->widgetContext->setViewHelperChildNodes($viewHelperChildNodes, $renderingContext);
         self::assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
         self::assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());

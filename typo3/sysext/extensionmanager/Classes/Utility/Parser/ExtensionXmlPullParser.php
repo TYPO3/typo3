@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Parser for TYPO3's extension.xml file.
  *
@@ -50,10 +52,10 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
     {
         $this->createParser();
         if (!(is_object($this->objXml) && get_class($this->objXml) === \XMLReader::class)) {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640540);
+            throw new ExtensionManagerException('Unable to create XML parser.', 1342640540);
         }
         if ($this->objXml->open($file, 'utf-8') === false) {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+            throw new ExtensionManagerException(
                 sprintf('Unable to open file resource %s.', $file),
                 1476108651
             );

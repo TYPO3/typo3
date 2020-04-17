@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -281,7 +282,7 @@ class EnvironmentController extends AbstractController
                     'Recipient: ' . $recipient,
                     'Test mail sent'
                 ));
-            } catch (\Symfony\Component\Mime\Exception\RfcComplianceException $exception) {
+            } catch (RfcComplianceException $exception) {
                 $messages->enqueue(new FlashMessage(
                     'Please verify $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'defaultMailFromAddress\'] is a valid mail address.'
                     . ' Error message: ' . $exception->getMessage(),

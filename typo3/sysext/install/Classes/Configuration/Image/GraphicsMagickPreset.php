@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\Configuration\Image;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 
 /**
  * Preset for GraphicsMagick
@@ -76,7 +77,7 @@ class GraphicsMagickPreset extends AbstractImagePreset
             if (@is_file($path . $executable)) {
                 $command = escapeshellarg($path . $executable) . ' -version';
                 $executingResult = false;
-                \TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $executingResult);
+                CommandUtility::exec($command, $executingResult);
                 // First line of exec command should contain string GraphicsMagick
                 $firstResultLine = array_shift($executingResult);
                 if (strpos($firstResultLine, 'GraphicsMagick') !== false) {

@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Class ExtendsAbstractEntity
  */
-class ExtendsAbstractEntity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class ExtendsAbstractEntity extends AbstractEntity
 {
 }

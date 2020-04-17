@@ -15,6 +15,11 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * This is the bootstrap for Ajax Widget responses
  *
@@ -47,10 +52,10 @@ class Bootstrap
      */
     public function run($content, $configuration)
     {
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->initializeConfiguration($configuration);
-        $ajaxWidgetContextHolder = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class);
-        $widgetIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('fluid-widget-id');
+        $ajaxWidgetContextHolder = $this->objectManager->get(AjaxWidgetContextHolder::class);
+        $widgetIdentifier = GeneralUtility::_GET('fluid-widget-id');
         $widgetContext = $ajaxWidgetContextHolder->get($widgetIdentifier);
         $configuration['extensionName'] = $widgetContext->getParentExtensionName();
         $configuration['pluginName'] = $widgetContext->getParentPluginName();
@@ -67,9 +72,9 @@ class Bootstrap
      */
     public function initializeConfiguration($configuration)
     {
-        $this->configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $this->configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
-        $contentObject = $this->cObj ?? \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $contentObject = $this->cObj ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $this->configurationManager->setContentObject($contentObject);
         $this->configurationManager->setConfiguration($configuration);
     }

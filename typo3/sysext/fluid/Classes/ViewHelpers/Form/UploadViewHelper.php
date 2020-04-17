@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <input type="file" name="file" />
  */
-class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+class UploadViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

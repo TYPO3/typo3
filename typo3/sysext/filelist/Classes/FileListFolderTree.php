@@ -15,12 +15,14 @@
 
 namespace TYPO3\CMS\Filelist;
 
+use TYPO3\CMS\Backend\Tree\View\FolderTreeView;
+
 /**
  * Class for drag and drop and ajax functionality
  * @see class \TYPO3\CMS\Backend\Tree\View\BrowseTreeView
  * @internal this is a concrete TYPO3 tree implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
-class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView
+class FileListFolderTree extends FolderTreeView
 {
     /**
      * @var bool

@@ -15,10 +15,14 @@
 
 namespace TYPO3\CMS\Belog\Controller;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
+use TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -73,7 +77,7 @@ class BackendLogController extends ActionController
     /**
      * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
      */
-    public function injectLogEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository)
+    public function injectLogEntryRepository(LogEntryRepository $logEntryRepository)
     {
         $this->logEntryRepository = $logEntryRepository;
     }
@@ -242,17 +246,17 @@ class BackendLogController extends ActionController
     {
         $userGroupArray = [];
         // Two meta entries: 'all' and 'self'
-        $userGroupArray[0] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('allUsers', 'Belog');
-        $userGroupArray[-1] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('self', 'Belog');
+        $userGroupArray[0] = LocalizationUtility::translate('allUsers', 'Belog');
+        $userGroupArray[-1] = LocalizationUtility::translate('self', 'Belog');
         // List of groups, key is gr-'uid'
-        $groups = \TYPO3\CMS\Backend\Utility\BackendUtility::getGroupNames();
+        $groups = BackendUtility::getGroupNames();
         foreach ($groups as $group) {
-            $userGroupArray['gr-' . $group['uid']] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('group', 'Belog') . ' ' . $group['title'];
+            $userGroupArray['gr-' . $group['uid']] = LocalizationUtility::translate('group', 'Belog') . ' ' . $group['title'];
         }
         // List of users, key is us-'uid'
-        $users = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+        $users = BackendUtility::getUserNames();
         foreach ($users as $user) {
-            $userGroupArray['us-' . $user['uid']] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('user', 'Belog') . ' ' . $user['username'];
+            $userGroupArray['us-' . $user['uid']] = LocalizationUtility::translate('user', 'Belog') . ' ' . $user['username'];
         }
         return $userGroupArray;
     }
@@ -264,14 +268,14 @@ class BackendLogController extends ActionController
      */
     protected function createWorkspaceListForSelectOptions()
     {
-        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return [];
         }
         $workspaceArray = [];
         // Two meta entries: 'all' and 'live'
-        $workspaceArray[-99] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('any', 'Belog');
-        $workspaceArray[0] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', 'Belog');
-        $workspaces = $this->objectManager->get(\TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository::class)->findAll();
+        $workspaceArray[-99] = LocalizationUtility::translate('any', 'Belog');
+        $workspaceArray[0] = LocalizationUtility::translate('live', 'Belog');
+        $workspaces = $this->objectManager->get(WorkspaceRepository::class)->findAll();
         /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
         foreach ($workspaces as $workspace) {
             $workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();
@@ -305,12 +309,12 @@ class BackendLogController extends ActionController
     protected function createPageDepthOptions()
     {
         $options = [
-            0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0', 'lang'),
-            1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1', 'lang'),
-            2 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2', 'lang'),
-            3 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3', 'lang'),
-            4 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4', 'lang'),
-            999 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi', 'lang')
+            0 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0', 'lang'),
+            1 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1', 'lang'),
+            2 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2', 'lang'),
+            3 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3', 'lang'),
+            4 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4', 'lang'),
+            999 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi', 'lang')
         ];
         return $options;
     }

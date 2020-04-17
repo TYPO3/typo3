@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -36,7 +37,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
  * - The name 'listUtility' is not good, the methods could be moved to some 'extensionInformationUtility', or a repository?
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
+class ListUtility implements SingletonInterface
 {
     /**
      * @var EmConfUtility

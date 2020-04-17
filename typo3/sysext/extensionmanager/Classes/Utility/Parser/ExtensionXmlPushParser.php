@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Parser for TYPO3's extension.xml file.
  *
@@ -62,7 +64,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
     {
         $this->createParser();
         if (!is_resource($this->objXml)) {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640663);
+            throw new ExtensionManagerException('Unable to create XML parser.', 1342640663);
         }
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
@@ -73,11 +75,11 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
         xml_set_element_handler($this->objXml, 'startElement', 'endElement');
         xml_set_character_data_handler($this->objXml, 'characterData');
         if (!($fp = fopen($file, 'r'))) {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Unable to open file resource %s.', $file), 1342640689);
+            throw new ExtensionManagerException(sprintf('Unable to open file resource %s.', $file), 1342640689);
         }
         while ($data = fread($fp, 4096)) {
             if (!xml_parse($this->objXml, $data, feof($fp))) {
-                throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('XML error %s in line %u of file resource %s.', xml_error_string(xml_get_error_code($this->objXml)), xml_get_current_line_number($this->objXml), $file), 1342640703);
+                throw new ExtensionManagerException(sprintf('XML error %s in line %u of file resource %s.', xml_error_string(xml_get_error_code($this->objXml)), xml_get_current_line_number($this->objXml), $file), 1342640703);
             }
         }
         libxml_disable_entity_loader($previousValueOfEntityLoader);

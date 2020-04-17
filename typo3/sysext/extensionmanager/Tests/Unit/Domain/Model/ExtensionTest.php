@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -85,7 +86,7 @@ class ExtensionTest extends UnitTestCase
      */
     public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected)
     {
-        $extension = new \TYPO3\CMS\Extensionmanager\Domain\Model\Extension();
+        $extension = new Extension();
         self::assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
     }
 }

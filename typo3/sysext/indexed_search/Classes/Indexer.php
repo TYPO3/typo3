@@ -19,12 +19,15 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\IndexedSearch\Hook\CrawlerFilesHook;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -531,7 +534,7 @@ class Indexer
         $crawler = null;
         // Get links:
         $list = $this->extractHyperLinks($content);
-        if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
+        if ($this->indexerConfig['useCrawlerForExternalFiles'] && ExtensionManagementUtility::isLoaded('crawler')) {
             /**
              * todo: remove dependency to class tx_crawler_lib
              * @link https://forge.typo3.org/issues/83603
@@ -579,7 +582,7 @@ class Indexer
                                 'conf' => $this->conf
                             ];
                             unset($params['conf']['content']);
-                            $crawler->addQueueEntry_callBack(0, $params, Hook\CrawlerFilesHook::class, $this->conf['id']);
+                            $crawler->addQueueEntry_callBack(0, $params, CrawlerFilesHook::class, $this->conf['id']);
                             $this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
                         } else {
                             $this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
@@ -591,7 +594,7 @@ class Indexer
                                 'conf' => $this->conf
                             ];
                             unset($params['conf']['content']);
-                            $crawler->addQueueEntry_callBack(0, $params, Hook\CrawlerFilesHook::class, $this->conf['id']);
+                            $crawler->addQueueEntry_callBack(0, $params, CrawlerFilesHook::class, $this->conf['id']);
                             $this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
                         } else {
                             $this->indexRegularDocument($linkSource);
@@ -611,7 +614,7 @@ class Indexer
      */
     public function extractHyperLinks($html)
     {
-        $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $htmlParts = $htmlParser->splitTags('a', $html);
         $hyperLinksData = [];
         foreach ($htmlParts as $index => $tagData) {
@@ -641,7 +644,7 @@ class Indexer
     public function extractBaseHref($html)
     {
         $href = '';
-        $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $htmlParts = $htmlParser->splitTags('base', $html);
         foreach ($htmlParts as $index => $tagData) {
             if ($index % 2 !== 0) {

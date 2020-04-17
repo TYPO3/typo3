@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception;
@@ -623,7 +624,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
+        GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $dir = StringUtility::getUniqueId('dir_');

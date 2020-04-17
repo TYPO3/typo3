@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Scheduler;
 
+use Doctrine\DBAL\DBALException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
@@ -59,7 +61,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      * @param Task\AbstractTask $task The object representing the task to add
      * @return bool TRUE if the task was successfully added, FALSE otherwise
      */
-    public function addTask(Task\AbstractTask $task)
+    public function addTask(AbstractTask $task)
     {
         $taskUid = $task->getTaskUid();
         if (empty($taskUid)) {
@@ -152,7 +154,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      * @return bool Whether the task was saved successfully to the database or not
      * @throws \Throwable
      */
-    public function executeTask(Task\AbstractTask $task)
+    public function executeTask(AbstractTask $task)
     {
         $task->setRunOnNextCronJob(false);
         // Trigger the saving of the task, as this will calculate its next execution time
@@ -223,7 +225,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      * @param Task\AbstractTask $task The object representing the task to delete
      * @return bool TRUE if task was successfully deleted, FALSE otherwise
      */
-    public function removeTask(Task\AbstractTask $task)
+    public function removeTask(AbstractTask $task)
     {
         $taskUid = $task->getTaskUid();
         if (!empty($taskUid)) {
@@ -242,7 +244,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      * @param Task\AbstractTask $task Scheduler task object
      * @return bool False if submitted task was not of proper class
      */
-    public function saveTask(Task\AbstractTask $task)
+    public function saveTask(AbstractTask $task)
     {
         $result = true;
         $taskUid = $task->getTaskUid();
@@ -275,7 +277,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                         ['uid' => $taskUid],
                         ['serialized_task_object' => Connection::PARAM_LOB]
                     );
-            } catch (\Doctrine\DBAL\DBALException $e) {
+            } catch (DBALException $e) {
                 $result = false;
             }
         } else {
@@ -451,7 +453,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      */
     public function isValidTaskObject($task)
     {
-        return $task instanceof Task\AbstractTask && get_class($task->getExecution()) !== \__PHP_Incomplete_Class::class;
+        return $task instanceof AbstractTask && get_class($task->getExecution()) !== \__PHP_Incomplete_Class::class;
     }
 
     /**

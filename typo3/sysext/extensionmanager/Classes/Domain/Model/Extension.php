@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
@@ -247,7 +248,7 @@ class Extension extends AbstractEntity
     public function getCategoryIndexFromStringOrNumber($category)
     {
         $categoryIndex = 4;
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($category)) {
+        if (MathUtility::canBeInterpretedAsInteger($category)) {
             $categoryIndex = (int)$category;
             if ($categoryIndex < 0 || $categoryIndex > 10) {
                 $categoryIndex = 4;

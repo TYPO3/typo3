@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Factory for XML parsers.
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
@@ -64,8 +66,8 @@ class XmlParserFactory
             // reset instance
             self::$instance[$parserType] = ($objParser = null);
             foreach (self::$parsers[$parserType] as $className => $file) {
-                if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeClassNames, $className)) {
-                    $objParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
+                if (!GeneralUtility::inList($excludeClassNames, $className)) {
+                    $objParser = GeneralUtility::makeInstance($className);
                     if ($objParser->isAvailable()) {
                         self::$instance[$parserType] = &$objParser;
                         break;

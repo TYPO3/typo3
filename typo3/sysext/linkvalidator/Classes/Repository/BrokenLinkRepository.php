@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Repository;
 
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +57,7 @@ class BrokenLinkRepository
             return (int)$queryBuilder
                 ->execute()
                 ->fetchColumn(0);
-        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
+        } catch (TableNotFoundException $e) {
             return 0;
         }
     }
@@ -82,7 +83,7 @@ class BrokenLinkRepository
             return (bool)$queryBuilder
                     ->execute()
                     ->fetchColumn(0);
-        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
+        } catch (TableNotFoundException $e) {
             return false;
         }
     }

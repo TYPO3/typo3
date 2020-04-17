@@ -15,8 +15,13 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException;
 use TYPO3Fluid\Fluid\Component\ComponentInterface;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -67,7 +72,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
      * @internal
      */
-    public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder)
+    public function injectAjaxWidgetContextHolder(AjaxWidgetContextHolder $ajaxWidgetContextHolder)
     {
         $this->ajaxWidgetContextHolder = $ajaxWidgetContextHolder;
     }
@@ -76,17 +81,17 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @internal
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->widgetContext = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
+        $this->widgetContext = $this->objectManager->get(WidgetContext::class);
     }
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      * @internal
      */
-    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    public function injectExtensionService(ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
     }
@@ -153,7 +158,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
     public function onClose(RenderingContextInterface $renderingContext): ComponentInterface
     {
         $node = parent::onClose($renderingContext);
-        $rootNode = $this->objectManager->get(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $rootNode = $this->objectManager->get(RootNode::class);
         $rootNode->setChildren($this->getChildren());
         $this->widgetContext->setViewHelperChildNodes($rootNode, $renderingContext);
         return $node;
@@ -188,7 +193,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      */
     public function setChildNodes(array $childNodes)
     {
-        $rootNode = $this->objectManager->get(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $rootNode = $this->objectManager->get(RootNode::class);
         foreach ($childNodes as $childNode) {
             $rootNode->addChildNode($childNode);
         }
@@ -214,19 +219,19 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      */
     protected function initiateSubRequest()
     {
-        if (!isset($this->controller) || !$this->controller instanceof \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController) {
-            throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException(
+        if (!isset($this->controller) || !$this->controller instanceof AbstractWidgetController) {
+            throw new MissingControllerException(
                 'initiateSubRequest() can not be called if there is no valid controller extending ' .
-                \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class .
+                AbstractWidgetController::class .
                 ' Got "' . ($this->controller ? get_class($this->controller) : gettype($this->controller)) .
                 '" in class "' . static::class . '".',
                 1289422564
             );
         }
-        $subRequest = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
+        $subRequest = $this->objectManager->get(WidgetRequest::class);
         $subRequest->setWidgetContext($this->widgetContext);
         $this->passArgumentsToSubRequest($subRequest);
-        $subResponse = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
+        $subResponse = $this->objectManager->get(Response::class);
         $this->controller->processRequest($subRequest, $subResponse);
         return $subResponse;
     }
@@ -236,7 +241,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
      *
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest $subRequest
      */
-    private function passArgumentsToSubRequest(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest $subRequest)
+    private function passArgumentsToSubRequest(WidgetRequest $subRequest)
     {
         $arguments = $this->renderingContext->getControllerContext()->getRequest()->getArguments();
         $widgetIdentifier = $this->widgetContext->getWidgetIdentifier();

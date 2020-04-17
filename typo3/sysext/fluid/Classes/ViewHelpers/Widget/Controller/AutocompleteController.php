@@ -15,11 +15,14 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
 
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
+
 /**
  * Class AutocompleteController
  * @deprecated since TYPO3 v10.4, will be removed in TYPO3 v11.0.
  */
-class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+class AutocompleteController extends AbstractWidgetController
 {
     public function __construct()
     {
@@ -51,7 +54,7 @@ class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         $results = $query->execute();
         $output = [];
         foreach ($results as $singleResult) {
-            $val = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($singleResult, $searchProperty);
+            $val = ObjectAccess::getProperty($singleResult, $searchProperty);
             $output[] = [
                 'id' => $val,
                 'label' => $val,

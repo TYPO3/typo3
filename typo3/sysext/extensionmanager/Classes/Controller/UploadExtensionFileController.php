@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\DependencyConfigurationNotFoundException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -162,7 +163,7 @@ class UploadExtensionFileController extends AbstractController
                     $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionData['extKey']]);
                 }
             }
-        } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $exception) {
+        } catch (StopActionException $exception) {
             throw $exception;
         } catch (DependencyConfigurationNotFoundException $exception) {
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);

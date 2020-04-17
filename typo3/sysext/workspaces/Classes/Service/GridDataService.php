@@ -32,6 +32,7 @@ use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
 use TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent;
 use TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
+use TYPO3\CMS\Workspaces\Service\Dependency\CollectionService;
 
 /**
  * Grid data service
@@ -664,7 +665,7 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function getDependencyCollectionService()
     {
-        return GeneralUtility::makeInstance(Dependency\CollectionService::class);
+        return GeneralUtility::makeInstance(CollectionService::class);
     }
 
     /**

@@ -22,12 +22,13 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Provides testing procedures
  * @internal This class is an example is not considered part of the Public TYPO3 API.
  */
-class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class TestTask extends AbstractTask
 {
     /**
      * An email address to be used during the process

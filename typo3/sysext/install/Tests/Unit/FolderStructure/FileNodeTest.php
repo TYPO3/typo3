@@ -17,10 +17,13 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\FileNode;
+use TYPO3\CMS\Install\FolderStructure\NodeInterface;
+use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
@@ -48,7 +51,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222207);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $parent = $this->createMock(NodeInterface::class);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $structure = [
@@ -62,7 +65,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsParent()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $parent = $this->createMock(NodeInterface::class);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $structure = [
@@ -77,7 +80,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsTargetPermission()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $parent = $this->createMock(NodeInterface::class);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $targetPermission = '0660';
@@ -96,7 +99,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $name = StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
@@ -111,7 +114,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectExceptionCode(1380364361);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $structure = [
             'name' => 'foo',
             'targetContent' => 'foo',
@@ -127,7 +130,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $targetContent = StringUtility::getUniqueId('content_');
         $structure = [
             'name' => 'foo',
@@ -144,7 +147,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $targetFile = $this->getVirtualTestFilePath('test_');
         $targetContent = StringUtility::getUniqueId('content_');
         file_put_contents($targetFile, $targetContent);
@@ -165,7 +168,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectExceptionCode(1380364362);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $targetFile = $this->getVirtualTestFilePath('test_');
         $structure = [
             'name' => 'foo',
@@ -181,7 +184,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $parent = $this->createMock(RootNodeInterface::class);
         $structure = [
             'name' => 'foo',
         ];
@@ -662,7 +665,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function isPermissionCorrectReturnsTrueIfTargetPermissionAndCurrentPermissionAreIdentical()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $parent = $this->createMock(NodeInterface::class);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getCurrentPermission', 'isWindowsOs'], [], '', false);
         $node->expects(self::any())->method('isWindowsOs')->willReturn(false);
@@ -781,7 +784,7 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
+        GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $link = StringUtility::getUniqueId('link_');
         $file = StringUtility::getUniqueId('file_');

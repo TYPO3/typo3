@@ -16,6 +16,9 @@
 namespace TYPO3\CMS\Linkvalidator\Linktype;
 
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TooManyRedirectsException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -175,13 +178,13 @@ class ExternalLinktype extends AbstractLinktype
             } else {
                 $isValidUrl = true;
             }
-        } catch (\GuzzleHttp\Exception\TooManyRedirectsException $e) {
+        } catch (TooManyRedirectsException $e) {
             // redirect loop or too many redirects
             // todo: change errorType to 'redirect' (breaking change)
             $this->errorParams['errorType'] = 'loop';
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             if ($e->hasResponse()) {
                 $this->errorParams['errorType'] = $e->getResponse()->getStatusCode();
             } else {
@@ -189,7 +192,7 @@ class ExternalLinktype extends AbstractLinktype
             }
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             $this->errorParams['errorType'] = 'network';
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);

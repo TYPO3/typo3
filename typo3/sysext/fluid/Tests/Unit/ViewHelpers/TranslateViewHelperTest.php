@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\TranslateViewHelperFixtureForEmptyString;
 use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Test class for TranslateViewHelper
@@ -37,7 +38,7 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper = new TranslateViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
-        $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1351584844);
 
         $this->setArgumentsUnderTest(

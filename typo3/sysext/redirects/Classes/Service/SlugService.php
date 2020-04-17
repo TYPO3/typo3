@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 
 /**
  * @internal Due to some possible refactorings in TYPO3 v10
@@ -340,7 +341,7 @@ class SlugService implements LoggerAwareInterface
     protected function enabledHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects'] =
-            \TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook::class;
+            DataHandlerSlugUpdateHook::class;
     }
 
     protected function disableHook(): void

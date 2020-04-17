@@ -23,6 +23,7 @@ use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
 use TYPO3\CMS\Install\FolderStructure\RootNode;
+use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -40,7 +41,7 @@ class RootNodeTest extends UnitTestCase
         $this->expectExceptionCode(1366140117);
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
-        $falseParent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        $falseParent = $this->createMock(RootNodeInterface::class);
         $node->__construct([], $falseParent);
     }
 

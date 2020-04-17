@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
+use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniquePersistenceIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -85,7 +87,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
      * @internal
      */
-    public function injectYamlSource(\TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource)
+    public function injectYamlSource(YamlSource $yamlSource)
     {
         $this->yamlSource = $yamlSource;
     }
@@ -94,7 +96,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * @param \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository
      * @internal
      */
-    public function injectStorageRepository(\TYPO3\CMS\Core\Resource\StorageRepository $storageRepository)
+    public function injectStorageRepository(StorageRepository $storageRepository)
     {
         $this->storageRepository = $storageRepository;
     }
@@ -102,7 +104,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * @param \TYPO3\CMS\Form\Slot\FilePersistenceSlot $filePersistenceSlot
      */
-    public function injectFilePersistenceSlot(\TYPO3\CMS\Form\Slot\FilePersistenceSlot $filePersistenceSlot)
+    public function injectFilePersistenceSlot(FilePersistenceSlot $filePersistenceSlot)
     {
         $this->filePersistenceSlot = $filePersistenceSlot;
     }
@@ -110,7 +112,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * @param \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory
      */
-    public function injectResourceFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory)
+    public function injectResourceFactory(ResourceFactory $resourceFactory)
     {
         $this->resourceFactory = $resourceFactory;
     }

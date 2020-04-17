@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
  * A file
@@ -43,7 +44,7 @@ class FileNode extends AbstractNode implements NodeInterface
     public function __construct(array $structure, NodeInterface $parent = null)
     {
         if ($parent === null) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'File node must have parent',
                 1366927513
             );
@@ -52,7 +53,7 @@ class FileNode extends AbstractNode implements NodeInterface
 
         // Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
         if (strpos($structure['name'], '/') !== false) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'File name must not contain forward slash',
                 1366222207
             );
@@ -64,7 +65,7 @@ class FileNode extends AbstractNode implements NodeInterface
         }
 
         if (isset($structure['targetContent']) && isset($structure['targetContentFile'])) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Either targetContent or targetContentFile can be set, but not both',
                 1380364361
             );
@@ -75,7 +76,7 @@ class FileNode extends AbstractNode implements NodeInterface
         }
         if (isset($structure['targetContentFile'])) {
             if (!is_readable($structure['targetContentFile'])) {
-                throw new Exception\InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'targetContentFile ' . $structure['targetContentFile'] . ' does not exist or is not readable',
                     1380364362
                 );

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 
@@ -309,7 +310,7 @@ class LinkAnalyzer
      */
     public function analyzeRecord(array &$results, $table, array $fields, array $record)
     {
-        $event = new Event\BeforeRecordIsAnalyzedEvent($table, $record, $fields, $this, $results);
+        $event = new BeforeRecordIsAnalyzedEvent($table, $record, $fields, $this, $results);
         $this->eventDispatcher->dispatch($event);
         $results = $event->getResults();
         $record = $event->getRecord();

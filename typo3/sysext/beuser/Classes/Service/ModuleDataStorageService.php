@@ -17,13 +17,15 @@ namespace TYPO3\CMS\Beuser\Service;
 
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Module data storage service.
  * Used to store and retrieve module state (eg. checkboxes, selections).
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface
+class ModuleDataStorageService implements SingletonInterface
 {
     /**
      * @var string
@@ -38,7 +40,7 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -66,7 +68,7 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\ModuleData $moduleData
      */
-    public function persistModuleData(\TYPO3\CMS\Beuser\Domain\Model\ModuleData $moduleData)
+    public function persistModuleData(ModuleData $moduleData)
     {
         $GLOBALS['BE_USER']->pushModuleData(self::KEY, serialize($moduleData));
     }

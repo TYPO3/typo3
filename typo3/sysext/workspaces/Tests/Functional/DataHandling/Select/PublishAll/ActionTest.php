@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Select\PublishAll;
 
+use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Select\AbstractActionTestCase;
+
 /**
  * Functional test for the DataHandler
  */
-class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Select\AbstractActionTestCase
+class ActionTest extends AbstractActionTestCase
 {
     /**
      * @var string

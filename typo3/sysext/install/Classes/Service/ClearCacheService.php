@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Install\Service;
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -92,7 +93,7 @@ class ClearCacheService
      */
     private function flushCaches(array $cacheConfiguration): void
     {
-        $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
+        $cacheManager = new CacheManager();
         $cacheManager->setCacheConfigurations($cacheConfiguration);
         $cacheManager->flushCaches();
     }

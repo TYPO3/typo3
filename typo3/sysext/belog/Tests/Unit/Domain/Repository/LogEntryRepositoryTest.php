@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 
+use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,12 +31,12 @@ class LogEntryRepositoryTest extends UnitTestCase
     public function initializeObjectSetsRespectStoragePidToFalse()
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->getMock();
-        $objectManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
-        $objectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->willReturn($querySettings);
+        $querySettings = $this->getMockBuilder(QuerySettingsInterface::class)->getMock();
+        $objectManager = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
+        $objectManager->expects(self::any())->method('get')->with(QuerySettingsInterface::class)->willReturn($querySettings);
         $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false);
         /** @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository|\PHPUnit\Framework\MockObject\MockObject $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository::class)
+        $subject = $this->getMockBuilder(LogEntryRepository::class)
             ->setMethods(['setDefaultQuerySettings', 'getBackendUsers'])
             ->setConstructorArgs([$objectManager])
             ->getMock();

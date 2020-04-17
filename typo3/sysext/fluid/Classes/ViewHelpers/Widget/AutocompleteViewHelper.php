@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
 
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController;
 
 /**
  * Simple autocomplete widget.
@@ -48,7 +50,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * See Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
  * @deprecated since TYPO3 v10.4, will be removed in TYPO3 v11.0.
  */
-class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+class AutocompleteViewHelper extends AbstractWidgetViewHelper
 {
     /**
      * @var bool
@@ -79,7 +81,7 @@ class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
     /**
      * @param \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller
      */
-    public function injectAutocompleteController(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller)
+    public function injectAutocompleteController(AutocompleteController $controller)
     {
         $this->controller = $controller;
     }

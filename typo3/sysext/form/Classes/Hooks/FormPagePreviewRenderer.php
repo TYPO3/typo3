@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Hooks;
 
+use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -54,7 +55,7 @@ class FormPagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
      * @param array $row Record row of tt_content
      */
     public function preProcess(
-        \TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
+        PageLayoutView &$parentObject,
         &$drawItem,
         &$headerContent,
         &$itemContent,

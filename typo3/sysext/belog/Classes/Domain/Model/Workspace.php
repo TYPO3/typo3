@@ -15,13 +15,15 @@
 
 namespace TYPO3\CMS\Belog\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Stub model for workspaces - only properties required for belog module are added currently
  *
  * @todo : This should be extended and put at some more central place
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class Workspace extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Workspace extends AbstractEntity
 {
     /**
      * @var int

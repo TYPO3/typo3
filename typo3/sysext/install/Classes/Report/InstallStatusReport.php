@@ -15,19 +15,22 @@
 
 namespace TYPO3\CMS\Install\Report;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\Exception;
+use TYPO3\CMS\Install\Service\CoreVersionService;
+use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * Provides an installation status report.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
+class InstallStatusReport implements StatusProviderInterface
 {
     /**
      * Compiles a collection of system status checks as a status report.
@@ -176,7 +179,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $message = '';
         $severity = Status::OK;
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // check if there are update wizards left to perform
         $incompleteWizards = $this->getIncompleteWizards();
         if (count($incompleteWizards)) {
@@ -200,7 +203,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $typoVersion = GeneralUtility::makeInstance(Typo3Version::class);
         $languageService = $this->getLanguageService();
         /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
-        $coreVersionService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreVersionService::class);
+        $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
 
         // No updates for development versions
         if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
@@ -210,7 +213,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         try {
             $isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
             $isMaintainedVersion = $coreVersionService->isVersionActivelyMaintained();
-        } catch (Exception\RemoteFetchException $remoteFetchException) {
+        } catch (RemoteFetchException $remoteFetchException) {
             return GeneralUtility::makeInstance(
                 Status::class,
                 'TYPO3',

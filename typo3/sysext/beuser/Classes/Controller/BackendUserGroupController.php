@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Controller;
 
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -33,7 +34,7 @@ class BackendUserGroupController extends ActionController
     /**
      * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository
      */
-    public function injectBackendUserGroupRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository)
+    public function injectBackendUserGroupRepository(BackendUserGroupRepository $backendUserGroupRepository)
     {
         $this->backendUserGroupRepository = $backendUserGroupRepository;
     }

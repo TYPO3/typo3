@@ -60,7 +60,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * Depending on property ``newsletter``.
  */
-class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+class RadioViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

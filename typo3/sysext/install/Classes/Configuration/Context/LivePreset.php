@@ -17,12 +17,13 @@ namespace TYPO3\CMS\Install\Configuration\Context;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * Live preset
  * @internal only to be used within EXT:install
  */
-class LivePreset extends Configuration\AbstractPreset
+class LivePreset extends AbstractPreset
 {
     /**
      * @var string Name of preset

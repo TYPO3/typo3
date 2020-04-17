@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
 
 /**
  * Service class handling language pack details
@@ -275,7 +276,7 @@ class LanguagePackService implements LoggerAwareInterface
         }
 
         // Allow to modify the base url on the fly
-        $event = $this->eventDispatcher->dispatch(new Event\ModifyLanguagePackRemoteBaseUrlEvent(new Uri($languagePackBaseUrl), $key));
+        $event = $this->eventDispatcher->dispatch(new ModifyLanguagePackRemoteBaseUrlEvent(new Uri($languagePackBaseUrl), $key));
         $languagePackBaseUrl = $event->getBaseUrl();
         $path = ExtensionManagementUtility::extPath($key);
         $majorVersion = explode('.', TYPO3_branch)[0];

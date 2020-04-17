@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
@@ -28,6 +31,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtili
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -973,31 +977,31 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $oldCacheConfigurations = [
             'cache_rootline' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'frontend' => VariableFrontend::class,
+                'backend' => Typo3DatabaseBackend::class,
                 'options' => [
                     'defaultLifetime' => 2592000,
                 ],
                 'groups' => ['pages']
             ],
             'fluid_template' => [
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                'backend' => SimpleFileBackend::class,
+                'frontend' => FluidTemplateCache::class,
                 'groups' => ['system'],
             ],
         ];
         $newCacheConfigurations = [
             'rootline' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'frontend' => VariableFrontend::class,
+                'backend' => Typo3DatabaseBackend::class,
                 'options' => [
                     'defaultLifetime' => 2592000,
                 ],
                 'groups' => ['pages']
             ],
             'fluid_template' => [
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                'backend' => SimpleFileBackend::class,
+                'frontend' => FluidTemplateCache::class,
                 'groups' => ['system'],
             ],
         ];
@@ -1032,16 +1036,16 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $oldCacheConfigurations = [
             'rootline' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'frontend' => VariableFrontend::class,
+                'backend' => Typo3DatabaseBackend::class,
                 'options' => [
                     'defaultLifetime' => 2592000,
                 ],
                 'groups' => ['pages']
             ],
             'fluid_template' => [
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
+                'backend' => SimpleFileBackend::class,
+                'frontend' => FluidTemplateCache::class,
                 'groups' => ['system'],
             ],
         ];

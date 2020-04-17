@@ -80,7 +80,7 @@ class RenderingContextTest extends UnitTestCase
      */
     public function controllerContextCanBeReadCorrectly()
     {
-        $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
+        $controllerContext = $this->getMockBuilder(ControllerContext::class)
             ->disableOriginalConstructor()
             ->getMock();
         $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));

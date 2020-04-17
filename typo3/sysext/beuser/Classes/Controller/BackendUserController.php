@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Beuser\Controller;
 
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
+use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
@@ -31,6 +33,9 @@ use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -96,14 +101,14 @@ class BackendUserController extends ActionController
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
         $this->moduleData = $this->moduleDataStorageService->loadModuleData();
         // We "finally" persist the module data.
         try {
             parent::processRequest($request, $response);
             $this->moduleDataStorageService->persistModuleData($this->moduleData);
-        } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $e) {
+        } catch (StopActionException $e) {
             $this->moduleDataStorageService->persistModuleData($this->moduleData);
             throw $e;
         }
@@ -128,7 +133,7 @@ class BackendUserController extends ActionController
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
      */
-    public function indexAction(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand = null)
+    public function indexAction(Demand $demand = null)
     {
         if ($demand === null) {
             $demand = $this->moduleData->getDemand();
@@ -290,7 +295,7 @@ class BackendUserController extends ActionController
      * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser
      * @param string $sessionId
      */
-    protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId)
+    protected function terminateBackendUserSessionAction(BackendUser $backendUser, $sessionId)
     {
         $sessionBackend = $this->getSessionBackend();
         $success = $sessionBackend->remove($sessionId);
@@ -308,7 +313,7 @@ class BackendUserController extends ActionController
      */
     protected function switchUser($switchUser)
     {
-        $targetUser = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $switchUser);
+        $targetUser = BackendUtility::getRecord('be_users', $switchUser);
         if (is_array($targetUser) && $this->getBackendUserAuthentication()->isAdmin()) {
             // Set backend user listing module as starting module for switchback
             $this->getBackendUserAuthentication()->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';

@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ExtendsAbstractEntity;
+use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
@@ -31,7 +33,7 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
         $expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
         $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->willReturn('prefix[theName]');
         $actualResult = $viewHelper->_call('renderHiddenIdentityField', $extendsAbstractEntity, 'theName');
         self::assertSame($expectedResult, $actualResult);
@@ -46,7 +48,7 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
         $extendsAbstractEntity->_setProperty('uid', 123);
         $object = clone $extendsAbstractEntity;
         $expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
         $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->willReturn('prefix[theName]');
         $actualResult = $viewHelper->_call('renderHiddenIdentityField', $extendsAbstractEntity, 'theName');
         self::assertSame($expectedResult, $actualResult);
@@ -57,7 +59,7 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function prefixFieldNameReturnsEmptyStringIfGivenFieldNameIsNULL()
     {
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper::class, ['dummy'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(AbstractFormViewHelper::class, ['dummy'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         self::assertSame('', $viewHelper->_call('prefixFieldName', null));
     }
@@ -67,7 +69,7 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function prefixFieldNameReturnsEmptyStringIfGivenFieldNameIsEmpty()
     {
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper::class, ['dummy'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(AbstractFormViewHelper::class, ['dummy'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         self::assertSame('', $viewHelper->_call('prefixFieldName', ''));
     }
@@ -77,10 +79,10 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function prefixFieldNameReturnsGivenFieldNameIfFieldNamePrefixIsEmpty()
     {
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper::class, ['dummy'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(AbstractFormViewHelper::class, ['dummy'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
-        $this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')->willReturn(true);
-        $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')->willReturn('');
+        $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'fieldNamePrefix')->willReturn(true);
+        $this->viewHelperVariableContainer->get(FormViewHelper::class, 'fieldNamePrefix')->willReturn('');
         self::assertSame('someFieldName', $viewHelper->_call('prefixFieldName', 'someFieldName'));
     }
 
@@ -89,10 +91,10 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function prefixFieldNamePrefixesGivenFieldNameWithFieldNamePrefix()
     {
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper::class, ['dummy'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(AbstractFormViewHelper::class, ['dummy'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
-        $this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')->willReturn(true);
-        $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')->willReturn('somePrefix');
+        $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'fieldNamePrefix')->willReturn(true);
+        $this->viewHelperVariableContainer->get(FormViewHelper::class, 'fieldNamePrefix')->willReturn('somePrefix');
         self::assertSame('somePrefix[someFieldName]', $viewHelper->_call('prefixFieldName', 'someFieldName'));
     }
 
@@ -101,10 +103,10 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function prefixFieldNamePreservesSquareBracketsOfFieldName()
     {
-        $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper::class, ['dummy'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(AbstractFormViewHelper::class, ['dummy'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
-        $this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')->willReturn(true);
-        $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')->willReturn('somePrefix[foo]');
+        $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'fieldNamePrefix')->willReturn(true);
+        $this->viewHelperVariableContainer->get(FormViewHelper::class, 'fieldNamePrefix')->willReturn('somePrefix[foo]');
         self::assertSame('somePrefix[foo][someFieldName][bar]', $viewHelper->_call('prefixFieldName', 'someFieldName[bar]'));
     }
 }

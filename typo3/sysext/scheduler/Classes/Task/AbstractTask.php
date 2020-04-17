@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Execution;
+use TYPO3\CMS\Scheduler\Scheduler;
 
 /**
  * This is the base class for all Scheduler tasks
@@ -99,7 +100,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     public function __construct()
     {
         // Using makeInstance instead of setScheduler() here as the logger is injected due to LoggerAwareTrait
-        $this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+        $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
         $this->execution = GeneralUtility::makeInstance(Execution::class);
     }
 
@@ -287,7 +288,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function setScheduler()
     {
-        $this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+        $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 

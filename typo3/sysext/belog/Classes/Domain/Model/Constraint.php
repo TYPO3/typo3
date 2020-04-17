@@ -40,7 +40,7 @@ class Constraint
      *
      * @var int
      */
-    protected $workspaceUid = \TYPO3\CMS\Belog\Domain\Model\Workspace::UID_ANY_WORKSPACE;
+    protected $workspaceUid = Workspace::UID_ANY_WORKSPACE;
 
     /**
      * Selected time frame

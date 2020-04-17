@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -24,7 +26,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @internal This class is only used internally by the widget framework.
  */
-class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
+class AjaxWidgetContextHolder implements SingletonInterface
 {
     /**
      * An array $ajaxWidgetIdentifier => $widgetContext
@@ -69,7 +71,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
     public function get($ajaxWidgetId)
     {
         if (!isset($this->widgetContexts[$ajaxWidgetId])) {
-            throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
+            throw new WidgetContextNotFoundException('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
         }
         return $this->widgetContexts[$ajaxWidgetId];
     }
@@ -80,7 +82,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
      */
-    public function store(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext)
+    public function store(WidgetContext $widgetContext)
     {
         $ajaxWidgetId = md5(uniqid(random_int(0, mt_getrandmax()), true));
         $widgetContext->setAjaxWidgetIdentifier($ajaxWidgetId);

@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -33,7 +37,7 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
-    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
     }
@@ -50,10 +54,10 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-        if (!$viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')) {
+        if (!$viewHelperVariableContainer->exists(FormViewHelper::class, 'fieldNamePrefix')) {
             return $fieldName;
         }
-        $fieldNamePrefix = (string)$viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix');
+        $fieldNamePrefix = (string)$viewHelperVariableContainer->get(FormViewHelper::class, 'fieldNamePrefix');
         if ($fieldNamePrefix === '') {
             return $fieldName;
         }
@@ -75,11 +79,11 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
      */
     protected function renderHiddenIdentityField($object, $name)
     {
-        if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+        if ($object instanceof LazyLoadingProxy) {
             $object = $object->_loadRealInstance();
         }
         if (!is_object($object)
-            || !($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject)
+            || !($object instanceof AbstractDomainObject)
             || ($object->_isNew() && !$object->_isClone())) {
             return '';
         }
@@ -103,12 +107,12 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
     protected function registerFieldNameForFormTokenGeneration($fieldName)
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-        if ($viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames')) {
-            $formFieldNames = $viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames');
+        if ($viewHelperVariableContainer->exists(FormViewHelper::class, 'formFieldNames')) {
+            $formFieldNames = $viewHelperVariableContainer->get(FormViewHelper::class, 'formFieldNames');
         } else {
             $formFieldNames = [];
         }
         $formFieldNames[] = $fieldName;
-        $viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames', $formFieldNames);
+        $viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);
     }
 }

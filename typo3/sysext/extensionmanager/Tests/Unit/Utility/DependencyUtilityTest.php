@@ -16,11 +16,14 @@
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures\LatestCompatibleExtensionObjectStorageFixture;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
+use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -40,7 +43,7 @@ class DependencyUtilityTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
+        $this->objectManagerMock = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
     }
 
     /**
@@ -353,7 +356,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion(): void
     {
-        $emConfUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class)
+        $emConfUtility = $this->getMockBuilder(EmConfUtility::class)
             ->setMethods(['includeEmConf'])
             ->getMock();
         $emConfUtility->expects(self::once())->method('includeEmConf')->willReturn([
@@ -483,7 +486,7 @@ class DependencyUtilityTest extends UnitTestCase
         $extension2->setExtensionKey('bar');
         $extension2->setVersion('1.0.42');
 
-        $myStorage = new \TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures\LatestCompatibleExtensionObjectStorageFixture();
+        $myStorage = new LatestCompatibleExtensionObjectStorageFixture();
         $myStorage->extensions[] = $extension1;
         $myStorage->extensions[] = $extension2;
         $dependency = new Dependency();

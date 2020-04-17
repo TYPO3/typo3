@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
 
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+
 /**
  * [Enter description here]
  */
-class EmptySyntaxTreeNode extends \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+class EmptySyntaxTreeNode extends ViewHelperNode
 {
     public function __construct()
     {

@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * ViewHelper which renders a record list as known from the TYPO3 list module.
@@ -56,7 +58,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * List of "Website user" records with a text property of ``foo`` stored on PID ``1`` and two levels down.
  * Clicking on a username will open the TYPO3 info popup for the respective record
  */
-class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+class TableListViewHelper extends AbstractBackendViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
@@ -73,7 +75,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
@@ -124,7 +126,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         /** @var \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $dblist */
-        $dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
+        $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dblist->pageRow = $pageinfo;
         if ($readOnly === false) {
             $dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageinfo);
@@ -134,7 +136,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
         $dblist->clickTitleMode = $clickTitleMode;
         $dblist->clickMenuEnabled = $enableClickMenu;
         if ($storagePid === null) {
-            $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             $storagePid = $frameworkConfiguration['persistence']['storagePid'];
         }
         $dblist->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);

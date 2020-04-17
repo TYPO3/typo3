@@ -16,12 +16,13 @@
 namespace TYPO3\CMS\Install\Configuration\Mail;
 
 use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * SMTP settings handling preset
  * @internal only to be used within EXT:install
  */
-class SmtpPreset extends Configuration\AbstractPreset
+class SmtpPreset extends AbstractPreset
 {
     /**
      * @var string Name of preset

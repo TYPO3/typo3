@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -294,7 +295,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 'id' => $this->id
             ];
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $assigns['moduleUrl'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $assigns['isNotInTopLevelKeyList'] = !isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj]);
@@ -347,7 +348,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 'id' => $this->id
             ];
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             // Parser Errors:
             $pEkey = $bType === 'setup' ? 'config' : 'constants';

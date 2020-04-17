@@ -15,13 +15,14 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Abstract action controller.
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class AbstractController extends ActionController
 {
     const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
     const TRIGGER_RefreshTopbar = 'refreshTopbar';

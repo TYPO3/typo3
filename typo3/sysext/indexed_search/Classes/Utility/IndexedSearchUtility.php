@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\IndexedSearch\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class with common methods used across various classes in the indexed search.
  * Implementation is provided by various people from the TYPO3 community.
@@ -33,7 +35,7 @@ class IndexedSearchUtility
     public static function isTableUsed($tableName)
     {
         $tableList = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'];
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tableList, $tableName);
+        return GeneralUtility::inList($tableList, $tableName);
     }
 
     /**

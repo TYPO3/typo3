@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 
+use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class DemandTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Beuser\Domain\Model\Demand();
+        $this->subject = new Demand();
     }
 
     /**
@@ -38,7 +39,7 @@ class DemandTest extends UnitTestCase
      */
     public function setUserTypeAllExpectedValueForInt()
     {
-        $userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
+        $userType = Demand::ALL;
         $this->subject->setUserType($userType);
         self::assertSame($this->subject->getUserType(), $userType);
     }
@@ -48,7 +49,7 @@ class DemandTest extends UnitTestCase
      */
     public function setUserTypeAdminOnlyExpectedValueForInt()
     {
-        $userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_ADMINONLY;
+        $userType = Demand::USERTYPE_ADMINONLY;
         $this->subject->setUserType($userType);
         self::assertSame($this->subject->getUserType(), $userType);
     }
@@ -58,7 +59,7 @@ class DemandTest extends UnitTestCase
      */
     public function setUserTypeUserOnlyExpectedValueForInt()
     {
-        $userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_USERONLY;
+        $userType = Demand::USERTYPE_USERONLY;
         $this->subject->setUserType($userType);
         self::assertSame($this->subject->getUserType(), $userType);
     }
@@ -68,7 +69,7 @@ class DemandTest extends UnitTestCase
      */
     public function setStatusAllExpectedValueForInt()
     {
-        $status = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
+        $status = Demand::ALL;
         $this->subject->setStatus($status);
         self::assertSame($this->subject->getStatus(), $status);
     }
@@ -78,7 +79,7 @@ class DemandTest extends UnitTestCase
      */
     public function setStatusActiveExpectedValueForInt()
     {
-        $status = \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_ACTIVE;
+        $status = Demand::STATUS_ACTIVE;
         $this->subject->setStatus($status);
         self::assertSame($this->subject->getStatus(), $status);
     }
@@ -88,7 +89,7 @@ class DemandTest extends UnitTestCase
      */
     public function setStatusInactiveExpectedValueForInt()
     {
-        $status = \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_INACTIVE;
+        $status = Demand::STATUS_INACTIVE;
         $this->subject->setStatus($status);
         self::assertSame($this->subject->getStatus(), $status);
     }
@@ -98,7 +99,7 @@ class DemandTest extends UnitTestCase
      */
     public function setLoginAllExpectedValueForInt()
     {
-        $login = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
+        $login = Demand::ALL;
         $this->subject->setLogins($login);
         self::assertSame($this->subject->getLogins(), $login);
     }
@@ -108,7 +109,7 @@ class DemandTest extends UnitTestCase
      */
     public function setLoginNoneExpectedValueForInt()
     {
-        $login = \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_NONE;
+        $login = Demand::LOGIN_NONE;
         $this->subject->setLogins($login);
         self::assertSame($this->subject->getLogins(), $login);
     }
@@ -118,7 +119,7 @@ class DemandTest extends UnitTestCase
      */
     public function setLoginxSameExpectedValueForInt()
     {
-        $login = \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_SOME;
+        $login = Demand::LOGIN_SOME;
         $this->subject->setLogins($login);
         self::assertSame($this->subject->getLogins(), $login);
     }

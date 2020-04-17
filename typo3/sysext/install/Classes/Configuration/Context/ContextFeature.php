@@ -15,13 +15,14 @@
 
 namespace TYPO3\CMS\Install\Configuration\Context;
 
-use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractFeature;
+use TYPO3\CMS\Install\Configuration\FeatureInterface;
 
 /**
  * Context feature sets development / production settings
  * @internal only to be used within EXT:install
  */
-class ContextFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
+class ContextFeature extends AbstractFeature implements FeatureInterface
 {
     /**
      * @var string Name of feature
@@ -32,8 +33,8 @@ class ContextFeature extends Configuration\AbstractFeature implements Configurat
      * @var array List of preset classes
      */
     protected $presetRegistry = [
-        \TYPO3\CMS\Install\Configuration\Context\LivePreset::class,
-        \TYPO3\CMS\Install\Configuration\Context\DebugPreset::class,
-        \TYPO3\CMS\Install\Configuration\Context\CustomPreset::class,
+        LivePreset::class,
+        DebugPreset::class,
+        CustomPreset::class,
     ];
 }

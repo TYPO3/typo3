@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
  * A link
@@ -38,7 +39,7 @@ class LinkNode extends AbstractNode implements NodeInterface
     public function __construct(array $structure, NodeInterface $parent = null)
     {
         if ($parent === null) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Link node must have parent',
                 1380485700
             );
@@ -47,7 +48,7 @@ class LinkNode extends AbstractNode implements NodeInterface
 
         // Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
         if (strpos($structure['name'], '/') !== false) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'File name must not contain forward slash',
                 1380546061
             );
@@ -163,7 +164,7 @@ class LinkNode extends AbstractNode implements NodeInterface
     protected function isLink()
     {
         if (!$this->exists()) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Link does not exist',
                 1380556246
             );
@@ -180,13 +181,13 @@ class LinkNode extends AbstractNode implements NodeInterface
     protected function isTargetCorrect()
     {
         if (!$this->exists()) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Link does not exist',
                 1380556245
             );
         }
         if (!$this->isLink()) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Node is not a link',
                 1380556247
             );

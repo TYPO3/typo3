@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Belog\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * A sys log entry
  * This model is 'complete': All current database properties are in there.
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  * @todo : This should be stuffed to some more central place
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class LogEntry extends AbstractEntity
 {
     /**
      * Storage page ID of the log entry

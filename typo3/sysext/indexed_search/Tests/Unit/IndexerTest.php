@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Indexer;
@@ -50,7 +51,7 @@ class IndexerTest extends UnitTestCase
      */
     public function extractHyperLinksReturnsCorrectPathWithBaseUrl()
     {
-        $baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $baseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);

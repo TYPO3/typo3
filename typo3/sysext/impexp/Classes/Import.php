@@ -971,7 +971,6 @@ class Import extends ImportExport
     /***************************
      * Import / Relations setting
      ***************************/
-
     /**
      * At the end of the import process all file and DB relations should be set properly (that is relations
      * to imported records are all re-created so imported records are correctly related again)

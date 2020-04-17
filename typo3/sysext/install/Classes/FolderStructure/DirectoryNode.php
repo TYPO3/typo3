@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
  * A directory
@@ -39,7 +40,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     public function __construct(array $structure, NodeInterface $parent = null)
     {
         if ($parent === null) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Node must have parent',
                 1366222203
             );
@@ -48,7 +49,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
 
         // Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
         if (strpos($structure['name'], '/') !== false) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Directory name must not contain forward slash',
                 1366226639
             );
@@ -283,13 +284,13 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     {
         foreach ($structure as $child) {
             if (!array_key_exists('type', $child)) {
-                throw new Exception\InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Child must have type',
                     1366222204
                 );
             }
             if (!array_key_exists('name', $child)) {
-                throw new Exception\InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Child must have name',
                     1366222205
                 );
@@ -298,7 +299,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
             foreach ($this->children as $existingChild) {
                 /** @var NodeInterface $existingChild */
                 if ($existingChild->getName() === $name) {
-                    throw new Exception\InvalidArgumentException(
+                    throw new InvalidArgumentException(
                         'Child name must be unique',
                         1366222206
                     );

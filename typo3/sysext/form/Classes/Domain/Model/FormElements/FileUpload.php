@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+
 /**
  * A generic file upload form element
  *
@@ -31,7 +33,7 @@ class FileUpload extends AbstractFormElement
      */
     public function initializeFormElement()
     {
-        $this->setDataType(\TYPO3\CMS\Extbase\Domain\Model\FileReference::class);
+        $this->setDataType(FileReference::class);
         parent::initializeFormElement();
     }
 }

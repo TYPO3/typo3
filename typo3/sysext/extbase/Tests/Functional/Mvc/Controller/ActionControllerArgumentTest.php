@@ -27,6 +27,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\ArgumentTestController;
+use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model;
+use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\ModelDto;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -76,7 +78,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
             // regular models
             'preset model' => [
                 'inputPresetModel',
-                ['preset' => (new Fixture\Domain\Model\Model())->setValue('preset')],
+                ['preset' => (new Model())->setValue('preset')],
                 'validateModel',
                 [
                     'form/model/value' => 'preset',
@@ -85,7 +87,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
             ],
             'preset DTO' => [
                 'inputPresetDto',
-                ['preset' => (new Fixture\Domain\Model\ModelDto())->setValue('preset')],
+                ['preset' => (new ModelDto())->setValue('preset')],
                 'validateDto',
                 [
                     'form/dto/value' => 'preset',

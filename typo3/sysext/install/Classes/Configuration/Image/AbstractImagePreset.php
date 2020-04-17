@@ -15,13 +15,15 @@
 
 namespace TYPO3\CMS\Install\Configuration\Image;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
  * Abstract class implements common image preset code
  * @internal only to be used within EXT:install
  */
-abstract class AbstractImagePreset extends Configuration\AbstractPreset
+abstract class AbstractImagePreset extends AbstractPreset
 {
     /**
      * @var array Default paths to search for executable, with trailing slash
@@ -152,7 +154,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset
      */
     protected function cleanUpPath($path)
     {
-        $path = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($path);
+        $path = GeneralUtility::fixWindowsFilePath($path);
         // Add trailing slash if missing
         if (!preg_match('/[\\/]$/', $path)) {
             $path .= '/';

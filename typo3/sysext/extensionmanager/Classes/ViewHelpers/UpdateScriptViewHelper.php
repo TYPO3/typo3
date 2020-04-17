@@ -19,6 +19,9 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
@@ -34,7 +37,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -59,7 +62,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
 
         // If the "class.ext_update.php" file exists, build link to the update script screen
         /** @var \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility $updateScriptUtility */
-        $updateScriptUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility::class);
+        $updateScriptUtility = $this->objectManager->get(UpdateScriptUtility::class);
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($updateScriptUtility->checkUpdateScriptExists($extensionKey)) {
@@ -72,7 +75,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
                 'UpdateScript'
             );
             $this->tag->addAttribute('href', $uri);
-            $this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.update.script', 'extensionmanager'));
+            $this->tag->addAttribute('title', LocalizationUtility::translate('extensionList.update.script', 'extensionmanager'));
             $this->tag->setContent($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render());
             $tag = $this->tag->render();
         } else {

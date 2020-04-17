@@ -15,13 +15,14 @@
 
 namespace TYPO3\CMS\Install\Configuration\Cache;
 
-use TYPO3\CMS\Install\Configuration;
+use TYPO3\CMS\Install\Configuration\AbstractFeature;
+use TYPO3\CMS\Install\Configuration\FeatureInterface;
 
 /**
  * Cache feature sets best practices
  * @internal only to be used within EXT:install
  */
-class CacheFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
+class CacheFeature extends AbstractFeature implements FeatureInterface
 {
     /**
      * @var string Name of feature

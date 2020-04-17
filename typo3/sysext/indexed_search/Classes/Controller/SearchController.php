@@ -33,7 +33,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
+use TYPO3\CMS\IndexedSearch\Lexer;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -43,7 +47,7 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
  * for this to make sense.
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class SearchController extends ActionController
 {
     /**
      * previously known as $this->piVars['sword']
@@ -167,7 +171,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
      */
-    public function injectTypoScriptService(\TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService)
+    public function injectTypoScriptService(TypoScriptService $typoScriptService)
     {
         $this->typoScriptService = $typoScriptService;
     }
@@ -242,7 +246,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($this->settings['rootPidList']) {
             $this->searchRootPageIdList = implode(',', GeneralUtility::intExplode(',', $this->settings['rootPidList']));
         }
-        $this->searchRepository = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository::class);
+        $this->searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
         $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
         $this->searchData = $searchData;
         // Calling hook for modification of initialized content
@@ -660,7 +664,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // If TypoScript is used to render the flag:
             if (is_array($this->settings['flagRendering'])) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-                $cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setCurrentVal($row['sys_language_uid']);
                 $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['flagRendering']);
                 $output = $cObj->cObjGetSingle($this->settings['flagRendering']['_typoScriptNodeValue'], $typoScriptArray);
@@ -689,7 +693,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // If TypoScript is used to render the icon:
             if (is_array($this->settings['iconRendering'])) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-                $cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setCurrentVal($imageType);
                 $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['iconRendering']);
                 $this->iconFileNameCache[$imageType] = $cObj->cObjGetSingle($this->settings['iconRendering']['_typoScriptNodeValue'], $typoScriptArray);
@@ -950,7 +954,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), 'utf-8'), 'OR'],
                     [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), 'utf-8'), 'AND NOT']
                 ];
-                $swordArray = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
+                $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
                 if (is_array($swordArray)) {
                     $sWordArray = $this->procSearchWordsByLexer($swordArray);
                 }
@@ -970,7 +974,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $newSearchWords = [];
         // Init lexer (used to post-processing of search words)
-        $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: \TYPO3\CMS\IndexedSearch\Lexer::class;
+        $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: Lexer::class;
         $this->lexerObj = GeneralUtility::makeInstance($lexerObjectClassName);
         // Traverse the search word array
         foreach ($searchWords as $wordDef) {

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
 
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,7 +29,7 @@ class BackendUserRepositoryTest extends UnitTestCase
      */
     public function classCanBeInstantiated()
     {
-        $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository($objectManager);
+        $objectManager = $this->createMock(ObjectManagerInterface::class);
+        new BackendUserRepository($objectManager);
     }
 }

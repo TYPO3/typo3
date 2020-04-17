@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -320,7 +321,7 @@ class ConfigurationController
         foreach ($this->treeSetup as $treeKey => $treeDetails) {
             $menuItem = $menu->makeMenuItem();
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $menuItem->setHref((string)$uriBuilder->buildUriFromRoute('system_config', ['tree' => $treeKey]))
                 ->setTitle($languageService->sL(
                     'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:' . $treeDetails['label']

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Recycler\Tests\Unit\Task;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
@@ -96,7 +98,7 @@ class CleanerTaskTest extends UnitTestCase
         // TODO: This should rather be a functional test if we need a query builder
         // or we should clean up the code itself to not need to mock internal behavior here
 
-        $statementProphet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
+        $statementProphet = $this->prophesize(Statement::class);
 
         $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);
         $restrictionProphet->removeAll()->willReturn($restrictionProphet->reveal());
@@ -148,7 +150,7 @@ class CleanerTaskTest extends UnitTestCase
 
         $connection->executeUpdate(Argument::cetera())
             ->shouldBeCalled()
-            ->willThrow(new \Doctrine\DBAL\DBALException('testing', 1476122315));
+            ->willThrow(new DBALException('testing', 1476122315));
 
         self::assertFalse($this->subject->execute());
     }

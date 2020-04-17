@@ -47,7 +47,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
      * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
      * @internal
      */
-    public function injectYamlSource(\TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource)
+    public function injectYamlSource(YamlSource $yamlSource)
     {
         $this->yamlSource = $yamlSource;
     }

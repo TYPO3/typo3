@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Reports\Report\Status;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -74,7 +76,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->getLL('status_empty');
             $severity = ReportStatus::WARNING;
@@ -111,7 +113,7 @@ class ConfigurationStatus implements StatusProviderInterface
         foreach ($configurations as $table => $conf) {
             if (is_array($conf)) {
                 foreach ($conf as $key => $value) {
-                    if ($value === \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend::class) {
+                    if ($value === MemcachedBackend::class) {
                         $memcachedServers = $configurations[$table]['options']['servers'];
                         break;
                     }

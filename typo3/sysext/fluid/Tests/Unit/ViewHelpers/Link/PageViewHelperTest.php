@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
@@ -60,7 +61,7 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         $this->uriBuilder->expects(self::any())->method('setAddQueryStringMethod')->willReturn($this->uriBuilder);
 
         // reset parent controller context and uri builder @todo: remove once fluid-cleanup is merged in testing framework
-        $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
+        $this->controllerContext = $this->createMock(ControllerContext::class);
         $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($this->uriBuilder);
         $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request->reveal());
         $this->arguments = [];

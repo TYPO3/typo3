@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode;
+use TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -31,7 +34,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
+        $this->viewHelper = $this->getAccessibleMock(UploadViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
@@ -41,7 +44,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderCorrectlySetsTagName()
     {
-        $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
+        $this->tagBuilder = $this->createMock(TagBuilder::class);
         $this->tagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('input');
         $this->viewHelper->setTagBuilder($this->tagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
@@ -69,7 +72,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
             'name' => 'someName'
         ];
         $this->viewHelper->setArguments($arguments);
-        $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
+        $this->viewHelper->setViewHelperNode(new EmptySyntaxTreeNode());
         $this->viewHelper->initializeArgumentsAndRender();
     }
 
@@ -88,7 +91,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     public function renderSetsAttributeNameAsArrayIfMultipleIsGiven()
     {
         /** @var TagBuilder $tagBuilder */
-        $tagBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TagBuilder::class);
+        $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class);
         $tagBuilder->addAttribute('multiple', 'multiple');
         $this->viewHelper->setTagBuilder($tagBuilder);
         $arguments = [

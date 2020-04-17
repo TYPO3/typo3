@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 
+use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class BackendUserTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new \TYPO3\CMS\Beuser\Domain\Model\BackendUser();
+        $this->subject = new BackendUser();
     }
 
     /**

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 
 /**
  * Core version service
@@ -163,7 +164,7 @@ class CoreVersionService
      */
     protected function throwFetchException(string $url): void
     {
-        throw new Exception\RemoteFetchException(
+        throw new RemoteFetchException(
             'Fetching ' .
             $url .
             ' failed. Maybe this instance can not connect to the remote system properly.',

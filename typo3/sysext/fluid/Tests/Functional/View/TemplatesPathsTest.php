@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\View;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\FluidTest\Controller\TemplateController;
 
 class TemplatesPathsTest extends FunctionalTestCase
 {
@@ -54,8 +55,8 @@ class TemplatesPathsTest extends FunctionalTestCase
                         'plugins' => [
                             'Pi' => [
                                 'controllers' => [
-                                    \TYPO3Fluid\FluidTest\Controller\TemplateController::class => [
-                                        'className' => \TYPO3Fluid\FluidTest\Controller\TemplateController::class,
+                                    TemplateController::class => [
+                                        'className' => TemplateController::class,
                                         'alias' => 'Template',
                                         'actions' => [
                                             'baseTemplate',
