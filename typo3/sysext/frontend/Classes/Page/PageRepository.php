@@ -663,7 +663,7 @@ class PageRepository implements LoggerAwareInterface
             $orderedListByLanguages = array_flip($languageUids);
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
             $result = $queryBuilder->select('*')
                 ->from('pages')
                 ->where(
@@ -746,7 +746,7 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($table);
                     $queryBuilder->setRestrictions(
-                        GeneralUtility::makeInstance(FrontendRestrictionContainer::class)
+                        GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
                     );
                     $olrow = $queryBuilder->select('*')
                         ->from($table)
@@ -1398,7 +1398,7 @@ class PageRepository implements LoggerAwareInterface
         $uid = (int)$uid;
         if (is_array($GLOBALS['TCA'][$table]) && $uid > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
             $row = $queryBuilder->select('*')
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
@@ -1411,7 +1411,7 @@ class PageRepository implements LoggerAwareInterface
                     if ($checkPage) {
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getQueryBuilderForTable('pages');
-                        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
                         $numRows = (int)$queryBuilder->count('*')
                             ->from('pages')
                             ->where(
@@ -1913,7 +1913,7 @@ class PageRepository implements LoggerAwareInterface
             // Find pointed-to record.
             if ($moveID) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
                 $origRow = $queryBuilder->select(...array_keys($this->purgeComputedProperties($row)))
                     ->from($table)
                     ->where(
@@ -2027,7 +2027,7 @@ class PageRepository implements LoggerAwareInterface
             // If version found, check if it could have been selected with enableFields on
             // as well:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
             // Remove the frontend workspace restriction because we are testing a version record
             $queryBuilder->getRestrictions()->removeByType(FrontendWorkspaceRestriction::class);
             $queryBuilder->select('uid')

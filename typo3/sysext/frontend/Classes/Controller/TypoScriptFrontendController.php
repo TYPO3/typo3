@@ -1338,7 +1338,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $customContext->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
             $pageSelectObject = GeneralUtility::makeInstance(PageRepository::class, $customContext);
             $targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
-            $result = $targetPage === -1 || $targetPage === -2;
+            // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
+            $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
         } else {
             $result = is_array($page) && ($page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME']);
         }
