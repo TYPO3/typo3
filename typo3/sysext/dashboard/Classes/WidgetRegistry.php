@@ -23,6 +23,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
+/**
+ * @internal
+ */
 class WidgetRegistry implements SingletonInterface
 {
     /**

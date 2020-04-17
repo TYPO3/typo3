@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Dashboard\Views;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
+/**
+ * @internal
+ */
 class Factory
 {
     public static function widgetTemplate(): StandaloneView

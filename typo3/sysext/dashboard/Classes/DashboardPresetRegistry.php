@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Dashboard;
 
 use TYPO3\CMS\Core\SingletonInterface;
 
+/**
+ * @internal
+ */
 class DashboardPresetRegistry implements SingletonInterface
 {
     /**

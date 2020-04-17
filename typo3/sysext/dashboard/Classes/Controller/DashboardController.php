@@ -36,6 +36,9 @@ use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
+/**
+ * @internal
+ */
 class DashboardController extends AbstractController
 {
     /**

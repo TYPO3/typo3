@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Dashboard;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 
+/**
+ * @internal
+ */
 class DashboardPreset
 {
     /**

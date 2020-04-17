@@ -24,6 +24,9 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
+/**
+ * @internal
+ */
 class DashboardRepository
 {
     private const TABLE = 'be_dashboards';

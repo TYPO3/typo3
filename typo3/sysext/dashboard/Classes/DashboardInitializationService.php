@@ -24,6 +24,9 @@ use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalJavaScriptInterface;
 use TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface;
 
+/**
+ * @internal
+ */
 class DashboardInitializationService
 {
     protected const MODULE_DATA_CURRENT_DASHBOARD_IDENTIFIER = 'dashboard/current_dashboard/';

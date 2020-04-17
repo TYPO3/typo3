@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Dashboard\Controller;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
+/**
+ * @internal
+ */
 class AbstractController
 {
     protected const MODULE_DATA_CURRENT_DASHBOARD_IDENTIFIER = 'dashboard/current_dashboard/';

@@ -26,6 +26,9 @@ use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\EventDataInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
+/**
+ * @internal
+ */
 class WidgetAjaxController extends AbstractController
 {
     /**

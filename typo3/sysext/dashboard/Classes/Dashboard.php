@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
+/**
+ * @internal
+ */
 class Dashboard
 {
     /**
