@@ -612,11 +612,12 @@ define(['jquery',
           nextButton.on('click', function(e) {
             Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               MultiStepWizard.set('confirmationDuplicateFormName', that.data('formName'));
-              MultiStepWizard.set('savePath', $(getDomElementIdentifier('duplicateFormSavePath') + ' option:selected', modal).val());
 
               if (folders.length > 1) {
+                MultiStepWizard.set('savePath', $(getDomElementIdentifier('duplicateFormSavePath') + ' option:selected', modal).val());
                 MultiStepWizard.set('confirmationDuplicateFormSavePath', $(getDomElementIdentifier('duplicateFormSavePath') + ' option:selected', modal).text());
               } else {
+                MultiStepWizard.set('savePath', folders[0]['value']);
                 MultiStepWizard.set('confirmationDuplicateFormSavePath', folders[0]['label']);
               }
 

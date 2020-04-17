@@ -258,17 +258,8 @@ class MultiStepWizard {
    */
   private initializeEvents(): void {
     let $modal = this.setup.$carousel.closest('.modal');
-    let $modalFooter = $modal.find('.modal-footer');
-    let $nextButton = $modalFooter.find('button[name="next"]');
-    let $prevButton = $modalFooter.find('button[name="prev"]');
-
-    $nextButton.on('click', (): void => {
-      this.setup.$carousel.carousel('next');
-    });
-
-    $prevButton.on('click', (): void => {
-      this.setup.$carousel.carousel('prev');
-    });
+    this.initializeSlideNextEvent($modal);
+    this.initializeSlidePrevEvent($modal);
 
     // Event fires when the slide transition is invoked
     this.setup.$carousel.on('slide.bs.carousel', (evt: any): void => {
@@ -301,6 +292,22 @@ class MultiStepWizard {
     });
   }
 
+  private initializeSlideNextEvent($modal: JQuery) {
+    let $modalFooter = $modal.find('.modal-footer');
+    let $nextButton = $modalFooter.find('button[name="next"]');
+    $nextButton.off().on('click', (): void => {
+      this.setup.$carousel.carousel('next');
+    });
+  }
+
+  private initializeSlidePrevEvent($modal: JQuery) {
+    let $modalFooter = $modal.find('.modal-footer');
+    let $prevButton = $modalFooter.find('button[name="prev"]');
+    $prevButton.off().on('click', (): void => {
+      this.setup.$carousel.carousel('prev');
+    });
+  }
+
   /**
    * All changes after applying the next-button
    *
@@ -308,6 +315,8 @@ class MultiStepWizard {
    * @private
    */
   private nextSlideChanges($modal: JQuery): void {
+    this.initializeSlideNextEvent($modal);
+
     let $modalTitle = $modal.find('.modal-title');
     let $modalFooter = $modal.find('.modal-footer');
     let $modalButtonGroup = $modal.find('.modal-btn-group');
@@ -361,6 +370,8 @@ class MultiStepWizard {
    * @private
    */
   private prevSlideChanges($modal: JQuery): void {
+    this.initializeSlidePrevEvent($modal);
+
     let $modalTitle = $modal.find('.modal-title');
     let $modalFooter = $modal.find('.modal-footer');
     let $modalButtonGroup = $modal.find('.modal-btn-group');
