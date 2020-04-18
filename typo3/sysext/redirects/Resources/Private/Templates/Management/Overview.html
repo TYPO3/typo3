@@ -9,7 +9,6 @@
 </f:section>
 
 <f:section name="content">
-
     <f:if condition="{redirects -> f:count()}">
         <f:then>
             <f:render section="filter" arguments="{_all}" />
@@ -160,7 +159,7 @@
 
         <div class="form-group">
             <label for="demand-source-host"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
-            <select id="demand-source-host" class="form-control input-sm" name="demand[source_host]" onchange="submit()">
+            <select id="demand-source-host" class="form-control input-sm" name="demand[source_host]" data-on-change="submit">
                 <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
                 <f:for each="{hosts}" as="host">
                     <f:form.select.option value="{host.name}" selected="{host.name} === {demand.sourceHost}">{host.name}</f:form.select.option>
@@ -177,7 +176,7 @@
         </div>
         <div class="form-group">
             <label for="demand-target-status-code"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.targetStatusCode"/></label>
-            <select id="demand-target-status-code" class="form-control input-sm" name="demand[target_statuscode]" onchange="submit()">
+            <select id="demand-target-status-code" class="form-control input-sm" name="demand[target_statuscode]" data-on-change="submit">
                 <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
                 <f:for each="{statusCodes}" as="statusCode">
                     <f:form.select.option value="{statusCode.code}" selected="{statusCode.code} === {demand.statusCode}">{statusCode.code}</f:form.select.option>

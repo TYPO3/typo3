@@ -26,6 +26,7 @@ class SourceHost
 {
     /**
      * JavaScript code for client side validation/evaluation
+     * (invoked by FormEngine when editing redirect entities)
      *
      * @return string JavaScript code for client side validation/evaluation
      */

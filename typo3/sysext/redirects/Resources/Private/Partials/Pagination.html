@@ -1,23 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
             data-namespace-typo3-fluid="true">
 
-<script>
-    function goToPage(formObject) {
-        var formField = formObject.elements['paginator-target-page'];
-        var url = formField.dataset.url;
-        var numberOfPages = parseInt(formField.dataset.numberOfPages);
-        var page = parseInt(formField.value);
-        if (page > numberOfPages) {
-            page = numberOfPages;
-        } else if (page < 1) {
-            page = 1;
-        }
-        url = url.replace('987654322', page);
-        self.location.href = url;
-        return false;
-    }
-</script>
-
 <nav class="pagination-wrap">
     <ul class="pagination pagination-block">
         <f:if condition="{pagination.hasLessPages}">
@@ -58,7 +41,7 @@
                         <f:variable name="gotToPageUrl">
                             <f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" />
                         </f:variable>
-                        <form onsubmit="return goToPage(this);" style="display:inline;">
+                        <form data-on-submit="processNavigate" style="display:inline;">
                             <f:form.textfield
                                 additionalAttributes="{min: 1, max: pagination.numberOfPages}"
                                 data="{number-of-pages: pagination.numberOfPages, url: gotToPageUrl}"

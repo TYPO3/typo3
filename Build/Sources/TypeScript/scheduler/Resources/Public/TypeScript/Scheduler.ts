@@ -163,6 +163,13 @@ class Scheduler {
       this.actOnChangeSchedulerTableGarbageCollectionTable($(evt.currentTarget));
     });
 
+    $('[data-update-task-frequency]').change((evt: JQueryEventObject): void => {
+      const $target = $(evt.currentTarget);
+      const $taskFrequency = $('#task_frequency');
+      $taskFrequency.val($target.val());
+      $target.val($target.attr('value')).blur();
+    });
+
     const taskGroupTable = document.querySelector('table.taskGroup-table');
     if (taskGroupTable !== null) {
       new Tablesort(taskGroupTable);

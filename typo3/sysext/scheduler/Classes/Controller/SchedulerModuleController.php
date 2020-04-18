@@ -1325,8 +1325,7 @@ class SchedulerModuleController
             $closeButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
-                ->setOnClick('document.location=' . GeneralUtility::quoteJSvalue($this->moduleUri))
-                ->setHref('#');
+                ->setHref($this->moduleUri);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             // Save, SaveAndClose, SaveAndNew
             $saveButtonDropdown = $buttonBar->makeSplitButton();

@@ -105,8 +105,8 @@
                     <div class="form-wizards-items-aside">
                         <div class="btn-group">
                             <select
-                                class="form-control tceforms-select tceforms-wizardselect"
-                                onchange="document.getElementById('task_frequency').value=this.options[this.selectedIndex].value;this.blur();this.selectedIndex=0;">
+                                data-update-task-frequency
+                                class="form-control tceforms-select tceforms-wizardselect">
                                 <option></option>
                                 <f:for each="{frequencyOptions}" as="label" key="command">
                                 <option value="{command}">{f:translate(key:label,default:label)} ({command})</option>
