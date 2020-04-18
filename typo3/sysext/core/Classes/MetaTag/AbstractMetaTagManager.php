@@ -295,7 +295,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
         }
 
         foreach ($this->handledProperties as $handledProperty => $handledPropertyConfig) {
-            foreach ((array)$handledPropertyConfig['allowedSubProperties'] as $allowedSubProperty => $allowedSubPropertyConfig) {
+            foreach ((array)($handledPropertyConfig['allowedSubProperties'] ?? []) as $allowedSubProperty => $allowedSubPropertyConfig) {
                 $propertyKey = is_array($allowedSubPropertyConfig) ? $allowedSubProperty : $allowedSubPropertyConfig;
                 if ($property === $handledProperty . $this->subPropertySeparator . $propertyKey) {
                     return true;

@@ -472,7 +472,7 @@ class RecordListController
             if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
                 $this->body .= '<div class="checkbox">' .
                     '<label for="checkLargeControl">' .
-                    BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"') .
+                    BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'] ?? '', '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"') .
                     BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('largeControl'))) .
                     '</label>' .
                     '</div>';
@@ -483,7 +483,7 @@ class RecordListController
                 if ($dblist->showClipboard) {
                     $this->body .= '<div class="checkbox">' .
                         '<label for="checkShowClipBoard">' .
-                        BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"') .
+                        BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'] ?? '', '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"') .
                         BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('showClipBoard'))) .
                         '</label>' .
                         '</div>';
@@ -510,7 +510,7 @@ class RecordListController
         $dblist->getDocHeaderButtons($this->moduleTemplate);
         // search box toolbar
         $content = '';
-        if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
+        if (!($this->modTSconfig['properties']['disableSearchBox'] ?? false) && ($dblist->HTMLcode || !empty($dblist->searchString))) {
             $content .= $dblist->getSearchBox();
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
 

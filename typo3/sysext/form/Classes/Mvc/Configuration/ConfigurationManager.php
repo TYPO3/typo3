@@ -131,7 +131,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     protected function overrideConfigurationByTypoScript(array $yamlSettings, string $extensionName): array
     {
         $typoScript = parent::getConfiguration(self::CONFIGURATION_TYPE_SETTINGS, $extensionName);
-        if (is_array($typoScript['yamlSettingsOverrides']) && !empty($typoScript['yamlSettingsOverrides'])) {
+        if (is_array($typoScript['yamlSettingsOverrides'] ?? null) && !empty($typoScript['yamlSettingsOverrides'])) {
             ArrayUtility::mergeRecursiveWithOverrule(
                 $yamlSettings,
                 $typoScript['yamlSettingsOverrides']

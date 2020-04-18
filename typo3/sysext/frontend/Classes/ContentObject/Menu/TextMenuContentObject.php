@@ -61,7 +61,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
         $this->WMresult = '';
         $this->WMmenuItems = count($this->result);
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes']], $this->WMmenuItems);
+        $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes'] ?? null], $this->WMmenuItems);
         foreach ($this->result as $key => $val) {
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
             $GLOBALS['TSFE']->register['count_MENUOBJ']++;
@@ -76,7 +76,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['pid'] = $this->menuArr[$key]['pid'];
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
             // Set access key
-            if ($this->mconf['accessKey']) {
+            if ($this->mconf['accessKey'] ?? false) {
                 $this->I['accessKey'] = $this->accessKey((string)($this->I['title'] ?? ''));
             } else {
                 $this->I['accessKey'] = [];
@@ -111,14 +111,14 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['A2'] = '';
             }
             // ATagBeforeWrap processing:
-            if ($this->I['val']['ATagBeforeWrap']) {
+            if ($this->I['val']['ATagBeforeWrap'] ?? false) {
                 $wrapPartsBefore = explode('|', $this->I['val']['linkWrap']);
                 $wrapPartsAfter = ['', ''];
             } else {
                 $wrapPartsBefore = ['', ''];
-                $wrapPartsAfter = explode('|', $this->I['val']['linkWrap']);
+                $wrapPartsAfter = explode('|', $this->I['val']['linkWrap'] ?? null);
             }
-            if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.'])) {
+            if (($this->I['val']['stdWrap2'] ?? false) || isset($this->I['val']['stdWrap2.'])) {
                 $stdWrap2 = isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|';
                 $wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ?: '|', $stdWrap2);
             } else {
@@ -133,13 +133,13 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrap($this->I['val']['doNotShowLink'], $this->I['val']['doNotShowLink.']);
             }
             if (!$this->I['val']['doNotShowLink']) {
-                $this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0];
+                $this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0] ?? '';
                 $this->I['parts']['ATag_begin'] = $this->I['A1'];
-                $this->I['parts']['ATagBeforeWrap_begin'] = $wrapPartsBefore[0];
+                $this->I['parts']['ATagBeforeWrap_begin'] = $wrapPartsBefore[0] ?? '';
                 $this->I['parts']['title'] = $this->I['title'];
-                $this->I['parts']['ATagBeforeWrap_end'] = $wrapPartsBefore[1];
+                $this->I['parts']['ATagBeforeWrap_end'] = $wrapPartsBefore[1] ?? '';
                 $this->I['parts']['ATag_end'] = $this->I['A2'];
-                $this->I['parts']['notATagBeforeWrap_end'] = $wrapPartsAfter[1];
+                $this->I['parts']['notATagBeforeWrap_end'] = $wrapPartsAfter[1] ?? '';
             }
             $this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1];
             $this->I['parts']['after'] = $this->getBeforeAfter('after');
@@ -152,11 +152,11 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // allWrap:
             $allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
             $this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
-            if ($this->I['val']['subst_elementUid']) {
+            if ($this->I['val']['subst_elementUid'] ?? false) {
                 $this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
             }
             // allStdWrap:
-            if (is_array($this->I['val']['allStdWrap.'])) {
+            if (is_array($this->I['val']['allStdWrap.'] ?? null)) {
                 $this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
             }
             // Calling extra processing function
@@ -196,7 +196,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
     {
         // Add part to the accumulated result + fetch submenus
         if (!$this->I['spacer']) {
-            $this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
+            $this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix'] ?? '');
         }
         $part = isset($this->I['val']['wrapItemAndSub.']) ? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.']) : $this->I['val']['wrapItemAndSub'];
         $this->WMresult .= $part ? $this->WMcObj->wrap($this->I['theItem'], $part) : $this->I['theItem'];
@@ -210,9 +210,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
      */
     protected function extProc_finish()
     {
-        if (is_array($this->mconf['stdWrap.'])) {
+        if (is_array($this->mconf['stdWrap.'] ?? null)) {
             $this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
         }
-        return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap']);
+        return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap'] ?? '');
     }
 }

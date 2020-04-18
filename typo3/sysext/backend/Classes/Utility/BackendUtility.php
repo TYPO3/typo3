@@ -3920,9 +3920,9 @@ class BackendUtility
     {
         $simUser = '';
         $simTime = '';
-        if ($pageInfo['fe_group'] > 0) {
+        if (($pageInfo['fe_group'] ?? 0) > 0) {
             $simUser = '&ADMCMD_simUser=' . $pageInfo['fe_group'];
-        } elseif ((int)$pageInfo['fe_group'] === -2) {
+        } elseif ((int)($pageInfo['fe_group'] ?? 0) === -2) {
             // -2 means "show at any login". We simulate first available fe_group.
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('fe_groups');
@@ -3940,8 +3940,8 @@ class BackendUtility
                 $simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
             }
         }
-        $startTime = (int)$pageInfo['starttime'];
-        $endTime = (int)$pageInfo['endtime'];
+        $startTime = (int)($pageInfo['starttime'] ?? 0);
+        $endTime = (int)($pageInfo['endtime'] ?? 0);
         if ($startTime > $GLOBALS['EXEC_TIME']) {
             // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
             // an URL for it

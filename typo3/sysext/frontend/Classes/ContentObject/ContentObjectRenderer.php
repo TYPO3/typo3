@@ -677,7 +677,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         foreach ($sKeyArray as $theKey) {
             $theValue = $setup[$theKey];
             if ((int)$theKey && strpos($theKey, '.') === false) {
-                $conf = $setup[$theKey . '.'];
+                $conf = $setup[$theKey . '.'] ?? [];
                 $content .= $this->cObjGetSingle($theValue, $conf, $addKey . $theKey);
             }
         }

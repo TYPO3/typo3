@@ -398,7 +398,7 @@ class TemplateService
         if (is_array($cc['all'])) {
             /** @var ConditionMatcher $matchObj */
             $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
-            $matchObj->setRootline((array)$cc['rootLine']);
+            $matchObj->setRootline((array)($cc['rootLine'] ?? []));
             $sectionsMatch = [];
             foreach ($cc['all'] as $key => $pre) {
                 if ($matchObj->match($pre)) {
@@ -1302,7 +1302,7 @@ class TemplateService
      */
     protected function getTypoScriptFrontendController()
     {
-        return $this->frontendController ?? $GLOBALS['TSFE'];
+        return $this->frontendController ?? $GLOBALS['TSFE'] ?? null;
     }
 
     /**

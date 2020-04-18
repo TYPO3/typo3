@@ -246,7 +246,7 @@ class BackendModuleRepository implements SingletonInterface
         $dummyScript = (string)$uriBuilder->buildUriFromRoute('dummy');
         foreach ($loadedModules as $moduleName => $moduleData) {
             $moduleLink = '';
-            if (!is_array($moduleData['sub'])) {
+            if (!is_array($moduleData['sub'] ?? null)) {
                 $moduleLink = $moduleData['script'];
             }
             $moduleLink = GeneralUtility::resolveBackPath($moduleLink);
@@ -259,7 +259,7 @@ class BackendModuleRepository implements SingletonInterface
                 'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                 'link' => $moduleLink,
                 'description' => $moduleLabels['shortdescription'],
-                'standalone' => (bool)$moduleData['standalone']
+                'standalone' => (bool)($moduleData['standalone'] ?? false)
             ];
             if ((($moduleData['standalone'] ?? false) === false) && !is_array($moduleData['sub']) && $moduleData['script'] !== $dummyScript) {
                 // Work around for modules with own main entry, but being self the only submodule
@@ -275,7 +275,7 @@ class BackendModuleRepository implements SingletonInterface
                     'navigationFrameScriptParam' => null,
                     'navigationComponentId' => null
                 ];
-            } elseif (is_array($moduleData['sub'])) {
+            } elseif (is_array($moduleData['sub'] ?? null)) {
                 foreach ($moduleData['sub'] as $submoduleName => $submoduleData) {
                     if (isset($submoduleData['script'])) {
                         $submoduleLink = GeneralUtility::resolveBackPath($submoduleData['script']);
@@ -286,7 +286,7 @@ class BackendModuleRepository implements SingletonInterface
                     $submoduleLabels = $moduleLoader->getLabelsForModule($submoduleKey);
                     $submoduleDescription = $submoduleLabels['shortdescription'];
                     $originalLink = $submoduleLink;
-                    $navigationFrameScript = $submoduleData['navFrameScript'];
+                    $navigationFrameScript = $submoduleData['navFrameScript'] ?? null;
                     $modules[$moduleKey]['subitems'][$submoduleKey] = [
                         'name' => $moduleName . '_' . $submoduleName,
                         'title' => $submoduleLabels['title'],
@@ -296,12 +296,12 @@ class BackendModuleRepository implements SingletonInterface
                         'originalLink' => $originalLink,
                         'description' => $submoduleDescription,
                         'navigationFrameScript' => $navigationFrameScript,
-                        'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'],
-                        'navigationComponentId' => $submoduleData['navigationComponentId']
+                        'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'] ?? null,
+                        'navigationComponentId' => $submoduleData['navigationComponentId'] ?? null
                     ];
                     // if the main module has a navframe script, inherit to the submodule,
                     // but only if it is not disabled explicitly (option is set to FALSE)
-                    if ($moduleData['navFrameScript'] && $submoduleData['inheritNavigationComponentFromMainModule'] !== false) {
+                    if (($moduleData['navFrameScript'] ?? false) && $submoduleData['inheritNavigationComponentFromMainModule'] !== false) {
                         $modules[$moduleKey]['subitems'][$submoduleKey]['parentNavigationFrameScript'] = $moduleData['navFrameScript'];
                     }
                 }

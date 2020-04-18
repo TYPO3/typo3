@@ -248,7 +248,7 @@ abstract class AbstractMenuContentObject
                 ? $this->parent_cObj->stdWrap($includeNotInMenu, $includeNotInMenuConf)
                 : $includeNotInMenu;
             // exclude doktypes that should not be shown in menu (e.g. backend user section)
-            if ($this->conf['excludeDoktypes']) {
+            if ($this->conf['excludeDoktypes'] ?? false) {
                 $this->excludedDoktypes = GeneralUtility::intExplode(',', $this->conf['excludeDoktypes']);
             }
             // EntryLevel
@@ -270,7 +270,7 @@ abstract class AbstractMenuContentObject
                 // (MP var for ->id is picked up in the next part of the code...)
                 foreach ($this->tmpl->rootLine as $entryLevel => $levelRec) {
                     // For overlaid mount points, set the variable right now:
-                    if ($levelRec['_MP_PARAM'] && $levelRec['_MOUNT_OL']) {
+                    if (($levelRec['_MP_PARAM'] ?? false) && ($levelRec['_MOUNT_OL'] ?? false)) {
                         $this->MP_array[] = $levelRec['_MP_PARAM'];
                     }
                     // Break when entry level is reached:
@@ -301,7 +301,7 @@ abstract class AbstractMenuContentObject
                 $rl_MParray = [];
                 foreach ($this->tmpl->rootLine as $v_rl) {
                     // For overlaid mount points, set the variable right now:
-                    if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
+                    if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                         $rl_MParray[] = $v_rl['_MP_PARAM'];
                     }
                     // Add to register:
@@ -312,7 +312,7 @@ abstract class AbstractMenuContentObject
                             : ''
                         );
                     // For normal mount points, set the variable for next level.
-                    if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
+                    if (($v_rl['_MP_PARAM'] ?? false) && !($v_rl['_MOUNT_OL'] ?? false)) {
                         $rl_MParray[] = $v_rl['_MP_PARAM'];
                     }
                 }
@@ -334,7 +334,7 @@ abstract class AbstractMenuContentObject
             // Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
             $startLevel = $directoryLevel ?: $this->entryLevel;
             $currentLevel = $startLevel + $this->menuNumber;
-            if (is_array($this->tmpl->rootLine[$currentLevel])) {
+            if (is_array($this->tmpl->rootLine[$currentLevel] ?? null)) {
                 $nextMParray = $this->MP_array;
                 if (empty($nextMParray) && !$this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] && $currentLevel > 0) {
                     // Make sure to slide-down any mount point information (_MP_PARAM) to children records in the rootline
@@ -377,7 +377,7 @@ abstract class AbstractMenuContentObject
 
         // Initializing showAccessRestrictedPages
         $SAVED_where_groupAccess = '';
-        if ($this->mconf['showAccessRestrictedPages']) {
+        if ($this->mconf['showAccessRestrictedPages'] ?? false) {
             // SAVING where_groupAccess
             $SAVED_where_groupAccess = $this->sys_page->where_groupAccess;
             // Temporarily removing fe_group checking!
@@ -388,9 +388,10 @@ abstract class AbstractMenuContentObject
 
         $c = 0;
         $c_b = 0;
-        $minItems = (int)($this->mconf['minItems'] ?: $this->conf['minItems']);
-        $maxItems = (int)($this->mconf['maxItems'] ?: $this->conf['maxItems']);
-        $begin = $this->parent_cObj->calc($this->mconf['begin'] ?: $this->conf['begin']);
+
+        $minItems = (int)(($this->mconf['minItems'] ?? 0) ?: ($this->conf['minItems'] ?? 0));
+        $maxItems = (int)(($this->mconf['maxItems'] ?? 0) ?: ($this->conf['maxItems'] ?? 0));
+        $begin = $this->parent_cObj->calc(($this->mconf['begin'] ?? 0) ?: ($this->conf['begin'] ?? 0));
         $minItemsConf = $this->mconf['minItems.'] ?? $this->conf['minItems.'] ?? null;
         $minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap($minItems, $minItemsConf) : $minItems;
         $maxItemsConf = $this->mconf['maxItems.'] ?? $this->conf['maxItems.'] ?? null;
@@ -427,7 +428,7 @@ abstract class AbstractMenuContentObject
             }
         }
         //	Passing the menuArr through a user defined function:
-        if ($this->mconf['itemArrayProcFunc']) {
+        if ($this->mconf['itemArrayProcFunc'] ?? false) {
             $this->menuArr = $this->userProcess('itemArrayProcFunc', $this->menuArr);
         }
         // Setting number of menu items
@@ -439,7 +440,7 @@ abstract class AbstractMenuContentObject
             json_encode($this->MP_array)
         );
         // Get the cache timeout:
-        if ($this->conf['cache_period']) {
+        if ($this->conf['cache_period'] ?? false) {
             $cacheTimeout = $this->conf['cache_period'];
         } else {
             $cacheTimeout = $this->getTypoScriptFrontendController()->get_cache_timeout();
@@ -453,7 +454,7 @@ abstract class AbstractMenuContentObject
             $this->result = $cachedData;
         }
         // End showAccessRestrictedPages
-        if ($this->mconf['showAccessRestrictedPages']) {
+        if ($this->mconf['showAccessRestrictedPages'] ?? false) {
             // RESTORING where_groupAccess
             $this->sys_page->where_groupAccess = $SAVED_where_groupAccess;
         }
@@ -502,7 +503,7 @@ abstract class AbstractMenuContentObject
     protected function prepareMenuItems()
     {
         $menuItems = [];
-        $alternativeSortingField = trim($this->mconf['alternativeSortingField']) ?: 'sorting';
+        $alternativeSortingField = trim($this->mconf['alternativeSortingField'] ?? '') ?: 'sorting';
 
         // Additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
         $additionalWhere = $this->mconf['additionalWhere'] ?? '';
@@ -553,7 +554,7 @@ abstract class AbstractMenuContentObject
                     $menuItems = $this->prepareMenuItemsForBrowseMenu($value, $alternativeSortingField, $additionalWhere);
                     break;
             }
-            if ($this->mconf['sectionIndex']) {
+            if ($this->mconf['sectionIndex'] ?? false) {
                 $sectionIndexes = [];
                 foreach ($menuItems as $page) {
                     $sectionIndexes = $sectionIndexes + $this->sectionIndex($alternativeSortingField, $page['uid']);
@@ -625,7 +626,7 @@ abstract class AbstractMenuContentObject
             if (GeneralUtility::hideIfNotTranslated($tsfe->page['l18n_cfg']) && $sUid &&
                 empty($lRecs) || GeneralUtility::hideIfDefaultLanguage($tsfe->page['l18n_cfg']) &&
                 (!$sUid || empty($lRecs)) ||
-                !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && empty($lRecs)
+                !($this->conf['special.']['normalWhenNoLanguage'] ?? false) && $sUid && empty($lRecs)
             ) {
                 $iState = $currentLanguageId === $sUid ? 'USERDEF2' : 'USERDEF1';
             } else {
@@ -1316,7 +1317,7 @@ abstract class AbstractMenuContentObject
         $tsfe = $this->getTypoScriptFrontendController();
 
         // If a user script returned the value overrideId in the menu array we use that as page id
-        if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId']) {
+        if (($this->mconf['overrideId'] ?? false) || ($this->menuArr[$key]['overrideId'] ?? false)) {
             $overrideId = (int)($this->mconf['overrideId'] ?: $this->menuArr[$key]['overrideId']);
             $overrideId = $overrideId > 0 ? $overrideId : null;
             // Clear MP parameters since ID was changed.
@@ -1335,13 +1336,13 @@ abstract class AbstractMenuContentObject
             $mainTarget = $this->mconf['target'];
         }
         // Creating link:
-        $addParams = $this->mconf['addParams'] . $MP_params;
-        if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key))) {
+        $addParams = ($this->mconf['addParams'] ?? '') . $MP_params;
+        if (($this->mconf['collapse'] ?? false) && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key))) {
             $thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
             $addParams .= $this->menuArr[$key]['_ADD_GETVARS'];
             $LD = $this->menuTypoLink($thePage, $mainTarget, $addParams, $typeOverride, $overrideId);
         } else {
-            $addParams .= $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS'];
+            $addParams .= ($this->I['val']['additionalParams'] ?? '') . $this->menuArr[$key]['_ADD_GETVARS'];
             $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
         }
         // Override default target configuration if option is set
@@ -1398,7 +1399,7 @@ abstract class AbstractMenuContentObject
         // Manipulation in case of access restricted pages:
         $this->changeLinksForAccessRestrictedPages($LD, $pageData, $mainTarget, $typeOverride);
         // Overriding URL / Target if set to do so:
-        if ($this->menuArr[$key]['_OVERRIDE_HREF']) {
+        if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
             $LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
             if ($this->menuArr[$key]['_OVERRIDE_TARGET']) {
                 $LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
@@ -1406,7 +1407,7 @@ abstract class AbstractMenuContentObject
         }
         // OnClick open in windows.
         $onClick = '';
-        if ($this->mconf['JSWindow']) {
+        if ($this->mconf['JSWindow'] ?? false) {
             $conf = $this->mconf['JSWindow.'];
             $url = $LD['totalURL'];
             $LD['totalURL'] = '#';
@@ -1426,12 +1427,12 @@ abstract class AbstractMenuContentObject
         $targetIsType = $LD['target'] && MathUtility::canBeInterpretedAsInteger($LD['target']) ? (int)$LD['target'] : false;
         if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
             // has type?
-            if ((int)$matches[1] || $targetIsType) {
+            if ((int)($matches[1] ?? 0) || $targetIsType) {
                 $LD['totalURL'] .= (strpos($LD['totalURL'], '?') === false ? '?' : '&') . 'type=' . ($targetIsType ?: (int)$matches[1]);
                 $LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
             }
             // Open in popup window?
-            if ($matches[3] && $matches[4]) {
+            if (($matches[3] ?? false) && ($matches[4] ?? false)) {
                 $target = $LD['target'] ?? 'FEopenLink';
                 $JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
                 $onClick = 'vHWin=window.open('
@@ -1493,7 +1494,7 @@ abstract class AbstractMenuContentObject
     protected function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
     {
         // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-        if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
+        if (($this->mconf['showAccessRestrictedPages'] ?? false) && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
             $thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
             $addParams = str_replace(
                 [
@@ -1521,16 +1522,16 @@ abstract class AbstractMenuContentObject
     {
         // Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
         $altArray = '';
-        if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU']) && !empty($this->menuArr[$this->I['key']]['_SUB_MENU'])) {
+        if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU'] ?? null) && !empty($this->menuArr[$this->I['key']]['_SUB_MENU'])) {
             $altArray = $this->menuArr[$this->I['key']]['_SUB_MENU'];
         }
         // Make submenu if the page is the next active
-        $menuType = $this->conf[($this->menuNumber + 1) . $objSuffix];
+        $menuType = $this->conf[($this->menuNumber + 1) . $objSuffix] ?? '';
         // stdWrap for expAll
         if (isset($this->mconf['expAll.'])) {
             $this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
         }
-        if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
+        if ((($this->mconf['expAll'] ?? false) || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !($this->mconf['sectionIndex'] ?? false)) {
             try {
                 $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
                 /** @var AbstractMenuContentObject $submenu */
@@ -1761,7 +1762,7 @@ abstract class AbstractMenuContentObject
     protected function userProcess($mConfKey, $passVar)
     {
         if ($this->mconf[$mConfKey]) {
-            $funcConf = $this->mconf[$mConfKey . '.'];
+            $funcConf = (array)($this->mconf[$mConfKey . '.'] ?? []);
             $funcConf['parentObj'] = $this;
             $passVar = $this->parent_cObj->callUserFunction($this->mconf[$mConfKey], $funcConf, $passVar);
         }
@@ -1803,7 +1804,7 @@ abstract class AbstractMenuContentObject
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $localMP_array = $this->MP_array;
             // NOTICE: "_MP_PARAM" is allowed to be a commalist of PID pairs!
-            if ($this->menuArr[$key]['_MP_PARAM']) {
+            if ($this->menuArr[$key]['_MP_PARAM'] ?? false) {
                 $localMP_array[] = $this->menuArr[$key]['_MP_PARAM'];
             }
             return !empty($localMP_array) ? implode(',', $localMP_array) : '';
