@@ -120,14 +120,6 @@ class PermissionController extends ActionController
     {
         parent::initializeView($view);
         $this->setPageInfo();
-        $view->assign(
-            'previewUrl',
-            BackendUtility::viewOnClick(
-                (int)$this->pageInfo['uid'],
-                '',
-                BackendUtility::BEgetRootLine((int)$this->pageInfo['uid'])
-            )
-        );
 
         // the view of the update action has a different view class
         if ($view instanceof BackendTemplateView) {
