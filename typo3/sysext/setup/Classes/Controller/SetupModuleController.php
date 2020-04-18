@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Setup\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
@@ -36,12 +37,14 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SysLog\Action\Setting as SystemLogSettingAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
 
 /**
  * Script class for the Setup module
@@ -144,20 +147,40 @@ class SetupModuleController
     protected $moduleTemplate;
 
     /**
-     * Instantiate the form protection before a simulated user is initialized.
+     * @var EventDispatcherInterface
      */
-    public function __construct()
+    protected $eventDispatcher;
+
+    /**
+     * Instantiate the form protection before a simulated user is initialized.
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher;
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->formProtection = FormProtectionFactory::get();
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Setup/SetupModule');
+        $this->processAdditionalJavaScriptModules($pageRenderer);
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
         $pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
         ]);
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
+    }
+
+    protected function processAdditionalJavaScriptModules(PageRenderer $pageRenderer): void
+    {
+        $event = new AddJavaScriptModulesEvent();
+        /** @var AddJavaScriptModulesEvent $event */
+        $event = $this->eventDispatcher->dispatch($event);
+        foreach ($event->getModules() as $moduleName) {
+            $pageRenderer->loadRequireJsModule($moduleName);
+        }
     }
 
     /**
@@ -420,6 +443,7 @@ class SetupModuleController
     protected function renderUserSetup()
     {
         $backendUser = $this->getBackendUser();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $html = '';
         $result = [];
         $firstTabLabel = '';
@@ -527,7 +551,25 @@ class SetupModuleController
                     $html = GeneralUtility::callUserFunction($config['userFunc'], $config, $this);
                     break;
                 case 'button':
-                    if ($config['onClick']) {
+                    if (!empty($config['clickData'])) {
+                        $clickData = $config['clickData'];
+                        $buttonAttributes = [
+                            'type' => 'button',
+                            'class' => 'btn btn-default',
+                            'aria-labelledby' => 'label_' . htmlspecialchars($fieldName),
+                            'value' => $this->getLabel($config['buttonlabel'], '', false),
+                        ];
+                        if (isset($clickData['eventName'])) {
+                            $buttonAttributes['data-event'] = 'click';
+                            $buttonAttributes['data-event-name'] = htmlspecialchars($clickData['eventName']);
+                            $buttonAttributes['data-event-payload'] = htmlspecialchars($fieldName);
+                        }
+                        $html = '<br><input '
+                            . GeneralUtility::implodeAttributes($buttonAttributes, false) . ' />';
+                    } elseif (!empty($config['onClick'])) {
+                        /**
+                         * @deprecated Will be removed in TYPO3 v12.0
+                         */
                         $onClick = $config['onClick'];
                         if ($config['onClickLabels']) {
                             foreach ($config['onClickLabels'] as $key => $labelclick) {
@@ -542,12 +584,28 @@ class SetupModuleController
                     }
                     if (!empty($config['confirm'])) {
                         $confirmData = $config['confirmData'];
-                        $html = '<br><input class="btn btn-default t3js-modal-trigger" type="button"'
-                            . ' value="' . $this->getLabel($config['buttonlabel'], '', false) . '"'
-                            . ' data-href="javascript:' . htmlspecialchars($confirmData['jsCodeAfterOk']) . '"'
-                            . ' data-severity="warning"'
-                            . ' data-title="' . $this->getLabel($config['label'], '', false) . '"'
-                            . ' data-content="' . $this->getLabel($confirmData['message'], '', false) . '" />';
+                        // cave: values must be processed by `htmlspecialchars()`
+                        $buttonAttributes = [
+                            'type' => 'button',
+                            'class' => 'btn btn-default t3js-modal-trigger',
+                            'data-severity' => 'warning',
+                            'data-title' => $this->getLabel($config['label'], '', false),
+                            'data-content' => $this->getLabel($confirmData['message'], '', false),
+                            'value' => htmlspecialchars($this->getLabel($config['buttonlabel'], '', false)),
+                        ];
+                        if (isset($confirmData['eventName'])) {
+                            $buttonAttributes['data-event'] = 'confirm';
+                            $buttonAttributes['data-event-name'] = htmlspecialchars($confirmData['eventName']);
+                            $buttonAttributes['data-event-payload'] = htmlspecialchars($fieldName);
+                        }
+                        if (isset($confirmData['jsCodeAfterOk'])) {
+                            /**
+                             * @deprecated Will be removed in TYPO3 v12.0
+                             */
+                            $buttonAttributes['data-href'] = 'javascript:' . htmlspecialchars($confirmData['jsCodeAfterOk']);
+                        }
+                        $html = '<br><input '
+                            . GeneralUtility::implodeAttributes($buttonAttributes, false) . ' />';
                     }
                     break;
                 case 'avatar':
@@ -569,25 +627,23 @@ class SetupModuleController
                     }
                     $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
                             'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
-                            ' value="' . (int)$avatarFileUid . '" />';
+                            ' value="' . (int)$avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
                     $html .= '<div class="btn-group">';
                     $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     if ($avatarFileUid) {
                         $html .=
                             '<button type="button" id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.clear')) . '" '
-                                . 'onclick="clearExistingImage(); return false;" class="btn btn-default">'
+                                . ' class="btn btn-default">'
                                 . $iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
                             . '</button>';
                     }
                     $html .=
                         '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
                             . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
-                            . ' onclick="openFileBrowser();return false;">'
-                            . $iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
+                            . ' data-setup-avatar-url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||__IDENTIFIER__'])) . '"'
+                            . '>' . $iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                             . '</button></div>';
-
-                    $this->addAvatarButtonJs($fieldName);
                     break;
                 default:
                     $html = '';
@@ -924,58 +980,6 @@ class SetupModuleController
                 $storeRec['be_users'][(int)$beUserId]['avatar'] = 'NEW1234';
             }
         }
-    }
-
-    /**
-     * Add JavaScript to for browse files button
-     *
-     * @param string $fieldName
-     */
-    protected function addAvatarButtonJs($fieldName)
-    {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->moduleTemplate->addJavaScriptCode('avatar-button', '
-            var browserWin="";
-
-            require([\'TYPO3/CMS/Backend/Utility/MessageUtility\'], function(MessageUtility) {
-                window.addEventListener(\'message\', function (e) {
-                    MessageUtility.MessageUtility.verifyOrigin
-                    if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
-                        throw \'Denied message sent by \' + e.origin;
-                    }
-                    if (e.data.actionName === \'typo3:foreignRelation:insert\') {
-                        if (typeof e.data.objectGroup === \'undefined\') {
-                            throw \'No object group defined for message\';
-                        }
-                        if (e.data.objectGroup !== \'dummy\') {
-                            // Received message isn\'t provisioned for current InlineControlContainer instance
-                            return;
-                        }
-                        setFileUid(\'avatar\', e.data.uid);
-                    }
-                });
-            });
-
-            function openFileBrowser() {
-                var url = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy'])) . ';
-                browserWin = window.open(url,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
-                browserWin.focus();
-            }
-
-            function clearExistingImage() {
-                $(' . GeneralUtility::quoteJSvalue('#image_' . htmlspecialchars($fieldName)) . ').hide();
-                $(' . GeneralUtility::quoteJSvalue('#clear_button_' . htmlspecialchars($fieldName)) . ').hide();
-                $(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(\'delete\');
-            }
-
-            function setFileUid(field, fileUid) {
-                clearExistingImage();
-                $(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(fileUid);
-                $(' . GeneralUtility::quoteJSvalue('#add_button_' . htmlspecialchars($fieldName)) . ').removeClass(\'btn-default\').addClass(\'btn-info\');
-
-                browserWin.close();
-            }
-        ');
     }
 
     /**

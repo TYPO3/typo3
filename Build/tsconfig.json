@@ -98,6 +98,10 @@
                 "../typo3/sysext/scheduler/Resources/Public/JavaScript/*",
                 "scheduler/Resources/Public/TypeScript/*"
             ],
+            "TYPO3/CMS/Setup/*": [
+                "../typo3/sysext/setup/Resources/Public/JavaScript/*",
+                "setup/Resources/Public/TypeScript/*"
+            ],
             "TYPO3/CMS/T3editor/*": [
                 "../typo3/sysext/t3editor/Resources/Public/JavaScript/*",
                 "t3editor/Resources/Public/TypeScript/*"

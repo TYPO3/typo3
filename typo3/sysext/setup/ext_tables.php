@@ -122,7 +122,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'confirm' => true,
             'confirmData' => [
                 'message' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setToStandardQuestion',
-                'jsCodeAfterOk' => 'document.getElementById(\'setValuesToDefault\').value = 1; document.getElementById(\'SetupModuleController\').submit();'
+                'eventName' => 'setup:confirmation:response',
             ]
         ],
         'resizeTextareas_Flexible' => [
