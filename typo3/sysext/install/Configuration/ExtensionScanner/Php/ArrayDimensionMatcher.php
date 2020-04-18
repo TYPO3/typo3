@@ -334,42 +334,42 @@ return [
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'beforeRedirect\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'postProcContent\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'forgotPasswordMail\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'password_changed\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'login_confirmed\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'login_error\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'logout_confirmed\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'loginFormOnSubmitFuncs\']' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClass\']' => [

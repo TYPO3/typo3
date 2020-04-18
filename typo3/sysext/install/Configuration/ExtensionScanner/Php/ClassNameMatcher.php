@@ -1355,17 +1355,17 @@ return [
     ],
     'TYPO3\CMS\Felogin\Hooks\CmsLayout' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     'TYPO3\CMS\Felogin\Controller\FrontendLoginController' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Hooks\CmsLayout' => [
         'restFiles' => [
-            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+            'Deprecation-88740-ExtFeloginPibasePlugin.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Dispatcher' => [
@@ -1375,37 +1375,37 @@ return [
     ],
     'TYPO3\CMS\Extbase\Domain\Model\FileMount' => [
         'restFiles' => [
-            'Deprecation-90686-DeprecateModelFileMount.rst',
+            'Deprecation-90686-ModelFileMount.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection' => [
         'restFiles' => [
-            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+            'Deprecation-90692-FileCollectionModels.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection' => [
         'restFiles' => [
-            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+            'Deprecation-90692-FileCollectionModels.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection' => [
         'restFiles' => [
-            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+            'Deprecation-90692-FileCollectionModels.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter' => [
         'restFiles' => [
-            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+            'Deprecation-90692-FileCollectionModels.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter' => [
         'restFiles' => [
-            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+            'Deprecation-90692-FileCollectionModels.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter' => [
         'restFiles' => [
-            'Deprecation-90692-DeprecateFileCollectionModels.rst',
+            'Deprecation-90692-FileCollectionModels.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface' => [

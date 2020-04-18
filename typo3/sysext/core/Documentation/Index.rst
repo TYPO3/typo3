@@ -13,7 +13,6 @@ Every change to the TYPO3 Core which might affect your site is documented here.
    :titlesonly:
 
    Sitemap/Index
-   Master
    Changelog-10
    Changelog-9
    Changelog-8
