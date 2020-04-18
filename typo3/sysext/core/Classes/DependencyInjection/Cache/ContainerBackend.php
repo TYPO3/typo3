@@ -35,4 +35,9 @@ class ContainerBackend extends SimpleFileBackend
         parent::flush();
         parent::set($entryIdentifier, $data, $tags, $lifetime);
     }
+
+    public function forceFlush(): void
+    {
+        parent::flush();
+    }
 }

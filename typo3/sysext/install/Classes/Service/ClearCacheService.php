@@ -16,7 +16,9 @@
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,9 +36,17 @@ class ClearCacheService
      */
     private $lateBootService;
 
-    public function __construct(LateBootService $lateBootService)
-    {
+    /**
+     * @var FrontendInterface
+     */
+    private $dependencyInjectionCache;
+
+    public function __construct(
+        LateBootService $lateBootService,
+        FrontendInterface $dependencyInjectionCache
+    ) {
         $this->lateBootService = $lateBootService;
+        $this->dependencyInjectionCache = $dependencyInjectionCache;
     }
 
     /**
@@ -44,7 +54,7 @@ class ClearCacheService
      * Goal is to reliably get rid of cache entries, even if some broken
      * extension is loaded that would kill the backend 'clear cache' action.
      *
-     * Therefor this method "knows" implementation details of the cache
+     * Therefore this method "knows" implementation details of the cache
      * framework and uses them to clear all file based cache (typo3temp/Cache)
      * and database caches (tables prefixed with cf_) manually.
      *
@@ -66,9 +76,12 @@ class ClearCacheService
         $this->flushCaches($baseCaches);
 
         // Remove DI container cache (this might be removed in preference of functionality to rebuild this cache)
-        // We need to remove using the remove method because the DI cache backend disables the flush method
-        $container = $this->lateBootService->getContainer();
-        $container->get('cache.di')->remove(get_class($container));
+        if ($this->dependencyInjectionCache->getBackend() instanceof ContainerBackend) {
+            /** @var ContainerBackend $diCacheBackend */
+            $diCacheBackend = $this->dependencyInjectionCache->getBackend();
+            // We need to remove using the forceFlush method because the DI cache backend disables the flush method
+            $diCacheBackend->forceFlush();
+        }
 
         // From this point on, the code may fatal, if some broken extension is loaded.
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();

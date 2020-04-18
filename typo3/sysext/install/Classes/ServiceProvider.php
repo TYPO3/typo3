@@ -107,7 +107,8 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getClearCacheService(ContainerInterface $container): Service\ClearCacheService
     {
         return new Service\ClearCacheService(
-            $container->get(Service\LateBootService::class)
+            $container->get(Service\LateBootService::class),
+            $container->get('cache.di')
         );
     }
 
