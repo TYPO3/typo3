@@ -209,7 +209,7 @@ class PermissionController extends ActionController
         $depthOptions = [];
         $url = $this->uriBuilder->reset()->setArguments([
             'action' => 'index',
-            'depth' => '__DEPTH__',
+            'depth' => '${value}',
             'id' => $this->id
         ])->buildBackendUri();
         foreach ([1, 2, 3, 4, 10] as $depthLevel) {

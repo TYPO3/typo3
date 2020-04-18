@@ -8,10 +8,10 @@
 </f:section>
 
 <f:section name="content">
-
     <div class="form-group">
         <label for="depth"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" />:</label>
-        <f:form.select class="form-control" id="depth" value="{depth}" options="{depthOptions}" additionalAttributes="{onchange: 'window.location.href = \'{depthBaseUrl}\'.replace(\'__DEPTH__\', this.options[this.selectedIndex].value);'}" />
+        <f:form.select class="form-control" id="depth" value="{depth}" options="{depthOptions}"
+                        additionalAttributes="{data-global-event: 'change', data-action-navigate: '$data=~s/$value/', data-navigate-value:depthBaseUrl}" />
     </div>
 
     <div class="panel panel-default panel-space">

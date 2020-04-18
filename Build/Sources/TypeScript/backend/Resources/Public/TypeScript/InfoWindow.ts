@@ -37,6 +37,10 @@ class InfoWindow {
   }
 }
 
+if (!top.TYPO3.InfoWindow) {
+  top.TYPO3.InfoWindow = InfoWindow;
+}
+
 // expose as global object
 TYPO3.InfoWindow = InfoWindow;
 export = InfoWindow;

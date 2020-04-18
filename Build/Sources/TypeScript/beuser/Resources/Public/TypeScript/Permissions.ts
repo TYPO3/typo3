@@ -26,6 +26,7 @@ declare global {
 class Permissions {
   private options: any = {
     containerSelector: '#typo3-permissionList',
+    editControllerSelector: '#PermissionControllerEdit',
   };
 
   private ajaxUrl: string = TYPO3.settings.ajaxUrls.user_access_permissions;
@@ -235,7 +236,7 @@ class Permissions {
    * so AJAX reloads are no problem
    */
   public initializeEvents(): void {
-    // Click event to change permissions
+    // Click events to change permissions (in template Index.html)
     $(this.options.containerSelector).on('click', '.change-permission', (evt: JQueryEventObject): void => {
       evt.preventDefault();
       this.setPermissions($(evt.currentTarget));
@@ -267,6 +268,12 @@ class Permissions {
       // Add click handler for saving group
       evt.preventDefault();
       this.changeGroup($(evt.currentTarget));
+    });
+    // Click events to change permissions (in template Edit.html)
+    $(this.options.editControllerSelector).on('click', '[data-check-change-permissions]', (evt: JQueryEventObject): void => {
+      const $target: JQuery = $(evt.currentTarget);
+      const args = $target.data('checkChangePermissions').split(',').map((item: string) => item.trim());
+      this.checkChange.apply(this, args);
     });
   }
 }

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./Enum/Severity","./Modal"],(function(e,t,n,o){"use strict";class i{static showItem(e,t){o.advanced({type:o.types.iframe,size:o.sizes.large,content:top.TYPO3.settings.ShowItem.moduleUrl+"&table="+encodeURIComponent(e)+"&uid="+("number"==typeof t?t:encodeURIComponent(t)),severity:n.SeverityEnum.notice})}}return TYPO3.InfoWindow=i,i}));
+define(["require","exports","./Enum/Severity","./Modal"],(function(e,t,n,o){"use strict";class i{static showItem(e,t){o.advanced({type:o.types.iframe,size:o.sizes.large,content:top.TYPO3.settings.ShowItem.moduleUrl+"&table="+encodeURIComponent(e)+"&uid="+("number"==typeof t?t:encodeURIComponent(t)),severity:n.SeverityEnum.notice})}}return top.TYPO3.InfoWindow||(top.TYPO3.InfoWindow=i),TYPO3.InfoWindow=i,i}));

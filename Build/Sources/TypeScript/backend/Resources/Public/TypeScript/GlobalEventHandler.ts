@@ -24,6 +24,8 @@ type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
  *     + `<any CSS selector>` queried element is submitted (if implementing HTMLFormElement)
  *   + `data-action-navigate="..."` navigates to URL
  *     + `$value` URL taken from value of current element
+ *     + `$data` URL taken from `data-navigate-value`
+ *     + `$data=~s/$value/` URL taken from `data-navigate-value`, substituting literal `${value}`
  * + `data-global-event="click"`
  *   + @todo
  *
@@ -85,6 +87,16 @@ class GlobalEventHandler {
       return false;
     }
     const value = this.resolveHTMLFormChildElementValue(resolvedTarget);
+    const navigateValue = resolvedTarget.dataset.navigateValue;
+    if (action === '$data=~s/$value/' && value && navigateValue) {
+      // replacing `${value}` and its URL encoded representation
+      window.location.href = navigateValue.replace(/(\$\{value\}|%24%7Bvalue%7D)/gi, value);
+      return true;
+    }
+    if (action === '$data' && navigateValue) {
+      window.location.href = navigateValue;
+      return true;
+    }
     if (action === '$value' && value) {
       window.location.href = value;
       return true;

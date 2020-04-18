@@ -40,7 +40,7 @@
                         </f:link.action>
                     </f:else>
                 </f:if>
-                <a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_users', '{onlineUser.backendUser.uid}'); return false;">
+                <a class="btn btn-default" href="#" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="be_users,{onlineUser.backendUser.uid}">
                     <core:icon identifier="actions-document-info" />
                 </a>
             </div>
