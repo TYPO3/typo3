@@ -48,30 +48,28 @@ How Do I Create My Own Preset?
 
 In your sitepackage extension:
 
-In :file:`ext_localconf`:
+In :file:`ext_localconf.php`, replace `my_extension` with your extension key, replace `my_preset` and `MyPreset.yaml`
+with the name of your preset.
 
-   .. code-block:: php
+.. code-block:: php
 
-      $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['my_preset'] = 'EXT:my_extension/Configuration/RTE/MyPreset.yaml';
-
-   Replace `my_extension` with your extension key, replace `my_preset` and `MyPreset.yaml`
-   with the name of your preset.
+   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['my_preset'] = 'EXT:my_extension/Configuration/RTE/MyPreset.yaml';
 
 In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for example:
 
-   .. code-block:: yaml
+.. code-block:: yaml
 
-      # Import basic configuration
-      imports:
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
-      # Add configuration for the editor
-      # For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
-      editor:
-        config:
-          # Include custom CSS
-          contentsCss: "EXT:my_extension/Resources/Public/Css/rte.css"
+   # Import basic configuration
+   imports:
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
+   # Add configuration for the editor
+   # For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
+   editor:
+     config:
+       # Include custom CSS
+       contentsCss: "EXT:my_extension/Resources/Public/Css/rte.css"
 
 How Do I Customize the Toolbar?
 ===============================
@@ -100,14 +98,14 @@ one or more toolbarGroups.
 
 Example:
 
-   .. code-block:: yaml
+.. code-block:: yaml
 
-      toolbarGroups:
-        - { name: clipboard, groups: [ clipboard, cleanup, undo ] }
+   toolbarGroups:
+     - { name: clipboard, groups: [ clipboard, cleanup, undo ] }
 
-   In the example, the toolbar "clipboard" will contain the toolbarGroups "clipboard", "cleanup" and
-   "undo" and all buttons which are assigned to these groups will be displayed in the toolbar
-   in the defined order.
+In the example, the toolbar "clipboard" will contain the toolbarGroups "clipboard", "cleanup" and
+"undo" and all buttons which are assigned to these groups will be displayed in the toolbar
+in the defined order.
 
 To find out which buttons exist and which are in which toolbar group, you can
 go to the `toolbar configurator <https://ckeditor.com/latest/samples/toolbarconfigurator/index.html#basic>`__.
