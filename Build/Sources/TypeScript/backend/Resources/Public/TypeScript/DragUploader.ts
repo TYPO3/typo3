@@ -647,7 +647,7 @@ class FileQueueItem {
    */
   public showFileInfo(fileInfo: UploadedFile): void {
     this.removeProgress();
-    // add spacing cells when clibboard and/or extended view is enabled
+    // add spacing cells when clipboard and/or extended view is enabled
     for (let i = 7; i < this.dragUploader.fileListColumnCount; i++) {
       $('<td />').text('').appendTo(this.$row);
     }

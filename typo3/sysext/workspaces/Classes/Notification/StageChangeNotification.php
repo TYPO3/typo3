@@ -60,7 +60,7 @@ class StageChangeNotification
     }
 
     /**
-     * Send an email notification to users in workspace in multiple languages, depending on each BE users' langauge
+     * Send an email notification to users in workspace in multiple languages, depending on each BE users' language
      * preference.
      *
      * @param array $workspaceRecord

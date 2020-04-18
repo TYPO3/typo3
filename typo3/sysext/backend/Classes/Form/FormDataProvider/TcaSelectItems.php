@@ -217,7 +217,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
         // Extract --div-- into itemGroups
         foreach ($allItems as $key => $item) {
             if ($item[1] === '--div--') {
-                // A divider is added as a group (existing groups will get their label overriden)
+                // A divider is added as a group (existing groups will get their label overridden)
                 if (isset($item[3])) {
                     $currentGroup = $item[3];
                     $itemGroups[$currentGroup] = $item[0];

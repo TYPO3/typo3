@@ -182,7 +182,7 @@ class Persistent {
    * Helper function used to set a value which could have been a flat object key data["my.foo.bar"] to
    * data[my][foo][bar] is called recursively by itself
    *
-   * @param {Object} data the data to be uased as base
+   * @param {Object} data the data to be used as base
    * @param {String} keyParts the keyParts for the subtree
    * @returns {Object}
    */

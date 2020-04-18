@@ -147,7 +147,7 @@ class Paste {
   }
 
   /**
-   * Send an AJAX requst via the AjaxDataHandler
+   * Send an AJAX request via the AjaxDataHandler
    *
    * @param {JQuery} $element
    */

@@ -47,7 +47,7 @@ export class GridEditor {
   protected field: JQuery;
   protected data: any[];
   protected nameLabel: string = 'name';
-  protected columnLabel: string = 'columen label';
+  protected columnLabel: string = 'column label';
   protected targetElement: JQuery;
   protected defaultCell: object = {spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined};
   protected selectorEditor: string = '.t3js-grideditor';

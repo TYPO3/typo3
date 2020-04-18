@@ -280,7 +280,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                         'expectedValue' => '12:09:04',
                         'expectedInternalValue' => '1970-01-01T12:09:04Z',
                         'expectedValueAfterSave' => '1970-01-01T12:09:04+00:00',
-                        'comment' => 'inputdatetime_6 eval=timesec additon input',
+                        'comment' => 'inputdatetime_6 eval=timesec addition input',
                     ],
         ];
     }

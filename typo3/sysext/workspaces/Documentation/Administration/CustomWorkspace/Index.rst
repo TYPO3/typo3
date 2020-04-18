@@ -177,7 +177,7 @@ can be chosen from among "Owners" and "Members". They are called
    Defining the notification settings of a custom stage
 
 
-The notitication settings for a custom stage are mostly the same
+The notification settings for a custom stage are mostly the same
 as for the default stages, except that the "Responsible persons"
 can also be chosen in the predefined list of users to notify
 and that a "Default mail comment" can be defined for that stage.

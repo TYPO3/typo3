@@ -325,7 +325,7 @@ class ContextMenuActions {
    * Paste db record after another
    *
    * @param {string} table any db table except sys_file
-   * @param {number} uid uid of the record after which record from the cliboard will be pasted
+   * @param {number} uid uid of the record after which record from the clipboard will be pasted
    */
   public static pasteAfter(table: string, uid: number): void {
     ContextMenuActions.pasteInto.bind($(this))(table, -uid);
@@ -335,7 +335,7 @@ class ContextMenuActions {
    * Paste page into another page
    *
    * @param {string} table any db table except sys_file
-   * @param {number} uid uid of the record after which record from the cliboard will be pasted
+   * @param {number} uid uid of the record after which record from the clipboard will be pasted
    */
   public static pasteInto(table: string, uid: number): void {
     const $anchorElement = $(this);

@@ -59,7 +59,7 @@ enum ProposalModes {
  *
  * For new and existing records, the toggle switch will allow editors to modify the slug
  *  - for new records, we only need to see if that is already in use or not (uniqueInSite), if it is taken, show a message.
- *  - for existing records, we also check for conflicts, and check if we have subpges, or if we want to add a redirect (todo)
+ *  - for existing records, we also check for conflicts, and check if we have subpages, or if we want to add a redirect (todo)
  */
 class SlugElement {
   private options: FieldOptions = null;

@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 interface WidgetConfigurationInterface
 {
     /**
-     * Returns the unique identifer of a widget
+     * Returns the unique identifier of a widget
      *
      * @return string
      */

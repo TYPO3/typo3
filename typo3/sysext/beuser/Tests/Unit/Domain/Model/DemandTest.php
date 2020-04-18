@@ -117,7 +117,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLoginxSameExpectedValueForInt()
+    public function setLoginSameExpectedValueForInt()
     {
         $login = Demand::LOGIN_SOME;
         $this->subject->setLogins($login);

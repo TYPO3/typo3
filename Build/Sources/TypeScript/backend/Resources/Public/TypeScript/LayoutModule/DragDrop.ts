@@ -171,7 +171,7 @@ class DragDrop {
 
     $droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
 
-    // send an AJAX requst via the AjaxDataHandler
+    // send an AJAX request via the AjaxDataHandler
     const contentElementUid: number = parseInt($draggableElement.data('uid'), 10);
 
     if (typeof(contentElementUid) === 'number' && contentElementUid > 0) {

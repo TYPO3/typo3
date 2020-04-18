@@ -20,7 +20,7 @@ declare global {
 }
 
 /**
- * Module: TYPO3/CMS/Beuser/Permissons
+ * Module: TYPO3/CMS/Beuser/Permissions
  * Javascript functions regarding the permissions module
  */
 class Permissions {

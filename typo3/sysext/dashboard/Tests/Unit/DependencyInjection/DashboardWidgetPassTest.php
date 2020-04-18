@@ -53,7 +53,7 @@ class DashboardWidgetPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function doesNothingIfWidgetRegistryIsUnkown(): void
+    public function doesNothingIfWidgetRegistryIsUnknown(): void
     {
         $this->container->findDefinition(WidgetRegistry::class)->willReturn(false);
         $this->container->findTaggedServiceIds('dashboard.widget')->shouldNotBeCalled();
@@ -90,7 +90,7 @@ class DashboardWidgetPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function registersTaggedWidgetWithMiniumConfigurationInRegistry(): void
+    public function registersTaggedWidgetWithMinimumConfigurationInRegistry(): void
     {
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);

@@ -2046,7 +2046,7 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Check if current user has modification and access permissons for content set
+     * Check if current user has modification and access permissions for content set
      *
      * @return bool
      */
