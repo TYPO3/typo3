@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ============================================================
-Feature: #90213 - Support `bit and` in TypoScript stdWrap_if
+Feature: #90213 - Support 'bit and' in TypoScript stdWrap_if
 ============================================================
 
 See :issue:`90213`

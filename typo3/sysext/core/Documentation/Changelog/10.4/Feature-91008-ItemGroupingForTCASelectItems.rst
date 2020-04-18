@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _changelog-Feature-91008-ItemGroupingForTCASelectItems:
+
 ====================================================
 Feature: #91008 - Item grouping for TCA select items
 ====================================================

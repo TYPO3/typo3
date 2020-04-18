@@ -12,7 +12,7 @@ Description
 The class :php:`\TYPO3\CMS\Extbase\Domain\Model\FileMount` has been marked as deprecated.
 
 The :php:`FileMount` is an internal class which never really had any functionality
-besides being an Extbase model for the database table :mysql:`sys_filemounts`. Therefore
+besides being an Extbase model for the database table :sql:`sys_filemounts`. Therefore
 and in order to streamline the codebase of Extbase, the class :php:`FileMount` will be removed with TYPO3 11.0.
 
 

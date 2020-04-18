@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _changelog-Feature-90899-IntroduceAssetPreRenderingEvents:
+
 ==============================================================
 Feature: #90899 - Introduce AssetRenderer pre-rendering events
 ==============================================================
@@ -123,7 +125,5 @@ Related
 =======
 
 - :ref:`changelog-Feature-90522-IntroduceAssetCollector`
-
-.. _changelog-Feature-90899-IntroduceAssetPreRenderingEvents:
 
 .. index:: PHP-API, ext:core

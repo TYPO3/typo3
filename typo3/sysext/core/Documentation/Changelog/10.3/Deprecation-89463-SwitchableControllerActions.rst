@@ -1,52 +1,52 @@
 .. include:: ../../Includes.txt
 
-=====================================================
-Deprecation: #89463 - `Switchable Controller Actions`
-=====================================================
+===================================================
+Deprecation: #89463 - Switchable Controller Actions
+===================================================
 
 See :issue:`89463`
 
 Description
 ===========
 
-`Switchable controller actions` have been marked as deprecated and will be removed in one of the next major versions
+Switchable controller actions have been marked as deprecated and will be removed in one of the next major versions
 of TYPO3, probably version 11.0 or 12.0.
 
-:ts:`Switchable controller actions` are used to override the allowed set of controllers and actions via TypoScript or plugin
+Switchable controller actions are used to override the allowed set of controllers and actions via TypoScript or plugin
 flexforms. While this is convenient for reusing the same plugin for a lot of different use cases, it's also very
 problematic as it completely overrides the original configuration defined via
 :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin`.
 
-:ts:`Switchable controller actions` therefore have bad implications that rectify their removal.
+Switchable controller actions therefore have bad implications that rectify their removal.
 
-First of all, :ts:`switchable controller actions` override the original configuration of plugins at runtime and possibly
+First of all, switchable controller actions override the original configuration of plugins at runtime and possibly
 depending on conditions which contradicts the idea of :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin`
 being the authoritative way to define configuration.
 
 Using the same plugin as an entry point for many different functionalities contradicts the idea of a plugin serving one
-specific purpose. :ts:`Switchable controller actions` allow for creating one central plugin that takes care of everything.
+specific purpose. Switchable controller actions allow for creating one central plugin that takes care of everything.
 
 
 Impact
 ======
 
-All plugins that are using :ts:`switchable controller actions` need to be split into multiple different plugins. Usually, one
-would create a new plugin for each possible :ts:`switchable controller actions` configuration entry.
+All plugins that are using switchable controller actions need to be split into multiple different plugins. Usually, one
+would create a new plugin for each possible switchable controller actions configuration entry.
 
 
 Affected Installations
 ======================
 
-All installations that make use of :ts:`switchable controller actions`, either via flexform configuration of plugins or via
+All installations that make use of switchable controller actions, either via flexform configuration of plugins or via
 TypoScript configuration.
 
 
 Migration
 =========
 
-Unfortunately, an automatic migration is not possible. As :ts:`switchable controller actions` allowed to override the whole
+Unfortunately, an automatic migration is not possible. As switchable controller actions allowed to override the whole
 configuration of allowed controllers and actions, the only way to migrate is to create dedicated plugins for each former
-:ts:`switchable controller actions` configuration entry.
+switchable controller actions configuration entry.
 
 Example:
 
@@ -101,7 +101,7 @@ it is possible to properly define which action should be cached.
 In addition, TYPO3 v10 LTS allows to group plugins in FormEngine directly
 to semantically register various plugins in one specific group.
 
-See https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.4/Feature-91008-ItemGroupingForTCASelectItems.html
+See :ref:`changelog-Feature-91008-ItemGroupingForTCASelectItems`
 for more details.
 
 
