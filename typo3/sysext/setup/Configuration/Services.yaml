@@ -6,3 +6,7 @@ services:
 
   TYPO3\CMS\Setup\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Setup\Controller\SetupModuleController:
+    shared: false
+    public: true
