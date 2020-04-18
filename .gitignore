@@ -58,6 +58,7 @@ nbproject
 /typo3conf/*
 /fileadmin/*
 /uploads/*
+/FIRST_INSTALL
 #
 # root .htaccess file
 /.htaccess
