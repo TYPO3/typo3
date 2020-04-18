@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import documentService = require('TYPO3/CMS/Core/DocumentService');
+
 type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 /**
@@ -37,24 +39,8 @@ class GlobalEventHandler {
   };
 
   constructor() {
-    this.onReady(() => {
-      this.registerEvents();
-    });
+    documentService.ready().then((): void => this.registerEvents());
   };
-
-  private onReady(callback: Function): void {
-    if (document.readyState === 'complete') {
-      callback.call(this);
-    } else {
-      const delegate = () => {
-        window.removeEventListener('load', delegate);
-        document.removeEventListener('DOMContentLoaded', delegate);
-        callback.call(this);
-      };
-      window.addEventListener('load', delegate);
-      document.addEventListener('DOMContentLoaded', delegate);
-    }
-  }
 
   private registerEvents(): void {
     document.querySelectorAll(this.options.onChangeSelector).forEach((element: HTMLElement) => {
