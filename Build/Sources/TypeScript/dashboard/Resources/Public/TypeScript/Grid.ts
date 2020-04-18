@@ -83,7 +83,7 @@ class Grid {
       ];
     });
 
-    (new AjaxRequest(TYPO3.settings.ajaxUrls['dashboard_save_widget_positions'])).post({
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_save_widget_positions)).post({
       widgets: widgets
     }).then(async (response: AjaxResponse): Promise<any> => {
       await response.resolve();

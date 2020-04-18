@@ -29,7 +29,7 @@ class WidgetContentCollector {
       const widgetContentElement = triggerElement.querySelector('.widget-content');
       const widgetErrorElement = triggerElement.querySelector('.widget-error');
 
-      const sentRequest = (new AjaxRequest(TYPO3.settings.ajaxUrls['dashboard_get_widget_content']))
+      const sentRequest = (new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_get_widget_content))
         .withQueryArguments({
           widget: triggerElement.dataset.widgetKey,
         })
