@@ -46,16 +46,6 @@ class QueryView
     public $storeList = 'search_query_smallparts,search_result_labels,labels_noprefix,show_deleted,queryConfig,queryTable,queryFields,queryLimit,queryOrder,queryOrderDesc,queryOrder2,queryOrder2Desc,queryGroup,search_query_makeQuery';
 
     /**
-     * @var string
-     */
-    public $downloadScript = 'index.php';
-
-    /**
-     * @var int
-     */
-    public $formW = 48;
-
-    /**
      * @var int
      */
     public $noDownloadB = 0;
@@ -173,9 +163,7 @@ class QueryView
         $markup[] = '<div class="load-queries">';
         $markup[] = '  <div class="form-inline">';
         $markup[] = '    <div class="form-group">';
-        $markup[] = '      <select class="form-control" name="storeControl[STORE]" onChange="document.forms[0]'
-            . '[\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 '
-            . '? this.options[this.selectedIndex].text : \'\';">' . implode(LF, $opt) . '</select>';
+        $markup[] = '      <select class="form-control" name="storeControl[STORE]" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
         $markup[] = '      <input class="form-control" name="storeControl[title]" value="" type="text" max="80">';
         $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">';
         $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save">';
@@ -546,8 +534,7 @@ class QueryView
                         . '</textarea>';
                     if (!$this->noDownloadB) {
                         $out .= '<br><input class="btn btn-default" type="submit" name="download_file" '
-                            . 'value="Click to download file" onClick="window.location.href=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->downloadScript))
-                            . ';">';
+                            . 'value="Click to download file">';
                     }
                     // Downloads file:
                     // @todo: args. routing anyone?
