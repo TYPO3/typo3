@@ -1221,7 +1221,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Enabled Backend Modules
             $this->groupData['modules'] = $this->user['userMods'];
             // Add available widgets
-            $this->groupData['available_widgets'] = $this->user['available_widgets'];
+            $this->groupData['available_widgets'] = $this->user['available_widgets'] ?? '';
             // Add Allowed Languages
             $this->groupData['allowed_languages'] = $this->user['allowed_languages'];
             // Set user value for workspace permissions.

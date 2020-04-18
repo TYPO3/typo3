@@ -1484,7 +1484,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function getRelevantParametersForCachingFromPageArguments(PageArguments $pageArguments): array
     {
         $queryParams = $pageArguments->getDynamicArguments();
-        if (!empty($queryParams) && $pageArguments->getArguments()['cHash'] ?? false) {
+        if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
             $queryParams['id'] = $pageArguments->getPageId();
             return GeneralUtility::makeInstance(CacheHashCalculator::class)
                 ->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
@@ -1654,7 +1654,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $disableAcquireCacheData = false;
         if ($this->isBackendUserLoggedIn()) {
-            if (strtolower($serverParams['HTTP_CACHE_CONTROL']) === 'no-cache' || strtolower($serverParams['HTTP_PRAGMA']) === 'no-cache') {
+            if (strtolower($serverParams['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache' || strtolower($serverParams['HTTP_PRAGMA'] ?? '') === 'no-cache') {
                 $disableAcquireCacheData = true;
             }
         }
@@ -1786,12 +1786,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $this->config['config'] = [];
                     }
                     // Filling the config-array, first with the main "config." part
-                    if (is_array($this->tmpl->setup['config.'])) {
+                    if (is_array($this->tmpl->setup['config.'] ?? null)) {
                         ArrayUtility::mergeRecursiveWithOverrule($this->tmpl->setup['config.'], $this->config['config']);
                         $this->config['config'] = $this->tmpl->setup['config.'];
                     }
                     // override it with the page/type-specific "config."
-                    if (is_array($this->pSetup['config.'])) {
+                    if (is_array($this->pSetup['config.'] ?? null)) {
                         ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
                     }
                     // Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
@@ -1817,7 +1817,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
                     // Class for render Header and Footer parts
-                    if ($this->pSetup['pageHeaderFooterTemplateFile']) {
+                    if ($this->pSetup['pageHeaderFooterTemplateFile'] ?? false) {
                         try {
                             $file = GeneralUtility::makeInstance(FilePathSanitizer::class)
                                 ->sanitize((string)$this->pSetup['pageHeaderFooterTemplateFile']);
@@ -2637,7 +2637,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return trim($this->language->getWebsiteTitle());
         }
         if ($this->site instanceof SiteInterface
-            && trim($this->site->getConfiguration()['websiteTitle']) !== ''
+            && trim($this->site->getConfiguration()['websiteTitle'] ?? '') !== ''
         ) {
             return trim($this->site->getConfiguration()['websiteTitle']);
         }
@@ -3437,7 +3437,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function releaseLock($type)
     {
-        if ($this->locks[$type]['accessLock']) {
+        if ($this->locks[$type]['accessLock'] ?? false) {
             if (!$this->locks[$type]['accessLock']->acquire()) {
                 throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1460975902);
             }

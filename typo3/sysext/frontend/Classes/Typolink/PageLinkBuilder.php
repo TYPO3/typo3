@@ -62,7 +62,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (isset($conf['linkAccessRestrictedPages'])) {
             $disableGroupAccessCheck = (bool)$conf['linkAccessRestrictedPages'];
         } else {
-            $disableGroupAccessCheck = (bool)$tsfe->config['config']['typolinkLinkAccessRestrictedPages'];
+            $disableGroupAccessCheck = (bool)($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false);
         }
 
         // Looking up the page record to verify its existence:
@@ -97,7 +97,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // MountPoints, look for closest MPvar:
         $MPvarAcc = [];
-        if (!$tsfe->config['config']['MP_disableTypolinkClosestMPvalue']) {
+        if (!($tsfe->config['config']['MP_disableTypolinkClosestMPvalue'] ?? false)) {
             $temp_MP = $this->getClosestMountPointValueForPage($page['uid']);
             if ($temp_MP) {
                 $MPvarAcc['closest'] = $temp_MP;
@@ -113,7 +113,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $MPvarAcc['re-map'] = $mount_info['MPvar'];
         }
         // Query Params:
-        $addQueryParams = $conf['addQueryString'] ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.']) : '';
+        $addQueryParams = $conf['addQueryString'] ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
         $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
         if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
             $addQueryParams = '';
@@ -253,7 +253,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // If link is to an access restricted page which should be redirected, then find new URL:
         if (empty($conf['linkAccessRestrictedPages'])
-            && $tsfe->config['config']['typolinkLinkAccessRestrictedPages']
+            && ($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
             && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
             && !$tsfe->checkPageGroupAccess($page)
         ) {
@@ -392,7 +392,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $queryParameters['_language'] = $siteLanguageOfTargetPage;
 
-        if ($conf['no_cache']) {
+        if ($conf['no_cache'] ?? false) {
             $queryParameters['no_cache'] = 1;
         }
 

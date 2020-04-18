@@ -507,14 +507,14 @@ class DatabaseRecordList
                 ];
             }
             // New record on pages that are not locked by editlock
-            if (!$modulePageTsConfig['noCreateRecordsLink'] && $this->editLockPermissions()) {
+            if (!($modulePageTsConfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
                 $newRecordButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $this->listURL()]))
                     ->setTitle($lang->getLL('newRecordGeneral'))
                     ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
-            if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
+            if (!in_array($this->pageRow['doktype'] ?? null, $noViewDokTypes)) {
                 $previewDataAttributes = PreviewUriBuilder::create((int)$this->id)
                     ->withRootLine(BackendUtility::BEgetRootLine($this->id))
                     ->buildDispatcherDataAttributes();

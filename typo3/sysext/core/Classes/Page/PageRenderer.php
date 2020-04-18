@@ -2140,14 +2140,14 @@ class PageRenderer implements SingletonInterface
      */
     private function createCssTag(array $properties, string $file): string
     {
-        if ($properties['inline'] && @is_file($file)) {
+        if (($properties['inline'] ?? false) && @is_file($file)) {
             $tag = $this->createInlineCssTagFromFile($file, $properties);
         } else {
             $href = $this->getStreamlinedFileName($file);
             $tag = '<link rel="' . htmlspecialchars($properties['rel'])
                 . '" href="' . htmlspecialchars($href)
                 . '" media="' . htmlspecialchars($properties['media']) . '"'
-                . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
+                . (($properties['title'] ?? false) ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
                 . $this->endingSlash . '>';
         }
         if ($properties['allWrap']) {
@@ -2240,10 +2240,10 @@ class PageRenderer implements SingletonInterface
                 $file = $this->getStreamlinedFileName($file);
                 $type = $properties['type'] ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
                 $async = $properties['async'] ? ' async="async"' : '';
-                $defer = $properties['defer'] ? ' defer="defer"' : '';
-                $nomodule = $properties['nomodule'] ? ' nomodule="nomodule"' : '';
-                $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
-                $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
+                $defer = ($properties['defer'] ?? false) ? ' defer="defer"' : '';
+                $nomodule = ($properties['nomodule'] ?? false) ? ' nomodule="nomodule"' : '';
+                $integrity = ($properties['integrity'] ?? false) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
+                $crossorigin = ($properties['crossorigin'] ?? false) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($file) . '"' . $type . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);

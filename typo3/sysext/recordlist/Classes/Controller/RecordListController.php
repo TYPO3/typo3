@@ -340,7 +340,7 @@ class RecordListController
             if ($modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
                 $body .= '<div class="checkbox">' .
                     '<label for="checkLargeControl">' .
-                    BackendUtility::getFuncCheck($id, 'SET[bigControlPanel]', $MOD_SETTINGS['bigControlPanel'], '', $table ? '&table=' . $table : '', 'id="checkLargeControl"') .
+                    BackendUtility::getFuncCheck($id, 'SET[bigControlPanel]', $MOD_SETTINGS['bigControlPanel'] ?? '', '', $table ? '&table=' . $table : '', 'id="checkLargeControl"') .
                     BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('largeControl'))) .
                     '</label>' .
                     '</div>';
@@ -372,7 +372,7 @@ class RecordListController
         $dblist->getDocHeaderButtons($this->moduleTemplate, $request);
         // search box toolbar
         $content = '';
-        if (!$modTSconfig['properties']['disableSearchBox'] && ($tableOutput || !empty($dblist->searchString))) {
+        if (!($modTSconfig['properties']['disableSearchBox'] ?? false) && ($tableOutput || !empty($dblist->searchString))) {
             $content .= $dblist->getSearchBox();
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
 

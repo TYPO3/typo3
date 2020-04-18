@@ -584,7 +584,7 @@ class ModuleTemplate
         $getParams = GeneralUtility::_GET();
         $storeArray = array_merge(
             GeneralUtility::compileSelectedGetVarsFromArray($gvList, $getParams),
-            ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]
+            ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)($GLOBALS['SOBE']->MOD_SETTINGS ?? []))]
         );
         return HttpUtility::buildQueryString($storeArray, '&');
     }
