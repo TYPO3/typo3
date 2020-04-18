@@ -1730,26 +1730,17 @@ class EditDocumentController
             && !empty($this->firstEl['table'])
             && $this->getTsConfigOption($this->firstEl['table'], 'showHistory')
         ) {
-            $historyButtonOnClick = 'window.location.href=' .
-                GeneralUtility::quoteJSvalue(
-                    (string)$this->uriBuilder->buildUriFromRoute(
-                        'record_history',
-                        [
-                            'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
-                            'returnUrl' => $this->R_URI,
-                        ]
-                    )
-                ) . '; return false;';
-
+            $historyUrl = (string)$this->uriBuilder->buildUriFromRoute('record_history', [
+                'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
+                'returnUrl' => $this->R_URI,
+            ]);
             $historyButton = $buttonBar->makeLinkButton()
-                ->setHref('#')
+                ->setHref($historyUrl)
+                ->setTitle('Open history of this record')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-history-open',
                     Icon::SIZE_SMALL
-                ))
-                ->setOnClick($historyButtonOnClick)
-                ->setTitle('Open history of this record')
-                ;
+                ));
 
             $buttonBar->addButton($historyButton, $position, $group);
         }

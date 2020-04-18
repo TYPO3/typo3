@@ -598,7 +598,6 @@ class InlineControlContainer extends AbstractContainer
      */
     protected function renderPossibleRecordsSelectorTypeSelect(array $config, array $uniqueIds)
     {
-        $onChange = '';
         $possibleRecords = $config['selectorOrUniquePossibleRecords'];
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         // Create option tags:
@@ -628,7 +627,7 @@ class InlineControlContainer extends AbstractContainer
             }
             $item .= '
             <span class="input-group-btn">
-                <a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" title="' . $createNewRelationText . '">
+                <a href="#" class="btn btn-default" title="' . $createNewRelationText . '">
                     ' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
                 </a>
             </span>';
