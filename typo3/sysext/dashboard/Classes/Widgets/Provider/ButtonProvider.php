@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
 
 /**
- * Provide link for sys log button.
- * Check whether belog is enabled and add link to module.
- * No link is returned if not enabled.
+ * Provides a button for the footer of a widget
  */
 class ButtonProvider implements ButtonProviderInterface
 {
