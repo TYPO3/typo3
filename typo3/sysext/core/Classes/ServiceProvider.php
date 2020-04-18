@@ -58,6 +58,7 @@ class ServiceProvider extends AbstractServiceProvider
             Package\FailsafePackageManager::class => [ static::class, 'getFailsafePackageManager' ],
             Registry::class => [ static::class, 'getRegistry' ],
             Resource\Index\FileIndexRepository::class => [ static::class, 'getFileIndexRepository' ],
+            Resource\Index\MetaDataRepository::class => [ static::class, 'getMetaDataRepository' ],
             Resource\Driver\DriverRegistry::class => [ static::class, 'getDriverRegistry' ],
             Resource\ProcessedFileRepository::class => [ static::class, 'getProcessedFileRepository' ],
             Resource\ResourceFactory::class => [ static::class, 'getResourceFactory' ],
@@ -227,6 +228,13 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getFileIndexRepository(ContainerInterface $container): Resource\Index\FileIndexRepository
     {
         return self::new($container, Resource\Index\FileIndexRepository::class, [
+            $container->get(EventDispatcherInterface::class)
+        ]);
+    }
+
+    public static function getMetaDataRepository(ContainerInterface $container): Resource\Index\MetaDataRepository
+    {
+        return self::new($container, Resource\Index\MetaDataRepository::class, [
             $container->get(EventDispatcherInterface::class)
         ]);
     }
