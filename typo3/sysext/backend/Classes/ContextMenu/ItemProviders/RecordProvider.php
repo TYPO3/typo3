@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -451,18 +450,14 @@ class RecordProvider extends AbstractProvider
             }
         }
 
-        try {
-            return BackendUtility::getPreviewUrl(
-                $this->getPreviewPid(),
-                '',
-                null,
-                $anchorSection,
-                '',
-                $additionalParams
-            );
-        } catch (UnableToLinkToPageException $e) {
-            return '';
-        }
+        return BackendUtility::getPreviewUrl(
+            $this->getPreviewPid(),
+            '',
+            null,
+            $anchorSection,
+            '',
+            $additionalParams
+        );
     }
 
     /**
