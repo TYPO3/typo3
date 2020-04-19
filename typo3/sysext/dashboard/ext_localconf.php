@@ -13,6 +13,3 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
         ],
     ];
 }
-
-// Set starting module to dashboard if users didn't change it
-$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC']['startModule'] = 'dashboard';
