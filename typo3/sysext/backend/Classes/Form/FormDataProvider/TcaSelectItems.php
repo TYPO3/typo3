@@ -107,7 +107,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
             // Translate labels
             // skip file of sys_file_metadata which is not rendered anyway but can use all memory
-            if ($table !== 'sys_file_metadata' && $fieldName !== 'file') {
+            if (!($table === 'sys_file_metadata' && $fieldName === 'file')) {
                 $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
             }
 
