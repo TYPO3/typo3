@@ -78,7 +78,7 @@
             <f:for each="{widgetGroups}" as="groupConfiguration" iteration="iterator">
                 <f:if condition="{groupConfiguration.widgets}">
                     <li class="t3js-tabmenu-item {f:if(condition: '{firstGroupActive} == \'false\'', then: 'active')}">
-                        <a id="tab-{groupConfiguration.identifier}" data-toggle="tab" href="#{groupConfiguration.identifier}" role="tab" aria-controls="{groupConfiguration.identifier}" aria-selected="true">{groupConfiguration.title}</a>
+                        <a id="dashboard-widgetgroup-tab-{groupConfiguration.identifier}" data-toggle="tab" href="#dashboard-widgetgroup-{groupConfiguration.identifier}" role="tab" aria-controls="dashboard-widgetgroup-{groupConfiguration.identifier}" aria-selected="true">{groupConfiguration.title}</a>
                     </li>
                     <f:variable name="firstGroupActive" value="true" />
                 </f:if>
@@ -88,7 +88,7 @@
             <f:variable name="firstGroupActive" value="false" />
             <f:for each="{widgetGroups}" as="groupConfiguration" iteration="iterator">
                 <f:if condition="{groupConfiguration.widgets}">
-                    <div class="tab-pane {f:if(condition: '{firstGroupActive} == \'false\'', then: 'active')}" id="{groupConfiguration.identifier}" role="tabpanel" aria-labelledby="{groupConfiguration.identifier}-tab">
+                    <div class="tab-pane {f:if(condition: '{firstGroupActive} == \'false\'', then: 'active')}" id="dashboard-widgetgroup-{groupConfiguration.identifier}" role="tabpanel" aria-labelledby="dashboard-widgetgroup-{groupConfiguration.identifier}-tab">
                         <div class="dashboard-modal-items ">
                             <f:for each="{groupConfiguration.widgets}" as="widgetConfiguration" key="widgetIdentifier">
                                 <div class="dashboard-modal-item">
