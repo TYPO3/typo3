@@ -47,7 +47,7 @@
                     <td>{record.crdate}</td>
                     <td><be:avatar backendUser="{record.owner_uid}" showIcon="true" />{record.owner} ({record.owner_uid})</td>
                     <td><f:if condition="{record.delete_user}"><be:avatar backendUser="{record.delete_user_uid}" showIcon="true" />{record.delete_user} ({record.delete_user_uid})</f:if></td>
-                    <td><f:format.html>{record.path}</f:format.html></td>
+                    <td><f:format.raw>{record.path}</f:format.raw></td>
                 </tr>
             </tbody>
         </table>
