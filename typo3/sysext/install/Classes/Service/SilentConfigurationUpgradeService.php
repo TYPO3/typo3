@@ -189,6 +189,7 @@ class SilentConfigurationUpgradeService
         $this->migrateSaltedPasswordsSettings();
         $this->migrateCachingFrameworkCaches();
         $this->migrateMailSettingsToSendmail();
+        $this->migrateMailSmtpEncryptSetting();
 
         // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -1095,11 +1096,45 @@ class SilentConfigurationUpgradeService
     {
         $confManager = $this->configurationManager;
         try {
-            $transport = (array)$confManager->getLocalConfigurationValueByPath('MAIL/transport');
+            $transport = $confManager->getLocalConfigurationValueByPath('MAIL/transport');
             if ($transport === 'mail') {
                 $confManager->setLocalConfigurationValueByPath('MAIL/transport', 'sendmail');
                 $confManager->setLocalConfigurationValueByPath('MAIL/transport_sendmail_command', (string)@ini_get('sendmail_path'));
                 $this->throwConfigurationChangedException();
+            }
+        } catch (MissingArrayPathException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrates MAIL/transport_smtp_encrypt to a boolean value
+     * See #91070, #90295, #88643 and https://github.com/symfony/symfony/commit/5b8c4676d059
+     */
+    protected function migrateMailSmtpEncryptSetting()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $transport = $confManager->getLocalConfigurationValueByPath('MAIL/transport');
+            if ($transport === 'smtp') {
+                $encrypt = $confManager->getLocalConfigurationValueByPath('MAIL/transport_smtp_encrypt');
+                if (is_string($encrypt)) {
+                    // SwiftMailer used 'tls' as identifier to connect with STARTTLS via SMTP (as usually used with port 587).
+                    // See https://github.com/swiftmailer/swiftmailer/blob/v5.4.10/lib/classes/Swift/Transport/EsmtpTransport.php#L144
+                    if ($encrypt === 'tls') {
+                        // With TYPO3 v10 the MAIL/transport_smtp_encrypt option is passed as constructor parameter $tls to
+                        // Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport
+                        // $tls = true instructs to start a SMTPS connection – that means SSL/TLS via SMTPS, not STARTTLS via SMTP.
+                        // That means symfony/mailer will use STARTTLS when $tls = false or ($tls = null with port != 465) is passed.
+                        // Actually symfony/mailer will use STARTTLS by default now.
+                        // Due to the misleading name (transport_smtp_encrypt) we avoid to set the option to false, but rather remove it.
+                        // Note: symfony/mailer provides no way to enforce STARTTLS usage, see https://github.com/symfony/symfony/commit/5b8c4676d059
+                        $confManager->removeLocalConfigurationKeysByPath(['MAIL/transport_smtp_encrypt']);
+                    } else {
+                        $confManager->setLocalConfigurationValueByPath('MAIL/transport_smtp_encrypt', true);
+                    }
+                    $this->throwConfigurationChangedException();
+                }
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
