@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
 use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
@@ -25,7 +26,7 @@ use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
 /**
  * Test case
  */
-class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
+class ConstructorArgumentMatcherTest extends TestCase
 {
     public function hitsFromFixtureAreFoundDataProvider(): array
     {
@@ -42,7 +43,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'numberOfMandatoryArguments' => 4,
                     ]),
                 ],
-                [32, 33, 34, 35, 40, 41],
+                [32, 33, 34, 35, 42, 43],
             ],
             'dropped' => [
                 [
@@ -50,7 +51,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'maximumNumberOfArguments' => 2,
                     ]),
                 ],
-                [32, 33, 34, 35, 40, 41],
+                [32, 33, 34, 35, 42, 43],
             ],
             'called' => [
                 [
@@ -59,7 +60,7 @@ class ConstructorArgumentMatcherTest extends \PHPUnit\Framework\TestCase
                         'maximumNumberOfArguments' => 3,
                     ]),
                 ],
-                [32, 33, 34, 35, 40, 41],
+                [32, 33, 34, 35, 42, 43],
             ],
             'unused' => [
                 [

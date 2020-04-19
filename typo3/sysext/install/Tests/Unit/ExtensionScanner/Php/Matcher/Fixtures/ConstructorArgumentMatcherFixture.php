@@ -33,6 +33,8 @@ class ConstructorArgumentMatcherFixture extends Subject
         $b = new \TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject('a', 'b', 'c');
         $c = GeneralUtility::makeInstance(Subject::class, 'a', 'b', 'c');
         $d = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject::class, 'a', 'b', 'c');
+        $className = Subject::class;
+        $e = new $className('a', 'b', 'c');
     }
 
     public function unused(): void
