@@ -69,6 +69,8 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
         }
         $resolvedNode = $node->getAttribute(self::NODE_RESOLVED_AS, null) ?? $node;
         if (!$resolvedNode instanceof New_
+            || !isset($resolvedNode->class)
+            || is_object($node->class) && !method_exists($node->class, '__toString')
             || !array_key_exists((string)$resolvedNode->class, $this->matcherDefinitions)
         ) {
             return;

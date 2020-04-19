@@ -45,7 +45,7 @@ class ConstructorArgumentMatcherTest extends TestCase
                         'numberOfMandatoryArguments' => 4,
                     ]),
                 ],
-                [34, 35, 36, 37, 42, 43],
+                [34, 35, 36, 37, 44, 45],
             ],
             'dropped' => [
                 [
@@ -53,7 +53,7 @@ class ConstructorArgumentMatcherTest extends TestCase
                         'maximumNumberOfArguments' => 2,
                     ]),
                 ],
-                [34, 35, 36, 37, 42, 43],
+                [34, 35, 36, 37, 44, 45],
             ],
             'called' => [
                 [
@@ -62,7 +62,7 @@ class ConstructorArgumentMatcherTest extends TestCase
                         'maximumNumberOfArguments' => 3,
                     ]),
                 ],
-                [34, 35, 36, 37, 42, 43],
+                [34, 35, 36, 37, 44, 45],
             ],
             'unused' => [
                 [
