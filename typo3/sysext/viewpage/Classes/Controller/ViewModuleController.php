@@ -343,12 +343,14 @@ class ViewModuleController
         }
 
         $page = BackendUtility::getRecord('pages', $pageId);
-        $pageType = (int)$page['doktype'] ?? 0;
+        $pageType = (int)($page['doktype'] ?? 0);
 
-        return $page !== null
-            && $pageType !== PageRepository::DOKTYPE_SPACER
-            && $pageType !== PageRepository::DOKTYPE_SYSFOLDER
-            && $pageType !== PageRepository::DOKTYPE_RECYCLER;
+        return $pageType !== 0
+            && !in_array($pageType, [
+                PageRepository::DOKTYPE_SPACER,
+                PageRepository::DOKTYPE_SYSFOLDER,
+                PageRepository::DOKTYPE_RECYCLER
+            ], true);
     }
 
     /**
