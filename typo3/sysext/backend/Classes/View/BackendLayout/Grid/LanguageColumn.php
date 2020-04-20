@@ -115,10 +115,11 @@ class LanguageColumn extends AbstractGridObject
 
     public function getPageEditUrl(): string
     {
+        $pageRecordUid = $this->context->getLocalizedPageRecord()['uid'] ?? $this->context->getPageRecord()['uid'];
         $urlParameters = [
             'edit' => [
                 'pages' => [
-                    $this->context->getLocalizedPageRecord()['uid'] => 'edit'
+                    $pageRecordUid => 'edit'
                 ]
             ],
             // Disallow manual adjustment of the language field for pages
