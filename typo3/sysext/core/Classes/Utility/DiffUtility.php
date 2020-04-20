@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Utility;
 
 use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Granularity\Character;
 use cogpowered\FineDiff\Granularity\Word;
 
 /**
@@ -33,13 +34,14 @@ class DiffUtility
     /**
      * Returns a color-marked-up diff output in HTML from the input strings.
      */
-    public function makeDiffDisplay(string $str1, string $str2): string
+    public function makeDiffDisplay(string $str1, string $str2, DiffGranularity $granularity = DiffGranularity::WORD): string
     {
         if ($this->stripTags) {
             $str1 = strip_tags($str1);
             $str2 = strip_tags($str2);
         }
-        $diff = new Diff(new Word());
+        $granularity = $granularity === DiffGranularity::WORD ? new Word() : new Character();
+        $diff = new Diff($granularity);
         return $diff->render($str1, $str2);
     }
 }

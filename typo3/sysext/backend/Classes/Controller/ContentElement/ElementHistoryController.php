@@ -27,12 +27,14 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -319,7 +321,7 @@ class ElementHistoryController
                     $singleLine['fieldNames'] = implode(',', $tmpFieldList);
                 } else {
                     // Display diff
-                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename']);
+                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename'], $entry['recuid']);
                 }
             }
             // put line together
@@ -341,18 +343,24 @@ class ElementHistoryController
     {
         $lines = [];
         if (is_array($entry['newRecord'] ?? null)) {
-            /* @var DiffUtility $diffUtility */
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-            $diffUtility->stripTags = false;
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
             foreach ($fieldsToDisplay as $fN) {
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && ($GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '') !== 'passthrough') {
-                    // Create diff-result:
-                    $diffres = $diffUtility->makeDiffDisplay(
-                        (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true),
-                        (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true)
-                    );
+                $tcaType = $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '';
+                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && $tcaType !== 'passthrough') {
+                    $granularity = DiffGranularity::WORD;
+                    if ($tcaType === 'flex') {
+                        $granularity = DiffGranularity::CHARACTER;
+                        $flexFormValueFormatter = GeneralUtility::makeInstance(FlexFormValueFormatter::class);
+                        $colConfig = $GLOBALS['TCA'][$table]['columns'][$fN]['config'] ?? [];
+                        $old = $flexFormValueFormatter->format($table, $fN, ($entry['oldRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
+                        $new = $flexFormValueFormatter->format($table, $fN, ($entry['newRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
+                    } else {
+                        $old = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid);
+                        $new = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid);
+                    }
+                    $diffResult = $diffUtility->makeDiffDisplay($old, $new, $granularity);
                     $rollbackUrl = '';
                     if ($rollbackUid && $showRollbackLink) {
                         $rollbackUrl = $this->buildUrl(['rollbackFields' => $table . ':' . $rollbackUid . ':' . $fN]);
@@ -360,7 +368,7 @@ class ElementHistoryController
                     $lines[] = [
                         'title' => $languageService->sL(BackendUtility::getItemLabel($table, $fN)),
                         'rollbackUrl' => $rollbackUrl,
-                        'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres)),
+                        'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffResult)),
                     ];
                 }
             }

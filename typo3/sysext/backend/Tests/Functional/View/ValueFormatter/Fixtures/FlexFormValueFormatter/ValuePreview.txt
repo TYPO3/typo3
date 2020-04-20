@@ -1,0 +1,22 @@
+Tab 1 configuration options
+--------------------------------------------------
+Select field: Item 2
+
+Check field: Yes
+
+Input field: A custom value
+
+Another field:
+	A custom value which doesn't fit in one line
+
+
+Additional tab headline
+--------------------------------------------------
+Additional check field: Yes
+
+Multiline text field:
+	Lorem ipsum dolor sit amet, consetetur sadipscing
+	elitr, sed diam nonumy eirmod tempor invidunt ut
+	labore et dolore magna aliquyam erat, sed diam
+	voluptua. At vero eos et accusam et justo duo
+	dolores ...

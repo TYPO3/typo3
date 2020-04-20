@@ -18,9 +18,11 @@ namespace TYPO3\CMS\Workspaces\Service;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,11 +40,6 @@ class HistoryService implements SingletonInterface
      * @var array
      */
     protected $historyEntries = [];
-
-    /**
-     * @var DiffUtility|null
-     */
-    protected $differencesObject;
 
     /**
      * Creates this object.
@@ -124,6 +121,7 @@ class HistoryService implements SingletonInterface
      */
     protected function getDifferences(array $entry)
     {
+        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
         $differences = [];
         $tableName = $entry['tablename'];
         if (is_array($entry['newRecord'] ?? false)) {
@@ -131,16 +129,25 @@ class HistoryService implements SingletonInterface
 
             /** @var array<int, string> $fields */
             foreach ($fields as $field) {
-                if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
+                $tcaType = $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] ?? '';
+                if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $tcaType !== 'passthrough') {
                     // Create diff-result:
-                    $fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(
-                        (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true),
-                        (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true)
-                    );
+                    if ($tcaType === 'flex') {
+                        $granularity = DiffGranularity::CHARACTER;
+                        $flexFormValueFormatter = GeneralUtility::makeInstance(FlexFormValueFormatter::class);
+                        $colConfig = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'] ?? [];
+                        $old = $flexFormValueFormatter->format($tableName, $field, $entry['oldRecord'][$field], $entry['recuid'], $colConfig);
+                        $new = $flexFormValueFormatter->format($tableName, $field, $entry['newRecord'][$field], $entry['recuid'], $colConfig);
+                    } else {
+                        $granularity = DiffGranularity::WORD;
+                        $old = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true);
+                        $new = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true);
+                    }
+                    $fieldDifferences = $diffUtility->makeDiffDisplay($old, $new, $granularity);
                     if (!empty($fieldDifferences)) {
                         $differences[] = [
                             'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
-                            'html' => nl2br(trim($fieldDifferences)),
+                            'html' => trim($fieldDifferences),
                         ];
                     }
                 }
@@ -178,20 +185,6 @@ class HistoryService implements SingletonInterface
                 ->getHistoryDataForRecord($table, $id);
         }
         return $this->historyEntries[$table][$id];
-    }
-
-    /**
-     * Gets an instance of the record differences utility.
-     *
-     * @return DiffUtility
-     */
-    protected function getDifferencesObject()
-    {
-        if (!isset($this->differencesObject)) {
-            $this->differencesObject = GeneralUtility::makeInstance(DiffUtility::class);
-            $this->differencesObject->stripTags = false;
-        }
-        return $this->differencesObject;
     }
 
     protected function getLanguageService(): LanguageService
