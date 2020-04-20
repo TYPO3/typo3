@@ -170,12 +170,9 @@ class LocalConfigurationValueService
             $dataType = $descriptionData['type'];
 
             if ($dataType === 'multiline') {
-                // Force Unix line breaks in text areas
-                // Preserve line breaks
-                $value = str_replace([CR, LF], ['', '\' . LF . \''], $value);
-            }
-
-            if ($dataType === 'bool') {
+                $value = str_replace(CR, '', $value);
+                $valueHasChanged = (string)$oldValue !== (string)$value;
+            } elseif ($dataType === 'bool') {
                 // When submitting settings in the Install Tool, values that default to "FALSE" or "TRUE"
                 // in EXT:core/Configuration/DefaultConfiguration.php will be sent as "0" resp. "1".
                 $value = $value === '1';
