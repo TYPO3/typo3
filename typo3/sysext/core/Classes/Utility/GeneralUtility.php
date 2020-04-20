@@ -3743,6 +3743,17 @@ class GeneralUtility
     }
 
     /**
+     * @param mixed $value
+     * @param bool $useHtmlEntities
+     * @return string
+     */
+    public static function jsonEncodeForHtmlAttribute($value, bool $useHtmlEntities = true): string
+    {
+        $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
+        return $useHtmlEntities ? htmlspecialchars($json) : $json;
+    }
+
+    /**
      * Set the ApplicationContext
      *
      * This function is used by the Bootstrap to hand over the application context. It must not be used anywhere else,

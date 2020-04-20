@@ -1603,7 +1603,7 @@ class PageLayoutView implements LoggerAwareInterface
 
             return '<div class="form-inline form-inline-spaced">'
                 . '<div class="form-group">'
-                . '<select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
+                . '<select class="form-control input-sm" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
                 . $output
                 . '</select></div></div>';
         }

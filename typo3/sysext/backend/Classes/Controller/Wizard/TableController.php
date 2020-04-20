@@ -411,7 +411,6 @@ class TableController extends AbstractWizardController
 				</tfoot>';
         }
         $content = '';
-        $addSubmitOnClick = 'onclick="document.getElementById(\'TableController\').submit();"';
         // Implode all table rows into a string, wrapped in table tags.
         $content .= '
 
@@ -428,7 +427,7 @@ class TableController extends AbstractWizardController
 			<div class="checkbox">
 				<input type="hidden" name="TABLE[textFields]" value="0" />
 				<label for="textFields">
-					<input type="checkbox" ' . $addSubmitOnClick . ' name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' />
+					<input type="checkbox" data-global-event="change" data-action-submit="$form" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' />
 					' . $this->getLanguageService()->getLL('table_smallFields') . '
 				</label>
 			</div>';

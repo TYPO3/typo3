@@ -65,8 +65,7 @@ class InfoPageTyposcriptConfigController
     public function init($pObj)
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $languageService = $this->getLanguageService();
-        $languageService->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
         $this->view = $this->getFluidTemplateObject();
         $this->pObj = $pObj;
         $this->id = (int)GeneralUtility::_GP('id');

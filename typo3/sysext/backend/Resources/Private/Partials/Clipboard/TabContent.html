@@ -22,9 +22,11 @@
         </f:if>
     </td>
     <td class="col-control nowrap">
-        <f:if condition="{content.infoLink}">
+        <f:if condition="{content.infoDataDispatch}">
             <div class="btn-group">
-                <a class="btn btn-default" href="#" onclick="{content.infoLink}"
+                <a class="btn btn-default" href="#"
+                    data-dispatch-action="{content.infoDataDispatch.action}"
+                    data-dispatch-args="{content.infoDataDispatch.args}"
                     title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}">
                     <f:format.raw>
                         <core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>

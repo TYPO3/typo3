@@ -16,11 +16,6 @@ import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import shortcutMenu = require('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
 import documentService = require('TYPO3/CMS/Core/DocumentService');
 
-const delegates: {[key: string]: Function} = {
-  'TYPO3.InfoWindow.showItem': InfoWindow.showItem.bind(null),
-  'TYPO3.ShortcutMenu.createShortcut': shortcutMenu.createShortcut.bind(shortcutMenu),
-};
-
 /**
  * Module: TYPO3/CMS/Backend/ActionDispatcher
  *
@@ -32,9 +27,14 @@ const delegates: {[key: string]: Function} = {
  *  data-dispatch-args="[$quot;tt_content&quot;,123]"
  */
 class ActionDispatcher {
+  private delegates: {[key: string]: Function} = {};
+
   private static resolveArguments(element: HTMLElement): null | string[] {
     if (element.dataset.dispatchArgs) {
-      const args = JSON.parse(element.dataset.dispatchArgs);
+      // `&quot;` is the only literal of a PHP `json_encode` that needs to be substituted
+      // all other payload values are expected to be serialized to unicode literals
+      const json = element.dataset.dispatchArgs.replace(/&quot;/g, '"');
+      const args = JSON.parse(json);
       return args instanceof Array ? ActionDispatcher.trimItems(args) : null;
     } else if (element.dataset.dispatchArgsList) {
       const args = element.dataset.dispatchArgsList.split(',');
@@ -67,7 +67,15 @@ class ActionDispatcher {
   }
 
   public constructor() {
+    this.createDelegates();
     documentService.ready().then((): void => this.registerEvents());
+  }
+
+  private createDelegates(): void {
+    this.delegates = {
+      'TYPO3.InfoWindow.showItem': InfoWindow.showItem.bind(null),
+      'TYPO3.ShortcutMenu.createShortcut': shortcutMenu.createShortcut.bind(shortcutMenu),
+    };
   }
 
   private registerEvents(): void {
@@ -85,8 +93,8 @@ class ActionDispatcher {
   private delegateTo(target: HTMLElement): void {
     const action = target.dataset.dispatchAction;
     const args = ActionDispatcher.resolveArguments(target);
-    if (delegates[action]) {
-      delegates[action].apply(null, args || []);
+    if (this.delegates[action]) {
+      this.delegates[action].apply(null, args || []);
     }
   }
 }

@@ -12,6 +12,7 @@
  */
 
 import documentService = require('TYPO3/CMS/Core/DocumentService');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -45,22 +46,20 @@ class GlobalEventHandler {
   };
 
   private registerEvents(): void {
-    document.querySelectorAll(this.options.onChangeSelector).forEach((element: HTMLElement) => {
-      document.addEventListener('change', this.handleChangeEvent.bind(this));
-    });
-    document.querySelectorAll(this.options.onClickSelector).forEach((element: HTMLElement) => {
-      document.addEventListener('click', this.handleClickEvent.bind(this));
-    });
+    new RegularEvent('change', this.handleChangeEvent.bind(this))
+      .delegateTo(document, this.options.onChangeSelector);
+    new RegularEvent('click', this.handleClickEvent.bind(this))
+      .delegateTo(document, this.options.onClickSelector);
   }
 
-  private handleChangeEvent(evt: Event): void {
-    const resolvedTarget = evt.target as HTMLElement;
+  private handleChangeEvent(evt: Event, resolvedTarget: HTMLElement): void {
+    evt.preventDefault();
     this.handleSubmitAction(evt, resolvedTarget)
       || this.handleNavigateAction(evt, resolvedTarget);
   }
 
-  private handleClickEvent(evt: Event): void {
-    const resolvedTarget = evt.currentTarget as HTMLElement;
+  private handleClickEvent(evt: Event, resolvedTarget: HTMLElement): void {
+    evt.preventDefault();
   }
 
   private handleSubmitAction(evt: Event, resolvedTarget: HTMLElement): boolean {
@@ -88,7 +87,7 @@ class GlobalEventHandler {
     }
     const value = this.resolveHTMLFormChildElementValue(resolvedTarget);
     const navigateValue = resolvedTarget.dataset.navigateValue;
-    if (action === '$data=~s/$value/' && value && navigateValue) {
+    if (action === '$data=~s/$value/' && navigateValue && value !== null) {
       // replacing `${value}` and its URL encoded representation
       window.location.href = navigateValue.replace(/(\$\{value\}|%24%7Bvalue%7D)/gi, value);
       return true;
@@ -111,8 +110,11 @@ class GlobalEventHandler {
   }
 
   private resolveHTMLFormChildElementValue(element: HTMLElement): string | null {
+    const type: string = element.getAttribute('type');
     if (element instanceof HTMLSelectElement) {
       return element.options[element.selectedIndex].value;
+    } else if (element instanceof HTMLInputElement && type === 'checkbox') {
+      return element.checked ? element.value : '';
     } else if (element instanceof HTMLInputElement) {
       return element.value;
     }

@@ -1196,8 +1196,13 @@ class BackendUtility
                         . '</span>';
                 }
                 if ($linkInfoPopup) {
-                    $onClick = 'top.TYPO3.InfoWindow.showItem(\'_FILE\',\'' . (int)$fileObject->getUid() . '\'); return false;';
-                    $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $imgTag . '</a> ';
+                    // @todo Should we add requireJsModule again (should be loaded in most/all cases)
+                    // loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
+                    $attributes = GeneralUtility::implodeAttributes([
+                        'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
+                        'data-dispatch-args-list' => '_FILE,' . (int)$fileObject->getUid(),
+                    ], true);
+                    $thumbData .= '<a href="#" ' . $attributes . '>' . $imgTag . '</a> ';
                 } else {
                     $thumbData .= $imgTag;
                 }
@@ -2616,15 +2621,21 @@ class BackendUtility
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         if (!empty($options)) {
-            $onChange = 'window.location.href = ' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value;';
-            return '
-
-				<!-- Function Menu of module -->
-				<select class="form-control" name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '" data-menu-identifier="' . htmlspecialchars($dataMenuIdentifier) . '">
-					' . implode('
-					', $options) . '
-				</select>
-						';
+            // @todo Should we add requireJsModule again (should be loaded in most/all cases)
+            // loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+            $attributes = GeneralUtility::implodeAttributes([
+                'name' => $elementName,
+                'class' => 'form-control',
+                'data-menu-identifier' => $dataMenuIdentifier,
+                'data-global-event' => 'change',
+                'data-action-navigate' => '$data=~s/$value/',
+                'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
+            ], true);
+            return sprintf(
+                '<select %s>%s</select>select>',
+                $attributes,
+                implode('', $options)
+            );
         }
         return '';
     }
@@ -2665,11 +2676,20 @@ class BackendUtility
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         if (!empty($options)) {
+            // @todo Should we add requireJsModule again (should be loaded in most/all cases)
+            // loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
             $onChange = 'window.location.href = ' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value;';
+            $attributes = GeneralUtility::implodeAttributes([
+                'name' => $elementName,
+                'data-menu-identifier' => $dataMenuIdentifier,
+                'data-global-event' => 'change',
+                'data-action-navigate' => '$data=~s/$value/',
+                'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
+            ], true);
             return '
 			<div class="form-group">
 				<!-- Function Menu of module -->
-				<select class="form-control input-sm" name="' . htmlspecialchars($elementName) . '" onchange="' . htmlspecialchars($onChange) . '" data-menu-identifier="' . htmlspecialchars($dataMenuIdentifier) . '">
+				<select class="form-control input-sm" ' . $attributes . '>
 					' . implode(LF, $options) . '
 				</select>
 			</div>
@@ -2699,18 +2719,22 @@ class BackendUtility
         $addParams = '',
         $tagParams = ''
     ) {
+        // @todo Should we add requireJsModule again (should be loaded in most/all cases)
+        // loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
-        $onClick = 'window.location.href = ' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+(this.checked?1:0);';
-
+        $attributes = GeneralUtility::implodeAttributes([
+            'type' => 'checkbox',
+            'class' => 'checkbox',
+            'name' => $elementName,
+            'value' => 1,
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
+        ], true);
         return
-            '<input' .
-            ' type="checkbox"' .
-            ' class="checkbox"' .
-            ' name="' . $elementName . '"' .
+            '<input ' . $attributes .
             ($currentValue ? ' checked="checked"' : '') .
-            ' onclick="' . htmlspecialchars($onClick) . '"' .
             ($tagParams ? ' ' . $tagParams : '') .
-            ' value="1"' .
             ' />';
     }
 

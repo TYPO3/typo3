@@ -280,6 +280,8 @@ function jumpToUrl(URL) {
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();
         $this->pageRenderer->enableCompressJavascript();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $this->pageRenderer->enableDebugMode();
         }

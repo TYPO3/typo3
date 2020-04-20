@@ -1874,8 +1874,7 @@ class DatabaseRecordList
         }
         $this->addActionToCellGroup($cells, $editAction, 'edit');
         // "Info": (All records)
-        $onClick = 'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;';
-        $viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('showInfo')) . '">'
+        $viewBigAction = '<a class="btn btn-default" href="#" ' . $this->createShowItemTagAttributes($table . ',' . (int)$row['uid']) . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('showInfo')) . '">'
             . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
         // "Move" wizard link for pages/tt_content elements:
@@ -3507,9 +3506,8 @@ class DatabaseRecordList
                 break;
             case 'info':
                 // "Info": (All records)
-                $code = '<a href="#" onclick="' . htmlspecialchars(
-                    'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;'
-                ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
+                $code = '<a href="#" ' . $this->createShowItemTagAttributes($table . ',' . (int)$row['uid'])
+                    . ' title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
                 // Output the label now:
@@ -4044,9 +4042,7 @@ class DatabaseRecordList
         } else {
             $htmlCode = '<a href="#"';
             if ($launchViewParameter !== '') {
-                $htmlCode .= ' onclick="' . htmlspecialchars(
-                    'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
-                ) . '"';
+                $htmlCode .= ' ' . $this->createShowItemTagAttributes($launchViewParameter);
             }
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
@@ -4068,6 +4064,20 @@ class DatabaseRecordList
     public function showOnlyTranslatedRecords(bool $showOnlyTranslatedRecords)
     {
         $this->showOnlyTranslatedRecords = $showOnlyTranslatedRecords;
+    }
+
+    /**
+     * Creates data attributes to be handles in moddule `TYPO3/CMS/Backend/ActionDispatcher`
+     *
+     * @param string $arguments
+     * @return string
+     */
+    protected function createShowItemTagAttributes(string $arguments): string
+    {
+        return GeneralUtility::implodeAttributes([
+            'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
+            'data-dispatch-args-list' => $arguments,
+        ], true);
     }
 
     /**

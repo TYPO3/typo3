@@ -123,6 +123,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $clickTitleMode = $this->arguments['clickTitleMode'];
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
 
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         /** @var \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $dblist */

@@ -702,9 +702,12 @@ class QueryView
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
                 . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div><div class="btn-group" role="group">';
-            $out .= '<a class="btn btn-default" href="#" onClick="top.TYPO3.InfoWindow.showItem(\'' . $table . '\',' . $row['uid']
-                . ');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()
-                . '</a>';
+            $out .= sprintf(
+                '<a class="btn btn-default" href="#" data-dispatch-action="%s" data-dispatch-args-list="%s">%s</a>',
+                'TYPO3.InfoWindow.showItem',
+                htmlspecialchars($table . ',' . $row['uid']),
+                $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()
+            );
             $out .= '</div>';
         } else {
             $out .= '<div class="btn-group" role="group">';
