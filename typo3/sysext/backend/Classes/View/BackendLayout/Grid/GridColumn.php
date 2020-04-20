@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * in the page layout.
  *
  * Accessed from Fluid templates.
+ *
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
 class GridColumn extends AbstractGridObject
 {

@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
  * Is solely responsible for grouping GridColumns.
  *
  * Accessed in Fluid templates.
+ *
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
 class GridRow extends AbstractGridObject
 {

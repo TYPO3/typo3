@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 
 use TYPO3\CMS\Core\SingletonInterface;
 
+/**
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ */
 class RecordRememberer implements SingletonInterface
 {
     /**

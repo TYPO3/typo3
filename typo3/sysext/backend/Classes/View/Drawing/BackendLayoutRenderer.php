@@ -51,6 +51,8 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  *
  * - Initializes the clipboard used in the page layout
  * - Inserts an encoded paste icon as JS which is made visible when clipboard elements are registered
+ *
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
 class BackendLayoutRenderer
 {

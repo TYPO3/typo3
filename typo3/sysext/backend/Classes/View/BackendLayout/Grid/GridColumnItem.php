@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * is-versioned, is-editable, is-delible and so on.
  *
  * Accessed from Fluid templates.
+ *
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
 class GridColumnItem extends AbstractGridObject
 {

@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * @see GridColumn
  * @see GridColumnItem
  * @see LanguageColumn
+ *
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
 abstract class AbstractGridObject
 {

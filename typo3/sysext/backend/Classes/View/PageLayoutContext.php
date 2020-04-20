@@ -36,6 +36,9 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ */
 class PageLayoutContext
 {
     /**
