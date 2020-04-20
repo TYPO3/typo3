@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Workspaces\Service;
 
+use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Granularity\Character;
+use cogpowered\FineDiff\Granularity\Word;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -131,11 +134,17 @@ class HistoryService implements SingletonInterface
 
             /** @var array<int, string> $fields */
             foreach ($fields as $field) {
-                if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
+                $tcaType = $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] ?? '';
+                if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $tcaType !== 'passthrough') {
                     // Create diff-result:
-                    $fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(
-                        (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true),
-                        (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true)
+                    $granularity = new Word();
+                    if ($tcaType === 'flex') {
+                        $granularity = new Character();
+                    }
+                    $diff = new Diff($granularity);
+                    $fieldDifferences = $diff->render(
+                        strip_tags((string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true, uid: $entry['uid'])),
+                        strip_tags((string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true, uid: $entry['uid']))
                     );
                     if (!empty($fieldDifferences)) {
                         $differences[] = [
