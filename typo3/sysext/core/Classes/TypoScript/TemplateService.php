@@ -1212,7 +1212,7 @@ class TemplateService
 
             // adding constants from site settings
             $siteConstants = '';
-            if ($this->getTypoScriptFrontendController()) {
+            if ($this->getTypoScriptFrontendController() instanceof TypoScriptFrontendController) {
                 $site = $this->getTypoScriptFrontendController()->getSite();
             } else {
                 $currentPage = end($this->absoluteRootLine);
