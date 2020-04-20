@@ -1,0 +1,98 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.headline</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <selectField>
+                        <TCEforms>
+                            <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.selectField</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0"></numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.selectField.item1</numIndex>
+                                        <numIndex index="1">item1</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.selectField.item2</numIndex>
+                                        <numIndex index="1">item2</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </selectField>
+
+                    <checkField>
+                        <TCEforms>
+                            <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.checkField</label>
+                            <config>
+                                <type>check</type>
+                            </config>
+                        </TCEforms>
+                    </checkField>
+
+                    <inputField>
+                        <TCEforms>
+                            <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.inputField</label>
+                            <config>
+                                <checkbox>1</checkbox>
+                                <default>0</default>
+                                <type>input</type>
+                                <size>15</size>
+                            </config>
+                        </TCEforms>
+                    </inputField>
+
+                    <anotherField>
+                        <TCEforms>
+                            <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.anotherField</label>
+                            <config>
+                                <checkbox>1</checkbox>
+                                <default>0</default>
+                                <type>input</type>
+                                <size>15</size>
+                            </config>
+                        </TCEforms>
+                    </anotherField>
+                </el>
+            </ROOT>
+        </sDEF>
+        <additional>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_additional.headline</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <additionalCheckField>
+                        <TCEforms>
+                            <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_additional.additionalCheckField</label>
+                            <config>
+                                <type>check</type>
+                            </config>
+                        </TCEforms>
+                    </additionalCheckField>
+                    <multilineTextField>
+                        <TCEforms>
+                            <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_additional.multilineTextField</label>
+                            <config>
+                                <type>text</type>
+                                <size>50</size>
+                                <rows>10</rows>
+                            </config>
+                        </TCEforms>
+                    </multilineTextField>
+                </el>
+            </ROOT>
+        </additional>
+    </sheets>
+</T3DataStructure>

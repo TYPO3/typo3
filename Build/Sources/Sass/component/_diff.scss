@@ -81,6 +81,6 @@ $diff-title-bgcolor: #fafafa;
     }
 
     &.diff-item-result-inline {
-        white-space: normal;
+        white-space: pre-wrap;
     }
 }
