@@ -49,7 +49,7 @@ class ZipService
         $result = $zip->extractTo($directory);
         $zip->close();
         if ($result) {
-            GeneralUtility::fixPermissions($directory, true);
+            GeneralUtility::fixPermissions(rtrim($directory, '/'), true);
         }
         return $result;
     }
