@@ -76,7 +76,7 @@ class PageLayoutController
     /**
      * Current ids page record
      *
-     * @var array
+     * @var array|bool
      * @internal
      */
     public $pageinfo;
@@ -161,7 +161,7 @@ class PageLayoutController
     protected $uriBuilder;
 
     /**
-     * @var PageLayoutContext
+     * @var PageLayoutContext|null
      */
     protected $context;
 
@@ -186,11 +186,14 @@ class PageLayoutController
 
         // Load page info array
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        $this->context = GeneralUtility::makeInstance(
-            PageLayoutContext::class,
-            $this->pageinfo,
-            GeneralUtility::makeInstance(BackendLayoutView::class)->getBackendLayoutForPage($this->id)
-        );
+        if ($this->pageinfo !== false) {
+            // If page info is not resolved, user has no access or the ID parameter was malformed.
+            $this->context = GeneralUtility::makeInstance(
+                PageLayoutContext::class,
+                $this->pageinfo,
+                GeneralUtility::makeInstance(BackendLayoutView::class)->getBackendLayoutForPage($this->id)
+            );
+        }
 
         /** @var SiteInterface $currentSite */
         $currentSite = $request->getAttribute('site');
@@ -553,29 +556,31 @@ class PageLayoutController
                 }
             ');
 
-            $backendLayout = $this->context->getBackendLayout();
+            if ($this->context instanceof PageLayoutContext) {
+                $backendLayout = $this->context->getBackendLayout();
 
-            // Find backend layout / columns
-            if (!empty($backendLayout->getColumnPositionNumbers())) {
-                $this->colPosList = implode(',', $backendLayout->getColumnPositionNumbers());
-            }
-            // Removing duplicates, if any
-            $this->colPosList = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
-            // Accessible columns
-            if (isset($this->modSharedTSconfig['properties']['colPos_list']) && trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
-                $this->activeColPosList = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
-                // Match with the list which is present in the colPosList for the current page
-                if (!empty($this->colPosList) && !empty($this->activeColPosList)) {
-                    $this->activeColPosList = array_unique(array_intersect(
-                        $this->activeColPosList,
-                        $this->colPosList
-                    ));
+                // Find backend layout / columns
+                if (!empty($backendLayout->getColumnPositionNumbers())) {
+                    $this->colPosList = implode(',', $backendLayout->getColumnPositionNumbers());
                 }
-            } else {
-                $this->activeColPosList = $this->colPosList;
+                // Removing duplicates, if any
+                $this->colPosList = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
+                // Accessible columns
+                if (isset($this->modSharedTSconfig['properties']['colPos_list']) && trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
+                    $this->activeColPosList = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
+                    // Match with the list which is present in the colPosList for the current page
+                    if (!empty($this->colPosList) && !empty($this->activeColPosList)) {
+                        $this->activeColPosList = array_unique(array_intersect(
+                            $this->activeColPosList,
+                            $this->colPosList
+                        ));
+                    }
+                } else {
+                    $this->activeColPosList = $this->colPosList;
+                }
+                $this->activeColPosList = implode(',', $this->activeColPosList);
+                $this->colPosList = implode(',', $this->colPosList);
             }
-            $this->activeColPosList = implode(',', $this->activeColPosList);
-            $this->colPosList = implode(',', $this->colPosList);
 
             $content .= $this->getHeaderFlashMessagesForCurrentPid();
 
@@ -626,51 +631,59 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
-        $backendLayout = $this->context->getBackendLayout();
+        $tableOutput = '';
+        $numberOfHiddenElements = 0;
 
-        $configuration = $this->context->getDrawingConfiguration();
-        $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
-        $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
-        $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
-        $configuration->setLanguageColumns($this->MOD_MENU['language']);
-        $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
-        $configuration->setSelectedLanguageId((int)$this->MOD_SETTINGS['language']);
-        if ($this->MOD_SETTINGS['function'] == 2) {
-            $configuration->setLanguageMode(true);
-        }
+        if ($this->context instanceof PageLayoutContext) {
+            // Context may not be set, which happens if the page module is viewed by a user with no access to the
+            // current page, or if the ID parameter is malformed. In this case we do not resolve any backend layout
+            // or other page structure information and we do not render any "table output" for the module.
+            $backendLayout = $this->context->getBackendLayout();
 
-        $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
-
-        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
-            $pageLayoutDrawer = $this->context->getBackendLayoutRenderer();
-
-            $pageActionsCallback = null;
-            if ($this->context->isPageEditable()) {
-                $languageOverlayId = 0;
-                $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
-                if (is_array($pageLocalizationRecord)) {
-                    $pageLocalizationRecord = reset($pageLocalizationRecord);
-                }
-                if (!empty($pageLocalizationRecord['uid'])) {
-                    $languageOverlayId = $pageLocalizationRecord['uid'];
-                }
-                $pageActionsCallback = 'function(PageActions) {
-                    PageActions.setPageId(' . (int)$this->id . ');
-                    PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
-                }';
+            $configuration = $this->context->getDrawingConfiguration();
+            $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
+            $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
+            $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
+            $configuration->setLanguageColumns($this->MOD_MENU['language']);
+            $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
+            $configuration->setSelectedLanguageId((int)$this->MOD_SETTINGS['language']);
+            if ($this->MOD_SETTINGS['function'] == 2) {
+                $configuration->setLanguageMode(true);
             }
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
-            $tableOutput = $pageLayoutDrawer->drawContent();
-        } else {
-            $dbList = PageLayoutView::createFromPageLayoutContext($this->context);
-            // Setting up the tt_content columns to show
-            $colList = array_keys($backendLayout->getUsedColumns());
-            if ($this->colPosList !== '') {
-                $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
+
+            $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
+
+            if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
+                $pageLayoutDrawer = $this->context->getBackendLayoutRenderer();
+
+                $pageActionsCallback = null;
+                if ($this->context->isPageEditable()) {
+                    $languageOverlayId = 0;
+                    $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
+                    if (is_array($pageLocalizationRecord)) {
+                        $pageLocalizationRecord = reset($pageLocalizationRecord);
+                    }
+                    if (!empty($pageLocalizationRecord['uid'])) {
+                        $languageOverlayId = $pageLocalizationRecord['uid'];
+                    }
+                    $pageActionsCallback = 'function(PageActions) {
+                        PageActions.setPageId(' . (int)$this->id . ');
+                        PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
+                    }';
+                }
+                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
+                $tableOutput = $pageLayoutDrawer->drawContent();
+            } else {
+                $dbList = PageLayoutView::createFromPageLayoutContext($this->context);
+                // Setting up the tt_content columns to show
+                $colList = array_keys($backendLayout->getUsedColumns());
+                if ($this->colPosList !== '') {
+                    $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
+                }
+                // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
+                $dbList->tt_contentConfig['cols'] = implode(',', $colList);
+                $tableOutput = $dbList->getTable_tt_content($this->id);
             }
-            // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
-            $dbList->tt_contentConfig['cols'] = implode(',', $colList);
-            $tableOutput = $dbList->getTable_tt_content($this->id);
         }
 
         if ($this->getBackendUser()->check('tables_select', 'tt_content') && $numberOfHiddenElements > 0) {
