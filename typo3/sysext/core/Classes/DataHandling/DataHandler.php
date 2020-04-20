@@ -3261,9 +3261,12 @@ class DataHandler implements LoggerAwareInterface
             return null;
         }
 
+        // NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
+        $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
+
         // Check if table is allowed on destination page
-        if (!$this->isTableAllowedForThisPage($destPid, $table)) {
-            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record "%s:%s" on a page (%s) that can\'t store record type.', -1, [$table, $uid, $destPid]);
+        if (!$this->isTableAllowedForThisPage($tscPID, $table)) {
+            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record "%s:%s" on a page (%s) that can\'t store record type.', -1, [$table, $uid, $tscPID]);
             return null;
         }
 
@@ -3286,8 +3289,6 @@ class DataHandler implements LoggerAwareInterface
         // Getting "copy-after" fields if applicable:
         $copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), 0) : [];
         // Page TSconfig related:
-        // NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
-        $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
         $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
         $tE = $this->getTableEntries($table, $TSConfig);
         // Traverse ALL fields of the selected record:
