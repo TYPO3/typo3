@@ -70,17 +70,11 @@ $diff-title-bgcolor: #fafafa;
         color: $diff-color-remove;
         background-color: shift-color($diff-color-remove, -85%);
         text-decoration: none;
-        display: inline-block;
     }
 
     ins {
         color: $diff-color-add;
         background-color: shift-color($diff-color-add, -85%);
         text-decoration: none;
-        display: inline-block;
-    }
-
-    &.diff-item-result-inline {
-        white-space: normal;
     }
 }

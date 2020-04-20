@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
+use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -58,11 +60,10 @@ class RemoteServer
         protected readonly GridDataService $gridDataService,
         protected readonly StagesService $stagesService,
         protected readonly WorkspaceService $workspaceService,
-        protected readonly DiffUtility $differenceHandler,
         protected readonly EventDispatcherInterface $eventDispatcher,
         private readonly FormDataCompiler $formDataCompiler,
+        protected readonly FlexFormValueFormatter $flexFormValueFormatter,
     ) {
-        $this->differenceHandler->stripTags = false;
     }
 
     /**
@@ -117,6 +118,7 @@ class RemoteServer
      */
     public function getRowDetails($parameter, ServerRequestInterface $request)
     {
+        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
         $diffReturnArray = [];
         $liveReturnArray = [];
         $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
@@ -196,27 +198,20 @@ class RemoteServer
                     ];
                 } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
                     // If this is a new or delete placeholder, add diff view for all appropriate fields
-                    $newOrDeleteRecord[$fieldName] = (string)BackendUtility::getProcessedValue(
-                        $parameter->table,
-                        $fieldName,
-                        $liveRecord[$fieldName], // Both (live and version) values are the same
-                        0,
-                        true,
-                        false,
-                        $liveRecord['uid'] // Relations of new/delete placeholder do always contain the live uid
-                    );
+                    $newOrDeleteRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
 
                     // Don't add empty fields
                     if ($newOrDeleteRecord[$fieldName] === '') {
                         continue;
                     }
 
+                    $granularity = ($configuration['type'] ?? '') === 'flex' ? DiffGranularity::CHARACTER : DiffGranularity::WORD;
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $versionState === VersionState::NEW_PLACEHOLDER
-                            ? $this->differenceHandler->makeDiffDisplay('', $newOrDeleteRecord[$fieldName])
-                            : $this->differenceHandler->makeDiffDisplay($newOrDeleteRecord[$fieldName], ''),
+                            ? $diffUtility->makeDiffDisplay('', $newOrDeleteRecord[$fieldName], $granularity)
+                            : $diffUtility->makeDiffDisplay($newOrDeleteRecord[$fieldName], '', $granularity),
                     ];
 
                     // Generally not needed by Core, but let's make it available for further processing in hooks
@@ -226,30 +221,20 @@ class RemoteServer
                         'content' => $newOrDeleteRecord[$fieldName],
                     ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
-                    // Select the human readable values before diff
-                    $liveRecord[$fieldName] = BackendUtility::getProcessedValue(
-                        $parameter->table,
-                        $fieldName,
+                    // Select the human-readable values before diff
+                    $liveRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
+                    $versionRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$versionRecord[$fieldName], $versionRecord['uid'], $configuration);
+                    $granularity = ($configuration['type'] ?? '') === 'flex' ? DiffGranularity::CHARACTER : DiffGranularity::WORD;
+                    $fieldDifferences = $diffUtility->makeDiffDisplay(
                         $liveRecord[$fieldName],
-                        0,
-                        true,
-                        false,
-                        $liveRecord['uid']
-                    );
-                    $versionRecord[$fieldName] = (string)BackendUtility::getProcessedValue(
-                        $parameter->table,
-                        $fieldName,
                         $versionRecord[$fieldName],
-                        0,
-                        true,
-                        false,
-                        $versionRecord['uid']
+                        $granularity
                     );
 
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $this->differenceHandler->makeDiffDisplay((string)$liveRecord[$fieldName], $versionRecord[$fieldName]),
+                        'content' => $fieldDifferences,
                     ];
                     $liveReturnArray[] = [
                         'field' => $fieldName,
@@ -313,6 +298,14 @@ class RemoteServer
         ];
     }
 
+    protected function formatValue(string $table, string $fieldName, string $value, int $uid, array $tcaConfiguration): string
+    {
+        if (($tcaConfiguration['type'] ?? '') === 'flex') {
+            return $this->flexFormValueFormatter->format($table, $fieldName, $value, $uid, $tcaConfiguration);
+        }
+        return (string)BackendUtility::getProcessedValue($table, $fieldName, $value, defaultPassthrough: true, uid: $uid);
+    }
+
     /**
      * Prepares difference view for file references.
      *
@@ -371,7 +364,8 @@ class RemoteServer
             }
         }
 
-        $differences = $this->differenceHandler->makeDiffDisplay($liveInformation, $versionInformation);
+        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+        $differences = $diffUtility->makeDiffDisplay($liveInformation, $versionInformation);
         $liveInformation = str_replace(array_keys($substitutes), array_values($substitutes), trim($liveInformation));
         $differences = str_replace(array_keys($substitutes), array_values($substitutes), trim($differences));
 

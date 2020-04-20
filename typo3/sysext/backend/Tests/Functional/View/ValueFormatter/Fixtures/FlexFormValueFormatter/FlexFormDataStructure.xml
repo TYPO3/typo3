@@ -1,0 +1,82 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <sheetTitle>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.headline</sheetTitle>
+                <type>array</type>
+                <el>
+                    <selectField>
+                        <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.selectField</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                                <numIndex index="0" type="array">
+                                    <label></label>
+                                    <value></value>
+                                </numIndex>
+                                <numIndex index="1">
+                                    <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.selectField.item1</label>
+                                    <value>item1</value>
+                                </numIndex>
+                                <numIndex index="2">
+                                    <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.selectField.item2</label>
+                                    <value>item2</value>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </selectField>
+
+                    <checkField>
+                        <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.checkField</label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </checkField>
+
+                    <inputField>
+                        <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.inputField</label>
+                        <config>
+                            <checkbox>1</checkbox>
+                            <default>0</default>
+                            <type>input</type>
+                            <size>15</size>
+                        </config>
+                    </inputField>
+
+                    <anotherField>
+                        <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_general.anotherField</label>
+                        <config>
+                            <checkbox>1</checkbox>
+                            <default>0</default>
+                            <type>input</type>
+                            <size>15</size>
+                        </config>
+                    </anotherField>
+                </el>
+            </ROOT>
+        </sDEF>
+        <additional>
+            <ROOT>
+                <sheetTitle>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_additional.headline</sheetTitle>
+                <type>array</type>
+                <el>
+                    <additionalCheckField>
+                        <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_additional.additionalCheckField</label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </additionalCheckField>
+                    <multilineTextField>
+                        <label>LLL:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/Language/Locallang.xlf:flexform_additional.multilineTextField</label>
+                        <config>
+                            <type>text</type>
+                            <size>50</size>
+                            <rows>10</rows>
+                        </config>
+                    </multilineTextField>
+                </el>
+            </ROOT>
+        </additional>
+    </sheets>
+</T3DataStructure>
