@@ -90,10 +90,17 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
      * Register the backend user as aspect
      *
      * @param BackendUserAuthentication|null $user
+     * @param int|null $alternativeWorkspaceId
      */
-    protected function setBackendUserAspect(?BackendUserAuthentication $user): void
+    protected function setBackendUserAspect(?BackendUserAuthentication $user, int $alternativeWorkspaceId = null): void
     {
-        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
+        $this->context->setAspect(
+            'backend.user',
+            GeneralUtility::makeInstance(UserAspect::class, $user)
+        );
+        $this->context->setAspect(
+            'workspace',
+            GeneralUtility::makeInstance(WorkspaceAspect::class, $alternativeWorkspaceId ?? $user->workspace ?? 0)
+        );
     }
 }

@@ -58,11 +58,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
         if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            // Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
-            $GLOBALS['BE_USER']->setWorkspace($GLOBALS['BE_USER']->user['workspace_id']);
-            $this->setBackendUserAspect($GLOBALS['BE_USER']);
             $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
             Bootstrap::loadExtTables();
+            $this->setBackendUserAspect($GLOBALS['BE_USER']);
         }
 
         $response = $handler->handle($request);
@@ -88,11 +86,13 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $backendUserObject->start();
         $backendUserObject->unpack_uc();
         if (!empty($backendUserObject->user['uid'])) {
+            $this->setBackendUserAspect($backendUserObject, (int)$backendUserObject->user['workspace_id']);
             $backendUserObject->fetchGroupData();
         }
         // Unset the user initialization if any setting / restriction applies
         if (!$this->isAuthenticated($backendUserObject, $request->getAttribute('normalizedParams'))) {
             $backendUserObject = null;
+            $this->setBackendUserAspect(null);
         }
         return $backendUserObject;
     }
