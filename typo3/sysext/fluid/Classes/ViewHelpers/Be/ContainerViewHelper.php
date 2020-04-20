@@ -66,6 +66,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         $this->registerArgument('includeJsFiles', 'array', 'List of custom JavaScript file to be loaded');
         $this->registerArgument('addJsInlineLabels', 'array', 'Custom labels to add to JavaScript inline labels');
         $this->registerArgument('includeRequireJsModules', 'array', 'List of RequireJS modules to be loaded');
+        $this->registerArgument('enableDocHeader', 'bool', 'Add an empty doc header', false);
     }
 
     /**
@@ -111,6 +112,12 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         // Render the content and return it
         $output = $this->renderChildren();
         $moduleTemplate = $this->getModuleTemplate();
+        if ($this->arguments['enableDocHeader'] ?? false) {
+            $moduleTemplate->getDocHeaderComponent()->enable();
+        } else {
+            $moduleTemplate->getDocHeaderComponent()->disable();
+            $moduleTemplate->getView()->setTemplate('EmptyModule.html');
+        }
         $moduleTemplate->setTitle($pageTitle);
         $moduleTemplate->setContent($output);
         return $moduleTemplate->renderContent();
