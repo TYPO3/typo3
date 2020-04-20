@@ -126,7 +126,7 @@ class PageLayoutContext
         $this->drawingConfiguration = GeneralUtility::makeInstance(DrawingConfiguration::class);
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
         $this->backendLayoutRenderer = GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this);
-        $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), false, $this->pageId);
+        $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
         $this->siteLanguage = $this->site->getDefaultLanguage();
     }
 
@@ -217,6 +217,9 @@ class PageLayoutContext
         if ($languageId === null) {
             return $this->siteLanguage;
         }
+        if ($languageId === -1) {
+            return $this->siteLanguages[-1];
+        }
         return $this->site->getLanguageById($languageId);
     }
 
@@ -304,7 +307,7 @@ class PageLayoutContext
         // First, select all languages that are available for the current user
         $availableTranslations = [];
         foreach ($this->getSiteLanguages() as $language) {
-            if ($language->getLanguageId() === 0) {
+            if ($language->getLanguageId() <= 0) {
                 continue;
             }
             $availableTranslations[$language->getLanguageId()] = $language->getTitle();
