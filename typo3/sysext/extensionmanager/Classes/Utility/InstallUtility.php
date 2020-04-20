@@ -44,6 +44,7 @@ use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenI
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
+use TYPO3\CMS\Install\Service\LateBootService;
 
 /**
  * Extension Manager Install Utility
@@ -92,6 +93,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
+
+    /**
+     * @var LateBootService
+     */
+    protected $lateBootService;
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -155,6 +161,14 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
+     * @param  LateBootService $lateBootService
+     */
+    public function injectLateBootService(LateBootService $lateBootService)
+    {
+        $this->lateBootService = $lateBootService;
+    }
+
+    /**
      * Helper function to install an extension
      * also processes db updates and clears the cache if the extension asks for it
      *
@@ -178,13 +192,21 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         } else {
             $this->cacheManager->flushCachesInGroup('system');
         }
+
+        // Load a new container as reloadCaches will load ext_localconf
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+
         $this->reloadCaches();
         $this->updateDatabase();
 
         foreach ($extensionKeys as $extensionKey) {
             $this->processExtensionSetup($extensionKey);
-            $this->eventDispatcher->dispatch(new AfterPackageActivationEvent($extensionKey, 'typo3-cms-extension', $this));
+            $container->get(EventDispatcherInterface::class)->dispatch(new AfterPackageActivationEvent($extensionKey, 'typo3-cms-extension', $this));
         }
+
+        // Reset to the original container instance
+        $this->lateBootService->makeCurrent(null, $backup);
     }
 
     /**

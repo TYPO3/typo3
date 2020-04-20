@@ -35,9 +35,9 @@ use TYPO3\CMS\Core\Package\PackageManager;
 class ContainerBuilder
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $cacheIdentifier;
+    protected $cacheIdentifiers;
 
     /**
      * @var array
@@ -163,15 +163,16 @@ class ContainerBuilder
      */
     protected function getCacheIdentifier(PackageManager $packageManager): string
     {
-        return $this->cacheIdentifier ?? $this->createCacheIdentifier($packageManager->getCacheIdentifier());
+        $packageManagerCacheIdentifier = $packageManager->getCacheIdentifier() ?? '';
+        return $this->cacheIdentifiers[$packageManagerCacheIdentifier] ?? $this->createCacheIdentifier($packageManagerCacheIdentifier);
     }
 
     /**
-     * @param string|null $additionalIdentifier
+     * @param string $additionalIdentifier
      * @return string
      */
-    protected function createCacheIdentifier(string $additionalIdentifier = null): string
+    protected function createCacheIdentifier(string $additionalIdentifier): string
     {
-        return $this->cacheIdentifier = 'DependencyInjectionContainer_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . ($additionalIdentifier ?? '') . 'DependencyInjectionContainer');
+        return $this->cacheIdentifiers[$additionalIdentifier] = 'DependencyInjectionContainer_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . $additionalIdentifier . 'DependencyInjectionContainer');
     }
 }

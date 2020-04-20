@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 use Prophecy\Argument;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -85,7 +87,15 @@ class InstallUtilityTest extends UnitTestCase
                 'importInitialFiles',
             ]
         );
-        $this->installMock->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
+        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
+        $this->installMock->injectEventDispatcher($eventDispatcherProphecy->reveal());
+        $this->installMock->injectLateBootService($this->prophesize(LateBootService::class)->reveal());
+        $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->get(EventDispatcherInterface::class)->willReturn($eventDispatcherProphecy->reveal());
+        $lateBootServiceProphecy = $this->prophesize(LateBootService::class);
+        $lateBootServiceProphecy->getContainer()->willReturn($containerProphecy->reveal());
+        $lateBootServiceProphecy->makeCurrent(Argument::cetera())->willReturn([]);
+        $this->installMock->injectLateBootService($lateBootServiceProphecy->reveal());
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
         $this->installMock->expects(self::any())

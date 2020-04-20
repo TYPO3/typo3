@@ -761,6 +761,8 @@ class PackageManager implements SingletonInterface
         }
         $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($this->packageStatesConfiguration) . ";\n";
         GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, true);
+        // Cache identifier depends on package states file, therefore we invalidate the identifier
+        $this->cacheIdentifier = null;
 
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($this->packageStatesPathAndFilename);
     }
