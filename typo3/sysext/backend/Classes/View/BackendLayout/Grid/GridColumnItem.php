@@ -162,11 +162,9 @@ class GridColumnItem extends AbstractGridObject
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }
         $icons[] = $icon;
-        if ($row['sys_language_uid'] >= 0) {
-            $siteLanguage = $this->context->getSiteLanguage();
-            if ($siteLanguage instanceof SiteLanguage) {
-                $icons[] = $this->renderLanguageFlag($siteLanguage);
-            }
+        $siteLanguage = $this->context->getSiteLanguage((int)$row['sys_language_uid']);
+        if ($siteLanguage instanceof SiteLanguage) {
+            $icons[] = $this->renderLanguageFlag($siteLanguage);
         }
 
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
