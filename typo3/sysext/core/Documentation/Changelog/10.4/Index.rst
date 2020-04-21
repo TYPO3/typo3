@@ -13,8 +13,6 @@
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
-None since TYPO3 v10.0 release.
-
 .. toctree::
    :maxdepth: 1
    :titlesonly:
