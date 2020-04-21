@@ -161,7 +161,7 @@ class QueryView
         }
         $markup = [];
         $markup[] = '<div class="load-queries">';
-        $markup[] = '  <div class="form-inline">';
+        $markup[] = '  <div class="form-group form-inline">';
         $markup[] = '    <div class="form-group">';
         $markup[] = '      <select class="form-control" name="storeControl[STORE]" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
         $markup[] = '      <input class="form-control" name="storeControl[title]" value="" type="text" max="80">';
