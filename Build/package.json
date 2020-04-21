@@ -53,6 +53,7 @@
     "karma-requirejs": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
     "node-sass": "^4.13.0",
+    "patch-package": "^6.2.2",
     "postcss-banner": "^3.0.1",
     "postcss-clean": "^1.1.0",
     "stylefmt": "^6.0.0",
@@ -65,7 +66,8 @@
     "build": "./node_modules/.bin/grunt build",
     "format": "./node_modules/.bin/grunt format",
     "update": "./node_modules/.bin/grunt update",
-    "lint": "./node_modules/.bin/grunt lint"
+    "lint": "./node_modules/.bin/grunt lint",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@claviska/jquery-minicolors": "^2.3.4",
