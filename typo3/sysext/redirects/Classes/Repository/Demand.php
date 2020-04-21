@@ -85,7 +85,7 @@ class Demand
         }
         $sourceHost = $demand['source_host'] ?? '';
         $sourcePath = $demand['source_path'] ?? '';
-        $statusCode = (int)$demand['target_statuscode'] ?? 0;
+        $statusCode = (int)($demand['target_statuscode'] ?? 0);
         $target = $demand['target'] ?? '';
         return new self($page, $sourceHost, $sourcePath, $target, $statusCode);
     }

@@ -58,7 +58,7 @@ class TransportFactory implements SingletonInterface
                     $host = $parts[0];
                     $port = $parts[1] ?? null;
                 } else {
-                    $host = (string)$mailSettings['transport_smtp_server'] ?? '';
+                    $host = (string)($mailSettings['transport_smtp_server'] ?? '');
                     $port = null;
                 }
 
