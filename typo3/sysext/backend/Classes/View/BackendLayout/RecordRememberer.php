@@ -32,8 +32,8 @@ class RecordRememberer implements SingletonInterface
     public function rememberRecords(iterable $records): void
     {
         foreach ($records as $record) {
-            $this->rememberRecordUid($record['uid'] ?? 0);
-            $this->rememberRecordUid($record['l18n_parent'] ?? 0);
+            $this->rememberRecordUid((int)($record['uid'] ?? 0));
+            $this->rememberRecordUid((int)($record['l18n_parent'] ?? 0));
         }
     }
 
