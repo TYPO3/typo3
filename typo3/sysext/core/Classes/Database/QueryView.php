@@ -170,7 +170,7 @@ class QueryView
         }
         $markup = [];
         $markup[] = '<div class="load-queries">';
-        $markup[] = '  <div class="form-inline">';
+        $markup[] = '  <div class="form-group form-inline">';
         $markup[] = '    <div class="form-group">';
         $markup[] = '      <select class="form-control" name="storeControl[STORE]" onChange="document.forms[0]'
             . '[\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 '
