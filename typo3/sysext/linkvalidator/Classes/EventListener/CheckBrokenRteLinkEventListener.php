@@ -45,7 +45,7 @@ final class CheckBrokenRteLinkEventListener
         if ($event->getLinkType() !== LinkService::TYPE_URL) {
             return;
         }
-        $url = (string)$event->getLinkData()['url'] ?? '';
+        $url = (string)($event->getLinkData()['url'] ?? '');
         if (!empty($url)) {
             if ($this->brokenLinkRepository->isLinkTargetBrokenLink($url)) {
                 $event->markAsBrokenLink('External link is broken');

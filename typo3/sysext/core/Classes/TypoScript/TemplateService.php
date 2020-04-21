@@ -1217,7 +1217,7 @@ class TemplateService
             } else {
                 $currentPage = end($this->absoluteRootLine);
                 try {
-                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$currentPage['uid'] ?? 0);
+                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)($currentPage['uid'] ?? 0));
                 } catch (SiteNotFoundException $exception) {
                     $site = null;
                 }
