@@ -55,9 +55,7 @@ with the name of your preset.
 
    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['my_preset'] = 'EXT:my_extension/Configuration/RTE/MyPreset.yaml';
 
-In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for example:
-
-.. code-block:: yaml
+In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for example::
 
    # Import basic configuration
    imports:
@@ -76,14 +74,14 @@ How Do I Customize the Toolbar?
 
 Since CKEditor 4, there are 2 ways to customize the toolbar buttons:
 
-#. Using `editor.config.toolbar
-   <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html#item-by-item-configuration>`_
-   : This has the advantage, that each button is configured individually and it gives
-   you more control over what is displayed in the toolbar.
-#. Using `editor.config.toolbarGroups
-   <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html#toolbar-groups-configuration>`__
-   : This has the advantage, that new buttons
-   that have been added by plugins will automatically appear.
+Using `editor.config.toolbar <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html#item-by-item-configuration>`_
+   This has the advantage,
+   that each button is configured individually
+   and it gives you more control over what is displayed in the toolbar.
+
+Using `editor.config.toolbarGroups <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_toolbarconcepts.html#toolbar-groups-configuration>`__
+   This has the advantage,
+   that new buttons that have been added by plugins will automatically appear.
 
 This is explained in the
 `Toolbar documentation <https://ckeditor.com/latest/samples/old/toolbar/toolbar.html>`__
@@ -96,9 +94,7 @@ Configuration Using the toolbarGroups Method
 Each button is in a specific toolbarGroup. You can configure various toolbars, containing
 one or more toolbarGroups.
 
-Example:
-
-.. code-block:: yaml
+Example::
 
    toolbarGroups:
      - { name: clipboard, groups: [ clipboard, cleanup, undo ] }
@@ -121,8 +117,10 @@ When you are ready, click :guilabel:`"Get toolbar config"` to see the configurat
 How do I add Custom Plugins?
 ============================
 
+.. todo: change url to Plugins.yaml after branching master to 10.4
+
 See `EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml
-<https://github.com/TYPO3/TYPO3.CMS/blob/9.5/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__
+<https://github.com/TYPO3/TYPO3.CMS/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__
 for a list of plugins, that are already integrated in `rte_ckeditor`. Besides this, the wordcount plugin was added as
 npm package. You can find it within :file:`typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/plugins/wordcount/`.
 
@@ -147,18 +145,15 @@ In this example, we integrate the plugin `codesnippet <https://ckeditor.com/cke4
 
 4. Include the path to the plugin in your Yaml configuration, for example:
 
-   :file:`EXT:my_extension/Configuration/RTE/MyPreset.yaml`:
-
-   .. code-block:: yaml
+   :file:`EXT:my_extension/Configuration/RTE/MyPreset.yaml`::
 
        editor:
           externalPlugins:
               codesnippet:
                   resource: "EXT:my_extension/Resources/Public/CKeditor/Plugins/codesnippet/"
 
-   .. tip::
-      Each CKEditor plugin must have a javascript file called :file:`plugin.js` per convention.
-      If this is not the case, you must reference the whole path including the javascript file.
+   Each CKEditor plugin must have a javascript file called :file:`plugin.js` per convention.
+   If this is not the case, you must reference the whole path including the javascript file.
 
 5. Configure
 
@@ -185,7 +180,7 @@ In this example, we integrate the plugin `codesnippet <https://ckeditor.com/cke4
 .. -------------------------------------
 .. todo: additional questions
    What are stylesets?
-   Some configuration can be done with Page TSconfig, some with TCA and some with Yaml and some with either 2 or more of these. Why and what should be configured where?
+   Some configuration can be done with Page TSconfig, some with TCA and some with YAML and some with either 2 or more of these. Why and what should be configured where?
    How can I configure classes to anchor tags?
    What is the contents.css?
    How can I set specific classes for anchors?

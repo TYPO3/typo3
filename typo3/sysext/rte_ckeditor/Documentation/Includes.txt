@@ -1,23 +1,20 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. This is 'Includes.txt'. It is included at the very top of each and
+   every ReST source file in THIS documentation project (= manual).
 
-.. This is 'Includes.txt'. It is included at the very top of each and
-   every ReST source file in this documentation project (= manual).
+.. role:: aspect (emphasis)
+.. role:: html(code)
+.. role:: js(code)
+.. role:: php(code)
+.. role:: typoscript(code)
+.. role:: typescript(code)
+.. role:: shell(code)
+.. role:: sql(code)
+.. role:: yaml(code)
 
+.. role:: ts(typoscript)
+   :class: typoscript
+.. role:: javascript(js)
+   :class: js
 
-.. ==================================================
-.. DEFINE SOME TEXT ROLES
-.. --------------------------------------------------
-
-.. role::   html(code)
-
-.. role::   typoscript(code)
-
-.. role::   ts(typoscript)
-   :class:  typoscript
-
-.. role::   php(code)
-
-.. highlight:: php
+.. default-role:: code
+.. highlight:: yaml

@@ -59,7 +59,7 @@ integrated into `rte_ckeditor` and new plugins have been written for TYPO3.
 
 Some examples of features:
 
-* Configurable via Yaml files
+* Configurable via YAML files
 * Configuration presets (minimal, default, full) for TYPO3
 * Toolbar customization
 * Link functionality: integration with TYPO3 link wizard

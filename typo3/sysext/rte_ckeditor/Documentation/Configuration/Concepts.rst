@@ -19,14 +19,17 @@ embedded in the TYPO3 core and not specific to `rte_ckeditor`.
 
 There are three main parts relevant for rich text editing with TYPO3:
 
-#. **Editor configuration:** This covers how the actual editor (in this case CKEditor)
-   should behave, what buttons should be shown, what options are available.
-#. **RTE transformations:** This defines how the information is processed when saved
-   from the Rich Text Editor to the database and when loaded from the database into
-   the Rich Text Editor
-#. **Frontend output configuration**: The information fetched from the database may need to
-   be processed for the frontend. The configuration of the
-   frontend output is configured via TypoScript.
+Editor configuration
+   This covers how the actual editor (in this case CKEditor) should behave,
+   what buttons should be shown, what options are available.
+
+RTE transformations
+   This defines how the information is processed when saved from the Rich Text Editor to the database.
+   And when loaded from the database into the Rich Text Editor.
+
+Frontend output configuration
+   The information fetched from the database may need to be processed for the frontend.
+   The configuration of the frontend output is configured via TypoScript.
 
 .. todo: diagram: overview with DB <-> RTE, DB -> FE etc.
 
@@ -45,49 +48,41 @@ has everything preset (see :ref:`t3tsref:parsefunc`).
 Editor Configuration
 ====================
 
-Yaml
+YAML
 ----
 
 For TYPO3 v8 the ability to configure editor-related configuration and transformations
-via Yaml (Yet-Another-Markup-Language) was made available and is usable for both CKEditor
+via YAML (Yet-Another-Markup-Language) was made available and is usable for both CKEditor
 and HtmlArea, although for the latter it is recommended to use the existing configuration
 when having special setups.
 
-.. todo: add link to general information about configuration with Yaml, once available
+.. todo: add link to general information about configuration with YAML, once available
 
-Yaml Basics
+YAML Basics
 ~~~~~~~~~~~
 
-* Yaml is case sensitive
+* YAML is case sensitive
 * Indenting level reflects hierarchy level and indenting must be used consistently
   (indent with 2 spaces in `rte_ckeditor` configuration).
 * Comments begin with a `#`.
 * White space is important, use a space after `:`.
 
-This is a dictionary (associative array):
-
-.. code-block:: yaml
+This is a dictionary (associative array)::
 
    key1: value
    key2: value
 
-A dictionary can be nested, for example:
-
-.. code-block:: yaml
+A dictionary can be nested, for example::
 
    key1:
      key1-2: value
 
-This is a list:
-
-.. code-block:: yaml
+This is a list::
 
    - list item 1
    - list item 2
 
-A dictionary can be combined with a list:
-
-.. code-block:: yaml
+A dictionary can be combined with a list::
 
    key:
      key2:
@@ -102,7 +97,7 @@ Configuration Presets
 
 Presets are the heart of having custom configuration per record type, or
 page area. A preset consists of a name and a reference to the location
-of a Yaml file.
+of a YAML file.
 
 TYPO3 ships with three RTE presets, “default”, “minimal” and “full”. The
 "default" configuration is active by default.
@@ -170,13 +165,14 @@ and per-type basis:
    # per-type
    RTE.config.tt_content.types.bullets.bodytext.preset = bullets
 
-* line #2: This sets the "minimal" preset for all bodytext fields of
-  content elements.
-* line #4: This sets the "bullets" preset for all bodytext fields of
-  content elements with Content Type “Bullet list” (CType=bullets).
+line #2
+   This sets the "minimal" preset for all bodytext fields of content elements.
 
-Of course, any other specific option set via Yaml can be overridden via
-Page TSconfig as well:
+line #4
+   This sets the "bullets" preset for all bodytext fields of content elements,
+   with Content Type “Bullet list” (CType=bullets).
+
+Of course, any other specific option set via YAML can be overridden via Page TSconfig as well:
 
 .. code-block:: typoscript
 
@@ -187,10 +183,10 @@ Page TSconfig as well:
 
 The loading order for configuration is:
 
-#. preset defined for a specific field via PageTS
-#. richtextConfiguration defined for a specific field via TCA
+#. ``preset`` defined for a specific field via PageTS
+#. ``richtextConfiguration`` defined for a specific field via TCA
 #. general preset defined via PageTS
-#. default
+#. ``default``
 
 
 For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
@@ -327,7 +323,7 @@ Fluid
 -----
 
 Outputting the contents of a RTE-enabled database field within Fluid can
-be achieved by adding :html:`<f:format.html>{record.myfield}</f:format.html>`
+be achieved by adding :html:`{record.myfield -> f:format.html()}`
 which in turn calls :typoscript:`stdWrap.parseFunc` with :typoscript:`lib.parseFunc_RTE`
 thus applying the same logic. Just ensure that the :typoscript:`lib.parseFunc_RTE`
 functionality is available.
@@ -339,13 +335,5 @@ to see if :typoscript:`lib.parseFunc_RTE` is filled.
 .. todo: [SCREENSHOT of TSOB having lib.parseFunc_RTE open]
 
 .. important::
-   If you add your opening and closing tags on an own line, the rendered output
-   includes empty paragraphs at beginning and end.
-
-.. tip::
-   In some cases it is an advantage to use the fluid inline notation to output the contents
-   of a RTE-enabled database field: :html:`{record.myfield -> f:format.html()}`. This makes
-   it easier to process the output further (e.g. by chaining Fluid ViewHelpers).
-
-
-
+   Take care of where you add opening and closing tags, if you don't use the fluid inline notation.
+   If they are on an own line, the rendered output includes empty paragraphs at beginning and end.
