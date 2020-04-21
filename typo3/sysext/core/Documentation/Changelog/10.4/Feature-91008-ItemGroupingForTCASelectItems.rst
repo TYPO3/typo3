@@ -34,7 +34,7 @@ type "select":
 
 .. code-block:: php
 
-   ExtensionManagementUtility:addTcaSelectItemGroup(
+   ExtensionManagementUtility::addTcaSelectItemGroup(
        'tt_content',
        'CType',
        'sliders',
