@@ -169,7 +169,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             case 'list':
                 $hookOut = '';
                 if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'])) {
-                    $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getBackendLayout());
+                    $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getContext());
                     $_params = ['pObj' => &$pageLayoutView, 'row' => $record];
                     foreach (
                         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$record['list_type']] ??
@@ -240,7 +240,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
         // Call drawFooter hooks
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'])) {
-            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getBackendLayout());
+            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($item->getContext());
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
