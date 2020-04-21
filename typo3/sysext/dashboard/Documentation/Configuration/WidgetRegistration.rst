@@ -222,3 +222,70 @@ An example to split up all Widget related configuration would look like:
            height: 'large'
            width: 'medium'
 
+
+Services.php File
+-----------------
+
+This is not intended for integrators but developers only, as this involves PHP experience.
+
+The typical use case should be solved via :file:`Services.yaml`.
+But for more complex situations, it is possible to register widgets via :file:`Services.php`.
+Even if :file:`Services.php` contains PHP, it is only executed during compilation of the dependency injection container.
+Therefore, it is not possible to check for runtime information like URLs, Users, etc..
+
+Instead, this approach can be used to register widgets if certain extensions are enabled.
+
+The following example demonstrates how a widget can be registered via :file:`Services.php`:
+
+.. code-block:: php
+
+
+   <?php
+
+   declare(strict_types=1);
+   namespace Vendor\ExtName;
+
+   use Vendor\ExtName\Widgets\ExampleWidget;
+   use Vendor\ExtName\Widgets\Provider\ExampleProvider;
+   use Symfony\Component\DependencyInjection\ContainerBuilder;
+   use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+   use Symfony\Component\DependencyInjection\Reference;
+   use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+   return function (ContainerConfigurator $configurator, ContainerBuilder $containerBuilder) {
+       $services = $configurator->services();
+
+       if (ExtensionManagementUtility::isLoaded('reports')) {
+           $services->set('widgets.dashboard.widget.exampleWidget')
+               ->class(ExampleWidget::class)
+               ->arg('$view', new Reference('dashboard.views.widget'))
+               ->arg('$buttonProvider', new Reference(ExampleProvider::class))
+               ->arg('$options', ['template' => 'Widget/ExampleWidget'])
+               ->tag('dashboard.widget', [
+                  'identifier' => 'widgets-exampleWidget',
+                  'groupNames' => 'systemInfo',
+                  'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:widgets.dashboard.widget.exampleWidget.title',
+                  'description' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:widgets.dashboard.widget.exampleWidget.description',
+                  'iconIdentifier' => 'content-widget-list',
+                  'height' => 'medium',
+                  'width' => 'medium'
+               ])
+           ;
+       }
+   };
+
+Above example will register a new widget called ``widgets.dashboard.widget.exampleWidget``.
+The widget is only registered, in case the extension "reports" is enabled.
+
+Configuration is done in the same way as with :file:`Services.yaml`, except a PHP API is used.
+The :php:`new Reference` equals to :yaml:`@` inside the YAML, to reference another service.
+:yaml:`arguments:` are registered via :php:`->arg()` method call.
+And :yaml:`tags:` are added via :php:`->tag()` method call.
+
+Using this approach, it is possible to provide widgets that depend on 3rd party code,
+without requiring this 3rd party code.
+Instead the 3rd party code can be suggested and is supported if its installed.
+
+Further information regarding how :file:`Services.php` works in general, can be found
+at `symfony.com <https://symfony.com/doc/current/components/dependency_injection.html>`_.
+Make sure to switch code examples from YAML to PHP.
