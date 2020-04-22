@@ -3930,7 +3930,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     // Search for tags to process in current data and
                     // call this method recursively if found
-                    if (strpos($data, '<') !== false) {
+                    if (strpos($data, '<') !== false && isset($conf['tags.']) && is_array($conf['tags.'])) {
                         foreach ($conf['tags.'] as $tag => $tagConfig) {
                             if (strpos($data, '<' . $tag) !== false) {
                                 $data = $this->_parseFunc($data, $conf);
