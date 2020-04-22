@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Substitution for `BackendUtility::viewOnClick` and `BackendUtility::getPreviewUrl`.
+ * Substitution for `BackendUtility::getPreviewUrl`.
  * Internally `BackendUtility::getPreviewUrl` is still called due to hooks being invoked
  * there - in the future it basically aims to be a replacement for mentioned function.
  */

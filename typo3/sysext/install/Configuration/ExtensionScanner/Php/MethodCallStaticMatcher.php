@@ -938,6 +938,7 @@ return [
         'maximumNumberOfArguments' => 7,
         'restFiles' => [
             'Important-91123-AvoidUsingBackendUtilityViewOnClick.rst',
+            'Deprecation-91806-BackendUtilityViewOnClick.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext' => [

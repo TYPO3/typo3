@@ -814,7 +814,7 @@ class DatabaseRecordList
     }
 
     /**
-     * Get viewOnClick link for pages or tt_content records
+     * Get preview link for pages or tt_content records
      *
      * @param string $table
      * @param array $row

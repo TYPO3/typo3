@@ -2194,6 +2194,7 @@ class BackendUtility
      * @param string $additionalGetVars Additional GET variables.
      * @param bool $switchFocus If TRUE, then the preview window will gain the focus.
      * @return string
+     * @deprecated Use TYPO3\CMS\Backend\Routing\PreviewUriBuilder instead, will be removed in TYPO3 v12.0
      */
     public static function viewOnClick(
         $pageUid,
@@ -2204,6 +2205,10 @@ class BackendUtility
         $additionalGetVars = '',
         $switchFocus = true
     ) {
+        trigger_error(
+            'Using BackendUtility::viewOnClick() is deprecated, use TYPO3\CMS\Backend\Routing\PreviewUriBuilder instead.',
+            E_USER_DEPRECATED
+        );
         try {
             $previewUrl = self::getPreviewUrl(
                 $pageUid,

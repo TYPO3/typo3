@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -43,5 +44,23 @@ class BackendUtilityTest extends UnitTestCase
         $reference = $rr;
         BackendUtility::fixVersioningPid($tableName, $rr);
         self::assertSame($reference, $rr);
+    }
+
+    /**
+     * @test
+     */
+    public function viewOnClickReturnsOnClickCodeWithAlternativeUrl()
+    {
+        // Make sure the hook inside viewOnClick is not fired. This may be removed if unit tests
+        // bootstrap does not initialize TYPO3_CONF_VARS anymore.
+        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']);
+
+        $alternativeUrl = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
+        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($alternativeUrl) . ',\'newTYPO3frontendWindow\');' . LF
+            . 'if (previewWin.location.href === ' . GeneralUtility::quoteJSvalue($alternativeUrl) . ') { previewWin.location.reload(); };';
+        self::assertStringMatchesFormat(
+            $onclickCode,
+            BackendUtility::viewOnClick(null, null, null, null, $alternativeUrl, null, false)
+        );
     }
 }

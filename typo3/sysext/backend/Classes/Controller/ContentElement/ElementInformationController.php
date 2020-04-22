@@ -629,7 +629,7 @@ class ElementInformationController
 
             $previewUriBuilder = PreviewUriBuilder::create((int)$uid)
                 ->withRootLine(BackendUtility::BEgetRootLine($uid));
-            // View page button (`previewUrlAttributes` is the substitute for previous `viewOnClick`)
+            // View page button
             $actions['previewUrlAttributes'] = $previewUriBuilder->serializeDispatcherAttributes();
         }
 
