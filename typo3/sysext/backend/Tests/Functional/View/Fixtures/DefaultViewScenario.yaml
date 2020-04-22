@@ -1,0 +1,117 @@
+__variables:
+  - &pageStandard 0
+  - &pageShortcut 4
+  - &pageMount 7
+  - &pageFolder 254
+  - &contentText 'text'
+  - &idAcmeRootPage 1000
+  - &idAcmeFirstPage 1100
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot', mount: 'mount_pid', visitorGroups: 'fe_group'}
+    defaultValues: {hidden: 0, doktype: *pageStandard}
+    valueInstructions:
+      shortcut:
+        first: {shortcut: 0, shortcut_mode: 1}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType', colPos: 'colPos'}
+    defaultValues: {colPos: 0}
+  workspace:
+    tableName: 'sys_workspace'
+  language:
+    tableName: 'sys_language'
+    columnNames: {code: 'language_isocode'}
+  visitorGroup:
+    tableName: 'fe_groups'
+  visitor:
+    tableName: 'fe_users'
+    columnNames: {groups: 'usergroup'}
+  typoscript:
+    tableName: 'sys_template'
+    valueInstructions:
+      type:
+        site: {root: 1, clear: 1}
+
+entities:
+  workspace:
+    - self: {id: 1, title: 'Workspace'}
+  language:
+    - self: {id: 1, title: 'French', code: 'fr'}
+    - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
+  page:
+    - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true}
+      children:
+        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome'}
+          languageVariants:
+            - self: {id: 1101, title: 'FR: Welcome', language: 1}
+            - self: {id: 1102, title: 'FR-CA: Welcome', language: 2}
+          versionVariants:
+            - version: {title: 'EN: Welcome to ACME Inc', workspace: 1}
+          entities:
+            content:
+              - self: {title: 'EN: Content Element #1 colPos #0', type: *contentText, }
+                # @todo does not work due to a bug in DataHandler's remap stack for l10n_source
+                languageVariants:
+                  - self: {title: 'FR: Content Element #1', type: *contentText, language: 1}
+                    languageVariants:
+                      - self: {title: 'FR-CA: Content Element #1', type: *contentText, language: 2}
+              - self: {title: 'EN: Content Element #2 colPos #1', type: *contentText, colPos: 1}
+              - self: {title: 'EN: Content Element #3 colPos #2', type: *contentText, colPos: 2}
+              - self: {title: 'EN: Content Element #4 colPos #3', type: *contentText, colPos: 3}
+        - self: {id: 1200, title: 'EN: Features'}
+          children:
+            - self: {id: 1210, title: 'EN: Frontend Editing'}
+        - self: {id: 1300, title: 'EN: Products'}
+          children:
+            - self: {id: 1310, title: 'EN: Planets'}
+            - self: {id: 1320, title: 'EN: Spaceships'}
+            - self: {id: 1330, title: 'EN: Dark Matter'}
+        - self: {id: 1400, title: 'EN: ACME in your Region'}
+          languageVariants:
+            - self: {id: 1401, title: 'FR: ACME in your Region', language: 1}
+            - self: {id: 1402, title: 'FR-CA: ACME in your Region', language: 2}
+          children:
+            - self: {id: 1410, title: 'EN: Groups', l18n_cfg: 1}
+              languageVariants:
+                - self: {id: 1411, title: 'FR: Groups', language: 1}
+                - self: {id: 1412, title: 'FR-CA: Groups', language: 2}
+        - self: {id: 1500, title: 'Internal'}
+          children:
+            - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true}
+              children:
+                - self: {id: 1511, title: 'Products'}
+                - self: {id: 1512, title: 'Solutions', visitorGroups: 10}
+                - self: {id: 1515, title: 'Research', visitorGroups: 20}
+            - self: {id: 1520, title: 'Forecasts', visitorGroups: 20, extendToSubpages: true}
+              children:
+                - self: {id: 1521, title: 'Current Year'}
+                - self: {id: 1522, title: 'Next Year'}
+                - self: {id: 1523, title: 'Five Years'}
+        - self: {id: 1600, title: 'About us'}
+        - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100}
+        - self: {id: 404, title: 'Page not found'}
+          entities:
+            content:
+              - self: {title: 'EN: Page not found', type: *contentText}
+        - self: {id: 1930, title: 'Our Blog', type: *pageShortcut, shortcut: 2000}
+        - version: {id: 1950, title: 'EN: Goodbye', workspace: 1}
+        - self: {id: 1990, title: 'Storage', type: *pageFolder}
+          entities:
+            visitorGroup:
+              - self: {id: 10, title: 'Customers'}
+              - self: {id: 20, title: 'Partners'}
+            visitor:
+              - self: {id: 1, username: 'john@doe.local', groups: '10'}
+              - self: {id: 2, username: 'manager@other-inc.local', groups: '20'}
+              - self: {id: 3, username: 'big-boss@acme-inc.local', groups: '10,20'}

@@ -114,11 +114,13 @@ class BackendLayoutRenderer
             foreach ($row['columns.'] as $column) {
                 $columnObject = GeneralUtility::makeInstance(GridColumn::class, $context, $column);
                 $rowObject->addColumn($columnObject);
-                $records = $this->contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
-                $recordRememberer->rememberRecords($records);
-                foreach ($records as $contentRecord) {
-                    $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
-                    $columnObject->addItem($columnItem);
+                if (isset($column['colPos'])) {
+                    $records = $this->contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
+                    $recordRememberer->rememberRecords($records);
+                    foreach ($records as $contentRecord) {
+                        $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
+                        $columnObject->addItem($columnItem);
+                    }
                 }
             }
             $grid->addRow($rowObject);
