@@ -49,8 +49,8 @@
         <table id="typo3-extension-list" class="table table-striped table-hover extension-list">
             <thead>
                 <tr>
-                    <th data-sort-method="none" title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
-                    <th data-sort-method="none" title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
+                    <th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
+                    <th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
                     <th data-filterable><f:translate key="extensionList.header.extensionName"/></th>
                     <th data-filterable data-sort-default><f:translate key="extensionList.header.extensionKey"/></th>
                     <th data-sort-method="dotsep"><f:translate key="extensionList.header.extensionVersion"/></th>
@@ -61,6 +61,10 @@
             </thead>
             <tbody>
                 <f:for each="{extensions}" as="extension" key="extensionKey">
+                    <f:variable name="updateIsBlocked" value="{f:if(condition: '{isComposerMode} || {settings.offlineMode} || {extension.state} == \'excludeFromUpdates\'', then: '1', else: '0')}" />
+                    <f:variable name="sortUpdate" value="0" />
+                    <f:variable name="sortUpdate" value="{f:if(condition: '{extension.updateAvailable} && {updateIsBlocked}', then: '1')}" />
+                    <f:variable name="sortUpdate" value="{f:if(condition: '{extension.updateAvailable} && !{updateIsBlocked}', then: '2')}" />
                     <f:if condition="{extension.terObject}">
                         <f:then>
                             <tr role="row" id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} == -1', then:'insecure')}{f:if(condition:'{extension.terObject.reviewState} == -2', then:'outdated')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
@@ -69,9 +73,9 @@
                             <tr role="row" id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
                         </f:else>
                     </f:if>
-                    <td>
+                    <td data-sort="{sortUpdate}">
                         <f:if condition="{extension.updateAvailable}">
-                            <f:if condition="{isComposerMode} || {settings.offlineMode} || {extension.state} == 'excludeFromUpdates'">
+                            <f:if condition="{updateIsBlocked}">
                                 <f:then>
                                     <span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
                                         <core:icon identifier="actions-system-extension-update" />
@@ -91,7 +95,7 @@
                             </f:if>
                         </f:if>
                     </td>
-                    <td data-order="{f:if(condition: extension.installed, then: 'active', else: 'inactive')}">
+                    <td data-sort="{f:if(condition: extension.installed, then: 'active', else: 'inactive')}">
                         <em:toggleExtensionInstallationState extension="{extension}" />
                     </td>
                     <td>
