@@ -94,6 +94,11 @@ class BackendController
     protected $moduleStorage;
 
     /**
+     * @var ModuleLoader
+     */
+    protected $moduleLoader;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -104,6 +109,10 @@ class BackendController
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
+        $this->moduleLoader->observeWorkspaces = true;
+        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
+
         // Add default BE javascript
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
@@ -451,7 +460,7 @@ class BackendController
                 $startModule = $beUser->uc['startModuleOnFirstLogin'];
                 unset($beUser->uc['startModuleOnFirstLogin']);
                 $beUser->writeUC();
-            } elseif ($beUser->uc['startModule']) {
+            } elseif ($this->moduleLoader->checkMod($beUser->uc['startModule']) !== 'notFound') {
                 $startModule = $beUser->uc['startModule'];
             } else {
                 $startModule = $this->determineFirstAvailableBackendModule();
@@ -481,11 +490,7 @@ class BackendController
 
     protected function determineFirstAvailableBackendModule(): string
     {
-        $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
-        $loadModules->observeWorkspaces = true;
-        $loadModules->load($GLOBALS['TBE_MODULES']);
-
-        foreach ($loadModules->modules as $mainMod => $modData) {
+        foreach ($this->moduleLoader->modules as $mainMod => $modData) {
             $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
             $isStandalone = $modData['standalone'] ?? false;
             if ($isStandalone) {

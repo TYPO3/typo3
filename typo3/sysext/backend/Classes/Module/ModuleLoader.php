@@ -226,7 +226,7 @@ class ModuleLoader
         }
 
         // Add some default configuration
-        if (!isset($moduleSetupInformation['configuration']['inheritNavigationComponentFromMainModule'])) {
+        if ($moduleSetupInformation['configuration'] !== [] && !isset($moduleSetupInformation['configuration']['inheritNavigationComponentFromMainModule'])) {
             $moduleSetupInformation['configuration']['inheritNavigationComponentFromMainModule'] = true;
         }
 
