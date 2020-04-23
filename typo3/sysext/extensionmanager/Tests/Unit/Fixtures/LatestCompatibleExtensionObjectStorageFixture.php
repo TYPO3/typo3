@@ -17,18 +17,22 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures;
 /**
  * Latest compatible extension object storage fixture
  */
-class LatestCompatibleExtensionObjectStorageFixture
+class LatestCompatibleExtensionObjectStorageFixture implements \IteratorAggregate
 {
     /**
-     * @var array
+     * @var int
+     */
+    private $position = 0;
+
+    /**
+     * @var array<int, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension>
      */
     public $extensions = [];
 
-    /**
-     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
-     */
-    public function getFirst()
+    public function getIterator(): \Generator
     {
-        return $this->extensions[0];
+        foreach ($this->extensions as $extension) {
+            yield $extension;
+        }
     }
 }

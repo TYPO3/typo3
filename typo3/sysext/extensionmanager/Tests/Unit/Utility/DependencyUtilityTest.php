@@ -510,12 +510,29 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function getLatestCompatibleExtensionByIntegerVersionDependencyWillReturnExtensionModelOfLatestExtension()
     {
+        $suitableDependency = new Dependency();
+        $suitableDependency->setIdentifier('typo3');
+        $suitableDependency->setLowestVersion('3.6.1');
+
+        $suitableDependencies = new \SplObjectStorage();
+        $suitableDependencies->attach($suitableDependency);
+
+        $unsuitableDependency = new Dependency();
+        $unsuitableDependency->setIdentifier('typo3');
+        $unsuitableDependency->setHighestVersion('4.3.0');
+
+        $unsuitableDependencies = new \SplObjectStorage();
+        $unsuitableDependencies->attach($unsuitableDependency);
+
         $extension1 = new Extension();
         $extension1->setExtensionKey('foo');
         $extension1->setVersion('1.0.0');
+        $extension1->setDependencies($unsuitableDependencies);
+
         $extension2 = new Extension();
         $extension2->setExtensionKey('bar');
         $extension2->setVersion('1.0.42');
+        $extension2->setDependencies($suitableDependencies);
 
         $myStorage = new \TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures\LatestCompatibleExtensionObjectStorageFixture();
         $myStorage->extensions[] = $extension1;
@@ -538,7 +555,7 @@ class DependencyUtilityTest extends UnitTestCase
         $extension = $dependencyUtility->_call('getLatestCompatibleExtensionByIntegerVersionDependency', $dependencyMock);
 
         $this->assertInstanceOf(Extension::class, $extension);
-        $this->assertSame('foo', $extension->getExtensionKey());
+        $this->assertSame('bar', $extension->getExtensionKey());
     }
 
     /**
