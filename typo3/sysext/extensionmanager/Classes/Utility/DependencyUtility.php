@@ -525,6 +525,32 @@ class DependencyUtility implements SingletonInterface
     }
 
     /**
+     * Get the latest compatible version of an extension that's
+     * compatible with the current core and PHP version.
+     *
+     * @param iterable $extensions
+     * @return Extension|null
+     */
+    protected function getCompatibleExtension(iterable $extensions): ?Extension
+    {
+        foreach ($extensions as $extension) {
+            /** @var Extension $extension */
+            $this->checkDependencies($extension);
+            $extensionKey = $extension->getExtensionKey();
+
+            if (isset($this->dependencyErrors[$extensionKey])) {
+                // reset dependencyErrors and continue with next version
+                unset($this->dependencyErrors[$extensionKey]);
+                continue;
+            }
+
+            return $extension;
+        }
+
+        return null;
+    }
+
+    /**
      * Get the latest compatible version of an extension that
      * fulfills the given dependency from TER
      *
@@ -539,7 +565,7 @@ class DependencyUtility implements SingletonInterface
             $versions['lowestIntegerVersion'],
             $versions['highestIntegerVersion']
         );
-        return $compatibleDataSets->getFirst();
+        return $this->getCompatibleExtension($compatibleDataSets);
     }
 
     /**
