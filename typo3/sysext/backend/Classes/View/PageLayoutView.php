@@ -381,7 +381,7 @@ class PageLayoutView implements LoggerAwareInterface
                     $link = '<a href="' . htmlspecialchars($url) . '" '
                         . 'title="' . $title . '"'
                         . 'data-title="' . $title . '"'
-                        . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '">'
+                        . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '">'
                         . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -482,7 +482,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 $singleElementHTML .= '<a href="' . htmlspecialchars($url) . '" '
                                     . 'title="' . $title . '"'
                                     . 'data-title="' . $title . '"'
-                                    . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '">'
+                                    . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '">'
                                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                                     . ' '
                                     . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';

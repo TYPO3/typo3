@@ -555,7 +555,7 @@ class NewRecordController
                             $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
-                                . '<a href="' . htmlspecialchars($url) . '" title="' . $title . '" data-title="' . $title . '" class="t3js-toggle-new-content-element-wizard">'
+                                . '<a href="' . htmlspecialchars($url) . '" title="' . $title . '" data-title="' . $title . '" class="t3js-toggle-new-content-element-wizard disabled">'
                                 . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard'))
                                 . '</a>'
                                 . '</li>'

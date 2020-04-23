@@ -1564,7 +1564,7 @@ class DatabaseRecordList
                                 $icon = '<a href="' . htmlspecialchars($url) . '" '
                                     . 'title="' . $title . '"'
                                     . 'data-title="' . $title . '"'
-                                    . 'class="btn btn-default t3js-toggle-new-content-element-wizard">'
+                                    . 'class="btn btn-default t3js-toggle-new-content-element-wizard disabled">'
                                     . $spriteIcon->render()
                                     . '</a>';
                             } elseif ($table === 'pages') {
