@@ -219,4 +219,31 @@ class MySql extends AbstractPlatform
             ));
         }
     }
+
+    /**
+     * Validate the database name
+     *
+     * @param string $databaseName
+     * @return bool
+     */
+    public static function isValidDatabaseName(string $databaseName): bool
+    {
+        return strlen($databaseName) <= static::SCHEMA_NAME_MAX_LENGTH && preg_match('/^[\x{0001}-\x{FFFF}]*$/u', $databaseName);
+    }
+
+    protected function checkDatabaseName(Connection $connection): void
+    {
+        if (static::isValidDatabaseName($connection->getDatabase())) {
+            return;
+        }
+
+        $this->messageQueue->enqueue(
+            new FlashMessage(
+                'The given database name must not be longer than ' . static::SCHEMA_NAME_MAX_LENGTH . ' characters'
+                . ' and consist of the Unicode Basic Multilingual Plane (BMP), except U+0000',
+                'Database name not valid',
+                FlashMessage::ERROR
+            )
+        );
+    }
 }

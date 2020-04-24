@@ -667,10 +667,11 @@ class InstallerController
         if ($success === false) {
             // remove the database again if we created it
             if ($request->getParsedBody()['install']['values']['type'] === 'new') {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+                $connection
                     ->getSchemaManager()
-                    ->dropDatabase($databaseName);
+                    ->dropDatabase($connection->quoteIdentifier($databaseName));
             }
 
             $this->configurationManager->removeLocalConfigurationKeysByPath(['DB/Connections/Default/dbname']);
@@ -1210,9 +1211,14 @@ For each website you need a TypoScript template on the main page of your website
             $platform = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
                 ->getDatabasePlatform();
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-                ->exec(PlatformInformation::getDatabaseCreateStatementWithCharset($platform, $dbName));
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+            $connection->exec(
+                PlatformInformation::getDatabaseCreateStatementWithCharset(
+                    $platform,
+                    $connection->quoteIdentifier($dbName)
+                )
+            );
             $this->configurationManager
                 ->setLocalConfigurationValueByPath('DB/Connections/Default/dbname', $dbName);
         } catch (DBALException $e) {
