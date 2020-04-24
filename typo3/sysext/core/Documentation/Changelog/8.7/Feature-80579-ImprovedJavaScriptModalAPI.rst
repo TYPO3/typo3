@@ -158,7 +158,7 @@ The configuration accepts an array of single button definitions.
          {
             text: 'Save changes',
             name: 'save',
-            icon: 'actions-document-save'
+            icon: 'actions-document-save',
             active: true,
             btnClass: 'btn-primary',
             dataAttributes: {
