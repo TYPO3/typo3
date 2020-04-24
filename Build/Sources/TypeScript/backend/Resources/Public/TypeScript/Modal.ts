@@ -124,12 +124,24 @@ class Modal {
 
   private readonly securityUtility: SecurityUtility;
 
+  private static resolveEventNameTargetElement(evt: Event): HTMLElement | null {
+    const target = evt.target as HTMLElement;
+    const currentTarget = evt.currentTarget as HTMLElement;
+    if (target.dataset && target.dataset.eventName) {
+      return target;
+    } else if (currentTarget.dataset && currentTarget.dataset.eventName) {
+      return currentTarget;
+    }
+    return null;
+  }
+
   private static createModalResponseEventFromElement(element: HTMLElement, result: boolean): ModalResponseEvent | null {
-    if (!element.dataset.eventName) {
+    if (!element || !element.dataset.eventName) {
       return null;
     }
     return new CustomEvent(
       element.dataset.eventName, {
+        bubbles: true,
         detail: { result, payload: element.dataset.eventPayload || null }
       });
   }
@@ -388,9 +400,11 @@ class Modal {
             btnClass: 'btn-default',
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
-              const event = Modal.createModalResponseEventFromElement(evt.currentTarget as HTMLElement, false);
+              const eventNameTarget = Modal.resolveEventNameTargetElement(evt);
+              const event = Modal.createModalResponseEventFromElement(eventNameTarget, false);
               if (event !== null) {
-                evt.currentTarget.dispatchEvent(event);
+                // dispatch event at the element having `data-event-name` declared
+                eventNameTarget.dispatchEvent(event);
               }
             },
           },
@@ -399,9 +413,11 @@ class Modal {
             btnClass: 'btn-' + Severity.getCssClass(severity),
             trigger: (): void => {
               this.currentModal.trigger('modal-dismiss');
-              const event = Modal.createModalResponseEventFromElement(evt.currentTarget as HTMLElement, true);
+              const eventNameTarget = Modal.resolveEventNameTargetElement(evt);
+              const event = Modal.createModalResponseEventFromElement(eventNameTarget, true);
               if (event !== null) {
-                evt.currentTarget.dispatchEvent(event);
+                // dispatch event at the element having `data-event-name` declared
+                eventNameTarget.dispatchEvent(event);
               }
               const href = $element.data('href') || $element.attr('href');
               if (href && href !== '#') {
