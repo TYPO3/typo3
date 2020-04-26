@@ -91,7 +91,7 @@ config.tx_extbase {
 		}
 	}
 	features {
-		# if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see https://wiki.typo3.org/Skip_default_arguments_in_URIs)
+		# if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see https://docs.typo3.org/m/typo3/book-extbasefluid/9.5/en-us/b-ExtbaseReference/Index.html#features)
 		skipDefaultArguments = 0
 		# if set to 1, the enable fields are ignored in BE context
 		ignoreAllEnableFieldsInBe = 0

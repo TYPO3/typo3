@@ -109,7 +109,7 @@ Filename convention
 File content
 ============
 
-Like other documentation, changelog files are done in ReST, see `TYPO3 wiki ReST syntax`_ for more details.
+Like other documentation, changelog files are done in ReST, see :ref:`h2document:rest-cheat-sheet` for more details.
 
 - All types contain a "Description" section that should give a short summary on which core part was affected by the change.
 
@@ -122,8 +122,6 @@ Like other documentation, changelog files are done in ReST, see `TYPO3 wiki ReST
 - Types "Deprecation" and "Breaking" contain a "Migration" section to describe best practices on how to cope with a specific change.
 
 - All types contain a list of tags, see below.
-
-.. _TYPO3 wiki ReST syntax: http://wiki.typo3.org/ReST_Syntax
 
 
 Tagging
