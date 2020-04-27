@@ -37,6 +37,7 @@ Example
            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
            iconIdentifier: 'content-widget-number'
+
 Options
 -------
 

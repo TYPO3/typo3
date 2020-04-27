@@ -134,7 +134,7 @@ For up to date information, please check the source code.
 
       :returntype: string
       :returns: The title used for the button. E.g. an ``LLL:EXT:`` reference like
-      ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
+                ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
 
    .. php:method:: getLink()
 
@@ -145,7 +145,7 @@ For up to date information, please check the source code.
 
       :returntype: string
       :returns: The target of the link, e.g. ``_blank``.
-      ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
+                ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
 
 .. php:class:: NumberWithIconDataProviderInterface
 
@@ -175,3 +175,11 @@ For up to date information, please check the source code.
 
          Doughnut
             https://www.chartjs.org/docs/latest/charts/doughnut.html#data-structure
+
+.. php:class:: ListDataProviderInterface
+
+   .. php:method:: getItems()
+
+      :returntype: array
+      :returns: Provide the array if items.
+                Each entry should be a single string.

@@ -12,7 +12,7 @@ In order to override, the extension which should override has to be loaded after
 
 Concrete options depend on the widget to configure.
 Each widget should provide an documentation covering all possible options and their meaning.
-For delivered widgets by ext:dashboard see :ref:`widget`.
+For delivered widgets by ext:dashboard see :ref:`widgets`.
 
 In case an widget defined by ext:dashboard should be adjusted,
 the extension has to define a dependency to ext:dashboard.
