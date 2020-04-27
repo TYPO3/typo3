@@ -2777,12 +2777,9 @@ class GeneralUtility
                 $retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/';
                 break;
             case 'TYPO3_SITE_URL':
-                $url = self::getIndpEnv('TYPO3_REQUEST_DIR');
-                // This can only be set by external entry scripts
-                if (defined('TYPO3_PATH_WEB')) {
-                    $retVal = $url;
-                } elseif (Environment::getCurrentScript()) {
+                if (Environment::getCurrentScript()) {
                     $lPath = PathUtility::stripPathSitePrefix(PathUtility::dirnameDuringBootstrap(Environment::getCurrentScript())) . '/';
+                    $url = self::getIndpEnv('TYPO3_REQUEST_DIR');
                     $siteUrl = substr($url, 0, -strlen($lPath));
                     if (substr($siteUrl, -1) !== '/') {
                         $siteUrl .= '/';

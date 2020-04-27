@@ -819,15 +819,10 @@ class NormalizedParams
      */
     protected static function determineSiteUrl(string $requestDir, string $pathThisScript, string $pathSite): string
     {
-        if (defined('TYPO3_PATH_WEB')) {
-            // This can only be set by external entry scripts
-            $siteUrl = $requestDir;
-        } else {
-            $pathThisScriptDir = substr(dirname($pathThisScript), strlen($pathSite)) . '/';
-            $siteUrl = substr($requestDir, 0, -strlen($pathThisScriptDir));
-            $siteUrl = rtrim($siteUrl, '/') . '/';
-        }
-        return $siteUrl;
+        $pathThisScriptDir = substr(dirname($pathThisScript), strlen($pathSite)) . '/';
+        $siteUrl = substr($requestDir, 0, -strlen($pathThisScriptDir));
+
+        return rtrim($siteUrl, '/') . '/';
     }
 
     /**

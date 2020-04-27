@@ -179,11 +179,14 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Absolute path to the root of the typo3 instance. This is often identical to the web document root path (eg. .../public),
-     * but may be different. For instance helhum/typo3-secure-web uses this: Then, rootPath TYPO3_PATH_ROOT is the absolute path to
-     * the private directory where code and runtime files are located (currently typo3/ext, typo3/sysext, fileadmin, typo3temp),
-     * while TYPO3_PATH_WEB is the public/ web document folder that gets assets like fileadmin and Resources/Public folders
-     * from extensions linked in.
+     * Absolute path to the "classic" site root of the TYPO3 application.
+     * This semantically refers to the directory where executable server-side code, configuration
+     * and runtime files are located (e.g. typo3conf/ext, typo3/sysext, typo3temp/var).
+     * In practice this is always identical to the public web document root path which contains
+     * files that are served by the webserver directly (fileadmin/ and public resources).
+     *
+     * This is not to be confused with the app-path that is used in composer-mode installations (by default).
+     * Resources in app-path are located outside the document root.
      *
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @param int $requestType
