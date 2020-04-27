@@ -1360,8 +1360,14 @@ For each website you need a TypoScript template on the main page of your website
         if (!($normalizedParams instanceof NormalizedParams)) {
             $normalizedParams = NormalizedParams::createFromRequest($request);
         }
+        // Check for siteUrl, despite there currently is no UI to provide it,
+        // to allow TYPO3 Console (for TYPO3 v10) to set this value to something reasonable,
+        // because on cli there is no way to find out which hostname the site is supposed to have.
+        // In the future this controller should be refactored to a generic service, where site URL is
+        // just one input argument.
+        $siteUrl = $request->getParsedBody()['install']['values']['siteUrl'] ?? $normalizedParams->getSiteUrl();
 
         // Create a default site configuration called "main" as best practice
-        $this->siteConfiguration->createNewBasicSite($identifier, $rootPageId, $normalizedParams->getSiteUrl());
+        $this->siteConfiguration->createNewBasicSite($identifier, $rootPageId, $siteUrl);
     }
 }
