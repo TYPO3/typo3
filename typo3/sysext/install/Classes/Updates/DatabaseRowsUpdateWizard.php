@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -213,22 +214,13 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                         // Target table and sys_registry table are on the same connection, use a transaction
                         $connectionForTable->beginTransaction();
                         try {
-                            $connectionForTable->update(
+                            $this->updateOrDeleteRow(
+                                $connectionForTable,
+                                $connectionForTable,
                                 $table,
+                                (int)$rowBefore['uid'],
                                 $updatedFields,
-                                [
-                                    'uid' => $rowBefore['uid'],
-                                ]
-                            );
-                            $connectionForTable->update(
-                                'sys_registry',
-                                [
-                                    'entry_value' => serialize($startPosition),
-                                ],
-                                [
-                                    'entry_namespace' => 'installUpdateRows',
-                                    'entry_key' => 'rowUpdatePosition',
-                                ]
+                                $startPosition
                             );
                             $connectionForTable->commit();
                         } catch (\Exception $up) {
@@ -238,22 +230,13 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                     } else {
                         // Different connections for table and sys_registry -> execute two
                         // distinct queries and hope for the best.
-                        $connectionForTable->update(
+                        $this->updateOrDeleteRow(
+                            $connectionForTable,
+                            $connectionForSysRegistry,
                             $table,
+                            (int)$rowBefore['uid'],
                             $updatedFields,
-                            [
-                                'uid' => $rowBefore['uid'],
-                            ]
-                        );
-                        $connectionForSysRegistry->update(
-                            'sys_registry',
-                            [
-                                'entry_value' => serialize($startPosition),
-                            ],
-                            [
-                                'entry_namespace' => 'installUpdateRows',
-                                'entry_key' => 'rowUpdatePosition',
-                            ]
+                            $startPosition
                         );
                     }
                 }
@@ -313,5 +296,44 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
             $registry->set('installUpdateRows', 'rowUpdatePosition', $startPosition);
         }
         return $startPosition;
+    }
+
+    /**
+     * @param Connection $connectionForTable
+     * @param string $table
+     * @param array $updatedFields
+     * @param int $uid
+     * @param Connection $connectionForSysRegistry
+     * @param array $startPosition
+     */
+    protected function updateOrDeleteRow(Connection $connectionForTable, Connection $connectionForSysRegistry, string $table, int $uid, array $updatedFields, array $startPosition): void
+    {
+        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
+        if ($deleteField === null && $updatedFields['deleted'] === 1) {
+            $connectionForTable->delete(
+                $table,
+                [
+                    'uid' => $uid,
+                ]
+            );
+        } else {
+            $connectionForTable->update(
+                $table,
+                $updatedFields,
+                [
+                    'uid' => $uid,
+                ]
+            );
+        }
+        $connectionForSysRegistry->update(
+            'sys_registry',
+            [
+                'entry_value' => serialize($startPosition),
+            ],
+            [
+                'entry_namespace' => 'installUpdateRows',
+                'entry_key' => 'rowUpdatePosition',
+            ]
+        );
     }
 }

@@ -63,7 +63,8 @@ class WorkspaceVersionRecordsMigration implements RowUpdaterInterface, LoggerAwa
         }
         // pid=-1 and live workspace => this may be very old "previous live" records that should be discarded
         if ((int)$row['t3ver_wsid'] === 0) {
-            $row['deleted'] = 1;
+            $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? 'deleted';
+            $row[$deleteField] = 1;
             // continue processing versions
         }
         // regular versions and placeholders (t3ver_state one of -1, 0, 2, 4 - but not 3) having t3ver_oid set
