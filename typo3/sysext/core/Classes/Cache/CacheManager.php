@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
@@ -300,7 +301,7 @@ class CacheManager implements SingletonInterface
             $backendOptions = $this->defaultCacheConfiguration['options'];
         }
 
-        if ($this->disableCaching) {
+        if ($this->disableCaching && $backend !== TransientMemoryBackend::class) {
             $backend = NullBackend::class;
             $backendOptions = [];
         }
