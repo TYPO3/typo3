@@ -89,15 +89,7 @@ class ImageService implements SingletonInterface
             return (string)$imageUrl;
         }
 
-        $uriPrefix = '';
-        $parsedUrl = parse_url($imageUrl);
-        // If full URL has no scheme we add the same scheme as used by the site
-        // so we have an absolute URL also usable outside of browser scope (e.g. in an email message)
-        if (isset($parsedUrl['host']) && !isset($parsedUrl['scheme'])) {
-            $uriPrefix = (GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https:' : 'http:') . $uriPrefix;
-        }
-
-        return GeneralUtility::locationHeaderUrl($uriPrefix . $imageUrl);
+        return GeneralUtility::locationHeaderUrl($imageUrl);
     }
 
     /**

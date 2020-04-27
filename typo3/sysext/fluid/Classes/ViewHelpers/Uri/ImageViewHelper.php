@@ -132,11 +132,6 @@ class ImageViewHelper extends AbstractViewHelper
             throw new Exception('The extension ' . $arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.', 1618992262);
         }
 
-        // A URL was given as src, this is kept as is
-        if ($src !== '' && preg_match('/^(https?:)?\/\//', $src)) {
-            return $src;
-        }
-
         try {
             $imageService = self::getImageService();
             $image = $imageService->getImage($src, $image, $treatIdAsReference);
