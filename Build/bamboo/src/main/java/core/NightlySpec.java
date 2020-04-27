@@ -261,17 +261,6 @@ public class NightlySpec extends AbstractCoreSpec {
      */
     private ArrayList<Stage> getCodeceptionMySqlStages() {
         ArrayList<Stage> stages = new ArrayList<>();
-<<<<<<< HEAD   (e20f41 [BUGFIX] Do not disable caching for caches with TransientMem)
-        for (String phpVersion : phpVersions) {
-            ArrayList<Job> jobs = new ArrayList<>();
-            for (int stageNumber = 0; stageNumber <= 2; stageNumber++) {
-                Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
-                jobs.add(this.getJobAcceptanceTestInstallMysql(stageNumber, phpVersion, composerTask, false));
-                jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(stageNumber, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-            }
-            stages.add(new Stage("Acceptance mysql " + phpVersion).jobs(jobs.toArray(new Job[0])));
-        }
-=======
 
         // install tests
         String phpVersion = "PHP72";
@@ -288,22 +277,18 @@ public class NightlySpec extends AbstractCoreSpec {
         phpVersion = "PHP72";
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_MIN);
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(COMPOSER_MIN, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(COMPOSER_MIN, phpVersion, composerTask, false));
 
         // PHP 7.3, composer max
         phpVersion = "PHP73";
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_MAX);
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(COMPOSER_MAX, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(COMPOSER_MAX, phpVersion, composerTask, false));
 
         // PHP 7.4, composer default
         phpVersion = "PHP74";
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_DEFAULT);
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(COMPOSER_DEFAULT, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(COMPOSER_DEFAULT, phpVersion, composerTask, false));
 
         stages.add(new Stage("Acceptance mysql").jobs(jobs.toArray(new Job[0])));
->>>>>>> CHANGE (bc5a8f [TASK] Rework nightly test run to execute less tests)
         return stages;
     }
 
