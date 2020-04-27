@@ -53,6 +53,8 @@ use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
+use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
+use TYPO3\CMS\Install\Updates\RepeatableInterface;
 
 /**
  * Install step controller, dispatcher class of step actions.
@@ -805,12 +807,15 @@ For each website you need a TypoScript template on the main page of your website
 
         // Mark upgrade wizards as done
         $this->loadExtLocalconfDatabaseAndExtTables();
+        $registry = GeneralUtility::makeInstance(Registry::class);
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
-            $registry = GeneralUtility::makeInstance(Registry::class);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
-                $registry->set('installUpdate', $updateClassName, 1);
+                if (!in_array(RepeatableInterface::class, class_implements($updateClassName), true)) {
+                    $registry->set('installUpdate', $updateClassName, 1);
+                }
             }
         }
+        $registry->set('installUpdateRows', 'rowUpdatersDone', GeneralUtility::makeInstance(DatabaseRowsUpdateWizard::class)->getAvailableRowUpdater());
 
         $configurationManager = new ConfigurationManager();
         $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
