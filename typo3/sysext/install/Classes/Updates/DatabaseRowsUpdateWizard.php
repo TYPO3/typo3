@@ -52,6 +52,15 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
     ];
 
     /**
+     * @internal
+     * @return string[]
+     */
+    public function getAvailableRowUpdater(): array
+    {
+        return $this->rowUpdater;
+    }
+
+    /**
      * @return string Unique identifier of this updater
      */
     public function getIdentifier(): string

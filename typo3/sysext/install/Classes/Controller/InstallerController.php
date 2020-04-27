@@ -61,6 +61,8 @@ use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
+use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
+use TYPO3\CMS\Install\Updates\RepeatableInterface;
 
 /**
  * Install step controller, dispatcher class of step actions.
@@ -1014,9 +1016,12 @@ For each website you need a TypoScript template on the main page of your website
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
-                $this->registry->set('installUpdate', $updateClassName, 1);
+                if (!in_array(RepeatableInterface::class, class_implements($updateClassName), true)) {
+                    $this->registry->set('installUpdate', $updateClassName, 1);
+                }
             }
         }
+        $this->registry->set('installUpdateRows', 'rowUpdatersDone', GeneralUtility::makeInstance(DatabaseRowsUpdateWizard::class)->getAvailableRowUpdater());
 
         $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 
