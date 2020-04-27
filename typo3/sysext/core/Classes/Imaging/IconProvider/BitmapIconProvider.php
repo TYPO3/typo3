@@ -81,7 +81,11 @@ class BitmapIconProvider implements IconProviderInterface
             return '';
         }
 
-        return '<image width="' . $icon->getDimension()->getWidth() . '" height="'
-            . $icon->getDimension()->getHeight() . '" xlink:href="' . PathUtility::getAbsoluteWebPath($source) . '"/>';
+        return sprintf(
+            '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %1$d %2$d" width="%1$d" height="%2$d"><image width="%1$d" height="%1$d" xlink:href="%3$s"/></svg>',
+            $icon->getDimension()->getWidth(),
+            $icon->getDimension()->getHeight(),
+            PathUtility::getAbsoluteWebPath($source)
+        );
     }
 }
