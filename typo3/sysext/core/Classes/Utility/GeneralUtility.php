@@ -4092,7 +4092,7 @@ class GeneralUtility
      */
     public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
     {
-        trigger_error('GeneralUtility::logDeprecatedViewHelperAttribute() will be removed in TYPO3 v10.0.');
+        trigger_error('GeneralUtility::logDeprecatedViewHelperAttribute() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $template = $renderingContext->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat(
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction()
@@ -4114,7 +4114,7 @@ class GeneralUtility
      */
     public static function getDeprecationLogFileName()
     {
-        trigger_error('GeneralUtility::getDeprecationLogFileName() will be removed in TYPO3 v10.0.');
+        trigger_error('GeneralUtility::getDeprecationLogFileName() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
     }
 
@@ -4125,7 +4125,7 @@ class GeneralUtility
      */
     public static function logDeprecatedFunction()
     {
-        trigger_error('GeneralUtility::logDeprecatedFunction() will be removed in TYPO3 v10.0.');
+        trigger_error('GeneralUtility::logDeprecatedFunction() will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         if ($trail[1]['type']) {
             $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
