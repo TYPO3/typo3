@@ -50,7 +50,7 @@ class BackendLogin {
   /**
    * Hide all form fields and show a progress message and icon
    */
-  public showLoginProcess = (): void => {
+  private showLoginProcess(): void {
     this.showLoadingIndicator();
     $(this.options.error).addClass('hidden');
     $(this.options.errorNoCookies).addClass('hidden');
@@ -59,7 +59,7 @@ class BackendLogin {
   /**
    * Show the loading spinner in the submit button
    */
-  public showLoadingIndicator = (): void => {
+  private showLoadingIndicator(): void {
     $(this.options.submitButton).button('loading');
   }
 
@@ -68,7 +68,7 @@ class BackendLogin {
    *
    * @param {Event} event
    */
-  public handleSubmit = (event: Event): void => {
+  private handleSubmit(event: Event): void {
     this.showLoginProcess();
 
     if (typeof this.options.submitHandler === 'function') {
@@ -79,7 +79,7 @@ class BackendLogin {
   /**
    * Store the new selected Interface in a cookie to save it for future visits
    */
-  public interfaceSelectorChanged = (): void => {
+  private interfaceSelectorChanged(): void {
     const now = new Date();
     // cookie expires in one year
     const expires = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 365);
@@ -91,7 +91,7 @@ class BackendLogin {
   /**
    * Check if an interface was stored in a cookie and preselect it in the select box
    */
-  public checkForInterfaceCookie = (): void => {
+  private checkForInterfaceCookie(): void {
     if ($(this.options.interfaceField).length) {
       const posStart = document.cookie.indexOf('typo3-login-interface=');
       if (posStart !== -1) {
@@ -105,7 +105,7 @@ class BackendLogin {
   /**
    * Hides input fields and shows cookie warning
    */
-  public showCookieWarning = (): void => {
+  private showCookieWarning(): void {
     $(this.options.formFields).addClass('hidden');
     $(this.options.errorNoCookies).removeClass('hidden');
   }
@@ -113,7 +113,7 @@ class BackendLogin {
   /**
    * Hides cookie warning and shows input fields
    */
-  public hideCookieWarning = (): void => {
+  private hideCookieWarning(): void {
     $(this.options.formFields).removeClass('hidden');
     $(this.options.errorNoCookies).addClass('hidden');
   }
@@ -122,7 +122,7 @@ class BackendLogin {
    * Checks browser's cookie support
    * see http://stackoverflow.com/questions/8112634/jquery-detecting-cookies-enabled
    */
-  public checkCookieSupport = (): void => {
+  private checkCookieSupport(): void {
     const cookieEnabled = navigator.cookieEnabled;
 
     // when cookieEnabled flag is present and false then cookies are disabled.
@@ -148,13 +148,13 @@ class BackendLogin {
   /**
    * Registers listeners for the Login Interface
    */
-  public initializeEvents = (): void => {
-    $(document).ajaxStart(this.showLoadingIndicator);
-    $(this.options.loginForm).on('submit', this.handleSubmit);
+  private initializeEvents(): void {
+    $(document).ajaxStart(this.showLoadingIndicator.bind(this));
+    $(this.options.loginForm).on('submit', this.handleSubmit.bind(this));
 
     // the Interface selector is not always present, so this check is needed
     if ($(this.options.interfaceField).length > 0) {
-      $(document).on('change blur', this.options.interfaceField, this.interfaceSelectorChanged);
+      $(document).on('change blur', this.options.interfaceField, this.interfaceSelectorChanged.bind(this));
     }
 
     $('.t3js-clearable').clearable();
