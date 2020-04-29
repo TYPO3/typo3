@@ -131,7 +131,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         // only calculate baseURI if the storage does not enforce jumpUrl Script
         if ($this->hasCapability(ResourceStorage::CAPABILITY_PUBLIC)) {
-            if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, Environment::getPublicPath())) {
+            if (!empty($this->configuration['baseUri'])) {
+                $this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
+            } elseif (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, Environment::getPublicPath())) {
                 // use site-relative URLs
                 $temporaryBaseUri = rtrim(PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
                 if ($temporaryBaseUri !== '') {
@@ -140,8 +142,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
                     $temporaryBaseUri = implode('/', $uriParts) . '/';
                 }
                 $this->baseUri = $temporaryBaseUri;
-            } elseif (isset($this->configuration['baseUri']) && GeneralUtility::isValidUrl($this->configuration['baseUri'])) {
-                $this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
             }
         }
     }
@@ -186,7 +186,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      *
      * @param string $identifier
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
-     * @throws \TYPO3\CMS\Core\Resource\Exception
      */
     public function getPublicUrl($identifier)
     {

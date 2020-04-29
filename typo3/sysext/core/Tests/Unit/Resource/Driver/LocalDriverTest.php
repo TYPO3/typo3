@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,6 +41,11 @@ class LocalDriverTest extends BaseTestCase
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
+
+    /**
+     * @var bool Reset changed Environment
+     */
+    protected $backupEnvironment = true;
 
     /**
      * @var LocalDriver
@@ -179,6 +185,103 @@ class LocalDriverTest extends BaseTestCase
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
         self::assertStringNotContainsString('/../', $basePath);
+    }
+
+    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider(): array
+    {
+        return [
+            'no base uri, within public' => [
+                '/files/',
+                '',
+                '/foo.txt',
+                true,
+                'files/foo.txt',
+            ],
+            'no base uri, within project' => [
+                '/../files/',
+                '',
+                '/foo.txt',
+                false,
+                null,
+            ],
+            'base uri with host, within public' => [
+                '/files/',
+                'https://host.tld/',
+                '/foo.txt',
+                true,
+                'https://host.tld/foo.txt',
+            ],
+            'base uri with host, within project' => [
+                '/../files/',
+                'https://host.tld/',
+                '/foo.txt',
+                true,
+                'https://host.tld/foo.txt',
+            ],
+            'base uri with path only, within public' => [
+                '/files/',
+                'assets/',
+                '/foo.txt',
+                true,
+                'assets/foo.txt',
+            ],
+            'base uri with path only, within project' => [
+                '/../files/',
+                'assets/',
+                '/foo.txt',
+                true,
+                'assets/foo.txt',
+            ],
+            'base uri with path only, within other public dir' => [
+                '/../public/assets/',
+                'assets/',
+                '/foo.txt',
+                true,
+                'assets/foo.txt',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $basePath
+     * @param string $baseUri
+     * @param string $fileName
+     * @param bool $expectedIsPublic
+     * @param string|null $expectedPublicUrl
+     * @test
+     * @dataProvider publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider
+     */
+    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUris(string $basePath, string $baseUri, string $fileName, bool $expectedIsPublic, ?string $expectedPublicUrl): void
+    {
+        $testDir = $this->createRealTestdir();
+        $projectPath = $testDir . '/app';
+        $publicPath = $projectPath . '/public';
+        $absoluteBaseDir = $publicPath . $basePath;
+        mkdir($projectPath);
+        mkdir($publicPath);
+        mkdir($absoluteBaseDir, 0777, true);
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            $projectPath,
+            $publicPath,
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isUnix() ? 'UNIX' : 'WINDOWS'
+        );
+        $driverConfiguration = [
+            'pathType' => 'relative',
+            'basePath' => $basePath,
+            'baseUri' => $baseUri,
+        ];
+
+        $subject = $this->createDriver($driverConfiguration);
+
+        self::assertSame($expectedIsPublic, $subject->hasCapability(ResourceStorageInterface::CAPABILITY_PUBLIC));
+        self::assertSame($fileName, $subject->createFile($fileName, '/'));
+        self::assertSame($expectedPublicUrl, $subject->getPublicUrl($fileName));
     }
 
     /**
