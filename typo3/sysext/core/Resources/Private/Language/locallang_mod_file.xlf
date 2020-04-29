@@ -18,6 +18,12 @@
 			<trans-unit id="sys_file_storage.localDriverFlexform_basePath_placeholder" resname="sys_file_storage.localDriverFlexform_basePath_placeholder">
 				<source>Add storage path here. For example: myPath/folder/</source>
 			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_baseUri" resname="sys_file_storage.localDriverFlexform_baseUri">
+				<source>Base URI</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.localDriverFlexform_baseUri_placeholder" resname="sys_file_storage.localDriverFlexform_baseUri_placeholder">
+				<source>Use this URI to build the public url of files, instead of deriving the URI from base path</source>
+			</trans-unit>
 			<trans-unit id="sys_file_storage.localDriverFlexform_pathType" resname="sys_file_storage.localDriverFlexform_pathType">
 				<source>Path type</source>
 			</trans-unit>

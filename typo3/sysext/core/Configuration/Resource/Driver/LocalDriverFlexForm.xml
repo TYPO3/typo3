@@ -33,6 +33,16 @@
 					</config>
 				</TCEforms>
 			</pathType>
+			<baseUri>
+				<TCEforms>
+					<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
+					<config>
+						<type>input</type>
+						<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</placeholder>
+						<size>30</size>
+					</config>
+				</TCEforms>
+			</baseUri>
 			<caseSensitive>
 				<TCEforms>
 					<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_caseSensitive</label>

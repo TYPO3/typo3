@@ -117,7 +117,7 @@ abstract class AbstractDriver implements DriverInterface
      */
     public function hasCapability($capability)
     {
-        return ($this->capabilities & $capability) == $capability;
+        return ($this->capabilities & $capability) === $capability;
     }
 
     /*******************
