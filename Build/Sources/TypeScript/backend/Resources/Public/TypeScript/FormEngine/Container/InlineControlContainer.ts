@@ -214,7 +214,7 @@ class InlineControlContainer {
    */
   constructor(elementId: string) {
     $((): void => {
-      this.container = <HTMLElement>document.querySelector('#' + elementId);
+      this.container = <HTMLElement>document.getElementById(elementId);
       this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
 
       this.registerEvents();
@@ -237,7 +237,7 @@ class InlineControlContainer {
     new RegularEvent('message', this.handlePostMessage).bindTo(window);
 
     if (this.getAppearance().useSortable) {
-      const recordListContainer = <HTMLDivElement>document.querySelector('#' + this.container.getAttribute('id') + '_records');
+      const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
       // tslint:disable-next-line:no-unused-expression
       new Sortable(recordListContainer, {
         group: recordListContainer.getAttribute('id'),
@@ -357,7 +357,7 @@ class InlineControlContainer {
       InlineControlContainer.getInlineRecordContainer(objectId).insertAdjacentHTML('afterend', markup);
       this.memorizeAddRecord(uid, afterUid, selectedValue);
     } else {
-      document.querySelector('#' + this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', markup);
+      document.getElementById(this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', markup);
       this.memorizeAddRecord(uid, null, selectedValue);
     }
   }
@@ -475,7 +475,7 @@ class InlineControlContainer {
         me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
         [me.container.dataset.objectGroup, this.dataset.type],
       ).then(async (response: InlineResponseInterface): Promise<any> => {
-        document.querySelector('#' + me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
+        document.getElementById(me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
 
         const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
         for (let itemUid of response.compilerInput.delete) {
@@ -529,7 +529,7 @@ class InlineControlContainer {
    * @param {string} objectId
    */
   private loadRecordDetails(objectId: string): void {
-    const recordFieldsContainer = document.querySelector('#' + objectId + '_fields');
+    const recordFieldsContainer = document.getElementById(objectId + '_fields');
     const isLoading = typeof this.requestQueue[objectId] !== 'undefined';
     const isLoaded = recordFieldsContainer !== null && recordFieldsContainer.innerHTML.substr(0, 16) !== '<!--notloaded-->';
 
@@ -681,7 +681,7 @@ class InlineControlContainer {
   private changeSortingByButton(objectId: string, direction: SortDirections): void {
     const currentRecordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
     const recordUid = currentRecordContainer.dataset.objectUid;
-    const recordListContainer = <HTMLDivElement>document.querySelector('#' + this.container.getAttribute('id') + '_records');
+    const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
     const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
     let position = records.indexOf(recordUid);
     let isChanged = false;
@@ -714,7 +714,7 @@ class InlineControlContainer {
       return;
     }
 
-    const recordListContainer = <HTMLDivElement>document.querySelector('#' + this.container.getAttribute('id') + '_records');
+    const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
     const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
@@ -848,8 +848,8 @@ class InlineControlContainer {
     }
 
     records.forEach((recordUid: string, index: number): void => {
-      const headerIdentifier = '#' + objectId + Separators.structureSeparator + recordUid + '_header';
-      const headerElement = document.querySelector(headerIdentifier);
+      const headerIdentifier = objectId + Separators.structureSeparator + recordUid + '_header';
+      const headerElement = document.getElementById(headerIdentifier);
 
       const sortUp = headerElement.querySelector('[data-action="sort"][data-direction="' + SortDirections.UP + '"]');
       if (sortUp !== null) {
@@ -971,8 +971,8 @@ class InlineControlContainer {
     if (!this.hasObjectGroupDefinedUniqueConstraints()) {
       return;
     }
-    const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.querySelector(
-      '#' + this.container.dataset.objectGroup + '_selector',
+    const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
+      this.container.dataset.objectGroup + '_selector',
     );
     const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
     if (unique.type === 'select') {
@@ -1053,8 +1053,8 @@ class InlineControlContainer {
     const oldValue = unique.used[recordUid];
 
     if (unique.selector === 'select') {
-      const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.querySelector(
-        '#' + this.container.dataset.objectGroup + '_selector',
+      const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
+        this.container.dataset.objectGroup + '_selector',
       );
       InlineControlContainer.removeSelectOptionByValue(selectorElement, srcElement.value);
       if (typeof oldValue !== 'undefined') {
@@ -1113,8 +1113,8 @@ class InlineControlContainer {
 
       if (unique.selector === 'select') {
         if (!isNaN(parseInt(uniqueValue, 10))) {
-          const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.querySelector(
-            '#' + this.container.dataset.objectGroup + '_selector',
+          const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
+            this.container.dataset.objectGroup + '_selector',
           );
           InlineControlContainer.reAddSelectOption(selectorElement, uniqueValue, unique);
         }
@@ -1166,7 +1166,7 @@ class InlineControlContainer {
     } else {
       value = formField.value;
     }
-    document.querySelector('#' + objectId + '_label').textContent = value.length ? value : this.noTitleString;
+    document.getElementById(objectId + '_label').textContent = value.length ? value : this.noTitleString;
   }
 
   /**
