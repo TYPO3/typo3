@@ -42,6 +42,8 @@ Migration
 
 As all functionality has been set up via PSR-15 middlewares, use a PSR-15 middleware instead.
 
+The method :php:`storeSessionData()` should be replaced with :php:`TSFE->fe_user->storeSessionData()`.
+
 The methods :php:`addTempContentHttpHeaders()` and :php:`sendCacheHeaders()` are now incorporated
 within :php:`TSFE->processOutput()`. This function should be used, or rather add custom headers
 to a PSR-15 Response object if available.
