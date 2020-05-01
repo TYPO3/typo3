@@ -2632,7 +2632,7 @@ class BackendUtility
                 'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
             ], true);
             return sprintf(
-                '<select %s>%s</select>select>',
+                '<select %s>%s</select>',
                 $attributes,
                 implode('', $options)
             );
