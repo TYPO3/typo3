@@ -177,6 +177,14 @@ class Response implements ResponseInterface
      */
     public function shutdown()
     {
+        // @todo: sending http headers has to be done outside this method. This Response class may hold all headers that
+        //        are to be sent, but it must not alter TSFE or send headers directly. Only the surrounding core framework
+        //        is supposed to send http headers.
+        if (($additionalHeaderData = $this->getAdditionalHeaderData()) !== []) {
+            $this->getTypoScriptFrontendController()->additionalHeaderData[] = implode(LF, $additionalHeaderData);
+        }
+        $this->sendHeaders();
+
         $content = $this->getContent();
         $this->setContent('');
         return $content;

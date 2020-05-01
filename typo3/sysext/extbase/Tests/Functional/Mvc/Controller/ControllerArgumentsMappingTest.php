@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -38,7 +38,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Response
+     * @var \TYPO3\CMS\Extbase\Mvc\Response
      */
     protected $response;
 

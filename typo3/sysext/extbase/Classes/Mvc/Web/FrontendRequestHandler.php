@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**

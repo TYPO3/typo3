@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Extbase\Mvc\Response;
 
 /**
  * A request handler which can handle web requests invoked by the backend.
@@ -26,12 +27,11 @@ class BackendRequestHandler extends AbstractRequestHandler
     /**
      * Handles the web request. The response will automatically be sent to the client.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Response
+     * @return Response
      */
     public function handleRequest()
     {
         $request = $this->requestBuilder->build();
-        /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
         $response = $this->objectManager->get(Response::class);
         $this->dispatcher->dispatch($request, $response);
         return $response;

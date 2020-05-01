@@ -35,7 +35,7 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
@@ -115,7 +115,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Response
+     * @var \TYPO3\CMS\Extbase\Mvc\Response
      */
     protected $response;
 

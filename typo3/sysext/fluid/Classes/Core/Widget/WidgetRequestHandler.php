@@ -17,9 +17,9 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
 
 /**
  * Widget request handler, which handles the request if
@@ -80,7 +80,7 @@ class WidgetRequestHandler extends AbstractRequestHandler
     /**
      * Handles the web request. The response will automatically be sent to the client.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Response
+     * @return \TYPO3\CMS\Extbase\Mvc\Response
      */
     public function handleRequest()
     {

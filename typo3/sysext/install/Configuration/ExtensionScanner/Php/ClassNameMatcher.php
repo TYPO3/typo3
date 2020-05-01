@@ -1542,4 +1542,10 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Web\Response' => [
+        'restFiles' => [
+            'Deprecation-89673-ExtbasesWebRequestAndWebResponse.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+        ],
+    ],
 ];

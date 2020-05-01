@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException;
