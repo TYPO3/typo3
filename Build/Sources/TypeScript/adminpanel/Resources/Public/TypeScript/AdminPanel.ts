@@ -77,7 +77,7 @@ namespace TYPO3 {
     }
 
     renderBackdrop(): void {
-      const adminPanel = document.querySelector('#TSFE_ADMIN_PANEL_FORM');
+      const adminPanel = document.getElementById('TSFE_ADMIN_PANEL_FORM');
       const backdrop = document.createElement('div');
       const body = document.querySelector('body');
       body.classList.add(AdminPanelClasses.noScroll);

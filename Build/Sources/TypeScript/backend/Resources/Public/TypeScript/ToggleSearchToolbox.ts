@@ -38,7 +38,7 @@ class ToggleSearchToolbox {
     });
 
     let searchField: HTMLInputElement;
-    if ((searchField = document.querySelector('#search_field')) !== null) {
+    if ((searchField = document.getElementById('search_field') as HTMLInputElement) !== null) {
       const searchResultShown = ('' !== searchField.value);
 
       // make search field clearable

@@ -32,7 +32,7 @@ class DashboardModal {
         title: this.dataset.modalTitle,
         size: Modal.sizes.medium,
         severity: SeverityEnum.notice,
-        content: $(document.querySelector(`#dashboardModal-${this.dataset.modalIdentifier}`).innerHTML),
+        content: $(document.getElementById(`dashboardModal-${this.dataset.modalIdentifier}`).innerHTML),
         additionalCssClasses: ['dashboard-modal'],
         callback: (currentModal: any): void => {
           currentModal.on('submit', '.dashboardModal-form', (e: JQueryEventObject): void => {

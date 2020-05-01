@@ -21,7 +21,7 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
     $.fx.off = true;
     jasmine.clock().install();
 
-    const alertContainer = document.querySelector('#alert-container');
+    const alertContainer = document.getElementById('alert-container');
     while (alertContainer !== null && alertContainer.firstChild) {
       alertContainer.removeChild(alertContainer.firstChild);
     }

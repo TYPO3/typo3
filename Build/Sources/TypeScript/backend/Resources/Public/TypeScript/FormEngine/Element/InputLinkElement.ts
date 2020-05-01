@@ -29,7 +29,7 @@ class InputLinkElement {
 
   constructor(elementId: string) {
     $((): void => {
-      this.element = <HTMLSelectElement>document.querySelector('#' + elementId);
+      this.element = <HTMLSelectElement>document.getElementById(elementId);
       this.container = <HTMLElement>this.element.closest('.t3js-form-field-inputlink');
       this.toggleSelector = <HTMLButtonElement>this.container.querySelector(Selectors.toggleSelector);
       this.explanationField = <HTMLInputElement>this.container.querySelector(Selectors.explanationSelector);

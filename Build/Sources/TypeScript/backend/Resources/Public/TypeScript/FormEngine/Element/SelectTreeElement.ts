@@ -19,8 +19,8 @@ class SelectTreeElement {
   private readonly callback: Function = null;
 
   constructor(treeWrapperId: string, treeRecordFieldId: string, callback: Function) {
-    this.treeWrapper = <HTMLElement>document.querySelector('#' + treeWrapperId);
-    this.recordField = <HTMLInputElement>document.querySelector('#' + treeRecordFieldId);
+    this.treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
+    this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
     this.callback = callback;
 
     this.initialize();

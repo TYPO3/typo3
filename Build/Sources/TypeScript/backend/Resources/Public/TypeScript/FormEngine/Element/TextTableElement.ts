@@ -20,7 +20,7 @@ class TextTableElement {
 
   constructor(elementId: string) {
     $((): void => {
-      this.element = <HTMLTextAreaElement>document.querySelector('#' + elementId);
+      this.element = <HTMLTextAreaElement>document.getElementById(elementId);
 
       Resizable.enable(this.element);
       Tabbable.enable(this.element);

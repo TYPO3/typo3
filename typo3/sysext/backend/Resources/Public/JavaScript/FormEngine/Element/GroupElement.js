@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./AbstractSortableSelectItems","jquery","../../FormEngineSuggest"],(function(e,t,r,s,n){"use strict";class l extends r.AbstractSortableSelectItems{constructor(e){super(),this.element=null,s(()=>{this.element=document.querySelector("#"+e),this.registerEventHandler(),this.registerSuggest()})}registerEventHandler(){this.registerSortableEventHandler(this.element)}registerSuggest(){let e;null!==(e=this.element.closest(".t3js-formengine-field-item").querySelector(".t3-form-suggest"))&&new n(e)}}return l}));
+define(["require","exports","./AbstractSortableSelectItems","jquery","../../FormEngineSuggest"],(function(e,t,r,s,n){"use strict";class l extends r.AbstractSortableSelectItems{constructor(e){super(),this.element=null,s(()=>{this.element=document.getElementById(e),this.registerEventHandler(),this.registerSuggest()})}registerEventHandler(){this.registerSortableEventHandler(this.element)}registerSuggest(){let e;null!==(e=this.element.closest(".t3js-formengine-field-item").querySelector(".t3-form-suggest"))&&new n(e)}}return l}));

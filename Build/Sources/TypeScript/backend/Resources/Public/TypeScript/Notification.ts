@@ -131,7 +131,7 @@ class Notification {
           : duration
       );
 
-    if (this.messageContainer === null || document.querySelector('#alert-container') === null) {
+    if (this.messageContainer === null || document.getElementById('alert-container') === null) {
       this.messageContainer = $('<div>', {'id': 'alert-container'}).appendTo('body');
     }
 

@@ -24,8 +24,8 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
     super();
 
     $((): void => {
-      this.selectedOptionsElement = <HTMLSelectElement>document.querySelector('#' + selectedOptionsElementId);
-      this.availableOptionsElement = <HTMLSelectElement>document.querySelector('#' + availableOptionsElementId);
+      this.selectedOptionsElement = <HTMLSelectElement>document.getElementById(selectedOptionsElementId);
+      this.availableOptionsElement = <HTMLSelectElement>document.getElementById(availableOptionsElementId);
       this.registerEventHandler();
     });
   }

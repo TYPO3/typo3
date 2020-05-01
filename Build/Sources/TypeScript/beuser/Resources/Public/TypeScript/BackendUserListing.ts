@@ -21,7 +21,7 @@ import 'TYPO3/CMS/Backend/Input/Clearable';
 class BackendUserListing {
   constructor() {
     let searchField: HTMLInputElement;
-    if ((searchField = document.querySelector('#tx_Beuser_username')) !== null) {
+    if ((searchField = document.getElementById('tx_Beuser_username') as HTMLInputElement) !== null) {
       const searchResultShown = ('' !== searchField.value);
 
       // make search field clearable

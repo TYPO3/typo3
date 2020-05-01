@@ -22,7 +22,7 @@ class GroupElement extends AbstractSortableSelectItems {
     super();
 
     $((): void => {
-      this.element = <HTMLSelectElement>document.querySelector('#' + elementId);
+      this.element = <HTMLSelectElement>document.getElementById(elementId);
       this.registerEventHandler();
       this.registerSuggest();
     });
