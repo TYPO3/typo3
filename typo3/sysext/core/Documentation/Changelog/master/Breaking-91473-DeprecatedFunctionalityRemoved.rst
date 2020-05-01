@@ -12,6 +12,7 @@ Description
 The following PHP classes that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController`
 
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 

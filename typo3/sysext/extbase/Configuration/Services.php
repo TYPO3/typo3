@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return function (ContainerConfigurator $containerConfigurator, ContainerBuilder $container) {
     $container->registerForAutoconfiguration(Mvc\RequestHandlerInterface::class)->addTag('extbase.request_handler');
     $container->registerForAutoconfiguration(Mvc\Controller\ControllerInterface::class)->addTag('extbase.controller');
-    $container->registerForAutoconfiguration(Mvc\Controller\AbstractController::class)->addTag('extbase.prototype_controller');
     $container->registerForAutoconfiguration(Mvc\Controller\ActionController::class)->addTag('extbase.action_controller');
     $container->registerForAutoconfiguration(Mvc\View\ViewInterface::class)->addTag('extbase.view');
 
@@ -22,9 +21,6 @@ return function (ContainerConfigurator $containerConfigurator, ContainerBuilder 
             }
             foreach ($container->findTaggedServiceIds('extbase.controller') as $id => $tags) {
                 $container->findDefinition($id)->setPublic(true);
-            }
-            foreach ($container->findTaggedServiceIds('extbase.prototype_controller') as $id => $tags) {
-                $container->findDefinition($id)->setShared(false);
             }
             foreach ($container->findTaggedServiceIds('extbase.action_controller') as $id => $tags) {
                 $container->findDefinition($id)->setShared(false);

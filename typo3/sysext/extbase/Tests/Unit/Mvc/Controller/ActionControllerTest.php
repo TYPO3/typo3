@@ -18,11 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -567,5 +571,100 @@ class ActionControllerTest extends UnitTestCase
             [$viewWithBothData, 'custom-header-data', 'custom-footer-data'],
             [$invalidView, null, null]
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function addFlashMessageDataProvider()
+    {
+        return [
+            [
+                new FlashMessage('Simple Message'),
+                'Simple Message',
+                '',
+                FlashMessage::OK,
+                false
+            ],
+            [
+                new FlashMessage('Some OK', 'Message Title', FlashMessage::OK, true),
+                'Some OK',
+                'Message Title',
+                FlashMessage::OK,
+                true
+            ],
+            [
+                new FlashMessage('Some Info', 'Message Title', FlashMessage::INFO, true),
+                'Some Info',
+                'Message Title',
+                FlashMessage::INFO,
+                true
+            ],
+            [
+                new FlashMessage('Some Notice', 'Message Title', FlashMessage::NOTICE, true),
+                'Some Notice',
+                'Message Title',
+                FlashMessage::NOTICE,
+                true
+            ],
+
+            [
+                new FlashMessage('Some Warning', 'Message Title', FlashMessage::WARNING, true),
+                'Some Warning',
+                'Message Title',
+                FlashMessage::WARNING,
+                true
+            ],
+            [
+                new FlashMessage('Some Error', 'Message Title', FlashMessage::ERROR, true),
+                'Some Error',
+                'Message Title',
+                FlashMessage::ERROR,
+                true
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider addFlashMessageDataProvider
+     */
+    public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = FlashMessage::OK, $storeInSession = true)
+    {
+        $flashMessageQueue = $this->getMockBuilder(FlashMessageQueue::class)
+            ->setMethods(['enqueue'])
+            ->setConstructorArgs([StringUtility::getUniqueId('identifier_')])
+            ->getMock();
+
+        $flashMessageQueue->expects(self::once())->method('enqueue')->with(self::equalTo($expectedMessage));
+
+        $controllerContext = $this->getMockBuilder(ControllerContext::class)
+            ->setMethods(['getFlashMessageQueue'])
+            ->getMock();
+        $controllerContext->expects(self::once())->method('getFlashMessageQueue')->willReturn($flashMessageQueue);
+
+        $controller = $this->getAccessibleMockForAbstractClass(
+            ActionController::class,
+            [],
+            '',
+            false,
+            true,
+            true,
+            ['dummy']
+        );
+        $controller->_set('controllerContext', $controllerContext);
+
+        $controller->addFlashMessage($messageBody, $messageTitle, $severity, $storeInSession);
+    }
+
+    /**
+     * @test
+     */
+    public function addFlashMessageThrowsExceptionOnInvalidMessageBody()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1243258395);
+        $controller = new ActionController();
+        $controller->addFlashMessage(new \stdClass());
     }
 }

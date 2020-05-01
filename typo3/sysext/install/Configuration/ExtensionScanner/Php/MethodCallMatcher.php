@@ -4286,6 +4286,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->addFlashMessage' => [
@@ -4293,6 +4294,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->canProcessRequest' => [
@@ -4300,6 +4302,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->processRequest' => [
@@ -4307,6 +4310,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->buildControllerContext' => [
@@ -4314,6 +4318,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->forward' => [
@@ -4321,6 +4326,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->redirect' => [
@@ -4328,6 +4334,7 @@ return [
         'maximumNumberOfArguments' => 7,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->redirectToUri' => [
@@ -4335,6 +4342,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->addBaseUriIfNecessary' => [
@@ -4342,6 +4350,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->throwStatus' => [
@@ -4349,6 +4358,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->initializeControllerArgumentsBaseValidators' => [
@@ -4356,6 +4366,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->mapRequestArgumentsToControllerArguments' => [
@@ -4363,6 +4374,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash' => [

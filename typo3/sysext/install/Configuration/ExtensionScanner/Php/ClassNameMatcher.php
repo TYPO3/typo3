@@ -1336,6 +1336,7 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController' => [
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface' => [
