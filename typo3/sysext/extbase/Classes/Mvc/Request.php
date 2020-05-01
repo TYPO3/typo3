@@ -81,7 +81,7 @@ class Request implements RequestInterface
     /**
      * @var string The requested representation format
      */
-    protected $format = 'txt';
+    protected $format = 'html';
 
     /**
      * @var bool If this request has been changed and needs to be dispatched again

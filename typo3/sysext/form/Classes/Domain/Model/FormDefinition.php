@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -200,7 +200,7 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  * ==========================
  *
  * In order to trigger *rendering* on a FormDefinition,
- * the current {@link \TYPO3\CMS\Extbase\Mvc\Web\Request} needs to be bound to the FormDefinition,
+ * the current {@link \TYPO3\CMS\Extbase\Mvc\Request} needs to be bound to the FormDefinition,
  * resulting in a {@link \TYPO3\CMS\Form\Domain\Runtime\FormRuntime} object which contains the *Runtime State* of the form
  * (such as the currently inserted values).
  *

@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
@@ -180,7 +181,7 @@ class RequestBuilder implements SingletonInterface
     /**
      * Builds a web request object from the raw HTTP information and the configuration
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Request The web request as an object
+     * @return \TYPO3\CMS\Extbase\Mvc\Request The web request as an object
      */
     public function build()
     {
@@ -215,7 +216,7 @@ class RequestBuilder implements SingletonInterface
             $baseUri .= TYPO3_mainDir;
         }
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
+        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
         $request = $this->objectManager->get(Request::class);
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);

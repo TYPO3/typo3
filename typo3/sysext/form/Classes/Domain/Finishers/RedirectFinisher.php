@@ -40,7 +40,7 @@ class RedirectFinisher extends AbstractFinisher
     ];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
+     * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
 

@@ -1536,4 +1536,10 @@ return [
             'Breaking-91066-RemovedButtonUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Web\Request' => [
+        'restFiles' => [
+            'Deprecation-89673-ExtbasesWebRequestAndWebResponse.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

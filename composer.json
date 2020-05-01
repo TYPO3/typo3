@@ -89,7 +89,7 @@
 		"phpstan/phpstan": "^0.12.13",
 		"rector/rector": "^0.7.14",
 		"typo3/cms-styleguide": "~10.0.2",
-		"typo3/testing-framework": "^6.3.1"
+		"typo3/testing-framework": "^6.3.2"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",

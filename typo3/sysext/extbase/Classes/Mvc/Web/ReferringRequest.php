@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
+use TYPO3\CMS\Extbase\Mvc\Request;
+
 /**
  * Represents a referring web request.
  */

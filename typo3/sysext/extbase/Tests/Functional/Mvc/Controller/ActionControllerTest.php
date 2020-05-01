@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController;
@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class ActionControllerTest extends FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
+     * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
 
