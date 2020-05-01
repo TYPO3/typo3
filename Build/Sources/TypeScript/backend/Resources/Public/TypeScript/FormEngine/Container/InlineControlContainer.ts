@@ -46,6 +46,7 @@ enum States {
   new = 'inlineIsNewRecord',
   visible = 'panel-visible',
   collapsed = 'panel-collapsed',
+  notLoaded = 't3js-not-loaded',
 }
 
 enum Separators {
@@ -530,8 +531,9 @@ class InlineControlContainer {
    */
   private loadRecordDetails(objectId: string): void {
     const recordFieldsContainer = document.getElementById(objectId + '_fields');
+    const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
     const isLoading = typeof this.requestQueue[objectId] !== 'undefined';
-    const isLoaded = recordFieldsContainer !== null && recordFieldsContainer.innerHTML.substr(0, 16) !== '<!--notloaded-->';
+    const isLoaded = recordFieldsContainer !== null && !recordContainer.classList.contains(States.notLoaded);
 
     if (!isLoaded) {
       const progress = this.getProgress(objectId);
@@ -544,6 +546,7 @@ class InlineControlContainer {
           delete this.requestQueue[objectId];
           delete this.progessQueue[objectId];
 
+          recordContainer.classList.remove(States.notLoaded);
           recordFieldsContainer.innerHTML = response.data;
           this.collapseExpandRecord(objectId);
 
