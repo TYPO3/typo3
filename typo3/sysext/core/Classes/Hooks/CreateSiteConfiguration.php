@@ -77,10 +77,7 @@ class CreateSiteConfiguration
         $siteIdentifier = $entryPoint . '-' . GeneralUtility::shortMD5((string)$pageId);
 
         if (!$this->siteExistsByRootPageId($pageId)) {
-            $siteConfiguration = GeneralUtility::makeInstance(
-                SiteConfiguration::class,
-                Environment::getConfigPath() . '/sites'
-            );
+            $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
             $normalizedParams = $this->getNormalizedParams();
             $basePrefix = Environment::isCli() ? $normalizedParams->getSitePath() : $normalizedParams->getSiteUrl();
             $siteConfiguration->createNewBasicSite(

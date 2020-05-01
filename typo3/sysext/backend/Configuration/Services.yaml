@@ -48,6 +48,8 @@ services:
   TYPO3\CMS\Backend\Controller\HelpController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
+    public: true
 
   # Listener for old Signal Slots
   TYPO3\CMS\Backend\Compatibility\SlotReplacement:

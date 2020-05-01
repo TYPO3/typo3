@@ -23,6 +23,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -310,6 +311,8 @@ class InstallUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
         file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', $config);
 
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
+
         $subject = new InstallUtility();
         $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
         $listUtility = $this->prophesize(ListUtility::class);
@@ -375,6 +378,8 @@ class InstallUtilityTest extends UnitTestCase
         $existingSiteConfig = 'sites/' . $siteIdentifier . '/config.yaml';
         GeneralUtility::mkdir_deep($configDir . '/sites/' . $siteIdentifier);
         file_put_contents($configDir . '/' . $existingSiteConfig, $config);
+
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
 
         $subject = new InstallUtility();
         $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());

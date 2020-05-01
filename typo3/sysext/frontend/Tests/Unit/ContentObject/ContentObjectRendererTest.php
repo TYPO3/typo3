@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -2712,6 +2713,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('dummy'));
 
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
+
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
@@ -3158,6 +3161,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('runtime'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
         $linkText = 'Nice Text';
         $configuration = [
             'parameter' => 'https://example.com 13x84:target=myexample'

@@ -31,7 +31,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -329,7 +328,7 @@ class SiteConfigurationController
             $newSiteConfiguration = $this->validateFullStructure($newSysSiteData);
 
             // Persist the configuration
-            $siteConfigurationManager = GeneralUtility::makeInstance(SiteConfiguration::class, Environment::getConfigPath() . '/sites');
+            $siteConfigurationManager = GeneralUtility::makeInstance(SiteConfiguration::class);
             if (!$isNewConfiguration && $currentIdentifier !== $siteIdentifier) {
                 $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
             }
@@ -560,7 +559,7 @@ class SiteConfigurationController
             throw new \RuntimeException('Not site identifier given', 1521565182);
         }
         // Verify site does exist, method throws if not
-        GeneralUtility::makeInstance(SiteConfiguration::class, Environment::getConfigPath() . '/sites')->delete($siteIdentifier);
+        GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $overviewRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
         return new RedirectResponse($overviewRoute);

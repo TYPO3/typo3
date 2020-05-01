@@ -590,10 +590,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             return;
         }
 
-        $siteConfiguration = GeneralUtility::makeInstance(
-            SiteConfiguration::class,
-            $destinationFolder
-        );
+        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
         $existingSites = $siteConfiguration->resolveAllExistingSites(false);
 
         GeneralUtility::mkdir($destinationFolder);

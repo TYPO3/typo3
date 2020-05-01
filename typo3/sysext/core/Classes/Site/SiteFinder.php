@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Site;
 
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -54,10 +53,7 @@ class SiteFinder
      */
     public function __construct(SiteConfiguration $siteConfiguration = null)
     {
-        $this->siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(
-            SiteConfiguration::class,
-            Environment::getConfigPath() . '/sites'
-        );
+        $this->siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(SiteConfiguration::class);
         $this->fetchAllSites();
     }
 
