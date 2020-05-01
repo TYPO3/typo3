@@ -160,26 +160,4 @@ class TypeHandlingUtility
     {
         return is_iterable($value);
     }
-
-    /**
-     * Converts a hex encoded string into binary data
-     *
-     * @param string $hexadecimalData A hex encoded string of data
-     * @return string A binary string decoded from the input
-     * @deprecated
-     */
-    public static function hex2bin(string $hexadecimalData): string
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' will be removed in TYPO3 11.0, use native hex2bin instead.',
-            E_USER_DEPRECATED
-        );
-
-        $binaryData = '';
-        $length = strlen($hexadecimalData);
-        for ($i = 0; $i < $length; $i += 2) {
-            $binaryData .= pack('C', hexdec(substr($hexadecimalData, $i, 2)));
-        }
-        return $binaryData;
-    }
 }

@@ -46,6 +46,7 @@ The following PHP static class methods that have been previously deprecated for 
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::presetApplicationContext`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::resetApplicationContext`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern`
+- :php:`\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::hex2bin`
 
 The following PHP methods have been additionally deprecated and are a no-op now:
 
