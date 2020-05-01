@@ -364,22 +364,6 @@ class ObjectAccess
     }
 
     /**
-     * Build the setter method name for a given property by capitalizing the
-     * first letter of the property, and prepending it with "set".
-     *
-     * @param string $propertyName Name of the property
-     *
-     * @return string Name of the setter method name
-     * @deprecated
-     */
-    public static function buildSetterMethodName($propertyName): string
-    {
-        trigger_error(__METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
-
-        return 'set' . ucfirst($propertyName);
-    }
-
-    /**
      * @return PropertyAccessor
      */
     private static function createAccessor(): PropertyAccessor

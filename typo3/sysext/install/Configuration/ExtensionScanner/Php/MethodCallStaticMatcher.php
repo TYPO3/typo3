@@ -846,6 +846,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-87332-AvoidRuntimeReflectionCallsInObjectAccess.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::hex2bin' => [
