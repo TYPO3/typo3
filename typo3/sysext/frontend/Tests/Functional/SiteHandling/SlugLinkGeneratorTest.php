@@ -569,6 +569,64 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     /**
      * @return array
      */
+    public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider(): array
+    {
+        $instructions = [
+            // default language (0)
+            ['https://acme.us/', 1100, 1510, 0, '/my-acme/whitepapers'],
+            ['https://acme.us/', 1100, 1512, 0, '/my-acme/whitepapers/solutions'],
+            ['https://acme.us/', 1100, 1515, 0, '/my-acme/whitepapers/research'],
+            // french language (1)
+            ['https://acme.fr/', 1100, 1510, 1, '/my-acme/papiersblanc'],
+            ['https://acme.fr/', 1100, 1512, 1, '/my-acme/papiersblanc/la-solutions'],
+            ['https://acme.fr/', 1100, 1515, 1, '/my-acme/papiersblanc/recherche'],
+            // canadian french language (2)
+            ['https://acme.ca/', 1100, 1510, 2, '/my-acme-ca/papiersblanc'],
+            ['https://acme.ca/', 1100, 1512, 2, '/my-acme-ca/papiersblanc/la-solutions'],
+            ['https://acme.ca/', 1100, 1515, 2, '/my-acme-ca/papiersblanc/recherche'],
+        ];
+
+        return $this->keysFromTemplate(
+            $instructions,
+            '%2$d->%3$d (language: %4$d)'
+        );
+    }
+
+    /**
+     * @param string $hostPrefix
+     * @param int $sourcePageId
+     * @param int $targetPageId
+     * @param int $languageId
+     * @param string $expectation
+     *
+     * @test
+     * @dataProvider linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider
+     */
+    public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPages(string $hostPrefix, int $sourcePageId, int $targetPageId, int $languageId, string $expectation)
+    {
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    (new TypoScriptInstruction(TemplateService::class))
+                        ->withTypoScript([
+                            'config.' => [
+                                'typolinkLinkAccessRestrictedPages' => 'NONE',
+                            ],
+                        ]),
+                    $this->createTypoLinkUrlInstruction([
+                        'parameter' => $targetPageId,
+                    ])
+                ]),
+            $this->internalRequestContext
+        );
+
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
+    /**
+     * @return array
+     */
     public function linkIsGeneratedForPageVersionDataProvider(): array
     {
         $instructions = [
