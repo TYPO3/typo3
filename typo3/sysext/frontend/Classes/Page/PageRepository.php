@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
@@ -345,8 +346,12 @@ class PageRepository implements LoggerAwareInterface
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del)
             );
 
+        $originalWhereGroupAccess = '';
         if (!$disableGroupAccessCheck) {
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess));
+        } else {
+            $originalWhereGroupAccess = $this->where_groupAccess;
+            $this->where_groupAccess = '';
         }
 
         $row = $queryBuilder->execute()->fetch();
@@ -356,6 +361,11 @@ class PageRepository implements LoggerAwareInterface
                 $result = $this->getPageOverlay($row);
             }
         }
+
+        if ($disableGroupAccessCheck) {
+            $this->where_groupAccess = $originalWhereGroupAccess;
+        }
+
         $cache->set($cacheIdentifier, $result);
         return $result;
     }
@@ -669,6 +679,9 @@ class PageRepository implements LoggerAwareInterface
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
+            if (empty($this->where_groupAccess)) {
+                $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
+            }
             $result = $queryBuilder->select('*')
                 ->from('pages')
                 ->where(

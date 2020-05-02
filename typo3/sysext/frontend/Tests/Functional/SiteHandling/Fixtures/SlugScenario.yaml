@@ -88,10 +88,19 @@ entities:
         - self: {id: 1500, title: 'Internal', slug: '/my-acme'}
           children:
             - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true, slug: '/my-acme/whitepapers'}
+              languageVariants:
+                - self: {id: 1513, title: 'FR: Whitepapers', language: 1, slug: '/my-acme/papiersblanc'}
+                - self: {id: 1514, title: 'FR-CA: Whitepapers', language: 2, slug: '/my-acme-ca/papiersblanc'}
               children:
                 - self: {id: 1511, title: 'Products', slug: '/my-acme/whitepapers/products'}
                 - self: {id: 1512, title: 'Solutions', visitorGroups: 10, slug: '/my-acme/whitepapers/solutions'}
+                  languageVariants:
+                    - self: {id: 1516, title: 'FR: La Solutions', language: 1, slug: '/my-acme/papiersblanc/la-solutions'}
+                    - self: {id: 1517, title: 'FR-CA: La Solutions', language: 2, slug: '/my-acme-ca/papiersblanc/la-solutions'}
                 - self: {id: 1515, title: 'Research', visitorGroups: 20, slug: '/my-acme/whitepapers/research'}
+                  languageVariants:
+                    - self: {id: 1518, title: 'FR: Research', language: 1, slug: '/my-acme/papiersblanc/recherche'}
+                    - self: {id: 1519, title: 'FR-CA: Research', language: 2, slug: '/my-acme-ca/papiersblanc/recherche'}
             - self: {id: 1520, title: 'Forecasts', visitorGroups: 20, extendToSubpages: true, slug: '/my-acme/forecasts'}
               children:
                 - self: {id: 1521, title: 'Current Year', slug: '/my-acme/forecasts/current-year'}
