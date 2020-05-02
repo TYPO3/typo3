@@ -216,7 +216,23 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getPluginNameByActionReturnsCurrentIfItCanHandleTheActionEvenIfMoreThanOnePluginMatches()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn(['extensionName' => 'CurrentExtension', 'pluginName' => 'CurrentPlugin', 'controllerConfiguration' => ['ControllerName' => ['actions' => ['otherAction']]]]);
+        $frameworkConfiguration = [
+            'extensionName' => 'CurrentExtension',
+            'pluginName' => 'CurrentPlugin',
+            'controllerConfiguration' => [
+                'Fully\\Qualified\\ControllerName' => [
+                    'alias' => 'ControllerName',
+                    'actions' => ['otherAction']
+                ]
+            ]
+        ];
+
+        $this->mockConfigurationManager
+            ->expects(self::once())
+            ->method('getConfiguration')
+            ->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)
+            ->willReturn($frameworkConfiguration);
+
         $actualResult = $this->extensionService->getPluginNameByAction('CurrentExtension', 'ControllerName', 'otherAction');
         $expectedResult = 'CurrentPlugin';
         self::assertEquals($expectedResult, $actualResult);

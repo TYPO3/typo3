@@ -88,13 +88,11 @@ class ExtensionService implements SingletonInterface
      */
     public function getPluginNameByAction(string $extensionName, string $controllerName, ?string $actionName): ?string
     {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         // check, whether the current plugin is configured to handle the action
-        if (!empty($frameworkConfiguration['extensionName']) && $extensionName === $frameworkConfiguration['extensionName']) {
-            if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'], true)) {
-                return $frameworkConfiguration['pluginName'];
-            }
+        if (($pluginName = $this->getPluginNameFromFrameworkConfiguration($extensionName, $controllerName, $actionName)) !== null) {
+            return $pluginName;
         }
+
         $plugins = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'] ?? false;
         if (!$plugins) {
             return null;
@@ -117,6 +115,36 @@ class ExtensionService implements SingletonInterface
             throw new Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument', 1280825466);
         }
         return !empty($pluginNames) ? $pluginNames[0] : null;
+    }
+
+    private function getPluginNameFromFrameworkConfiguration(string $extensionName, string $controllerAlias, ?string $actionName): ?string
+    {
+        if ($actionName === null) {
+            return null;
+        }
+
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+
+        if (!is_string($pluginName = ($frameworkConfiguration['pluginName'] ?? null))) {
+            return null;
+        }
+
+        $configuredExtensionName = $frameworkConfiguration['extensionName'] ?? '';
+        $configuredExtensionName = is_string($configuredExtensionName) ? $configuredExtensionName : '';
+
+        if ($configuredExtensionName === '' || $configuredExtensionName !== $extensionName) {
+            return null;
+        }
+
+        $configuredControllers = $frameworkConfiguration['controllerConfiguration'] ?? [];
+        $configuredControllers = is_array($configuredControllers) ? $configuredControllers : [];
+
+        $configuredActionsByControllerAliases = array_column($configuredControllers, 'actions', 'alias');
+
+        $actions = $configuredActionsByControllerAliases[$controllerAlias] ?? [];
+        $actions = is_array($actions) ? $actions : [];
+
+        return in_array($actionName, $actions, true) ? $pluginName : null;
     }
 
     /**
