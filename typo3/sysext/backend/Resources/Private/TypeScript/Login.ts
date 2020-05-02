@@ -24,6 +24,7 @@ import 'TYPO3/CMS/Backend/jquery.clearable';
  */
 class BackendLogin {
   public options: any;
+  public ready: boolean = true;
 
   constructor() {
     this.options = {
@@ -43,7 +44,11 @@ class BackendLogin {
 
     // prevent opening the login form in the backend frameset
     if (top.location.href !== location.href) {
+      this.ready = false;
       top.location.href = location.href;
+    }
+    if (this.ready) {
+      document.body.setAttribute('data-typo3-login-ready', 'true');
     }
   }
 
