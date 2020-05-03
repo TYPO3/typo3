@@ -92,10 +92,7 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
         $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
 
-        $target = [
-            RouteDispatcherClassFixture::class,
-            'mainAction'
-        ];
+        $target = RouteDispatcherClassFixture::class . '::mainAction';
         $routeProphecy->getOption('target')->willReturn($target);
         $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
 
