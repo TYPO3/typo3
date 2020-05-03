@@ -105,6 +105,10 @@ class LinkButton extends AbstractButton
         if ($this->onClick !== '') {
             $attributes['onclick'] = $this->onClick;
         }
+        if ($this->isDisabled()) {
+            $attributes['disabled'] = 'disabled';
+            $attributes['class'] .= ' disabled';
+        }
         $attributesString = '';
         foreach ($attributes as $key => $value) {
             $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
