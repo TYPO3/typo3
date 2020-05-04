@@ -13,7 +13,7 @@
 				<source>Successfully cleared page cache</source>
 			</trans-unit>
 			<trans-unit id="clearcache.message.error" resname="clearcache.message.error">
-				<source>Page cache could not cleared</source>
+				<source>Page cache could not be cleared</source>
 			</trans-unit>
 			<trans-unit id="create_folder.title" resname="create_folder.title">
 				<source>Create new folder</source>
