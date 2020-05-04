@@ -74,8 +74,8 @@ class RssWidget implements WidgetInterface
         $this->cache = $cache;
         $this->options = array_merge(
             [
-            'limit' => 5,
-            'lifeTime' => 43200
+                'limit' => 5,
+                'lifeTime' => 43200
             ],
             $options
         );
@@ -119,7 +119,7 @@ class RssWidget implements WidgetInterface
                 'title' => trim((string)$item->title),
                 'link' => trim((string)$item->link),
                 'pubDate' => trim((string)$item->pubDate),
-                'description' => trim((string)$item->description),
+                'description' => trim(strip_tags((string)$item->description)),
             ];
         }
         usort($items, function ($item1, $item2) {
