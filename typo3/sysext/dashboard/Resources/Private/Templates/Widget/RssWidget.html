@@ -1,4 +1,4 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Widget/Widget" />
 <f:section name="main">
 
@@ -7,7 +7,7 @@
             <f:for each="{items}" as="item">
                 <tr>
                     <td>
-                        <f:link.external uri="{item.link}" target="_blank"><strong>{item.title}</strong></f:link.external>
+                        <f:link.external uri="{item.link}" target="_blank" rel="noreferrer"><strong>{item.title}</strong></f:link.external>
                         <small><time datetime="{item.pubDate -> f:format.date(format: '%Y-%m-%d')}">{item.pubDate -> f:format.date()}</time></small>
                         <p>{item.description -> f:format.crop(maxCharacters: 180)}</p>
                     </td>
@@ -18,8 +18,6 @@
 
 </f:section>
 <f:section name="footer">
-    <f:if condition="{button}">
-        <a href="{button.link}" target="{button.target}" class="widget-cta">{f:translate(id: button.title, default: button.title)}</a>
-    </f:if>
+    <f:render partial="Widget/Button" arguments="{button: button}"/>
 </f:section>
 </html>

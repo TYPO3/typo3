@@ -8,10 +8,6 @@
 
 </f:section>
 <f:section name="footer">
-
-    <f:if condition="{button}">
-        <a href="{button.link}" target="{button.target}" class="widget-cta">{f:translate(id: button.title, default: button.title)}</a>
-    </f:if>
-
+    <f:render partial="Widget/Button" arguments="{button: button}"/>
 </f:section>
 </html>
