@@ -230,34 +230,39 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function init($show_hidden)
     {
-        $this->where_groupAccess = '';
-
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages')
-            ->expr();
-        if ($this->versioningWorkspaceId > 0) {
-            // For version previewing, make sure that enable-fields are not
-            // de-selecting hidden pages - we need versionOL() to unset them only
-            // if the overlay record instructs us to.
-            // Clear where_hid_del and restrict to live and current workspaces
-            $this->where_hid_del = ' AND ' . $expressionBuilder->andX(
-                $expressionBuilder->eq('pages.deleted', 0),
-                $expressionBuilder->orX(
-                    $expressionBuilder->eq('pages.t3ver_wsid', 0),
-                    $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
-                ),
-                $expressionBuilder->lt('pages.doktype', 200)
-            );
+        $cache = $this->getRuntimeCache();
+        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($show_hidden ? 'ShowHidden' : '') . '_' . (int)$this->versioningWorkspaceId;
+        $cacheEntry = $cache->get($cacheIdentifier);
+        if ($cacheEntry) {
+            $this->where_hid_del = $cacheEntry;
         } else {
-            // add starttime / endtime, and check for hidden/deleted
-            // Filter out new/deleted place-holder pages in case we are NOT in a
-            // versioning preview (that means we are online!)
-            $this->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
-                QueryHelper::stripLogicalOperatorPrefix(
-                    $this->enableFields('pages', $show_hidden, ['fe_group' => true], true)
-                ),
-                $expressionBuilder->lt('pages.doktype', 200)
-            );
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages')
+                ->expr();
+            if ($this->versioningWorkspaceId > 0) {
+                // For version previewing, make sure that enable-fields are not
+                // de-selecting hidden pages - we need versionOL() to unset them only
+                // if the overlay record instructs us to.
+                // Clear where_hid_del and restrict to live and current workspaces
+                $this->where_hid_del = ' AND ' . $expressionBuilder->andX(
+                    $expressionBuilder->eq('pages.deleted', 0),
+                    $expressionBuilder->orX(
+                        $expressionBuilder->eq('pages.t3ver_wsid', 0),
+                        $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
+                    ),
+                    $expressionBuilder->lt('pages.doktype', 200)
+                );
+            } else {
+                // add starttime / endtime, and check for hidden/deleted
+                // Filter out new/deleted place-holder pages in case we are NOT in a
+                // versioning preview (that means we are online!)
+                $this->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
+                    QueryHelper::stripLogicalOperatorPrefix(
+                        $this->enableFields('pages', $show_hidden, ['fe_group' => true], true)
+                    ),
+                    $expressionBuilder->lt('pages.doktype', 200)
+                );
+            }
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] ?? false)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] as $classRef) {
@@ -1684,7 +1689,12 @@ class PageRepository implements LoggerAwareInterface
         /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');
         $memberGroups = $userAspect->getGroupIds();
-
+        $cache = $this->getRuntimeCache();
+        $cacheIdentifier = 'PageRepository_groupAccessWhere_' . str_replace('.', '_', $field) . '_' . $table . '_' . implode('_', $memberGroups);
+        $cacheEntry = $cache->get($cacheIdentifier);
+        if ($cacheEntry) {
+            return $cacheEntry;
+        }
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
             ->expr();
@@ -1699,7 +1709,9 @@ class PageRepository implements LoggerAwareInterface
             $orChecks[] = $expressionBuilder->inSet($field, $expressionBuilder->literal($value));
         }
 
-        return' AND (' . $expressionBuilder->orX(...$orChecks) . ')';
+        $accessGroupWhere = ' AND (' . $expressionBuilder->orX(...$orChecks) . ')';
+        $cache->set($cacheIdentifier, $accessGroupWhere);
+        return $accessGroupWhere;
     }
 
     /**********************
