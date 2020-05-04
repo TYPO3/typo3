@@ -16,6 +16,3 @@ services:
 
   TYPO3\CMS\Dashboard\Controller\WidgetAjaxController:
     public: true
-
-  TYPO3\CMS\Dashboard\DasboardRegistry:
-    public: true
