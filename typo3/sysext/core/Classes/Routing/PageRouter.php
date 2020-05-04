@@ -197,7 +197,13 @@ class PageRouter implements RouterInterface
                 }
             }
 
-            $pageCollection->addNamePrefix('page_' . $page['uid'] . '_');
+            $collectionPrefix = 'page_' . $page['uid'];
+            // Pages with a MountPoint Parameter means that they have a different context, and should be treated
+            // as a separate instance
+            if (isset($page['MPvar'])) {
+                $collectionPrefix .= '_MP_' . str_replace(',', '', $page['MPvar']);
+            }
+            $pageCollection->addNamePrefix($collectionPrefix . '_');
             $fullCollection->addCollection($pageCollection);
         }
 
