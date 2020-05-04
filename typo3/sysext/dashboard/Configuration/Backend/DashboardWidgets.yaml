@@ -67,7 +67,7 @@ services:
       $cache: '@cache.dashboard.rss'
       $buttonProvider: '@dashboard.buttons.t3news'
       $options:
-        feedUrl: 'https://www.typo3.org/rss'
+        feedUrl: 'https://typo3.org/rss'
     tags:
       - name: dashboard.widget
         identifier: 't3news'
@@ -177,7 +177,7 @@ services:
       $cache: '@cache.dashboard.rss'
       $buttonProvider: '@dashboard.buttons.t3securityAdvisories'
       $options:
-        feedUrl: 'https://typo3.org/?type=101'
+        feedUrl: 'https://typo3.org/rss-security'
     tags:
       - name: dashboard.widget
         identifier: 't3securityAdvisories'
