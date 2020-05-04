@@ -85,6 +85,10 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
 
         $page = $route->getOption('_page');
         $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
+        // See PageSlugCandidateProvider where this is added.
+        if ($page['MPvar'] ?? '') {
+            $routeArguments['MP'] = $page['MPvar'];
+        }
         $type = $this->resolveType($route, $remainingQueryParameters);
         return new PageArguments($pageId, $type, $routeArguments, $staticArguments, $remainingQueryParameters);
     }
