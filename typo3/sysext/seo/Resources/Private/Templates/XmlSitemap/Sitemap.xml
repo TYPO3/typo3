@@ -9,7 +9,9 @@
                 <f:if condition="{item.changefreq}">
                     <changefreq>{item.changefreq}</changefreq>
                 </f:if>
-                <priority>{item.priority}</priority>
+                <f:if condition="{item.priority}">
+                    <priority>{item.priority}</priority>
+                </f:if>
             </url>
         </f:if>
     </f:for>
