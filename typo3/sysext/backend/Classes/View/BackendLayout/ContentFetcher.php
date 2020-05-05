@@ -179,10 +179,11 @@ class ContentFetcher
                 && $languageTranslationInfo['hasTranslations']
             ) {
                 $languageTranslationInfo['mode'] = 'mixed';
-                $siteLanguage = $this->context->getSiteLanguage();
+                $siteLanguage = $this->context->getSiteLanguage($language);
+
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    sprintf($this->getLanguageService()->getLL('staleTranslationWarning'), $siteLanguage->getTitle()),
+                    $this->getLanguageService()->getLL('staleTranslationWarning'),
                     sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $siteLanguage->getTitle()),
                     FlashMessage::WARNING
                 );

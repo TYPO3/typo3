@@ -1822,7 +1822,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $siteLanguage = $this->siteLanguages[$language];
                 $message = GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    sprintf($this->getLanguageService()->getLL('staleTranslationWarning'), $siteLanguage->getTitle()),
+                    $this->getLanguageService()->getLL('staleTranslationWarning'),
                     sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $siteLanguage->getTitle()),
                     FlashMessage::WARNING
                 );
