@@ -93,6 +93,8 @@ class CacheManager implements SingletonInterface
      */
     public function setCacheConfigurations(array $cacheConfigurations)
     {
+        $newConfiguration = [];
+        $migratedConfiguration = [];
         foreach ($cacheConfigurations as $identifier => $configuration) {
             if (!is_array($configuration)) {
                 throw new \InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1231259656);
@@ -101,9 +103,12 @@ class CacheManager implements SingletonInterface
             if (strpos($identifier, 'cache_') === 0) {
                 trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
                 $identifier = substr($identifier, 6);
+                $migratedConfiguration[$identifier] = $configuration;
+            } else {
+                $newConfiguration[$identifier] = $configuration;
             }
-            $this->cacheConfigurations[$identifier] = $configuration;
         }
+        $this->cacheConfigurations = array_replace_recursive($newConfiguration, $migratedConfiguration);
     }
 
     /**

@@ -496,4 +496,45 @@ class CacheManagerTest extends UnitTestCase
         $manager->setCacheConfigurations($configuration);
         $manager->flushCachesInGroupByTags('group2', $tags);
     }
+
+    /**
+     * @test
+     */
+    public function setCacheConfigurationsMergesLegacyConfigCorrectly()
+    {
+        $rawConfiguration = [
+            'pages' => [
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                'options' => [
+                    'compression' => true,
+                ],
+                'groups' => ['pages'],
+            ],
+            'cache_pages' => [
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class,
+                'options' => [
+                    'hostname' => 'redis',
+                ],
+                'groups' => ['pages'],
+            ],
+        ];
+        $expectedConfiguration = [
+            'pages' => [
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                'backend' => \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class,
+                'options' => [
+                    'compression' => true,
+                    'hostname' => 'redis',
+                ],
+                'groups' => ['pages']
+            ],
+        ];
+        $this->expectDeprecation();
+
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
+        $manager->setCacheConfigurations($rawConfiguration);
+        self::assertEquals($expectedConfiguration, $manager->_get('cacheConfigurations'));
+    }
 }
