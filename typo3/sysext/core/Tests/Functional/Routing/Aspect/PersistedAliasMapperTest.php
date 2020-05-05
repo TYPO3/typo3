@@ -262,10 +262,11 @@ class PersistedAliasMapperTest extends FunctionalTestCase
                 ['slug' => 'hidden-visibility-slug', 'uid' => '4051'],
                 false,
             ],
+            // fe_group slugs are always considered
             'restricted-visibility-slug, raw context' => [
                 $rawContext,
                 ['slug' => 'restricted-visibility-slug', 'uid' => '4052'],
-                false,
+                true,
             ],
             'scheduled-visibility-slug, raw context' => [
                 $rawContext,
@@ -277,10 +278,11 @@ class PersistedAliasMapperTest extends FunctionalTestCase
                 ['slug' => 'hidden-visibility-slug', 'uid' => '4051'],
                 true,
             ],
+            // fe_group slugs are always considered
             'restricted-visibility-slug, frontend-groups context (13)' => [
                 $frontendGroupsContext,
                 ['slug' => 'restricted-visibility-slug', 'uid' => '4052'],
-                false, // @todo actually `true`, FrontendGroupRestriction does not support Context, yet
+                true,
             ],
             'scheduled-visibility-slug, scheduled context (timestamp 20000)' => [
                 $scheduledContext,

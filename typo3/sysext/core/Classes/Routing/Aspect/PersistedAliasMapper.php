@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait;
@@ -255,6 +256,9 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $queryBuilder->setRestrictions(
             GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
         );
+        // Frontend Groups are not available at this time (initialized via TSFE->determineId)
+        // So this must be excluded to allow access restricted records
+        $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
         return $queryBuilder;
     }
 
