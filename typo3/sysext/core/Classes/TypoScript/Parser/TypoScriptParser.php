@@ -610,7 +610,7 @@ class TypoScriptParser
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$modifierName])) {
                     $hookMethod = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$modifierName];
                     $params = ['currentValue' => $currentValue, 'functionArgument' => $modifierArgument];
-                    $fakeThis = false;
+                    $fakeThis = null;
                     $newValue = GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
                 } else {
                     self::getLogger()->warning('Missing function definition for ' . $modifierName . ' on TypoScript');

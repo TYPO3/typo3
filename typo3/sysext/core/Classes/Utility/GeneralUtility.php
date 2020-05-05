@@ -1691,7 +1691,7 @@ class GeneralUtility
      */
     public static function minifyJavaScript($script, &$error = '')
     {
-        $fakeThis = false;
+        $fakeThis = null;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
             try {
                 $parameters = ['script' => $script];
@@ -3126,7 +3126,7 @@ class GeneralUtility
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] ?? null)) {
             $params = ['source' => $source, 'destination' => $destination, 'method' => 'upload_copy_move'];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] as $hookMethod) {
-                $fakeThis = false;
+                $fakeThis = null;
                 self::callUserFunction($hookMethod, $params, $fakeThis);
             }
         }
@@ -3163,7 +3163,7 @@ class GeneralUtility
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] ?? null)) {
                 $params = ['source' => $uploadedFileName, 'destination' => $tempFile, 'method' => 'upload_to_tempfile'];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] as $hookMethod) {
-                    $fakeThis = false;
+                    $fakeThis = null;
                     self::callUserFunction($hookMethod, $params, $fakeThis);
                 }
             }

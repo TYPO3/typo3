@@ -134,7 +134,7 @@ class LinkService implements SingletonInterface
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] ?? null)) {
                 $params = ['urn' => $urn, 'result' => &$result];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] as $hookMethod) {
-                    $fakeThis = false;
+                    $fakeThis = null;
                     GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
                 }
             }
