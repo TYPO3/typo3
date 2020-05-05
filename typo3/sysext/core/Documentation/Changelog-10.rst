@@ -16,3 +16,4 @@ Every change to the TYPO3 Core which might affect your site is documented here.
    Changelog/10.2/Index
    Changelog/10.3/Index
    Changelog/10.4/Index
+   Changelog/10.4.x/Index
