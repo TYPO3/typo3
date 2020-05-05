@@ -49,7 +49,7 @@
 				<source>Identifier not changed</source>
 			</trans-unit>
 			<trans-unit id="validation.identifierExists.message" resname="validation.identifierExists.message">
-				<source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.';</source>
+				<source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
 			</trans-unit>
 			<trans-unit id="validation.required.title" resname="validation.required.title">
 				<source>Site configuration not saved</source>
