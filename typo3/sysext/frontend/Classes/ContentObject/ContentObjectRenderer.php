@@ -3932,7 +3932,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // call this method recursively if found
                     if (strpos($data, '<') !== false && isset($conf['tags.']) && is_array($conf['tags.'])) {
                         foreach ($conf['tags.'] as $tag => $tagConfig) {
-                            if (strpos($data, '<' . $tag) !== false) {
+                            // only match tag `a` in `<a href"...">` but not in `<abbr>`
+                            if (preg_match('#<' . $tag . '[\s/>]#', $data)) {
                                 $data = $this->_parseFunc($data, $conf);
                                 break;
                             }
@@ -7113,7 +7114,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Take care for nested tags
         do {
             $nextMatchingEndTagPosition = strpos($tempContent, $endTag);
-            $nextSameTypeTagPosition = strpos($tempContent, $startTag);
+            // only match tag `a` in `<a href"...">` but not in `<abbr>`
+            $nextSameTypeTagPosition = preg_match(
+                '#' . $startTag . '[\s/>]#',
+                $tempContent,
+                $nextSameStartTagMatches,
+                PREG_OFFSET_CAPTURE
+            ) ? $nextSameStartTagMatches[0][1] : false;
 
             // filter out nested tag contents to help getting the correct closing tag
             if ($nextSameTypeTagPosition !== false && $nextSameTypeTagPosition < $nextMatchingEndTagPosition) {

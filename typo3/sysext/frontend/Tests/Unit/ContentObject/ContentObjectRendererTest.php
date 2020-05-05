@@ -2296,82 +2296,96 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
+     * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
+     * @param string $value
+     * @param array $configuration
+     * @param string $expectedResult
+     */
+    public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
+    {
+        self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+    }
+
+    /**
      * Data provider for the parseFuncParsesNestedTagsProperly test
      *
-     * @return \Generator multi-dimensional array with test data
+     * @return array multi-dimensional array with test data
      * @see parseFuncParsesNestedTagsProperly
      */
-    public function _parseFuncParsesNestedTagsProperlyDataProvider(): \Generator
+    public function _parseFuncParsesNestedTagsProperlyDataProvider(): array
     {
-        yield 'list with empty and filled li' => [
-            '<ul>
+        $defaultListItemParseFunc = [
+            'parseFunc'  => '',
+            'parseFunc.' => [
+                'tags.' => [
+                    'li'  => 'TEXT',
+                    'li.' => [
+                        'wrap'    => '<li>LI:|</li>',
+                        'current' => '1'
+                    ]
+                ]
+            ]
+        ];
+
+        return [
+            'parent & child tags with same beginning are processed' => [
+                '<div><any data-skip><anyother data-skip>content</anyother></any>',
+                [
+                    'parseFunc'  => '',
+                    'parseFunc.' => [
+                        'tags.' => [
+                            'any' => 'TEXT',
+                            'any.' => [
+                                'wrap' => '<any data-processed>|</any>',
+                                'current' => 1,
+                            ],
+                            'anyother' => 'TEXT',
+                            'anyother.' => [
+                                'wrap' => '<anyother data-processed>|</anyother>',
+                                'current' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+                '<div><any data-processed><anyother data-processed>content</anyother></any>',
+            ],
+            'list with empty and filled li' => [
+                '<ul>
     <li></li>
     <li>second</li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:</li>
     <li>LI:second</li>
 </ul>',
-        ];
-        yield 'list with filled li wrapped by a div containing text' => [
-            '<div>text<ul><li></li><li>second</li></ul></div>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
             ],
-            '<div>text<ul><li>LI:</li><li>LI:second</li></ul></div>',
-        ];
-        yield 'link list with empty li modification' => [
-            '<ul>
+            'list with filled li wrapped by a div containing text' => [
+                '<div>text<ul><li></li><li>second</li></ul></div>',
+                $defaultListItemParseFunc,
+                '<div>text<ul><li>LI:</li><li>LI:second</li></ul></div>',
+            ],
+            'link list with empty li modification' => [
+                '<ul>
     <li>
         <ul>
             <li></li>
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:
         <ul>
             <li>LI:</li>
         </ul>
     </li>
 </ul>',
-        ];
+            ],
 
-        yield 'link list with li modifications' => [
-            '<ul>
+            'link list with li modifications' => [
+                '<ul>
     <li>first</li>
     <li>second
         <ul>
@@ -2380,19 +2394,8 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:first</li>
     <li>LI:second
         <ul>
@@ -2401,9 +2404,9 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>'
-        ];
-        yield 'link list with li modifications and no text' => [
-            '<ul>
+            ],
+            'link list with li modifications and no text' => [
+                '<ul>
     <li>first</li>
     <li>
         <ul>
@@ -2412,19 +2415,8 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:first</li>
     <li>LI:
         <ul>
@@ -2433,9 +2425,9 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-        ];
-        yield 'link list with li modifications on third level' => [
-            '<ul>
+            ],
+            'link list with li modifications on third level' => [
+                '<ul>
     <li>first</li>
     <li>second
         <ul>
@@ -2449,19 +2441,8 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:first</li>
     <li>LI:second
         <ul>
@@ -2475,9 +2456,9 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-        ];
-        yield 'link list with li modifications on third level no text' => [
-            '<ul>
+            ],
+            'link list with li modifications on third level no text' => [
+                '<ul>
     <li>first</li>
     <li>
         <ul>
@@ -2491,19 +2472,8 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:first</li>
     <li>LI:
         <ul>
@@ -2517,9 +2487,9 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-        ];
-        yield 'link list with ul and li modifications' => [
-            '<ul>
+            ],
+            'link list with ul and li modifications' => [
+                '<ul>
     <li>first</li>
     <li>second
         <ul>
@@ -2528,24 +2498,24 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'ul'  => 'TEXT',
-                        'ul.' => [
-                            'wrap'    => '<ul><li>intro</li>|<li>outro</li></ul>',
-                            'current' => '1'
-                        ],
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
+                [
+                    'parseFunc'  => '',
+                    'parseFunc.' => [
+                        'tags.' => [
+                            'ul'  => 'TEXT',
+                            'ul.' => [
+                                'wrap'    => '<ul><li>intro</li>|<li>outro</li></ul>',
+                                'current' => '1'
+                            ],
+                            'li'  => 'TEXT',
+                            'li.' => [
+                                'wrap'    => '<li>LI:|</li>',
+                                'current' => '1'
+                            ]
                         ]
                     ]
-                ]
-            ],
-            '<ul><li>intro</li>
+                ],
+                '<ul><li>intro</li>
     <li>LI:first</li>
     <li>LI:second
         <ul><li>intro</li>
@@ -2554,10 +2524,10 @@ class ContentObjectRendererTest extends UnitTestCase
         <li>outro</li></ul>
     </li>
 <li>outro</li></ul>',
-        ];
+            ],
 
-        yield 'link list with li containing p tag and sub list' => [
-            '<ul>
+            'link list with li containing p tag and sub list' => [
+                '<ul>
     <li>first</li>
     <li>
         <ul>
@@ -2573,19 +2543,8 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            [
-                'parseFunc'  => '',
-                'parseFunc.' => [
-                    'tags.' => [
-                        'li'  => 'TEXT',
-                        'li.' => [
-                            'wrap'    => '<li>LI:|</li>',
-                            'current' => '1'
-                        ]
-                    ]
-                ]
-            ],
-            '<ul>
+                $defaultListItemParseFunc,
+                '<ul>
     <li>LI:first</li>
     <li>LI:
         <ul>
@@ -2601,19 +2560,8 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
+            ]
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
-     * @param string $value
-     * @param array $configuration
-     * @param string $expectedResult
-     */
-    public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
-    {
-        self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
     /**
