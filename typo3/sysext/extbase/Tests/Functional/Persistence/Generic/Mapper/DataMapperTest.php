@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
-use ExtbaseTeam\BlogExample\Domain\Model\Comment;
 use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
 use ExtbaseTeam\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -62,26 +61,6 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function datetimeObjectsCanBePersistedToDatetimeDatabaseFields()
-    {
-        $date = new \DateTime('2016-03-06T12:40:00+01:00');
-        $comment = new Comment();
-        $comment->setDate($date);
-
-        $this->persistenceManager->add($comment);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($comment);
-        $this->persistenceManager->clearState();
-
-        /** @var Comment $existingComment */
-        $existingComment = $this->persistenceManager->getObjectByIdentifier($uid, Comment::class);
-
-        self::assertEquals($date->getTimestamp(), $existingComment->getDate()->getTimestamp());
-    }
-
-    /**
-     * @test
-     */
     public function dateValuesAreStoredInUtcInIntegerDatabaseFields()
     {
         $example = new DateExample();
@@ -122,10 +101,10 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateValuesAreStoredInUtcInDatetimeDatabaseFields()
+    public function dateValuesAreStoredInLocalTimeInDatetimeDatabaseFields()
     {
         $example = new DateExample();
-        $date = new \DateTime('2016-03-06T12:40:00+01:00');
+        $date = new \DateTime('2016-03-06T12:40:00');
         $example->setDatetimeDatetime($date);
 
         $this->persistenceManager->add($example);

@@ -338,19 +338,18 @@ class DataMapper
     {
         $dateTimeTypes = QueryHelper::getDateTimeTypes();
 
+        // Invalid values are converted to NULL
         if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00' || $value === '00:00:00') {
-            // 0 -> NULL !!!
             return null;
         }
-        if (in_array($storageFormat, $dateTimeTypes, true)) {
-            // native date/datetime/time values are stored in UTC
-            $utcTimeZone = new \DateTimeZone('UTC');
-            $utcDateTime = GeneralUtility::makeInstance($targetType, $value, $utcTimeZone);
-            $currentTimeZone = new \DateTimeZone(date_default_timezone_get());
-            return $utcDateTime->setTimezone($currentTimeZone);
+        if (!in_array($storageFormat, $dateTimeTypes, true)) {
+            // Integer timestamps are also stored "as is" in the database, but are UTC by definition,
+            // so we convert the timestamp to a ISO representation.
+            $value = date('c', (int)$value);
         }
-        // integer timestamps are local server time
-        return GeneralUtility::makeInstance($targetType, date('c', (int)$value));
+        // All date/datetime/time values are stored in the database "as is", independent of any time zone information.
+        // It is therefore only important to use the same time zone in PHP when storing and retrieving the values.
+        return GeneralUtility::makeInstance($targetType, $value);
     }
 
     /**
@@ -736,18 +735,15 @@ class DataMapper
         } elseif ($input instanceof \DateTimeInterface) {
             if ($columnMap !== null && $columnMap->getDateTimeStorageFormat() !== null) {
                 $storageFormat = $columnMap->getDateTimeStorageFormat();
-                $timeZoneToStore = clone $input;
-                // set to UTC to store in database
-                $timeZoneToStore->setTimezone(new \DateTimeZone('UTC'));
                 switch ($storageFormat) {
                     case 'datetime':
-                        $parameter = $timeZoneToStore->format('Y-m-d H:i:s');
+                        $parameter = $input->format('Y-m-d H:i:s');
                         break;
                     case 'date':
-                        $parameter = $timeZoneToStore->format('Y-m-d');
+                        $parameter = $input->format('Y-m-d');
                         break;
                     case 'time':
-                        $parameter = $timeZoneToStore->format('H:i');
+                        $parameter = $input->format('H:i');
                         break;
                     default:
                         throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are date, datetime or time.', 1395353470);

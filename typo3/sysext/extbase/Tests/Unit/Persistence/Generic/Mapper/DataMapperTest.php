@@ -361,10 +361,10 @@ class DataMapperTest extends UnitTestCase
         return [
             'nothing' => [null, null, null],
             'timestamp' => [1, null, date('c', 1)],
-            'empty date' => ['0000-00-00', 'date', null],
-            'valid date' => ['2013-01-01', 'date', date('c', strtotime('2013-01-01T00:00:00+00:00'))],
-            'empty datetime' => ['0000-00-00 00:00:00', 'datetime', null],
-            'valid datetime' => ['2013-01-01 01:02:03', 'datetime', date('c', strtotime('2013-01-01T01:02:03+00:00'))],
+            'invalid date' => ['0000-00-00', 'date', null],
+            'valid date' => ['2013-01-01', 'date', date('c', strtotime('2013-01-01 00:00:00'))],
+            'invalid datetime' => ['0000-00-00 00:00:00', 'datetime', null],
+            'valid datetime' => ['2013-01-01 01:02:03', 'datetime', date('c', strtotime('2013-01-01 01:02:03'))],
         ];
     }
 
@@ -388,6 +388,48 @@ class DataMapperTest extends UnitTestCase
         } else {
             self::assertEquals($expectedValue, $dateTime->format('c'));
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider()
+    {
+        return [
+            'nothing' => [null, null, null],
+            'timestamp' => [1, null, '@1'],
+            'invalid date' => ['0000-00-00', 'date', null],
+            'valid date' => ['2013-01-01', 'date', '2013-01-01T00:00:00'],
+            'invalid datetime' => ['0000-00-00 00:00:00', 'datetime', null],
+            'valid datetime' => ['2013-01-01 01:02:03', 'datetime', '2013-01-01T01:02:03'],
+        ];
+    }
+
+    /**
+     * @param string|int|null $value
+     * @param string|null $storageFormat
+     * @param string|null $expectedValue
+     * @test
+     * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider
+     */
+    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZone($value, ?string $storageFormat, ?string $expectedValue)
+    {
+        $originalTimeZone = date_default_timezone_get();
+        date_default_timezone_set('America/Chicago');
+        $usedTimeZone = date_default_timezone_get();
+        /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */
+        $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
+
+        /** @var $dateTime NULL|\DateTime */
+        $dateTime = $accessibleDataMapFactory->_call('mapDateTime', $value, $storageFormat);
+
+        if ($expectedValue === null) {
+            self::assertNull($dateTime);
+        } else {
+            self::assertEquals(new \DateTime($expectedValue, new \DateTimeZone($usedTimeZone)), $dateTime);
+        }
+        // Restore the systems current timezone
+        date_default_timezone_set($originalTimeZone);
     }
 
     /**
@@ -417,8 +459,7 @@ class DataMapperTest extends UnitTestCase
 
         $columnMap = new ColumnMap('column_name', 'propertyName');
         $columnMap->setDateTimeStorageFormat('datetime');
-        $datetimeAsString = '2013-04-15 09:30:00';
-        $input = new \DateTime($datetimeAsString, new \DateTimeZone('UTC'));
+        $input = new \DateTime('2013-04-15 09:30:00');
         self::assertEquals('2013-04-15 09:30:00', $subject->getPlainValue($input, $columnMap));
         $columnMap->setDateTimeStorageFormat('date');
         self::assertEquals('2013-04-15', $subject->getPlainValue($input, $columnMap));
