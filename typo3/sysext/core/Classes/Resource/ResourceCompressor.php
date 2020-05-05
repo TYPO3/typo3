@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Compressor
@@ -182,11 +183,12 @@ class ResourceCompressor
             unset($jsFiles[$key]);
         }
         if (!empty($filesToInclude)) {
+            $defaultTypeAttributeForJavaScript = $this->getJavaScriptFileType();
             foreach ($filesToInclude as $section => $files) {
                 $targetFile = $this->createMergedJsFile($files);
                 $concatenatedOptions = [
                     'file' => $targetFile,
-                    'type' => 'text/javascript',
+                    'type' => $defaultTypeAttributeForJavaScript,
                     'section' => $section,
                     'compress' => true,
                     'excludeFromConcatenation' => true,
@@ -697,5 +699,26 @@ class ResourceCompressor
         // Ensure file ends in newline.
         $contents .= LF;
         return $contents;
+    }
+
+    /**
+     * Determines the the JavaScript mime type
+     *
+     * The <script> tag only needs the type if the page is not rendered as HTML5.
+     * In TYPO3 Backend or when TSFE is not available we always use HTML5.
+     * For TYPO3 Frontend the configured config.doctype is evaluated.
+     *
+     * @return string
+     */
+    protected function getJavaScriptFileType(): string
+    {
+        if (TYPO3_MODE === 'BE' || !isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
+            // Backend (or at least no TSFE), always HTML5
+            return '';
+        }
+        if (($GLOBALS['TSFE']->config['config']['doctype'] ?? 'html5') === 'html5') {
+            return '';
+        }
+        return 'text/javascript';
     }
 }
