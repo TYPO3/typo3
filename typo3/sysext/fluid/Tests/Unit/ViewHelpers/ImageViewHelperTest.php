@@ -64,7 +64,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->setArgumentsUnderTest($this->viewHelper, $arguments);
 
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception::class);
+        $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
         $this->expectExceptionCode(1382284106);
 
         $this->viewHelper->render();

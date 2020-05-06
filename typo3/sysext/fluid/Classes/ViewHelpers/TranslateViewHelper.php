@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
+use TYPO3Fluid\Fluid\Core\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -113,7 +113,7 @@ class TranslateViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @throws InvalidVariableException
+     * @throws Exception
      * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
@@ -130,7 +130,7 @@ class TranslateViewHelper extends AbstractViewHelper
         }
 
         if ((string)$id === '') {
-            throw new InvalidVariableException('An argument "key" or "id" has to be provided', 1351584844);
+            throw new Exception('An argument "key" or "id" has to be provided', 1351584844);
         }
 
         $request = $renderingContext->getControllerContext()->getRequest();

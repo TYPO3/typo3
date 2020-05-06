@@ -36,7 +36,7 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper = new TranslateViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
-        $this->expectException(\TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException::class);
+        $this->expectException(\TYPO3Fluid\Fluid\Core\Exception::class);
         $this->expectExceptionCode(1351584844);
 
         $this->setArgumentsUnderTest(
