@@ -22,9 +22,7 @@
 				<source>File exists already</source>
 			</trans-unit>
 			<trans-unit id="file_rename.exists.description" resname="file_rename.exists.description">
-				<source>You want to rename the file "{0}" to "{1}", but such a file already exists. How do you want to
-					proceed?
-				</source>
+				<source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
 			</trans-unit>
 			<trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel">
 				<source>Cancel</source>
