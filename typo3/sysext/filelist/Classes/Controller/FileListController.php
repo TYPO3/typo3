@@ -205,7 +205,7 @@ class FileListController extends ActionController
 
         try {
             if ($combinedIdentifier) {
-                /** @var ResourceFactory $resourceFactory */
+                $this->getBackendUser()->evaluateUserSpecificFileFilterSettings();
                 $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                 $storage = $resourceFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
                 $identifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
