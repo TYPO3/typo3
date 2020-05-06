@@ -1534,7 +1534,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'aTagParams' => &$aTagParams
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] ?? [] as $className) {
-            $processor = & GeneralUtility::makeInstance($className);
+            $processor = GeneralUtility::makeInstance($className);
             $aTagParams = $processor->process($_params, $this);
         }
 
