@@ -686,6 +686,14 @@ abstract class AbstractMenuContentObject
             // Get sub-pages:
             $statement = $this->parent_cObj->exec_getQuery('pages', ['pidInList' => $id, 'orderBy' => $sortingField]);
             while ($row = $statement->fetch()) {
+                // When the site language configuration is in "free" mode, then the page without overlay is fetched
+                // (which is kind-of strange for pages, but this is what exec_getQuery() is doing)
+                // this means, that $row is a translated page, but hasn't been overlaid. For this reason, we fetch
+                // the default translation page again, (which does a ->getPageOverlay() again - doing this on a
+                // translated page would result in no record at all)
+                if ($row['l10n_parent'] > 0 && !isset($row['_PAGES_OVERLAY'])) {
+                    $row = $this->sys_page->getPage($row['l10n_parent'], true);
+                }
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (!empty($row)) {
                     // Keep mount point?
@@ -856,6 +864,14 @@ abstract class AbstractMenuContentObject
             'max' => $limit
         ]);
         while ($row = $statement->fetch()) {
+            // When the site language configuration is in "free" mode, then the page without overlay is fetched
+            // (which is kind-of strange for pages, but this is what exec_getQuery() is doing)
+            // this means, that $row is a translated page, but hasn't been overlaid. For this reason, we fetch
+            // the default translation page again, (which does a ->getPageOverlay() again - doing this on a
+            // translated page would result in no record at all)
+            if ($row['l10n_parent'] > 0 && !isset($row['_PAGES_OVERLAY'])) {
+                $row = $this->sys_page->getPage($row['l10n_parent'], true);
+            }
             $tsfe->sys_page->versionOL('pages', $row, true);
             if (is_array($row)) {
                 $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
