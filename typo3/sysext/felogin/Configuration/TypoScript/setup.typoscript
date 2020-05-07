@@ -9,7 +9,7 @@ plugin.tx_felogin_login {
     email_from = {$styles.content.loginform.emailFrom}
     email_fromName = {$styles.content.loginform.emailFromName}
     email {
-      templateName = {$styles.content.loginform.emailTemplateName}
+      templateName = {$styles.content.loginform.email.templateName}
       layoutRootPaths {
         20 = {$styles.content.loginform.email.layoutRootPath}
       }
