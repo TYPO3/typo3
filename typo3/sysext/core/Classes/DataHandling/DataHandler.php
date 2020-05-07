@@ -1945,6 +1945,9 @@ class DataHandler implements LoggerAwareInterface
         $state = RecordStateFactory::forName($table)
             ->fromArray($fullRecord, $realPid, $id);
         $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
+        if (in_array('unique', $evalCodesArray, true)) {
+            $value = $helper->buildSlugForUniqueInTable($value, $state);
+        }
         if (in_array('uniqueInSite', $evalCodesArray, true)) {
             $value = $helper->buildSlugForUniqueInSite($value, $state);
         }

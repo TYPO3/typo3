@@ -90,6 +90,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         }
 
         $evalInfo = !empty($fieldConfig['eval']) ? GeneralUtility::trimExplode(',', $fieldConfig['eval'], true) : [];
+        $hasToBeUniqueInDb = in_array('unique', $evalInfo, true);
         $hasToBeUniqueInSite = in_array('uniqueInSite', $evalInfo, true);
         $hasToBeUniqueInPid = in_array('uniqueInPid', $evalInfo, true);
 
@@ -119,6 +120,10 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
 
         $state = RecordStateFactory::forName($tableName)
             ->fromArray($recordData, $pid, $recordId);
+        if ($hasToBeUniqueInDb && !$slug->isUniqueInTable($proposal, $state)) {
+            $hasConflict = true;
+            $proposal = $slug->buildSlugForUniqueInTable($proposal, $state);
+        }
         if ($hasToBeUniqueInSite && !$slug->isUniqueInSite($proposal, $state)) {
             $hasConflict = true;
             $proposal = $slug->buildSlugForUniqueInSite($proposal, $state);
