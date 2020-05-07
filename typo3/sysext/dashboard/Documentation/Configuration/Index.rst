@@ -14,6 +14,7 @@ Target group: **Developers** and **Integrators**
 
    WidgetRegistration
    WidgetGroupCreation
+   WidgetPresets
    WidgetSettings
    WidgetTemplate
    PermissionHandlingOfWidgets
