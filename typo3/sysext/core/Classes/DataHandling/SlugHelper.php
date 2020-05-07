@@ -324,6 +324,31 @@ class SlugHelper
     }
 
     /**
+     * Check if there are other records with the same slug.
+     *
+     * @param string $slug
+     * @param RecordState $state
+     * @return bool
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     */
+    public function isUniqueInTable(string $slug, RecordState $state): bool
+    {
+        $languageId = $state->getContext()->getLanguageId();
+
+        $queryBuilder = $this->createPreparedQueryBuilder();
+        $this->applySlugConstraint($queryBuilder, $slug);
+        $this->applyLanguageConstraint($queryBuilder, $languageId);
+        $this->applyWorkspaceConstraint($queryBuilder);
+        $statement = $queryBuilder->execute();
+
+        $records = $this->resolveVersionOverlays(
+            $statement->fetchAll()
+        );
+
+        return count($records) === 0;
+    }
+
+    /**
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
@@ -364,6 +389,33 @@ class SlugHelper
         $newValue = $slug;
         $counter = 0;
         while (!$this->isUniqueInPid(
+            $newValue,
+            $state
+        ) && $counter++ < 100
+        ) {
+            $newValue = $this->sanitize($rawValue . '-' . $counter);
+        }
+        if ($counter === 100) {
+            $newValue = $this->sanitize($rawValue . '-' . GeneralUtility::shortMD5($rawValue));
+        }
+        return $newValue;
+    }
+
+    /**
+     * Generate a slug with a suffix "/mytitle-1" if that is in use already.
+     *
+     * @param string $slug proposed slug
+     * @param RecordState $state
+     * @return string
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     */
+    public function buildSlugForUniqueInTable(string $slug, RecordState $state): string
+    {
+        $slug = $this->sanitize($slug);
+        $rawValue = $this->extract($slug);
+        $newValue = $slug;
+        $counter = 0;
+        while (!$this->isUniqueInTable(
             $newValue,
             $state
         ) && $counter++ < 100

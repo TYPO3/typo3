@@ -125,6 +125,7 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
             $cache->remove('site-configuration');
         }
     }
+
     /**
      * DataProvider for testing the language resolving of the parent page.
      * - If the language can be resolved, get the slug of the current language
