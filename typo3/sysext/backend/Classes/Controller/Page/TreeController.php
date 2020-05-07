@@ -23,9 +23,7 @@ use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\PagePermissionRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -373,7 +371,6 @@ class TreeController
         if (!empty($excludedDocumentTypes)) {
             $additionalQueryRestrictions[] = GeneralUtility::makeInstance(DocumentTypeExclusionRestriction::class, $excludedDocumentTypes);
         }
-        $additionalQueryRestrictions[] = GeneralUtility::makeInstance(PagePermissionRestriction::class, GeneralUtility::makeInstance(Context::class)->getAspect('backend.user'), Permission::PAGE_SHOW);
 
         $repository = GeneralUtility::makeInstance(
             PageTreeRepository::class,
@@ -419,7 +416,10 @@ class TreeController
                 }
             }
 
-            $entryPoint = $repository->getTree($entryPoint);
+            $entryPoint = $repository->getTree($entryPoint, function ($page) use ($backendUser) {
+                // Check each page if the user has permission to access it
+                return $backendUser->doesUserHaveAccess($page, Permission::PAGE_SHOW);
+            });
             if (!is_array($entryPoint)) {
                 unset($entryPoints[$k]);
             }

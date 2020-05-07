@@ -52,7 +52,7 @@ entities:
     - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
     - self: {id: 3, title: 'Spanish', code: 'es'}
   beGroup:
-    - self: {id: 9, title: 'editors', db_mountpoints: '1000,2000', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
+    - self: {id: 9, title: 'editors', db_mountpoints: '1000,2000,8110', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
   page:
     - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:
@@ -116,7 +116,7 @@ entities:
               - self: {id: 1, username: 'john@doe.local', groups: '10'}
               - self: {id: 2, username: 'manager@other-inc.local', groups: '20'}
               - self: {id: 3, username: 'big-boss@acme-inc.local', groups: '10,20'}
-    - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true, slug: '/', perms_userid: 1, perms_groupid: 1, description: "not accessible"}
+    - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true, slug: '/', perms_userid: 1, perms_groupid: 1, description: 'not accessible'}
       children:
         - self: {id: 2100, title: 'Authors', slug: '/authors'}
           children:
@@ -128,10 +128,19 @@ entities:
                 - self: {id: 2121, title: 'About', slug: '/about-jane'}
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 2930, title: 'ACME Inc', type: *pageShortcut, shortcut: 1000, slug: '/acme'}
-    - self: {id: 7000, title: 'Common Collection', type: *pageFolder, root: true, slug: '/common'}
+    - self: {id: 7000, title: 'Common Collection', type: *pageFolder, root: true, slug: '/common', description: 'not visible as not mounted'}
       children:
         - self: {id: 7100, title: 'Announcements & News', slug: '/common/news'}
           children:
             - self: {id: 7110, title: 'Markets', slug: '/common/markets'}
             - self: {id: 7120, title: 'Products', slug: '/common/products'}
             - self: {id: 7130, title: 'Partners', slug: '/common/partners'}
+    - self: {id: 8000, title: 'Divisions', type: *pageFolder, root: true, slug: '/divisions', perms_userid: 1, perms_groupid: 1, description: 'not accessible'}
+      children:
+        - self: {id: 8100, title: 'EMEA', slug: '/divisions/emea', perms_userid: 1, perms_groupid: 1}
+          children:
+            - self: {id: 8110, title: 'Europe', slug: '/divisions/emea/europe', description: 'mounted, thus visible'}
+              children:
+                - self: {id: 811000, title: 'France', slug: '/divisions/emea/europe/france'}
+            - self: {id: 8120, title: 'Asia', slug: '/divisions/asia', description: 'not visible as not mounted'}
+            - self: {id: 8130, title: 'South America', slug: '/divisions/south-america'}
