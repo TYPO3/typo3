@@ -32,7 +32,8 @@ class FluidEmailTest extends FunctionalTestCase
             ->format(FluidEmail::FORMAT_PLAIN)
             ->setTemplate('Default')
             ->from('benniYYYY@typo3.org')
-            ->assign('content', 'Plain content from Functional test');
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
         $result = $subject->getBody();
         self::assertEquals('plain', $result->getMediaSubtype());
         self::assertStringContainsString('Plain content from Functional test', $result->bodyToString());
@@ -50,7 +51,8 @@ class FluidEmailTest extends FunctionalTestCase
             ->format(FluidEmail::FORMAT_HTML)
             ->setTemplate('Default')
             ->from('benniYYYY@typo3.org')
-            ->assign('content', 'HTML content <strong>from</strong> Functional test');
+            ->assign('content', 'HTML content <strong>from</strong> Functional test')
+            ->to('some-recipient@example.com');
         $result = $subject->getBody();
         self::assertEquals('html', $result->getMediaSubtype());
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result->bodyToString());
@@ -68,7 +70,8 @@ class FluidEmailTest extends FunctionalTestCase
             ->format(FluidEmail::FORMAT_BOTH)
             ->setTemplate('Default')
             ->from('benniYYYY@typo3.org')
-            ->assign('content', 'Plain content <strong>from</strong> Functional test');
+            ->assign('content', 'Plain content <strong>from</strong> Functional test')
+            ->to('some-recipient@example.com');
         $result = $subject->getBody();
         self::assertEquals('alternative', $result->getMediaSubtype());
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result->bodyToString());
