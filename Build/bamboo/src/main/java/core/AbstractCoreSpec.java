@@ -1661,7 +1661,8 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
-                    "composer install --no-progress --no-suggest --no-interaction"
+                    "composer install --no-progress --no-suggest --no-interaction -n\n" +
+                    "composer dumpautoload"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
@@ -1683,7 +1684,8 @@ abstract class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
                     "composer install -n\n" +
-                    "composer update --with-dependencies --no-progress -n"
+                    "composer update --with-dependencies --no-progress  -n\n" +
+                    "composer dumpautoload"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
@@ -1705,7 +1707,8 @@ abstract class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
                     "composer install -n\n" +
-                    "composer update --prefer-lowest --no-progress -n"
+                    "composer update --prefer-lowest --no-progress  -n\n" +
+                    "composer dumpautoload"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
