@@ -25,9 +25,8 @@ is given to controllers, example:
 
 The request object is also available as a global variable in :php:`$GLOBALS['TYPO3_REQUEST']`. This is a workaround for
 the core which has to access the server parameters at places where $request is not available. So, while this object is
-globally available during any HTTP request, it is considered bad practice to use it, and the extension scanner will mark
-an access to this global variable as deprecated. The global object will vanish later if the core code has been
-refactored enough to not rely on it anymore.
+globally available during any HTTP request, it is considered bad practice to use it. The global object will vanish
+later if the core code has been refactored enough to not rely on it anymore.
 
 For now, class :php:`NormalizedParams` is a one-to-one transition of :php:`GeneralUtility::getIndpEnv()`, the old
 arguments can be substituted with these calls:
