@@ -18,12 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Configuration\TypoScript\ConditionMatching;
 
 use Prophecy\Argument;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -485,7 +485,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     protected function getConditionMatcher(): ConditionMatcher
     {
         $conditionMatcher = new ConditionMatcher();
-        $conditionMatcher->setLogger($this->prophesize(Logger::class)->reveal());
+        $conditionMatcher->setLogger(new NullLogger());
 
         return $conditionMatcher;
     }
@@ -496,7 +496,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     protected function setupFrontendUserContext(array $groups = []): void
     {
         $frontendUser = new FrontendUserAuthentication();
-        $frontendUser->user['uid'] = 13;
+        $frontendUser->user['uid'] = empty($groups) ? 0 : 13;
         $frontendUser->groupData['uid'] = $groups;
 
         GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect($frontendUser, $groups));
