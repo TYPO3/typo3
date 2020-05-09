@@ -68,14 +68,14 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function isLoggedInReturnsFalseOnFrontendUserWithoutUserGroup()
+    public function isLoggedInReturnsTrueOnFrontendUserWithoutUserGroup()
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
             'uid' => 13
         ];
         $subject = new UserAspect($user);
-        self::assertFalse($subject->isLoggedIn());
+        self::assertTrue($subject->isLoggedIn());
     }
 
     /**

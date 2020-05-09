@@ -95,16 +95,18 @@ class UserAspect implements AspectInterface
     }
 
     /**
-     * If a frontend user is checked, he/she also needs to have a group, otherwise it is only
-     * checked if the frontend user has a uid > 0
+     * A user is logged in if the user has a UID, but does not care about groups.
+     *
+     * For frontend purposes, it is possible to e.g. simulate groups, but this would still be defined as "not logged in".
+     * This is also possible in frontend where there are cases that a user can be marked as NOT logged IN, but
+     * be logged in but the groups are explicitly NOT defined (see pages.fe_login_mode)
+     *
+     * For backend, only the check on the user ID is used.
      *
      * @return bool
      */
     public function isLoggedIn(): bool
     {
-        if ($this->user instanceof FrontendUserAuthentication) {
-            return ($this->user->user[$this->user->userid_column ?? 'uid'] ?? 0) > 0 && !empty($this->user->groupData['uid'] ?? null);
-        }
         return ($this->user->user[$this->user->userid_column ?? 'uid'] ?? 0) > 0;
     }
 
@@ -182,7 +184,7 @@ class UserAspect implements AspectInterface
     {
         if ($this->user instanceof FrontendUserAuthentication) {
             $groups = $this->getGroupIds();
-            return is_array($this->user->user ?? null) || implode(',', $groups) !== '0,-1';
+            return $this->isLoggedIn() || implode(',', $groups) !== '0,-1';
         }
         return $this->isLoggedIn();
     }
