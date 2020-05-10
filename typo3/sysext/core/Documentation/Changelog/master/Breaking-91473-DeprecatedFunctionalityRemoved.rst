@@ -212,6 +212,8 @@ The following global JavaScript functions have been removed:
 
 The following JavaScript modules have been removed:
 
+- :js:`jquery.clearable`
+
 The following global instances have been removed:
 
 Impact
