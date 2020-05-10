@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
+use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ServerResponseCheck;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
@@ -41,7 +42,8 @@ class SecurityStatusReport implements StatusProviderInterface
         $this->executeAdminCommand();
         return [
             'installToolPassword' => $this->getInstallToolPasswordStatus(),
-            'installToolProtection' => $this->getInstallToolProtectionStatus()
+            'installToolProtection' => $this->getInstallToolProtectionStatus(),
+            'serverResponseStatus' => GeneralUtility::makeInstance(ServerResponseCheck::class)->asStatus(),
         ];
     }
 
