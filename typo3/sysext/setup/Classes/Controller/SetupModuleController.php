@@ -157,7 +157,6 @@ class SetupModuleController
         $pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
         ]);
-        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
     }
 
     /**
