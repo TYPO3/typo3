@@ -63,7 +63,7 @@ The configuration is subject to being overridden in other groups and by the TSco
 				<source>Usergroups for Website users.</source>
 			</trans-unit>
 			<trans-unit id=".details" resname=".details">
-				<source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</source>
+				<source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve">
 				<source>fe_users,
