@@ -252,6 +252,11 @@ The following global JavaScript functions have been removed:
 - :js:`rawurlencode`
 - :js:`str_replace`
 - :js:`openUrlInWindow`
+- :js:`setFormValueOpenBrowser`
+- :js:`setFormValueFromBrowseWin`
+- :js:`setHiddenFromList`
+- :js:`setFormValueManipulate`
+- :js:`setFormValue_getFObj`
 
 The following JavaScript modules have been removed:
 

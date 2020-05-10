@@ -20,13 +20,6 @@
  *   - select fields: move selected items up and down via buttons, remove items etc
  */
 
-// add legacy functions to be accessible in the global scope
-var setFormValueOpenBrowser, // @deprecated
-  setFormValueFromBrowseWin, // @deprecated
-  setHiddenFromList, // @deprecated
-  setFormValueManipulate, // @deprecated
-  setFormValue_getFObj; // @deprecated
-
 /**
  * Module: TYPO3/CMS/Backend/FormEngine
  */
@@ -73,18 +66,6 @@ define(['jquery',
    *
    * @param {string} mode can be "db" or "file"
    * @param {string} params additional params for the browser window
-   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.openPopupWindow() instead.
-   */
-  setFormValueOpenBrowser = function(mode, params) {
-    console.warn('setFormValueOpenBrowser() has been marked as deprecated and will be removed in TYPO3 v11. Use FormEngine.openPopupWindow instead.');
-    return FormEngine.openPopupWindow(mode, params);
-  };
-
-  /**
-   * Opens a popup window with the element browser (browser.php)
-   *
-   * @param {string} mode can be "db" or "file"
-   * @param {string} params additional params for the browser window
    */
   FormEngine.openPopupWindow = function(mode, params) {
     return Modal.advanced({
@@ -92,27 +73,6 @@ define(['jquery',
       content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params,
       size: Modal.sizes.large
     });
-  };
-
-  /**
-   * properly fills the select field from the popup window (element browser, link browser)
-   * or from a multi-select (two selects side-by-side)
-   * previously known as "setFormValueFromBrowseWin"
-   *
-   * @param {string} fieldName Formerly known as "fsetFormValueFromBrowseWinName" name of the field, like [tt_content][2387][header]
-   * @param {string|number} value The value to fill in (could be an integer)
-   * @param {string} label The visible name in the selector
-   * @param {string} title The title when hovering over it
-   * @param {string} exclusiveValues If the select field has exclusive options that are not combine-able
-   * @param {$} $optionEl The jQuery object of the selected <option> tag
-   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.setSelectOptionFromExternalSource() instead.
-   */
-  setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues, $optionEl) {
-    console.warn(
-      'setFormValueFromBrowseWin() has been marked as deprecated and will be removed in TYPO3 v11. '
-      + 'Use FormEngine.setSelectOptionFromExternalSource() or send a message instead.'
-    );
-    FormEngine.setSelectOptionFromExternalSource(fieldName, value, label, title, exclusiveValues, $optionEl);
   };
 
   /**
@@ -259,19 +219,6 @@ define(['jquery',
    *
    * @param {HTMLElement} selectFieldEl the select field
    * @param {HTMLElement} originalFieldEl the hidden form field
-   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.updateHiddenFieldValueFromSelect() instead.
-   */
-  setHiddenFromList = function(selectFieldEl, originalFieldEl) {
-    console.warn('setHiddenFromList() has been marked as deprecated and will be removed in TYPO3 v11. Use FormEngine.updateHiddenFieldValueFromSelect() instead.');
-    FormEngine.updateHiddenFieldValueFromSelect(selectFieldEl, originalFieldEl);
-  };
-
-  /**
-   * sets the value of the hidden field, from the select list, always executed after the select field was updated
-   * previously known as global function setHiddenFromList()
-   *
-   * @param {HTMLElement} selectFieldEl the select field
-   * @param {HTMLElement} originalFieldEl the hidden form field
    */
   FormEngine.updateHiddenFieldValueFromSelect = function(selectFieldEl, originalFieldEl) {
     var selectedValues = [];
@@ -282,201 +229,6 @@ define(['jquery',
     // make a comma separated list, if it is a multi-select
     // set the values to the final hidden field
     $(originalFieldEl).val(selectedValues.join(','));
-  };
-
-  /**
-   * legacy function, can be removed once this function is not in use anymore
-   *
-   * @param {String} fName
-   * @param {String} type
-   * @param {Number} maxLength
-   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0.
-   */
-  setFormValueManipulate = function(fName, type, maxLength) {
-    console.warn('setFormValueManipulate() has been marked as deprecated and will be removed in TYPO3 v11.');
-    var $formEl = FormEngine.getFormElement(fName);
-    if ($formEl.length > 0) {
-      var formObj = $formEl.get(0);
-      var localArray_V = [];
-      var localArray_L = [];
-      var localArray_S = [];
-      var localArray_T = [];
-      var fObjSel = formObj[fName + '_list'];
-      var l = fObjSel.length;
-      var c = 0;
-      var a;
-
-      if (type === 'RemoveFirstIfFull') {
-        if (maxLength == 1) {
-          for (a = 1; a < l; a++) {
-            if (fObjSel.options[a].selected != 1) {
-              localArray_V[c] = fObjSel.options[a].value;
-              localArray_L[c] = fObjSel.options[a].text;
-              localArray_S[c] = 0;
-              localArray_T[c] = fObjSel.options[a].title;
-              c++;
-            }
-          }
-        } else {
-          return;
-        }
-      }
-
-      if ((type === "Remove" && fObjSel.size > 1) || type === "Top" || type === "Bottom") {
-        if (type === "Top") {
-          for (a = 0; a < l; a++) {
-            if (fObjSel.options[a].selected == 1) {
-              localArray_V[c] = fObjSel.options[a].value;
-              localArray_L[c] = fObjSel.options[a].text;
-              localArray_S[c] = 1;
-              localArray_T[c] = fObjSel.options[a].title;
-              c++;
-            }
-          }
-        }
-        for (a = 0; a < l; a++) {
-          if (fObjSel.options[a].selected != 1) {
-            localArray_V[c] = fObjSel.options[a].value;
-            localArray_L[c] = fObjSel.options[a].text;
-            localArray_S[c] = 0;
-            localArray_T[c] = fObjSel.options[a].title;
-            c++;
-          }
-        }
-        if (type === "Bottom") {
-          for (a = 0; a < l; a++) {
-            if (fObjSel.options[a].selected == 1) {
-              localArray_V[c] = fObjSel.options[a].value;
-              localArray_L[c] = fObjSel.options[a].text;
-              localArray_S[c] = 1;
-              localArray_T[c] = fObjSel.options[a].title;
-              c++;
-            }
-          }
-        }
-      }
-      if (type === "Down") {
-        var tC = 0;
-        var tA = [];
-        var aa = 0;
-
-        for (a = 0; a < l; a++) {
-          if (fObjSel.options[a].selected != 1) {
-            // Add non-selected element:
-            localArray_V[c] = fObjSel.options[a].value;
-            localArray_L[c] = fObjSel.options[a].text;
-            localArray_S[c] = 0;
-            localArray_T[c] = fObjSel.options[a].title;
-            c++;
-
-            // Transfer any accumulated and reset:
-            if (tA.length > 0) {
-              for (aa = 0; aa < tA.length; aa++) {
-                localArray_V[c] = fObjSel.options[tA[aa]].value;
-                localArray_L[c] = fObjSel.options[tA[aa]].text;
-                localArray_S[c] = 1;
-                localArray_T[c] = fObjSel.options[tA[aa]].title;
-                c++;
-              }
-
-              tC = 0;
-              tA = [];
-            }
-          } else {
-            tA[tC] = a;
-            tC++;
-          }
-        }
-        // Transfer any remaining:
-        if (tA.length > 0) {
-          for (aa = 0; aa < tA.length; aa++) {
-            localArray_V[c] = fObjSel.options[tA[aa]].value;
-            localArray_L[c] = fObjSel.options[tA[aa]].text;
-            localArray_S[c] = 1;
-            localArray_T[c] = fObjSel.options[tA[aa]].title;
-            c++;
-          }
-        }
-      }
-      if (type === "Up") {
-        var tC = 0;
-        var tA = [];
-        var aa = 0;
-        c = l - 1;
-
-        for (a = l - 1; a >= 0; a--) {
-          if (fObjSel.options[a].selected != 1) {
-
-            // Add non-selected element:
-            localArray_V[c] = fObjSel.options[a].value;
-            localArray_L[c] = fObjSel.options[a].text;
-            localArray_S[c] = 0;
-            localArray_T[c] = fObjSel.options[a].title;
-            c--;
-
-            // Transfer any accumulated and reset:
-            if (tA.length > 0) {
-              for (aa = 0; aa < tA.length; aa++) {
-                localArray_V[c] = fObjSel.options[tA[aa]].value;
-                localArray_L[c] = fObjSel.options[tA[aa]].text;
-                localArray_S[c] = 1;
-                localArray_T[c] = fObjSel.options[tA[aa]].title;
-                c--;
-              }
-
-              tC = 0;
-              tA = [];
-            }
-          } else {
-            tA[tC] = a;
-            tC++;
-          }
-        }
-        // Transfer any remaining:
-        if (tA.length > 0) {
-          for (aa = 0; aa < tA.length; aa++) {
-            localArray_V[c] = fObjSel.options[tA[aa]].value;
-            localArray_L[c] = fObjSel.options[tA[aa]].text;
-            localArray_S[c] = 1;
-            localArray_T[c] = fObjSel.options[tA[aa]].title;
-            c--;
-          }
-        }
-        c = l;	// Restore length value in "c"
-      }
-
-      // Transfer items in temporary storage to list object:
-      fObjSel.length = c;
-      for (a = 0; a < c; a++) {
-        fObjSel.options[a].value = localArray_V[a];
-        fObjSel.options[a].text = localArray_L[a];
-        fObjSel.options[a].selected = localArray_S[a];
-        fObjSel.options[a].title = localArray_T[a];
-      }
-      FormEngine.updateHiddenFieldValueFromSelect(fObjSel, formObj[fName]);
-
-      FormEngine.legacyFieldChangedCb();
-    }
-  };
-
-
-  /**
-   * Legacy function
-   * returns the DOM object for the given form name of the current form,
-   * but only if the given field name is valid, legacy function, use "getFormElement" instead
-   *
-   * @param {String} fieldName the name of the field name
-   * @returns {*|HTMLElement}
-   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.getFormElement() instead.
-   */
-  setFormValue_getFObj = function(fieldName) {
-    console.warn('setFormValue_getFObj() has been marked as deprecated and will be removed in TYPO3 v11. Use FormEngine.getFormElement() instead.');
-    var $formEl = FormEngine.getFormElement(fieldName);
-    if ($formEl.length > 0) {
-      // return the DOM element of the form object
-      return $formEl.get(0);
-    }
-    return null;
   };
 
   /**

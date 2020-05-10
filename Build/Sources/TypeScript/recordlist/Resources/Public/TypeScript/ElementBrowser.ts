@@ -167,11 +167,6 @@ class ElementBrowser {
 
   public addElement(elName: string, elValue: string, altElValue: string, close: boolean): void {
     if (this.getParent()) {
-      if (this.getParent().setFormValueFromBrowseWin) {
-        console.warn('setFormValueFromBrowseWin has been marked as deprecated. Listen to message events instead.');
-        this.getParent().setFormValueFromBrowseWin(this.fieldReference, altElValue ? altElValue : elValue, elName);
-      }
-
       const message = {
         actionName: 'typo3:elementBrowser:elementAdded',
         fieldName: this.fieldReference,
