@@ -586,6 +586,7 @@ define(['jquery',
       $(this).closest('.t3js-formengine-field-item').toggleClass('disabled');
     }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', function(e) {
       FormEngine.toggleCheckboxField($(this));
+      FormEngineValidation.markFieldAsChanged($(this));
     }).on('change', function(event) {
       $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     }).on('click', '.t3js-element-browser', function(e) {
