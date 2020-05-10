@@ -35,6 +35,7 @@ use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
+use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ServerResponseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 
 /**
@@ -113,6 +114,10 @@ class EnvironmentController extends AbstractController
         }
         $databaseMessages = (new DatabaseCheck())->getStatus();
         foreach ($databaseMessages as $message) {
+            $messageQueue->enqueue($message);
+        }
+        $serverResponseMessages = (new ServerResponseCheck(false))->getStatus();
+        foreach ($serverResponseMessages as $message) {
             $messageQueue->enqueue($message);
         }
         return new JsonResponse([
