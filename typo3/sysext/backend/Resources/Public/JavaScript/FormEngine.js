@@ -707,6 +707,7 @@ define(['jquery',
       $(this).closest('.t3js-formengine-field-item').toggleClass('disabled');
     }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', function(e) {
       FormEngine.toggleCheckboxField($(this));
+      FormEngineValidation.markFieldAsChanged($(this));
     }).on('change', '.t3js-l10n-state-container input[type=radio]', function(event) {
       // Change handler for "l10n_state" field changes
       var $me = $(this);
