@@ -38,55 +38,6 @@ function jump(url, modName, mainModName, pageId) {
 }
 
 /**
- * Function similar to PHPs  rawurlencode();
- */
-function rawurlencode(str) {
-  console.warn('top.rawurlencode() has been marked as deprecated, consider using encodeURIComponent() instead.');
-  var output = encodeURIComponent(str);
-  output = str_replace("*", "%2A", output);
-  output = str_replace("+", "%2B", output);
-  output = str_replace("/", "%2F", output);
-  output = str_replace("@", "%40", output);
-  return output;
-}
-
-
-/**
- * String-replace function
- */
-function str_replace(match, replace, string) {	//
-  console.warn('top.str_replace() has been marked as deprecated, consider using .replace() instead.');
-  var input = "" + string;
-  var matchStr = "" + match;
-  if (!matchStr) {
-    return string;
-  }
-  var output = "";
-  var pointer = 0;
-  var pos = input.indexOf(matchStr);
-  while (pos !== -1) {
-    output += "" + input.substr(pointer, pos - pointer) + replace;
-    pointer = pos + matchStr.length;
-    pos = input.indexOf(match, pos + 1);
-  }
-  output += "" + input.substr(pointer);
-  return output;
-}
-
-/**
- * Opens plain window with url
- */
-function openUrlInWindow(url, windowName) {	//
-  console.warn('top.openUrlInWindow() has been marked as deprecated.');
-  regularWindow = window.open(
-    url,
-    windowName,
-    "status=1,menubar=1,resizable=1,location=1,directories=0,scrollbars=1,toolbar=1");
-  regularWindow.focus();
-  return false;
-}
-
-/**
  * Loads a page id for editing in the page edit module:
  */
 function loadEditId(id, addGetVars) {	//

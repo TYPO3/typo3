@@ -210,6 +210,10 @@ The following php doc annotations have been removed:
 
 The following global JavaScript functions have been removed:
 
+- :js:`rawurlencode`
+- :js:`str_replace`
+- :js:`openUrlInWindow`
+
 The following JavaScript modules have been removed:
 
 - :js:`jquery.clearable`
