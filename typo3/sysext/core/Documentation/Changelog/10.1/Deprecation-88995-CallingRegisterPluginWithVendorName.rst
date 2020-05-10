@@ -52,4 +52,4 @@ Just use the extension name like in this example.
        'content-form',
    );
 
-.. index:: PHP-API, FullyScanned, ext:extbase
+.. index:: PHP-API, NotScanned, ext:extbase

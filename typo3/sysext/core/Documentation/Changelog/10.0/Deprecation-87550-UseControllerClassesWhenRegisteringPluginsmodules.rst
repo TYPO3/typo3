@@ -87,4 +87,4 @@ Migration
 * Omit the vendor name in argument :php:`$extensionName`
 * Use fully qualified class names as array keys in arguments :php:`$controllerActions` and :php:`$nonCacheableControllerActions`
 
-.. index:: PHP-API, PartiallyScanned, ext:extbase
+.. index:: PHP-API, NotScanned, ext:extbase
