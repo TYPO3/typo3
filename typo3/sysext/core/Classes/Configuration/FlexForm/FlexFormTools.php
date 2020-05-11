@@ -690,7 +690,7 @@ class FlexFormTools
                         1478105826
                     );
                 }
-                $dataStructure = file_get_contents($file);
+                $dataStructure = (string)file_get_contents($file);
             }
 
             // Parse main structure
@@ -729,7 +729,7 @@ class FlexFormTools
                         $file = GeneralUtility::getFileAbsFileName(trim($sheetStructure));
                     }
                     if ($file && @is_file($file)) {
-                        $sheetStructure = GeneralUtility::xml2array(file_get_contents($file));
+                        $sheetStructure = GeneralUtility::xml2array((string)file_get_contents($file));
                     }
                 }
                 $dataStructure['sheets'][$sheetName] = $sheetStructure;

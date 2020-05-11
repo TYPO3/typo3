@@ -93,7 +93,7 @@ class PageTsConfigLoader
                             $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
                             $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
                             if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
-                                $tsData['page_' . $page['uid'] . '_includes_' . $key] = file_get_contents($includeTsConfigFileAndPath);
+                                $tsData['page_' . $page['uid'] . '_includes_' . $key] = (string)file_get_contents($includeTsConfigFileAndPath);
                             }
                         }
                     }
