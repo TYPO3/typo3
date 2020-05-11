@@ -276,7 +276,7 @@ class ValidatorTask extends AbstractTask
                 $lang = $this->getLanguageService();
                 throw new \InvalidArgumentException(
                     $lang->sL($this->languageFile . ':tasks.error.invalidEmailTemplateFile'),
-                    '1295476972'
+                    1295476972
                 );
             }
         }
@@ -285,14 +285,14 @@ class ValidatorTask extends AbstractTask
         // The array to put the content into
         $pageSections = '';
         $this->isDifferentToLastRun = false;
-        $pageList = GeneralUtility::trimExplode(',', $this->page, true);
+        $pageList = GeneralUtility::trimExplode(',', (string)$this->page, true);
         $modTs = $this->loadModTsConfig($this->page);
         if (is_array($pageList)) {
             // reset broken link counts as they were stored in the serialized object
             $this->oldTotalBrokenLink = 0;
             $this->totalBrokenLink = 0;
             foreach ($pageList as $page) {
-                $pageSections .= $this->checkPageLinks($page);
+                $pageSections .= $this->checkPageLinks((int)$page);
             }
         }
         if ($this->totalBrokenLink != $this->oldTotalBrokenLink) {
@@ -379,7 +379,7 @@ class ValidatorTask extends AbstractTask
             foreach ($parseObj->errors as $errorInfo) {
                 $parseErrorMessage .= $errorInfo[0] . '<br />';
             }
-            throw new \Exception($parseErrorMessage, '1295476989');
+            throw new \Exception($parseErrorMessage, 1295476989);
         }
         $modTs = BackendUtility::getPagesTSconfig($page)['mod.']['linkvalidator.'] ?? [];
         $tsConfig = $parseObj->setup;
@@ -469,7 +469,7 @@ class ValidatorTask extends AbstractTask
         } else {
             throw new \Exception(
                 $lang->sL($this->languageFile . ':tasks.error.invalidFromEmail'),
-                '1295476760'
+                1295476760
             );
         }
         if (GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
@@ -480,7 +480,7 @@ class ValidatorTask extends AbstractTask
         } else {
             throw new \Exception(
                 $lang->sL($this->languageFile . ':tasks.error.noSubject'),
-                '1295476808'
+                1295476808
             );
         }
         if (!empty($this->email)) {
@@ -497,7 +497,7 @@ class ValidatorTask extends AbstractTask
                 if (!GeneralUtility::validEmail($emailAdd)) {
                     throw new \Exception(
                         $lang->sL($this->languageFile . ':tasks.error.invalidToEmail'),
-                        '1295476821'
+                        1295476821
                     );
                 }
                 $validEmailList[] = $emailAdd;
@@ -550,7 +550,7 @@ class ValidatorTask extends AbstractTask
         }
         $markerArray['title'] = BackendUtility::getRecordTitle(
             'pages',
-            BackendUtility::getRecord('pages', $curPage)
+            BackendUtility::getRecord('pages', $curPage) ?? []
         );
         $content = '';
         if ($markerArray['total'] > 0) {

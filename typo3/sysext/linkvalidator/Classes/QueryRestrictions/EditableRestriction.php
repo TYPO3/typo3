@@ -54,7 +54,7 @@ class EditableRestriction implements QueryRestrictionInterface
     protected $queryBuilder;
 
     /**
-     * @param array $searchFields array of 'table' => 'field1, field2'
+     * @param array<string, string> $searchFields array of 'table' => 'field1, field2'
      *   in which linkvalidator searches for broken links.
      * @param QueryBuilder $queryBuilder
      */

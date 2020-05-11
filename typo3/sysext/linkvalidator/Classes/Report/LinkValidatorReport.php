@@ -527,8 +527,8 @@ class LinkValidatorReport
         if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) {
             $fieldName = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']);
             // Crop colon from end if present
-            if (substr($fieldName, '-1', '1') === ':') {
-                $fieldName = substr($fieldName, '0', strlen($fieldName) - 1);
+            if (substr($fieldName, -1, 1) === ':') {
+                $fieldName = substr($fieldName, 0, strlen($fieldName) - 1);
             }
         }
         // Fallback, if there is no label

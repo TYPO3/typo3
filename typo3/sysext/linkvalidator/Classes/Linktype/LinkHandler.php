@@ -154,7 +154,7 @@ class LinkHandler extends AbstractLinktype
     protected function getTranslatedErrorMessage($translationKey, $uid, $title = null)
     {
         $message = $this->getLanguageService()->getLL($translationKey);
-        $message = str_replace('###uid###', (int)$uid, $message);
+        $message = str_replace('###uid###', (string)(int)$uid, $message);
         if (isset($title)) {
             $message = str_replace('###title###', htmlspecialchars($title), $message);
         }

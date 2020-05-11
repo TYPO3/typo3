@@ -136,6 +136,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             '4' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
             '999' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
         ];
+        /** @var array<string, string> $fieldValueArray */
         $fieldCode = '<select class="form-control" name="tx_scheduler[linkvalidator][depth]" id="' . $fieldId . '">';
         foreach ($fieldValueArray as $depth => $label) {
             $fieldCode .= "\t" . '<option value="' . htmlspecialchars($depth) . '"'
