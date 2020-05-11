@@ -27,7 +27,7 @@ class DownloadQueue implements SingletonInterface
     /**
      * Storage for extensions to be downloaded
      *
-     * @var array|string[]
+     * @var array<string, array<string>>
      */
     protected $extensionStorage = [];
 

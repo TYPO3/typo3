@@ -75,7 +75,7 @@ class TerUtility
         $parts = explode(':', $stream, 3);
         if ($parts[1] === 'gzcompress') {
             if (function_exists('gzuncompress')) {
-                $parts[2] = gzuncompress($parts[2]);
+                $parts[2] = (string)gzuncompress($parts[2]);
             } else {
                 throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() functions are not available!', 1344761814);
             }

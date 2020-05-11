@@ -368,6 +368,7 @@ class DependencyUtility implements SingletonInterface
     {
         if ($this->localExtensionStorage !== '' && is_dir($this->localExtensionStorage)) {
             $extList = GeneralUtility::get_dirs($this->localExtensionStorage);
+            $extList = is_array($extList) ? $extList : [];
             if (in_array($extensionKey, $extList)) {
                 $this->managementService->markExtensionForCopy($extensionKey, $this->localExtensionStorage);
                 return true;

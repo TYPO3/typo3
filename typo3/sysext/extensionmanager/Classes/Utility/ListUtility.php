@@ -195,7 +195,7 @@ class ListUtility implements SingletonInterface
     {
         foreach ($extensions as $extensionKey => $properties) {
             $emconf = $this->emConfUtility->includeEmConf($extensionKey, $properties);
-            if ($emconf) {
+            if (is_array($emconf)) {
                 $extensions[$extensionKey] = array_merge($emconf, $properties);
             } else {
                 unset($extensions[$extensionKey]);

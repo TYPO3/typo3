@@ -136,11 +136,11 @@ class ListController extends AbstractModuleController
                 LocalizationUtility::translate(
                     'composerMode.message',
                     'extensionmanager'
-                ),
+                ) ?? '',
                 LocalizationUtility::translate(
                     'composerMode.title',
                     'extensionmanager'
-                ),
+                ) ?? '',
                 FlashMessage::INFO
             );
         }

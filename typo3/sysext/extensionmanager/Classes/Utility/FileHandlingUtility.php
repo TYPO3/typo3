@@ -276,6 +276,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
                     'siteRelPath' => PathUtility::stripPathSitePrefix($rootPath)
                 ]
             );
+            $emConfFileData = is_array($emConfFileData) ? $emConfFileData : [];
         }
         $extensionData['EM_CONF'] = array_replace_recursive($emConfFileData, $extensionData['EM_CONF']);
         $emConfContent = $this->emConfUtility->constructEmConf($extensionData, $extension);
@@ -391,6 +392,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
 
         // Make paths relative to extension root directory.
         $files = GeneralUtility::removePrefixPathFromList($files, $extensionPath);
+        $files = is_array($files) ? $files : [];
 
         // Remove the one empty path that is the extension dir itself.
         $files = array_filter($files);

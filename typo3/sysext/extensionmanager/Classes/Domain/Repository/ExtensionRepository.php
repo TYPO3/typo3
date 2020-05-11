@@ -429,10 +429,10 @@ class ExtensionRepository extends Repository
      * Adds default constraints to the query - in this case it
      * enables us to always just search for the latest version of an extension
      *
-     * @param Query $query the query to adjust
-     * @return Query
+     * @param QueryInterface $query the query to adjust
+     * @return QueryInterface
      */
-    protected function addDefaultConstraints(Query $query): Query
+    protected function addDefaultConstraints(QueryInterface $query): QueryInterface
     {
         if ($query->getConstraint()) {
             $query->matching($query->logicalAnd(

@@ -77,6 +77,7 @@ class DownloadExtensionViewHelper extends AbstractFormViewHelper
         }
         $pathSelector = '<ul class="extensionmanager-is-hidden">';
         foreach ($installPaths as $installPathType => $installPath) {
+            /** @var string $installPathType */
             $pathSelector .= '<li>
 				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix()) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />
 				<label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
