@@ -174,7 +174,7 @@ class RecordHistory
     {
         if (!empty($this->element)) {
             [$table, $recordUid] = explode(':', $this->element);
-            return $this->getHistoryData($table, $recordUid, $this->showSubElements, $this->lastHistoryEntry);
+            return $this->getHistoryData($table, (int)$recordUid, $this->showSubElements === 1, $this->lastHistoryEntry);
         }
         return [];
     }
@@ -369,7 +369,7 @@ class RecordHistory
         }
 
         $uid = $this->resolveElement($table, $uid);
-        return $this->findEventsForRecord($table, $uid, ($this->maxSteps ?: null), $lastHistoryEntry);
+        return $this->findEventsForRecord($table, $uid, ($this->maxSteps ?: 0), $lastHistoryEntry);
     }
 
     /*******************************

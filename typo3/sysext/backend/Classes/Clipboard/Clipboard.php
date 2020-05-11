@@ -387,7 +387,7 @@ class Clipboard
                         if ($fileObject) {
                             $thumb = [];
                             $folder = $fileObject instanceof Folder;
-                            $size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
+                            $size = $folder ? '' : '(' . GeneralUtility::formatSize((int)$fileObject->getSize()) . 'bytes)';
                             if (!$folder && $fileObject->isImage()) {
                                 $thumb = [
                                     'image' => $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(true),
@@ -417,7 +417,7 @@ class Clipboard
                         }
                     } else {
                         // Rendering records:
-                        $rec = BackendUtility::getRecordWSOL($table, $uid);
+                        $rec = BackendUtility::getRecordWSOL($table, (int)$uid);
                         if (is_array($rec)) {
                             $lines[] = [
                                 'icon' => $this->linkItemText($this->iconFactory->getIconForRecord(
@@ -534,7 +534,7 @@ class Clipboard
     {
         $el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
         if ($el) {
-            return ' (' . ($pad === 'normal' ? ($this->clipData['normal']['mode'] === 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el)) . ')';
+            return ' (' . ($pad === 'normal' ? ($this->clipData['normal']['mode'] === 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars((string)$el)) . ')';
         }
         return '';
     }
@@ -773,7 +773,7 @@ class Clipboard
                         }
                     } else {
                         // Rendering records:
-                        $rec = BackendUtility::getRecord($table, $uid);
+                        $rec = BackendUtility::getRecord($table, (int)$uid);
                         if (is_array($rec)) {
                             $params['tx_impexp']['record'][] = $table . ':' . $uid;
                         }
@@ -831,7 +831,7 @@ class Clipboard
             foreach ($this->clipData[$this->current]['el'] as $k => $v) {
                 [$table, $uid] = explode('|', $k);
                 if ($table !== '_FILE') {
-                    if (!$v || !is_array(BackendUtility::getRecord($table, $uid, 'uid'))) {
+                    if (!$v || !is_array(BackendUtility::getRecord($table, (int)$uid, 'uid'))) {
                         unset($this->clipData[$this->current]['el'][$k]);
                         $this->changed = 1;
                     }
@@ -910,10 +910,10 @@ class Clipboard
         if (!$table && !$uid) {
             $elArr = $this->elFromTable('');
             reset($elArr);
-            [$table, $uid] = explode('|', key($elArr));
+            [$table, $uid] = explode('|', (string)key($elArr));
         }
-        if ($this->isSelected($table, $uid)) {
-            $selRec = BackendUtility::getRecordWSOL($table, $uid);
+        if ($this->isSelected($table, (int)$uid)) {
+            $selRec = BackendUtility::getRecordWSOL($table, (int)$uid);
             $selRec['_RECORD_TITLE'] = BackendUtility::getRecordTitle($table, $selRec);
             return $selRec;
         }

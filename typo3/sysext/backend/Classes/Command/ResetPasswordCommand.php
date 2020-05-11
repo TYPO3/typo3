@@ -62,11 +62,13 @@ class ResetPasswordCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $email = $input->getArgument('email');
+        $email = is_string($email) ? $email : '';
         if (!GeneralUtility::validEmail($email)) {
             $io->error('The given email "' . $email . '" is not a valid email address.');
             return 1;
         }
         $backendUrl = $input->getArgument('backendurl');
+        $backendUrl = is_string($backendUrl) ? $backendUrl : '';
         if (!GeneralUtility::isValidUrl($backendUrl)) {
             $io->error('The given backend URL "' . $backendUrl . '" is not a valid URL.');
             return 1;

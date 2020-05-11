@@ -76,7 +76,7 @@ class MetaInformation
         // Setting the path of the page
         // crop the title to title limit (or 50, if not defined)
         $beUser = $this->getBackendUser();
-        $cropLength = empty($beUser->uc['titleLen']) ? 50 : $beUser->uc['titleLen'];
+        $cropLength = empty($beUser->uc['titleLen']) ? 50 : (int)$beUser->uc['titleLen'];
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
         if ($croppedTitle !== $title) {
             $pagePath = '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';

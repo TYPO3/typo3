@@ -312,7 +312,7 @@ function jumpToUrl(URL) {
         if ((int)$motherModName === 1) {
             $motherModule = 'top.currentModuleLoaded';
         } elseif ($motherModName) {
-            $motherModule = GeneralUtility::quoteJSvalue($motherModName);
+            $motherModule = GeneralUtility::quoteJSvalue((string)$motherModName);
         } else {
             $motherModule = '\'\'';
         }
@@ -811,7 +811,7 @@ function jumpToUrl(URL) {
         // Setting the path of the page
         $pagePath = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
-        $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
+        $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : (int)$GLOBALS['BE_USER']->uc['titleLen'];
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
         if ($croppedTitle !== $title) {
             $pagePath .= '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';

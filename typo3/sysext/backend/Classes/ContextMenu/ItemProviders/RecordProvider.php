@@ -169,7 +169,7 @@ class RecordProvider extends AbstractProvider
     protected function initialize()
     {
         parent::initialize();
-        $this->record = BackendUtility::getRecordWSOL($this->table, $this->identifier);
+        $this->record = BackendUtility::getRecordWSOL($this->table, (int)$this->identifier);
         $this->initPermissions();
     }
 

@@ -45,6 +45,7 @@ class TableManualRepository
             $parts[0] = '';
             // Traverse table columns as listed in TCA_DESCR
             foreach ($GLOBALS['TCA_DESCR'][$table]['columns'] as $field => $_) {
+                /** @var string $field */
                 if (!$this->isExcludableField($table, $field) || $this->checkAccess('non_exclude_fields', $table . ':' . $field)) {
                     if (!$field) {
                         // Header
@@ -85,6 +86,7 @@ class TableManualRepository
     {
         // Initialize
         $cshKeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
+        /** @var string[] $tcaKeys */
         $tcaKeys = array_keys($GLOBALS['TCA']);
         $outputSections = [];
         $tocArray = [];

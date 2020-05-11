@@ -214,7 +214,7 @@ class ShortcutRepository
         $pageId = 0;
 
         if (is_array($queryParameters['edit'])) {
-            $table = key($queryParameters['edit']);
+            $table = (string)key($queryParameters['edit']);
             $recordId = (int)key($queryParameters['edit'][$table]);
             $pageId = (int)BackendUtility::getRecord($table, $recordId)['pid'];
             $languageFile = 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf';

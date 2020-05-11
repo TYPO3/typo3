@@ -544,7 +544,7 @@ class ModuleTemplate
         }
         if ((int)$motherModName === 1) {
             $motherModule = 'top.currentModuleLoaded';
-        } elseif ($motherModName) {
+        } elseif (is_string($motherModName) && $motherModName !== '') {
             $motherModule = GeneralUtility::quoteJSvalue($motherModName);
         } else {
             $motherModule = '\'\'';
