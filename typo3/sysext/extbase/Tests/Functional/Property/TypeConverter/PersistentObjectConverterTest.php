@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
@@ -39,7 +38,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
      */
     public function converterReturnsNullWithEmptyStringsOrIntegers()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         self::assertNull($propertyMapper->convert(0, BackendUser::class));
         self::assertNull($propertyMapper->convert('', BackendUser::class));
@@ -54,7 +53,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": The identity property "foo" is no UID.');
 
-        GeneralUtility::getContainer()->get(PropertyMapper::class)->convert('foo', BackendUser::class);
+        $this->getContainer()->get(PropertyMapper::class)->convert('foo', BackendUser::class);
     }
 
     /**
@@ -66,7 +65,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297933823);
         static::expectExceptionMessage('Object of type TYPO3\CMS\Extbase\Domain\Model\BackendUser with identity "2" not found.');
 
-        GeneralUtility::getContainer()->get(PropertyMapper::class)->convert(2, BackendUser::class);
+        $this->getContainer()->get(PropertyMapper::class)->convert(2, BackendUser::class);
     }
 
     /**
@@ -74,7 +73,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
      */
     public function converterFetchesObjectFromPersistenceIfSourceIsAnInteger()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $backendUser = $propertyMapper->convert(1, BackendUser::class);
 
@@ -87,7 +86,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
      */
     public function converterFetchesObjectFromPersistenceIfSourceIsANumericString()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $backendUser = $propertyMapper->convert('1', BackendUser::class);
 
@@ -100,7 +99,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
      */
     public function converterBuildsEmptyObjectIfSourceIsAnEmptyArray()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $backendUser = $propertyMapper->convert([], BackendUser::class);
 
@@ -113,7 +112,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
      */
     public function converterFetchesObjectFromPersistenceIfSourceIsAnArrayWithIdentityKey()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $backendUser = $propertyMapper->convert(['__identity' => 1], BackendUser::class);
 
@@ -137,7 +136,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
             false
         );
 
-        GeneralUtility::getContainer()->get(PropertyMapper::class)->convert(
+        $this->getContainer()->get(PropertyMapper::class)->convert(
             [],
             BackendUser::class,
             $propertyMapperConfiguration
@@ -149,7 +148,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
      */
     public function converterRespectsAndSetsProperties()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $backendUser = $propertyMapper->convert(['userName' => 'johndoe'], BackendUser::class);
 
@@ -167,7 +166,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": Property "nonExistant" was not found in target object of type "TYPO3\CMS\Extbase\Domain\Model\BackendUser".');
 
-        GeneralUtility::getContainer()->get(PropertyMapper::class)->convert(['nonExistant' => 'johndoe'], BackendUser::class);
+        $this->getContainer()->get(PropertyMapper::class)->convert(['nonExistant' => 'johndoe'], BackendUser::class);
     }
 
     /**
@@ -179,6 +178,6 @@ class PersistentObjectConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "integer" could not be set in target object of type "TYPO3\CMS\Extbase\Domain\Model\BackendUser"');
 
-        GeneralUtility::getContainer()->get(PropertyMapper::class)->convert(['uid' => 7], BackendUser::class);
+        $this->getContainer()->get(PropertyMapper::class)->convert(['uid' => 7], BackendUser::class);
     }
 }

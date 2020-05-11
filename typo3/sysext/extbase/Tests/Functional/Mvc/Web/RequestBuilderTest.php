@@ -57,7 +57,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -89,7 +89,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -122,7 +122,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -138,7 +138,7 @@ class RequestBuilderTest extends FunctionalTestCase
         static::expectExceptionCode(1289843275);
         static::expectExceptionMessage('"extensionName" is not properly configured. Request can\'t be dispatched!');
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -155,7 +155,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration(['extensionName' => 'blog_example']);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -191,7 +191,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -248,7 +248,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -300,7 +300,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -335,7 +335,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -359,7 +359,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -390,7 +390,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -432,7 +432,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -469,7 +469,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -504,7 +504,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -535,7 +535,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -570,7 +570,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -604,7 +604,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build();
     }
 
@@ -638,7 +638,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -677,7 +677,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -714,7 +714,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = GeneralUtility::getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build();
 
         self::assertInstanceOf(RequestInterface::class, $request);

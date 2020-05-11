@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\File;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -36,7 +35,7 @@ class FileConverterTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         /** @var File $file */
         $file = $propertyMapper->convert(

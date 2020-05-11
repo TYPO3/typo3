@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e989ed437e387e3457d27c4c934d00f",
+    "content-hash": "9a3876621a6a69d1826034146021adab",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -8320,21 +8320,22 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.2.4",
+            "version": "6.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "970fb834d40cb5bf8cc0c2d45f60023d21377911"
+                "reference": "7b920e015f7a45575b428ed3a36afe91b6196af1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/970fb834d40cb5bf8cc0c2d45f60023d21377911",
-                "reference": "970fb834d40cb5bf8cc0c2d45f60023d21377911",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/7b920e015f7a45575b428ed3a36afe91b6196af1",
+                "reference": "7b920e015f7a45575b428ed3a36afe91b6196af1",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.8",
                 "phpunit/phpunit": "^8.4 || ^9.0",
+                "psr/container": "^1.0",
                 "typo3/cms-backend": "10.*.*@dev",
                 "typo3/cms-core": "10.*.*@dev",
                 "typo3/cms-extbase": "10.*.*@dev",
@@ -8376,7 +8377,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2020-05-02T12:48:34+00:00"
+            "time": "2020-05-12T15:01:24+00:00"
         }
     ],
     "aliases": [],

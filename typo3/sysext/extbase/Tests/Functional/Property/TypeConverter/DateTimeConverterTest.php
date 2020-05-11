@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
@@ -31,7 +30,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertFromReturnsAnErrorWhenConvertingIntegersToDateTime()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(0, \DateTime::class);
 
@@ -48,7 +47,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertFromReturnsNullIfSourceIsAnEmptyString()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert('', \DateTime::class);
 
@@ -61,7 +60,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertDefaultDateFormatString()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert('2019-12-07T19:07:02+00:00', \DateTime::class);
 
@@ -81,7 +80,7 @@ class DateTimeConverterTest extends FunctionalTestCase
             \DateTime::RFC7231
         );
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             'Sat, 07 Dec 2019 19:15:45 GMT',
@@ -109,7 +108,7 @@ class DateTimeConverterTest extends FunctionalTestCase
             []
         );
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $propertyMapper->convert(
             'Sat, 07 Dec 2019 19:15:45 GMT',
@@ -123,7 +122,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertWithArraySourceWithStringDate()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -148,7 +147,7 @@ class DateTimeConverterTest extends FunctionalTestCase
             'U'
         );
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -174,7 +173,7 @@ class DateTimeConverterTest extends FunctionalTestCase
             'Y-m-d'
         );
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -195,7 +194,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertWithArraySourceWithDayMonthYearAndDateFormatSet()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -216,7 +215,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertWithArraySourceWithDayMonthYearHourMinuteAndSecondSet()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -245,7 +244,7 @@ class DateTimeConverterTest extends FunctionalTestCase
         // The timezone parameter and the current timezone are ignored when the time parameter
         // either contains a UNIX timestamp (e.g. 946684800) or specifies a timezone (e.g. 2010-01-28T15:00:00+02:00).
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -272,7 +271,7 @@ class DateTimeConverterTest extends FunctionalTestCase
             'Y-m-d H:i:s'
         );
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -293,7 +292,7 @@ class DateTimeConverterTest extends FunctionalTestCase
      */
     public function convertFromReturnsErrorIfSourceIsAnArrayAndEitherDayMonthOrYearAreLowerThanOne()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
@@ -321,7 +320,7 @@ class DateTimeConverterTest extends FunctionalTestCase
         static::expectExceptionCode(1297759968);
         static::expectExceptionMessage('Exception while property mapping at property path "": Could not convert the given source into a DateTime object because it was not an array with a valid date as a string');
 
-        GeneralUtility::getContainer()->get(PropertyMapper::class)->convert([], \DateTime::class);
+        $this->getContainer()->get(PropertyMapper::class)->convert([], \DateTime::class);
     }
 
     /**
@@ -340,7 +339,7 @@ class DateTimeConverterTest extends FunctionalTestCase
             'Y-m-d H:i:s'
         );
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $propertyMapper->convert(
             [

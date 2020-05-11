@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -28,7 +27,7 @@ class FloatConverterTest extends FunctionalTestCase
      */
     public function convertToFloat()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         self::assertSame(10.1, $propertyMapper->convert(10.1, 'float'));
 

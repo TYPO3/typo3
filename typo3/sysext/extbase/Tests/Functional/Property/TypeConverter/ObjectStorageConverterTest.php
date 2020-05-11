@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
@@ -35,7 +34,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
         $propertyMapperConfiguration->allowAllProperties();
         $propertyMapperConfiguration->forProperty('foo')->allowAllProperties();
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $objectStorage = $propertyMapper->convert(
             [
@@ -61,7 +60,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->forProperty('foo')->allowAllProperties();
 
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $objectStorage = $propertyMapper->convert(
             'foo',

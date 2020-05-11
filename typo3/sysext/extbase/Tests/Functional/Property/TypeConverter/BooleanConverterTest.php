@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -28,7 +27,7 @@ class BooleanConverterTest extends FunctionalTestCase
      */
     public function convertToBoolean()
     {
-        $propertyMapper = GeneralUtility::getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         self::assertTrue($propertyMapper->convert(true, 'boolean'));
         self::assertFalse($propertyMapper->convert(false, 'boolean'));
