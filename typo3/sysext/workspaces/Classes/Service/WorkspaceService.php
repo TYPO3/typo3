@@ -236,7 +236,7 @@ class WorkspaceService implements SingletonInterface
         if ($pageId != -1 && $recursionLevel > 0) {
             $pageList = $this->getTreeUids($pageId, $wsid, $recursionLevel);
         } elseif ($pageId != -1) {
-            $pageList = $pageId;
+            $pageList = (string)$pageId;
         } else {
             $pageList = '';
             // check if person may only see a "virtual" page-root

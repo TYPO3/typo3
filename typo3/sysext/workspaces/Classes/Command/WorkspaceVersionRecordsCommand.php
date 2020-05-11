@@ -423,7 +423,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 ->execute();
 
             while ($placeholderRecord = $result->fetch()) {
-                $versions = BackendUtility::selectVersionsOfRecord($table, $placeholderRecord['uid'], 'uid', null);
+                $versions = (array)BackendUtility::selectVersionsOfRecord($table, $placeholderRecord['uid'], 'uid', null);
                 if (count($versions) <= 1) {
                     $unusedPlaceholders[$table . ':' . $placeholderRecord['uid']] = [
                         'table' => $table,

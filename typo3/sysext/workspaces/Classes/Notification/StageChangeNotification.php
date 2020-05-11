@@ -74,7 +74,7 @@ class StageChangeNotification
     {
         [$elementTable, $elementUid] = reset($affectedElements);
         $elementUid = (int)$elementUid;
-        $elementRecord = BackendUtility::getRecord($elementTable, $elementUid);
+        $elementRecord = (array)BackendUtility::getRecord($elementTable, $elementUid);
         $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
         $pageUid = $this->findFirstPageId($elementTable, $elementUid, $elementRecord);
 

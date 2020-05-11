@@ -60,6 +60,10 @@ class EventCallback
      */
     public function execute(array $callerArguments = [], $caller, $eventName)
     {
-        return call_user_func_array([$this->object, $this->method], [$callerArguments, $this->targetArguments, $caller, $eventName]);
+        $callable = [$this->object, $this->method];
+        if (is_callable($callable)) {
+            return $callable($callerArguments, $this->targetArguments, $caller, $eventName);
+        }
+        return null;
     }
 }

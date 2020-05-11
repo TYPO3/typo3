@@ -150,12 +150,13 @@ class GridDataService implements LoggerAwareInterface
                 self::GridColumn_CollectionChildren => 0,
             ];
             foreach ($versions as $table => $records) {
+                $table = (string)$table;
                 $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
                 $isRecordTypeAllowedToModify = $backendUser->check('tables_modify', $table);
 
                 foreach ($records as $record) {
-                    $origRecord = BackendUtility::getRecord($table, $record['t3ver_oid']);
-                    $versionRecord = BackendUtility::getRecord($table, $record['uid']);
+                    $origRecord = (array)BackendUtility::getRecord($table, $record['t3ver_oid']);
+                    $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
                     $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
                     $this->getIntegrityService()->checkElement($combinedRecord);
 
@@ -242,7 +243,7 @@ class GridDataService implements LoggerAwareInterface
                 $identifier = $element['table'] . ':' . $element['t3ver_oid'];
                 $element['integrity'] = [
                     'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
-                    'messages' => htmlspecialchars($this->getIntegrityService()->getIssueMessages($identifier, true))
+                    'messages' => htmlspecialchars((string)$this->getIntegrityService()->getIssueMessages($identifier, true))
                 ];
             }
             $this->setDataArrayIntoCache($versions, $filterTxt);
@@ -450,8 +451,8 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Implements individual sorting for columns based on string comparison.
      *
-     * @param string $a First value
-     * @param string $b Second value
+     * @param array $a First value
+     * @param array $b Second value
      * @return int
      */
     protected function stringSort($a, $b)

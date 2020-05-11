@@ -135,8 +135,8 @@ class RemoteServer
         $diffReturnArray = [];
         $liveReturnArray = [];
         $diffUtility = $this->getDifferenceHandler();
-        $liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
-        $versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
+        $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
+        $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon_Live = $iconFactory->getIconForRecord($parameter->table, $liveRecord, Icon::SIZE_SMALL)->render();
         $icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, Icon::SIZE_SMALL)->render();
@@ -165,13 +165,13 @@ class RemoteServer
                         $useThumbnails = empty($differentExtensions);
                     }
 
-                    $liveFileReferences = BackendUtility::resolveFileReferences(
+                    $liveFileReferences = (array)BackendUtility::resolveFileReferences(
                         $parameter->table,
                         $fieldName,
                         $liveRecord,
                         0
                     );
-                    $versionFileReferences = BackendUtility::resolveFileReferences(
+                    $versionFileReferences = (array)BackendUtility::resolveFileReferences(
                         $parameter->table,
                         $fieldName,
                         $versionRecord,
@@ -204,7 +204,7 @@ class RemoteServer
                         $fieldName,
                         $liveRecord[$fieldName],
                         0,
-                        1,
+                        true,
                         false,
                         $liveRecord['uid']
                     );
@@ -213,7 +213,7 @@ class RemoteServer
                         $fieldName,
                         $versionRecord[$fieldName],
                         0,
-                        1,
+                        true,
                         false,
                         $versionRecord['uid']
                     );
