@@ -123,7 +123,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
     public function recover(int $timeout = 900): void
     {
         foreach (new DirectoryIterator($this->path) as $file) {
-            $file = $file->getRealPath();
+            $file = (string)$file->getRealPath();
 
             if (substr($file, -16) == '.message.sending') {
                 $lockedtime = filectime($file);
@@ -144,7 +144,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
         $count = 0;
         $time = time();
         foreach ($directoryIterator as $file) {
-            $file = $file->getRealPath();
+            $file = (string)$file->getRealPath();
 
             if (substr($file, -8) != '.message') {
                 continue;
@@ -152,7 +152,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
 
             /* We try a rename, it's an atomic operation, and avoid locking the file */
             if (rename($file, $file . '.sending')) {
-                $message = unserialize(file_get_contents($file . '.sending'), [
+                $message = unserialize((string)file_get_contents($file . '.sending'), [
                     'allowedClasses' => [
                         RawMessage::class,
                         Message::class,
@@ -247,13 +247,13 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
         $result = '';
         $directoryIterator = new DirectoryIterator($this->path);
         foreach ($directoryIterator as $file) {
-            $file = $file->getRealPath();
+            $file = (string)$file->getRealPath();
 
             if (substr($file, -8) != '.message') {
                 continue;
             }
 
-            $result .= file_get_contents($file) . "\n";
+            $result .= (string)file_get_contents($file) . "\n";
         }
         return $result;
     }

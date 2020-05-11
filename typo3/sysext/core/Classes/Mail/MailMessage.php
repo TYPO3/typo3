@@ -241,7 +241,7 @@ class MailMessage extends Email
     /**
      * Converts address from [email, name] into Address objects.
      *
-     * @param array<int,mixed> $args
+     * @param mixed ...$args
      * @return Address[]
      */
     protected function convertNamedAddress(...$args): array

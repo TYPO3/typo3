@@ -114,7 +114,7 @@ class Mailer implements MailerInterface
                     if ($address === 0) {
                         $replyTo = new Address($replyTo[$address]);
                     } else {
-                        $replyTo = new Address($address, reset($replyTo));
+                        $replyTo = new Address((string)$address, reset($replyTo));
                     }
                     $message->replyTo($replyTo);
                 }
