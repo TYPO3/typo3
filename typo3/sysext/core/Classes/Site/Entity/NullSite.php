@@ -152,7 +152,7 @@ class NullSite implements SiteInterface
                 'flag' => 'flags-multiple'
             ]);
         }
-        $pageTs = BackendUtility::getPagesTSconfig($pageId);
+        $pageTs = BackendUtility::getPagesTSconfig((int)$pageId);
         $pageTs = $pageTs['mod.']['SHARED.'] ?? [];
 
         $disabledLanguages = GeneralUtility::intExplode(',', $pageTs['disableLanguages'] ?? '', true);
