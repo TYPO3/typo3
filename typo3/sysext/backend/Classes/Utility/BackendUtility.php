@@ -474,7 +474,9 @@ class BackendUtility
                 $newLocation = false;
                 if ($workspaceOL) {
                     self::workspaceOL('pages', $row);
-                    $newLocation = self::getMovePlaceholder('pages', $row['uid'], 'pid');
+                    if (is_array($row) && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER) {
+                        $newLocation = self::getMovePlaceholder('pages', $row['uid'], 'pid');
+                    }
                 }
                 if (is_array($row)) {
                     if ($newLocation !== false) {
