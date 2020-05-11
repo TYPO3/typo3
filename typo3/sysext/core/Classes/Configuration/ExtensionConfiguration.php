@@ -278,7 +278,7 @@ class ExtensionConfiguration
             'EXT:' . $extensionKey . '/ext_conf_template.txt'
         );
         if (file_exists($extConfTemplateFileLocation)) {
-            $rawString = file_get_contents($extConfTemplateFileLocation);
+            $rawString = (string)file_get_contents($extConfTemplateFileLocation);
         }
         return $rawString;
     }
