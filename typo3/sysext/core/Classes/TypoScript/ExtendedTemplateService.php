@@ -353,7 +353,7 @@ class ExtendedTemplateService extends TemplateService
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
             if (substr($key, -2) !== '..') {
-                $key = preg_replace('/\\.$/', '', $key);
+                $key = preg_replace('/\\.$/', '', $key) ?? '';
                 if (substr($key, -1) !== '.') {
                     if (MathUtility::canBeInterpretedAsInteger($key)) {
                         $keyArr_num[$key] = $arr[$key];
@@ -423,15 +423,15 @@ class ExtendedTemplateService extends TemplateService
                         $HTML .= ' = <span class="list-tree-value">' . htmlspecialchars($theValue) . '</span>';
                     }
                     if ($this->ext_regComments && isset($arr[$key . '..'])) {
-                        $comment = $arr[$key . '..'];
+                        $comment = (string)$arr[$key . '..'];
                         // Skip INCLUDE_TYPOSCRIPT comments, they are almost useless
                         if (!preg_match('/### <INCLUDE_TYPOSCRIPT:.*/', $comment)) {
                             // Remove linebreaks, replace with ' '
-                            $comment = preg_replace('/[\\r\\n]/', ' ', $comment);
+                            $comment = preg_replace('/[\\r\\n]/', ' ', $comment) ?? '';
                             // Remove # and * if more than twice in a row
-                            $comment = preg_replace('/[#\\*]{2,}/', '', $comment);
+                            $comment = preg_replace('/[#\\*]{2,}/', '', $comment) ?? '';
                             // Replace leading # (just if it exists) and add it again. Result: Every comment should be prefixed by a '#'.
-                            $comment = preg_replace('/^[#\\*\\s]+/', '# ', $comment);
+                            $comment = preg_replace('/^[#\\*\\s]+/', '# ', $comment) ?? '';
                             // Masking HTML Tags: Replace < with &lt; and > with &gt;
                             $comment = htmlspecialchars($comment);
                             $HTML .= ' <i class="text-muted">' . trim($comment) . '</i>';
@@ -503,7 +503,7 @@ class ExtendedTemplateService extends TemplateService
     {
         $keyArr = [];
         foreach ($arr as $key => $value) {
-            $key = preg_replace('/\\.$/', '', $key);
+            $key = preg_replace('/\\.$/', '', $key) ?? '';
             if (substr($key, -1) !== '.') {
                 $keyArr[$key] = 1;
             }
@@ -587,7 +587,7 @@ class ExtendedTemplateService extends TemplateService
     {
         $keyArr = [];
         foreach ($arr as $key => $value) {
-            $key = preg_replace('/\\.$/', '', $key);
+            $key = preg_replace('/\\.$/', '', $key) ?? '';
             if (substr($key, -1) !== '.') {
                 $keyArr[$key] = 1;
             }
@@ -1335,7 +1335,7 @@ class ExtendedTemplateService extends TemplateService
                         switch ($typeDat['type']) {
                             case 'int':
                                 if ($typeDat['paramstr']) {
-                                    $var = MathUtility::forceIntegerInRange($var, $typeDat['params'][0], $typeDat['params'][1]);
+                                    $var = MathUtility::forceIntegerInRange((int)$var, $typeDat['params'][0], $typeDat['params'][1]);
                                 } else {
                                     $var = (int)$var;
                                 }
@@ -1346,15 +1346,15 @@ class ExtendedTemplateService extends TemplateService
                             case 'color':
                                 $col = [];
                                 if ($var) {
-                                    $var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
+                                    $var = preg_replace('/[^A-Fa-f0-9]*/', '', $var) ?? '';
                                     $useFulHex = strlen($var) > 3;
-                                    $col[] = hexdec($var[0]);
-                                    $col[] = hexdec($var[1]);
-                                    $col[] = hexdec($var[2]);
+                                    $col[] = (int)hexdec($var[0]);
+                                    $col[] = (int)hexdec($var[1]);
+                                    $col[] = (int)hexdec($var[2]);
                                     if ($useFulHex) {
-                                        $col[] = hexdec($var[3]);
-                                        $col[] = hexdec($var[4]);
-                                        $col[] = hexdec($var[5]);
+                                        $col[] = (int)hexdec($var[3]);
+                                        $col[] = (int)hexdec($var[4]);
+                                        $col[] = (int)hexdec($var[5]);
                                     }
                                     $var = substr('0' . dechex($col[0]), -1) . substr('0' . dechex($col[1]), -1) . substr('0' . dechex($col[2]), -1);
                                     if ($useFulHex) {

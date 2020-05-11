@@ -234,7 +234,7 @@ class ConstantConfigurationParser
             $counter++;
             $comment = trim($flatSetup[$key]);
             foreach (explode(LF, $comment) as $k => $v) {
-                $line = trim(preg_replace('/^[#\\/]*/', '', $v));
+                $line = trim(preg_replace('/^[#\\/]*/', '', $v) ?? '');
                 if (!$line) {
                     continue;
                 }
