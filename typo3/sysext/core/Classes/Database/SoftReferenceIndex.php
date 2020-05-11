@@ -395,10 +395,10 @@ class SoftReferenceIndex implements SingletonInterface
     {
         $elements = [];
         // Files starting with EXT:
-        $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
+        $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE) ?: [];
         foreach ($parts as $idx => $value) {
             if ($idx % 3 == 2) {
-                $this->makeTokenID($idx);
+                $this->makeTokenID((string)$idx);
                 $elements[$idx] = [];
                 $elements[$idx]['matchString'] = $value;
             }

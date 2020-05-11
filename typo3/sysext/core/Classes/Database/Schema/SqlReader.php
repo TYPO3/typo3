@@ -64,10 +64,10 @@ class SqlReader
         foreach ($this->packageManager->getActivePackages() as $package) {
             $packagePath = $package->getPackagePath();
             if (@file_exists($packagePath . 'ext_tables.sql')) {
-                $sqlString[] = file_get_contents($packagePath . 'ext_tables.sql');
+                $sqlString[] = (string)file_get_contents($packagePath . 'ext_tables.sql');
             }
             if ($withStatic && @file_exists($packagePath . 'ext_tables_static+adt.sql')) {
-                $sqlString[] = file_get_contents($packagePath . 'ext_tables_static+adt.sql');
+                $sqlString[] = (string)file_get_contents($packagePath . 'ext_tables_static+adt.sql');
             }
         }
 

@@ -38,7 +38,7 @@ class SchemaIndexDefinitionListener
      */
     public function onSchemaIndexDefinition(SchemaIndexDefinitionEventArgs $event)
     {
-        if (strpos($event->getConnection()->getServerVersion(), 'MySQL') !== 0) {
+        if (strpos((string)$event->getConnection()->getServerVersion(), 'MySQL') !== 0) {
             return;
         }
 
