@@ -120,6 +120,9 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
         $imagesSizes = [];
 
         $fileContent = file_get_contents($this->getPathname());
+        if ($fileContent === false) {
+            return false;
+        }
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $xml = simplexml_load_string($fileContent, \SimpleXMLElement::class, LIBXML_NOERROR | LIBXML_NOWARNING);
