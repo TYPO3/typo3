@@ -720,9 +720,9 @@ class NormalizedParams
             // Choose which IP in list to use
             $configuredReverseProxyHeaderMultiValue = trim($configuration['reverseProxyHeaderMultiValue'] ?? '');
             if (!empty($ip) && $configuredReverseProxyHeaderMultiValue === 'last') {
-                $ip = array_pop($ip);
+                $ip = (string)array_pop($ip);
             } elseif (!empty($ip) && $configuredReverseProxyHeaderMultiValue === 'first') {
-                $ip = array_shift($ip);
+                $ip = (string)array_shift($ip);
             } else {
                 $ip = '';
             }

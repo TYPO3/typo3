@@ -606,7 +606,7 @@ class Uri implements UriInterface
      *
      * @param string $scheme
      * @param string $host
-     * @param int $port
+     * @param int|null $port
      * @return bool
      */
     protected function isNonStandardPort($scheme, $host, $port)
