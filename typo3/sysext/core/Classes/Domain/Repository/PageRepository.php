@@ -193,7 +193,7 @@ class PageRepository implements LoggerAwareInterface
                 // versioning preview (that means we are online!)
                 $this->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
                     QueryHelper::stripLogicalOperatorPrefix(
-                        $this->enableFields('pages', $show_hidden, ['fe_group' => true])
+                        $this->enableFields('pages', (int)$show_hidden, ['fe_group' => true])
                     ),
                     $expressionBuilder->neq('pages.doktype', self::DOKTYPE_RECYCLER)
                 );
@@ -938,7 +938,7 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value)
      *
-     * @param int $shortcutFieldValue The value of the "shortcut" field from the pages record
+     * @param string $shortcutFieldValue The value of the "shortcut" field from the pages record
      * @param int $shortcutMode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
      * @param int $thisUid The current page UID of the page which is a shortcut
      * @param int $iteration Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
