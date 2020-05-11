@@ -60,7 +60,7 @@ class DocumentationFile
         if ($this->registry === null) {
             $this->registry = new Registry();
         }
-        $this->changelogPath = $changelogDir !== '' ? $changelogDir : realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog');
+        $this->changelogPath = $changelogDir !== '' ? $changelogDir : (string)realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog');
         $this->changelogPath = str_replace('\\', '/', $this->changelogPath);
     }
 
@@ -129,6 +129,7 @@ class DocumentationFile
             throw new \InvalidArgumentException('the given file does not belong to the changelog dir. Aborting', 1485425531);
         }
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $lines = is_array($lines) ? $lines : [];
         $headline = $this->extractHeadline($lines);
         $entry['version'] = PathUtility::basename(PathUtility::dirname($file));
         $entry['headline'] = $headline;
@@ -144,7 +145,7 @@ class DocumentationFile
             }
         }
         $entry['tagList'] = implode(',', $entry['tags']);
-        $entry['content'] = file_get_contents($file);
+        $entry['content'] = (string)file_get_contents($file);
         $entry['parsedContent'] = $this->parseContent($entry['content']);
         $entry['file_hash'] = md5($entry['content']);
         if ($entry['version'] !== '') {
@@ -338,11 +339,11 @@ class DocumentationFile
     protected function parseContent(string $rstContent): string
     {
         $content = htmlspecialchars($rstContent);
-        $content = preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
-        $content = preg_replace('/#([\d]*)/', '#<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
-        $content = preg_replace('/(\n([=]*)\n(.*)\n([=]*)\n)/', '', $content, 1);
-        $content = preg_replace('/.. index::(.*)/', '', $content);
-        $content = preg_replace('/.. include::(.*)/', '', $content);
+        $content = (string)preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
+        $content = (string)preg_replace('/#([\d]*)/', '#<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
+        $content = (string)preg_replace('/(\n([=]*)\n(.*)\n([=]*)\n)/', '', $content, 1);
+        $content = (string)preg_replace('/.. index::(.*)/', '', $content);
+        $content = (string)preg_replace('/.. include::(.*)/', '', $content);
         return trim($content);
     }
 

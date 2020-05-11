@@ -230,7 +230,7 @@ class ServerResponseCheck implements CheckInterface
             $messageParts[] = sprintf(
                 'unexpected content-type %s',
                 $this->wrapValue(
-                    $fileDeclaration->getUnexpectedContentType(),
+                    (string)$fileDeclaration->getUnexpectedContentType(),
                     '<code>',
                     '</code>'
                 )
@@ -240,7 +240,7 @@ class ServerResponseCheck implements CheckInterface
             $messageParts[] = sprintf(
                 'content-type mismatch %s, got %s',
                 $this->wrapValue(
-                    $fileDeclaration->getExpectedContent(),
+                    (string)$fileDeclaration->getExpectedContent(),
                     '<code>',
                     '</code>'
                 ),
@@ -255,7 +255,7 @@ class ServerResponseCheck implements CheckInterface
             $messageParts[] = sprintf(
                 'unexpected content %s',
                 $this->wrapValue(
-                    $fileDeclaration->getUnexpectedContent(),
+                    (string)$fileDeclaration->getUnexpectedContent(),
                     '<code>',
                     '</code>'
                 )
@@ -265,7 +265,7 @@ class ServerResponseCheck implements CheckInterface
             $messageParts[] = sprintf(
                 'content mismatch %s',
                 $this->wrapValue(
-                    $fileDeclaration->getExpectedContent(),
+                    (string)$fileDeclaration->getExpectedContent(),
                     '<code>',
                     '</code>'
                 )

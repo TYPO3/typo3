@@ -120,9 +120,9 @@ class FileSessionHandler implements \SessionHandlerInterface
             if ($fd = fopen($sessionFile, 'rb')) {
                 $lockres = flock($fd, LOCK_SH);
                 if ($lockres) {
-                    $length = filesize($sessionFile);
+                    $length = (int)filesize($sessionFile);
                     if ($length > 0) {
-                        $content = fread($fd, $length);
+                        $content = (string)fread($fd, $length);
                     }
                     flock($fd, LOCK_UN);
                 }

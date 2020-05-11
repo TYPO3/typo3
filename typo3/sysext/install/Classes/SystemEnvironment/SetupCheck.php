@@ -120,7 +120,7 @@ class SetupCheck implements CheckInterface
      */
     protected function checkSystemLocale()
     {
-        $currentLocale = setlocale(LC_CTYPE, 0);
+        $currentLocale = (string)setlocale(LC_CTYPE, '0');
 
         // On Windows an empty locale value uses the regional settings from the Control Panel
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && !Environment::isWindows()) {
@@ -162,7 +162,7 @@ class SetupCheck implements CheckInterface
                 ));
             } else {
                 $testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
-                $currentLocale = setlocale(LC_CTYPE, 0);
+                $currentLocale = (string)setlocale(LC_CTYPE, '0');
                 $quote = Environment::isWindows() ? '"' : '\'';
                 setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
                 if (escapeshellarg($testString) === $quote . $testString . $quote) {

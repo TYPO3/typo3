@@ -187,7 +187,7 @@ abstract class AbstractNode
      */
     protected function getCurrentPermission()
     {
-        $permissions = decoct(fileperms($this->getAbsolutePath()));
+        $permissions = decoct((int)fileperms($this->getAbsolutePath()));
         return substr($permissions, -4);
     }
 

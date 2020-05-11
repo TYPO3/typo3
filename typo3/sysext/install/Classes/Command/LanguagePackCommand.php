@@ -73,8 +73,8 @@ class LanguagePackCommand extends Command
     {
         $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
-        $isos = $input->getArgument('locales');
-        $skipExtensions = $input->getOption('skip-extension');
+        $isos = (array)$input->getArgument('locales');
+        $skipExtensions = (array)$input->getOption('skip-extension');
         if (empty($isos)) {
             $isos = $languagePackService->getActiveLanguages();
         }

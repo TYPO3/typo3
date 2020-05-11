@@ -71,7 +71,7 @@ class SessionService implements SingletonInterface
         );
         session_set_save_handler($sessionHandler);
         session_name($this->cookieName);
-        ini_set('session.cookie_httponly', true);
+        ini_set('session.cookie_httponly', 'On');
         if ($this->hasSameSiteCookieSupport()) {
             ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
         }
@@ -79,7 +79,7 @@ class SessionService implements SingletonInterface
         // Always call the garbage collector to clean up stale session files
         ini_set('session.gc_probability', (string)100);
         ini_set('session.gc_divisor', (string)100);
-        ini_set('session.gc_maxlifetime', (string)$this->expireTimeInMinutes * 2 * 60);
+        ini_set('session.gc_maxlifetime', (string)($this->expireTimeInMinutes * 2 * 60));
         if ($this->isSessionAutoStartEnabled()) {
             $sessionCreationError = 'Error: session.auto-start is enabled.<br />';
             $sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';

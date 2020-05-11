@@ -638,11 +638,12 @@ class UpgradeController extends AbstractController
             }
 
             // Build array of file (hashes) not affected by current scan, if they are tagged as "FullyScanned"
-            $parsedRestFile = array_pop($documentationFile->getListEntry(str_replace(
+            $listEntries = $documentationFile->getListEntry(str_replace(
                 '\\',
                 '/',
-                realpath($restFile->getPathname())
-            )));
+                (string)realpath($restFile->getPathname())
+            ));
+            $parsedRestFile = array_pop($listEntries);
             if (!in_array($parsedRestFile['file_hash'], $foundRestFileHashes, true)
                 && in_array('FullyScanned', $parsedRestFile['tags'], true)
             ) {
@@ -759,11 +760,12 @@ class UpgradeController extends AbstractController
                     $restFileLocation = $restFile->getPathname();
                     break;
                 }
-                $parsedRestFile = array_pop($documentationFile->getListEntry(str_replace(
+                $listEntries = $documentationFile->getListEntry(str_replace(
                     '\\',
                     '/',
-                    realpath($restFileLocation)
-                )));
+                    (string)realpath($restFileLocation)
+                ));
+                $parsedRestFile = array_pop($listEntries);
                 $version = GeneralUtility::trimExplode(DIRECTORY_SEPARATOR, $restFileLocation);
                 array_pop($version);
                 // something like "8.2" .. "8.7" .. "master"
@@ -1235,7 +1237,7 @@ class UpgradeController extends AbstractController
     {
         $documentationFileService = new DocumentationFile();
         $documentationDirectories = $documentationFileService->findDocumentationDirectories(
-            str_replace('\\', '/', realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog'))
+            str_replace('\\', '/', (string)realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog'))
         );
         return array_reverse($documentationDirectories);
     }
@@ -1250,7 +1252,7 @@ class UpgradeController extends AbstractController
     {
         $documentationFileService = new DocumentationFile();
         $documentationFiles = $documentationFileService->findDocumentationFiles(
-            str_replace('\\', '/', realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog/' . $version))
+            str_replace('\\', '/', (string)realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog/' . $version))
         );
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_registry');

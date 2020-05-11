@@ -140,7 +140,7 @@ class Check implements CheckInterface
      */
     protected function checkCurrentDirectoryIsInIncludePath()
     {
-        $includePath = ini_get('include_path');
+        $includePath = (string)ini_get('include_path');
         $delimiter = $this->isWindowsOs() ? ';' : ':';
         $pathArray = $this->trimExplode($delimiter, $includePath);
         if (!in_array('.', $pathArray)) {
@@ -190,8 +190,8 @@ class Check implements CheckInterface
      */
     protected function checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize()
     {
-        $maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
-        $maximumPostSize = $this->getBytesFromSizeMeasurement(ini_get('post_max_size'));
+        $maximumUploadFilesize = $this->getBytesFromSizeMeasurement((string)ini_get('upload_max_filesize'));
+        $maximumPostSize = $this->getBytesFromSizeMeasurement((string)ini_get('post_max_size'));
         if ($maximumPostSize > 0 && $maximumPostSize < $maximumUploadFilesize) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'upload_max_filesize=' . ini_get('upload_max_filesize') . LF
@@ -222,7 +222,7 @@ class Check implements CheckInterface
     {
         $minimumMemoryLimit = 64;
         $recommendedMemoryLimit = 128;
-        $memoryLimit = $this->getBytesFromSizeMeasurement(ini_get('memory_limit'));
+        $memoryLimit = $this->getBytesFromSizeMeasurement((string)ini_get('memory_limit'));
         if ($memoryLimit <= 0) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'PHP is configured not to limit memory usage at all. This is a risk'
@@ -371,7 +371,7 @@ class Check implements CheckInterface
      */
     protected function checkDisableFunctions()
     {
-        $disabledFunctions = trim(ini_get('disable_functions'));
+        $disabledFunctions = trim((string)ini_get('disable_functions'));
 
         // Filter "disable_functions"
         $disabledFunctionsArray = $this->trimExplode(',', $disabledFunctions);
@@ -422,7 +422,7 @@ class Check implements CheckInterface
      */
     protected function checkDocRoot()
     {
-        $docRootSetting = trim(ini_get('doc_root'));
+        $docRootSetting = trim((string)ini_get('doc_root'));
         if ($docRootSetting !== '') {
             $this->messageQueue->enqueue(new FlashMessage(
                 'doc_root=' . $docRootSetting . LF
@@ -447,7 +447,7 @@ class Check implements CheckInterface
      */
     protected function checkOpenBaseDir()
     {
-        $openBaseDirSetting = trim(ini_get('open_basedir'));
+        $openBaseDirSetting = trim((string)ini_get('open_basedir'));
         if ($openBaseDirSetting !== '') {
             $this->messageQueue->enqueue(new FlashMessage(
                 'open_basedir = ' . ini_get('open_basedir') . LF
@@ -818,6 +818,7 @@ class Check implements CheckInterface
     protected function trimExplode($delimiter, $string)
     {
         $explodedValues = explode($delimiter, $string);
+        $explodedValues = is_array($explodedValues) ? $explodedValues : [];
         $resultWithPossibleEmptyValues = array_map('trim', $explodedValues);
         $result = [];
         foreach ($resultWithPossibleEmptyValues as $value) {

@@ -257,7 +257,7 @@ class FileNode extends AbstractNode implements NodeInterface
             $result = true;
         } else {
             $targetContentHash = md5($this->targetContent);
-            $currentContentHash = md5(file_get_contents($absolutePath));
+            $currentContentHash = md5((string)file_get_contents($absolutePath));
             if ($targetContentHash === $currentContentHash) {
                 $result = true;
             }
