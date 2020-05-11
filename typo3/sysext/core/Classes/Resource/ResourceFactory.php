@@ -80,7 +80,7 @@ class ResourceFactory implements SingletonInterface
      * Creates an instance of the storage from given UID. The $recordData can
      * be supplied to increase performance.
      *
-     * @param int $uid The uid of the storage to instantiate.
+     * @param int|null $uid The uid of the storage to instantiate.
      * @param array $recordData The record row from database.
      * @param string $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
      *
@@ -239,7 +239,7 @@ class ResourceFactory implements SingletonInterface
         }
         $parts = GeneralUtility::trimExplode(':', $identifier);
         if (count($parts) === 2) {
-            $storageUid = $parts[0];
+            $storageUid = (int)$parts[0];
             $fileIdentifier = $parts[1];
         } else {
             // We only got a path: Go into backwards compatibility mode and
@@ -300,7 +300,7 @@ class ResourceFactory implements SingletonInterface
             return $this->retrieveFileOrFolderObject($input);
         }
         if (MathUtility::canBeInterpretedAsInteger($input)) {
-            return $this->getFileObject($input);
+            return $this->getFileObject((int)$input);
         }
         if (strpos($input, ':') > 0) {
             [$prefix] = explode(':', $input);
@@ -341,7 +341,7 @@ class ResourceFactory implements SingletonInterface
     {
         $parts = GeneralUtility::trimExplode(':', $identifier);
         if (count($parts) === 2) {
-            $storageUid = $parts[0];
+            $storageUid = (int)$parts[0];
             $folderIdentifier = $parts[1];
         } else {
             // We only got a path: Go into backwards compatibility mode and

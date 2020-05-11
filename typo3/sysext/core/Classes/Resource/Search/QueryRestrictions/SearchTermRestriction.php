@@ -68,7 +68,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
     private function makeQuerySearchByTable(string $tableName, string $tableAlias): CompositeExpression
     {
         $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
-        $searchTerm = $this->searchDemand->getSearchTerm();
+        $searchTerm = (string)$this->searchDemand->getSearchTerm();
         $constraints = [];
 
         $searchTermParts = str_getcsv($searchTerm, ' ');

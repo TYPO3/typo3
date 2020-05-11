@@ -2069,7 +2069,7 @@ class ResourceStorage implements ResourceStorageInterface
             } elseif ($conflictMode->equals(DuplicationBehavior::CANCEL)) {
                 throw $exception;
             } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE)) {
-                $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, strrpos($file->getCombinedIdentifier(), '/') + 1) . $targetFileName;
+                $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $targetFileName;
                 $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
                 $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
             }
@@ -2281,21 +2281,23 @@ class ResourceStorage implements ResourceStorageInterface
         } else {
             $this->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $sanitizedNewFolderName);
         }
-        $this->eventDispatcher->dispatch(
-            new AfterFolderCopiedEvent($folderToCopy, $targetParentFolder, $returnObject)
-        );
+        if ($folderToCopy instanceof Folder && $targetParentFolder instanceof Folder) {
+            $this->eventDispatcher->dispatch(
+                new AfterFolderCopiedEvent($folderToCopy, $targetParentFolder, $returnObject)
+            );
+        }
         return $returnObject;
     }
 
     /**
      * Copies a folder between storages.
      *
-     * @param Folder $folderToCopy
-     * @param Folder $targetParentFolder
+     * @param FolderInterface $folderToCopy
+     * @param FolderInterface $targetParentFolder
      * @param string $newFolderName
      * @throws NotImplementedMethodException
      */
-    protected function copyFolderBetweenStorages(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName)
+    protected function copyFolderBetweenStorages(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName)
     {
         throw new NotImplementedMethodException('Not yet implemented.', 1476046386);
     }

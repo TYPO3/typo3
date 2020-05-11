@@ -319,11 +319,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         // Handle UTF-8 characters
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
-            $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
+            $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
         } else {
             $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII($charset, $fileName);
             // Replace unwanted characters with underscores
-            $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
+            $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
         }
         // Strip trailing dots and return
         $cleanFileName = rtrim($cleanFileName, '.');
@@ -953,7 +953,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $sourcePath = $this->getAbsolutePath($fileIdentifier);
         $temporaryPath = $this->getTemporaryPathForFile($fileIdentifier);
         $result = copy($sourcePath, $temporaryPath);
-        touch($temporaryPath, filemtime($sourcePath));
+        touch($temporaryPath, (int)filemtime($sourcePath));
         if ($result === false) {
             throw new \RuntimeException(
                 'Copying file "' . $fileIdentifier . '" to temporary path "' . $temporaryPath . '" failed.',
@@ -975,7 +975,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $destinationFile = $recycleDirectory . '/' . PathUtility::basename($filePath);
         if (file_exists($destinationFile)) {
-            $timeStamp = \DateTimeImmutable::createFromFormat('U.u', microtime(true))->format('YmdHisu');
+            $timeStamp = \DateTimeImmutable::createFromFormat('U.u', (string)microtime(true))->format('YmdHisu');
             $destinationFile = $recycleDirectory . '/' . $timeStamp . '_' . PathUtility::basename($filePath);
         }
         $result = rename($filePath, $destinationFile);
@@ -1234,6 +1234,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $path = $this->getAbsolutePath($folderIdentifier);
         $dirHandle = opendir($path);
+        if ($dirHandle === false) {
+            return false;
+        }
         while ($entry = readdir($dirHandle)) {
             if ($entry !== '.' && $entry !== '..') {
                 closedir($dirHandle);
@@ -1390,7 +1393,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     public function dumpFileContents($identifier)
     {
-        readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), 0);
+        readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), false);
     }
 
     /**

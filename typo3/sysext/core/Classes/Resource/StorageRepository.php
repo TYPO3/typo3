@@ -200,7 +200,7 @@ class StorageRepository implements LoggerAwareInterface
                 $storageObjects[] = $this->getStorageObject($storageRow['uid'], $storageRow);
             } else {
                 $this->logger->warning(
-                    sprintf('Could not instantiate storage "%s" because of missing driver.', [$storageRow['name']]),
+                    sprintf('Could not instantiate storage "%s" because of missing driver.', $storageRow['name']),
                     $storageRow
                 );
             }
@@ -224,7 +224,7 @@ class StorageRepository implements LoggerAwareInterface
                 $storageObjects[] = $this->getStorageObject($storageRow['uid'], $storageRow);
             } else {
                 $this->logger->warning(
-                    sprintf('Could not instantiate storage "%s" because of missing driver.', [$storageRow['name']]),
+                    sprintf('Could not instantiate storage "%s" because of missing driver.', $storageRow['name']),
                     $storageRow
                 );
             }
@@ -437,7 +437,7 @@ class StorageRepository implements LoggerAwareInterface
             $storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
         }
         $driverType = $storageRecord['driver'];
-        $driverObject = $this->getDriverObject($driverType, $storageConfiguration);
+        $driverObject = $this->getDriverObject($driverType, (array)$storageConfiguration);
         $storageRecord['configuration'] = $storageConfiguration;
         return GeneralUtility::makeInstance(ResourceStorage::class, $driverObject, $storageRecord, $this->eventDispatcher);
     }

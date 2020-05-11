@@ -281,7 +281,7 @@ class ResourceCompressor
             foreach ($filesToInclude as $filename) {
                 $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
                 $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
-                $contents = file_get_contents($filenameAbsolute);
+                $contents = (string)file_get_contents($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
                 if (strpos($contents, "\xEF\xBB\xBF") === 0) {
                     $contents = substr($contents, 3);
@@ -353,7 +353,7 @@ class ResourceCompressor
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
         if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
-            $contents = $this->compressCssString(file_get_contents($filenameAbsolute));
+            $contents = $this->compressCssString((string)file_get_contents($filenameAbsolute));
             if (strpos($filename, $this->targetDirectory) === false) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
             }
@@ -405,7 +405,7 @@ class ResourceCompressor
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
         // only create it, if it doesn't exist, yet
         if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
-            $contents = file_get_contents($filenameAbsolute);
+            $contents = (string)file_get_contents($filenameAbsolute);
             $this->writeFileAndCompressed($targetFile, $contents);
         }
         return $this->returnFileReference($targetFile);
@@ -455,7 +455,7 @@ class ResourceCompressor
             return $fileNameWithoutSlash;
         }
         // if the file is from a special TYPO3 internal directory, add the missing typo3/ prefix
-        if (is_file(realpath(Environment::getBackendPath() . '/' . $filename))) {
+        if (is_file((string)realpath(Environment::getBackendPath() . '/' . $filename))) {
             $filename = 'typo3/' . $filename;
         }
         // build the file path relative to the public web path
@@ -469,7 +469,7 @@ class ResourceCompressor
 
         // check if the file exists, and if so, return the path relative to current PHP script
         if (is_file($file)) {
-            return rtrim(PathUtility::getRelativePathTo($file), '/');
+            return rtrim((string)PathUtility::getRelativePathTo($file), '/');
         }
         // none of above conditions were met, fallback to default behaviour
         return $filename;
@@ -569,7 +569,7 @@ class ResourceCompressor
         GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $contents);
         if ($this->createGzipped) {
             // create compressed version
-            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . '.gzip', gzencode($contents, $this->gzipCompressionLevel));
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . '.gzip', (string)gzencode($contents, $this->gzipCompressionLevel));
         }
     }
 
@@ -601,7 +601,7 @@ class ResourceCompressor
         $filename = $this->targetDirectory . 'external-' . md5($url);
         // Write only if file does not exist OR md5 of the content is not the same as fetched one
         if (!file_exists(Environment::getPublicPath() . '/' . $filename)
-            || !hash_equals(md5(file_get_contents(Environment::getPublicPath() . '/' . $filename)), md5($externalContent))
+            || !hash_equals(md5((string)file_get_contents(Environment::getPublicPath() . '/' . $filename)), md5($externalContent))
         ) {
             GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent);
         }
@@ -624,7 +624,7 @@ class ResourceCompressor
         // Regexp to match single quoted strings.
         $single_quot = "'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'";
         // Strip all comment blocks, but keep double/single quoted strings.
-        $contents = preg_replace(
+        $contents = (string)preg_replace(
             "<($double_quot|$single_quot)|$comment>Ss",
             '$1',
             $contents
@@ -633,7 +633,7 @@ class ResourceCompressor
         // There are different conditions for removing leading and trailing
         // whitespace.
         // @see https://php.net/manual/regexp.reference.subpatterns.php
-        $contents = preg_replace(
+        $contents = (string)preg_replace(
             '<
 				# Strip leading and trailing whitespace.
 				\s*([@{};,])\s*

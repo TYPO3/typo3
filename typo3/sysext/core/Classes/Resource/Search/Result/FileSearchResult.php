@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FileSearchResult implements FileSearchResultInterface
 {
     /**
-     * @var FileSearchQuery
+     * @var FileSearchDemand
      */
     private $searchDemand;
 

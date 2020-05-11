@@ -79,7 +79,7 @@ class FileIndexRepository implements SingletonInterface
      * Retrieves Index record for a given $fileUid
      *
      * @param int $fileUid
-     * @return array|bool
+     * @return array|false
      */
     public function findOneByUid($fileUid)
     {
@@ -103,7 +103,7 @@ class FileIndexRepository implements SingletonInterface
      *
      * @param int $storageUid
      * @param string $identifierHash
-     * @return array|bool
+     * @return array|false
      *
      * @internal only for use from FileRepository
      */

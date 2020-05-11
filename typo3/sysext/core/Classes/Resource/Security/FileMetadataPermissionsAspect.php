@@ -78,7 +78,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
                         );
                     }
 
-                    $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', $id);
+                    $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', (int)$id);
                     $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
                     if (!$accessAllowed) {
                         // If for any item in the array, access is not allowed, we deny the whole operation
@@ -91,7 +91,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
                 foreach ($parent->datamap[$table] as $id => $data) {
                     $recordAccessAllowed = false;
 
-                    if (strpos($id, 'NEW') === false) {
+                    if (strpos((string)$id, 'NEW') === false) {
                         $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', $id);
                         if ($fileMetadataRecord !== null) {
                             if ($parent->isImporting && empty($fileMetadataRecord['file'])) {
@@ -143,7 +143,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
         $accessAllowed = $parameters['hasAccess'];
 
         if ($accessAllowed && $table === 'sys_file_metadata' && $cmd === 'edit') {
-            $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', $uid);
+            $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', $uid);
             $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
         }
         return $accessAllowed;
