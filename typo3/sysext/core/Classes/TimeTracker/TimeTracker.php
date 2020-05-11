@@ -403,7 +403,7 @@ class TimeTracker implements SingletonInterface
         $flag_tree = $this->printConf['flag_tree'];
         $flag_messages = $this->printConf['flag_messages'];
         $flag_content = $this->printConf['flag_content'];
-        $keyLgd = $this->printConf['keyLgd'];
+        $keyLgd = (int)$this->printConf['keyLgd'];
         $c = 0;
         foreach ($this->tsStackLog as $uniqueId => $data) {
             $logRowClass = '';
