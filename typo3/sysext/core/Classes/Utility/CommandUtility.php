@@ -453,7 +453,7 @@ class CommandUtility
         $isUTF8Filesystem = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']);
         $currentLocale = false;
         if ($isUTF8Filesystem) {
-            $currentLocale = setlocale(LC_CTYPE, 0);
+            $currentLocale = setlocale(LC_CTYPE, '0');
             setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
         }
 

@@ -262,9 +262,10 @@ class GeneralUtility
                     $mask = false;
                 }
                 if ((int)$mask) {
+                    $mask = (int)$mask;
                     // "192.168.3.0/24"
-                    $lnet = ip2long($test);
-                    $lip = ip2long($baseIP);
+                    $lnet = (int)ip2long($test);
+                    $lip = (int)ip2long($baseIP);
                     $binnet = str_pad(decbin($lnet), 32, '0', STR_PAD_LEFT);
                     $firstpart = substr($binnet, 0, $mask);
                     $binip = str_pad(decbin($lip), 32, '0', STR_PAD_LEFT);
@@ -318,13 +319,15 @@ class GeneralUtility
                 } elseif ($maskInt == 128) {
                     $success = $test === $baseIP;
                 } else {
-                    $testBin = inet_pton($test);
-                    $baseIPBin = inet_pton($baseIP);
+                    $testBin = (string)inet_pton($test);
+                    $baseIPBin = (string)inet_pton($baseIP);
+
                     $success = true;
                     // Modulo is 0 if this is a 8-bit-boundary
                     $maskIntModulo = $maskInt % 8;
                     $numFullCharactersUntilBoundary = (int)($maskInt / 8);
-                    if (strpos($testBin, substr($baseIPBin, 0, $numFullCharactersUntilBoundary)) !== 0) {
+                    $substring = (string)substr($baseIPBin, 0, $numFullCharactersUntilBoundary);
+                    if (strpos($testBin, $substring) !== 0) {
                         $success = false;
                     } elseif ($maskIntModulo > 0) {
                         // If not an 8-bit-boundary, check bits of last character
@@ -501,7 +504,7 @@ class GeneralUtility
             // Resolve hostname
             // Note: this is reverse-lookup and can be randomly set as soon as somebody is able to set
             // the reverse-DNS for his IP (security when for example used with REMOTE_ADDR)
-            $baseHostName = gethostbyaddr($baseHost);
+            $baseHostName = (string)gethostbyaddr($baseHost);
             if ($baseHostName === $baseHost) {
                 // Unable to resolve hostname
                 return false;
@@ -913,7 +916,7 @@ class GeneralUtility
      */
     public static function camelCaseToLowerCaseUnderscored($string)
     {
-        $value = preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $string);
+        $value = preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $string) ?? '';
         return mb_strtolower($value, 'utf-8');
     }
 
@@ -987,7 +990,7 @@ class GeneralUtility
      */
     public static function intExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0)
     {
-        $result = explode($delimiter, $string);
+        $result = explode($delimiter, $string) ?: [];
         foreach ($result as $key => &$value) {
             if ($removeEmptyValues && ($value === '' || trim($value) === '')) {
                 unset($result[$key]);
@@ -1035,7 +1038,7 @@ class GeneralUtility
         if ($count <= 1) {
             return [$string];
         }
-        $explodedValues = explode($delimiter, strrev($string), $count);
+        $explodedValues = explode($delimiter, strrev($string), $count) ?: [];
         $explodedValues = array_map('strrev', $explodedValues);
         return array_reverse($explodedValues);
     }
@@ -1054,7 +1057,7 @@ class GeneralUtility
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0)
     {
-        $result = explode($delim, $string);
+        $result = explode($delim, $string) ?: [];
         if ($removeEmptyValues) {
             $temp = [];
             foreach ($result as $value) {
@@ -1184,7 +1187,7 @@ class GeneralUtility
      *
      * @param string $tag HTML-tag string (or attributes only)
      * @param bool $decodeEntities Whether to decode HTML entities
-     * @return string[] Array with the attribute values.
+     * @return array<string, string> Array with the attribute values.
      */
     public static function get_tag_attributes($tag, bool $decodeEntities = false)
     {
@@ -1202,7 +1205,7 @@ class GeneralUtility
                         $name = '';
                     }
                 } else {
-                    if ($key = strtolower(preg_replace('/[^[:alnum:]_\\:\\-]/', '', $val))) {
+                    if ($key = strtolower(preg_replace('/[^[:alnum:]_\\:\\-]/', '', $val) ?? '')) {
                         $attributes[$key] = '';
                         $name = $key;
                     }
@@ -1224,7 +1227,7 @@ class GeneralUtility
      */
     public static function split_tag_attributes($tag)
     {
-        $tag_tmp = trim(preg_replace('/^<[^[:space:]]*/', '', trim($tag)));
+        $tag_tmp = trim(preg_replace('/^<[^[:space:]]*/', '', trim($tag)) ?? '');
         // Removes any > in the end of the string
         $tag_tmp = trim(rtrim($tag_tmp, '>'));
         $value = [];
@@ -1853,13 +1856,13 @@ class GeneralUtility
         }
         if (static::isAllowedAbsPath($path)) {
             if (@is_file($path)) {
-                $targetPermissions = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] ?? '0644';
+                $targetPermissions = (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] ?? '0644');
             } elseif (@is_dir($path)) {
-                $targetPermissions = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '0755';
+                $targetPermissions = (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '0755');
             }
             if (!empty($targetPermissions)) {
                 // make sure it's always 4 digits
-                $targetPermissions = str_pad($targetPermissions, 4, 0, STR_PAD_LEFT);
+                $targetPermissions = str_pad($targetPermissions, 4, '0', STR_PAD_LEFT);
                 $targetPermissions = octdec($targetPermissions);
                 // "@" is there because file is not necessarily OWNED by the user
                 $result = @chmod($path, $targetPermissions);
@@ -2035,9 +2038,9 @@ class GeneralUtility
         if (!@is_dir($currentPath)) {
             do {
                 $firstCreatedPath = $currentPath;
-                $separatorPosition = strrpos($currentPath, DIRECTORY_SEPARATOR);
+                $separatorPosition = (int)strrpos($currentPath, DIRECTORY_SEPARATOR);
                 $currentPath = substr($currentPath, 0, $separatorPosition);
-            } while (!is_dir($currentPath) && $separatorPosition !== false);
+            } while (!is_dir($currentPath) && $separatorPosition > 0);
             $result = @mkdir($fullDirectoryPath, $permissionMask, true);
             // Check existence of directory again to avoid race condition. Directory could have get created by another process between previous is_dir() and mkdir()
             if (!$result && !@is_dir($fullDirectoryPath)) {
@@ -2058,7 +2061,7 @@ class GeneralUtility
     {
         $OK = false;
         // Remove trailing slash
-        $path = preg_replace('|/$|', '', $path);
+        $path = preg_replace('|/$|', '', $path) ?? '';
         $isWindows = DIRECTORY_SEPARATOR === '\\';
         if (file_exists($path)) {
             $OK = true;
@@ -2250,7 +2253,7 @@ class GeneralUtility
         if ($regDirs) {
             $fileArr[md5($path)] = $path;
         }
-        $fileArr = array_merge($fileArr, self::getFilesInDir($path, $extList, 1, 1, $excludePattern));
+        $fileArr = array_merge($fileArr, (array)self::getFilesInDir($path, $extList, true, '', $excludePattern));
         $dirs = self::get_dirs($path);
         if ($recursivityLevels > 0 && is_array($dirs)) {
             foreach ($dirs as $subdirs) {
@@ -2362,10 +2365,12 @@ class GeneralUtility
      */
     public static function getMaxUploadFileSize()
     {
+        $uploadMaxFilesize = (string)ini_get('upload_max_filesize');
+        $postMaxSize = (string)ini_get('post_max_size');
         // Check for PHP restrictions of the maximum size of one of the $_FILES
-        $phpUploadLimit = self::getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
+        $phpUploadLimit = self::getBytesFromSizeMeasurement($uploadMaxFilesize);
         // Check for PHP restrictions of the maximum $_POST size
-        $phpPostLimit = self::getBytesFromSizeMeasurement(ini_get('post_max_size'));
+        $phpPostLimit = self::getBytesFromSizeMeasurement($postMaxSize);
         // If the total amount of post data is smaller (!) than the upload_max_filesize directive,
         // then this is the real limit in PHP
         $phpUploadLimit = $phpPostLimit > 0 && $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
@@ -2388,7 +2393,7 @@ class GeneralUtility
         } elseif (stripos($measurement, 'K')) {
             $bytes *= 1024;
         }
-        return $bytes;
+        return (int)$bytes;
     }
 
     /**
@@ -2684,7 +2689,7 @@ class GeneralUtility
                                 $ip = '';
                         }
                     }
-                    if (self::validIP($ip)) {
+                    if (self::validIP((string)$ip)) {
                         $retVal = $ip;
                     }
                 }
@@ -3225,13 +3230,14 @@ class GeneralUtility
             self::mkdir_deep($temporaryPath);
         }
         if ($fileSuffix === '') {
-            $tempFileName = $temporaryPath . PathUtility::basename(tempnam($temporaryPath, $filePrefix));
+            $path = (string)tempnam($temporaryPath, $filePrefix);
+            $tempFileName = $temporaryPath . PathUtility::basename($path);
         } else {
             do {
                 $tempFileName = $temporaryPath . $filePrefix . random_int(1, PHP_INT_MAX) . $fileSuffix;
             } while (file_exists($tempFileName));
             touch($tempFileName);
-            clearstatcache(null, $tempFileName);
+            clearstatcache(false, $tempFileName);
         }
         return $tempFileName;
     }
@@ -3320,9 +3326,11 @@ class GeneralUtility
             if (class_exists($parts[0])) {
                 // Create object
                 $classObj = self::makeInstance($parts[0]);
-                if (method_exists($classObj, $parts[1])) {
+                $methodName = (string)$parts[1];
+                $callable = [$classObj, $methodName];
+                if (is_callable($callable)) {
                     // Call method:
-                    $content = call_user_func_array([&$classObj, $parts[1]], [&$params, &$ref]);
+                    $content = call_user_func_array($callable, [&$params, &$ref]);
                 } else {
                     $errorMsg = 'No method name \'' . $parts[1] . '\' in class ' . $parts[0];
                     throw new \InvalidArgumentException($errorMsg, 1294585865);
@@ -3331,7 +3339,7 @@ class GeneralUtility
                 $errorMsg = 'No class named ' . $parts[0];
                 throw new \InvalidArgumentException($errorMsg, 1294585866);
             }
-        } elseif (function_exists($funcName)) {
+        } elseif (function_exists($funcName) && is_callable($funcName)) {
             // It's a function
             $content = call_user_func_array($funcName, [&$params, &$ref]);
         } else {
@@ -3726,8 +3734,13 @@ class GeneralUtility
      */
     public static function quoteJSvalue($value)
     {
+        $json = (string)json_encode(
+            (string)$value,
+            JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG
+        );
+
         return strtr(
-            json_encode((string)$value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG),
+            $json,
             [
                 '"' => '\'',
                 '\\\\' => '\\u005C',
@@ -3747,7 +3760,7 @@ class GeneralUtility
      */
     public static function jsonEncodeForHtmlAttribute($value, bool $useHtmlEntities = true): string
     {
-        $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
+        $json = (string)json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
         return $useHtmlEntities ? htmlspecialchars($json) : $json;
     }
 

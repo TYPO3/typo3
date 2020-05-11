@@ -1605,7 +1605,7 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = ' */';
                 $phpCodeToCache[] = '';
                 // Add ext_localconf.php content of extension
-                $phpCodeToCache[] = trim(file_get_contents($extLocalconfPath));
+                $phpCodeToCache[] = trim((string)file_get_contents($extLocalconfPath));
                 $phpCodeToCache[] = '';
                 $phpCodeToCache[] = '';
             }
@@ -1829,7 +1829,7 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = ' */';
                 $phpCodeToCache[] = '';
                 // Add ext_tables.php content of extension
-                $phpCodeToCache[] = trim(file_get_contents($extTablesPath));
+                $phpCodeToCache[] = trim((string)file_get_contents($extTablesPath));
                 $phpCodeToCache[] = '';
             }
         }

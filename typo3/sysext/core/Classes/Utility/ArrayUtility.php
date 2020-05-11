@@ -679,7 +679,7 @@ class ArrayUtility
      *
      * @param array $array The initial array to be filtered/reduced
      * @param mixed $keepItems The items which are allowed/kept in the array - accepts array or csv string
-     * @param string $getValueFunc (optional) Callback function used to get the value to keep
+     * @param callable|null $getValueFunc (optional) Callback function used to get the value to keep
      * @return array The filtered/reduced array with the kept items
      */
     public static function keepItemsInArray(array $array, $keepItems, $getValueFunc = null)
@@ -837,7 +837,7 @@ class ArrayUtility
             if (is_array($value)) {
                 $result[$key] = self::stripTagsFromValuesRecursive($value);
             } elseif (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
-                $result[$key] = strip_tags($value);
+                $result[$key] = strip_tags((string)$value);
             }
         }
         return $result;
