@@ -135,12 +135,12 @@ class Parser
         if ($lookaheadType !== $token) {
             // If parameter is not identifier (1-99) must be exact match
             if ($token < Lexer::T_IDENTIFIER) {
-                $this->syntaxError($this->lexer->getLiteral($token));
+                $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
 
             // If parameter is keyword (200+) must be exact match
             if ($token > Lexer::T_IDENTIFIER) {
-                $this->syntaxError($this->lexer->getLiteral($token));
+                $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
 
             // If parameter is MATCH then FULL, PARTIAL or SIMPLE must follow
@@ -149,11 +149,11 @@ class Parser
                 && $lookaheadType !== Lexer::T_PARTIAL
                 && $lookaheadType !== Lexer::T_SIMPLE
             ) {
-                $this->syntaxError($this->lexer->getLiteral($token));
+                $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
 
             if ($token === Lexer::T_ON && $lookaheadType !== Lexer::T_DELETE && $lookaheadType !== Lexer::T_UPDATE) {
-                $this->syntaxError($this->lexer->getLiteral($token));
+                $this->syntaxError((string)$this->lexer->getLiteral($token));
             }
         }
 
@@ -239,7 +239,7 @@ class Parser
     public function semanticalError($message = '', $token = null)
     {
         if ($token === null) {
-            $token = $this->lexer->lookahead;
+            $token = $this->lexer->lookahead ?? [];
         }
 
         // Minimum exposed chars ahead of token

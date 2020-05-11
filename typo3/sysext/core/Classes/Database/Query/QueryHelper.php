@@ -125,9 +125,9 @@ class QueryHelper
             $tableName = strtok($input, $quoteCharacter);
         }
 
-        $tableAlias = strtok($quoteCharacter);
+        $tableAlias = (string)strtok($quoteCharacter);
         if (strtolower($tableAlias) === 'as') {
-            $tableAlias = strtok($quoteCharacter);
+            $tableAlias = (string)strtok($quoteCharacter);
             // Skip the next token which must be ON
             strtok(' ');
             $joinCondition = strtok('');
@@ -145,7 +145,7 @@ class QueryHelper
         // that the quoted table alias contains whitespace.
         $firstCharacterOfTableAlias = $tableAlias[0] ?? null;
         if ($firstCharacterOfTableAlias === '`' || $firstCharacterOfTableAlias === '"') {
-            $tableAlias = substr($tableAlias, 1, -1);
+            $tableAlias = substr((string)$tableAlias, 1, -1);
         }
 
         $tableAlias = $tableAlias ?: $tableName;

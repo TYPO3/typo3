@@ -454,7 +454,7 @@ class ReferenceIndex implements LoggerAwareInterface
         }
         return $this->createEntryDataUsingRecord(
             (string)$table,
-            $this->getRecordRawCached($table, $uid),
+            $this->getRecordRawCached($table, $uid) ?: [],
             (string)$field,
             (string)$flexPointer,
             $deleted ? (int)$deleted : 0,
@@ -527,7 +527,7 @@ class ReferenceIndex implements LoggerAwareInterface
         }
         $this->createEntryDataForDatabaseRelationsUsingRecord(
             (string)$table,
-            $this->getRecordRawCached($table, $uid),
+            $this->getRecordRawCached($table, $uid) ?: [],
             (string)$fieldName,
             (string)$flexPointer,
             $deleted ? (int)$deleted : 0,
@@ -570,7 +570,7 @@ class ReferenceIndex implements LoggerAwareInterface
         }
         $this->createEntryDataForSoftReferencesUsingRecord(
             (string)$table,
-            $this->getRecordRawCached($table, $uid),
+            $this->getRecordRawCached($table, $uid) ?: [],
             (string)$fieldName,
             (string)$flexPointer,
             $deleted ? (int)$deleted : 0,

@@ -106,7 +106,7 @@ class SchemaColumnDefinitionListener
      */
     protected function getUnquotedEnumerationValues(string $typeDefinition): array
     {
-        $valuesDefinition = preg_replace('#^(enum|set)\((.*)\)\s*$#i', '$2', $typeDefinition);
+        $valuesDefinition = preg_replace('#^(enum|set)\((.*)\)\s*$#i', '$2', $typeDefinition) ?? '';
         $quoteChar = $valuesDefinition[0];
         $separator = $quoteChar . ',' . $quoteChar;
 
@@ -114,9 +114,9 @@ class SchemaColumnDefinitionListener
             '#' . $quoteChar . ',\s*' . $quoteChar . '#',
             $separator,
             $valuesDefinition
-        );
+        ) ?? '';
 
-        $values = explode($quoteChar . ',' . $quoteChar, substr($valuesDefinition, 1, -1));
+        $values = explode($quoteChar . ',' . $quoteChar, substr($valuesDefinition, 1, -1)) ?: [];
 
         return array_map(
             function (string $value) use ($quoteChar) {

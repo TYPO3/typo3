@@ -58,7 +58,7 @@ class RelationHandler
     /**
      * Contains items in a numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
      *
-     * @var array
+     * @var array<int, array<string, mixed>>
      */
     public $itemArray = [];
 
@@ -494,7 +494,7 @@ class RelationHandler
             );
         } elseif (count($this->tableArray) === 1) {
             reset($this->tableArray);
-            $table = key($this->tableArray);
+            $table = (string)key($this->tableArray);
             $connection = $this->getConnectionForTableName($table);
             $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
@@ -578,7 +578,7 @@ class RelationHandler
         }
         if ($this->MM_table_where) {
             $queryBuilder->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where))
+                QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$uid, $this->MM_table_where))
             );
         }
         foreach ($this->MM_match_fields as $field => $value) {
@@ -654,7 +654,7 @@ class RelationHandler
             if ($this->MM_table_where) {
                 $additionalWhere->add(
                     QueryHelper::stripLogicalOperatorPrefix(
-                        str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where)
+                        str_replace('###THIS_UID###', (string)$uid, $this->MM_table_where)
                     )
                 );
             }
@@ -896,7 +896,7 @@ class RelationHandler
             // Add WHERE clause if configured
             if ($this->MM_table_where) {
                 $queryBuilder->andWhere(
-                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where))
+                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$uid, $this->MM_table_where))
                 );
             }
             // Select, update or delete only those relations that match the configured fields
@@ -1030,7 +1030,7 @@ class RelationHandler
         $rows = [];
         $result = $queryBuilder->execute();
         while ($row = $result->fetch()) {
-            $rows[$row['uid']] = $row;
+            $rows[(int)$row['uid']] = $row;
         }
         if (!empty($rows)) {
             // Retrieve the parsed and prepared ORDER BY configuration for the resolver
@@ -1098,7 +1098,7 @@ class RelationHandler
                 }
                 $isOnSymmetricSide = false;
                 if ($symmetric_field) {
-                    $isOnSymmetricSide = self::isOnSymmetricSide($parentUid, $conf, $row);
+                    $isOnSymmetricSide = self::isOnSymmetricSide((string)$parentUid, $conf, $row);
                 }
                 $updateValues = $foreign_match_fields;
                 // No update to the uid is requested, so this is the normal behaviour
@@ -1426,7 +1426,7 @@ class RelationHandler
     /**
      * Handles a purge callback on $this->itemArray
      *
-     * @param callable $purgeCallback
+     * @param string $purgeCallback
      * @return bool Whether items have been purged
      */
     protected function purgeItemArrayHandler($purgeCallback)
@@ -1438,7 +1438,12 @@ class RelationHandler
                 continue;
             }
 
-            $purgedItemIds = call_user_func([$this, $purgeCallback], $itemTableName, $itemIds);
+            $purgedItemIds = [];
+            $callable =[$this, $purgeCallback];
+            if (is_callable($callable)) {
+                $purgedItemIds = call_user_func($callable, $itemTableName, $itemIds);
+            }
+
             $removedItemIds = array_diff($itemIds, $purgedItemIds);
             foreach ($removedItemIds as $removedItemId) {
                 $this->removeFromItemArray($itemTableName, $removedItemId);
@@ -1462,7 +1467,7 @@ class RelationHandler
     protected function purgeVersionedIds($tableName, array $ids)
     {
         $ids = $this->sanitizeIds($ids);
-        $ids = array_combine($ids, $ids);
+        $ids = (array)array_combine($ids, $ids);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
@@ -1505,7 +1510,7 @@ class RelationHandler
     protected function purgeLiveVersionedIds($tableName, array $ids)
     {
         $ids = $this->sanitizeIds($ids);
-        $ids = array_combine($ids, $ids);
+        $ids = (array)array_combine($ids, $ids);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
@@ -1549,7 +1554,7 @@ class RelationHandler
     protected function purgeDeletePlaceholder($tableName, array $ids)
     {
         $ids = $this->sanitizeIds($ids);
-        $ids = array_combine($ids, $ids);
+        $ids = array_combine($ids, $ids) ?: [];
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 

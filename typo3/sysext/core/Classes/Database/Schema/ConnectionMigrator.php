@@ -164,7 +164,7 @@ class ConnectionMigrator
                     $indexColumns = array_map(
                         function ($columnName) {
                             // Strip MySQL prefix length information to get real column names
-                            $columnName = preg_replace('/\(\d+\)$/', '', $columnName);
+                            $columnName = preg_replace('/\(\d+\)$/', '', $columnName) ?? '';
                             // Strip mssql '[' and ']' from column names
                             $columnName = ltrim($columnName, '[');
                             $columnName = rtrim($columnName, ']');
@@ -252,6 +252,7 @@ class ConnectionMigrator
 
         // Collect the table names that have been mapped to this connection.
         $connectionName = $this->connectionName;
+        /** @var string[] $tablesForConnection */
         $tablesForConnection = array_keys(
             array_filter(
                 $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'],
@@ -575,7 +576,9 @@ class ConnectionMigrator
                         continue;
                     }
 
-                    $changedColumn->fromColumn = $this->buildQuotedColumn($changedColumn->fromColumn);
+                    if ($changedColumn->fromColumn !== null) {
+                        $changedColumn->fromColumn = $this->buildQuotedColumn($changedColumn->fromColumn);
+                    }
 
                     // Get the current SQL declaration for the column
                     $currentColumn = $fromTable->getColumn($changedColumn->getOldColumnName()->getName());
@@ -823,6 +826,9 @@ class ConnectionMigrator
                 // Treat each removed foreign key with a new diff to get a dedicated suggestions
                 // just for this foreign key.
                 foreach ($changedTable->removedForeignKeys as $removedForeignKey) {
+                    if (is_string($removedForeignKey)) {
+                        continue;
+                    }
                     $fkIndex = $index . ':fk_' . $removedForeignKey->getName();
                     $changedTables[$fkIndex] = GeneralUtility::makeInstance(
                         TableDiff::class,
@@ -1081,9 +1087,9 @@ class ConnectionMigrator
     /**
      * Helper for buildSchemaDiff to filter an array of TableDiffs against a list of valid table names.
      *
-     * @param TableDiff[]|Table[] $tableDiffs
+     * @param \Doctrine\DBAL\Schema\TableDiff[]|Table[] $tableDiffs
      * @param string[] $validTableNames
-     * @return TableDiff[]
+     * @return \Doctrine\DBAL\Schema\TableDiff[]
      * @throws \InvalidArgumentException
      */
     protected function removeUnrelatedTables(array $tableDiffs, array $validTableNames): array
