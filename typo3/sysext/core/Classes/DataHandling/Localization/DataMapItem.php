@@ -411,6 +411,7 @@ class DataMapItem
         if (MathUtility::canBeInterpretedAsInteger($idValue)) {
             return $idValue;
         }
+        $idValue = (string)$idValue;
         if (strpos($idValue, 'NEW') === 0) {
             return $idValue;
         }

@@ -119,11 +119,11 @@ class SlugHelper
         $slug = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $slug);
 
         // Get rid of all invalid characters, but allow slashes
-        $slug = preg_replace('/[^\p{L}\p{M}0-9\/' . preg_quote($fallbackCharacter) . ']/u', '', $slug);
+        $slug = (string)preg_replace('/[^\p{L}\p{M}0-9\/' . preg_quote($fallbackCharacter) . ']/u', '', $slug);
 
         // Convert multiple fallback characters to a single one
         if ($fallbackCharacter !== '') {
-            $slug = preg_replace('/' . preg_quote($fallbackCharacter) . '{2,}/', $fallbackCharacter, $slug);
+            $slug = (string)preg_replace('/' . preg_quote($fallbackCharacter) . '{2,}/', $fallbackCharacter, $slug);
         }
 
         // Ensure slug is lower cased after all replacement was done
@@ -209,7 +209,7 @@ class SlugHelper
         $slug = $this->sanitize($slug);
         // No valid data found
         if ($slug === '' || $slug === '/') {
-            $slug = 'default-' . GeneralUtility::shortMD5(json_encode($recordData));
+            $slug = 'default-' . GeneralUtility::shortMD5((string)json_encode($recordData));
         }
         if ($this->prependSlashInSlug && ($slug[0] ?? '') !== '/') {
             $slug = '/' . $slug;
@@ -556,7 +556,7 @@ class SlugHelper
             $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($recordId, \PDO::PARAM_INT))
         );
         if ($this->workspaceId > 0 && $this->workspaceEnabled) {
-            $liveId = BackendUtility::getLiveVersionIdOfRecord($this->tableName, $recordId) ?? $recordId;
+            $liveId = BackendUtility::getLiveVersionIdOfRecord($this->tableName, (int)$recordId) ?? $recordId;
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT))
             );

@@ -2941,7 +2941,7 @@ class BackendUtility
      * @param string $table Table name
      * @param int $uid Record uid
      * @param int|string $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return
-     * @return int
+     * @return int|null
      * @internal
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::copyRecord()
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid()

@@ -159,7 +159,7 @@ class ReferenceIndexUpdater
                         )
                         ->execute();
                     while ($row = $statement->fetch()) {
-                        $this->registerForUpdate($row['tablename'], (int)$row['recuid'], $item['targetWorkspace']);
+                        $this->registerForUpdate($row['tablename'], (int)$row['recuid'], (int)$item['targetWorkspace']);
                     }
                 }
             }

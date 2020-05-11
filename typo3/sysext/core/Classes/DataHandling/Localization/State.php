@@ -309,7 +309,7 @@ class State
         $fieldNames = static::getFieldNames($this->tableName);
         return array_intersect_key(
             $states,
-            array_combine($fieldNames, $fieldNames)
+            array_combine($fieldNames, $fieldNames) ?: []
         );
     }
 

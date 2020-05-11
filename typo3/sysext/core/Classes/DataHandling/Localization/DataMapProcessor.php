@@ -56,12 +56,12 @@ class DataMapProcessor
     protected $allDataMap = [];
 
     /**
-     * @var array
+     * @var array<string, array>
      */
     protected $modifiedDataMap = [];
 
     /**
-     * @var array
+     * @var array<string, array<int, array>>
      */
     protected $sanitizationMap = [];
 
@@ -301,7 +301,7 @@ class DataMapProcessor
             );
         }
 
-        $fieldNameMap = array_combine($fieldNames, $fieldNames);
+        $fieldNameMap = array_combine($fieldNames, $fieldNames) ?: [];
         // separate fields, that are submitted in data-map, but not defined as custom
         $this->sanitizationMap[$item->getTableName()][$item->getId()] = array_intersect_key(
             $this->allDataMap[$item->getTableName()][$item->getId()],
@@ -333,7 +333,7 @@ class DataMapProcessor
         if (MathUtility::canBeInterpretedAsInteger($fromId)) {
             $fromRecord = BackendUtility::getRecordWSOL(
                 $item->getTableName(),
-                $fromId,
+                (int)$fromId,
                 $fieldNameList
             );
         }
@@ -560,7 +560,7 @@ class DataMapProcessor
 
         // The dependent ID map points from language parent/source record to
         // localization, thus keys: parents/sources & values: localizations
-        $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds, $item->getLanguage());
+        $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds, (int)$item->getLanguage());
         // filter incomplete structures - this is a drawback of DataHandler's remap stack, since
         // just created IRRE translations still belong to the language parent - filter them out
         $suggestedAncestorIds = array_diff($suggestedAncestorIds, array_values($dependentIdMap));
@@ -576,7 +576,7 @@ class DataMapProcessor
         // non-persisted elements that should be duplicated in data-map directly
         $populateAncestorIds = array_diff($missingAncestorIds, $createAncestorIds);
         // this desired state map defines the final result of child elements in their parent translation
-        $desiredIdMap = array_combine($suggestedAncestorIds, $suggestedAncestorIds);
+        $desiredIdMap = array_combine($suggestedAncestorIds, $suggestedAncestorIds) ?: [];
         // update existing translations in the desired state map
         foreach ($dependentIdMap as $ancestorId => $translationId) {
             if (isset($desiredIdMap[$ancestorId])) {
@@ -660,7 +660,7 @@ class DataMapProcessor
                     $adjustCopiedValues = $this->applyLocalizationReferences(
                         $foreignTableName,
                         $createAncestorId,
-                        $item->getLanguage(),
+                        (int)$item->getLanguage(),
                         $fieldNames,
                         []
                     );
@@ -683,7 +683,7 @@ class DataMapProcessor
                     $duplicatedValues = $this->applyLocalizationReferences(
                         $foreignTableName,
                         $populateAncestorId,
-                        $item->getLanguage(),
+                        (int)$item->getLanguage(),
                         $fieldNames,
                         $duplicatedValues
                     );
@@ -693,7 +693,7 @@ class DataMapProcessor
                     $duplicatedValues = $this->prefixLanguageTitle(
                         $foreignTableName,
                         $populateAncestorId,
-                        $item->getLanguage(),
+                        (int)$item->getLanguage(),
                         $duplicatedValues
                     );
                 }
@@ -932,7 +932,7 @@ class DataMapProcessor
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['translationSource'])) {
             $fieldNames['source'] = $GLOBALS['TCA'][$tableName]['ctrl']['translationSource'];
         }
-        $fieldNamesMap = array_combine($fieldNames, $fieldNames);
+        $fieldNamesMap = array_combine($fieldNames, $fieldNames) ?: [];
 
         $persistedIds = $this->filterNumericIds($ids);
         $createdIds = array_diff($ids, $persistedIds);
@@ -1334,7 +1334,7 @@ class DataMapProcessor
 
         $languageService = $this->getLanguageService();
         $languageRecord = BackendUtility::getRecord('sys_language', $language, 'title');
-        [$pageId] = BackendUtility::getTSCpid($tableName, $fromId, $data['pid'] ?? null);
+        [$pageId] = BackendUtility::getTSCpid($tableName, (int)$fromId, $data['pid'] ?? null);
 
         $tsConfigTranslateToMessage = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['translateToMessage'] ?? '';
         if (!empty($tsConfigTranslateToMessage)) {
