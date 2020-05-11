@@ -770,11 +770,26 @@ class TemplateService
                         $ISF_filePath = ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
                         if (@is_dir($ISF_filePath)) {
                             $mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
+
+                            $includeStaticTxtPath = $ISF_filePath . 'include_static.txt';
+                            $includeStaticTxtContents = '';
+                            if (@file_exists($includeStaticTxtPath)) {
+                                $includeStaticTxtContents = (string)file_get_contents($includeStaticTxtPath);
+                                $includeStaticTxtContents = implode(',', array_unique(GeneralUtility::intExplode(',', $includeStaticTxtContents)));
+                            }
+
+                            $includeStaticFileTxtPath = $ISF_filePath . 'include_static_file.txt';
+                            $includeStaticFileTxtContents = '';
+                            if (@file_exists($includeStaticFileTxtPath)) {
+                                $includeStaticFileTxtContents = (string)file_get_contents($includeStaticFileTxtPath);
+                                $includeStaticFileTxtContents = implode(',', array_unique(GeneralUtility::trimExplode(',', $includeStaticFileTxtContents)));
+                            }
+
                             $subrow = [
                                 'constants' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'constants'),
                                 'config' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'setup'),
-                                'include_static' => @file_exists($ISF_filePath . 'include_static.txt') ? implode(',', array_unique(GeneralUtility::intExplode(',', file_get_contents($ISF_filePath . 'include_static.txt')))) : '',
-                                'include_static_file' => @file_exists($ISF_filePath . 'include_static_file.txt') ? implode(',', array_unique(explode(',', file_get_contents($ISF_filePath . 'include_static_file.txt')))) : '',
+                                'include_static' => $includeStaticTxtContents,
+                                'include_static_file' => $includeStaticFileTxtContents,
                                 'title' => $ISF_file,
                                 'uid' => $mExtKey
                             ];
@@ -1097,7 +1112,7 @@ class TemplateService
         // Recursive substitution of constants (up to 10 nested levels)
         for ($i = 0; $i < 10 && !$noChange; $i++) {
             $old_all = $all;
-            $all = preg_replace_callback('/\\{\\$(.[^}]*)\\}/', [$this, 'substituteConstantsCallBack'], $all);
+            $all = preg_replace_callback('/\\{\\$(.[^}]*)\\}/', [$this, 'substituteConstantsCallBack'], $all) ?? '';
             if ($old_all == $all) {
                 $noChange = true;
             }
