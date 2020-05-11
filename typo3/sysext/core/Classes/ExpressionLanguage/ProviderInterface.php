@@ -25,9 +25,9 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 interface ProviderInterface
 {
     /**
-     * An array of objects which implements the ExpressionFunctionProviderInterface
+     * An array of class names which implements the ExpressionFunctionProviderInterface
      *
-     * @return ExpressionFunctionProviderInterface[]
+     * @return array<int, class-string>
      */
     public function getExpressionLanguageProviders(): array;
 
