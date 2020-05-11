@@ -99,11 +99,11 @@ class InternalLinktype extends AbstractLinktype
             $page = $url;
         }
         // Check if the linked page is OK
-        $this->responsePage = $this->checkPage($page);
+        $this->responsePage = $this->checkPage((int)$page);
         // Check if the linked content element is OK
         if ($anchor) {
             // Check if the content element is OK
-            $this->responseContent = $this->checkContent($page, $anchor);
+            $this->responseContent = $this->checkContent((int)$page, (int)$anchor);
         }
         if (
             (is_array($this->errorParams['page']) && !$this->responsePage)
@@ -118,7 +118,7 @@ class InternalLinktype extends AbstractLinktype
     /**
      * Checks a given page uid for validity
      *
-     * @param string $page Page uid to check
+     * @param int $page Page uid to check
      * @return bool TRUE on success or FALSE on error
      */
     protected function checkPage($page)
@@ -164,8 +164,8 @@ class InternalLinktype extends AbstractLinktype
     /**
      * Checks a given content uid for validity
      *
-     * @param string $page Uid of the page to which the link is pointing
-     * @param string $anchor Uid of the content element to check
+     * @param int $page Uid of the page to which the link is pointing
+     * @param int $anchor Uid of the content element to check
      * @return bool TRUE on success or FALSE on error
      */
     protected function checkContent($page, $anchor)

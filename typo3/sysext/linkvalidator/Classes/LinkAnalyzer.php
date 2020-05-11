@@ -39,7 +39,7 @@ class LinkAnalyzer
     /**
      * Array of tables and fields to search for broken links
      *
-     * @var array
+     * @var array<string, array<int, string>>
      */
     protected $searchFields = [];
 
@@ -353,7 +353,7 @@ class LinkAnalyzer
 
                 // Do processing
                 $resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $softRefParams);
-                if (empty($resultArray['elements'])) {
+                if (!is_array($resultArray) || !isset($resultArray['elements']) || !is_array($resultArray['elements'])) {
                     continue;
                 }
 
