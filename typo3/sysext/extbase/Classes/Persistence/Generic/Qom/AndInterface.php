@@ -26,14 +26,14 @@ interface AndInterface extends ConstraintInterface
     /**
      * Gets the first constraint.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null the constraint
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint
      */
     public function getConstraint1();
 
     /**
      * Gets the second constraint.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null the constraint
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint
      */
     public function getConstraint2();
 }

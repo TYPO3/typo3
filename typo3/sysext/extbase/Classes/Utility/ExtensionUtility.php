@@ -190,7 +190,7 @@ tt_content.' . $pluginSignature . ' {
         self::checkExtensionNameFormat($extensionName);
 
         // Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
-        $vendorName = null;
+        $vendorName = '';
         if (false !== $delimiterPosition = strrpos($extensionName, '.')) {
             trigger_error(
                 'Calling method ' . __METHOD__ . ' with argument $extensionName containing the vendor name is deprecated and will stop working in TYPO3 11.0.',

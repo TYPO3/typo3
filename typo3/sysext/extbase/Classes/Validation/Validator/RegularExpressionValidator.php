@@ -53,12 +53,12 @@ class RegularExpressionValidator extends AbstractValidator
 
     protected function getErrorMessage(): string
     {
-        $errorMessage = $this->options['errorMessage'] ?? '';
+        $errorMessage = (string)($this->options['errorMessage'] ?? '');
         // if custom message is no locallang reference
-        if ($errorMessage && strpos($errorMessage, 'LLL') === false) {
+        if ($errorMessage !== '' && strpos($errorMessage, 'LLL') !== 0) {
             return $errorMessage;
         }
-        if (!$errorMessage) {
+        if ($errorMessage === '') {
             // fallback to default message
             $errorMessage = 'validator.regularexpression.nomatch';
         }

@@ -210,7 +210,10 @@ class Container implements SingletonInterface, LoggerAwareInterface
             return;
         }
         foreach ($classSchema->getInjectMethods() as $injectMethodName => $injectMethod) {
-            $instanceToInject = $this->getInstanceInternal($injectMethod->getFirstParameter()->getDependency());
+            if (($classNameToInject = $injectMethod->getFirstParameter()->getDependency()) === null) {
+                continue;
+            }
+            $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classSchema->isSingleton() && !$instanceToInject instanceof SingletonInterface) {
                 $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
@@ -219,7 +222,9 @@ class Container implements SingletonInterface, LoggerAwareInterface
             }
         }
         foreach ($classSchema->getInjectProperties() as $injectPropertyName => $injectProperty) {
-            $classNameToInject = $injectProperty->getType();
+            if (($classNameToInject = $injectProperty->getType()) === null) {
+                continue;
+            }
 
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classSchema->isSingleton() && !$instanceToInject instanceof SingletonInterface) {

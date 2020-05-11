@@ -158,7 +158,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $object The object to add.
+     * @param DomainObjectInterface $object The object to add.
      * @param mixed $data The data to associate with the object.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::attach
@@ -170,7 +170,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $object The object to look for.
+     * @param DomainObjectInterface $object The object to look for.
      * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
@@ -204,7 +204,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @return object The object at the current iterator position.
+     * @return DomainObjectInterface The object at the current iterator position.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
      */
@@ -215,7 +215,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $object The object to remove.
+     * @param DomainObjectInterface $object The object to remove.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::detach
      */
@@ -246,7 +246,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $value The object to look for, or the key in the storage.
+     * @param DomainObjectInterface $value The object to look for, or the key in the storage.
      * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
@@ -258,7 +258,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $value The object to look for, or its key in the storage.
+     * @param DomainObjectInterface $value The object to look for, or its key in the storage.
      * @return mixed
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
@@ -270,7 +270,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $object The object to add.
+     * @param DomainObjectInterface $object The object to add.
      * @param mixed $info The data to associate with the object.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetSet
@@ -282,7 +282,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param object $value The object to remove, or its key in the storage.
+     * @param DomainObjectInterface $value The object to remove, or its key in the storage.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
      */

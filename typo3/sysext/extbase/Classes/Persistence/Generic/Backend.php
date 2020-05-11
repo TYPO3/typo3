@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityAddedToPersistenceEvent;
@@ -519,11 +518,11 @@ class Backend implements BackendInterface, SingletonInterface
      * Updates the fields defining the relation between the object and the parent object.
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
+     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      */
-    protected function updateRelationOfObjectToParentObject(DomainObjectInterface $object, AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0)
+    protected function updateRelationOfObjectToParentObject(DomainObjectInterface $object, DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 0)
     {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
@@ -538,12 +537,12 @@ class Backend implements BackendInterface, SingletonInterface
      * Updates fields defining the relation between the object and the parent object in relation has-many.
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
+     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
      */
-    protected function attachObjectToParentObjectRelationHasMany(DomainObjectInterface $object, AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0)
+    protected function attachObjectToParentObjectRelationHasMany(DomainObjectInterface $object, DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 0)
     {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);

@@ -152,14 +152,14 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param string $extensionName
      * @param array $arguments
      *
-     * @return string|null
+     * @return string
      */
-    protected function translateErrorMessage($translateKey, $extensionName, $arguments = [])
+    protected function translateErrorMessage($translateKey, $extensionName, $arguments = []): string
     {
         return LocalizationUtility::translate(
             $translateKey,
             $extensionName,
             $arguments
-        );
+        ) ?? '';
     }
 }
