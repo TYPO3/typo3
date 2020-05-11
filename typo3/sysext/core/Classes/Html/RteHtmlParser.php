@@ -236,7 +236,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         // Transform empty paragraphs into spacing paragraphs
                         $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
                         // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
-                        $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value);
+                        $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value) ?? $value;
                         $value = $this->TS_transform_db($value);
                         break;
                     default:
@@ -711,9 +711,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      */
     protected function sanitizeLineBreaksForContentOnly(string $content)
     {
-        $content = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $content);
+        $content = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $content) ?? $content;
         $content = str_replace(LF . LF, LF, $content);
-        $content = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $content);
+        $content = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $content) ?? $content;
         return $content;
     }
 
