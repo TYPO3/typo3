@@ -92,10 +92,16 @@ class SvgIconProvider implements IconProviderInterface
         }
 
         $svgContent = file_get_contents($source);
-        $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
+        if ($svgContent === false) {
+            return '';
+        }
+        $svgContent = (string)preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $svgElement = simplexml_load_string($svgContent);
+        if ($svgElement === false) {
+            return '';
+        }
         libxml_disable_entity_loader($previousValueOfEntityLoader);
 
         // remove xml version tag
