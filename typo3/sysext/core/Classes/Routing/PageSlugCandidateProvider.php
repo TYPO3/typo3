@@ -304,6 +304,7 @@ class PageSlugCandidateProvider
 
             // Add possible sub-pages prepended with the MountPoint page slug
             if ($mountPageInformation) {
+                /** @var array $mountedPage */
                 $siteOfMountedPage = $siteFinder->getSiteByPageId((int)$mountedPage['uid']);
                 $morePageCandidates = $this->findPageCandidatesOfMountPoint(
                     $row,
@@ -447,7 +448,7 @@ class PageSlugCandidateProvider
         if (!empty($redecorationPattern) && preg_match('#' . $redecorationPattern . '#', $routePath, $matches)) {
             $decoration = $matches['decoration'];
             $decorationPattern = preg_quote($decoration, '#');
-            $routePath = preg_replace('#' . $decorationPattern . '$#', '', $routePath);
+            $routePath = preg_replace('#' . $decorationPattern . '$#', '', $routePath) ?? '';
         }
 
         $candidatePathParts = [];

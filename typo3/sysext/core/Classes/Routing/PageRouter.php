@@ -90,7 +90,7 @@ class PageRouter implements RouterInterface
     protected $cacheHashCalculator;
 
     /**
-     * @var \TYPO3\CMS\Core\Context\Context|null
+     * @var \TYPO3\CMS\Core\Context\Context
      */
     protected $context;
 
@@ -130,7 +130,7 @@ class PageRouter implements RouterInterface
         if ($requestId > 0) {
             if (!empty($pageId = $candidateProvider->getRealPageIdForPageIdAsPossibleCandidate($requestId))) {
                 return new PageArguments(
-                    $pageId,
+                    (int)$pageId,
                     (string)($request->getQueryParams()['type'] ?? '0'),
                     [],
                     [],
@@ -260,7 +260,7 @@ class PageRouter implements RouterInterface
             // with the base of the MountPoint page, this is especially relevant for cross-domain linking
             // Because the language contains the full base, it is retrieved in this case.
             try {
-                [, $mountPointPage] = explode('-', reset($mountPointPairs));
+                [, $mountPointPage] = explode('-', (string)reset($mountPointPairs));
                 $site = GeneralUtility::makeInstance(SiteMatcher::class)
                     ->matchByPageId((int)$mountPointPage);
                 $language = $site->getLanguageById($language->getLanguageId());
