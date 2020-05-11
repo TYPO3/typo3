@@ -307,7 +307,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         $directory = $this->cacheDirectory;
         if (is_link($directory)) {
             // Avoid attempting to rename the symlink see #87367
-            $directory = realpath($directory);
+            $directory = (string)realpath($directory);
         }
 
         if (is_dir($directory)) {
