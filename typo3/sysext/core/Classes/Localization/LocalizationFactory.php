@@ -122,7 +122,10 @@ class LocalizationFactory implements SingletonInterface
         if (!empty($overrides)) {
             foreach ($overrides as $overrideFile) {
                 $languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);
-                ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $this->getParsedData($languageOverrideFileName, $languageKey, null, null, true));
+                $parsedData = $this->getParsedData($languageOverrideFileName, $languageKey, null, null, true);
+                if (is_array($parsedData)) {
+                    ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $parsedData);
+                }
             }
         }
     }

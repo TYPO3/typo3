@@ -77,7 +77,7 @@ class XliffParser extends AbstractXmlParser
                             $id = (string)$translationElement['id'];
                         } else {
                             $id = (string)$translationElement->{'trans-unit'}[0]['id'];
-                            $id = substr($id, 0, strpos($id, '['));
+                            $id = substr($id, 0, (int)strpos($id, '['));
                         }
                         $parsedData[$id] = $parsedTranslationElement;
                     }

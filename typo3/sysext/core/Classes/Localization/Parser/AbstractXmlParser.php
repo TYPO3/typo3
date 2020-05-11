@@ -73,6 +73,12 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     protected function parseXmlFile()
     {
         $xmlContent = file_get_contents($this->sourcePath);
+        if ($xmlContent === false) {
+            throw new InvalidXmlFileException(
+                'The path provided does not point to an existing and accessible file.',
+                1278155986
+            );
+        }
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $rootXmlNode = simplexml_load_string($xmlContent, \SimpleXMLElement::class, LIBXML_NOWARNING);
@@ -80,7 +86,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         if ($rootXmlNode === false) {
             $xmlError = libxml_get_last_error();
             throw new InvalidXmlFileException(
-                'The path provided does not point to existing and accessible well-formed XML file. Reason: ' . $xmlError->message . ' in ' . $this->sourcePath . ', line ' . $xmlError->line,
+                'The path provided does not point to an existing and accessible well-formed XML file. Reason: ' . $xmlError->message . ' in ' . $this->sourcePath . ', line ' . $xmlError->line,
                 1278155988
             );
         }
@@ -94,7 +100,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      * @param string $fileRef Absolute file reference to locallang file
      * @param string $language Language key
      * @param bool $sameLocation If TRUE, then locallang localization file name will be returned with same directory as $fileRef
-     * @return string|null Absolute path to the language file, or null if error occurred
+     * @return string Absolute path to the language file
      */
     protected function getLocalizedFileName($fileRef, $language, $sameLocation = false)
     {
@@ -133,7 +139,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
             // The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
             return Environment::getLabelsPath() . '/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
         }
-        return null;
+        return '';
     }
 
     /**
