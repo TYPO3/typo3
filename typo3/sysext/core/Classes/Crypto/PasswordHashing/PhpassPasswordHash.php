@@ -252,7 +252,7 @@ class PhpassPasswordHash implements PasswordHashInterface
             if (!strncmp('$', $salt, 1)) {
                 if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
                     $isValid = true;
-                    $salt = substr($salt, strrpos($salt, '$') + 2);
+                    $salt = substr($salt, (int)strrpos($salt, '$') + 2);
                 } else {
                     $skip = true;
                 }
