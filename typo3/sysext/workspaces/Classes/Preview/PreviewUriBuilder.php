@@ -143,7 +143,7 @@ class PreviewUriBuilder
     {
         $movePlaceholder = [];
         if ($table === 'pages') {
-            return BackendUtility::viewOnClick(BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
+            return BackendUtility::viewOnClick((int)BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
         }
 
         if ($liveRecord === null) {

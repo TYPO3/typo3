@@ -122,7 +122,7 @@ class DataHandlerHook
                 $this->version_clearWSID($table, (int)$id, true, $dataHandler);
                 break;
             case 'setStage':
-                $elementIds = GeneralUtility::trimExplode(',', $id, true);
+                $elementIds = GeneralUtility::intExplode(',', (string)$id, true);
                 foreach ($elementIds as $elementId) {
                     $this->version_setStage(
                         $table,
@@ -650,7 +650,7 @@ class DataHandlerHook
         // Now start to swap records by first creating the lock file
 
         // Write lock-file:
-        GeneralUtility::writeFileToTypo3tempDir($lockFileName, json_encode([
+        GeneralUtility::writeFileToTypo3tempDir($lockFileName, (string)json_encode([
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'user' => $dataHandler->BE_USER->user['username'],
             'curVersion' => $curVersion,

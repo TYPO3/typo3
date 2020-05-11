@@ -617,7 +617,7 @@ class StagesService implements SingletonInterface
             // traversing list
             // Get row:
             $row = $this->userGroups[$uid];
-            if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
+            if (is_array($row) && !GeneralUtility::inList($idList, (string)$uid)) {
                 // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
                 // If the localconf.php option isset the user of the sub- sub- groups will also be used
                 if ($GLOBALS['TYPO3_CONF_VARS']['BE']['customStageShowRecipientRecursive'] == 1) {

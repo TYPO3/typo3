@@ -95,7 +95,7 @@ class WorkspacePreview implements MiddlewareInterface
             // A keyword was found in a query parameter or in a cookie
             // If the keyword is valid, activate a BE User and override any existing BE Users
             // (in case workspace ID was given and a corresponding site to be used was found)
-            $previewWorkspaceId = $this->getWorkspaceIdFromRequest($request, $keyword);
+            $previewWorkspaceId = (int)$this->getWorkspaceIdFromRequest($request, $keyword);
             if ($previewWorkspaceId > 0 && $routeResult instanceof RouteResultInterface) {
                 $previewUser = $this->initializePreviewUser($previewWorkspaceId);
                 if ($previewUser instanceof PreviewUserAuthentication) {
@@ -162,7 +162,7 @@ class WorkspacePreview implements MiddlewareInterface
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']) {
             $templateFile = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']);
             if (@is_file($templateFile)) {
-                $message = file_get_contents($templateFile);
+                $message = (string)file_get_contents($templateFile);
             } else {
                 $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewLogoutError');
                 $message = htmlspecialchars($message);

@@ -54,7 +54,7 @@ class AjaxDispatcher
             $method = $call->method;
             $parameters = $call->data;
             $instance = GeneralUtility::makeInstance($className);
-            $results[] = $this->buildResultFromResponse(call_user_func_array([$instance, $method], $parameters), $call);
+            $results[] = $this->buildResultFromResponse($instance->$method(...$parameters), $call);
         }
         return (new JsonResponse())->setPayload($results);
     }

@@ -391,7 +391,7 @@ class ActionHandler
         // and $recipients with the email address
         $allRecipients = array_merge($additionalRecipients, $recipients);
         foreach ($allRecipients as $email => $recipientInformation) {
-            if (GeneralUtility::validEmail($email)) {
+            if (GeneralUtility::validEmail((string)$email)) {
                 $finalRecipients[] = $recipientInformation;
             }
         }
