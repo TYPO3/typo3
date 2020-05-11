@@ -86,10 +86,10 @@ class CommaSeparatedValueProcessor implements DataProcessorInterface
         $maximumColumns = $cObj->stdWrapValue('maximumColumns', $processorConfiguration, 0);
 
         // Set the field delimiter which is "," by default
-        $fieldDelimiter = $cObj->stdWrapValue('fieldDelimiter', $processorConfiguration, ',');
+        $fieldDelimiter = (string)$cObj->stdWrapValue('fieldDelimiter', $processorConfiguration, ',');
 
         // Set the field enclosure which is " by default
-        $fieldEnclosure = $cObj->stdWrapValue('fieldEnclosure', $processorConfiguration, '"');
+        $fieldEnclosure = (string)$cObj->stdWrapValue('fieldEnclosure', $processorConfiguration, '"');
 
         $processedData[$targetVariableName] = CsvUtility::csvToArray(
             $originalValue,

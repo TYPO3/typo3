@@ -85,21 +85,21 @@ class FilesProcessor implements DataProcessorInterface
         // files
         $files = $cObj->stdWrapValue('files', $processorConfiguration);
         if ($files) {
-            $files = GeneralUtility::intExplode(',', $files, true);
+            $files = GeneralUtility::intExplode(',', (string)$files, true);
             $fileCollector->addFiles($files);
         }
 
         // collections
         $collections = $cObj->stdWrapValue('collections', $processorConfiguration);
         if (!empty($collections)) {
-            $collections = GeneralUtility::trimExplode(',', $collections, true);
+            $collections = GeneralUtility::trimExplode(',', (string)$collections, true);
             $fileCollector->addFilesFromFileCollections($collections);
         }
 
         // folders
         $folders = $cObj->stdWrapValue('folders', $processorConfiguration);
         if (!empty($folders)) {
-            $folders = GeneralUtility::trimExplode(',', $folders, true);
+            $folders = GeneralUtility::trimExplode(',', (string)$folders, true);
             $fileCollector->addFilesFromFolders($folders, !empty($processorConfiguration['folders.']['recursive']));
         }
 

@@ -139,7 +139,7 @@ class CategoryMenuUtility
      *
      * @param array $pageA Record for first page to be compared
      * @param array $pageB Record for second page to be compared
-     * @return array -1 if first argument is smaller than second argument, 1 if first is greater than second and 0 if both are equal
+     * @return int -1 if first argument is smaller than second argument, 1 if first is greater than second and 0 if both are equal
      */
     public static function sortPagesUtility($pageA, $pageB)
     {

@@ -77,7 +77,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
             // Set access key
             if ($this->mconf['accessKey']) {
-                $this->I['accessKey'] = $this->accessKey($this->I['title']);
+                $this->I['accessKey'] = $this->accessKey((string)($this->I['title'] ?? ''));
             } else {
                 $this->I['accessKey'] = [];
             }
@@ -160,7 +160,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
             }
             // Calling extra processing function
-            $this->extProc_afterLinking($key);
+            $this->extProc_afterLinking((int)$key);
         }
         return $this->extProc_finish();
     }

@@ -1024,7 +1024,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $tsfe = $this->getTypoScriptFrontendController();
         $listArr = null;
         if (trim($pidList)) {
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', $tsfe->contentPid, $pidList));
+            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $pidList));
             $listArr = $this->checkPidArray($listArr);
         }
         $pidList = [];
@@ -1307,8 +1307,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $string;
         }
         $content = (string)$this->typoLink($string, $conf['typolink.']);
-        if (isset($conf['file.'])) {
-            $imageFile = $this->stdWrap($imageFile, $conf['file.']);
+        if (isset($conf['file.']) && is_scalar($imageFile)) {
+            $imageFile = $this->stdWrap((string)$imageFile, $conf['file.']);
         }
 
         if ($imageFile instanceof File) {
@@ -1339,7 +1339,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $parameters[$parameterName] = $conf[$parameterName];
                 }
             }
-            $parametersEncoded = base64_encode(json_encode($parameters));
+            $parametersEncoded = base64_encode((string)json_encode($parameters));
             $hmac = GeneralUtility::hmac(implode('|', [$file->getUid(), $parametersEncoded]));
             $params = '&md5=' . $hmac;
             foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
@@ -1403,7 +1403,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 $paramString = '';
                 foreach ($params as $paramKey => $paramValue) {
-                    $paramString .= htmlspecialchars($paramKey) . '=' . htmlspecialchars($paramValue) . ',';
+                    $paramString .= htmlspecialchars((string)$paramKey) . '=' . htmlspecialchars((string)$paramValue) . ',';
                 }
 
                 $onClick = 'openPic('
@@ -1650,7 +1650,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ((!isset($isExecuted[$stdWrapName]) || !$isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
-                $functionType = $this->stdWrapOrder[$functionName] ?? null;
+                $functionType = $this->stdWrapOrder[$functionName] ?? '';
                 // If there is any code on the next level, check if it contains "official" stdWrap functions
                 // if yes, execute them first - will make each function stdWrap aware
                 // so additional stdWrap calls within the functions can be removed, since the result will be the same
@@ -2308,7 +2308,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_numberFormat($content = '', $conf = [])
     {
-        return $this->numberFormat($content, $conf['numberFormat.'] ?? []);
+        return $this->numberFormat((float)$content, $conf['numberFormat.'] ?? []);
     }
 
     /**
@@ -2416,7 +2416,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_bytes($content = '', $conf = [])
     {
-        return GeneralUtility::formatSize($content, $conf['bytes.']['labels'], $conf['bytes.']['base']);
+        return GeneralUtility::formatSize((int)$content, $conf['bytes.']['labels'], $conf['bytes.']['base']);
     }
 
     /**
@@ -3042,13 +3042,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $char = $char ?: ',';
         if (MathUtility::canBeInterpretedAsInteger($char)) {
-            $char = chr($char);
+            $char = chr((int)$char);
         }
         $temp = explode($char, $content);
+        if (empty($temp)) {
+            return '';
+        }
         $last = '' . (count($temp) - 1);
         // Take a random item if requested
         if ($listNum === 'rand') {
-            $listNum = random_int(0, count($temp) - 1);
+            $listNum = (string)random_int(0, count($temp) - 1);
         }
         $index = $this->calc(str_ireplace('last', $last, $listNum));
         return $temp[$index];
@@ -3125,7 +3128,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
             }
             if (isset($conf['bitAnd']) || isset($conf['bitAnd.'])) {
-                $number = isset($conf['bitAnd.']) ? trim($this->stdWrap($conf['bitAnd'], $conf['bitAnd.'])) : trim($conf['bitAnd']);
+                $number = (int)(isset($conf['bitAnd.']) ? trim($this->stdWrap($conf['bitAnd'], $conf['bitAnd.'])) : trim($conf['bitAnd']));
                 if ((new BitSet($number))->get($value) === false) {
                     $flag = false;
                 }
@@ -3355,6 +3358,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
 				/?>								# closing the tag with \'>\' or \'/>\'
 			)';
         $splittedContent = preg_split('%' . $tagsRegEx . '%xs', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+        if ($splittedContent === false) {
+            $this->logger->debug('Unable to split "' . $content . '" into tags.');
+            $splittedContent = [];
+        }
         // Reverse array if we are cropping from right.
         if ($chars < 0) {
             $splittedContent = array_reverse($splittedContent);
@@ -3852,7 +3859,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     } while ($c > 0 && $endChar && ($endChar < 97 || $endChar > 122) && $endChar != 47);
                     $len = $len_p - 1;
                 } else {
-                    $len = $this->getContentLengthOfCurrentTag($theValue, $pointer, $currentTag[0]);
+                    $len = $this->getContentLengthOfCurrentTag($theValue, $pointer, (string)$currentTag[0]);
                 }
                 // $data is the content until the next <tag-start or end is detected.
                 // In case of a currentTag set, this would mean all data between the start- and end-tags
@@ -3861,6 +3868,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if ($stripNL) {
                         // If the previous tag was set to strip NewLines in the beginning of the next data-chunk.
                         $data = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $data);
+                        if ($data === null) {
+                            $this->logger->debug('Stripping new lines failed for "' . $data . '"');
+                            $data = '';
+                        }
                     }
                     // These operations should only be performed on code outside the tags...
                     if (!is_array($currentTag)) {
@@ -3970,7 +3981,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $contentAccumP++;
                         $treated = true;
                         // in-out-tag: img and other empty tags
-                        if (preg_match('/^(area|base|br|col|hr|img|input|meta|param)$/i', $tag[0])) {
+                        if (preg_match('/^(area|base|br|col|hr|img|input|meta|param)$/i', (string)$tag[0])) {
                             $tag['out'] = 1;
                         }
                     }
@@ -3985,14 +3996,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $this->parameters = [];
                         if (isset($currentTag[1])) {
                             // decode HTML entities in attributes, since they're processed
-                            $params = GeneralUtility::get_tag_attributes($currentTag[1], true);
+                            $params = GeneralUtility::get_tag_attributes((string)$currentTag[1], true);
                             if (is_array($params)) {
                                 foreach ($params as $option => $val) {
                                     // contains non-encoded values
                                     $this->parameters[strtolower($option)] = $val;
                                 }
                             }
-                            $this->parameters['allParams'] = trim($currentTag[1]);
+                            $this->parameters['allParams'] = trim((string)$currentTag[1]);
                         }
                         // Removes NL in the beginning and end of the tag-content AND at the end of the currentTagBuffer.
                         // $stripNL depends on the configuration of the current tag
@@ -4026,8 +4037,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 } else {
                     // If a tag was not a typo tag, then it is just added to the content
                     $stripNL = false;
-                    if (GeneralUtility::inList($allowTags, $tag[0]) ||
-                        ($denyTags !== '*' && !GeneralUtility::inList($denyTags, $tag[0]))) {
+                    if (GeneralUtility::inList($allowTags, (string)$tag[0]) ||
+                        ($denyTags !== '*' && !GeneralUtility::inList($denyTags, (string)$tag[0]))) {
                         $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
                             ? $contentAccum[$contentAccumP] . $data
                             : $data;
@@ -4048,11 +4059,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($a % 2 != 1) {
                 // stdWrap
                 if (isset($conf['nonTypoTagStdWrap.']) && is_array($conf['nonTypoTagStdWrap.'])) {
-                    $contentAccum[$a] = $this->stdWrap($contentAccum[$a], $conf['nonTypoTagStdWrap.']);
+                    $contentAccum[$a] = $this->stdWrap((string)($contentAccum[$a] ?? ''), $conf['nonTypoTagStdWrap.']);
                 }
                 // userFunc
                 if (!empty($conf['nonTypoTagUserFunc'])) {
-                    $contentAccum[$a] = $this->callUserFunction($conf['nonTypoTagUserFunc'], $conf['nonTypoTagUserFunc.'], $contentAccum[$a]);
+                    $contentAccum[$a] = $this->callUserFunction($conf['nonTypoTagUserFunc'], $conf['nonTypoTagUserFunc.'], (string)($contentAccum[$a] ?? ''));
                 }
             }
         }
@@ -4232,7 +4243,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
 
                     // check for jump URLs or similar
-                    $linkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_COMMON, $scheme . $parts[0], $conf);
+                    $linkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_COMMON, $scheme . $parts[0], $conf) ?? '';
 
                     $res = '<a href="' . htmlspecialchars($linkUrl) . '"'
                         . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
@@ -4265,6 +4276,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function mailto_makelinks($data, $conf)
     {
+        $conf = (array)$conf;
         $parts = [];
         // http-split
         $aTagParams = $this->getATagParams($conf);
@@ -4281,7 +4293,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 $parts[0] = substr($textpieces[$i], 0, $len);
                 $parts[1] = substr($textpieces[$i], $len);
-                $linktxt = preg_replace('/\\?.*/', '', $parts[0]);
+                $linktxt = (string)preg_replace('/\\?.*/', '', $parts[0]);
                 [$mailToUrl, $linktxt] = $this->getMailTo($parts[0], $linktxt);
                 $mailToUrl = $tsfe->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
                 $res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
@@ -4630,28 +4642,42 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                     case 'leveltitle':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
-                        $numericKey = $this->getKey($keyParts[0], $tsfe->tmpl->rootLine);
-                        $retVal = $this->rootLineValue($numericKey, 'title', strtolower($keyParts[1] ?? '') === 'slide');
+                        $pointer = (int)($keyParts[0] ?? 0);
+                        $slide = (string)($keyParts[1] ?? '');
+
+                        $numericKey = $this->getKey($pointer, $tsfe->tmpl->rootLine);
+                        $retVal = $this->rootLineValue($numericKey, 'title', strtolower($slide) === 'slide');
                         break;
                     case 'levelmedia':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
-                        $numericKey = $this->getKey($keyParts[0], $tsfe->tmpl->rootLine);
-                        $retVal = $this->rootLineValue($numericKey, 'media', strtolower($keyParts[1] ?? '') === 'slide');
+                        $pointer = (int)($keyParts[0] ?? 0);
+                        $slide = (string)($keyParts[1] ?? '');
+
+                        $numericKey = $this->getKey($pointer, $tsfe->tmpl->rootLine);
+                        $retVal = $this->rootLineValue($numericKey, 'media', strtolower($slide) === 'slide');
                         break;
                     case 'leveluid':
-                        $numericKey = $this->getKey($key, $tsfe->tmpl->rootLine);
+                        $numericKey = $this->getKey((int)$key, $tsfe->tmpl->rootLine);
                         $retVal = $this->rootLineValue($numericKey, 'uid');
                         break;
                     case 'levelfield':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
-                        $numericKey = $this->getKey($keyParts[0], $tsfe->tmpl->rootLine);
-                        $retVal = $this->rootLineValue($numericKey, $keyParts[1], strtolower($keyParts[2] ?? '') === 'slide');
+                        $pointer = (int)($keyParts[0] ?? 0);
+                        $field = (string)($keyParts[1] ?? '');
+                        $slide = (string)($keyParts[2] ?? '');
+
+                        $numericKey = $this->getKey($pointer, $tsfe->tmpl->rootLine);
+                        $retVal = $this->rootLineValue($numericKey, $field, strtolower($slide) === 'slide');
                         break;
                     case 'fullrootline':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
-                        $fullKey = (int)$keyParts[0] - count($tsfe->tmpl->rootLine) + count($tsfe->rootLine);
+                        $pointer = (int)($keyParts[0] ?? 0);
+                        $field = (string)($keyParts[1] ?? '');
+                        $slide = (string)($keyParts[2] ?? '');
+
+                        $fullKey = (int)($pointer - count($tsfe->tmpl->rootLine) + count($tsfe->rootLine));
                         if ($fullKey >= 0) {
-                            $retVal = $this->rootLineValue($fullKey, $keyParts[1], stristr($keyParts[2] ?? '', 'slide'), $tsfe->rootLine);
+                            $retVal = $this->rootLineValue($fullKey, $field, stristr($slide, 'slide') !== false, $tsfe->rootLine);
                         }
                         break;
                     case 'date':
@@ -4858,7 +4884,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Returns a value from the current rootline (site) from $GLOBALS['TSFE']->tmpl->rootLine;
      *
-     * @param string $key Which level in the root line
+     * @param int $key Which level in the root line
      * @param string $field The field in the rootline record to return (a field from the pages table)
      * @param bool $slideBack If set, then we will traverse through the rootline from outer level towards the root level until the value found is TRUE
      * @param mixed $altRootLine If you supply an array for this it will be used as an alternative root line array
@@ -4966,10 +4992,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Check for link-handler keyword
         $linkHandlerExploded = explode(':', $linkParameterParts['url'], 2);
-        $linkHandlerKeyword = $linkHandlerExploded[0] ?? null;
-        $linkHandlerValue = $linkHandlerExploded[1] ?? null;
+        $linkHandlerKeyword = (string)($linkHandlerExploded[0] ?? '');
+        $linkHandlerValue = (string)($linkHandlerExploded[1] ?? '');
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword])
-            && (string)$linkHandlerValue !== ''
+            && $linkHandlerValue !== ''
         ) {
             trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][typolinkLinkHandler] will be removed in TYPO3 v11.0. Use a custom LinkHandler instead. The used link handler keyword was: ' . $linkHandlerKeyword, E_USER_DEPRECATED);
             $linkHandlerObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
@@ -4978,7 +5004,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
 
-        if (in_array(strtolower(preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
+        if (in_array(strtolower((string)preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
             // Disallow insecure scheme's like javascript: or data:
             return $linkText;
         }
@@ -5427,6 +5453,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
                     $lastDotLabel = $lastDotLabel ?: '(dot)';
                     $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
+                    if ($spamProtectedMailAddress === null) {
+                        $this->logger->debug('Error replacing the last dot in email address "' . $spamProtectedMailAddress . '"');
+                        $spamProtectedMailAddress = '';
+                    }
                 }
                 $linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
             }
@@ -5587,8 +5617,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $funcName The functionname, eg "user_myfunction" or "user_myclass->main". Notice that there are rules for the names of functions/classes you can instantiate. If a function cannot be called for some reason it will be seen in the TypoScript log in the AdminPanel.
      * @param array $conf The TypoScript configuration to pass the function
-     * @param string $content The content string to pass the function
-     * @return string The return content from the function call. Should probably be a string.
+     * @param mixed $content The content payload to pass the function
+     * @return mixed The return content from the function call. Should probably be a string.
      * @see stdWrap()
      * @see typoLink()
      * @see _parseFunc()
@@ -5605,12 +5635,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 } else {
                     $classObj = GeneralUtility::makeInstance($parts[0]);
                 }
-                if (is_object($classObj) && method_exists($classObj, $parts[1])) {
+                $methodName = (string)$parts[1];
+                $callable = [$classObj, $methodName];
+                if (is_object($classObj) && method_exists($classObj, $parts[1]) && is_callable($callable)) {
                     $classObj->cObj = $this;
-                    $content = call_user_func_array([
-                        $classObj,
-                        $parts[1]
-                    ], [
+                    $content = call_user_func_array($callable, [
                         $content,
                         $conf
                     ]);
@@ -5621,7 +5650,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $this->getTimeTracker()->setTSlogMessage('Class "' . $parts[0] . '" did not exist', 3);
             }
         } elseif (function_exists($funcName)) {
-            $content = call_user_func($funcName, $content, $conf);
+            $content = $funcName($content, $conf);
         } else {
             $this->getTimeTracker()->setTSlogMessage('Function "' . $funcName . '" did not exist', 3);
         }
@@ -5637,6 +5666,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function keywords($content)
     {
         $listArr = preg_split('/[,;' . LF . ']/', $content);
+        if ($listArr === false) {
+            return '';
+        }
         foreach ($listArr as $k => $v) {
             $listArr[$k] = trim($v);
         }
@@ -6278,7 +6310,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Implementation of getTreeList allows to pass the id negative to include
                     // it into the result otherwise only childpages are returned
                     $expandedPidList = array_merge(
-                        GeneralUtility::intExplode(',', $this->getTreeList($value, $conf['recursive'])),
+                        GeneralUtility::intExplode(',', $this->getTreeList((int)$value, (int)($conf['recursive'] ?? 0))),
                         $expandedPidList
                     );
                 }
@@ -6342,8 +6374,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
 
             if (!$error) {
-                $conf['begin'] = MathUtility::forceIntegerInRange(ceil($this->calc($conf['begin'])), 0);
-                $conf['max'] = MathUtility::forceIntegerInRange(ceil($this->calc($conf['max'])), 0);
+                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
+                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
                 if ($conf['begin'] > 0) {
                     $queryBuilder->setFirstResult($conf['begin']);
                 }
@@ -6511,7 +6543,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         );
 
         if (trim($conf['uidInList'])) {
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', $tsfe->contentPid, $conf['uidInList']));
+            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $conf['uidInList']));
 
             // If move placeholder shall be considered, select via t3ver_move_id
             if ($considerMovePlaceholders) {
@@ -6537,7 +6569,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         if (trim($conf['pidInList'])) {
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', $tsfe->contentPid, $conf['pidInList']));
+            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $conf['pidInList']));
             // Removes all pages which are not visible for the user!
             $listArr = $this->checkPidArray($listArr);
             if (GeneralUtility::inList($conf['pidInList'], 'root')) {
@@ -6736,7 +6768,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
         $restrictionContainer->add(GeneralUtility::makeInstance(
             DocumentTypeExclusionRestriction::class,
-            GeneralUtility::intExplode(',', $this->checkPid_badDoktypeList, true)
+            GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
         ));
         return $this->getTypoScriptFrontendController()->sys_page->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
@@ -7127,8 +7159,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ) ? $nextSameStartTagMatches[0][1] : false;
 
             // filter out nested tag contents to help getting the correct closing tag
-            if ($nextSameTypeTagPosition !== false && $nextSameTypeTagPosition < $nextMatchingEndTagPosition) {
-                $lastOpeningTagStartPosition = strrpos(substr($tempContent, 0, $nextMatchingEndTagPosition), $startTag);
+            if ($nextMatchingEndTagPosition !== false && $nextSameTypeTagPosition !== false && $nextSameTypeTagPosition < $nextMatchingEndTagPosition) {
+                $lastOpeningTagStartPosition = (int)strrpos(substr($tempContent, 0, $nextMatchingEndTagPosition), $startTag);
                 $closingTagEndPosition = $nextMatchingEndTagPosition + strlen($endTag);
                 $offsetCount += $closingTagEndPosition - $lastOpeningTagStartPosition;
 

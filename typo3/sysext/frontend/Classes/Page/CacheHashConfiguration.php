@@ -177,13 +177,13 @@ class CacheHashConfiguration
                 $indicator = self::INDICATOR_EQUALS;
                 $value = self::INDICATOR_EQUALS . $value;
             }
-            if (strlen($value) === 1) {
+            if (strlen((string)$value) === 1) {
                 throw new \LogicException(
                     sprintf('Empty value after %s indicator', $indicator),
                     1580225313
                 );
             }
-            $data[$indicator][] = substr($value, 1);
+            $data[$indicator][] = substr((string)$value, 1);
         }
         if (!empty($data)) {
             $this->data[$aspect] = $data;

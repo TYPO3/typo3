@@ -146,7 +146,7 @@ EOF;
         } else {
             $this->file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
         }
-        if ($this->file !== null && !$this->isFileValid($this->file)) {
+        if (!($this->file instanceof FileInterface && $this->isFileValid($this->file))) {
             throw new Exception('File processing for local storage is denied', 1594043425);
         }
 
@@ -161,7 +161,7 @@ EOF;
     {
         $processedImage = $this->processImage();
         $imageTagMarkers = [
-            '###publicUrl###' => htmlspecialchars($processedImage->getPublicUrl()),
+            '###publicUrl###' => htmlspecialchars($processedImage->getPublicUrl() ?? ''),
             '###alt###' => htmlspecialchars($this->file->getProperty('alternative') ?: $this->title),
             '###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
             '###width###' => $processedImage->getProperty('width'),

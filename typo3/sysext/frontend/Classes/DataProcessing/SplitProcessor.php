@@ -71,7 +71,7 @@ class SplitProcessor implements DataProcessorInterface
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, $fieldName);
 
         // Set the delimiter which is "LF" by default
-        $delimiter = $cObj->stdWrapValue('delimiter', $processorConfiguration, LF);
+        $delimiter = (string)$cObj->stdWrapValue('delimiter', $processorConfiguration, LF);
 
         // Filter integers
         $filterIntegers = (bool)$cObj->stdWrapValue('filterIntegers', $processorConfiguration, false);

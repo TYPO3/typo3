@@ -402,7 +402,7 @@ class AbstractPlugin
             ArrayUtility::mergeRecursiveWithOverrule($piVars, $overrulePIvars);
             $overrulePIvars = $piVars;
             if ($this->pi_autoCacheEn) {
-                $cache = $this->pi_autoCache($overrulePIvars);
+                $cache = (bool)$this->pi_autoCache($overrulePIvars);
             }
         }
         return $this->pi_linkTP($str, [$this->prefixId => $overrulePIvars], $cache, $altPageId);
@@ -449,7 +449,7 @@ class AbstractPlugin
             } else {
                 $overrulePIvars = ['showUid' => $uid ?: ''];
                 $overrulePIvars = array_merge($overrulePIvars, (array)$mergeArr);
-                $str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, 0, $altPageId);
+                $str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, false, $altPageId);
             }
             // If urlOnly flag, return only URL as it has recently be generated.
             if ($urlOnly) {
@@ -538,9 +538,9 @@ class AbstractPlugin
         $pointer = (int)$this->piVars[$pointerName];
         $count = (int)$this->internal['res_count'];
         $results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
-        $totalPages = ceil($count / $results_at_a_time);
+        $totalPages = (int)ceil($count / $results_at_a_time);
         $maxPages = MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, 100);
-        $pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields);
+        $pi_isOnlyFields = (bool)$this->pi_isOnlyFields($this->pi_isOnlyFields);
         if (!$forceOutput && $count <= $results_at_a_time) {
             return '';
         }
@@ -691,7 +691,7 @@ class AbstractPlugin
         $cells = [];
         foreach ($items as $k => $v) {
             $cells[] = '
-					<td' . ($this->piVars['mode'] == $k ? $this->pi_classParam('modeSelector-SCell') : '') . '><p>' . $this->pi_linkTP_keepPIvars(htmlspecialchars($v), ['mode' => $k], $this->pi_isOnlyFields($this->pi_isOnlyFields)) . '</p></td>';
+					<td' . ($this->piVars['mode'] == $k ? $this->pi_classParam('modeSelector-SCell') : '') . '><p>' . $this->pi_linkTP_keepPIvars(htmlspecialchars($v), ['mode' => $k], (bool)$this->pi_isOnlyFields($this->pi_isOnlyFields)) . '</p></td>';
         }
         $sTables = '
 
@@ -1167,7 +1167,7 @@ class AbstractPlugin
             $pid_list = $this->frontendController->id;
         }
         $recursive = MathUtility::forceIntegerInRange($recursive, 0);
-        $pid_list_arr = array_unique(GeneralUtility::trimExplode(',', $pid_list, true));
+        $pid_list_arr = array_unique(GeneralUtility::intExplode(',', $pid_list, true));
         $pid_list = [];
         foreach ($pid_list_arr as $val) {
             $val = MathUtility::forceIntegerInRange($val, 0);

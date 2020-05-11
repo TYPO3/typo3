@@ -1350,7 +1350,7 @@ abstract class AbstractMenuContentObject
         }
         // Override URL if using "External URL"
         if ((int)$this->menuArr[$key]['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $externalUrl = $this->sys_page->getExtURL($this->menuArr[$key]);
+            $externalUrl = (string)$this->sys_page->getExtURL($this->menuArr[$key]);
             // Create link using typolink (concerning spamProtectEmailAddresses) for email links
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $externalUrl]);
             // Links to emails should not have any target

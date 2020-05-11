@@ -603,9 +603,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Page content render object
      *
-     * @var ContentObjectRenderer|string
+     * @var ContentObjectRenderer
      */
-    public $cObj = '';
+    public $cObj;
 
     /**
      * All page content is accumulated in this variable. See RequestHandler
@@ -782,7 +782,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Since TYPO3 v10.0, this argument is requested to be of type SiteLanguage, which will be mandatory in TYPO3 v11.0.
      * If no SiteLanguage object is given, this is fetched from the given request object.
      *
-     * @param SiteLanguage|int|string $siteLanguageOrType
+     * @param SiteLanguage|int|string|null $siteLanguageOrType
      * @param ServerRequestInterface $request
      */
     private function initializeSiteLanguageWithCompatibility($siteLanguageOrType, ServerRequestInterface $request): void
@@ -791,7 +791,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->language = $siteLanguageOrType;
         } else {
             trigger_error('TypoScriptFrontendController should evaluate the parameter "type" by the PageArguments object, not by a separate constructor argument. This functionality will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
-            $this->type = $siteLanguageOrType;
+            $this->type = (int)$siteLanguageOrType;
             if ($request->getAttribute('language') instanceof SiteLanguage) {
                 $this->language = $request->getAttribute('language');
             } else {
@@ -2457,7 +2457,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // replace every "," wrapped in "()" by a "unique" string
         $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', function ($result) use ($tempCommaReplacementString) {
             return str_replace(',', $tempCommaReplacementString, $result[0]);
-        }, $string);
+        }, $string) ?? '';
 
         $string = GeneralUtility::trimExplode(',', $string);
 
@@ -3572,7 +3572,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
-            $realWebPath = PathUtility::dirname(realpath(Environment::getBackendPath())) . '/';
+            $realWebPath = PathUtility::dirname((string)realpath(Environment::getBackendPath())) . '/';
             $file = $trace[0]['file'];
             if (strpos($file, $realWebPath) === 0) {
                 $file = str_replace($realWebPath, '', $file);
@@ -3642,7 +3642,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             if (!empty($this->config['config']['cache_clearAtMidnight'])) {
                 $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-                $midnightTime = mktime(0, 0, 0, date('m', $timeOutTime), date('d', $timeOutTime), date('Y', $timeOutTime));
+                $midnightTime = mktime(0, 0, 0, (int)date('m', $timeOutTime), (int)date('d', $timeOutTime), (int)date('Y', $timeOutTime));
                 // If the midnight time of the expire-day is greater than the current time,
                 // we may set the timeOutTime to the new midnighttime.
                 if ($midnightTime > $GLOBALS['EXEC_TIME']) {
