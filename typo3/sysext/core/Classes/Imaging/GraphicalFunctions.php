@@ -614,8 +614,8 @@ class GraphicalFunctions
                 $fileMask = $tmpStr . '_maskNT.' . $this->gifExtension;
                 // Scalefactor
                 $sF = MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
-                $newW = ceil($sF * imagesx($im));
-                $newH = ceil($sF * imagesy($im));
+                $newW = (int)ceil($sF * imagesx($im));
+                $newH = (int)ceil($sF * imagesy($im));
                 // Make mask
                 $maskImg = imagecreatetruecolor($newW, $newH);
                 $Bcolor = imagecolorallocate($maskImg, 255, 255, 255);
@@ -986,8 +986,8 @@ class GraphicalFunctions
     {
         // Initialize:
         $stringParts = $this->splitString($string, $splitRendering, $fontSize, $fontFile);
-        $x = ceil($sF * $x);
-        $y = ceil($sF * $y);
+        $x = (int)ceil($sF * $x);
+        $y = (int)ceil($sF * $y);
         // Traverse string parts:
         foreach ($stringParts as $i => $strCfg) {
             // Initialize:
@@ -1080,7 +1080,7 @@ class GraphicalFunctions
                             // Initialize range:
                             $ranges = GeneralUtility::trimExplode(',', $cfg['value'], true);
                             foreach ($ranges as $i => $rangeDef) {
-                                $ranges[$i] = GeneralUtility::intExplode('-', $ranges[$i]);
+                                $ranges[$i] = GeneralUtility::intExplode('-', (string)$ranges[$i]);
                                 if (!isset($ranges[$i][1])) {
                                     $ranges[$i][1] = $ranges[$i][0];
                                 }
@@ -1250,6 +1250,7 @@ class GraphicalFunctions
     {
         $wordPairs = [];
         $wordsArray = preg_split('#([- .,!:]+)#', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $wordsArray = is_array($wordsArray) ? $wordsArray : [];
         $wordsCount = count($wordsArray);
         for ($index = 0; $index < $wordsCount; $index += 2) {
             $wordPairs[] = $wordsArray[$index] . $wordsArray[$index + 1];
@@ -1448,11 +1449,11 @@ class GraphicalFunctions
                 if ($conf['intensity']) {
                     $intensity = MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
                 }
-                $intensity = ceil(255 - $intensity / 100 * 255);
+                $intensity = (int)ceil(255 - $intensity / 100 * 255);
                 $this->inputLevels($blurTextImg, 0, $intensity);
                 $opacity = MathUtility::forceIntegerInRange((int)$conf['opacity'], 0, 100);
                 if ($opacity && $opacity < 100) {
-                    $high = ceil(255 * $opacity / 100);
+                    $high = (int)ceil(255 * $opacity / 100);
                     // Reducing levels as the opacity demands
                     $this->outputLevels($blurTextImg, 0, $high);
                 }
@@ -1506,8 +1507,8 @@ class GraphicalFunctions
             // PHP 0 = opaque, 127 = transparent
             // TYPO3 100 = opaque, 0 = transparent
             $opacity = MathUtility::forceIntegerInRange((int)$conf['opacity'], 1, 100, 1);
-            $opacity = abs($opacity - 100);
-            $opacity = round(127 * $opacity / 100);
+            $opacity = (int)abs($opacity - 100);
+            $opacity = (int)round(127 * $opacity / 100);
         }
         $tmpColor = imagecolorallocatealpha($im, $cols[0], $cols[1], $cols[2], $opacity);
         imagefilledrectangle($im, $cords[0], $cords[1], $cords[0] + $cords[2] - 1, $cords[1] + $cords[3] - 1, $tmpColor);
@@ -1587,35 +1588,35 @@ class GraphicalFunctions
                     break;
                 case 'blur':
                     if ($this->processorEffectsEnabled) {
-                        $commands .= $this->v5_blur($value);
+                        $commands .= $this->v5_blur((int)$value);
                     }
                     break;
                 case 'sharpen':
                     if ($this->processorEffectsEnabled) {
-                        $commands .= $this->v5_sharpen($value);
+                        $commands .= $this->v5_sharpen((int)$value);
                     }
                     break;
                 case 'rotate':
-                    $commands .= ' -rotate ' . MathUtility::forceIntegerInRange($value, 0, 360);
+                    $commands .= ' -rotate ' . MathUtility::forceIntegerInRange((int)$value, 0, 360);
                     break;
                 case 'solarize':
-                    $commands .= ' -solarize ' . MathUtility::forceIntegerInRange($value, 0, 99);
+                    $commands .= ' -solarize ' . MathUtility::forceIntegerInRange((int)$value, 0, 99);
                     break;
                 case 'swirl':
-                    $commands .= ' -swirl ' . MathUtility::forceIntegerInRange($value, 0, 1000);
+                    $commands .= ' -swirl ' . MathUtility::forceIntegerInRange((int)$value, 0, 1000);
                     break;
                 case 'wave':
                     $params = GeneralUtility::intExplode(',', $value);
                     $commands .= ' -wave ' . MathUtility::forceIntegerInRange($params[0], 0, 99) . 'x' . MathUtility::forceIntegerInRange($params[1], 0, 99);
                     break;
                 case 'charcoal':
-                    $commands .= ' -charcoal ' . MathUtility::forceIntegerInRange($value, 0, 100);
+                    $commands .= ' -charcoal ' . MathUtility::forceIntegerInRange((int)$value, 0, 100);
                     break;
                 case 'gray':
                     $commands .= ' -colorspace GRAY';
                     break;
                 case 'edge':
-                    $commands .= ' -edge ' . MathUtility::forceIntegerInRange($value, 0, 99);
+                    $commands .= ' -edge ' . MathUtility::forceIntegerInRange((int)$value, 0, 99);
                     break;
                 case 'emboss':
                     $commands .= ' -emboss';
@@ -1627,10 +1628,10 @@ class GraphicalFunctions
                     $commands .= ' -flop';
                     break;
                 case 'colors':
-                    $commands .= ' -colors ' . MathUtility::forceIntegerInRange($value, 2, 255);
+                    $commands .= ' -colors ' . MathUtility::forceIntegerInRange((int)$value, 2, 255);
                     break;
                 case 'shear':
-                    $commands .= ' -shear ' . MathUtility::forceIntegerInRange($value, -90, 90);
+                    $commands .= ' -shear ' . MathUtility::forceIntegerInRange((int)$value, -90, 90);
                     break;
                 case 'invert':
                     $commands .= ' -negate';
@@ -1844,9 +1845,9 @@ class GraphicalFunctions
             $totalCols = imagecolorstotal($im);
             for ($c = 0; $c < $totalCols; $c++) {
                 $cols = imagecolorsforindex($im, $c);
-                $cols['red'] = MathUtility::forceIntegerInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
-                $cols['green'] = MathUtility::forceIntegerInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
-                $cols['blue'] = MathUtility::forceIntegerInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
+                $cols['red'] = MathUtility::forceIntegerInRange((int)(($cols['red'] - $low) / $delta * 255), 0, 255);
+                $cols['green'] = MathUtility::forceIntegerInRange((int)(($cols['green'] - $low) / $delta * 255), 0, 255);
+                $cols['blue'] = MathUtility::forceIntegerInRange((int)(($cols['blue'] - $low) / $delta * 255), 0, 255);
                 imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
             }
         }
@@ -1896,7 +1897,7 @@ class GraphicalFunctions
      */
     public function v5_sharpen($factor)
     {
-        $factor = MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
+        $factor = MathUtility::forceIntegerInRange((int)ceil($factor / 10), 0, 10);
         $sharpenArr = explode(',', ',' . $this->im5fx_sharpenSteps);
         $sharpenF = trim($sharpenArr[$factor]);
         if ($sharpenF) {
@@ -1917,7 +1918,7 @@ class GraphicalFunctions
      */
     public function v5_blur($factor)
     {
-        $factor = MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
+        $factor = MathUtility::forceIntegerInRange((int)ceil($factor / 10), 0, 10);
         $blurArr = explode(',', ',' . $this->im5fx_blurSteps);
         $blurF = trim($blurArr[$factor]);
         if ($blurF) {
@@ -1967,12 +1968,12 @@ class GraphicalFunctions
         // Finding the RGB definitions of the color:
         $string = $cParts[0];
         if (strpos($string, '#') !== false) {
-            $string = preg_replace('/[^A-Fa-f0-9]*/', '', $string);
+            $string = preg_replace('/[^A-Fa-f0-9]*/', '', $string) ?? '';
             $col[] = hexdec(substr($string, 0, 2));
             $col[] = hexdec(substr($string, 2, 2));
             $col[] = hexdec(substr($string, 4, 2));
         } elseif (strpos($string, ',') !== false) {
-            $string = preg_replace('/[^,0-9]*/', '', $string);
+            $string = preg_replace('/[^,0-9]*/', '', $string) ?? '';
             $strArr = explode(',', $string);
             $col[] = (int)$strArr[0];
             $col[] = (int)$strArr[1];
@@ -1990,14 +1991,14 @@ class GraphicalFunctions
             $cParts[1] = trim($cParts[1]);
             if ($cParts[1][0] === '*') {
                 $val = (float)substr($cParts[1], 1);
-                $col[0] = MathUtility::forceIntegerInRange($col[0] * $val, 0, 255);
-                $col[1] = MathUtility::forceIntegerInRange($col[1] * $val, 0, 255);
-                $col[2] = MathUtility::forceIntegerInRange($col[2] * $val, 0, 255);
+                $col[0] = MathUtility::forceIntegerInRange((int)($col[0] * $val), 0, 255);
+                $col[1] = MathUtility::forceIntegerInRange((int)($col[1] * $val), 0, 255);
+                $col[2] = MathUtility::forceIntegerInRange((int)($col[2] * $val), 0, 255);
             } else {
                 $val = (int)$cParts[1];
-                $col[0] = MathUtility::forceIntegerInRange($col[0] + $val, 0, 255);
-                $col[1] = MathUtility::forceIntegerInRange($col[1] + $val, 0, 255);
-                $col[2] = MathUtility::forceIntegerInRange($col[2] + $val, 0, 255);
+                $col[0] = MathUtility::forceIntegerInRange((int)($col[0] + $val), 0, 255);
+                $col[1] = MathUtility::forceIntegerInRange((int)($col[1] + $val), 0, 255);
+                $col[2] = MathUtility::forceIntegerInRange((int)($col[2] + $val), 0, 255);
             }
         }
         return $col;
@@ -2126,7 +2127,7 @@ class GraphicalFunctions
         }
         $info[0] = $data[0];
         $info[1] = $data[1];
-        $frame = $this->addFrameSelection ? (int)$frame : '';
+        $frame = $this->addFrameSelection ? (int)$frame : 0;
         if (!$params) {
             $params = $this->cmds[$newExt];
         }
@@ -2300,8 +2301,8 @@ class GraphicalFunctions
      * Get numbers for scaling the image based on input
      *
      * @param array $info Current image information: Width, Height etc.
-     * @param int $w "required" width
-     * @param int $h "required" height
+     * @param string $w "required" width
+     * @param string $h "required" height
      * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH
      * @return array
      * @internal
@@ -2312,8 +2313,8 @@ class GraphicalFunctions
         $out = [];
         $max = strpos($w . $h, 'm') !== false ? 1 : 0;
         if (strpos($w . $h, 'c') !== false) {
-            $out['cropH'] = (int)substr(strstr($w, 'c'), 1);
-            $out['cropV'] = (int)substr(strstr($h, 'c'), 1);
+            $out['cropH'] = (int)substr((string)strstr($w, 'c'), 1);
+            $out['cropV'] = (int)substr((string)strstr($h, 'c'), 1);
             $crs = true;
         } else {
             $crs = false;
@@ -2750,7 +2751,7 @@ class GraphicalFunctions
     public function ImageWrite($destImg, $theImage, $quality = 0)
     {
         imageinterlace($destImg, 0);
-        $ext = strtolower(substr($theImage, strrpos($theImage, '.') + 1));
+        $ext = strtolower(substr($theImage, (int)strrpos($theImage, '.') + 1));
         $result = false;
         switch ($ext) {
             case 'jpg':

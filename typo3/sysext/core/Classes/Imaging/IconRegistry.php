@@ -678,7 +678,7 @@ class IconRegistry implements SingletonInterface
             $this->initialize();
         }
 
-        return sha1(json_encode($this->icons));
+        return sha1((string)json_encode($this->icons));
     }
 
     /**

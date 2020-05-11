@@ -148,7 +148,7 @@ class ImageDimension
                     $options['crop'] = new Area($cropData->x, $cropData->y, $cropData->width, $cropData->height);
                 } else {
                     [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $configuration['crop'], 4);
-                    $options['crop'] = new Area($offsetLeft, $offsetTop, $newWidth, $newHeight);
+                    $options['crop'] = new Area((float)$offsetLeft, (float)$offsetTop, (float)$newWidth, (float)$newHeight);
                 }
                 if ($options['crop']->isEmpty()) {
                     unset($options['crop']);
