@@ -27,7 +27,7 @@ class SyslogWriter extends AbstractWriter
      * List of valid syslog facility names.
      * private as it's not supposed to be changed.
      *
-     * @var int[] Facilities
+     * @var array<string, int> Facilities
      */
     private $facilities = [
         'auth' => LOG_AUTH,
@@ -88,7 +88,7 @@ class SyslogWriter extends AbstractWriter
     /**
      * Sets the facility to use when logging to syslog.
      *
-     * @param int $facility Facility to use when logging.
+     * @param string $facility Facility to use when logging.
      */
     public function setFacility($facility)
     {

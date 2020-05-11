@@ -221,7 +221,7 @@ class FileWriter extends AbstractWriter
         $scheme = parse_url($this->logFile, PHP_URL_SCHEME);
         if ($scheme === null || $scheme === 'file' || $scheme === 'vfs' || GeneralUtility::isAbsPath($this->logFile)) {
             // remove file:/ before creating the directory
-            $logFileDirectory = PathUtility::dirname(preg_replace('#^file:/#', '', $this->logFile));
+            $logFileDirectory = PathUtility::dirname((string)preg_replace('#^file:/#', '', $this->logFile));
             if (!@is_dir($logFileDirectory)) {
                 GeneralUtility::mkdir_deep($logFileDirectory);
                 // create .htaccess file if log file is within the site path
