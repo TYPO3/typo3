@@ -155,7 +155,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                                 $icon,
                                 $tableName,
                                 $shortcutRecord['uid'],
-                                1
+                                '1'
                             );
                             $shortcutContent[] = $icon
                                 . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
@@ -276,8 +276,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $fieldArr = explode(',', $fieldList);
         foreach ($fieldArr as $field) {
             if ($record[$field]) {
-                $info[] = '<strong>' . htmlspecialchars($itemLabels[$field]) . '</strong> '
-                    . htmlspecialchars(BackendUtility::getProcessedValue('tt_content', $field, $record[$field]));
+                $info[] = '<strong>' . htmlspecialchars((string)($itemLabels[$field] ?? '')) . '</strong> '
+                    . htmlspecialchars(BackendUtility::getProcessedValue('tt_content', $field, $record[$field]) ?? '');
             }
         }
     }

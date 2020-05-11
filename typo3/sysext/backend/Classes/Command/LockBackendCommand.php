@@ -60,6 +60,7 @@ class LockBackendCommand extends Command
         $output = 'Wrote lock file to "' . $lockFile . '"';
         if ($input->getArgument('redirect')) {
             $lockFileContent = $input->getArgument('redirect');
+            $lockFileContent = is_string($lockFileContent) ? $lockFileContent : '';
             $output .= LF . 'with content "' . $lockFileContent . '".';
         } else {
             $lockFileContent = '';

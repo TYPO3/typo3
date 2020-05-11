@@ -409,7 +409,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function isFunctionDisabled(string $functionName): bool
     {
-        $disabledFunctions = GeneralUtility::trimExplode(',', ini_get('disable_functions'));
+        $disabledFunctions = GeneralUtility::trimExplode(',', (string)ini_get('disable_functions'));
         if (!empty($disabledFunctions)) {
             return in_array($functionName, $disabledFunctions, true);
         }

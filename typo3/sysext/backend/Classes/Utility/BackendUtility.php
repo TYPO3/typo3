@@ -162,8 +162,8 @@ class BackendUtility
     /**
      * Purges computed properties starting with underscore character ('_').
      *
-     * @param array $record
-     * @return array
+     * @param array<string,mixed> $record
+     * @return array<string,mixed>
      * @internal should only be used from within TYPO3 Core
      */
     public static function purgeComputedPropertiesFromRecord(array $record): array
@@ -576,7 +576,7 @@ class BackendUtility
      *
      * @param int $id Page uid for which to check read-access
      * @param string $perms_clause This is typically a value generated with static::getBackendUserAuthentication()->getPagePermsClause(1);
-     * @return array|bool Returns page record if OK, otherwise FALSE.
+     * @return array|false Returns page record if OK, otherwise FALSE.
      */
     public static function readPageAccess($id, $perms_clause)
     {
@@ -709,7 +709,7 @@ class BackendUtility
         );
         $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, null, $id, $rootLine);
         $tsConfig = $parser->parse($pageTs, $matcher, $site);
-        $cacheHash = md5(json_encode($tsConfig));
+        $cacheHash = md5((string)json_encode($tsConfig));
 
         // Get User TSconfig overlay, if no backend user is logged-in, this needs to be checked as well
         if (static::getBackendUserAuthentication()) {
@@ -1079,7 +1079,7 @@ class BackendUtility
         $linkInfoPopup = true
     ) {
         // Check and parse the size parameter
-        $size = trim($size);
+        $size = trim((string)$size);
         $sizeParts = [64, 64];
         if ($size) {
             $sizeParts = explode('x', $size . 'x' . $size);
@@ -1122,8 +1122,8 @@ class BackendUtility
                     ]);
                     $attributes = [
                         'src' => $imageUrl,
-                        'width' => (int)$sizeParts[0],
-                        'height' => (int)$sizeParts[1],
+                        'width' => (string)(int)$sizeParts[0],
+                        'height' => (string)(int)$sizeParts[1],
                         'alt' => $fileReferenceObject->getName(),
                     ];
                     $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
@@ -1156,7 +1156,7 @@ class BackendUtility
      */
     public static function getThumbnailUrl(int $fileId, array $configuration): string
     {
-        $parameters = json_encode([
+        $parameters = (string)json_encode([
             'fileId' => $fileId,
             'configuration' => $configuration
         ]);
@@ -1251,7 +1251,7 @@ class BackendUtility
             $fe_groups = [];
             foreach (GeneralUtility::intExplode(',', $row['fe_group']) as $fe_group) {
                 if ($fe_group < 0) {
-                    $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', $fe_group));
+                    $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', (string)$fe_group));
                 } else {
                     $lRec = self::getRecordWSOL('fe_groups', $fe_group, 'title');
                     $fe_groups[] = $lRec['title'];
@@ -1292,7 +1292,7 @@ class BackendUtility
     public static function getRecordIconAltText($row, $table = 'pages')
     {
         if ($table === 'pages') {
-            $out = self::titleAttribForPages($row, '', 0);
+            $out = self::titleAttribForPages($row, '', false);
         } else {
             $out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'])) ? $row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] . ' ' : '';
             $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
@@ -1493,11 +1493,11 @@ class BackendUtility
                     $GLOBALS['TCA'][$table]['ctrl']['label'],
                     $row[$GLOBALS['TCA'][$table]['ctrl']['label']],
                     0,
-                    0,
+                    false,
                     false,
                     $row['uid'],
                     $forceResult
-                );
+                ) ?? '';
                 if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])
                     && (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) || (string)$recordTitle === '')
                 ) {
@@ -1509,7 +1509,7 @@ class BackendUtility
                     foreach ($altFields as $fN) {
                         $recordTitle = trim(strip_tags($row[$fN]));
                         if ((string)$recordTitle !== '') {
-                            $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, 0, false, $row['uid']);
+                            $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid']);
                             if (!$GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
                                 break;
                             }
@@ -1936,7 +1936,7 @@ class BackendUtility
                             ) {
                                 $ageSuffix = ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '')
                                     . self::calcAge(
-                                        abs($GLOBALS['EXEC_TIME'] - $value),
+                                        (int)abs($GLOBALS['EXEC_TIME'] - $value),
                                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                                     )
                                     . ')';
@@ -2038,14 +2038,14 @@ class BackendUtility
         $forceResult = true,
         $pid = 0
     ) {
-        $fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 1, 0, $uid, $forceResult, $pid);
+        $fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, true, false, $uid, $forceResult, $pid);
         if (!isset($fVnew)) {
             if (is_array($GLOBALS['TCA'][$table])) {
                 if ($fN == $GLOBALS['TCA'][$table]['ctrl']['tstamp'] || $fN == $GLOBALS['TCA'][$table]['ctrl']['crdate']) {
-                    $fVnew = self::datetime($fV);
+                    $fVnew = self::datetime((int)$fV);
                 } elseif ($fN === 'pid') {
                     // Fetches the path with no regard to the users permissions to select pages.
-                    $fVnew = self::getRecordPath($fV, '1=1', 20);
+                    $fVnew = self::getRecordPath((int)$fV, '1=1', 20);
                 } else {
                     $fVnew = $fV;
                 }
@@ -2342,7 +2342,7 @@ class BackendUtility
             $previewUrl = $viewScript;
         } else {
             $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
-            $pageInfo = self::readPageAccess($pageUid, $permissionClause);
+            $pageInfo = self::readPageAccess($pageUid, $permissionClause) ?: [];
             // prepare custom context for link generation (to allow for example time based previews)
             $context = clone GeneralUtility::makeInstance(Context::class);
             $additionalGetVars .= self::ADMCMD_previewCmds($pageInfo, $context);
@@ -2609,7 +2609,7 @@ class BackendUtility
             'type' => 'checkbox',
             'class' => 'checkbox',
             'name' => $elementName,
-            'value' => 1,
+            'value' => '1',
             'data-global-event' => 'change',
             'data-action-navigate' => '$data=~s/$value/',
             'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
@@ -3015,7 +3015,7 @@ class BackendUtility
      *
      * @param string $table Table name
      * @param int $uid Record uid
-     * @param int $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return
+     * @param int|string $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return
      * @return int
      * @internal
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::copyRecord()
@@ -3073,7 +3073,7 @@ class BackendUtility
         $firstLevelCache = $runtimeCache->get('backendUtilityTscPidCached') ?: [];
         $key = $table . ':' . $uid . ':' . $pid;
         if (!isset($firstLevelCache[$key])) {
-            $firstLevelCache[$key] = static::getTSCpid($table, $uid, $pid);
+            $firstLevelCache[$key] = static::getTSCpid($table, (int)$uid, (int)$pid);
             $runtimeCache->set('backendUtilityTscPidCached', $firstLevelCache);
         }
         return $firstLevelCache[$key];
@@ -3084,7 +3084,7 @@ class BackendUtility
      *
      * @param string $table Table name
      * @param int $uid Record uid
-     * @param int $pid Record pid
+     * @param int|string $pid Record pid
      * @return array Array of two integers; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID,
      * second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
      * @internal
@@ -3191,8 +3191,8 @@ class BackendUtility
      * @param string $table Table name (or "_FILE" if its a file)
      * @param string $ref Reference: If table, then int-uid, if _FILE, then file reference (relative to Environment::getPublicPath())
      * @param string $msg Message with %s, eg. "There were %s records pointing to this file!
-     * @param string|null $count Reference count
-     * @return string Output string (or int count value if no msg string specified)
+     * @param string|int|null $count Reference count
+     * @return string|int Output string (or int count value if no msg string specified)
      */
     public static function referenceCount($table, $ref, $msg = '', $count = null)
     {

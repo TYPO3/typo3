@@ -144,7 +144,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
                 }
             } else {
                 $pageOfEditableRecord = BackendUtility::getRecord('pages', $dataArray['pid']);
-                if ($this->doesUserHaveAccess($pageOfEditableRecord, Permission::CONTENT_EDIT) && !$restrictEditingToRecordsOfCurrentPid) {
+                if (is_array($pageOfEditableRecord) && $this->doesUserHaveAccess($pageOfEditableRecord, Permission::CONTENT_EDIT) && !$restrictEditingToRecordsOfCurrentPid) {
                     $mayEdit = true;
                 }
             }
