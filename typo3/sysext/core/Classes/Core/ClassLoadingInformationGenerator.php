@@ -85,7 +85,7 @@ class ClassLoadingInformationGenerator
                 foreach ($autoloadPsr4 as $namespacePrefix => $paths) {
                     foreach ((array)$paths as $path) {
                         $namespacePath = $packagePath . $path;
-                        $namespaceRealPath = realpath($namespacePath);
+                        $namespaceRealPath = (string)realpath($namespacePath);
                         if ($useRelativePaths) {
                             $psr4[$namespacePrefix][] = $this->makePathRelative($namespacePath, $namespaceRealPath);
                         } else {
@@ -115,18 +115,18 @@ class ClassLoadingInformationGenerator
      *
      * @param \stdClass $manifest
      * @param string $section
-     * @return array
+     * @return array<string,array>
      */
     protected function getAutoloadSectionFromManifest($manifest, $section)
     {
         $finalAutoloadSection = [];
-        $autoloadDefinition = json_decode(json_encode($manifest->autoload), true);
+        $autoloadDefinition = json_decode((string)json_encode($manifest->autoload), true);
         if (!empty($autoloadDefinition[$section]) && is_array($autoloadDefinition[$section])) {
             $finalAutoloadSection = $autoloadDefinition[$section];
         }
         if ($this->isDevMode) {
             if (isset($manifest->{'autoload-dev'})) {
-                $autoloadDefinitionDev = json_decode(json_encode($manifest->{'autoload-dev'}), true);
+                $autoloadDefinitionDev = json_decode((string)json_encode($manifest->{'autoload-dev'}), true);
                 if (!empty($autoloadDefinitionDev[$section]) && is_array($autoloadDefinitionDev[$section])) {
                     $finalAutoloadSection = array_merge($finalAutoloadSection, $autoloadDefinitionDev[$section]);
                 }
@@ -150,7 +150,7 @@ class ClassLoadingInformationGenerator
         $classMap = [];
         $blacklistExpression = null;
         if ($ignorePotentialTestClasses) {
-            $blacklistPathPrefix = realpath($classesPath);
+            $blacklistPathPrefix = (string)realpath($classesPath);
             $blacklistPathPrefix = str_replace('\\', '/', $blacklistPathPrefix);
             $blacklistExpression = "{($blacklistPathPrefix/tests/|$blacklistPathPrefix/Tests/|$blacklistPathPrefix/Resources/|$blacklistPathPrefix/res/|$blacklistPathPrefix/class.ext_update.php)}";
         }
@@ -255,7 +255,7 @@ EOF;
     protected function makePathRelative($packagePath, $realPathOfClassFile, $relativeToRoot = true)
     {
         $realPathOfClassFile = GeneralUtility::fixWindowsFilePath($realPathOfClassFile);
-        $packageRealPath = GeneralUtility::fixWindowsFilePath(realpath($packagePath));
+        $packageRealPath = GeneralUtility::fixWindowsFilePath((string)realpath($packagePath));
         $relativePackagePath = rtrim(substr($packagePath, strlen($this->installationRoot)), '/');
         if ($relativeToRoot) {
             if ($realPathOfClassFile === $packageRealPath) {

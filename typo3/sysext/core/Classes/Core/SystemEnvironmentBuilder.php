@@ -172,7 +172,7 @@ class SystemEnvironmentBuilder
                 // or has the real path
                 $scriptName = ltrim(substr($scriptPath, strlen($rootPath)), '/');
             }
-            $rootPath = rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
+            $rootPath = rtrim(GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_ROOT')), '/');
             $scriptPath = $rootPath . '/' . $scriptName;
         }
         return $scriptPath;
@@ -196,7 +196,7 @@ class SystemEnvironmentBuilder
     {
         // Check if the root path has been set in the environment (e.g. by the composer installer)
         if (getenv('TYPO3_PATH_ROOT')) {
-            return rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
+            return rtrim(GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_ROOT')), '/');
         }
         $isCli = self::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
@@ -240,7 +240,7 @@ class SystemEnvironmentBuilder
     protected static function initializeEnvironment(int $requestType, string $scriptPath, string $sitePath)
     {
         if (getenv('TYPO3_PATH_ROOT')) {
-            $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
+            $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_ROOT')), '/');
             if ($sitePath !== $rootPathFromEnvironment) {
                 // This means, that we re-initialized the environment during a single request
                 // This currently only happens in custom code or during functional testing
@@ -250,7 +250,7 @@ class SystemEnvironmentBuilder
             }
         }
 
-        $projectRootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_APP'));
+        $projectRootPath = GeneralUtility::fixWindowsFilePath((string)getenv('TYPO3_PATH_APP'));
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
             static::createApplicationContext(),
