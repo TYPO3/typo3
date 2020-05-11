@@ -68,7 +68,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
-        return $this->isValidSalt($saltedHashPW) && hash_equals($this->getHashedPasswordInternal($plainPW, $saltedHashPW), $saltedHashPW);
+        return $this->isValidSalt($saltedHashPW) && hash_equals((string)$this->getHashedPasswordInternal($plainPW, $saltedHashPW), $saltedHashPW);
     }
 
     /**
@@ -237,7 +237,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
             if (!strncmp('$', $salt, 1)) {
                 if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
                     $isValid = true;
-                    $salt = substr($salt, strrpos($salt, '$') + 1);
+                    $salt = substr($salt, (int)strrpos($salt, '$') + 1);
                 } else {
                     $skip = true;
                 }

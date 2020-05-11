@@ -215,7 +215,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
             if (!strncmp('$', $salt, 1)) {
                 if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
                     $isValid = true;
-                    $salt = substr($salt, strrpos($salt, '$') + 1);
+                    $salt = substr($salt, (int)strrpos($salt, '$') + 1);
                 } else {
                     $skip = true;
                 }
