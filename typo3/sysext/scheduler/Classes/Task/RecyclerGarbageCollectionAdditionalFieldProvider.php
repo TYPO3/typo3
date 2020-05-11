@@ -59,7 +59,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
         }
         $fieldName = 'tx_scheduler[scheduler_recyclerGarbageCollection_numberOfDays]';
         $fieldId = 'task_recyclerGarbageCollection_numberOfDays';
-        $fieldValue = (int)$taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'];
+        $fieldValue = (string)(int)$taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'];
         $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
         $additionalFields = [];
         $additionalFields[$fieldId] = [
