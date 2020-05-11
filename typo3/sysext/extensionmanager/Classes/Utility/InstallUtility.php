@@ -172,7 +172,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Helper function to install an extension
      * also processes db updates and clears the cache if the extension asks for it
      *
-     * @param array<int,mixed> $extensionKeys
+     * @param string ...$extensionKeys
      * @throws ExtensionManagerException
      */
     public function install(...$extensionKeys)
@@ -236,7 +236,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
                     'extensionList.uninstall.dependencyError',
                     'extensionmanager',
                     [$extensionKey, implode(',', $dependentExtensions)]
-                ),
+                ) ?? '',
                 1342554622
             );
         }
@@ -392,9 +392,12 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             if (empty($updateStatements[$action])) {
                 continue;
             }
+
+            $statements = array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true));
+            $statements = is_array($statements) ? $statements : [];
             $selectedStatements = array_merge(
                 $selectedStatements,
-                array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true))
+                $statements
             );
         }
 
@@ -540,7 +543,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             $extTablesStaticSqlFile = Environment::getPublicPath() . '/' . $extTablesStaticSqlRelFile;
             $shortFileHash = '';
             if (file_exists($extTablesStaticSqlFile)) {
-                $extTablesStaticSqlContent = file_get_contents($extTablesStaticSqlFile);
+                $extTablesStaticSqlContent = (string)file_get_contents($extTablesStaticSqlFile);
                 $shortFileHash = md5($extTablesStaticSqlContent);
                 $this->importStaticSql($extTablesStaticSqlContent);
             }

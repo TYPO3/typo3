@@ -70,8 +70,8 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
         xml_parser_set_option($this->objXml, XML_OPTION_CASE_FOLDING, false);
         xml_parser_set_option($this->objXml, XML_OPTION_SKIP_WHITE, false);
         xml_parser_set_option($this->objXml, XML_OPTION_TARGET_ENCODING, 'utf-8');
-        xml_set_element_handler($this->objXml, 'startElement', 'endElement');
-        xml_set_character_data_handler($this->objXml, 'characterData');
+        xml_set_element_handler($this->objXml, [$this, 'startElement'], [$this, 'endElement']);
+        xml_set_character_data_handler($this->objXml, [$this, 'characterData']);
         if (!($fp = fopen($file, 'r'))) {
             throw new ExtensionManagerException(sprintf('Unable to open file resource %s.', $file), 1342641010);
         }

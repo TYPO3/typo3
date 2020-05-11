@@ -216,13 +216,14 @@ class DownloadController extends AbstractController
         if ($errorMessages) {
             foreach ($errorMessages as $extensionKey => $messages) {
                 foreach ($messages as $message) {
+                    /** @var string $message */
                     $this->addFlashMessage(
                         $message['message'],
                         LocalizationUtility::translate(
                             'distribution.error.headline',
                             'extensionmanager',
                             [$extensionKey]
-                        ),
+                        ) ?? '',
                         AbstractMessage::ERROR
                     );
                 }
@@ -240,8 +241,8 @@ class DownloadController extends AbstractController
                     'distribution.welcome.message',
                     'extensionmanager',
                     [$extension->getExtensionKey()]
-                ),
-                LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager')
+                ) ?? '',
+                LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager') ?? ''
             );
 
             // Redirect to show action

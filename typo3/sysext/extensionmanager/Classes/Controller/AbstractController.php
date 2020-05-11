@@ -40,11 +40,11 @@ class AbstractController extends ActionController
      *
      * @param string $key
      * @param array|null $arguments
-     * @return string|null
+     * @return string
      */
     protected function translate($key, $arguments = null)
     {
-        return LocalizationUtility::translate($key, 'extensionmanager', $arguments);
+        return LocalizationUtility::translate($key, 'extensionmanager', $arguments) ?? '';
     }
 
     /**

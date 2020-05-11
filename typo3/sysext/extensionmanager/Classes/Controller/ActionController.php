@@ -154,7 +154,7 @@ class ActionController extends AbstractController
                     [
                         'extension' => $extension,
                     ]
-                )
+                ) ?? ''
             );
         } catch (ExtensionManagerException|Exception $e) {
             $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);

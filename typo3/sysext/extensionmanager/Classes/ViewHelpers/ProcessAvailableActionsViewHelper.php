@@ -51,6 +51,7 @@ class ProcessAvailableActionsViewHelper extends AbstractTagBasedViewHelper
     {
         $html = $this->renderChildren();
         $actions = preg_split('#\\n\\s*#s', trim($html));
+        $actions = is_array($actions) ? $actions : [];
 
         $event = new AvailableActionsForExtensionEvent($this->arguments['extension']['key'], $this->arguments['extension'], $actions);
         $this->eventDispatcher->dispatch($event);
