@@ -150,7 +150,11 @@ class ContainerBuilder
         // We need to patch the generated source code to use GeneralUtility::makeInstanceForDi() instead of `new`.
         // This is ugly, but has to stay, as long as we support SingletonInstances to be created/retrieved
         // through GeneralUtility::makeInstance.
-        $code = str_replace(', )', ')', preg_replace('/new ([^\(]+)\(/', '\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstanceForDi(\\1::class, ', $code));
+        $code = preg_replace('/new ([^\(]+)\(/', '\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstanceForDi(\\1::class, ', $code);
+        if ($code === null) {
+            throw new \RuntimeException('Could not generate container code', 1599767133);
+        }
+        $code = str_replace(', )', ')', $code);
 
         $cache->set($cacheIdentifier, $code);
 
