@@ -155,9 +155,9 @@ class CronCommand
      */
     protected function dayMatchesCronCommand($timestamp)
     {
-        $dayOfMonth = date('j', $timestamp);
-        $month = date('n', $timestamp);
-        $dayOfWeek = date('N', $timestamp);
+        $dayOfMonth = (int)date('j', $timestamp);
+        $month = (int)date('n', $timestamp);
+        $dayOfWeek = (int)date('N', $timestamp);
         $isInDayOfMonth = $this->isInCommandList($this->cronCommandSections[2], $dayOfMonth);
         $isInMonth = $this->isInCommandList($this->cronCommandSections[3], $month);
         $isInDayOfWeek = $this->isInCommandList($this->cronCommandSections[4], $dayOfWeek);
@@ -190,7 +190,7 @@ class CronCommand
         if ((string)$commandExpression === '*') {
             $inList = true;
         } else {
-            $inList = GeneralUtility::inList($commandExpression, $numberToMatch);
+            $inList = GeneralUtility::inList($commandExpression, (string)$numberToMatch);
         }
         return $inList;
     }
@@ -209,10 +209,10 @@ class CronCommand
      */
     protected function numberOfSecondsInDay($timestamp)
     {
-        $now = mktime(0, 0, 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
+        $now = mktime(0, 0, 0, (int)date('n', $timestamp), (int)date('j', $timestamp), (int)date('Y', $timestamp));
         // Make sure to be in next day, even if day has 25 hours
         $nextDay = $now + 60 * 60 * 25;
-        $nextDay = mktime(0, 0, 0, date('n', $nextDay), date('j', $nextDay), date('Y', $nextDay));
+        $nextDay = mktime(0, 0, 0, (int)date('n', $nextDay), (int)date('j', $nextDay), (int)date('Y', $nextDay));
         return $nextDay - $now;
     }
 
@@ -224,6 +224,6 @@ class CronCommand
      */
     protected function roundTimestamp($timestamp)
     {
-        return mktime(date('H', $timestamp), date('i', $timestamp), 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
+        return mktime((int)date('H', $timestamp), (int)date('i', $timestamp), 0, (int)date('n', $timestamp), (int)date('j', $timestamp), (int)date('Y', $timestamp));
     }
 }

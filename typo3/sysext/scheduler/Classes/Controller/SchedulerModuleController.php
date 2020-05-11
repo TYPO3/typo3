@@ -693,7 +693,7 @@ class SchedulerModuleController
             // Add each field to the display, if there are indeed any
             if (is_array($fields)) {
                 foreach ($fields as $fieldID => $fieldInfo) {
-                    $htmlClassName = strtolower(str_replace('\\', '-', $class));
+                    $htmlClassName = strtolower(str_replace('\\', '-', (string)$class));
                     $field = [];
                     $field['htmlClassName'] = $htmlClassName;
                     $field['code'] = $fieldInfo['code'];

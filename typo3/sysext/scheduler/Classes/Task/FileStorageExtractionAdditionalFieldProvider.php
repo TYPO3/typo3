@@ -93,7 +93,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
     {
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_fileCount]';
         $fieldId = 'scheduler_fileStorageIndexing_fileCount';
-        $fieldValue = $task !== null ? (int)$task->maxFileCount : 100;
+        $fieldValue = (string)($task !== null ? (int)$task->maxFileCount : 100);
         $fieldHtml = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
 
         $fieldConfiguration = [
