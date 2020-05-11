@@ -817,7 +817,9 @@ class PackageManager implements SingletonInterface
         $composerManifest = null;
         if (file_exists($manifestPath . 'composer.json')) {
             $json = file_get_contents($manifestPath . 'composer.json');
-            $composerManifest = json_decode($json);
+            if ($json !== false) {
+                $composerManifest = json_decode($json);
+            }
             if (!$composerManifest instanceof \stdClass) {
                 throw new InvalidPackageManifestException('The composer.json found for extension "' . PathUtility::basename($manifestPath) . '" is invalid!', 1439555561);
             }
@@ -909,12 +911,18 @@ class PackageManager implements SingletonInterface
             }
         }
         if (isset($extensionManagerConfiguration['autoload'])) {
-            $composerManifest->autoload = json_decode(json_encode($extensionManagerConfiguration['autoload']));
+            $autoload = json_encode($extensionManagerConfiguration['autoload']);
+            if ($autoload !== false) {
+                $composerManifest->autoload = json_decode($autoload);
+            }
         }
         // composer.json autoload-dev information must be discarded, as it may contain information only available after a composer install
         unset($composerManifest->{'autoload-dev'});
         if (isset($extensionManagerConfiguration['autoload-dev'])) {
-            $composerManifest->{'autoload-dev'} = json_decode(json_encode($extensionManagerConfiguration['autoload-dev']));
+            $autoloadDev = json_encode($extensionManagerConfiguration['autoload-dev']);
+            if ($autoloadDev !== false) {
+                $composerManifest->{'autoload-dev'} = json_decode($autoloadDev);
+            }
         }
 
         return $composerManifest;
