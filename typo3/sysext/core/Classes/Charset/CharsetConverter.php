@@ -429,10 +429,10 @@ class CharsetConverter implements SingletonInterface
                 // Caching brought parsing time for gb2312 down from 2400 ms to 150 ms. For other charsets we are talking 11 ms down to zero.
                 $cacheFile = Environment::getVarPath() . '/charset/charset_' . $charset . '.tbl';
                 if ($cacheFile && @is_file($cacheFile)) {
-                    $this->parsedCharsets[$charset] = unserialize(file_get_contents($cacheFile), ['allowed_classes' => false]);
+                    $this->parsedCharsets[$charset] = unserialize((string)file_get_contents($cacheFile), ['allowed_classes' => false]);
                 } else {
                     // Parse conversion table into lines:
-                    $lines = GeneralUtility::trimExplode(LF, file_get_contents($charsetConvTableFile), true);
+                    $lines = GeneralUtility::trimExplode(LF, (string)file_get_contents($charsetConvTableFile), true);
                     // Initialize the internal variable holding the conv. table:
                     $this->parsedCharsets[$charset] = ['local' => [], 'utf8' => []];
                     // traverse the lines:
@@ -462,7 +462,7 @@ class CharsetConverter implements SingletonInterface
                             $decval = hexdec(trim($hexbyte));
                             if ($decval > 127) {
                                 $utf8decval = hexdec(substr(trim($utf8), 2));
-                                $this->parsedCharsets[$charset]['local'][$decval] = $this->UnumberToChar($utf8decval);
+                                $this->parsedCharsets[$charset]['local'][$decval] = $this->UnumberToChar((int)$utf8decval);
                                 $this->parsedCharsets[$charset]['utf8'][$this->parsedCharsets[$charset]['local'][$decval]] = $decval;
                             }
                         }
@@ -495,7 +495,7 @@ class CharsetConverter implements SingletonInterface
         }
         // Use cached version if possible
         if ($cacheFileASCII && @is_file($cacheFileASCII)) {
-            $this->toASCII['utf-8'] = unserialize(file_get_contents($cacheFileASCII), ['allowed_classes' => false]);
+            $this->toASCII['utf-8'] = unserialize((string)file_get_contents($cacheFileASCII), ['allowed_classes' => false]);
             return 2;
         }
         // Process main Unicode data file
@@ -516,7 +516,7 @@ class CharsetConverter implements SingletonInterface
         // Array of chars to be omitted (eg. Russian hard sign)
         $omit = [];
         while (!feof($fh)) {
-            $line = fgets($fh, 4096);
+            $line = (string)fgets($fh, 4096);
             // Has a lot of info
             [$char, $name, $cat, , , $decomp, , , $num] = explode(';', rtrim($line));
             $ord = hexdec($char);
@@ -619,18 +619,18 @@ class CharsetConverter implements SingletonInterface
         foreach ($decomposition as $from => $to) {
             $code_decomp = [];
             while ($code_value = array_shift($to)) {
-                $ord = hexdec($code_value);
+                $ord = (int)hexdec($code_value);
                 if ($ord > 127) {
                     continue 2;
                 }
                 // Skip decompositions containing non-ASCII chars
                 $code_decomp[] = chr($ord);
             }
-            $this->toASCII['utf-8'][$this->UnumberToChar(hexdec(substr($from, 2)))] = implode('', $code_decomp);
+            $this->toASCII['utf-8'][$this->UnumberToChar((int)hexdec(substr($from, 2)))] = implode('', $code_decomp);
         }
         // Add numeric decompositions
         foreach ($number as $from => $to) {
-            $utf8_char = $this->UnumberToChar(hexdec(substr($from, 2)));
+            $utf8_char = $this->UnumberToChar((int)hexdec(substr($from, 2)));
             if (!isset($this->toASCII['utf-8'][$utf8_char])) {
                 $this->toASCII['utf-8'][$utf8_char] = $to;
             }
@@ -657,7 +657,7 @@ class CharsetConverter implements SingletonInterface
         // Use cached version if possible
         $cacheFile = Environment::getVarPath() . '/charset/csascii_' . $charset . '.tbl';
         if ($cacheFile && @is_file($cacheFile)) {
-            $this->toASCII[$charset] = unserialize(file_get_contents($cacheFile), ['allowed_classes' => false]);
+            $this->toASCII[$charset] = unserialize((string)file_get_contents($cacheFile), ['allowed_classes' => false]);
             return 2;
         }
         // Init UTF-8 conversion for this charset
