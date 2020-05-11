@@ -339,7 +339,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         $groupId = (int)$groupId;
         if ($this->groupList && $groupId) {
-            return GeneralUtility::inList($this->groupList, $groupId);
+            return GeneralUtility::inList($this->groupList, (string)$groupId);
         }
         return false;
     }
@@ -745,7 +745,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if (trim($this->groupData['allowed_languages']) !== '') {
             $langValue = (int)$langValue;
             // Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
-            if ($langValue != -1 && !$this->check('allowed_languages', $langValue)) {
+            if ($langValue != -1 && !$this->check('allowed_languages', (string)$langValue)) {
                 return false;
             }
         }
@@ -802,7 +802,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * The function takes an ID (int) or row (array) as second argument.
      *
      * @param string $table Table name
-     * @param mixed $idOrRow If integer, then this is the ID of the record. If Array this just represents fields in the record.
+     * @param int|array $idOrRow If integer, then this is the ID of the record. If Array this just represents fields in the record.
      * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
      * @param bool $deletedRecord Set, if testing a deleted record array.
      * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
@@ -1297,7 +1297,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         $alternativeWebmountPoint = (int)$this->getSessionData('pageTree_temporaryMountPoint');
         if ($alternativeWebmountPoint) {
-            $alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
+            $alternativeWebmountPoint = GeneralUtility::intExplode(',', (string)$alternativeWebmountPoint);
             $this->setWebmounts($alternativeWebmountPoint);
             return;
         }
