@@ -34,7 +34,7 @@ class VersionNumberUtility
         $version = $versionParts[0];
         for ($i = 1; $i < 3; $i++) {
             if (!empty($versionParts[$i])) {
-                $version .= str_pad((int)$versionParts[$i], 3, '0', STR_PAD_LEFT);
+                $version .= str_pad((string)(int)$versionParts[$i], 3, '0', STR_PAD_LEFT);
             } else {
                 $version .= '000';
             }
@@ -86,7 +86,7 @@ class VersionNumberUtility
             $cleanedVersion = GeneralUtility::trimExplode('.', $versions[$i]);
             $cleanedVersionCount = count($cleanedVersion);
             for ($j = 0; $j < $cleanedVersionCount; $j++) {
-                $cleanedVersion[$j] = MathUtility::forceIntegerInRange($cleanedVersion[$j], 0, 999);
+                $cleanedVersion[$j] = MathUtility::forceIntegerInRange((int)$cleanedVersion[$j], 0, 999);
             }
             $cleanedVersionString = implode('.', $cleanedVersion);
             if (static::convertVersionNumberToInteger($cleanedVersionString) === 0) {

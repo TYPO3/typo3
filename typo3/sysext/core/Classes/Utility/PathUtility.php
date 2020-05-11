@@ -114,7 +114,7 @@ class PathUtility
         if (count($paths) === 1) {
             $commonPath = array_shift($paths);
         } elseif (count($paths) > 1) {
-            $parts = explode('/', array_shift($paths));
+            $parts = explode('/', (string)array_shift($paths));
             $comparePath = '';
             $break = false;
             foreach ($parts as $part) {
@@ -164,7 +164,7 @@ class PathUtility
      */
     public static function basename($path)
     {
-        $currentLocale = setlocale(LC_CTYPE, 0);
+        $currentLocale = (string)setlocale(LC_CTYPE, '0');
         setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
         $basename = basename($path);
         setlocale(LC_CTYPE, $currentLocale);
@@ -185,7 +185,7 @@ class PathUtility
      */
     public static function dirname($path)
     {
-        $currentLocale = setlocale(LC_CTYPE, 0);
+        $currentLocale = (string)setlocale(LC_CTYPE, '0');
         setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
         $dirname = dirname($path);
         setlocale(LC_CTYPE, $currentLocale);
@@ -203,11 +203,11 @@ class PathUtility
      * @param string $path
      * @param int $options
      *
-     * @return string|array
+     * @return string|string[]
      */
     public static function pathinfo($path, $options = null)
     {
-        $currentLocale = setlocale(LC_CTYPE, 0);
+        $currentLocale = (string)setlocale(LC_CTYPE, '0');
         setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
         $pathinfo = $options == null ? pathinfo($path) : pathinfo($path, $options);
         setlocale(LC_CTYPE, $currentLocale);
