@@ -95,7 +95,7 @@ class SessionManager implements SingletonInterface
      * Creates a session backend from configuration
      *
      * @param string $identifier the identifier
-     * @param array $configuration The session configuration array
+     * @param array<string, class-string> $configuration The session configuration array
      * @return SessionBackendInterface
      * @throws \InvalidArgumentException
      */
