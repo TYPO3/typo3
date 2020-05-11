@@ -455,7 +455,7 @@ class CoreUpdateService
                 FlashMessage::ERROR
             ));
         } else {
-            $isCurrentCoreSymlinkAbsolute = PathUtility::isAbsolutePath(readlink($this->symlinkToCoreFiles));
+            $isCurrentCoreSymlinkAbsolute = PathUtility::isAbsolutePath((string)readlink($this->symlinkToCoreFiles));
             $unlinkResult = unlink($this->symlinkToCoreFiles);
             if (!$unlinkResult) {
                 $success = false;

@@ -152,6 +152,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
 
         // Scope of the row updater is to update all rows that have TCA,
         // our list of tables is just the list of loaded TCA tables.
+        /** @var string[] $listOfAllTables */
         $listOfAllTables = array_keys($GLOBALS['TCA']);
 
         // In case the PHP ended for whatever reason, fetch the last position from registry

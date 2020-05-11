@@ -455,10 +455,10 @@ class EnvironmentController extends AbstractController
         if ($imResult !== null && is_file($imResult[3])) {
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
                 clearstatcache();
-                $previousSize = GeneralUtility::formatSize(filesize($imResult[3]));
+                $previousSize = GeneralUtility::formatSize((int)filesize($imResult[3]));
                 $methodUsed = GraphicalFunctions::gifCompress($imResult[3], '');
                 clearstatcache();
-                $compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
+                $compressedSize = GeneralUtility::formatSize((int)filesize($imResult[3]));
                 $messages->enqueue(new FlashMessage(
                     'Method used by compress: ' . $methodUsed . LF
                     . ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize,
@@ -1088,10 +1088,10 @@ class EnvironmentController extends AbstractController
         foreach ($testResult as $resultKey => $value) {
             if ($resultKey === 'referenceFile') {
                 $fileExt = end(explode('.', $testResult['referenceFile']));
-                $responseData['referenceFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode(file_get_contents($testResult['referenceFile']));
+                $responseData['referenceFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['referenceFile']));
             } elseif ($resultKey === 'outputFile') {
                 $fileExt = end(explode('.', $testResult['outputFile']));
-                $responseData['outputFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode(file_get_contents($testResult['outputFile']));
+                $responseData['outputFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['outputFile']));
             } else {
                 $responseData[$resultKey] = $value;
             }

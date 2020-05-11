@@ -115,6 +115,7 @@ class UpgradeWizardRunCommand extends Command
         $result = 0;
         if ($input->getArgument('wizardName')) {
             $wizardToExecute = $input->getArgument('wizardName');
+            $wizardToExecute = is_string($wizardToExecute) ? $wizardToExecute : '';
             if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardToExecute])) {
                 $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardToExecute];
                 $upgradeWizard = $this->getWizard($className, $wizardToExecute);
