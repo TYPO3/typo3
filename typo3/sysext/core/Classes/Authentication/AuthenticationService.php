@@ -271,7 +271,7 @@ class AuthenticationService extends AbstractAuthenticationService
             // Get row:
             $row = $groupRows[$uid];
             // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-            if (is_array($row) && !GeneralUtility::inList($idList, $uid) && trim($row['subgroup'])) {
+            if (is_array($row) && !GeneralUtility::inList($idList, (string)$uid) && trim($row['subgroup'])) {
                 // Make integer list
                 $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
                 // Call recursively, pass along list of already processed groups so they are not processed again.

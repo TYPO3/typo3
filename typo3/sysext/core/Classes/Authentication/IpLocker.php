@@ -79,6 +79,9 @@ class IpLocker
 
         $numberOfParts = MathUtility::forceIntegerInRange($numberOfParts, 1, $maxParts);
         $ipParts = explode($delimiter, $ipAddress);
+        if ($ipParts === false) {
+            return $ipAddress;
+        }
         for ($a = $maxParts; $a > $numberOfParts; $a--) {
             $ipPartValue = $delimiter === '.' ? '0' : str_pad('', strlen($ipParts[$a - 1]), '0');
             $ipParts[$a - 1] = $ipPartValue;
@@ -103,7 +106,8 @@ class IpLocker
         }
 
         // inet_pton also takes care of IPv4-mapped addresses (see https://en.wikipedia.org/wiki/IPv6_address#Representation)
-        $expandedAddress = rtrim(chunk_split(unpack('H*hex', inet_pton($ipAddress))['hex'], 4, ':'), ':');
+        $unpacked = unpack('H*hex', (string)inet_pton($ipAddress)) ?: [];
+        $expandedAddress = rtrim(chunk_split($unpacked['hex'] ?? '', 4, ':'), ':');
         return $this->getIpLockPart($expandedAddress, $this->lockIPv6PartCount, 8, ':');
     }
 

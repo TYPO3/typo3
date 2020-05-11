@@ -1027,7 +1027,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $cookieDomain = $this->getCookieDomain();
         // If no cookie domain is set, use the base path
         $cookiePath = $cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        setcookie($cookieName, null, -1, $cookiePath, $cookieDomain);
+        setcookie($cookieName, '', -1, $cookiePath, $cookieDomain);
     }
 
     /**
@@ -1321,7 +1321,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $authInfo['db_user']['checkPidList'] = $this->checkPid_value;
             $authInfo['db_user']['check_pid_clause'] = $expressionBuilder->in(
                 'pid',
-                GeneralUtility::intExplode(',', $this->checkPid_value)
+                GeneralUtility::intExplode(',', (string)$this->checkPid_value)
             );
         } else {
             $authInfo['db_user']['checkPidList'] = '';
