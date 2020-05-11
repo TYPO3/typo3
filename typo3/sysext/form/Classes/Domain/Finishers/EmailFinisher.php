@@ -89,7 +89,9 @@ class EmailFinisher extends AbstractFinisher
         $subject = $this->parseOption('subject');
         $recipients = $this->getRecipients('recipients', 'recipientAddress', 'recipientName');
         $senderAddress = $this->parseOption('senderAddress');
+        $senderAddress = is_string($senderAddress) ? $senderAddress : '';
         $senderName = $this->parseOption('senderName');
+        $senderName = is_string($senderName) ? $senderName : '';
         $replyToRecipients = $this->getRecipients('replyToRecipients', 'replyToAddress');
         $carbonCopyRecipients = $this->getRecipients('carbonCopyRecipients', 'carbonCopyAddress');
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients', 'blindCarbonCopyAddress');

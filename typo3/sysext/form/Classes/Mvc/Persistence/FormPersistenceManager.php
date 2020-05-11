@@ -793,7 +793,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     protected function isFileWithinAccessibleExtensionFolders(string $fileName): bool
     {
-        $dirName = rtrim(PathUtility::pathinfo($fileName, PATHINFO_DIRNAME), '/') . '/';
+        $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+        $pathInfo = is_string($pathInfo) ? $pathInfo : '';
+        $dirName = rtrim($pathInfo, '/') . '/';
         return array_key_exists($dirName, $this->getAccessibleExtensionFolders());
     }
 

@@ -143,7 +143,7 @@ final class FilePersistenceSlot implements SingletonInterface
         $this->assertFileName(
             self::COMMAND_FILE_ADD,
             $combinedFileIdentifier,
-            file_get_contents($event->getSourceFilePath())
+            (string)file_get_contents($event->getSourceFilePath())
         );
     }
 
@@ -151,7 +151,7 @@ final class FilePersistenceSlot implements SingletonInterface
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
             $event->getFile()->getParentFolder(),
-            $event->getTargetFileName()
+            $event->getTargetFileName() ?? ''
         );
 
         $this->assertFileName(

@@ -415,6 +415,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
             throw new TypeDefinitionNotFoundException(sprintf('The "implementationClassName" was not set in type definition "%s".', $typeName), 1477083126);
         }
         $implementationClassName = $typeDefinition['implementationClassName'];
+        /** @var Page $page */
         $page = $this->objectManager->get($implementationClassName, $identifier, $typeName);
 
         if (isset($typeDefinition['label'])) {
@@ -511,6 +512,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
             $defaultOptions = $this->finishersDefinition[$finisherIdentifier]['options'] ?? [];
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
+            /** @var FinisherInterface $finisher */
             $finisher = $this->objectManager->get($implementationClassName, $finisherIdentifier);
             $finisher->setOptions($defaultOptions);
             $this->addFinisher($finisher);

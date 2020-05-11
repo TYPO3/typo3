@@ -214,6 +214,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
+            /** @var ValidatorInterface $validator */
             $validator = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get($implementationClassName, $defaultOptions);
             $this->addValidator($validator);

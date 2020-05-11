@@ -216,7 +216,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      *
      * @param array $elementsConfiguration
      * @param array $databaseData
-     * @return mixed
+     * @return array
      */
     protected function prepareData(array $elementsConfiguration, array $databaseData)
     {
@@ -273,7 +273,9 @@ class SaveToDatabaseFinisher extends AbstractFinisher
         $this->throwExceptionOnInconsistentConfiguration();
 
         $table = $this->parseOption('table');
+        $table = is_string($table) ? $table : '';
         $elementsConfiguration = $this->parseOption('elements');
+        $elementsConfiguration = is_array($elementsConfiguration) ? $elementsConfiguration : [];
         $databaseColumnMappingsConfiguration = $this->parseOption('databaseColumnMappings');
 
         $this->databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);

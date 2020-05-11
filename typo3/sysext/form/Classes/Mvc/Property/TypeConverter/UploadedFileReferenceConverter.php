@@ -177,6 +177,10 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
             return $this->convertedResources[$source['tmp_name']];
         }
 
+        if ($configuration === null) {
+            throw new \InvalidArgumentException('Argument $configuration must not be null', 1589183114);
+        }
+
         try {
             $resource = $this->importUploadedResource($source, $configuration);
         } catch (TypeConverterException $e) {

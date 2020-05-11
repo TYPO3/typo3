@@ -115,7 +115,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
 
             $classes[] = str_replace(
                 '{@numbersOfColumnsToUse}',
-                $numbersOfColumnsToUse,
+                (string)$numbersOfColumnsToUse,
                 $configuration['classPattern']
             );
         }

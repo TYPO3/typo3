@@ -118,7 +118,7 @@ class FormManagerController extends AbstractBackendController
         }
 
         $templatePath = GeneralUtility::getFileAbsFileName($templatePath);
-        $form = Yaml::parse(file_get_contents($templatePath));
+        $form = Yaml::parse((string)file_get_contents($templatePath));
         $form['label'] = $formName;
         $form['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
         $form['prototypeName'] = $prototypeName;
@@ -498,7 +498,7 @@ class FormManagerController extends AbstractBackendController
         $csConverter = GeneralUtility::makeInstance(CharsetConverter::class);
 
         $formIdentifier = $csConverter->specCharsToASCII('utf-8', $formName);
-        $formIdentifier = preg_replace('/[^a-zA-Z0-9-_]/', '', $formIdentifier);
+        $formIdentifier = (string)preg_replace('/[^a-zA-Z0-9-_]/', '', $formIdentifier);
         $formIdentifier = lcfirst($formIdentifier);
         return $formIdentifier;
     }

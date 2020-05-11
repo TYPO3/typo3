@@ -46,7 +46,7 @@ class EmptyValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validation.error.1476396435',
                     'form'
-                ),
+                ) ?? '',
                 1476396435
             );
         }

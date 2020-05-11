@@ -280,6 +280,7 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
                     $newPossiblePersistenceIdentifier,
                     PATHINFO_BASENAME
                 );
+                $newFileName = is_string($newFileName) ? $newFileName : '';
 
                 try {
                     $file->rename($newFileName, DuplicationBehavior::RENAME);
@@ -405,6 +406,7 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
 
         foreach ($this->persistenceManager->retrieveYamlFilesFromExtensionFolders() as $persistenceIdentifier => $_) {
             try {
+                /** @var File $file */
                 $file = $this->resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
             } catch (\Exception $exception) {
                 continue;
@@ -582,7 +584,7 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
         $sheetIdentifiers = [];
         foreach ($this->getFinisherSheetsFromFlexform($flexform) as $sheetIdentifier => $sheetData) {
             $itemOptionPath = array_keys($sheetData['lDEF']);
-            $firstSheetItemOptionPath = array_shift($itemOptionPath);
+            $firstSheetItemOptionPath = (string)array_shift($itemOptionPath);
             preg_match('#^settings\.finishers\.(.*)\..+$#', $firstSheetItemOptionPath, $matches);
             if (!isset($matches[1])) {
                 continue;
