@@ -72,9 +72,10 @@ class FileSearchQuery
         $query->additionalRestriction(
             new SearchTermRestriction($searchDemand, $query->queryBuilder)
         );
-        if ($searchDemand->getFolder()) {
+        $folder = $searchDemand->getFolder();
+        if ($folder !== null) {
             $query->additionalRestriction(
-                new FolderRestriction($searchDemand->getFolder(), $searchDemand->isRecursive())
+                new FolderRestriction($folder, $searchDemand->isRecursive())
             );
         } else {
             $query->additionalRestriction(
@@ -141,9 +142,10 @@ class FileSearchQuery
         $query->additionalRestriction(
             new SearchTermRestriction($searchDemand, $query->queryBuilder)
         );
-        if ($searchDemand->getFolder()) {
+        $folder = $searchDemand->getFolder();
+        if ($folder !== null) {
             $query->additionalRestriction(
-                new FolderRestriction($searchDemand->getFolder(), $searchDemand->isRecursive())
+                new FolderRestriction($folder, $searchDemand->isRecursive())
             );
         }
 

@@ -51,7 +51,7 @@ class PlainTextExtractor implements TextExtractorInterface
         $localTempFile = $file->getForLocalProcessing(false);
 
         // extract text
-        $content = file_get_contents($localTempFile);
+        $content = (string)file_get_contents($localTempFile);
 
         // In case of remote storage, the temporary copy of the
         // original file in typo3temp must be removed

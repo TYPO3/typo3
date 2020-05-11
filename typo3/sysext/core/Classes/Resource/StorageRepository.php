@@ -165,7 +165,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
                 $storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
             } else {
                 $this->logger->warning(
-                    sprintf('Could not instantiate storage "%s" because of missing driver.', [$storageRow['name']]),
+                    sprintf('Could not instantiate storage "%s" because of missing driver.', $storageRow['name']),
                     $storageRow
                 );
             }
@@ -192,7 +192,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
                 $storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
             } else {
                 $this->logger->warning(
-                    sprintf('Could not instantiate storage "%s" because of missing driver.', [$storageRow['name']]),
+                    sprintf('Could not instantiate storage "%s" because of missing driver.', $storageRow['name']),
                     $storageRow
                 );
             }

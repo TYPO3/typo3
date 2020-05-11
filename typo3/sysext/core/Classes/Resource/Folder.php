@@ -521,7 +521,7 @@ class Folder implements FolderInterface
     /**
      * Returns the role of this folder (if any). See FolderInterface::ROLE_* constants for possible values.
      *
-     * @return int
+     * @return string
      */
     public function getRole()
     {

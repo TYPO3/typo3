@@ -135,7 +135,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
      * Creates an instance of the storage from given UID. The $recordData can
      * be supplied to increase performance.
      *
-     * @param int $uid The uid of the storage to instantiate.
+     * @param int|null $uid The uid of the storage to instantiate.
      * @param array $recordData The record row from database.
      * @param string $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
      *
@@ -212,7 +212,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
         $bestMatchStorageUid = 0;
         $bestMatchLength = 0;
         foreach ($this->localDriverStorageCache as $storageUid => $basePath) {
-            $matchLength = strlen(PathUtility::getCommonPrefix([$basePath, $localPath]));
+            $matchLength = strlen(PathUtility::getCommonPrefix([$basePath, $localPath]) ?? '');
             $basePathLength = strlen($basePath);
 
             if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
@@ -389,7 +389,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
         }
         $parts = GeneralUtility::trimExplode(':', $identifier);
         if (count($parts) === 2) {
-            $storageUid = $parts[0];
+            $storageUid = (int)$parts[0];
             $fileIdentifier = $parts[1];
         } else {
             // We only got a path: Go into backwards compatibility mode and
@@ -420,7 +420,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
             if ($fileData === false) {
                 $fileObject = $this->getIndexer($storage)->createIndexEntry($fileIdentifier);
             } else {
-                $fileObject = $this->getFileObject($fileData['uid'], $fileData);
+                $fileObject = $this->getFileObject($fileData['uid'], (array)$fileData);
             }
         } else {
             $fileObject = $this->getProcessedFileRepository()->findByStorageAndIdentifier($storage, $fileIdentifier);
@@ -460,7 +460,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
             return $this->retrieveFileOrFolderObject($input);
         }
         if (MathUtility::canBeInterpretedAsInteger($input)) {
-            return $this->getFileObject($input);
+            return $this->getFileObject((int)$input);
         }
         if (strpos($input, ':') > 0) {
             [$prefix] = explode(':', $input);
@@ -501,7 +501,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
     {
         $parts = GeneralUtility::trimExplode(':', $identifier);
         if (count($parts) === 2) {
-            $storageUid = $parts[0];
+            $storageUid = (int)$parts[0];
             $folderIdentifier = $parts[1];
         } else {
             // We only got a path: Go into backwards compatibility mode and
@@ -528,7 +528,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
     public function getStorageObjectFromCombinedIdentifier($identifier)
     {
         $parts = GeneralUtility::trimExplode(':', $identifier);
-        $storageUid = count($parts) === 2 ? $parts[0] : null;
+        $storageUid = count($parts) === 2 ? (int)$parts[0] : null;
         return $this->getStorageObject($storageUid);
     }
 
@@ -543,7 +543,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
     public function getObjectFromCombinedIdentifier($identifier)
     {
         [$storageId, $objectIdentifier] = GeneralUtility::trimExplode(':', $identifier);
-        $storage = $this->getStorageObject($storageId);
+        $storage = $this->getStorageObject((int)$storageId);
         if ($storage->hasFile($objectIdentifier)) {
             return $storage->getFile($objectIdentifier);
         }

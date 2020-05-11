@@ -125,7 +125,7 @@ class VideoTagRenderer implements FileRendererInterface
         return sprintf(
             '<video%s><source src="%s" type="%s"></video>',
             empty($attributes) ? '' : ' ' . implode(' ', $attributes),
-            htmlspecialchars($file->getPublicUrl($usedPathsRelativeToCurrentScript)),
+            htmlspecialchars((string)$file->getPublicUrl($usedPathsRelativeToCurrentScript)),
             $file->getMimeType()
         );
     }

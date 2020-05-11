@@ -48,7 +48,7 @@ class DriverRegistry implements SingletonInterface
      * Registers a driver class with an optional short name.
      *
      * @param string $className
-     * @param string $shortName
+     * @param string|null $shortName
      * @param string $label
      * @param string $flexFormDataStructurePathAndFilename
      * @return bool TRUE if registering succeeded
@@ -56,6 +56,9 @@ class DriverRegistry implements SingletonInterface
      */
     public function registerDriverClass($className, $shortName = null, $label = null, $flexFormDataStructurePathAndFilename = null)
     {
+        // todo: Default of $shortName must be empty string, not null.
+        $shortName = (string)$shortName;
+
         // check if the class is available for TYPO3 before registering the driver
         if (!class_exists($className)) {
             throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1314979197);
