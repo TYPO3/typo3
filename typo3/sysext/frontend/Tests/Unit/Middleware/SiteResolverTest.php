@@ -61,7 +61,7 @@ class SiteResolverTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalLocale = setlocale(LC_COLLATE, 0);
+        $this->originalLocale = setlocale(LC_COLLATE, '0');
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, ['dummy'], [], '', false);
 
         // A request handler which expects a site to be found.

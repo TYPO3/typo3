@@ -6458,7 +6458,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject
             ->expects(self::once())
             ->method('numberFormat')
-            ->with($content, $conf['numberFormat.'])
+            ->with((float)$content, $conf['numberFormat.'])
             ->willReturn($return);
         self::assertSame(
             $return,

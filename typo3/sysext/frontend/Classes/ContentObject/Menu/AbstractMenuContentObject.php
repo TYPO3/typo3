@@ -496,7 +496,7 @@ abstract class AbstractMenuContentObject
 
         // ... only for the FIRST level of a HMENU
         if ($this->menuNumber == 1 && $this->conf['special']) {
-            $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
+            $value = (string)$this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
             switch ($this->conf['special']) {
                 case 'userfunction':
                     $menuItems = $this->prepareMenuItemsForUserSpecificMenu($value, $alternativeSortingField);
@@ -878,7 +878,7 @@ abstract class AbstractMenuContentObject
             $specialValue = $tsfe->page['uid'];
         }
         if ($this->conf['special.']['setKeywords'] || $this->conf['special.']['setKeywords.']) {
-            $kw = $this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
+            $kw = (string)$this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
         } else {
             // The page record of the 'value'.
             $value_rec = $this->sys_page->getPage($specialValue);
@@ -1005,7 +1005,7 @@ abstract class AbstractMenuContentObject
     protected function prepareMenuItemsForRootlineMenu()
     {
         $menuItems = [];
-        $range = $this->parent_cObj->stdWrapValue('range', $this->conf['special.'] ?? []);
+        $range = (string)$this->parent_cObj->stdWrapValue('range', $this->conf['special.'] ?? []);
         $begin_end = explode('|', $range);
         $begin_end[0] = (int)$begin_end[0];
         if (!MathUtility::canBeInterpretedAsInteger($begin_end[1])) {
@@ -1307,7 +1307,7 @@ abstract class AbstractMenuContentObject
         if ($altTarget) {
             $mainTarget = $altTarget;
         } else {
-            $mainTarget = $this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
+            $mainTarget = (string)$this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
         }
         // Creating link:
         $addParams = $this->mconf['addParams'] . $MP_params;
@@ -1325,7 +1325,7 @@ abstract class AbstractMenuContentObject
         }
         // Override URL if using "External URL"
         if ((int)$this->menuArr[$key]['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $externalUrl = $this->sys_page->getExtURL($this->menuArr[$key]);
+            $externalUrl = (string)$this->sys_page->getExtURL($this->menuArr[$key]);
             // Create link using typolink (concerning spamProtectEmailAddresses) for email links
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $externalUrl]);
             // Links to emails should not have any target
@@ -1801,7 +1801,7 @@ abstract class AbstractMenuContentObject
      */
     protected function getBannedUids()
     {
-        $excludeUidList = $this->parent_cObj->stdWrapValue('excludeUidList', $this->conf ?? []);
+        $excludeUidList = (string)$this->parent_cObj->stdWrapValue('excludeUidList', $this->conf ?? []);
         if (!trim($excludeUidList)) {
             return [];
         }

@@ -152,7 +152,7 @@ class GifBuilder extends GraphicalFunctions
             if (!$this->setup['backColor']) {
                 $this->setup['backColor'] = 'white';
             }
-            $this->setup['transparentColor_array'] = explode('|', trim($this->cObj->stdWrapValue('transparentColor', $this->setup ?? [])));
+            $this->setup['transparentColor_array'] = explode('|', trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup ?? [])));
             $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup ?? []);
             $this->setup['reduceColors'] = $this->cObj->stdWrapValue('reduceColors', $this->setup ?? []);
             // Set default dimensions
@@ -370,7 +370,11 @@ class GifBuilder extends GraphicalFunctions
         // Reset internal properties
         $this->saveAlphaLayer = false;
         // Gif-start
-        $this->im = imagecreatetruecolor($XY[0], $XY[1]);
+        $im = imagecreatetruecolor($XY[0], $XY[1]);
+        if ($im === false) {
+            throw new \RuntimeException('imagecreatetruecolor returned false', 1598350445);
+        }
+        $this->im = $im;
         $this->w = $XY[0];
         $this->h = $XY[1];
         // Transparent layer as background if set and requirements are met
@@ -515,7 +519,7 @@ class GifBuilder extends GraphicalFunctions
                 // Multiple transparent colors are set. This is done via the trick that all transparent colors get
                 // converted to one color and then this one gets set as transparent as png/gif can just have one
                 // transparent color.
-                $Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], (int)$this->setup['transparentColor.']['closest']);
+                $Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], (bool)$this->setup['transparentColor.']['closest']);
                 if ($Tcolor >= 0) {
                     imagecolortransparent($this->im, $Tcolor);
                 }
@@ -721,7 +725,7 @@ class GifBuilder extends GraphicalFunctions
             $this->combinedFileNames,
             $this->data
         ];
-        return 'typo3temp/' . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(json_encode($hashInputForFileName)) . '.' . $this->extension();
+        return 'typo3temp/' . $pre . $filePrefix . '_' . GeneralUtility::shortMD5((string)json_encode($hashInputForFileName)) . '.' . $this->extension();
     }
 
     /**
@@ -805,7 +809,7 @@ class GifBuilder extends GraphicalFunctions
     {
         if (preg_match_all('#max\\(([^)]+)\\)#', $string, $matches)) {
             foreach ($matches[1] as $index => $maxExpression) {
-                $string = str_replace($matches[0][$index], $this->calculateMaximum($maxExpression), $string);
+                $string = str_replace($matches[0][$index], (string)$this->calculateMaximum($maxExpression), $string);
             }
         }
         return $string;

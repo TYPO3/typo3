@@ -60,8 +60,8 @@ class RecordsContentObject extends AbstractContentObject
             ++$GLOBALS['TSFE']->recordRegister[$originalRec];
         }
 
-        $tables = $this->cObj->stdWrapValue('tables', $conf ?? []);
-        if ($tables) {
+        $tables = (string)$this->cObj->stdWrapValue('tables', $conf ?? []);
+        if ($tables !== '') {
             $tablesArray = array_unique(GeneralUtility::trimExplode(',', $tables, true));
             // Add tables which have a configuration (note that this may create duplicate entries)
             if (is_array($conf['conf.'])) {
@@ -74,12 +74,12 @@ class RecordsContentObject extends AbstractContentObject
 
             // Get the data, depending on collection method.
             // Property "source" is considered more precise and thus takes precedence over "categories"
-            $source = $this->cObj->stdWrapValue('source', $conf ?? []);
-            $categories = $this->cObj->stdWrapValue('categories', $conf ?? []);
+            $source = (string)$this->cObj->stdWrapValue('source', $conf ?? []);
+            $categories = (string)$this->cObj->stdWrapValue('categories', $conf ?? []);
             if ($source) {
                 $this->collectRecordsFromSource($source, $tablesArray);
             } elseif ($categories) {
-                $relationField = $this->cObj->stdWrapValue('relation', $conf['categories.'] ?? []);
+                $relationField = (string)$this->cObj->stdWrapValue('relation', $conf['categories.'] ?? []);
                 $this->collectRecordsFromCategories($categories, $tablesArray, $relationField);
             }
             $itemArrayCount = count($this->itemArray);

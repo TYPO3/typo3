@@ -171,7 +171,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $this->view->setTemplateSource($templateSource);
         } else {
             // Fetch the Fluid template by file stdWrap
-            $file = $this->cObj->stdWrapValue('file', $conf ?? []);
+            $file = (string)$this->cObj->stdWrapValue('file', $conf ?? []);
             // Get the absolute file name
             $templatePathAndFilename = GeneralUtility::getFileAbsFileName($file);
             $this->view->setTemplatePathAndFilename($templatePathAndFilename);
@@ -187,8 +187,9 @@ class FluidTemplateContentObject extends AbstractContentObject
     {
         // Override the default layout path via typoscript
         $layoutPaths = [];
-        $layoutRootPath = $this->cObj->stdWrapValue('layoutRootPath', $conf ?? []);
-        if ($layoutRootPath) {
+
+        $layoutRootPath = (string)$this->cObj->stdWrapValue('layoutRootPath', $conf ?? []);
+        if ($layoutRootPath !== '') {
             $layoutPaths[] = GeneralUtility::getFileAbsFileName($layoutRootPath);
         }
         if (isset($conf['layoutRootPaths.'])) {
@@ -207,8 +208,9 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function setPartialRootPath(array $conf)
     {
         $partialPaths = [];
-        $partialRootPath = $this->cObj->stdWrapValue('partialRootPath', $conf ?? []);
-        if ($partialRootPath) {
+
+        $partialRootPath = (string)$this->cObj->stdWrapValue('partialRootPath', $conf ?? []);
+        if ($partialRootPath !== '') {
             $partialPaths[] = GeneralUtility::getFileAbsFileName($partialRootPath);
         }
         if (isset($conf['partialRootPaths.'])) {

@@ -45,7 +45,7 @@ class CategoryMenuUtility
         $selectedPages = [];
         $categoriesPerPage = [];
         // Determine the name of the relation field
-        $relationField = $parentObject->getParentContentObject()->stdWrapValue('relation', $configuration ?? []);
+        $relationField = (string)$parentObject->getParentContentObject()->stdWrapValue('relation', $configuration ?? []);
         // Get the pages for each selected category
         $selectedCategories = GeneralUtility::intExplode(',', $selectedCategories, true);
         foreach ($selectedCategories as $aCategory) {
@@ -80,7 +80,7 @@ class CategoryMenuUtility
 
         // Sort the pages according to the sorting property
         self::$sortingField = $parentObject->getParentContentObject()->stdWrapValue('sorting', $configuration ?? []);
-        $order = $parentObject->getParentContentObject()->stdWrapValue('order', $configuration ?? []);
+        $order = (string)$parentObject->getParentContentObject()->stdWrapValue('order', $configuration ?? []);
         $selectedPages = $this->sortPages($selectedPages, $order);
 
         return $selectedPages;
@@ -131,7 +131,7 @@ class CategoryMenuUtility
      *
      * @param array $pageA Record for first page to be compared
      * @param array $pageB Record for second page to be compared
-     * @return array -1 if first argument is smaller than second argument, 1 if first is greater than second and 0 if both are equal
+     * @return int -1 if first argument is smaller than second argument, 1 if first is greater than second and 0 if both are equal
      */
     public static function sortPagesUtility($pageA, $pageB)
     {

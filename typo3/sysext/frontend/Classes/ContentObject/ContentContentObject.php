@@ -44,7 +44,7 @@ class ContentContentObject extends AbstractContentObject
         if ($originalRec) {
             ++$frontendController->recordRegister[$originalRec];
         }
-        $conf['table'] = trim($this->cObj->stdWrapValue('table', $conf ?? []));
+        $conf['table'] = trim((string)$this->cObj->stdWrapValue('table', $conf ?? []));
         $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
         $renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
         $renderObjKey = $conf['renderObj'] ? 'renderObj' : '';

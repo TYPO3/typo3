@@ -73,7 +73,7 @@ class ImageContentObject extends AbstractContentObject
             $info
         );
 
-        $layoutKey = $this->cObj->stdWrapValue('layoutKey', $conf ?? []);
+        $layoutKey = (string)$this->cObj->stdWrapValue('layoutKey', $conf ?? []);
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
         $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);
 
@@ -97,8 +97,8 @@ class ImageContentObject extends AbstractContentObject
         $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $theValue = $markerTemplateEngine->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
 
-        $linkWrap = $this->cObj->stdWrapValue('linkWrap', $conf ?? []);
-        if ($linkWrap) {
+        $linkWrap = (string)$this->cObj->stdWrapValue('linkWrap', $conf ?? []);
+        if ($linkWrap !== '') {
             $theValue = $this->linkWrap($theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap']) {
             $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
@@ -200,11 +200,11 @@ class ImageContentObject extends AbstractContentObject
                 $pixelDensity = (int)$this->cObj->stdWrapValue('pixelDensity', $sourceConfiguration, 1);
                 $dimensionKeys = ['width', 'height', 'maxW', 'minW', 'maxH', 'minH', 'maxWidth', 'maxHeight', 'XY'];
                 foreach ($dimensionKeys as $dimensionKey) {
-                    $dimension = $this->cObj->stdWrapValue($dimensionKey, $sourceConfiguration);
-                    if (!$dimension) {
-                        $dimension = $this->cObj->stdWrapValue($dimensionKey, $conf['file.'] ?? []);
+                    $dimension = (string)$this->cObj->stdWrapValue($dimensionKey, $sourceConfiguration);
+                    if ($dimension === '') {
+                        $dimension = (string)$this->cObj->stdWrapValue($dimensionKey, $conf['file.'] ?? []);
                     }
-                    if ($dimension) {
+                    if ($dimension !== '') {
                         if (strpos($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
                             $dimensionParts = explode('c', $dimension, 2);
                             $dimension = ((int)$dimensionParts[0] * $pixelDensity) . 'c';
@@ -290,8 +290,8 @@ class ImageContentObject extends AbstractContentObject
      */
     public function getAltParam($conf, $longDesc = true)
     {
-        $altText = trim($this->cObj->stdWrapValue('altText', $conf ?? []));
-        $titleText = trim($this->cObj->stdWrapValue('titleText', $conf ?? []));
+        $altText = trim((string)$this->cObj->stdWrapValue('altText', $conf ?? []));
+        $titleText = trim((string)$this->cObj->stdWrapValue('titleText', $conf ?? []));
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
             $longDescUrl = $this->cObj->typoLink_URL($conf['longdescURL.']);
         } else {

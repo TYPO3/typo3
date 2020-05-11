@@ -491,9 +491,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Page content render object
      *
-     * @var ContentObjectRenderer|string
+     * @var ContentObjectRenderer
      */
-    public $cObj = '';
+    public $cObj;
 
     /**
      * All page content is accumulated in this variable. See RequestHandler
@@ -2148,7 +2148,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // replace every "," wrapped in "()" by a "unique" string
         $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', function ($result) use ($tempCommaReplacementString) {
             return str_replace(',', $tempCommaReplacementString, $result[0]);
-        }, $string);
+        }, $string) ?? '';
 
         $string = GeneralUtility::trimExplode(',', $string);
 
@@ -2593,7 +2593,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function generatePageTitle(): string
     {
         // Check for a custom pageTitleSeparator, and perform stdWrap on it
-        $pageTitleSeparator = $this->cObj->stdWrapValue('pageTitleSeparator', $this->config['config'] ?? []);
+        $pageTitleSeparator = (string)$this->cObj->stdWrapValue('pageTitleSeparator', $this->config['config'] ?? []);
         if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($this->config['config']['pageTitleSeparator'] ?? '')) {
             $pageTitleSeparator .= ' ';
         }
@@ -3103,7 +3103,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
-            $realWebPath = PathUtility::dirname(realpath(Environment::getBackendPath())) . '/';
+            $realWebPath = PathUtility::dirname((string)realpath(Environment::getBackendPath())) . '/';
             $file = $trace[0]['file'];
             if (strpos($file, $realWebPath) === 0) {
                 $file = str_replace($realWebPath, '', $file);
@@ -3173,7 +3173,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             if (!empty($this->config['config']['cache_clearAtMidnight'])) {
                 $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-                $midnightTime = mktime(0, 0, 0, date('m', $timeOutTime), date('d', $timeOutTime), date('Y', $timeOutTime));
+                $midnightTime = mktime(0, 0, 0, (int)date('m', $timeOutTime), (int)date('d', $timeOutTime), (int)date('Y', $timeOutTime));
                 // If the midnight time of the expire-day is greater than the current time,
                 // we may set the timeOutTime to the new midnighttime.
                 if ($midnightTime > $GLOBALS['EXEC_TIME']) {

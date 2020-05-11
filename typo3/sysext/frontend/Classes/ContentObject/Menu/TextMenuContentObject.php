@@ -79,14 +79,14 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
             // Set access key
             if ($this->mconf['accessKey']) {
-                $this->I['accessKey'] = $this->accessKey($this->I['title']);
+                $this->I['accessKey'] = $this->accessKey((string)($this->I['title'] ?? ''));
             } else {
                 $this->I['accessKey'] = [];
             }
             // Make link tag
             $this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
             $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
-            $this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
+            $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), $this->mconf['forceTypeValue']);
             if (empty($this->I['linkHREF'])) {
                 $this->I['val']['doNotLinkIt'] = 1;
             }
@@ -157,7 +157,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
             }
             // Calling extra processing function
-            $this->extProc_afterLinking($key);
+            $this->extProc_afterLinking((int)$key);
         }
         return $this->extProc_finish();
     }
