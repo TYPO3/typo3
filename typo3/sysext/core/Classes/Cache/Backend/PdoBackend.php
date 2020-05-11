@@ -284,6 +284,9 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
     protected function importSql(\PDO $databaseHandle, string $pdoDriver, string $pathAndFilename): void
     {
         $sql = file($pathAndFilename, FILE_IGNORE_NEW_LINES & FILE_SKIP_EMPTY_LINES);
+        if ($sql === false) {
+            throw new \RuntimeException('Error while reading file "' . $pathAndFilename . '".', 1601021306);
+        }
         // Remove MySQL style key length delimiters (yuck!) if we are not setting up a MySQL db
         if (strpos($pdoDriver, 'mysql') !== 0) {
             $sql = preg_replace('/"\\([0-9]+\\)/', '"', $sql);

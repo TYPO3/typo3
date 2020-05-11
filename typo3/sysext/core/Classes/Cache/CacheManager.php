@@ -88,7 +88,7 @@ class CacheManager implements SingletonInterface
      * If one of the options is not specified, the default value is assumed.
      * Existing cache configurations are preserved.
      *
-     * @param array $cacheConfigurations The cache configurations to set
+     * @param array<string, array> $cacheConfigurations The cache configurations to set
      * @throws \InvalidArgumentException If $cacheConfigurations is not an array
      */
     public function setCacheConfigurations(array $cacheConfigurations)

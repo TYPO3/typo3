@@ -366,7 +366,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             $storedEntry = $this->redis->get(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier);
         }
         if ($this->compression && (string)$storedEntry !== '') {
-            $storedEntry = gzuncompress($storedEntry);
+            $storedEntry = gzuncompress((string)$storedEntry);
         }
         return $storedEntry;
     }

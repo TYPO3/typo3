@@ -107,7 +107,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         parent::setCache($cache);
         if (file_exists($this->cacheDirectory . 'FrozenCache.data')) {
             $this->frozen = true;
-            $this->cacheEntryIdentifiers = unserialize(file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
+            $this->cacheEntryIdentifiers = unserialize((string)file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
         }
     }
 
@@ -139,9 +139,9 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         }
         $this->remove($entryIdentifier);
         $temporaryCacheEntryPathAndFilename = $this->cacheDirectory . StringUtility::getUniqueId() . '.temp';
-        $lifetime = $lifetime ?? $this->defaultLifetime;
-        $expiryTime = $lifetime === 0 ? 0 : $GLOBALS['EXEC_TIME'] + $lifetime;
-        $metaData = str_pad($expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad(strlen($data), self::DATASIZE_DIGITS);
+        $lifetime = (int)($lifetime ?? $this->defaultLifetime);
+        $expiryTime = $lifetime === 0 ? 0 : (int)($GLOBALS['EXEC_TIME'] + $lifetime);
+        $metaData = str_pad((string)$expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad((string)strlen($data), self::DATASIZE_DIGITS);
         $result = file_put_contents($temporaryCacheEntryPathAndFilename, $data . $metaData);
         GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
         if ($result === false) {
@@ -181,12 +181,12 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         }
         $dataSize = (int)file_get_contents(
             $pathAndFilename,
-            null,
+            false,
             null,
             filesize($pathAndFilename) - self::DATASIZE_DIGITS,
             self::DATASIZE_DIGITS
         );
-        return file_get_contents($pathAndFilename, null, null, 0, $dataSize);
+        return file_get_contents($pathAndFilename, false, null, 0, $dataSize);
     }
 
     /**
@@ -256,12 +256,12 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
             $cacheEntryPathAndFilename = $directoryIterator->getPathname();
             $index = (int)file_get_contents(
                 $cacheEntryPathAndFilename,
-                null,
+                false,
                 null,
                 filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS,
                 self::DATASIZE_DIGITS
             );
-            $metaData = file_get_contents($cacheEntryPathAndFilename, null, null, $index);
+            $metaData = (string)file_get_contents($cacheEntryPathAndFilename, false, null, $index);
             $expiryTime = (int)substr($metaData, 0, self::EXPIRYTIME_LENGTH);
             if ($expiryTime !== 0 && $expiryTime < $now) {
                 continue;
@@ -318,12 +318,12 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         }
         $index = (int)file_get_contents(
             $cacheEntryPathAndFilename,
-            null,
+            false,
             null,
             filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS,
             self::DATASIZE_DIGITS
         );
-        $expiryTime = (int)file_get_contents($cacheEntryPathAndFilename, null, null, $index, self::EXPIRYTIME_LENGTH);
+        $expiryTime = (int)file_get_contents($cacheEntryPathAndFilename, false, null, $index, self::EXPIRYTIME_LENGTH);
         return $expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME'];
     }
 
