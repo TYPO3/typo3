@@ -179,20 +179,20 @@ class Rfc822AddressesParser
         $this->error = null;
         $this->index = null;
         // Unfold any long lines in $this->address.
-        $this->address = preg_replace('/\\r?\\n/', '
+        $this->address = (string)preg_replace('/\\r?\\n/', '
 ', $this->address);
-        $this->address = preg_replace('/\\r\\n(\\t| )+/', ' ', $this->address);
+        $this->address = (string)preg_replace('/\\r\\n(\\t| )+/', ' ', $this->address);
         while ($this->address = $this->_splitAddresses($this->address)) {
         }
         if ($this->address === false || isset($this->error)) {
-            throw new \InvalidArgumentException($this->error, 1294681466);
+            throw new \InvalidArgumentException((string)$this->error, 1294681466);
         }
         // Validate each address individually.  If we encounter an invalid
         // address, stop iterating and return an error immediately.
         foreach ($this->addresses as $address) {
             $valid = $this->_validateAddress($address);
             if ($valid === false || isset($this->error)) {
-                throw new \InvalidArgumentException($this->error, 1294681467);
+                throw new \InvalidArgumentException((string)$this->error, 1294681467);
             }
             $this->structure = array_merge($this->structure, $valid);
         }
@@ -223,7 +223,7 @@ class Rfc822AddressesParser
             return false;
         }
         // Split the string based on the above ten or so lines.
-        $parts = explode($split_char, $address);
+        $parts = explode($split_char, $address) ?: [];
         $string = $this->_splitCheck($parts, $split_char);
         // If a group...
         if ($is_group) {
@@ -376,7 +376,7 @@ class Rfc822AddressesParser
      */
     protected function _hasUnclosedBracketsSub($string, &$num, $char)
     {
-        $parts = explode($char, $string);
+        $parts = explode($char, $string) ?: [];
         $partsCounter = count($parts);
         for ($i = 0; $i < $partsCounter; $i++) {
             if (substr($parts[$i], -1) === '\\' || $this->_hasUnclosedQuotes($parts[$i])) {
@@ -535,9 +535,9 @@ class Rfc822AddressesParser
     protected function _validateQuotedString($qstring)
     {
         // Leading and trailing "
-        $qstring = substr($qstring, 1, -1);
+        $qstring = (string)substr($qstring, 1, -1);
         // Perform check, removing quoted characters first.
-        return !preg_match('/[\\x0D\\\\"]/', preg_replace('/\\\\./', '', $qstring));
+        return !preg_match('/[\\x0D\\\\"]/', (string)preg_replace('/\\\\./', '', $qstring));
     }
 
     /**
