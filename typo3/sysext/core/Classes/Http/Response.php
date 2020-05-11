@@ -119,7 +119,7 @@ class Response extends Message implements ResponseInterface
     /**
      * Constructor for generating new responses
      *
-     * @param StreamInterface|string $body
+     * @param StreamInterface|string|null $body
      * @param int $statusCode
      * @param array $headers
      * @param string $reasonPhrase

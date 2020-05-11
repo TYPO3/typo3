@@ -82,7 +82,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         }
         $parsedBody = GeneralUtility::_POST();
         if (empty($parsedBody) && in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
-            parse_str(file_get_contents('php://input'), $parsedBody);
+            parse_str((string)file_get_contents('php://input'), $parsedBody);
         }
         if (!empty($parsedBody)) {
             $request = $request->withParsedBody($parsedBody);

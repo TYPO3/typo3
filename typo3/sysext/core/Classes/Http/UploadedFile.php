@@ -134,7 +134,7 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        $this->stream = new Stream($this->file);
+        $this->stream = new Stream((string)$this->file);
         return $this->stream;
     }
 
