@@ -75,7 +75,7 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     {
         $formDefinition = $this->getRootForm();
         $uniqueIdentifier = sprintf('%s-%s', $formDefinition->getIdentifier(), $this->identifier);
-        $uniqueIdentifier = preg_replace('/[^a-zA-Z0-9-_]/', '_', $uniqueIdentifier);
+        $uniqueIdentifier = (string)preg_replace('/[^a-zA-Z0-9-_]/', '_', $uniqueIdentifier);
         return lcfirst($uniqueIdentifier);
     }
 

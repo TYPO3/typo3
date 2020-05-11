@@ -94,7 +94,7 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     {
         $formDefinition = $this->getRootForm();
         $uniqueIdentifier = sprintf('%s-%s', $formDefinition->getIdentifier(), $this->identifier);
-        $uniqueIdentifier = preg_replace('/[^a-zA-Z0-9_-]/', '_', $uniqueIdentifier);
+        $uniqueIdentifier = (string)preg_replace('/[^a-zA-Z0-9_-]/', '_', $uniqueIdentifier);
         return lcfirst($uniqueIdentifier);
     }
 

@@ -55,7 +55,7 @@ class MimeTypeValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validation.error.1471708997',
                     'form'
-                ),
+                ) ?? '',
                 1471708997
             );
             return;
@@ -68,7 +68,7 @@ class MimeTypeValidator extends AbstractValidator
                     'validation.error.1471708998',
                     'form',
                     [$resource->getMimeType()]
-                ),
+                ) ?? '',
                 1471708998,
                 [$resource->getMimeType()]
             );
