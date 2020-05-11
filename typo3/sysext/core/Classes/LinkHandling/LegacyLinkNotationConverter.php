@@ -200,18 +200,26 @@ class LegacyLinkNotationConverter
     protected function getFileOrFolderObjectFromMixedIdentifier(string $mixedIdentifier): array
     {
         $result = [];
-        if (strpos($mixedIdentifier, '#') !== false) {
-            [$mixedIdentifier, $result['fragment']] = explode('#', $mixedIdentifier, 2);
-        }
         try {
-            $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($mixedIdentifier);
+            $fileIdentifier = $mixedIdentifier;
+            $fragment = null;
+            if (strpos($fileIdentifier, '#') !== false) {
+                [$fileIdentifier, $fragment] = explode('#', $fileIdentifier, 2);
+            }
+            $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($fileIdentifier);
             // Link to a folder or file
             if ($fileOrFolderObject instanceof File) {
                 $result['type'] = LinkService::TYPE_FILE;
                 $result['file'] = $fileOrFolderObject;
+                if ($fragment) {
+                    $result['fragment'] = $fragment;
+                }
             } elseif ($fileOrFolderObject instanceof Folder) {
                 $result['type'] = LinkService::TYPE_FOLDER;
                 $result['folder'] = $fileOrFolderObject;
+                if ($fragment) {
+                    $result['fragment'] = $fragment;
+                }
             } else {
                 $result['type'] = LinkService::TYPE_UNKNOWN;
                 $result['file'] = $mixedIdentifier;
