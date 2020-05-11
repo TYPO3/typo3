@@ -329,7 +329,7 @@ abstract class AbstractService implements LoggerAwareInterface
      *
      * @param string $absFile File name to read from.
      * @param int $length Maximum length to read. If empty the whole file will be read.
-     * @return string|bool $content or FALSE
+     * @return string|bool file content or false
      */
     public function readFile($absFile, $length = 0)
     {
@@ -354,8 +354,12 @@ abstract class AbstractService implements LoggerAwareInterface
     {
         if (!$absFile) {
             $absFile = $this->tempFile($this->prefixId);
+            if ($absFile === false) {
+                return false;
+            }
+            $absFile = (string)$absFile;
         }
-        if ($absFile && GeneralUtility::isAllowedAbsPath($absFile)) {
+        if (GeneralUtility::isAllowedAbsPath($absFile)) {
             if ($fd = @fopen($absFile, 'wb')) {
                 @fwrite($fd, $content);
                 @fclose($fd);
@@ -446,7 +450,7 @@ abstract class AbstractService implements LoggerAwareInterface
      * Get the input content.
      * Will be read from input file if needed. (That is if ->inputContent is empty and ->inputFile is not)
      *
-     * @return mixed
+     * @return string|bool
      */
     public function getInput()
     {
@@ -481,7 +485,7 @@ abstract class AbstractService implements LoggerAwareInterface
     /**
      * Set the output file name.
      *
-     * @param string $absFile File name
+     * @param string|bool $absFile File name
      */
     public function setOutputFile($absFile)
     {
@@ -491,7 +495,7 @@ abstract class AbstractService implements LoggerAwareInterface
     /**
      * Get the output content.
      *
-     * @return mixed
+     * @return string
      */
     public function getOutput()
     {

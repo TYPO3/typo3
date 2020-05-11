@@ -73,7 +73,7 @@ class ZipService
         }
 
         for ($i = 0; $i < $zip->numFiles; $i++) {
-            $entryName = $zip->getNameIndex($i);
+            $entryName = (string)$zip->getNameIndex($i);
             if (preg_match('#/(?:\.{2,})+#', $entryName) // Contains any traversal sequence starting with a slash, e.g. /../, /.., /.../
                 || preg_match('#^(?:\.{2,})+/#', $entryName) // Starts with a traversal sequence, e.g. ../, .../
             ) {

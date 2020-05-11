@@ -74,7 +74,7 @@ class OpcodeCacheService
      */
     protected static function isClearable(): bool
     {
-        $disabled = explode(',', ini_get('disable_functions'));
+        $disabled = explode(',', (string)ini_get('disable_functions'));
         return !(in_array('opcache_invalidate', $disabled, true) || in_array('opcache_reset', $disabled, true));
     }
 }
