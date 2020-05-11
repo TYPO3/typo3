@@ -67,18 +67,18 @@ class BooleanValidator extends AbstractValidator
                 $this->addError($this->translateErrorMessage(
                     'validator.boolean.nottrue',
                     'extbase'
-                ), 1361959230);
+                ) ?? '', 1361959230);
             } else {
                 if ($expectation) {
                     $this->addError($this->translateErrorMessage(
                         'validator.boolean.nottrue',
                         'extbase'
-                    ), 1361959228);
+                    ) ?? '', 1361959228);
                 } else {
                     $this->addError($this->translateErrorMessage(
                         'validator.boolean.notfalse',
                         'extbase'
-                    ), 1361959229);
+                    ) ?? '', 1361959229);
                 }
             }
         }

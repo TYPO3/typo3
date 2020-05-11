@@ -68,7 +68,7 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
     {
         $object = $this->getOriginalResource($source);
         if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
-            throw new Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object), 1342895975);
+            throw new Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . (is_object($object) ? get_class($object) : 'null'), 1342895975);
         }
         /** @var \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder $subject */
         $subject = $this->objectManager->get($targetType);

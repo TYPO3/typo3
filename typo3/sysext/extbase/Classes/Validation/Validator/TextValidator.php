@@ -38,7 +38,7 @@ class TextValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.text.notvalid',
                     'extbase'
-                ),
+                ) ?? '',
                 1221565786
             );
         }

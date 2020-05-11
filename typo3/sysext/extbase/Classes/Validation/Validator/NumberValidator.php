@@ -32,7 +32,7 @@ class NumberValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.number.notvalid',
                     'extbase'
-                ),
+                ) ?? '',
                 1221563685
             );
         }

@@ -342,7 +342,7 @@ class DataMapper
      *
      * @param int|string $value Unix timestamp or date/datetime/time value
      * @param string|null $storageFormat Storage format for native date/datetime/time fields
-     * @param string|null $targetType The object class name to be created
+     * @param string $targetType The object class name to be created
      * @return \DateTimeInterface
      */
     protected function mapDateTime($value, $storageFormat = null, $targetType = \DateTime::class)
@@ -473,7 +473,7 @@ class DataMapper
                 $query->setOrderings([$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING]);
             }
         }
-        $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
+        $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, (array)$columnMap->getRelationTableMatchFields()));
         return $query;
     }
 
@@ -608,7 +608,7 @@ class DataMapper
                 } else {
                     $propertyValue = $objects;
                 }
-            } elseif (strpbrk($property->getType(), '_\\') !== false) {
+            } elseif (strpbrk((string)$property->getType(), '_\\') !== false) {
                 // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
                 if (is_object($result) && $result instanceof QueryResultInterface) {
                     $propertyValue = $result->getFirst();

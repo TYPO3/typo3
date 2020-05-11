@@ -54,6 +54,7 @@ class StringLengthValidator extends AbstractValidator
             return;
         }
 
+        $value = (string)$value;
         $stringLength = mb_strlen($value, 'utf-8');
         $isValid = true;
         if ($stringLength < $this->options['minimum']) {
@@ -73,7 +74,7 @@ class StringLengthValidator extends AbstractValidator
                             $this->options['minimum'],
                             $this->options['maximum']
                         ]
-                    ),
+                    ) ?? '',
                     1428504122,
                     [$this->options['minimum'], $this->options['maximum']]
                 );
@@ -85,7 +86,7 @@ class StringLengthValidator extends AbstractValidator
                         [
                             $this->options['minimum']
                         ]
-                    ),
+                    ) ?? '',
                     1238108068,
                     [$this->options['minimum']]
                 );
@@ -97,7 +98,7 @@ class StringLengthValidator extends AbstractValidator
                         [
                             $this->options['maximum']
                         ]
-                    ),
+                    ) ?? '',
                     1238108069,
                     [$this->options['maximum']]
                 );

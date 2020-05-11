@@ -314,7 +314,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     protected function getTypeConvertersWithParentClasses($typeConverter)
     {
         $typeConverterClasses = class_parents($typeConverter);
-        $typeConverterClasses = $typeConverterClasses === false ? [] : $typeConverterClasses;
+        $typeConverterClasses = $typeConverterClasses ?: [];
         $typeConverterClasses[] = $typeConverter;
         return $typeConverterClasses;
     }

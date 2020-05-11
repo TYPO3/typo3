@@ -121,6 +121,7 @@ class ClassSchema
      */
     public function __construct(string $className)
     {
+        /** @var class-string $className */
         $this->className = $className;
         $this->bitSet = new BitSet();
 

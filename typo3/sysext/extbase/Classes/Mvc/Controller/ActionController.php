@@ -410,8 +410,12 @@ class ActionController implements ControllerInterface
         $this->mvcPropertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($request, $this->arguments);
         $this->initializeAction();
         $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
+        /** @var callable $callable */
+        $callable = [$this, $actionInitializationMethodName];
         if (method_exists($this, $actionInitializationMethodName)) {
-            call_user_func([$this, $actionInitializationMethodName]);
+            // todo: replace method_exists with is_callable or even both
+            //       method_exists alone does not guarantee that $callable is actually callable
+            call_user_func($callable);
         }
         $this->mapRequestArgumentsToControllerArguments();
         $this->controllerContext = $this->buildControllerContext();

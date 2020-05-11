@@ -36,7 +36,7 @@ class UrlValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.url.notvalid',
                     'extbase'
-                ),
+                ) ?? '',
                 1238108078
             );
         }

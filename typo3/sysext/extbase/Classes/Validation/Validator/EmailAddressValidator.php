@@ -34,7 +34,7 @@ class EmailAddressValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.emailaddress.notvalid',
                     'extbase'
-                ),
+                ) ?? '',
                 1221559976
             );
         }

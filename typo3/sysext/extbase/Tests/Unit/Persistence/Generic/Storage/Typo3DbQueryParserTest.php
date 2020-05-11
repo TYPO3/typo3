@@ -208,39 +208,6 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderNotAddsInvalidAndConstraint()
-    {
-        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
-        $subject = $this->getAccessibleMock(
-            Typo3DbQueryParser::class,
-            // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
-        );
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
-
-        $queryProphecy = $this->prophesize(QueryInterface::class);
-        $sourceProphecy = $this->prophesize(SourceInterface::class);
-        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
-        $queryProphecy->getOrderings()->willReturn([]);
-        $queryProphecy->getStatement()->willReturn(null);
-
-        $constraintProphecy = $this->prophesize(AndInterface::class);
-        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
-        $constraint1Prophecy = $this->prophesize(ComparisonInterface::class);
-        $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
-        // no result for constraint2
-        $constraintProphecy->getConstraint2()->willReturn(null);
-
-        // not be called
-        $queryBuilderProphecy->andWhere()->shouldNotBeCalled();
-
-        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
-    }
-
-    /**
-     * @test
-     */
     public function convertQueryToDoctrineQueryBuilderAddsOrConstraint()
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
@@ -272,39 +239,6 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $compositeExpressionRevelation = $compositeExpressionProphecy->reveal();
         $expressionProphecy->orX('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
         $queryBuilderProphecy->andWhere($compositeExpressionRevelation)->shouldBeCalled();
-
-        $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
-    }
-
-    /**
-     * @test
-     */
-    public function convertQueryToDoctrineQueryBuilderNotAddsInvalidOrConstraint()
-    {
-        // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
-        $subject = $this->getAccessibleMock(
-            Typo3DbQueryParser::class,
-            // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
-        );
-        $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-        $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
-
-        $queryProphecy = $this->prophesize(QueryInterface::class);
-        $sourceProphecy = $this->prophesize(SourceInterface::class);
-        $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
-        $queryProphecy->getOrderings()->willReturn([]);
-        $queryProphecy->getStatement()->willReturn(null);
-
-        $constraintProphecy = $this->prophesize(OrInterface::class);
-        $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
-        $constraint1Prophecy = $this->prophesize(ComparisonInterface::class);
-        $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
-        // no result for constraint2
-        $constraintProphecy->getConstraint2()->willReturn(null);
-
-        // not be called
-        $queryBuilderProphecy->andWhere()->shouldNotBeCalled();
 
         $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
     }

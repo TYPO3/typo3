@@ -370,8 +370,11 @@ class Dispatcher implements SingletonInterface
                 $object = $this->objectManager->get($slotInformation['class']);
             }
 
-            if (!method_exists($object, $slotInformation['method'])) {
-                throw new InvalidSlotException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() does not exist.', 1245673368);
+            $method = (string)($slotInformation['method'] ?? '');
+            $callable = [$object, $method];
+
+            if (!is_object($object) || !is_callable($callable)) {
+                throw new InvalidSlotException('The slot method ' . get_class($object) . '->' . $method . '() does not exist.', 1245673368);
             }
 
             $preparedSlotArguments = $signalArguments;
@@ -379,15 +382,15 @@ class Dispatcher implements SingletonInterface
                 $preparedSlotArguments[] = $signalClassName . '::' . $signalName;
             }
 
-            $slotReturn = call_user_func_array([$object, $slotInformation['method']], $preparedSlotArguments);
+            $slotReturn = call_user_func_array($callable, $preparedSlotArguments);
 
             if ($slotReturn) {
                 if (!is_array($slotReturn)) {
-                    throw new InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '()\'s return value is of an not allowed type ('
+                    throw new InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $method . '()\'s return value is of an not allowed type ('
                         . gettype($slotReturn) . ').', 1376683067);
                 }
                 if (count($slotReturn) !== count($signalArguments)) {
-                    throw new InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() returned a different number ('
+                    throw new InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $method . '() returned a different number ('
                         . count($slotReturn) . ') of arguments, than it received (' . count($signalArguments) . ').', 1376683066);
                 }
                 $signalArguments = $slotReturn;

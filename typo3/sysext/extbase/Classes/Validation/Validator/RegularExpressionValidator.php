@@ -43,7 +43,7 @@ class RegularExpressionValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.regularexpression.nomatch',
                     'extbase'
-                ),
+                ) ?? '',
                 1221565130
             );
         }

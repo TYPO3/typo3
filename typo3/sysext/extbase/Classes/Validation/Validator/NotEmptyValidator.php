@@ -40,7 +40,7 @@ class NotEmptyValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.notempty.null',
                     'extbase'
-                ),
+                ) ?? '',
                 1221560910
             );
         }
@@ -49,7 +49,7 @@ class NotEmptyValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.notempty.empty',
                     'extbase'
-                ),
+                ) ?? '',
                 1221560718
             );
         }
@@ -58,7 +58,7 @@ class NotEmptyValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.notempty.empty',
                     'extbase'
-                ),
+                ) ?? '',
                 1347992400
             );
         }
@@ -67,7 +67,7 @@ class NotEmptyValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.notempty.empty',
                     'extbase'
-                ),
+                ) ?? '',
                 1347992453
             );
         }

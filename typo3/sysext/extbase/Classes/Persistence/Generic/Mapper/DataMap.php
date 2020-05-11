@@ -38,7 +38,7 @@ class DataMap
     /**
      * The record type stored in the "type" field as configured in $TCA
      *
-     * @var string
+     * @var string|null
      */
     protected $recordType;
 
@@ -190,7 +190,7 @@ class DataMap
     /**
      * Sets the record type
      *
-     * @param string $recordType The record type
+     * @param string|null $recordType The record type
      */
     public function setRecordType($recordType)
     {
@@ -200,7 +200,7 @@ class DataMap
     /**
      * Returns the record type
      *
-     * @return string The record type
+     * @return string|null The record type
      */
     public function getRecordType()
     {

@@ -43,6 +43,7 @@ class NotFoundView extends AbstractView
             throw new Exception('Can\'t render view without request object.', 1192450280);
         }
         $template = file_get_contents($this->getTemplatePathAndFilename());
+        $template = is_string($template) ? $template : '';
         if ($this->controllerContext->getRequest() instanceof Request) {
             $template = str_replace('###BASEURI###', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $template);
         }

@@ -103,7 +103,7 @@ class Typo3DbQueryParser
      * Maps tablenames to their aliases to be used in where clauses etc.
      * Mainly used for joins on the same table etc.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $tableAliasMap = [];
 
@@ -260,30 +260,16 @@ class Typo3DbQueryParser
     protected function parseConstraint(ConstraintInterface $constraint, SourceInterface $source)
     {
         if ($constraint instanceof AndInterface) {
-            $constraint1 = $constraint->getConstraint1();
-            $constraint2 = $constraint->getConstraint2();
-            if (($constraint1 instanceof ConstraintInterface)
-                && ($constraint2 instanceof ConstraintInterface)
-            ) {
-                return $this->queryBuilder->expr()->andX(
-                    $this->parseConstraint($constraint1, $source),
-                    $this->parseConstraint($constraint2, $source)
-                );
-            }
-            return '';
+            return $this->queryBuilder->expr()->andX(
+                $this->parseConstraint($constraint->getConstraint1(), $source),
+                $this->parseConstraint($constraint->getConstraint2(), $source)
+            );
         }
         if ($constraint instanceof OrInterface) {
-            $constraint1 = $constraint->getConstraint1();
-            $constraint2 = $constraint->getConstraint2();
-            if (($constraint1 instanceof ConstraintInterface)
-                && ($constraint2 instanceof ConstraintInterface)
-            ) {
-                return $this->queryBuilder->expr()->orX(
-                    $this->parseConstraint($constraint->getConstraint1(), $source),
-                    $this->parseConstraint($constraint->getConstraint2(), $source)
-                );
-            }
-            return '';
+            return $this->queryBuilder->expr()->orX(
+                $this->parseConstraint($constraint->getConstraint1(), $source),
+                $this->parseConstraint($constraint->getConstraint2(), $source)
+            );
         }
         if ($constraint instanceof NotInterface) {
             return ' NOT(' . $this->parseConstraint($constraint->getConstraint(), $source) . ')';
@@ -397,7 +383,8 @@ class Typo3DbQueryParser
             $columnMap = $dataMap->getColumnMap($propertyName);
             $typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : null;
             if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-                $relationTableName = $columnMap->getRelationTableName();
+                /** @var ColumnMap $columnMap */
+                $relationTableName = (string)$columnMap->getRelationTableName();
                 $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
                 $queryBuilderForSubselect
                         ->select($columnMap->getParentKeyFieldName())
@@ -703,6 +690,9 @@ class Typo3DbQueryParser
      */
     protected function getAdditionalWhereClause(QuerySettingsInterface $querySettings, $tableName, $tableAlias = null)
     {
+        $tableAlias = (string)$tableAlias;
+        // todo: $tableAlias must not be null
+
         $whereClause = [];
         if ($querySettings->getRespectSysLanguage()) {
             $systemLanguageStatement = $this->getLanguageStatement($tableName, $tableAlias, $querySettings);
@@ -1088,7 +1078,7 @@ class Typo3DbQueryParser
             );
             $this->suggestDistinctQuery = true;
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-            $relationTableName = $columnMap->getRelationTableName();
+            $relationTableName = (string)$columnMap->getRelationTableName();
             $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
 
             $joinConditionExpression = $this->queryBuilder->expr()->andX(
