@@ -53,6 +53,9 @@ class CliEntryPoint implements InstallerScript
         $pluginConfig = Config::load($composer);
 
         $entryPointContent = file_get_contents($this->source);
+        if ($entryPointContent === false) {
+            return false;
+        }
         $targetFile = $pluginConfig->get('root-dir') . '/' . $this->target;
         $autoloadFile = $composer->getConfig()->get('vendor-dir') . '/autoload.php';
 
