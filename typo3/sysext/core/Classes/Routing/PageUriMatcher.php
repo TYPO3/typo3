@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
 class PageUriMatcher
 {
     /**
-     * @var RouteCollection
+     * @var RouteCollection<string, Route>
      */
     protected $routes;
 
@@ -69,7 +69,7 @@ class PageUriMatcher
      * Tries to match a URL with a set of routes.
      *
      * @param string $urlPath The path info to be parsed
-     * @param RouteCollection $routes The set of routes
+     * @param RouteCollection<string,Route> $routes The set of routes
      * @return array An array of parameters
      */
     protected function matchCollection(string $urlPath, RouteCollection $routes): ?array

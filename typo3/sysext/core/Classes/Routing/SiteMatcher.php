@@ -90,7 +90,7 @@ class SiteMatcher implements SingletonInterface
      */
     public function matchRequest(ServerRequestInterface $request): RouteResultInterface
     {
-        $site = null;
+        $site = new NullSite();
         $language = null;
         $defaultLanguage = null;
 
@@ -125,7 +125,7 @@ class SiteMatcher implements SingletonInterface
             $context = new RequestContext(
                 '',
                 $request->getMethod(),
-                HttpUtility::idn_to_ascii($request->getUri()->getHost()),
+                (string)HttpUtility::idn_to_ascii($request->getUri()->getHost()),
                 $request->getUri()->getScheme(),
                 // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
                 80,
@@ -202,7 +202,7 @@ class SiteMatcher implements SingletonInterface
                     ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
                     array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
-                    HttpUtility::idn_to_ascii($uri->getHost()) ?: '',
+                    (string)(HttpUtility::idn_to_ascii($uri->getHost()) ?: ''),
                     $uri->getScheme()
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
