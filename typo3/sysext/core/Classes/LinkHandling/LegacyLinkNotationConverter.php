@@ -71,7 +71,7 @@ class LegacyLinkNotationConverter
         // Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
         if (stripos($linkParameter, 'file:') === 0) {
             $result = $this->getFileOrFolderObjectFromMixedIdentifier(substr($linkParameter, 5));
-        } elseif (GeneralUtility::validEmail(parse_url($linkParameter, PHP_URL_PATH))) {
+        } elseif (GeneralUtility::validEmail((string)parse_url($linkParameter, PHP_URL_PATH))) {
             $result['type'] = LinkService::TYPE_EMAIL;
             $result['email'] = $linkParameter;
         } elseif (strpos($linkParameter, 'tel:') === 0) {
