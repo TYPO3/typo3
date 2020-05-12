@@ -30,9 +30,11 @@ class BackendLogin {
     this.options = {
       error: '.t3js-login-error',
       errorNoCookies: '.t3js-login-error-nocookies',
+      errorNoReferrer: '.t3js-login-error-noreferrer',
       formFields: '.t3js-login-formfields',
       interfaceField: '.t3js-login-interface-field',
       loginForm: '#typo3-login-form',
+      loginUrlWrapper: 't3js-login-url',
       submitButton: '.t3js-login-submit',
       submitHandler: null,
       useridentField: '.t3js-login-userident-field',
@@ -40,6 +42,7 @@ class BackendLogin {
 
     this.checkCookieSupport();
     this.checkForInterfaceCookie();
+    this.checkDocumentReferrerSupport();
     this.initializeEvents();
 
     // prevent opening the login form in the backend frameset
@@ -104,6 +107,36 @@ class BackendLogin {
         selectedInterface = selectedInterface.substr(0, selectedInterface.indexOf(';'));
         $(this.options.interfaceField).val(selectedInterface);
       }
+    }
+  }
+
+  private checkDocumentReferrerSupport(): void {
+    const referrerRefresh = '#referrer-refresh';
+    const referrerRefreshed = document.location.hash === referrerRefresh;
+    const loginUrlWrapper = document.getElementById(this.options.loginUrlWrapper) as HTMLAnchorElement;
+    if (typeof loginUrlWrapper.dataset.referrerCheckEnabled === 'undefined'
+      || parseInt(loginUrlWrapper.dataset.referrerCheckEnabled, 10) !== 1
+    ) {
+      return;
+    }
+
+    if (typeof document.referrer === 'string' && document.referrer !== '') {
+      if (referrerRefreshed) {
+        // refresh again to re-enable auto-focus
+        this.ready = false;
+        document.location.href = document.location.href.replace(/#[^#]*$/, '');
+      }
+      return;
+    }
+    if (referrerRefreshed) {
+      document.querySelectorAll(this.options.errorNoReferrer)
+        .forEach((element: HTMLElement): void => element.classList.remove('hidden'));
+    } else {
+      this.ready = false;
+
+      // We have to click a real <a> tag as some browsers won't update their referrer doing otherwise
+      loginUrlWrapper.href += referrerRefresh;
+      loginUrlWrapper.click();
     }
   }
 

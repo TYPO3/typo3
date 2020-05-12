@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -134,6 +135,7 @@ class LoginController implements LoggerAwareInterface
         if ($this->redirectUrl) {
             $this->redirectToURL = $this->redirectUrl;
         } else {
+            // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
         }
@@ -280,6 +282,8 @@ class LoginController implements LoggerAwareInterface
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
             'loginNewsItems' => $this->getSystemNews(),
+            'referrerCheckEnabled' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('security.backend.enforceReferrer'),
+            'loginUrl' => (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login'),
             'loginProviderIdentifier' => $this->loginProviderIdentifier,
             'loginProviders' => $this->loginProviders
         ]);
@@ -344,6 +348,7 @@ class LoginController implements LoggerAwareInterface
                     $this->redirectToURL = '../';
                     break;
                 case 'backend':
+                    // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
                     break;

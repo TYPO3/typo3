@@ -45,6 +45,7 @@ class BackendRouteInitialization implements MiddlewareInterface
         // Check if a module URL is requested and deprecate this call
         $moduleName = $request->getQueryParams()['M'] ?? $request->getParsedBody()['M'] ?? null;
         // Allow the login page to be displayed if routing is not used and on index.php
+        // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
         $pathToRoute = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? $moduleName ?? '/login';
 
         if ($moduleName !== null) {
