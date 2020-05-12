@@ -211,6 +211,11 @@ class LoginController implements LoggerAwareInterface
             $this->view->assign('resetInitiated', true);
         }
         $this->moduleTemplate->setContent($this->view->render());
+        // Prevent time based information disclosure by waiting a random time
+        // before sending a response. This prevents that the reponse time
+        // can be an indicator if the used email exists or not.
+        // wait a random time between 200 milliseconds and 3 seconds.
+        usleep(random_int(200000, 3000000));
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
