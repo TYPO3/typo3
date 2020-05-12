@@ -514,7 +514,8 @@ class ShortcutRepository
             $moduleName = $row['M_module_name'] ?: $row['module_name'];
 
             // Check if the user has access to this module
-            if (!is_array($this->moduleLoader->checkMod($moduleName))) {
+            // @todo Hack for EditDocumentController / FormEngine, see issues #91368 and #91210
+            if (!is_array($this->moduleLoader->checkMod($moduleName)) && $moduleName !== 'xMOD_alt_doc.php') {
                 continue;
             }
 
