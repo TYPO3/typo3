@@ -127,7 +127,8 @@ class ContextHelp {
       const cshWindow = window.open(
         this.helpModuleUrl +
         '&table=' + $trigger.data('table') +
-        '&field=' + $trigger.data('field'),
+        '&field=' + $trigger.data('field') +
+        '&action=detail',
         'ContextHelpWindow',
         'height=400,width=600,status=0,menubar=0,scrollbars=1',
       );

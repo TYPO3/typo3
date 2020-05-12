@@ -1,45 +1,48 @@
-<a id="{manual.table}{f:if(condition:manual.field,then:'.{manual.field}')}"></a>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+    <a id="{manual.table}{f:if(condition:manual.field,then:'.{manual.field}')}"></a>
 
-<h2>{manual.headerLine}</h2>
-<p>{manual.content -> f:format.htmlentities() -> f:format.raw()}</p>
+    <h2>{manual.headerLine}</h2>
+    <p>{manual.content -> f:format.htmlentities() -> f:format.raw()}</p>
 
-<f:if condition="{manual.configuration.details}">
-    <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" /></h3>
-    <p>{manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}</p>
-</f:if>
+    <f:if condition="{manual.configuration.details}">
+        <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" /></h3>
+        <p>{manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}</p>
+    </f:if>
 
-<f:if condition="{manual.configuration.syntax}">
-    <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" /></h3>
-    {manual.configuration.syntax -> f:format.raw()}
-</f:if>
+    <f:if condition="{manual.configuration.syntax}">
+        <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" /></h3>
+        {manual.configuration.syntax -> f:format.raw()}
+    </f:if>
 
-<f:if condition="{manual.images}">
-    <f:for each="{manual.images}" as="image">
-        <div>
-            <img src="../{image.image}" class="img-responsive" />
-            <f:if condition="{image.description}">
-                <p>{image.description}</p>
-            </f:if>
-        </div>
-    </f:for>
-    {manual.configuration.syntax -> f:format.raw()}
-</f:if>
-
-<f:if condition="{manual.seeAlso}">
-    <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:seeAlso" /></h3>
-    <ul>
-        <f:for each="{manual.seeAlso}" as="link">
-            <li>
-                <f:if condition="{link.internal}">
-                    <f:then>
-                        <f:link.action action="detail" arguments="{link.arguments}">{link.title}</f:link.action>
-                    </f:then>
-                    <f:else>
-                        <a href="{link.url}" target="{link.target}">{link.title}</a>
-                    </f:else>
+    <f:if condition="{manual.images}">
+        <f:for each="{manual.images}" as="image">
+            <div>
+                <img src="../{image.image}" class="img-responsive" />
+                <f:if condition="{image.description}">
+                    <p>{image.description}</p>
                 </f:if>
-
-            </li>
+            </div>
         </f:for>
-    </ul>
-</f:if>
+        {manual.configuration.syntax -> f:format.raw()}
+    </f:if>
+
+    <f:if condition="{manual.seeAlso}">
+        <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:seeAlso" /></h3>
+        <ul>
+            <f:for each="{manual.seeAlso}" as="link">
+                <li>
+                    <f:if condition="{link.internal}">
+                        <f:then>
+                            <a href="{be:moduleLink(route: 'help_cshmanual', arguments: link.arguments)}">{link.title}</a>
+                        </f:then>
+                        <f:else>
+                            <a href="{link.url}" target="{link.target}">{link.title}</a>
+                        </f:else>
+                    </f:if>
+                </li>
+            </f:for>
+        </ul>
+    </f:if>
+</html>
