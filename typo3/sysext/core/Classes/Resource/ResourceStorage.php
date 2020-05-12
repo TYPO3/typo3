@@ -1949,7 +1949,7 @@ class ResourceStorage implements ResourceStorageInterface
         $newFileObject = $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileObjectIdentifier);
 
         $this->eventDispatcher->dispatch(
-            new AfterFileCopiedEvent($file, $targetFolder)
+            new AfterFileCopiedEvent($file, $targetFolder, $newFileObjectIdentifier, $newFileObject)
         );
         return $newFileObject;
     }

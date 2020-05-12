@@ -38,10 +38,22 @@ final class AfterFileCopiedEvent
      */
     private $folder;
 
-    public function __construct(FileInterface $file, Folder $folder)
+    /**
+     * @var string
+     */
+    private $newFileIdentifier;
+
+    /**
+     * @var FileInterface|null
+     */
+    private $newFile;
+
+    public function __construct(FileInterface $file, Folder $folder, string $newFileIdentifier, ?FileInterface $newFile)
     {
         $this->file = $file;
         $this->folder = $folder;
+        $this->newFileIdentifier = $newFileIdentifier;
+        $this->newFile = $newFile;
     }
 
     public function getFile(): FileInterface
@@ -52,5 +64,15 @@ final class AfterFileCopiedEvent
     public function getFolder(): Folder
     {
         return $this->folder;
+    }
+
+    public function getNewFileIdentifier(): string
+    {
+        return $this->newFileIdentifier;
+    }
+
+    public function getNewFile(): ?FileInterface
+    {
+        return $this->newFile;
     }
 }
