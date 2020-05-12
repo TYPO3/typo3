@@ -26,6 +26,8 @@ class TypolinkViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    private const TEMPLATE_BASE_PATH = 'typo3/sysext/fluid/Tests/Functional/ViewHelpers/Fixtures/';
+
     /**
      * @var array
      */
@@ -372,6 +374,43 @@ class TypolinkViewHelperTest extends FunctionalTestCase
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename('typo3/sysext/fluid/Tests/Functional/ViewHelpers/Fixtures/link_typolink_parts.html');
         $view->assignMultiple(['parameter' => $parameter]);
+        self::assertSame($expectation, trim($view->render()));
+    }
+
+    public function typoLinkAdditionalAttributesAreRenderedDataProvider(): array
+    {
+        return [
+            [
+                [
+                    'parameter' => 'http://typo3.org/ "_self" "<CSS>" "<Title>"',
+                    'additionalAttributes' => [
+                        'data-html' => '<div data-template="template">'
+                            . '<img src="logo.png" alt="&quot;&lt;ALT&gt;&quot;"></div>',
+                        'data-other' => '\'\'',
+                    ],
+                ],
+                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
+                    . ' class="&lt;CSS&gt;" data-html="&lt;div data-template=&quot;template&quot;&gt;'
+                    . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
+                    . ' data-other="\'\'">Link Text</a>'
+            ]
+        ];
+    }
+
+    /**
+     * @param array $configuration
+     * @param string $expectation
+     *
+     * @test
+     * @dataProvider typoLinkAdditionalAttributesAreRenderedDataProvider
+     */
+    public function typoLinkAdditionalAttributesAreRendered(array $configuration, string $expectation): void
+    {
+        $view = new StandaloneView();
+        $view->setTemplatePathAndFilename(
+            self::TEMPLATE_BASE_PATH . 'link_typolink_additionalAttributes.html'
+        );
+        $view->assignMultiple($configuration);
         self::assertSame($expectation, trim($view->render()));
     }
 }

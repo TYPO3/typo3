@@ -1183,9 +1183,10 @@ class GeneralUtility
      * If an attribute is empty, then the value for the key is empty. You can check if it existed with isset()
      *
      * @param string $tag HTML-tag string (or attributes only)
+     * @param bool $decodeEntities Whether to decode HTML entities
      * @return string[] Array with the attribute values.
      */
-    public static function get_tag_attributes($tag)
+    public static function get_tag_attributes($tag, bool $decodeEntities = false)
     {
         $components = self::split_tag_attributes($tag);
         // Attribute name is stored here
@@ -1197,7 +1198,7 @@ class GeneralUtility
             if ($val !== '=') {
                 if ($valuemode) {
                     if ($name) {
-                        $attributes[$name] = htmlspecialchars_decode($val, ENT_NOQUOTES);
+                        $attributes[$name] = $decodeEntities ? htmlspecialchars_decode($val) : $val;
                         $name = '';
                     }
                 } else {
