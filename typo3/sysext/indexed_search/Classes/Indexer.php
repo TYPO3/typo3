@@ -661,7 +661,8 @@ class Indexer
             }
             // @todo The code below stops at first unset tag. Is that correct?
             for ($i = 0; isset($meta[$i]); $i++) {
-                $meta[$i] = GeneralUtility::get_tag_attributes($meta[$i]);
+                // decode HTML entities, meta tag content needs to be encoded later
+                $meta[$i] = GeneralUtility::get_tag_attributes($meta[$i], true);
                 if (stristr($meta[$i]['name'], 'keywords')) {
                     $contentArr['keywords'] .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
                 }
