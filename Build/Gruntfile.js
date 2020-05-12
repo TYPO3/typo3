@@ -417,6 +417,12 @@ module.exports = function (grunt) {
       },
       ckeditor: {
         options: {
+          copyOptions: {
+            // Using null encoding to allow passthrough of binary files in `process`
+            encoding: null,
+            // Convert CRLF to LF in plain text files to mimic git's autocrlf behaviour
+            process: (content, srcpath) => srcpath.match(/\.(css|js|txt|html|md)$/) ? content.toString('utf8').replace(/\r\n/g, '\n') : content
+          },
           destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib"
         },
         files: {
@@ -428,6 +434,12 @@ module.exports = function (grunt) {
       },
       ckeditor_externalplugins: {
         options: {
+          copyOptions: {
+            // Using null encoding to allow passthrough of binary files in `process`
+            encoding: null,
+            // Convert CRLF to LF in plain text files to mimic git's autocrlf behaviour
+            process: (content, srcpath) => srcpath.match(/\.(css|js|txt|html|md)$/) ? content.toString('utf8').replace(/\r\n/g, '\n') : content
+          },
           destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib/plugins"
         },
         files: {
