@@ -662,7 +662,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             return [];
         }
 
-        $inlineView = unserialize($backendUser->uc['inlineView']);
+        $inlineView = unserialize($backendUser->uc['inlineView'], ['allowed_classes' => false]);
         if (!is_array($inlineView)) {
             $inlineView = [];
         }

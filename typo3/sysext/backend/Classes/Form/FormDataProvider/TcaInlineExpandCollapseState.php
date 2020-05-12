@@ -35,7 +35,7 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
             if (!empty($result['inlineTopMostParentUid']) && !empty($result['inlineTopMostParentTableName'])) {
                 // Happens in inline ajax context, top parent uid and top parent table are set
                 if (isset($this->getBackendUser()->uc['inlineView'])) {
-                    $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
+                    $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView'], ['allowed_classes' => false]);
                     if (!is_array($fullInlineState)) {
                         $fullInlineState = [];
                     }
@@ -53,7 +53,7 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
                 $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
             } else {
                 // Default case for a single record
-                $fullInlineState = !empty($this->getBackendUser()->uc['inlineView']) ? unserialize($this->getBackendUser()->uc['inlineView']) : [];
+                $fullInlineState = !empty($this->getBackendUser()->uc['inlineView']) ? unserialize($this->getBackendUser()->uc['inlineView'], ['allowed_classes' => false]) : [];
                 if (!is_array($fullInlineState)) {
                     $fullInlineState = [];
                 }

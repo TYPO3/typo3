@@ -365,7 +365,7 @@ class ActionHandler
             }
             $beUserRecord = BackendUtility::getRecord('be_users', (int)$userUid);
             if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
-                $uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : [];
+                $uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc'], ['allowed_classes' => false]) : [];
                 $recipients[$beUserRecord['email']] = [
                     'email' => $beUserRecord['email'],
                     'lang' => $uc['lang'] ?? $beUserRecord['lang']
@@ -383,7 +383,7 @@ class ActionHandler
                     continue;
                 }
                 if (!isset($recipients[$preselectedBackendUser['email']])) {
-                    $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc']) : []);
+                    $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc'], ['allowed_classes' => false]) : []);
                     $recipients[$preselectedBackendUser['email']] = [
                         'email' => $preselectedBackendUser['email'],
                         'lang' => $uc['lang'] ?? $preselectedBackendUser['lang']

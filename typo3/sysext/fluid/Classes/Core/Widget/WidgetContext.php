@@ -25,8 +25,20 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  *
  * @internal It is a purely internal class which should not be used outside of Fluid.
  */
-class WidgetContext
+class WidgetContext implements \JsonSerializable
 {
+    protected const JSON_SERIALIZABLE_PROPERTIES = [
+        'widgetIdentifier',
+        'ajaxWidgetIdentifier',
+        'widgetConfiguration',
+        'controllerObjectName',
+        'parentPluginNamespace',
+        'parentVendorName',
+        'parentExtensionName',
+        'parentPluginName',
+        'widgetViewHelperClassName',
+    ];
+
     /**
      * Uniquely identifies a Widget Instance on a certain page.
      *
@@ -43,7 +55,8 @@ class WidgetContext
 
     /**
      * User-supplied widget configuration, available inside the widget
-     * controller as $this->widgetConfiguration.
+     * controller as $this->widgetConfiguration. Array items must be
+     * null, scalar, array or implement \JsonSerializable interface.
      *
      * @var array
      */
@@ -97,6 +110,51 @@ class WidgetContext
      * @var string
      */
     protected $widgetViewHelperClassName;
+
+    public static function fromArray(array $data): WidgetContext
+    {
+        $target = new WidgetContext();
+        foreach ($data as $propertyName => $propertyValue) {
+            if (!in_array($propertyName, self::JSON_SERIALIZABLE_PROPERTIES, true)) {
+                continue;
+            }
+            if (!property_exists($target, $propertyName)) {
+                continue;
+            }
+            $target->{$propertyName} = $propertyValue;
+        }
+        return $target;
+    }
+
+    public function jsonSerialize()
+    {
+        $properties = array_fill_keys(self::JSON_SERIALIZABLE_PROPERTIES, true);
+        $data = array_intersect_key(get_object_vars($this), $properties);
+
+        if (is_array($data['widgetConfiguration'] ?? null)) {
+            $data['widgetConfiguration'] = array_filter(
+                $data['widgetConfiguration'],
+                function ($value): bool {
+                    if ($value === null || is_scalar($value) || is_array($value)
+                        || is_object($value) && $value instanceof \JsonSerializable
+                    ) {
+                        return true;
+                    }
+                    throw new Exception(
+                        sprintf(
+                            'Widget configuration items either must be null, scalar, array or JSON serializable, got "%s"',
+                            is_object($value) ? get_class($value) : gettype($value)
+                        ),
+                        1588178538
+                    );
+                }
+            );
+        } else {
+            $data['widgetConfiguration'] = null;
+        }
+
+        return $data;
+    }
 
     /**
      * @return string
@@ -286,13 +344,5 @@ class WidgetContext
     public function getViewHelperChildNodeRenderingContext()
     {
         return $this->viewHelperChildNodeRenderingContext;
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return ['widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentVendorName', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'];
     }
 }

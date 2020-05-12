@@ -126,7 +126,7 @@ class WidgetContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function sleepReturnsExpectedPropertyNames()
+    public function jsonEncodeContainsExpectedPropertyNames()
     {
         $this->assertEquals(
             [
@@ -134,7 +134,7 @@ class WidgetContextTest extends UnitTestCase
                 'parentPluginNamespace', 'parentVendorName', 'parentExtensionName', 'parentPluginName',
                 'widgetViewHelperClassName'
             ],
-            $this->widgetContext->__sleep()
+            array_keys(json_decode(json_encode($this->widgetContext), true))
         );
     }
 }

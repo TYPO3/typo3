@@ -470,7 +470,7 @@ class TaskModuleController
 
         // Change the sorting of items to the user's one
         if ($mainMenu) {
-            $userSorting = unserialize($this->getBackendUser()->uc['taskcenter']['sorting']);
+            $userSorting = unserialize($this->getBackendUser()->uc['taskcenter']['sorting'], ['allowed_classes' => false]);
             if (is_array($userSorting)) {
                 $newSorting = [];
                 foreach ($userSorting as $item) {

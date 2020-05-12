@@ -147,7 +147,7 @@ class FormEngineUtility
     {
         $backendUser = static::getBackendUserAuthentication();
         if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
-            $inlineView = (array)unserialize($backendUser->uc['inlineView']);
+            $inlineView = (array)unserialize($backendUser->uc['inlineView'], ['allowed_classes' => false]);
             foreach ($uc['inlineView'] as $topTable => $topRecords) {
                 foreach ($topRecords as $topUid => $childElements) {
                     foreach ($childElements as $childTable => $childRecords) {

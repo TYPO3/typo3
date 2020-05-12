@@ -537,7 +537,7 @@ class BackendUtility
         if ($clearExpansion) {
             $expandedPages = [];
         } else {
-            $expandedPages = unserialize($beUser->uc['browseTrees']['browsePages']);
+            $expandedPages = unserialize($beUser->uc['browseTrees']['browsePages'], ['allowed_classes' => false]);
         }
         // Get rootline:
         $rL = self::BEgetRootLine($pid);
