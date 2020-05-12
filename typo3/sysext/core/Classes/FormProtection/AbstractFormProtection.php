@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\FormProtection;
 
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -27,6 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractFormProtection
 {
+    use BlockSerializationTrait;
+
     /**
      * @var \Closure
      */

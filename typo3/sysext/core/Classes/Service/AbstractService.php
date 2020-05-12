@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Service;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractService implements LoggerAwareInterface
 {
+    use BlockSerializationTrait;
     use LoggerAwareTrait;
 
     // General error - something went wrong

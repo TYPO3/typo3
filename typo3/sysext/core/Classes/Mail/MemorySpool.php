@@ -23,6 +23,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MemorySpool extends AbstractTransport implements SingletonInterface, LoggerAwareInterface, DelayedTransportInterface
 {
+    use BlockSerializationTrait;
     use LoggerAwareTrait;
 
     /**

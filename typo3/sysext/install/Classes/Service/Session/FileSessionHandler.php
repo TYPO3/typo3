@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service\Session;
 
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception;
 
@@ -26,6 +27,8 @@ use TYPO3\CMS\Install\Service\Exception;
  */
 class FileSessionHandler implements \SessionHandlerInterface
 {
+    use BlockSerializationTrait;
+
     /**
      * The path to our var/session/ folder (where we can write our sessions). Set in the
      * constructor.

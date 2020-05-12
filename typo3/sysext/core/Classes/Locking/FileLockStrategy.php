@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,8 +27,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileLockStrategy implements LockingStrategyInterface
 {
-    const FILE_LOCK_FOLDER = 'lock/';
+    use BlockSerializationTrait;
 
+    const FILE_LOCK_FOLDER = 'lock/';
     const DEFAULT_PRIORITY = 75;
 
     /**

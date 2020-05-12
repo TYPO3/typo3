@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
@@ -27,6 +28,8 @@ use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
  */
 class ReflectionService implements SingletonInterface
 {
+    use BlockSerializationTrait;
+
     /**
      * @var string
      */
