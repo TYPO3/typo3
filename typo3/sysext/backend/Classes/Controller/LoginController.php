@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -123,6 +124,11 @@ class LoginController implements LoggerAwareInterface
     protected $uriBuilder;
 
     /**
+     * @var Features
+     */
+    protected $features;
+
+    /**
      * @var PageRenderer
      */
     protected $pageRenderer;
@@ -130,11 +136,13 @@ class LoginController implements LoggerAwareInterface
     public function __construct(
         Typo3Information $typo3Information,
         EventDispatcherInterface $eventDispatcher,
-        UriBuilder $uriBuilder
+        UriBuilder $uriBuilder,
+        Features $features
     ) {
         $this->typo3Information = $typo3Information;
         $this->eventDispatcher = $eventDispatcher;
         $this->uriBuilder = $uriBuilder;
+        $this->features = $features;
     }
 
     /**
@@ -326,6 +334,7 @@ class LoginController implements LoggerAwareInterface
         if ($this->redirectUrl) {
             $this->redirectToURL = $this->redirectUrl;
         } else {
+            // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
             $this->redirectToURL = (string)$this->uriBuilder->buildUriFromRoute('main');
         }
 
@@ -339,6 +348,8 @@ class LoginController implements LoggerAwareInterface
         $this->view->getRequest()->setControllerExtensionName('Backend');
         $this->provideCustomLoginStyling();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
+        $this->view->assign('referrerCheckEnabled', $this->features->isFeatureEnabled('security.backend.enforceReferrer'));
+        $this->view->assign('loginUrl', (string)$this->uriBuilder->buildUriFromRoute('login'));
         $this->view->assign('loginProviderIdentifier', $this->loginProviderIdentifier);
     }
 
@@ -504,6 +515,7 @@ class LoginController implements LoggerAwareInterface
                     $this->redirectToURL = '../';
                     break;
                 case 'backend':
+                    // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
                     $this->redirectToURL = (string)$this->uriBuilder->buildUriFromRoute('main');
                     break;
             }

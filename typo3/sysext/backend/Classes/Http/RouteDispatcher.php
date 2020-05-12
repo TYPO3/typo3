@@ -21,8 +21,10 @@ use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Dispatcher;
+use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -46,6 +48,11 @@ class RouteDispatcher extends Dispatcher
         $route = $router->matchRequest($request);
         $request = $request->withAttribute('route', $route);
         $request = $request->withAttribute('target', $route->getOption('target'));
+
+        $enforceReferrerResponse = $this->enforceReferrer($request);
+        if ($enforceReferrerResponse instanceof ResponseInterface) {
+            return $enforceReferrerResponse;
+        }
         if (!$this->isValidRequest($request)) {
             throw new InvalidRequestTokenException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
         }
@@ -67,6 +74,35 @@ class RouteDispatcher extends Dispatcher
     protected function getFormProtection()
     {
         return FormProtectionFactory::get();
+    }
+
+    /**
+     * Evaluates HTTP `Referer` header (which is denied by client to be a custom
+     * value) - attempts to ensure the value is given using a HTML client refresh.
+     * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface|null
+     */
+    protected function enforceReferrer(ServerRequestInterface $request): ?ResponseInterface
+    {
+        /** @var Features $features */
+        $features = GeneralUtility::makeInstance(Features::class);
+        if (!$features->isFeatureEnabled('security.backend.enforceReferrer')) {
+            return null;
+        }
+        /** @var Route $route */
+        $route = $request->getAttribute('route');
+        $referrerFlags = GeneralUtility::trimExplode(',', $route->getOption('referrer') ?? '', true);
+        if (!in_array('required', $referrerFlags, true)) {
+            return null;
+        }
+        /** @var ReferrerEnforcer $referrerEnforcer */
+        $referrerEnforcer = GeneralUtility::makeInstance(ReferrerEnforcer::class, $request);
+        return $referrerEnforcer->handle([
+            'flags' => $referrerFlags,
+            'subject' => $route->getPath(),
+        ]);
     }
 
     /**

@@ -47,7 +47,8 @@ class Application extends AbstractApplication
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeContext();
-        return parent::handle($request);
+        return parent::handle($request)
+            ->withHeader('X-Frame-Options', 'SAMEORIGIN');
     }
 
     /**

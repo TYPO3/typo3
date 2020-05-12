@@ -85,6 +85,9 @@ Have a nice day.</source>
 			<trans-unit id="login.error.cookies" resname="login.error.cookies">
 				<source>Please activate Cookies!</source>
 			</trans-unit>
+			<trans-unit id="login.error.referrer" resname="login.error.referrer">
+				<source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
+			</trans-unit>
 			<trans-unit id="login.process" resname="login.process">
 				<source>Verifying Login Data ...</source>
 			</trans-unit>

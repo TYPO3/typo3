@@ -45,6 +45,7 @@ class BackendRouteInitialization implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Allow the login page to be displayed if routing is not used and on index.php
+        // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
         $pathToRoute = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
 
         // Backend Routes from Configuration/Backend/{,Ajax}Routes.php will be implicitly loaded thanks to DI.

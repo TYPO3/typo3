@@ -5,7 +5,9 @@
                 <div class="panel panel-lg panel-login">
                     <div class="panel-body">
                         <div class="typo3-login-logo">
-                            <img src="{logo}" class="typo3-login-image" alt="" />
+                            <a href="{loginUrl}" id="t3js-login-url" data-referrer-check-enabled="{f:if(condition: '{referrerCheckEnabled}', then: '1', else: '0')}">
+                                <img src="{logo}" class="typo3-login-image" alt="" />
+                            </a>
                         </div>
                         <f:if condition="{formType} == 'LoginForm'">
                             <f:then>
@@ -22,6 +24,9 @@
                                 </noscript>
                                 <div class="hidden t3js-login-error-nocookies">
                                     <f:be.infobox message="{f:translate(key: 'login.error.cookies')}" state="2" />
+                                </div>
+                                <div class="hidden t3js-login-error-noreferrer">
+                                    <f:be.infobox message="{f:translate(key: 'login.error.referrer')}" state="2" />
                                 </div>
                                 <div class="typo3-login-form t3js-login-formfields">
                                     <form action="?loginProvider={loginProviderIdentifier}" method="post" name="loginform" id="typo3-login-form">
