@@ -15,12 +15,15 @@ namespace TYPO3\CMS\Core\Log\Writer;
  */
 
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 
 /**
  * Abstract implementation of a log writer
  */
 abstract class AbstractWriter implements WriterInterface
 {
+    use BlockSerializationTrait;
+
     /**
      * Constructs this log writer
      *

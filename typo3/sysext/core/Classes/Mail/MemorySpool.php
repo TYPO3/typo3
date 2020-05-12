@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Mail;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MemorySpool extends \Swift_MemorySpool implements SingletonInterface, LoggerAwareInterface
 {
+    use BlockSerializationTrait;
     use LoggerAwareTrait;
 
     /**

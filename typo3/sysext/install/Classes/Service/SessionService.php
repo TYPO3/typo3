@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SessionService implements SingletonInterface
 {
+    use BlockSerializationTrait;
     use CookieHeaderTrait;
 
     /**

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -23,6 +24,8 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class ReflectionService implements SingletonInterface
 {
+    use BlockSerializationTrait;
+
     const CACHE_IDENTIFIER = 'extbase_reflection';
     const CACHE_ENTRY_IDENTIFIER = 'ClassSchematas';
 
