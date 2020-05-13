@@ -62,13 +62,9 @@ class ObjectManager implements ObjectManagerInterface
      * @return array Names of the properties to be serialized
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __sleep()
+    public function __sleep(): array
     {
-        // Use get_objects_vars() instead of
-        // a much more expensive Reflection:
-        $properties = get_object_vars($this);
-        unset($properties['objectContainer']);
-        return array_keys($properties);
+        return [];
     }
 
     /**
