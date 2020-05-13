@@ -114,8 +114,9 @@ class BackendLogin {
     const referrerRefresh = '#referrer-refresh';
     const referrerRefreshed = document.location.hash === referrerRefresh;
     const loginUrlWrapper = document.getElementById(this.options.loginUrlWrapper) as HTMLAnchorElement;
-    if (typeof loginUrlWrapper.dataset.referrerCheckEnabled === 'undefined'
-      || parseInt(loginUrlWrapper.dataset.referrerCheckEnabled, 10) !== 1
+    if (loginUrlWrapper === null
+      || typeof loginUrlWrapper.dataset.referrerCheckEnabled === 'undefined'
+      || loginUrlWrapper.dataset.referrerCheckEnabled !== '1'
     ) {
       return;
     }
