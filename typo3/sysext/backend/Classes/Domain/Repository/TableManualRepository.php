@@ -305,7 +305,8 @@ class TableManualRepository
                                 'internal' => true,
                                 'arguments' => [
                                     'table' => $table,
-                                    'field' => $field
+                                    'field' => $field,
+                                    'action' => 'detail',
                                 ],
                                 'title' => $label
                             ];
