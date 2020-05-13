@@ -18,18 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security;
 
 /**
- * Blocks object being using in `serialize()` and `unserialize()` invocations.
+ * Blocks object being using `unserialize()` invocations.
+ *
+ * Initially this trait blocked `serialize()` as well, which caused
+ * a couple of side-effects in user-land code and is not problematic
+ * from a security point of view.
  */
 trait BlockSerializationTrait
 {
-    /**
-     * Deny object serialization.
-     */
-    public function __sleep()
-    {
-        throw new \BadMethodCallException('Cannot serialize ' . __CLASS__, 1588784141);
-    }
-
     /**
      * Deny object deserialization.
      */
