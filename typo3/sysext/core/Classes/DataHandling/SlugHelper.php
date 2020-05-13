@@ -335,10 +335,12 @@ class SlugHelper
      */
     public function isUniqueInTable(string $slug, RecordState $state): bool
     {
+        $recordId = $state->getSubject()->getIdentifier();
         $languageId = $state->getContext()->getLanguageId();
 
         $queryBuilder = $this->createPreparedQueryBuilder();
         $this->applySlugConstraint($queryBuilder, $slug);
+        $this->applyRecordConstraint($queryBuilder, $recordId);
         $this->applyLanguageConstraint($queryBuilder, $languageId);
         $this->applyWorkspaceConstraint($queryBuilder, $state);
         $statement = $queryBuilder->execute();

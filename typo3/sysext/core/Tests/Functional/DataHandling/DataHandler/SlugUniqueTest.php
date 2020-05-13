@@ -30,7 +30,6 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
         $this->setUpFrontendSite(1);
-        $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueBase.csv');
     }
 
     /**
@@ -51,8 +50,9 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
      * @test
      * @param string $uniqueSetting
      */
-    public function differentUniqueEvalSettingsDeDuplicateSlug(string $uniqueSetting)
+    public function differentUniqueEvalSettingsDeDuplicateSlug(string $uniqueSetting): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueBase.csv');
         $GLOBALS['TCA']['pages']['columns']['slug']['config']['eval'] = $uniqueSetting;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->enableLogging = false;
@@ -68,7 +68,60 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
             []
         );
         $dataHandler->process_datamap();
+        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/TestSlugUniqueResult.csv');
+    }
+
+    /**
+     * @dataProvider getEvalSettingDataProvider
+     * @test
+     * @param string $uniqueSetting
+     */
+    public function currentRecordIsExcludedWhenDeDuplicateSlug(string $uniqueSetting): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueWithDeduplicatedSlugBase.csv');
+        $GLOBALS['TCA']['pages']['columns']['slug']['config']['eval'] = $uniqueSetting;
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
+        $dataHandler->start(
+            [
+                'pages' => [
+                    3 => [
+                        'slug' => 'page-one-1',
+                    ],
+                ],
+            ],
+            []
+        );
+        $dataHandler->process_datamap();
 
         $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/TestSlugUniqueResult.csv');
+    }
+
+    /**
+     * @dataProvider getEvalSettingDataProvider
+     * @test
+     * @param string $uniqueSetting
+     */
+    public function differentUniqueEvalSettingsDeDuplicateSlugWhenCreatingNewRecords(string $uniqueSetting): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueBase.csv');
+        $GLOBALS['TCA']['pages']['columns']['slug']['config']['eval'] = $uniqueSetting;
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
+        $dataHandler->start(
+            [
+                'pages' => [
+                    'NEW-1' => [
+                        'pid' => 1,
+                        'title' => 'Page Two',
+                        'slug' => '',
+                    ],
+                ],
+            ],
+            []
+        );
+        $dataHandler->process_datamap();
+
+        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/TestSlugUniqueNewRecordResult.csv');
     }
 }
