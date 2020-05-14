@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInvalidTypeHint;
@@ -52,5 +55,59 @@ class ReflectionServiceTest extends UnitTestCase
         $this->expectExceptionMessage('Class Foo\Bar\Not\Found does not exist. Reflection failed.');
         $reflectionService = new ReflectionService();
         $reflectionService->getClassSchema(DummyClassWithInvalidTypeHint::class);
+    }
+
+    /**
+     * @test
+     */
+    public function reflectionServiceCanBeSerializedAndUnserialized(): void
+    {
+        $class = new class() {
+        };
+
+        $reflectionService = new ReflectionService();
+        $serialized = serialize($reflectionService);
+        unset($reflectionService);
+
+        $reflectionService = unserialize($serialized, ['allowed_classes' => [ReflectionService::class]]);
+
+        self::assertInstanceOf(ReflectionService::class, $reflectionService);
+        self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
+    }
+
+    /**
+     * @test
+     */
+    public function reflectionServiceCanBeSerializedAndUnserializedWithCacheManager(): void
+    {
+        $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('extbase')->willReturn(new NullFrontend('extbase'));
+
+        $class = new class() {
+        };
+
+        $reflectionService = new ReflectionService($cacheManager->reveal());
+        $serialized = serialize($reflectionService);
+        unset($reflectionService);
+
+        $reflectionService = unserialize($serialized, ['allowed_classes' => [ReflectionService::class]]);
+
+        self::assertInstanceOf(ReflectionService::class, $reflectionService);
+        self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
+    }
+
+    /**
+     * @test
+     */
+    public function reflectionServiceIsResetDuringWakeUp(): void
+    {
+        $insecureString = file_get_contents(__DIR__ . '/Fixture/InsecureSerializedReflectionService.txt');
+        $reflectionService = unserialize($insecureString);
+
+        $reflectionClass = new \ReflectionClass($reflectionService);
+        $classSchemaProperty = $reflectionClass->getProperty('classSchemata');
+        $classSchemaProperty->setAccessible(true);
+
+        self::assertSame([], $classSchemaProperty->getValue($reflectionService));
     }
 }

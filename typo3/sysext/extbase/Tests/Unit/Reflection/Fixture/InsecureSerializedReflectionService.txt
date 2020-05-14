@@ -1,0 +1,1 @@
+O:46:"TYPO3\CMS\Extbase\Reflection\ReflectionService":4:{s:12:" * dataCache";N;s:23:" * dataCacheNeedsUpdate";b:0;s:16:" * classSchemata";a:1:{s:9:"className";s:31:"possibly malicious class schema";}s:62:" TYPO3\CMS\Extbase\Reflection\ReflectionService cachingEnabled";b:0;}

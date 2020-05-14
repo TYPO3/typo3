@@ -16,9 +16,10 @@
 namespace TYPO3\CMS\Extbase\Reflection;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
@@ -28,15 +29,13 @@ use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
  */
 class ReflectionService implements SingletonInterface
 {
-    use BlockSerializationTrait;
-
     /**
      * @var string
      */
     private static $cacheEntryIdentifier;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var FrontendInterface
      */
     protected $dataCache;
 
@@ -70,13 +69,19 @@ class ReflectionService implements SingletonInterface
      */
     public function __construct(CacheManager $cacheManager = null)
     {
-        if ($cacheManager instanceof CacheManager && $cacheManager->hasCache('extbase')) {
-            $this->cachingEnabled = true;
-            $this->dataCache = $cacheManager->getCache('extbase');
+        if ($cacheManager instanceof CacheManager) {
+            try {
+                $this->dataCache = $cacheManager->getCache('extbase');
+                $this->cachingEnabled = true;
+            } catch (NoSuchCacheException $ignoredException) {
+                $this->cachingEnabled = false;
+            }
 
-            static::$cacheEntryIdentifier = 'ClassSchemata_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
-            if (($classSchemata = $this->dataCache->get(static::$cacheEntryIdentifier)) !== false) {
-                $this->classSchemata = $classSchemata;
+            if ($this->cachingEnabled) {
+                static::$cacheEntryIdentifier = 'ClassSchemata_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+                if (($classSchemata = $this->dataCache->get(static::$cacheEntryIdentifier)) !== false) {
+                    $this->classSchemata = $classSchemata;
+                }
             }
         }
     }
@@ -122,5 +127,24 @@ class ReflectionService implements SingletonInterface
         $this->classSchemata[$className] = $classSchema;
         $this->dataCacheNeedsUpdate = true;
         return $classSchema;
+    }
+
+    /**
+     * @internal
+     */
+    public function __sleep(): array
+    {
+        return [];
+    }
+
+    /**
+     * @internal
+     */
+    public function __wakeup(): void
+    {
+        $this->dataCache = null;
+        $this->dataCacheNeedsUpdate = false;
+        $this->classSchemata = [];
+        $this->cachingEnabled = false;
     }
 }
