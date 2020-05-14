@@ -38,7 +38,7 @@ Example:
    <picture>
      <source srcset="{f:uri.image(image: fileObject, treatIdAsReference: true, fileExtension: 'webp')}" type="image/webp">
      <source srcset="{f:uri.image(image: fileObject, treatIdAsReference: true, fileExtension: 'jpg')}" type="image/jpeg">
-     <f:image image="{fileObject}" treatIdAsReference="true" alt="{fileObject.alternative}">
-   <picture>
+     <f:image image="{fileObject}" treatIdAsReference="true" alt="{fileObject.alternative}" />
+   </picture>
 
 .. index:: Fluid, ext:fluid
