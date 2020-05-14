@@ -15,7 +15,8 @@ namespace TYPO3\CMS\Extbase\Reflection;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Security\BlockSerializationTrait;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -24,13 +25,11 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class ReflectionService implements SingletonInterface
 {
-    use BlockSerializationTrait;
-
     const CACHE_IDENTIFIER = 'extbase_reflection';
     const CACHE_ENTRY_IDENTIFIER = 'ClassSchematas';
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var FrontendInterface
      */
     protected $dataCache;
 
@@ -64,12 +63,18 @@ class ReflectionService implements SingletonInterface
      */
     public function __construct(CacheManager $cacheManager = null)
     {
-        if ($cacheManager instanceof CacheManager && $cacheManager->hasCache(static::CACHE_IDENTIFIER)) {
-            $this->cachingEnabled = true;
-            $this->dataCache = $cacheManager->getCache(static::CACHE_IDENTIFIER);
+        if ($cacheManager instanceof CacheManager) {
+            try {
+                $this->dataCache = $cacheManager->getCache(static::CACHE_IDENTIFIER);
+                $this->cachingEnabled = true;
+            } catch (NoSuchCacheException $ignoredException) {
+                $this->cachingEnabled = false;
+            }
 
-            if (($classSchemata = $this->dataCache->get(static::CACHE_ENTRY_IDENTIFIER)) !== false) {
-                $this->classSchemata = $classSchemata;
+            if ($this->cachingEnabled) {
+                if (($classSchemata = $this->dataCache->get(static::CACHE_ENTRY_IDENTIFIER)) !== false) {
+                    $this->classSchemata = $classSchemata;
+                }
             }
         }
     }
@@ -368,5 +373,24 @@ class ReflectionService implements SingletonInterface
         $this->classSchemata[$className] = $classSchema;
         $this->dataCacheNeedsUpdate = true;
         return $classSchema;
+    }
+
+    /**
+     * @internal
+     */
+    public function __sleep(): array
+    {
+        return [];
+    }
+
+    /**
+     * @internal
+     */
+    public function __wakeup(): void
+    {
+        $this->dataCache = null;
+        $this->dataCacheNeedsUpdate = false;
+        $this->classSchemata = [];
+        $this->cachingEnabled = false;
     }
 }
