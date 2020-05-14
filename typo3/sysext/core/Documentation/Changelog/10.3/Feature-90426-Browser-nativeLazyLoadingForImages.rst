@@ -33,7 +33,7 @@ the behavior can be modified generally to be either set to :html:`eager`,
 :html:`auto` or to an empty value, removing the property directly.
 
 The Fluid ImageViewHelper has the possibility to set this option
-via :html:`<f:image src="{fileObject}" treatIdAsReference="true" loading="lazy">`
+via :html:`<f:image src="{fileObject}" treatIdAsReference="true" loading="lazy" />`
 to hint the browser on how the prioritization of image loading should be used.
 
 .. index:: Frontend, ext:fluid_styled_content
