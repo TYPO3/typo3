@@ -53,7 +53,6 @@ class PreviewSimulator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ((bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
-            $GLOBALS['TSFE']->clear_preview();
             $simulatingDate = $this->simulateDate($request);
             $simulatingGroup = $this->simulateUserGroup($request);
             $GLOBALS['TSFE']->fePreview = ((int)($simulatingDate || $simulatingGroup));
