@@ -1361,7 +1361,7 @@ return [
     'MAIL' => [ // Mail configurations to tune how \TYPO3\CMS\Core\Mail\ classes will send their mails.
         'transport' => 'sendmail',
         'transport_smtp_server' => 'localhost:25',
-        'transport_smtp_encrypt' => '',
+        'transport_smtp_encrypt' => false,
         'transport_smtp_username' => '',
         'transport_smtp_password' => '',
         'transport_sendmail_command' => '',

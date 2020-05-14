@@ -1130,6 +1130,8 @@ class SilentConfigurationUpgradeService
                         // Due to the misleading name (transport_smtp_encrypt) we avoid to set the option to false, but rather remove it.
                         // Note: symfony/mailer provides no way to enforce STARTTLS usage, see https://github.com/symfony/symfony/commit/5b8c4676d059
                         $confManager->removeLocalConfigurationKeysByPath(['MAIL/transport_smtp_encrypt']);
+                    } elseif ($encrypt === '') {
+                        $confManager->setLocalConfigurationValueByPath('MAIL/transport_smtp_encrypt', false);
                     } else {
                         $confManager->setLocalConfigurationValueByPath('MAIL/transport_smtp_encrypt', true);
                     }
