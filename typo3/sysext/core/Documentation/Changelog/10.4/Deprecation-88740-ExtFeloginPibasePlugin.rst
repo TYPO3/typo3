@@ -41,21 +41,21 @@ All of the hooks have been replaced by equivalent PSR-14 events.
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
 | Pibase hook                                                                       | PSR-14 event                                                         |
 +===================================================================================+======================================================================+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect']`         | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\BeforeRedirectEvent`      |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect']`         | :php:`\TYPO3\CMS\FrontendLogin\Event\BeforeRedirectEvent`      |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent']`        | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\ModifyLoginFormViewEvent` |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent']`        | :php:`\TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent` |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail']`     | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\SendRecoveryEmailEvent`   |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail']`     | :php:`\TYPO3\CMS\FrontendLogin\Event\SendRecoveryEmailEvent`   |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']`       | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\PasswordChangeEvent`      |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']`       | :php:`\TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent`      |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']`        | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\LoginConfirmedEvent`      |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']`        | :php:`\TYPO3\CMS\FrontendLogin\Event\LoginConfirmedEvent`      |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error']`            | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\LoginErrorOccurredEvent`  |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error']`            | :php:`\TYPO3\CMS\FrontendLogin\Event\LoginErrorOccurredEvent`  |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']`       | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\LogoutConfirmedEvent`     |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']`       | :php:`\TYPO3\CMS\FrontendLogin\Event\LogoutConfirmedEvent`     |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
-|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs']` | :php:`\TYPO3\CMS\FrontendLogin\Event\Login\ModifyLoginFormViewEvent` |
+|:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs']` | :php:`\TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent` |
 +-----------------------------------------------------------------------------------+----------------------------------------------------------------------+
 
 .. index:: Frontend, FullyScanned, ext:felogin
