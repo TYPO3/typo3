@@ -697,7 +697,8 @@ class PageRepository implements LoggerAwareInterface
      * rootline these must be handled externally to this function.
      *
      * @param int|int[] $pageId The page id (or array of page ids) for which to fetch subpages (PID)
-     * @param string $fields List of fields to select. Default is "*" = all
+     * @param string $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
+     *                       contains the `uid` field. It's mandatory for further processing of the result row.
      * @param string $sortField The field to sort by. Default is "sorting
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%some text%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
@@ -717,7 +718,8 @@ class PageRepository implements LoggerAwareInterface
      * the _MP_PARAM field is set to the correct MPvar.
      *
      * @param int[] $pageIds Array of page ids to fetch
-     * @param string $fields List of fields to select. Default is "*" = all
+     * @param string $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
+     *                       contains the `uid` field. It's mandatory for further processing of the result row.
      * @param string $sortField The field to sort by. Default is "sorting"
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%some text%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
@@ -753,7 +755,8 @@ class PageRepository implements LoggerAwareInterface
      * CAUTION: In case of an overlaid mount point, it is the original UID.
      *
      * @param int[] $pageIds PIDs or UIDs to load records for
-     * @param string $fields fields to select
+     * @param string $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
+     *                       contains the `uid` field. It's mandatory for further processing of the result row.
      * @param string $sortField the field to sort by
      * @param string $additionalWhereClause optional additional WHERE clause
      * @param bool $checkShortcuts whether to check if shortcuts exist
@@ -1245,7 +1248,8 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table The table name to search
      * @param int $uid The uid to look up in $table
-     * @param string $fields The fields to select, default is "*
+     * @param string $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
+     *                       contains the `uid` field. It's mandatory for further processing of the result row.
      * @return mixed Returns array (the record) if found, otherwise blank/0 (zero)
      * @see getPage_noCheck()
      */
@@ -1686,7 +1690,8 @@ class PageRepository implements LoggerAwareInterface
      * @param int $workspace Workspace ID
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find workspace version.
-     * @param string $fields Field list to select
+     * @param string $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
+     *                       contains the `uid` field. It's mandatory for further processing of the result row.
      * @param bool $bypassEnableFieldsCheck If TRUE, enablefields are not checked for.
      * @return mixed If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
      * @see BackendUtility::getWorkspaceVersionOfRecord()
