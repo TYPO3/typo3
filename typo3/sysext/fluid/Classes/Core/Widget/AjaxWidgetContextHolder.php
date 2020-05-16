@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -42,10 +44,16 @@ class AjaxWidgetContextHolder implements SingletonInterface
     protected $widgetContextsStorageKey = 'TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder_widgetContexts';
 
     /**
+     * @var HashService
+     */
+    protected $hashService;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->hashService = GeneralUtility::makeInstance(HashService::class);
         $this->loadWidgetContexts();
     }
 
@@ -55,13 +63,9 @@ class AjaxWidgetContextHolder implements SingletonInterface
     protected function loadWidgetContexts()
     {
         if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            $this->widgetContexts = $this->buildWidgetContextsFromArray(
-                json_decode($GLOBALS['TSFE']->fe_user->getKey('ses', $this->widgetContextsStorageKey ?? null), true) ?? []
-            );
+            $this->widgetContexts = $this->unserializeWithHmac($GLOBALS['TSFE']->fe_user->getKey('ses', $this->widgetContextsStorageKey));
         } else {
-            $this->widgetContexts = $this->buildWidgetContextsFromArray(
-                json_decode($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey] ?? '', true) ?? []
-            );
+            $this->widgetContexts = isset($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]) ? $this->unserializeWithHmac($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]) : [];
             $GLOBALS['BE_USER']->writeUC();
         }
     }
@@ -100,27 +104,33 @@ class AjaxWidgetContextHolder implements SingletonInterface
     protected function storeWidgetContexts()
     {
         if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            $GLOBALS['TSFE']->fe_user->setKey('ses', $this->widgetContextsStorageKey, json_encode($this->widgetContexts));
+            $GLOBALS['TSFE']->fe_user->setKey('ses', $this->widgetContextsStorageKey, $this->serializeWithHmac($this->widgetContexts));
             $GLOBALS['TSFE']->fe_user->storeSessionData();
         } else {
-            $GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey] = json_encode($this->widgetContexts);
+            $GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey] = $this->serializeWithHmac($this->widgetContexts);
             $GLOBALS['BE_USER']->writeUC();
         }
     }
 
-    /**
-     * Builds WidgetContext instances from JSON representation,
-     * this is basically required for AJAX widgets only.
-     *
-     * @param array $data
-     * @return WidgetContext[]
-     */
-    protected function buildWidgetContextsFromArray(array $data): array
+    protected function serializeWithHmac(array $widgetContexts): string
     {
-        $widgetContexts = [];
-        foreach ($data as $widgetId => $widgetContextData) {
-            $widgetContexts[$widgetId] = WidgetContext::fromArray($widgetContextData);
+        $data = serialize($widgetContexts);
+        return $this->hashService->appendHmac($data);
+    }
+
+    protected function unserializeWithHmac(?string $data): array
+    {
+        if ($data === null || $data === '') {
+            return [];
         }
-        return $widgetContexts;
+        try {
+            $data = $this->hashService->validateAndStripHmac($data);
+            // widget contexts literally can contain everything, that why using
+            // HMAC-signed `unserialize()` is the only option here unless Extbase
+            // structures have been refactored further
+            $widgetContexts = unserialize($data);
+        } finally {
+            return is_array($widgetContexts ?? null) ? $widgetContexts : [];
+        }
     }
 }
