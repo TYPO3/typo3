@@ -60,7 +60,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $this->widgetRequestBuilder = $this->getAccessibleMock(WidgetRequestBuilder::class, ['setArgumentsFromRawRequestData']);
         $this->mockWidgetRequest = $this->createMock(WidgetRequest::class);
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects(self::once())->method('get')->with(WidgetRequest::class)->willReturn($this->mockWidgetRequest);
+        $this->mockObjectManager->expects(self::any())->method('get')->with(WidgetRequest::class)->willReturn($this->mockWidgetRequest);
         $this->widgetRequestBuilder->_set('objectManager', $this->mockObjectManager);
         $this->mockWidgetContext = $this->createMock(WidgetContext::class);
         $this->mockAjaxWidgetContextHolder = $this->createMock(AjaxWidgetContextHolder::class);

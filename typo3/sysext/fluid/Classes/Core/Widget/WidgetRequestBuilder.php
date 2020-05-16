@@ -51,19 +51,7 @@ class WidgetRequestBuilder extends RequestBuilder
             $baseUri .= TYPO3_mainDir;
         }
 
-        $request = $this->objectManager->get(WidgetRequest::class);
-        $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $request->setBaseUri($baseUri);
-        $request->setMethod($_SERVER['REQUEST_METHOD'] ?? null);
-        if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
-            $request->setArguments(GeneralUtility::_POST());
-        } else {
-            $request->setArguments(GeneralUtility::_GET());
-        }
         $rawGetArguments = GeneralUtility::_GET();
-        if (isset($rawGetArguments['action'])) {
-            $request->setControllerActionName($rawGetArguments['action']);
-        }
         if (!isset($rawGetArguments['fluid-widget-id'])) {
             // Low level test, WidgetRequestHandler returns false in canHandleRequest () if this is not set
             throw new \InvalidArgumentException(
@@ -72,6 +60,19 @@ class WidgetRequestBuilder extends RequestBuilder
             );
         }
         $widgetContext = $this->ajaxWidgetContextHolder->get($rawGetArguments['fluid-widget-id']);
+
+        $request = $this->objectManager->get(WidgetRequest::class, $widgetContext->getControllerObjectName());
+        $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        $request->setBaseUri($baseUri);
+        $request->setMethod($_SERVER['REQUEST_METHOD'] ?? null);
+        if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
+            $request->setArguments(GeneralUtility::_POST());
+        } else {
+            $request->setArguments(GeneralUtility::_GET());
+        }
+        if (isset($rawGetArguments['action'])) {
+            $request->setControllerActionName($rawGetArguments['action']);
+        }
         $request->setWidgetContext($widgetContext);
         return $request;
     }
