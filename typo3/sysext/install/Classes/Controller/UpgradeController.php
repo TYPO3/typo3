@@ -1067,15 +1067,28 @@ class UpgradeController extends AbstractController
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
-        $this->upgradeWizardsService->addMissingTablesAndFields();
+        $errors = $this->upgradeWizardsService->addMissingTablesAndFields();
         $this->lateBootService->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
-        $messages->enqueue(new FlashMessage(
-            '',
-            'Added missing database fields and tables'
-        ));
+        // Discard empty values which indicate success
+        $errors = array_filter($errors);
+        $success = count($errors) === 0;
+        if ($success) {
+            $messages->enqueue(new FlashMessage(
+                '',
+                'Added missing database fields and tables'
+            ));
+        } else {
+            foreach ($errors as $query => $error) {
+                $messages->enqueue(new FlashMessage(
+                    'Error: ' . $error,
+                    'Failed to execute: ' . $query,
+                    FlashMessage::ERROR
+                ));
+            }
+        }
         return new JsonResponse([
-            'success' => true,
+            'success' => $success,
             'status' => $messages,
         ]);
     }
