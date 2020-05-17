@@ -124,7 +124,8 @@ class ContentFetcher
 
         $knownColumnPositionNumbers = $this->context->getBackendLayout()->getColumnPositionNumbers();
         $rememberer = GeneralUtility::makeInstance(RecordRememberer::class);
-        foreach ($this->getContentRecordsPerColumn(null, 0) as $contentRecordsInColumn) {
+        $languageId = $this->context->getDrawingConfiguration()->getSelectedLanguageId();
+        foreach ($this->getContentRecordsPerColumn(null, $languageId) as $contentRecordsInColumn) {
             foreach ($contentRecordsInColumn as $contentRecord) {
                 $used = $rememberer->isRemembered((int)$contentRecord['uid']);
                 // A hook mentioned that this record is used somewhere, so this is in fact "rendered" already
