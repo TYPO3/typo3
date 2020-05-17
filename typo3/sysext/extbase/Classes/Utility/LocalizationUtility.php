@@ -196,7 +196,9 @@ class LocalizationUtility
             $siteLanguage = self::getCurrentSiteLanguage();
 
             // Get values from site language
-            $languageKeys['languageKey'] = $siteLanguage->getTypo3Language();
+            if ($siteLanguage !== null) {
+                $languageKeys['languageKey'] = $siteLanguage->getTypo3Language();
+            }
 
             $locales = GeneralUtility::makeInstance(Locales::class);
             if (in_array($languageKeys['languageKey'], $locales->getLocales())) {
