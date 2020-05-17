@@ -235,18 +235,31 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
+          if (Array.isArray(data.status) && data.status.length > 0) {
+            data.status.forEach((element: any): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
+              $outputContainer.append(message);
+            });
+          }
           if (data.success === true) {
-            if (Array.isArray(data.status) && data.status.length > 0) {
-              data.status.forEach((element: any): void => {
-                const message = InfoBox.render(element.severity, element.title, element.message);
-                $outputContainer.append(message);
-              });
-              this.wizardsList();
-            }
-          } else {
+            this.wizardsList();
+          } else if (!Array.isArray(data.status) || data.status.length === 0) {
             const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            UpgradeWizards.removeLoadingMessage($outputContainer);
             $outputContainer.append(message);
+          } else {
+            const $toolbar = $('<div class="btn-toolbar mt-3 mb-4"></div>');
+            const $retryButton = $('<button class="btn btn-default">Retry database migration</button>');
+            const $proceedButton = $('<button class="btn btn-danger">Proceed despite of errors</button>');
+            $retryButton.click((): void => {
+              this.blockingUpgradesDatabaseAddsExecute();
+            });
+            $proceedButton.click((): void => {
+              $toolbar.remove();
+              this.wizardsList();
+            });
+            $toolbar.append($retryButton);
+            $toolbar.append($proceedButton);
+            $outputContainer.append($toolbar);
           }
         },
         (error: AjaxResponse): void => {
