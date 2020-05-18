@@ -1704,7 +1704,7 @@ class PageRepository implements LoggerAwareInterface
         $userAspect = $this->context->getAspect('frontend.user');
         $memberGroups = $userAspect->getGroupIds();
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_groupAccessWhere_' . str_replace('.', '_', $field) . '_' . $table . '_' . implode('_', $memberGroups);
+        $cacheIdentifier = 'PageRepository_groupAccessWhere_' . md5($field . '_' . $table . '_' . implode('_', $memberGroups));
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             return $cacheEntry;
