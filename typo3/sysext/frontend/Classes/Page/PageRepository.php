@@ -264,6 +264,7 @@ class PageRepository implements LoggerAwareInterface
                     $expressionBuilder->lt('pages.doktype', 200)
                 );
             }
+            $cache->set($cacheIdentifier, $this->where_hid_del);
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] ?? false)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] as $classRef) {
