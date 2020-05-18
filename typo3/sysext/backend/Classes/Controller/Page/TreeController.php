@@ -337,6 +337,8 @@ class TreeController
      * Converts nested tree structure produced by PageTreeRepository to a flat, one level array
      * and also adds visual representation information to the data.
      *
+     * The result is intended to be used as JSON result - dumping data directly to HTML might lead to XSS!
+     *
      * @param array $page
      * @param int $entryPoint
      * @param int $depth
@@ -401,7 +403,8 @@ class TreeController
             // identifier is not only used for pages, therefore it's a string
             'identifier' => (string)$pageId,
             'depth' => $depth,
-            'tip' => htmlspecialchars($tooltip),
+            // fine in JSON - if used in HTML directly, e.g. quotes can be used for XSS
+            'tip' => strip_tags(htmlspecialchars_decode($tooltip)),
             'icon' => $icon->getIdentifier(),
             'name' => $visibleText,
             'type' => (int)($page['doktype'] ?? 0),
