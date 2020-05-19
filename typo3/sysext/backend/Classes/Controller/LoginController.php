@@ -349,7 +349,7 @@ class LoginController implements LoggerAwareInterface
         $this->provideCustomLoginStyling();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
         $this->view->assign('referrerCheckEnabled', $this->features->isFeatureEnabled('security.backend.enforceReferrer'));
-        $this->view->assign('loginUrl', (string)$this->uriBuilder->buildUriFromRoute('login'));
+        $this->view->assign('loginUrl', (string)$request->getUri());
         $this->view->assign('loginProviderIdentifier', $this->loginProviderIdentifier);
     }
 
