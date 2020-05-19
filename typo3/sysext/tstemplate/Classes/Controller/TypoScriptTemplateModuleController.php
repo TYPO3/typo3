@@ -257,9 +257,9 @@ class TypoScriptTemplateModuleController
     {
         // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->CMD = GeneralUtility::_GP('CMD');
+        $this->id = (int)GeneralUtility::_GP('id');
         $this->menuConfig();
         $this->handleExternalFunctionValue();
-        $this->id = (int)GeneralUtility::_GP('id');
         // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
         $this->sObj = GeneralUtility::_GP('sObj');
         // @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0.
