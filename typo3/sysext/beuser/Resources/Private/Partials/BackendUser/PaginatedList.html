@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        <f:for each="{paginatedBackendUsers}" as="backendUser">
+        <f:for each="{paginator.paginatedItems}" as="backendUser">
             <f:render partial="BackendUser/IndexListRow" section="list_row" arguments="{demand: demand, backendUser: backendUser, onlineBackendUsers: onlineBackendUsers, dateFormat: dateFormat, timeFormat: timeFormat, compareUserUidList: compareUserUidList, currentUserUid: currentUserUid}" />
         </f:for>
         <f:comment>
@@ -19,9 +19,11 @@
         <tfoot>
         <tr>
             <td colspan="5">
-                <f:count subject="{backendUsers}" /> <f:translate key="users" />
+                {totalAmountOfBackendUsers} <f:translate key="users" />
             </td>
         </tr>
         </tfoot>
     </table>
 </div>
+
+<f:render partial="SimplePagination" arguments="{paginator:paginator, pagination:pagination}" />

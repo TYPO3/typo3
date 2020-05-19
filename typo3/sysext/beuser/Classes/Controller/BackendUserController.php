@@ -28,6 +28,7 @@ use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -132,8 +134,9 @@ class BackendUserController extends ActionController
      * - Switch session to different user
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
+     * @param int $currentPage
      */
-    public function indexAction(Demand $demand = null)
+    public function indexAction(Demand $demand = null, int $currentPage = 1)
     {
         if ($demand === null) {
             $demand = $this->moduleData->getDemand();
@@ -147,10 +150,16 @@ class BackendUserController extends ActionController
         }
         $compareUserList = $this->moduleData->getCompareUserList();
 
+        $backendUsers = $this->backendUserRepository->findDemanded($demand);
+        $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
+        $pagination = new SimplePagination($paginator);
+
         $this->view->assignMultiple([
             'onlineBackendUsers' => $this->getOnlineBackendUsers(),
             'demand' => $demand,
-            'backendUsers' => $this->backendUserRepository->findDemanded($demand),
+            'paginator' => $paginator,
+            'pagination' => $pagination,
+            'totalAmountOfBackendUsers' => $backendUsers->count(),
             'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
             'compareUserUidList' => array_combine($compareUserList, $compareUserList),
             'currentUserUid' => $this->getBackendUserAuthentication()->user['uid'],

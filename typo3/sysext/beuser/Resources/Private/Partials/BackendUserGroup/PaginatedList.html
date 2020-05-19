@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        <f:for each="{paginatedBackendUserGroups}" as="backendUserGroup">
+        <f:for each="{paginator.paginatedItems}" as="backendUserGroup">
             <f:render partial="BackendUserGroup/IndexListRow" section="list_row" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, currentUserUid: currentUserUid, compareGroupUidList: compareGroupUidList,}" />
         </f:for>
         <f:comment>
@@ -17,9 +17,11 @@
         </f:comment>
         <tr>
             <td colspan="4">
-                <f:count subject="{backendUserGroups}" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups" />s
+                {totalAmountOfBackendUserGroups} <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups" />
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<f:render partial="SimplePagination" arguments="{paginator:paginator, pagination:pagination}" />

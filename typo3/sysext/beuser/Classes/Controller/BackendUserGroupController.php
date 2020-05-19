@@ -18,7 +18,9 @@ namespace TYPO3\CMS\Beuser\Controller;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 
 /**
  * Backend module user group administration controller
@@ -52,14 +54,20 @@ class BackendUserGroupController extends ActionController
 
     /**
      * Displays all BackendUserGroups
+     * @param int $currentPage
      */
-    public function indexAction(): void
+    public function indexAction(int $currentPage = 1): void
     {
+        $backendUsers = $this->backendUserGroupRepository->findAll();
+        $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
+        $pagination = new SimplePagination($paginator);
         $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
         $this->view->assignMultiple(
             [
                 'shortcutLabel' => 'backendUserGroupsMenu',
-                'backendUserGroups' => $this->backendUserGroupRepository->findAll(),
+                'paginator' => $paginator,
+                'pagination' => $pagination,
+                'totalAmountOfBackendUserGroups' => $backendUsers->count(),
                 'compareGroupUidList' => array_map(static function ($value) { // uid as key and force value to 1
                     return 1;
                 }, array_flip($compareGroupUidList)),
