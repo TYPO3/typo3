@@ -1967,8 +1967,13 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     {
         $uploadFolder = $this->getTSConfig()['options.']['defaultUploadFolder'] ?? '';
         if ($uploadFolder) {
-            $uploadFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($uploadFolder);
-        } else {
+            try {
+                $uploadFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($uploadFolder);
+            } catch (Exception\FolderDoesNotExistException $e) {
+                $uploadFolder = null;
+            }
+        }
+        if (empty($uploadFolder)) {
             foreach ($this->getFileStorages() as $storage) {
                 if ($storage->isDefault() && $storage->isWritable()) {
                     try {

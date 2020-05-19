@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -104,5 +106,26 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertNotContains('5', $result, 'Not existing page is not filtered out');
         self::assertContains('40', $result, 'Accessible db mount page, child of a not accessible page is not shown');
         self::assertEquals(['1', '40'], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultUploadFolderFallsBackToDefaultStorage(): void
+    {
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $path = 'user_upload/some-folder-that-does-not-exist';
+        $fullPathToStorageBase = Environment::getPublicPath() . '/fileadmin/' . $path;
+        GeneralUtility::rmdir($fullPathToStorageBase);
+        // Skip access permissions, as this is not checked here
+        $this->subject->user['admin'] = 1;
+        $this->subject->user['TSconfig'] = 'options.defaultUploadFolder = 1:/' . $path;
+        $this->subject->fetchGroupData();
+        $folder = $this->subject->getDefaultUploadFolder();
+        self::assertEquals('/user_upload/', $folder->getIdentifier());
+        // Now create the folder and check again
+        GeneralUtility::mkdir_deep($fullPathToStorageBase);
+        $folder = $this->subject->getDefaultUploadFolder();
+        self::assertEquals('/' . $path . '/', $folder->getIdentifier());
     }
 }
