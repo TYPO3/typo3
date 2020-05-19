@@ -192,11 +192,11 @@ class TypoScriptTemplateModuleController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $changedMenuSettings = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
         $this->menuConfig($changedMenuSettings);
         // Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
         $this->extClassConf = $this->getExternalItemConfig('web_ts', 'function', $this->MOD_SETTINGS['function']);
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
         // Checking for first level external objects
