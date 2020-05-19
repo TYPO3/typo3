@@ -197,7 +197,7 @@ class RootlineUtility
     }
 
     /**
-     * Returns the actual rootline
+     * Returns the actual rootline without the tree root (uid=0), including the page with $this->pageUid
      *
      * @return array
      */
