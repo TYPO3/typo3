@@ -303,6 +303,9 @@ class SlugHelper
             $siteOfCurrentRecord = $siteFinder->getSiteByPageId($pageId);
         } catch (SiteNotFoundException $e) {
             // Not within a site, so nothing to do
+            // TODO: Rather than silently ignoring this misconfiguration,
+            // a warning should be thrown here, or maybe even let the
+            // exception bubble up and catch it in places that uses this API
             return true;
         }
         foreach ($records as $record) {
