@@ -58,7 +58,7 @@ class GetExtensionsCest
     public function checkPageBrowserDisplaysTwoRecords(BackendTester $I)
     {
         $I->seeElement('.pagination-wrap');
-        $I->see('Records 1 - 2');
+        $I->see('Extensions 1 - 2');
     }
 
     /**

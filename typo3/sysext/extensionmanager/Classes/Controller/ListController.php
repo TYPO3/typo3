@@ -25,9 +25,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -201,20 +204,31 @@ class ListController extends AbstractModuleController
      * Either all extensions or depending on a search param
      *
      * @param string $search
+     * @param int $currentPage
      */
-    public function terAction($search = '')
+    public function terAction($search = '', int $currentPage = 1)
     {
         $this->addComposerModeNotification();
         $search = trim($search);
         if (!empty($search)) {
             $extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
+            $paginator = new ArrayPaginator($extensions, $currentPage);
+            $tableId = 'terSearchTable';
         } else {
             $extensions = $this->extensionRepository->findAll();
+            $paginator = new QueryResultPaginator($extensions, $currentPage);
+            $tableId = 'terTable';
         }
+        $pagination = new SimplePagination($paginator);
         $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($this->listUtility->getAvailableExtensions());
         $this->view->assign('extensions', $extensions)
+                ->assign('paginator', $paginator)
+                ->assign('pagination', $pagination)
                 ->assign('search', $search)
-                ->assign('availableAndInstalled', $availableAndInstalledExtensions);
+                ->assign('availableAndInstalled', $availableAndInstalledExtensions)
+                ->assign('actionName', 'ter')
+                ->assign('tableId', $tableId)
+        ;
     }
 
     /**

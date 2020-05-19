@@ -536,6 +536,27 @@
 			<trans-unit id="config.offlineMode" resname="config.offlineMode">
 				<source>Disable TER connection and hide menu items</source>
 			</trans-unit>
+			<trans-unit id="pagination.previous" resname="pagination.previous">
+				<source>previous</source>
+			</trans-unit>
+			<trans-unit id="pagination.next" resname="pagination.next">
+				<source>next</source>
+			</trans-unit>
+			<trans-unit id="pagination.first" resname="pagination.first">
+				<source>first</source>
+			</trans-unit>
+			<trans-unit id="pagination.last" resname="pagination.last">
+				<source>last</source>
+			</trans-unit>
+			<trans-unit id="pagination.records" resname="pagination.records">
+				<source>Extensions</source>
+			</trans-unit>
+			<trans-unit id="pagination.page" resname="pagination.page">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="pagination.refresh" resname="pagination.refresh">
+				<source>Refresh</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
