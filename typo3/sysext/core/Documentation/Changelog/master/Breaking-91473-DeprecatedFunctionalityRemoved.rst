@@ -24,6 +24,8 @@ The following PHP classes that have been previously deprecated for v10 have been
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Widget\AutocompleteViewHelper`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController`
 
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 
@@ -136,6 +138,7 @@ The following ViewHelpers have changed:
 - :html:`<f:uri.typolink>` ViewHelper argument "useCacheHash" is dropped
 - :html:`<f:widget.link>` ViewHelper argument "useCacheHash" is dropped
 - :html:`<f:widget.uri>` ViewHelper argument "useCacheHash" is dropped
+- :html:`<f:widget.autocomplete>` ViewHelper is removed
 
 The following scheduler tasks have been removed:
 
