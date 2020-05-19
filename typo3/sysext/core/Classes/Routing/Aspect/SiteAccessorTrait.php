@@ -94,7 +94,11 @@ trait SiteAccessorTrait
             $expectedSite = $this->getSiteMatcher()->matchByPageId($pageId);
             return $expectedSite->getRootPageId() === $this->site->getRootPageId();
         } catch (SiteNotFoundException $exception) {
-            return false;
+            // Same as in \TYPO3\CMS\Core\DataHandling\SlugHelper::isUniqueInSite
+            // where it is assumed that a record, that is not in site context,
+            // but still configured uniqueInSite is unique. We therefore must assume
+            // the resolved record to be rightfully part of the current site.
+            return true;
         }
     }
 

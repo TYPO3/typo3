@@ -303,6 +303,10 @@ class SlugHelper
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
         $siteMatcher->refresh();
         $siteOfCurrentRecord = $siteMatcher->matchByPageId($pageId);
+        // TODO: Rather than silently ignoring this misconfiguration
+        // (when getting a PseudoSite or NullSite), a warning should
+        // be thrown here, or maybe even let the exception bubble up
+        // and catch it in places that uses this API
         foreach ($records as $record) {
             try {
                 $recordState = RecordStateFactory::forName($this->tableName)->fromArray($record);
