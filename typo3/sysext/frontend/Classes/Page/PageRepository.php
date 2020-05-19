@@ -231,6 +231,8 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function init($show_hidden)
     {
+        $this->where_groupAccess = '';
+
         $cache = $this->getRuntimeCache();
         $cacheIdentifier = 'PageRepository_hidDelWhere' . ($show_hidden ? 'ShowHidden' : '') . '_' . (int)$this->versioningWorkspaceId;
         $cacheEntry = $cache->get($cacheIdentifier);
