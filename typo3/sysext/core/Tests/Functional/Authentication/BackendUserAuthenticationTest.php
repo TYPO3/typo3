@@ -71,4 +71,18 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $result = $this->subject->isInWebMount(2);
         $this->assertNotNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function returnWebmountsFilterOutInaccessiblePages(): void
+    {
+        $result = $this->subject->returnWebmounts();
+
+        self::assertNotContains('3', $result, 'Deleted page is not filtered out');
+        self::assertNotContains('4', $result, 'Page user has no permission to read is not filtered out');
+        self::assertNotContains('5', $result, 'Not existing page is not filtered out');
+        self::assertContains('40', $result, 'Accessible db mount page, child of a not accessible page is not shown');
+        self::assertEquals(['1', '40'], $result);
+    }
 }
