@@ -1139,7 +1139,7 @@ class FrontendLoginController extends AbstractPlugin
         }
         $parsedReplyTo = MailUtility::parseAddresses($replyTo);
         if (!empty($parsedReplyTo)) {
-            $mail->replyTo($parsedReplyTo);
+            $mail->replyTo(...$parsedReplyTo);
         }
         // First line is subject
         $messageParts = explode(LF, trim($message), 2);
