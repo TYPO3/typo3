@@ -47,6 +47,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
 
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
+        /** @var \TYPO3\CMS\Adminpanel\Service\EventDispatcher $eventDispatcher */
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $cloner = new VarCloner();
         $cloner->setMinDepth(2);

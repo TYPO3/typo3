@@ -54,7 +54,7 @@ class InMemoryLogWriter extends AbstractWriter
         }
 
         // Guard: Memory Usage
-        if (!self::$memoryLock && MemoryUtility::isMemoryConsumptionTooHigh()) {
+        if (MemoryUtility::isMemoryConsumptionTooHigh()) {
             $this->lockWriter();
             return $this;
         }

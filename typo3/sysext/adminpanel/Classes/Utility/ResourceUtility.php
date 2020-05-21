@@ -28,7 +28,7 @@ class ResourceUtility
      * Get additional resources (css, js) from modules and merge it to
      * one array - returns an array of full html tags
      *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface[] $modules
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
      * @return array
      */
     public static function getAdditionalResourcesForModules(array $modules): array

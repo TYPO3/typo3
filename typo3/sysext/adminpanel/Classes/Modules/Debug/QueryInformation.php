@@ -98,7 +98,12 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
     {
         $groupedQueries = [];
         foreach ($queries as $query) {
-            $identifier = sha1($query['sql']) . sha1(json_encode($query['backtrace']));
+            $backtraceString = json_encode($query['backtrace']);
+            if ($backtraceString === false) {
+                // skip entry if it can't be encoded
+                continue;
+            }
+            $identifier = sha1($query['sql']) . sha1($backtraceString);
             if (is_array($query['params'])) {
                 foreach ($query['params'] as $k => $param) {
                     if (is_array($param)) {
@@ -123,7 +128,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         }
         uasort(
             $groupedQueries,
-            function ($a, $b) {
+            static function ($a, $b) {
                 return $b['time'] <=> $a['time'];
             }
         );

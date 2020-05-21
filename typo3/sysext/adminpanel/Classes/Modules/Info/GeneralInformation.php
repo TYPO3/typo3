@@ -131,7 +131,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         $count = 0;
         $totalImageSize = 0;
         foreach (GeneralUtility::makeInstance(AssetCollector::class)->getMedia() as $file => $information) {
-            $fileSize = @filesize($file);
+            $fileSize = (int)@filesize($file);
             $imagesOnPage['files'][] = [
                 'name' => $file,
                 'size' => $fileSize,
