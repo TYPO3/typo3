@@ -520,6 +520,7 @@ abstract class AbstractItemProvider
         }
 
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         while ($foreignRow = $queryResult->fetch()) {
             BackendUtility::workspaceOL($foreignTable, $foreignRow);
@@ -546,7 +547,6 @@ abstract class AbstractItemProvider
                     }
                 } else {
                     // Else, determine icon based on record type, or a generic fallback
-                    $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
                 }
                 // Add the item
