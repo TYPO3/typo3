@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
+use TYPO3\CMS\Install\Database\PermissionsCheck;
 
 /**
  * @internal
@@ -78,6 +79,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\LanguagePackCommand::class => [ static::class, 'getLanguagePackCommand' ],
             Command\UpgradeWizardRunCommand::class => [ static::class, 'getUpgradeWizardRunCommand' ],
             Command\UpgradeWizardListCommand::class => [ static::class, 'getUpgradeWizardListCommand' ],
+            Database\PermissionsCheck::class => [ static::class, 'getPermissionsCheck' ],
         ];
     }
 
@@ -214,7 +216,8 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class),
             $container->get(SiteConfiguration::class),
             $container->get(Registry::class),
-            $container->get(FailsafePackageManager::class)
+            $container->get(FailsafePackageManager::class),
+            $container->get(PermissionsCheck::class)
         );
     }
 
@@ -282,6 +285,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\LateBootService::class),
             $container->get(Service\UpgradeWizardsService::class)
         );
+    }
+
+    public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
+    {
+        return new Database\PermissionsCheck();
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry

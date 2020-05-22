@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception\ConnectionException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -52,6 +53,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
+use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Exception;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\EnableFileService;
@@ -100,13 +102,19 @@ class InstallerController
      */
     private $packageManager;
 
+    /**
+     * @var PermissionsCheck
+     */
+    private $databasePermissionsCheck;
+
     public function __construct(
         LateBootService $lateBootService,
         SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
         ConfigurationManager $configurationManager,
         SiteConfiguration $siteConfiguration,
         Registry $registry,
-        FailsafePackageManager $packageManager
+        FailsafePackageManager $packageManager,
+        PermissionsCheck $databasePermissionsCheck
     ) {
         $this->lateBootService = $lateBootService;
         $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
@@ -114,6 +122,7 @@ class InstallerController
         $this->siteConfiguration = $siteConfiguration;
         $this->registry = $registry;
         $this->packageManager = $packageManager;
+        $this->databasePermissionsCheck = $databasePermissionsCheck;
     }
 
     /**
@@ -665,6 +674,22 @@ class InstallerController
             }
         }
 
+        // Check create and drop permissions
+        $statusMessages = [];
+        foreach ($this->checkRequiredDatabasePermissions() as $checkRequiredPermission) {
+            $statusMessages[] = new FlashMessage(
+                $checkRequiredPermission,
+                'Missing required permissions',
+                FlashMessage::ERROR
+            );
+        }
+        if ($statusMessages !== []) {
+            return new JsonResponse([
+                'success' => false,
+                'status' => $statusMessages,
+            ]);
+        }
+
         // if requirements are not fulfilled
         if ($success === false) {
             // remove the database again if we created it
@@ -696,6 +721,25 @@ class InstallerController
             'success' => $success,
             'status' => $messages,
         ]);
+    }
+
+    private function checkRequiredDatabasePermissions(): array
+    {
+        try {
+            return $this->databasePermissionsCheck
+                ->checkCreateAndDrop()
+                ->checkAlter()
+                ->checkIndex()
+                ->checkCreateTemporaryTable()
+                ->checkLockTable()
+                ->checkInsert()
+                ->checkSelect()
+                ->checkUpdate()
+                ->checkDelete()
+                ->getMessages();
+        } catch (\TYPO3\CMS\Install\Configuration\Exception $exception) {
+            return $this->databasePermissionsCheck->getMessages();
+        }
     }
 
     private function checkDatabaseRequirementsForDriver(string $databaseDriverName): FlashMessageQueue
@@ -1191,14 +1235,26 @@ For each website you need a TypoScript template on the main page of your website
             // portable way to switch databases on the same Doctrine connection.
             // Directly using the Doctrine DriverManager here to avoid messing with
             // the $GLOBALS database configuration array.
-            $connectionParams['dbname'] = $databaseName;
-            $connection = DriverManager::getConnection($connectionParams);
+            try {
+                $connectionParams['dbname'] = $databaseName;
+                $connection = DriverManager::getConnection($connectionParams);
 
-            $databases[] = [
-                'name' => $databaseName,
-                'tables' => count($connection->getSchemaManager()->listTableNames()),
-            ];
-            $connection->close();
+                $databases[] = [
+                    'name' => $databaseName,
+                    'tables' => count($connection->getSchemaManager()->listTableNames()),
+                    'readonly' => false
+                ];
+                $connection->close();
+            } catch (ConnectionException $exception) {
+                $databases[] = [
+                    'name' => $databaseName,
+                    'tables' => 0,
+                    'readonly' => true
+                ];
+                // we ignore a connection exception here.
+                // if this happens here, the show tables was successful
+                // but the connection failed because of missing permissions.
+            }
         }
 
         return $databases;
