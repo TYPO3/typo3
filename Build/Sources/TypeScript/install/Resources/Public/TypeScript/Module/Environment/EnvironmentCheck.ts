@@ -83,7 +83,7 @@ class EnvironmentCheck extends AbstractInteractableModule {
               $errorBadge.removeClass('label-error').addClass('label-warning').text(warningCount).show();
             }
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {

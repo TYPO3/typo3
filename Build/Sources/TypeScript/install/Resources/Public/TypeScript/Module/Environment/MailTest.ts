@@ -54,7 +54,7 @@ class MailTest extends AbstractInteractableModule {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -86,12 +86,12 @@ class MailTest extends AbstractInteractableModule {
             $outputContainer.html(aMessage);
           });
         } else {
-          Notification.error('Something went wrong');
+          Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
         }
       },
       (): void => {
         // 500 can happen here if the mail configuration is broken
-        Notification.error('Something went wrong');
+        Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
       },
     ).finally((): void => {
       this.setModalButtonsState(true);

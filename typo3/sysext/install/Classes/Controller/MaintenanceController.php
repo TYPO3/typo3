@@ -177,18 +177,23 @@ class MaintenanceController extends AbstractController
         $storageUid = $request->getParsedBody()['install']['storageUid'] ?? null;
         if ($storageUid === null) {
             $this->typo3tempFileService->clearAssetsFolder($folder);
-            $messageQueue->enqueue(new FlashMessage('Cleared files in "' . $folder . '" folder'));
+            $messageQueue->enqueue(new FlashMessage('The directory "' . $folder . '" has been cleared successfully', 'Directory cleared'));
         } else {
             $storageUid = (int)$storageUid;
+            // We have to get the stats before deleting files, otherwise we're not able to retrieve the amount of files anymore
+            $stats = $this->typo3tempFileService->getStatsFromStorageByUid($storageUid);
             $failedDeletions = $this->typo3tempFileService->clearProcessedFiles($storageUid);
             if ($failedDeletions) {
                 $messageQueue->enqueue(new FlashMessage(
                     'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/log/typo3_*.log)',
-                    '',
+                    'Failed to delete files',
                     FlashMessage::ERROR
                 ));
             } else {
-                $messageQueue->enqueue(new FlashMessage('Cleared processed files'));
+                $messageQueue->enqueue(new FlashMessage(
+                    sprintf('Removed %d files from directory "%s"', $stats['numberOfFiles'], $stats['directory']),
+                    'Deleted processed files'
+                ));
             }
         }
         return new JsonResponse([
@@ -207,14 +212,15 @@ class MaintenanceController extends AbstractController
         $messageQueue = new FlashMessageQueue('install');
         if (Environment::isComposerMode()) {
             $messageQueue->enqueue(new FlashMessage(
-                'Skipped generating additional class loading information in composer mode.',
-                '',
+                'Skipped generating additional class loading information in Composer mode.',
+                'Autoloader not dumped',
                 FlashMessage::NOTICE
             ));
         } else {
             ClassLoadingInformation::dumpClassLoadingInformation();
             $messageQueue->enqueue(new FlashMessage(
-                'Successfully dumped class loading information for extensions.'
+                'Successfully dumped class loading information for extensions.',
+                'Dumped autoloader'
             ));
         }
         return new JsonResponse([
@@ -420,7 +426,7 @@ class MaintenanceController extends AbstractController
         $selectedHashes = $request->getParsedBody()['install']['hashes'] ?? [];
         if (empty($selectedHashes)) {
             $messageQueue->enqueue(new FlashMessage(
-                '',
+                'Please select any change by activating their respective checkboxes.',
                 'No database changes selected',
                 FlashMessage::WARNING
             ));
@@ -493,7 +499,7 @@ class MaintenanceController extends AbstractController
         }
         (new ClearTableService())->clearSelectedTable($table);
         $messageQueue = (new FlashMessageQueue('install'))->enqueue(
-            new FlashMessage('Cleared table')
+            new FlashMessage('The table ' . $table . ' has been cleared.', 'Table cleared')
         );
         return new JsonResponse([
             'success' => true,
@@ -541,9 +547,9 @@ class MaintenanceController extends AbstractController
 
         $messages = new FlashMessageQueue('install');
 
-        if (strlen($username) < 1) {
+        if ($username === '') {
             $messages->enqueue(new FlashMessage(
-                'No valid username given.',
+                'No username given.',
                 'Administrator user not created',
                 FlashMessage::ERROR
             ));
@@ -607,8 +613,8 @@ class MaintenanceController extends AbstractController
                 }
 
                 $messages->enqueue(new FlashMessage(
-                    '',
-                    'Administrator created with username "' . $username . '".'
+                    'Administrator created',
+                    'An administrator with username "' . $username . '" has been created successfully.'
                 ));
             }
         }

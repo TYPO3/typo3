@@ -56,7 +56,7 @@ class ImageProcessing extends AbstractInteractableModule {
             Modal.setButtons(data.buttons);
             this.runTests();
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {

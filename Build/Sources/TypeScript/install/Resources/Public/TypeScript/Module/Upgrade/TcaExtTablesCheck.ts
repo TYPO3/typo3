@@ -71,7 +71,7 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
               modalContent.find(this.selectorOutputContainer).append(aMessage);
             }
           } else {
-            Notification.error('Something went wrong', 'Use "Check for broken extensions"');
+            Notification.error('Something went wrong', 'Please use the module "Check for broken extensions" to find a possible extension causing this issue.');
           }
         },
         (error: ResponseError): void => {

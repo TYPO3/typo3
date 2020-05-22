@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -57,7 +59,10 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781454);
-        $subject = new Typo3tempFileService();
+
+        $processedFileRepository = $this->prophesize(ProcessedFileRepository::class);
+        $storageRepository = $this->prophesize(StorageRepository::class);
+        $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
     }
 
@@ -71,7 +76,9 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
         file_put_contents($this->directoryPath . '/a/b/c.css', '/* test */');
         file_put_contents($this->directoryPath . '/a/b/d.css', '/* test */');
 
-        $subject = new Typo3tempFileService();
+        $processedFileRepository = $this->prophesize(ProcessedFileRepository::class);
+        $storageRepository = $this->prophesize(StorageRepository::class);
+        $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
 
         self::assertDirectoryNotExists($this->directoryPath . '/a');

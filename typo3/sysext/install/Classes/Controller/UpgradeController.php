@@ -1117,17 +1117,19 @@ class UpgradeController extends AbstractController
     {
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         $wizardToBeMarkedAsUndoneIdentifier = $request->getParsedBody()['install']['identifier'];
+        $wizardToBeMarkedAsUndone = $this->upgradeWizardsService->getWizardInformationByIdentifier($wizardToBeMarkedAsUndoneIdentifier);
         $result = $this->upgradeWizardsService->markWizardUndone($wizardToBeMarkedAsUndoneIdentifier);
         $this->lateBootService->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
         if ($result) {
             $messages->enqueue(new FlashMessage(
-                'Wizard has been marked undone'
+                'The wizard "' . $wizardToBeMarkedAsUndone['title'] . '" has been marked as undone.',
+                'Wizard marked as undone'
             ));
         } else {
             $messages->enqueue(new FlashMessage(
+                'The wizard "' . $wizardToBeMarkedAsUndone['title'] . '" has not been marked as undone.',
                 'Wizard has not been marked undone',
-                '',
                 FlashMessage::ERROR
             ));
         }

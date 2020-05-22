@@ -19,6 +19,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,6 +30,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Typo3tempFileService
 {
+    private $processedFileRepository;
+    private $storageRepository;
+
+    public function __construct(ProcessedFileRepository $processedFileRepository, StorageRepository $storageRepository)
+    {
+        $this->processedFileRepository = $processedFileRepository;
+        $this->storageRepository = $storageRepository;
+    }
+
     /**
      * Returns a list of directory names in typo3temp/assets and their number of files
      *
@@ -40,6 +50,12 @@ class Typo3tempFileService
             $this->statsFromTypo3temp(),
             $this->statsFromStorages()
         );
+    }
+
+    public function getStatsFromStorageByUid(int $storageUid): array
+    {
+        $storage = $this->storageRepository->findByUid($storageUid);
+        return $this->getStatsFromStorage($storage);
     }
 
     /**
@@ -84,22 +100,27 @@ class Typo3tempFileService
     protected function statsFromStorages(): array
     {
         $stats = [];
-        $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-        $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
+        $storages = $this->storageRepository->findAll();
         foreach ($storages as $storage) {
             if ($storage->isOnline()) {
-                $storageConfiguration = $storage->getConfiguration();
-                $storageBasePath = rtrim($storageConfiguration['basePath'], '/');
-                $processedPath = '/' . $storageBasePath . $storage->getProcessingFolder()->getIdentifier();
-                $numberOfFiles = $processedFileRepository->countByStorage($storage);
-                $stats[] = [
-                    'directory' => $processedPath,
-                    'numberOfFiles' => $numberOfFiles,
-                    'storageUid' => $storage->getUid()
-                ];
+                $stats[] = $this->getStatsFromStorage($storage);
             }
         }
         return $stats;
+    }
+
+    protected function getStatsFromStorage(ResourceStorage $storage): array
+    {
+        $storageConfiguration = $storage->getConfiguration();
+        $storageBasePath = rtrim($storageConfiguration['basePath'], '/');
+        $processedPath = '/' . $storageBasePath . $storage->getProcessingFolder()->getIdentifier();
+        $numberOfFiles = $this->processedFileRepository->countByStorage($storage);
+
+        return [
+            'directory' => $processedPath,
+            'numberOfFiles' => $numberOfFiles,
+            'storageUid' => $storage->getUid()
+        ];
     }
 
     /**

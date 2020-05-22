@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 
 /**
@@ -163,7 +165,10 @@ class ServiceProvider extends AbstractServiceProvider
     }
     public static function getTypo3tempFileService(ContainerInterface $container): Service\Typo3tempFileService
     {
-        return new Service\Typo3tempFileService();
+        return new Service\Typo3tempFileService(
+            $container->get(ProcessedFileRepository::class),
+            $container->get(StorageRepository::class)
+        );
     }
 
     public static function getUpgradeWizardsService(ContainerInterface $container): Service\UpgradeWizardsService

@@ -36,13 +36,16 @@ class DumpAutoload extends AbstractInlineModule {
               });
             }
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (): void => {
           // In case the dump action fails (typically 500 from server), do not kill the entire
           // install tool, instead show a notification that something went wrong.
-          Notification.error('Dumping autoload files went wrong on the server side. Check the system for broken extensions and try again');
+          Notification.error(
+            'Autoloader not dumped',
+            'Dumping autoload files failed for unknown reasons. Check the system for broken extensions and try again.'
+          );
         }
       )
       .finally((): void => {
