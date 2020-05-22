@@ -98,11 +98,6 @@ class LocalConfiguration extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true) {
-            if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
-                Notification.success(element.title, element.message);
-              });
-            }
             modalContent.html(data.html);
             Modal.setButtons(data.buttons);
           }
@@ -144,7 +139,7 @@ class LocalConfiguration extends AbstractInteractableModule {
           Notification.showMessage(element.title, element.message, element.severity);
         });
       } else {
-        Notification.error('Something went wrong');
+        Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
       }
     }, (error: ResponseError): void => {
       Router.handleAjaxError(error, modalContent);

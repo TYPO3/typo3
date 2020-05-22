@@ -216,7 +216,7 @@ class LocalConfigurationValueService
                 ));
             }
         }
-        if (!empty($messageQueue)) {
+        if ($messageQueue->count() > 0) {
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
         }
         return $messageQueue;

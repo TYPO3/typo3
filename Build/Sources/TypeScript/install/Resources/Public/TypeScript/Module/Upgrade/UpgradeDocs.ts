@@ -125,7 +125,7 @@ class UpgradeDocs extends AbstractInteractableModule {
               // Remove loading spinner form panel
               $panelGroup.find('.t3js-panel-loading').remove();
             } else {
-              Notification.error('Something went wrong');
+              Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
             }
           },
           (error: ResponseError): void => {

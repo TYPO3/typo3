@@ -92,7 +92,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
               this.unlockModal();
             });
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -179,7 +179,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
             this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
             this.getLoadedExtensionList();
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {

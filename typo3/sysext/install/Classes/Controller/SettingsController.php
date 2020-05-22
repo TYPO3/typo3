@@ -125,14 +125,14 @@ class SettingsController extends AbstractController
 
         if ($password !== $passwordCheck) {
             $messageQueue->enqueue(new FlashMessage(
-                'Install tool password not changed. Given passwords do not match.',
-                '',
+                'Given passwords do not match.',
+                'Install tool password not changed',
                 FlashMessage::ERROR
             ));
         } elseif (strlen($password) < 8) {
             $messageQueue->enqueue(new FlashMessage(
-                'Install tool password not changed. Given password must be at least eight characters long.',
-                '',
+                'Given password must be at least eight characters long.',
+                'Install tool password not changed',
                 FlashMessage::ERROR
             ));
         } else {
@@ -142,7 +142,10 @@ class SettingsController extends AbstractController
                 'BE/installToolPassword',
                 $hashInstance->getHashedPassword($password)
             );
-            $messageQueue->enqueue(new FlashMessage('Install tool password changed'));
+            $messageQueue->enqueue(new FlashMessage(
+                'The Install tool password has been changed successfully.',
+                'Install tool password changed'
+            ));
         }
         return new JsonResponse([
             'success' => true,
@@ -195,7 +198,6 @@ class SettingsController extends AbstractController
         }
         return new JsonResponse([
             'success' => true,
-            'status' => [],
             'users' => $users,
             'html' => $view->render(),
             'buttons' => [
@@ -251,14 +253,14 @@ class SettingsController extends AbstractController
         $messages = [];
         if (empty($validatedUserList)) {
             $messages[] = new FlashMessage(
-                '',
-                'Set system maintainer list to an empty array',
+                'The system has no maintainers enabled anymore. Please use the standalone Admin Tools from now on.',
+                'Cleared system maintainer list',
                 FlashMessage::INFO
             );
         } else {
             $messages[] = new FlashMessage(
-                implode(', ', $validatedUserList),
-                'New system maintainer uid list',
+                'New system maintainer uid list: ' . implode(', ', $validatedUserList),
+                'Updated system maintainers',
                 FlashMessage::INFO
             );
         }
@@ -317,10 +319,10 @@ class SettingsController extends AbstractController
         }
         $localConfigurationValueService = new LocalConfigurationValueService();
         $messageQueue = $localConfigurationValueService->updateLocalConfigurationValues($settings);
-        if (empty($messageQueue)) {
+        if ($messageQueue->count() === 0) {
             $messageQueue->enqueue(new FlashMessage(
-                '',
-                'No values changed',
+                'No configuration changes have been detected in the submitted form.',
+                'Configuration not updated',
                 FlashMessage::WARNING
             ));
         }
@@ -376,6 +378,9 @@ class SettingsController extends AbstractController
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
             $messageBody = [];
             foreach ($configurationValues as $configurationKey => $configurationValue) {
+                if (is_array($configurationValue)) {
+                    $configurationValue = json_encode($configurationValue);
+                }
                 $messageBody[] = '\'' . $configurationKey . '\' => \'' . $configurationValue . '\'';
             }
             $messages->enqueue(new FlashMessage(
@@ -445,8 +450,8 @@ class SettingsController extends AbstractController
         (new ExtensionConfiguration())->set($extensionKey, '', $nestedConfiguration);
         $messages = [
             new FlashMessage(
-                'Successfully saved configuration for extension "' . $extensionKey . '"',
-                '',
+                'Successfully saved configuration for extension "' . $extensionKey . '".',
+                'Configuration saved',
                 FlashMessage::OK
             )
         ];
@@ -512,10 +517,10 @@ class SettingsController extends AbstractController
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $enabledFeaturesFromPost = $request->getParsedBody()['install']['values'] ?? [];
-        $allFeatures = array_keys($GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? []);
+        $allFeatures = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? [];
         $configurationDescription = GeneralUtility::makeInstance(YamlFileLoader::class)
             ->load($configurationManager->getDefaultConfigurationDescriptionFileLocation());
-        foreach ($allFeatures as $featureName) {
+        foreach (array_keys($allFeatures) as $featureName) {
             // Only features that have a .yml description will be listed. There is currently no
             // way for extensions to extend this, so feature toggles of non-core extensions are
             // not considered.
@@ -527,10 +532,14 @@ class SettingsController extends AbstractController
                 }
             }
         }
+        $configurationManager->exportConfiguration();
+
+        $allFeaturesUpdated = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? [];
+        $changedFeatures = array_diff_assoc($allFeaturesUpdated, $allFeatures);
         $messages = [
             new FlashMessage(
-                'Successfully updated feature toggles',
-                '',
+                'Successfully updated the following feature toggles: ' . implode(', ', array_keys($changedFeatures)),
+                'Features updated',
                 FlashMessage::OK
             )
         ];

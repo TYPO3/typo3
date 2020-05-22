@@ -56,11 +56,6 @@ class SystemMaintainer extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true) {
-            if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
-                Notification.success(element.title, element.message);
-              });
-            }
             modalContent.html(data.html);
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.users)) {
@@ -119,7 +114,7 @@ class SystemMaintainer extends AbstractInteractableModule {
           });
         }
       } else {
-        Notification.error('Something went wrong');
+        Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
       }
     }, (error: ResponseError): void => {
       Router.handleAjaxError(error, modalContent);

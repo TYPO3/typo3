@@ -32,17 +32,20 @@ class ResetBackendUserUc extends AbstractInlineModule {
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
               data.status.forEach((element: any): void => {
-                Notification.success(element.message);
+                Notification.success(element.title, element.message);
               });
             }
           } else {
-            Notification.error('Something went wrong ...');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (): void => {
-          // In case the dump action fails (typically 500 from server), do not kill the entire
+          // In case the reset action fails (typically 500 from server), do not kill the entire
           // install tool, instead show a notification that something went wrong.
-          Notification.error('Dumping autoload files went wrong on the server side. Check the system for broken extensions and try again');
+          Notification.error(
+            'Reset preferences of all backend users failed',
+            'Resetting preferences of all backend users failed for an unknown reason. Please check your server\'s logs for further investigation.'
+          );
         }
       )
       .finally((): void => {

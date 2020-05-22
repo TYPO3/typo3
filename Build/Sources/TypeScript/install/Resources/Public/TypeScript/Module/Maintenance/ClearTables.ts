@@ -75,7 +75,7 @@ class ClearTables extends AbstractInteractableModule {
               });
             }
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -100,10 +100,10 @@ class ClearTables extends AbstractInteractableModule {
           const data = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: any): void => {
-              Notification.success(element.message);
+              Notification.success(element.title, element.message);
             });
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
           this.getStats();
         },

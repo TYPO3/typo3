@@ -43,7 +43,8 @@ class Cache extends AbstractInlineModule {
           // In case the clear cache action fails (typically 500 from server), do not kill the entire
           // install tool, instead show a notification that something went wrong.
           Notification.error(
-            'Clearing caches went wrong on the server side. Check the system for broken extensions or missing database tables and try again',
+            'Clearing caches failed',
+            'Clearing caches went wrong on the server side. Check the system for broken extensions or missing database tables and try again.',
           );
         },
       )

@@ -258,33 +258,44 @@ class UpgradeWizardsService
     public function getUpgradeWizardsList(): array
     {
         $wizards = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $class) {
+        foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']) as $identifier) {
             if ($this->isWizardDone($identifier)) {
                 continue;
             }
-            /** @var UpgradeWizardInterface $wizardInstance */
-            $wizardInstance = GeneralUtility::makeInstance($class);
-            $explanation = '';
 
-            // $explanation is changed by reference in Update objects!
-            $shouldRenderWizard = false;
-            if ($wizardInstance instanceof UpgradeWizardInterface) {
-                if ($wizardInstance instanceof ChattyInterface) {
-                    $wizardInstance->setOutput($this->output);
-                }
-                $shouldRenderWizard = $wizardInstance->updateNecessary();
-                $explanation = $wizardInstance->getDescription();
-            }
-
-            $wizards[] = [
-                'class' => $class,
-                'identifier' => $identifier,
-                'title' => $wizardInstance->getTitle(),
-                'shouldRenderWizard' => $shouldRenderWizard,
-                'explanation' => $explanation,
-            ];
+            $wizards[] = $this->getWizardInformationByIdentifier($identifier);
         }
         return $wizards;
+    }
+
+    public function getWizardInformationByIdentifier(string $identifier): array
+    {
+        if (class_exists($identifier)) {
+            $class = $identifier;
+        } else {
+            $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
+        }
+        /** @var UpgradeWizardInterface $wizardInstance */
+        $wizardInstance = GeneralUtility::makeInstance($class);
+        $explanation = '';
+
+        // $explanation is changed by reference in Update objects!
+        $shouldRenderWizard = false;
+        if ($wizardInstance instanceof UpgradeWizardInterface) {
+            if ($wizardInstance instanceof ChattyInterface) {
+                $wizardInstance->setOutput($this->output);
+            }
+            $shouldRenderWizard = $wizardInstance->updateNecessary();
+            $explanation = $wizardInstance->getDescription();
+        }
+
+        return [
+            'class' => $class,
+            'identifier' => $identifier,
+            'title' => $wizardInstance->getTitle(),
+            'shouldRenderWizard' => $shouldRenderWizard,
+            'explanation' => $explanation,
+        ];
     }
 
     /**

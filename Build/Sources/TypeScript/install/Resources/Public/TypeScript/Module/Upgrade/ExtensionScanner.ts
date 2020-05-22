@@ -93,7 +93,7 @@ class ExtensionScanner extends AbstractInteractableModule {
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
         } else {
-          Notification.error('Something went wrong');
+          Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
         }
       },
       (error: ResponseError): void => {
@@ -158,7 +158,7 @@ class ExtensionScanner extends AbstractInteractableModule {
 
     if (numberOfScannedExtensions === numberOfExtensions) {
       this.findInModal(this.selectorExtensionScanButton).removeClass('disabled').prop('disabled', false);
-      Notification.success('Scan finished', 'All extensions have been scanned');
+      Notification.success('Scan finished', 'All extensions have been scanned.');
 
       (new AjaxRequest(Router.getUrl())).post({
         install: {
@@ -218,7 +218,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         if (data.success === true && Array.isArray(data.files)) {
           const numberOfFiles = data.files.length;
           if (numberOfFiles <= 0) {
-            Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
+            Notification.warning('No files found', 'The extension ' + extension + ' contains no scannable files');
             return;
           }
 

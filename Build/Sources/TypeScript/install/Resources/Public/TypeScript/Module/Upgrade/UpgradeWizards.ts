@@ -110,7 +110,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             modalContent.empty().append(data.html);
             this.blockingUpgradesDatabaseCharsetTest();
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -210,7 +210,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               this.wizardsList();
             }
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -296,7 +296,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             modalContent.find(this.selectorOutputWizardsContainer).append(list);
             this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', false);
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -387,7 +387,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             modalContent.find(this.selectorOutputDoneContainer).empty();
             this.doneUpgrades();
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -439,7 +439,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
             }
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -468,12 +468,12 @@ class UpgradeWizards extends AbstractInteractableModule {
           modalContent.find(this.selectorOutputDoneContainer).empty();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: any): void => {
-              Notification.success(element.message);
+              Notification.success(element.title, element.message);
               this.doneUpgrades();
               this.blockingUpgradesDatabaseCharsetTest();
             });
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {

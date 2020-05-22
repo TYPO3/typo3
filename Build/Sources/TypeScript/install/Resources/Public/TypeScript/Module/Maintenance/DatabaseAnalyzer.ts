@@ -65,7 +65,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             Modal.setButtons(data.buttons);
             this.analyze();
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -143,7 +143,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
               outputContainer.append(InfoBox.render(Severity.ok, 'Database schema is up to date. Good job!', ''));
             }
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {
@@ -176,12 +176,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
-          if (data.success === true) {
-            if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
-                Notification.showMessage(element.title, element.message, element.severity);
-              });
-            }
+          if (Array.isArray(data.status)) {
+            data.status.forEach((element: any): void => {
+              Notification.showMessage(element.title, element.message, element.severity);
+            });
           }
           this.analyze();
         },

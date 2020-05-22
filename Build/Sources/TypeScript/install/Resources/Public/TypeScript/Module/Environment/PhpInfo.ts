@@ -37,7 +37,7 @@ class PhpInfo extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.empty().append(data.html);
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {

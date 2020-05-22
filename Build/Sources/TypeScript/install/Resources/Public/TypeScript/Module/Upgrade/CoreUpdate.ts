@@ -122,7 +122,7 @@ class CoreUpdate extends AbstractInteractableModule {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
           } else {
-            Notification.error('Something went wrong');
+            Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: ResponseError): void => {

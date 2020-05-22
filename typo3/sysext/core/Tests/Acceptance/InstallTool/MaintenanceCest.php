@@ -113,7 +113,8 @@ class MaintenanceCest extends AbstractCest
     {
         $I->click('Reset backend user preferences');
         $I->waitForElementVisible('.alert-success');
-        $I->see('Preferences of all backend users have been reset', '.alert-success h4');
+        $I->see('Reset preferences of all backend users', '.alert-success h4');
+        $I->see('Preferences of all backend users have been reset', '.alert-success p');
     }
 
     /**
