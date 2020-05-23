@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -1922,6 +1923,11 @@ class PageLayoutView implements LoggerAwareInterface
             'groupBy' => null,
             'orderBy' => null
         ];
+
+        $sortBy = (string)($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
+        foreach (QueryHelper::parseOrderBy($sortBy) as $orderBy) {
+            $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);
+        }
 
         // Build the query constraints
         $queryBuilder->andWhere(

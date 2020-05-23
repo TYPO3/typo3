@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -224,6 +225,12 @@ class ContentFetcher
             'groupBy' => null,
             'orderBy' => null
         ];
+
+        $sortBy = (string)($GLOBALS['TCA']['tt_content']['ctrl']['sortby'] ?: $GLOBALS['TCA']['tt_content']['ctrl']['default_sortby']);
+        foreach (QueryHelper::parseOrderBy($sortBy) as $orderBy) {
+            $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);
+        }
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageLayoutView::class]['modifyQuery'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (method_exists($hookObject, 'modifyQuery')) {
