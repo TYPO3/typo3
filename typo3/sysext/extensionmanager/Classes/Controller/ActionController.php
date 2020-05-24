@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
@@ -138,6 +139,13 @@ class ActionController extends AbstractController
     protected function removeExtensionAction($extension)
     {
         try {
+            if (Environment::isComposerMode()) {
+                throw new ExtensionManagerException(
+                    'The system is set to composer mode. You are not allowed to remove any extension.',
+                    1590314046
+                );
+            }
+
             $this->installUtility->removeExtension($extension);
             $this->addFlashMessage(
                 LocalizationUtility::translate(
