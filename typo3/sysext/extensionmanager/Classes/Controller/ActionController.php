@@ -128,6 +128,13 @@ class ActionController extends AbstractController
     protected function removeExtensionAction($extension)
     {
         try {
+            if (\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
+                throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+                    'The system is set to composer mode. You are not allowed to remove any extension.',
+                    1590314046
+                );
+            }
+
             $this->installUtility->removeExtension($extension);
             $this->addFlashMessage(
                 \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
