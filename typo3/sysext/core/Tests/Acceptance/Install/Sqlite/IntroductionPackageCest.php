@@ -30,6 +30,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
      * @param InstallTester $I
      * @param Scenario $scenario
      * @env sqlite
+     * @skip
      */
     public function installTypo3OnSqlite(InstallTester $I, Scenario $scenario)
     {

@@ -29,6 +29,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
     /**
      * @env mysql
      * @param InstallTester $I
+     * @skip
      */
     public function installTypo3OnMysql(InstallTester $I, Scenario $scenario)
     {

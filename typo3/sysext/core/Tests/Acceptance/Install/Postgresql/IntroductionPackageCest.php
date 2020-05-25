@@ -30,6 +30,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
      * @param InstallTester $I
      * @param Scenario $scenario
      * @env postgresql
+     * @skip
      */
     public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario)
     {
