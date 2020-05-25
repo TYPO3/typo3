@@ -33,8 +33,8 @@ import com.atlassian.bamboo.specs.util.BambooServer;
 @BambooSpec
 public class PreMergeSpec extends AbstractPreMergeSpec {
 
-    private static String planName = "Core master pre-merge";
-    private static String planKey = "GTC";
+    private static String planName = "Core 10.4 pre-merge";
+    private static String planKey = "GTC104";
 
     /**
      * Run main to publish plan on Bamboo
@@ -66,7 +66,7 @@ public class PreMergeSpec extends AbstractPreMergeSpec {
                 stageEarly,
                 stageMainStage
             )
-            .linkedRepositories("github TYPO3 TYPO3.CMS")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 10.4")
             .triggers(getGerritTrigger())
             .variables(
                 new Variable("changeUrl", ""),

@@ -33,8 +33,8 @@ import static core.AbstractCoreSpec.bambooServerName;
 @BambooSpec
 public class SecuritySpec extends AbstractPreMergeSpec {
 
-    private static String planName = "Core master security";
-    private static String planKey = "GTS";
+    private static String planName = "Core 10.4 security";
+    private static String planKey = "GTS104";
 
     /**
      * Run main to publish plan on Bamboo
@@ -68,7 +68,7 @@ public class SecuritySpec extends AbstractPreMergeSpec {
                 stageEarly,
                 stageMainStage
             )
-            .linkedRepositories("github TYPO3 TYPO3.CMS")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 10.4")
             .triggers(
                 getGerritTrigger())
             .variables(

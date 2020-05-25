@@ -37,8 +37,8 @@ import java.util.ArrayList;
 @BambooSpec
 public class NightlySpec extends AbstractCoreSpec {
 
-    private static String planName = "Core master nightly";
-    private static String planKey = "GTN";
+    private static String planName = "Core 10.4 nightly";
+    private static String planKey = "GTN104";
 
     private static int numberOfAcceptanceTestJobs = 8;
     private static int numberOfFunctionalMysqlJobs = 6;
@@ -91,10 +91,10 @@ public class NightlySpec extends AbstractCoreSpec {
         return new Plan(project(), planName, planKey).description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
             .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(stages.toArray(new Stage[0]))
-            .linkedRepositories("github TYPO3 TYPO3.CMS")
+            .linkedRepositories("github TYPO3 TYPO3.CMS 10.4")
             .triggers(new ScheduledTrigger().name("Scheduled")
                 .description("once a day")
-                .cronExpression("0 0 3 ? * *"))
+                .cronExpression("0 0 21 ? * *"))
             .variables(new Variable("changeUrl", ""), new Variable("patchset", ""))
             .planBranchManagement(new PlanBranchManagement().delete(new BranchCleanup())
                 .notificationForCommitters())
