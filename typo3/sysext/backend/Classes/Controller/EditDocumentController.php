@@ -1079,7 +1079,7 @@ class EditDocumentController
             $fullLinkParameters = HttpUtility::buildQueryString(array_merge($linkParameters, ['id' => $previewPageId]), '&');
             $cacheHashParameters = $cacheHashCalculator->getRelevantParameters($fullLinkParameters);
             $linkParameters['cHash'] = $cacheHashCalculator->calculateCacheHash($cacheHashParameters);
-        } else {
+        } elseif (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'])) {
             $linkParameters['no_cache'] = 1;
         }
 
