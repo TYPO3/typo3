@@ -19,7 +19,6 @@ return [
         ],
     ],
 
-
     'columns' => [
         'sys_language_uid' => [
             'exclude' => 1,
@@ -79,7 +78,6 @@ return [
             ],
         ],
 
-
         'fal_1' => [
             'label' => 'fal_1 selicon_field',
             'exclude' => 1,
@@ -92,16 +90,12 @@ return [
             ),
         ],
 
-
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'fal_1',
         ],
     ],
-
 
 ];

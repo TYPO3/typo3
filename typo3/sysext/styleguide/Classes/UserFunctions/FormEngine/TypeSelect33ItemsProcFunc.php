@@ -26,7 +26,7 @@ class TypeSelect33ItemsProcFunc
      */
     public function itemsProcFunc(&$params)
     {
-        $params['items'][] = array('item 1 from itemProcFunc()', 'val1');
-        $params['items'][] = array('item 2 from itemProcFunc()', 'val2');
+        $params['items'][] = ['item 1 from itemProcFunc()', 'val1'];
+        $params['items'][] = ['item 2 from itemProcFunc()', 'val2'];
     }
 }

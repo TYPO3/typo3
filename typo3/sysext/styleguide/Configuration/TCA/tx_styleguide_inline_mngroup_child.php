@@ -20,9 +20,7 @@ return [
         'origUid' => 't3_origuid',
     ],
 
-
     'columns' => [
-
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -83,7 +81,6 @@ return [
             ],
         ],
 
-
         'input_1' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
@@ -115,9 +112,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -127,6 +122,5 @@ return [
             ',
         ],
     ],
-
 
 ];

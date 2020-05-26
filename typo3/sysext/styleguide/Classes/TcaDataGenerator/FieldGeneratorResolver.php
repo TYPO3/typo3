@@ -118,7 +118,7 @@ class FieldGeneratorResolver
      */
     public function resolve(array $data): FieldGeneratorInterface
     {
-        $generator = NULL;
+        $generator = null;
         foreach ($this->fieldValueGenerators as $fieldValueGenerator) {
             $generator = GeneralUtility::makeInstance($fieldValueGenerator);
             if (!$generator instanceof FieldGeneratorInterface) {
@@ -141,5 +141,4 @@ class FieldGeneratorResolver
         }
         return $generator;
     }
-
 }

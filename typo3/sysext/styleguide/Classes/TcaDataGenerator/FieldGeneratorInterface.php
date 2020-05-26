@@ -18,7 +18,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 /**
  * Interface for field value generators
  */
-interface FieldGeneratorInterface {
+interface FieldGeneratorInterface
+{
 
     /**
      * Return true if this FieldGenerator matches

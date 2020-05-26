@@ -17,9 +17,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -84,7 +82,6 @@ return [
             ],
         ],
 
-
         'text_1' => [
             'label' => 'text_1',
             'config' => [
@@ -123,9 +120,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '1' => [
@@ -134,6 +129,5 @@ return [
             '
         ],
     ],
-
 
 ];

@@ -96,7 +96,7 @@ class Generator
                 foreach ($sysLanguageStyleguideDemoUids as $languageUid) {
                     $newIdOfLocalizedPage = StringUtility::getUniqueId('NEW');
                     $data['pages'][$newIdOfLocalizedPage] = [
-                        'title' => str_replace('_', ' ', substr($mainTable . " - language " . $languageUid, strlen('tx_styleguide_'))),
+                        'title' => str_replace('_', ' ', substr($mainTable . ' - language ' . $languageUid, strlen('tx_styleguide_'))),
                         'tx_styleguide_containsdemo' => $mainTable,
                         'hidden' => 0,
                         'pid' => $neighborPage,
@@ -118,7 +118,7 @@ class Generator
 
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
-            $generator = NULL;
+            $generator = null;
             foreach ($this->tableHandler as $handlerName) {
                 $generator = GeneralUtility::makeInstance($handlerName);
                 if (!$generator instanceof TableHandlerInterface) {
@@ -299,7 +299,7 @@ class Generator
             ];
             foreach ($files as $fileName) {
                 $sourceLocation = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
-                $storage->addFile($sourceLocation, $folder, $fileName,  DuplicationBehavior::RENAME, false);
+                $storage->addFile($sourceLocation, $folder, $fileName, DuplicationBehavior::RENAME, false);
             }
         } catch (ExistingTargetFolderException $e) {
             // No op if folder exists. This code assumes file exist, too.

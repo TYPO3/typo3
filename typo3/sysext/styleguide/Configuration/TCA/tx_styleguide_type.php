@@ -21,7 +21,6 @@ return [
         'type' => 'type',
     ],
 
-
     'columns' => [
 
         'hidden' => [
@@ -99,7 +98,6 @@ return [
             ],
         ],
 
-
         'text_1' => [
             'exclude' => 1,
             'label' => 'text_1',
@@ -108,9 +106,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -128,6 +124,5 @@ return [
             ],
         ],
     ],
-
 
 ];

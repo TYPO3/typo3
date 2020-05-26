@@ -20,7 +20,6 @@ return [
         'origUid' => 't3_origuid',
     ],
 
-
     'columns' => [
         'sys_language_uid' => [
             'exclude' => 1,
@@ -81,7 +80,6 @@ return [
             ]
         ],
 
-
         'input_1' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
@@ -98,9 +96,9 @@ return [
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_inline_mn_mm',
-                "foreign_field" => "parentid",
-                "foreign_sortby" => "parentsort",
-                "foreign_label" => "childid",
+                'foreign_field' => 'parentid',
+                'foreign_sortby' => 'parentsort',
+                'foreign_label' => 'childid',
                 'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
@@ -110,9 +108,7 @@ return [
             ]
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -122,6 +118,5 @@ return [
             '
         ]
     ],
-
 
 ];
