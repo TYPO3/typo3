@@ -90,7 +90,7 @@ class DefaultFactory
                                     ]
                                 ]
                             ],
-                        ],
+                        ]
                     ],
                     [
                         'name' => 'typo3conf',
@@ -107,10 +107,15 @@ class DefaultFactory
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                             ],
-                        ],
+                            [
+                                'name' => 'sites',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                        ]
                     ],
                     $this->getFileadminStructure(),
-                ],
+                ]
             ];
 
             // Have a default .htaccess if running apache web server or a default web.config if running IIS
@@ -185,6 +190,18 @@ class DefaultFactory
                 'name' => Environment::getProjectPath(),
                 'targetPermission' => $directoryPermission,
                 'children' => [
+                    [
+                        'name' => 'config',
+                        'type' => DirectoryNode::class,
+                        'targetPermission' => $directoryPermission,
+                        'children' => [
+                            [
+                                'name' => 'sites',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                        ]
+                    ],
                     $this->getPublicStructure($publicPath, $publicPathSubStructure),
                     [
                         'name' => 'var',
@@ -218,8 +235,8 @@ class DefaultFactory
                                 'targetPermission' => $directoryPermission,
                             ],
                         ]
-                    ]
-                ],
+                    ],
+                ]
             ];
         }
         return $structure;
