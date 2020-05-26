@@ -112,8 +112,6 @@ CREATE TABLE pages (
 	backend_layout varchar(64) DEFAULT '' NOT NULL,
 	backend_layout_next_level varchar(64) DEFAULT '' NOT NULL,
 	tsconfig_includes text,
-	# @deprecated since v9 and will be removed in TYPO3 v11. Legacy connection UID field to pages_language_overlay table
-	legacy_overlay_uid int(11) unsigned DEFAULT '0' NOT NULL,
 
 	KEY determineSiteRoot (is_siteroot),
 	KEY language_identifier (l10n_parent,sys_language_uid),

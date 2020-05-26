@@ -37,7 +37,7 @@ The following class methods have changed visibility:
 
 The following class properties have changed visibility:
 
-The following VieHelpers have changed:
+The following ViewHelpers have changed:
 
 The following scheduler tasks have been removed:
 
@@ -197,6 +197,8 @@ The following features have been removed:
 The following database tables have been removed:
 
 The following database fields have been removed:
+
+- pages.legacy_overlay_uid
 
 The following php doc annotations have been removed:
 

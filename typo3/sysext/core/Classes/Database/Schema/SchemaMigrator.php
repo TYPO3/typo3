@@ -267,11 +267,6 @@ class SchemaMigrator
         $tables = $defaultTcaSchema->enrich($tables);
         // Ensure the default TCA fields are ordered
         foreach ($tables as $k => $table) {
-            // @deprecated since v10 and will be removed in TYPO3 v11. "pages_language_overlay" is not to be added anymore in TYPO3 v10.
-            if ($table->getName() === 'pages_language_overlay') {
-                unset($tables[$k]);
-                continue;
-            }
             $prioritizedColumnNames = $defaultTcaSchema->getPrioritizedFieldNames($table->getName());
             // no TCA table
             if (empty($prioritizedColumnNames)) {
