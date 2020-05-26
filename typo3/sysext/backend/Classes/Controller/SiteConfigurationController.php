@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -418,10 +419,17 @@ class SiteConfigurationController
 
             // Persist the configuration
             $siteConfigurationManager = GeneralUtility::makeInstance(SiteConfiguration::class);
-            if (!$isNewConfiguration && $currentIdentifier !== $siteIdentifier) {
-                $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
+            try {
+                if (!$isNewConfiguration && $currentIdentifier !== $siteIdentifier) {
+                    $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
+                }
+                $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration);
+            } catch (SiteConfigurationWriteException $e) {
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
             }
-            $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration);
         } catch (SiteValidationErrorException $e) {
             // Do not store new config if a validation error is thrown, but redirect only to show a generated flash message
         }
@@ -656,8 +664,15 @@ class SiteConfigurationController
         if (empty($siteIdentifier)) {
             throw new \RuntimeException('Not site identifier given', 1521565182);
         }
-        // Verify site does exist, method throws if not
-        GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
+        try {
+            // Verify site does exist, method throws if not
+            GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
+        } catch (SiteConfigurationWriteException $e) {
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        }
         $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
         return new RedirectResponse($overviewRoute);
     }

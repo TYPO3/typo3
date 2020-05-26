@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Core\Configuration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -101,6 +103,7 @@ class SiteConfiguration implements SingletonInterface
      * @param string $identifier
      * @param int $rootPageId
      * @param string $base
+     * @throws SiteConfigurationWriteException
      */
     public function createNewBasicSite(string $identifier, int $rootPageId, string $base): void
     {
@@ -153,7 +156,7 @@ class SiteConfiguration implements SingletonInterface
      *
      * @param bool $useCache
      * @return array
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws InvalidDataException
      */
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
@@ -203,7 +206,7 @@ class SiteConfiguration implements SingletonInterface
      *
      * @param string $siteIdentifier
      * @param array $configuration
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws SiteConfigurationWriteException
      */
     public function write(string $siteIdentifier, array $configuration): void
     {
@@ -228,7 +231,9 @@ class SiteConfiguration implements SingletonInterface
         }
         $newConfiguration = $this->sortConfiguration($newConfiguration);
         $yamlFileContents = Yaml::dump($newConfiguration, 99, 2);
-        GeneralUtility::writeFile($fileName, $yamlFileContents);
+        if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
+            throw new SiteConfigurationWriteException('Unable to write site configuration in sites/' . $siteIdentifier . '/' . $this->configFileName, 1590487011);
+        }
         $this->firstLevelCache = null;
         $this->cache->remove($this->cacheIdentifier);
     }
@@ -238,13 +243,12 @@ class SiteConfiguration implements SingletonInterface
      *
      * @param string $currentIdentifier
      * @param string $newIdentifier
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws SiteConfigurationWriteException
      */
     public function rename(string $currentIdentifier, string $newIdentifier): void
     {
-        $result = rename($this->configPath . '/' . $currentIdentifier, $this->configPath . '/' . $newIdentifier);
-        if (!$result) {
-            throw new \RuntimeException('Unable to rename folder sites/' . $currentIdentifier, 1522491300);
+        if (!rename($this->configPath . '/' . $currentIdentifier, $this->configPath . '/' . $newIdentifier)) {
+            throw new SiteConfigurationWriteException('Unable to rename folder sites/' . $currentIdentifier, 1522491300);
         }
         $this->cache->remove($this->cacheIdentifier);
         $this->firstLevelCache = null;
@@ -255,7 +259,7 @@ class SiteConfiguration implements SingletonInterface
      * Also clears the cache.
      *
      * @param string $siteIdentifier
-     * @throws SiteNotFoundException
+     * @throws SiteNotFoundException|SiteConfigurationWriteException
      */
     public function delete(string $siteIdentifier): void
     {
@@ -267,7 +271,9 @@ class SiteConfiguration implements SingletonInterface
         if (!file_exists($fileName)) {
             throw new SiteNotFoundException('Site configuration file ' . $this->configFileName . ' within the site ' . $siteIdentifier . ' not found.', 1522866184);
         }
-        @unlink($fileName);
+        if (!unlink($fileName)) {
+            throw new SiteConfigurationWriteException('Unable to delete folder sites/' . $siteIdentifier, 1596462020);
+        }
         $this->cache->remove($this->cacheIdentifier);
         $this->firstLevelCache = null;
     }

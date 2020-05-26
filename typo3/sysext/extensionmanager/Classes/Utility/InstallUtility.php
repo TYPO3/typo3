@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\BootService;
@@ -593,7 +594,18 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             }
             $configuration = $siteConfiguration->load($siteIdentifier);
             $configuration['rootPageId'] = $importedPageId;
-            $siteConfiguration->write($siteIdentifier, $configuration);
+            try {
+                $siteConfiguration->write($siteIdentifier, $configuration);
+            } catch (SiteConfigurationWriteException $e) {
+                $this->logger->warning(
+                    sprintf(
+                        'Imported site configuration with identifier %s could not be written: %s',
+                        $newSite->getIdentifier(),
+                        $e->getMessage()
+                    )
+                );
+                continue;
+            }
         }
         $this->eventDispatcher->dispatch(new AfterExtensionSiteFilesHaveBeenImportedEvent($extensionKey, $newSiteIdentifierList));
     }

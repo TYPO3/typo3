@@ -17,12 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Hooks;
 
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -82,12 +85,19 @@ class CreateSiteConfiguration
             $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
             $normalizedParams = $this->getNormalizedParams();
             $basePrefix = Environment::isCli() ? $normalizedParams->getSitePath() : $normalizedParams->getSiteUrl();
-            $siteConfiguration->createNewBasicSite(
-                $siteIdentifier,
-                $pageId,
-                $basePrefix . $entryPoint
-            );
-            $this->updateSlugForPage($pageId);
+            try {
+                $siteConfiguration->createNewBasicSite(
+                    $siteIdentifier,
+                    $pageId,
+                    $basePrefix . $entryPoint
+                );
+                $this->updateSlugForPage($pageId);
+            } catch (SiteConfigurationWriteException $e) {
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
+            }
         }
     }
 
