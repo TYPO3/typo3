@@ -20,6 +20,10 @@ The following PHP class aliases that have been previously deprecated for v10 hav
 The following PHP class methods that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->settingLocale`
+
 
 The following PHP static class methods that have been previously deprecated for v10 have been removed:
 
@@ -92,6 +96,13 @@ The following language files and aliases have been removed:
 The following global variables have been removed:
 
 The following hooks have been removed:
+
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace']`
+
 
 The following hooks don't pass the class reference anymore:
 

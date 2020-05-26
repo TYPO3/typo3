@@ -121,7 +121,7 @@ class WorkspacePreview implements MiddlewareInterface
         }
 
         // Add an info box to the frontend content
-        if ($GLOBALS['TSFE']->doWorkspacePreview() && $GLOBALS['TSFE']->isOutputting(true)) {
+        if ($GLOBALS['TSFE']->doWorkspacePreview()) {
             $previewInfo = $this->renderPreviewInfo($GLOBALS['TSFE'], $request->getAttribute('normalizedParams'));
             $body = $response->getBody();
             $body->rewind();

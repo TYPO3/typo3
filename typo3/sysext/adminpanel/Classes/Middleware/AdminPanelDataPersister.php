@@ -23,7 +23,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -44,9 +43,7 @@ class AdminPanelDataPersister implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         if (
-            !($response instanceof NullResponse)
-            && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
-            && $GLOBALS['TSFE']->isOutputting(true)
+            $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
             && StateUtility::isActivatedForUser()
             && StateUtility::isActivatedInTypoScript()
             && !StateUtility::isHiddenForUser()

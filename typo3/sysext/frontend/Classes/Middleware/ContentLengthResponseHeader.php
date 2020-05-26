@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -45,10 +44,7 @@ class ContentLengthResponseHeader implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if (
-            !($response instanceof NullResponse)
-            && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
-            && $GLOBALS['TSFE']->isOutputting(true)) {
+        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             if (
                     (!isset($GLOBALS['TSFE']->config['config']['enableContentLengthHeader']) || $GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
                     && !$GLOBALS['TSFE']->isBackendUserLoggedIn() && !$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']

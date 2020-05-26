@@ -4151,7 +4151,8 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-88473-TypoScriptFrontendController-settingLocale.rst'
+            'Deprecation-88473-TypoScriptFrontendController-settingLocale.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Database\SoftReferenceIndex->findRef_images' => [
@@ -4490,6 +4491,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput' => [
@@ -4497,6 +4499,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
 ];

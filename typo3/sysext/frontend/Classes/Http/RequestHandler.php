@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -151,35 +150,12 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->pull();
         }
 
-        // Create a Response object when sending content
+        // Create a default Response object and add headers and body to it
         $response = new Response();
-
-        // Output content
-        // The if() condition can be removed in TYPO3 v11, which means that TYPO3 will not return a NullResponse
-        // by default anymore, which it hasn't done without any extensions anyway already.
-        $isOutputting = $controller->isOutputting(true);
-        if ($isOutputting) {
-            $this->timeTracker->push('Print Content');
-            $response = $controller->applyHttpHeadersToResponse($response);
-            $controller->processContentForOutput(true);
-            $this->timeTracker->pull();
-        }
-
-        // Hook for "end-of-frontend"
-        $_params = ['pObj' => &$controller];
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'])) {
-            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][hook_eofe] will be removed in TYPO3 v11.0. The same functionality can be achieved by using a PSR-15 middleware.', E_USER_DEPRECATED);
-        }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $controller);
-        }
+        $response = $controller->applyHttpHeadersToResponse($response);
         $this->displayPreviewInfoMessage($controller);
-
-        if ($isOutputting) {
-            $response->getBody()->write($controller->content);
-            return $response;
-        }
-        return new NullResponse();
+        $response->getBody()->write($controller->content);
+        return $response;
     }
 
     /**
