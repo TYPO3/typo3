@@ -20,7 +20,6 @@ use Doctrine\DBAL\Driver\Statement;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -40,8 +39,6 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Mail\MailMessage;
-use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -52,7 +49,6 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
-use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
@@ -63,7 +59,6 @@ use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -384,20 +379,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $recordRegister = [];
 
     /**
-     * Additionally registered content object types and class names
-     *
-     * @var array
-     * @deprecated - will be removed in TYPO3 v11.0
-     */
-    protected $cObjHookObjectsRegistry = [];
-
-    /**
-     * @var array
-     * @deprecated - will be removed in TYPO3 v11.0
-     */
-    public $cObjHookObjectsArr = [];
-
-    /**
      * Containing hook objects for stdWrap
      *
      * @var array
@@ -561,10 +542,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ? $table . ':' . ($this->data['uid'] ?? '')
             : '';
         $this->parameters = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] ?? [] as $classArr) {
-            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][cObjTypeAndClass] for adding custom cObjects will be removed in TYPO3 v11.0. Use a custom cObject which you can register directly instead.', E_USER_DEPRECATED);
-            $this->cObjHookObjectsRegistry[$classArr[0]] = $classArr[1];
-        }
         $this->stdWrapHookObjects = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
@@ -717,43 +694,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $content .= $this->cObjGetSingle($name, $conf, $key);
                 $timeTracker->decStackPointer();
             } else {
-                $hooked = false;
-                // Application defined cObjects
-                // @deprecated since TYPO3 v10.4 - will be removed in TYPO3 v11.0
-                if (!empty($this->cObjHookObjectsRegistry[$name])) {
-                    if (empty($this->cObjHookObjectsArr[$name])) {
-                        $this->cObjHookObjectsArr[$name] = GeneralUtility::makeInstance($this->cObjHookObjectsRegistry[$name]);
-                    }
-                    $hookObj = $this->cObjHookObjectsArr[$name];
-                    if (method_exists($hookObj, 'cObjGetSingleExt')) {
-                        $content .= $hookObj->cObjGetSingleExt($name, $conf, $TSkey, $this);
-                        $hooked = true;
-                    }
-                }
-                if (!$hooked) {
-                    $contentObject = $this->getContentObject($name);
-                    if ($contentObject) {
-                        $content .= $this->render($contentObject, $conf);
-                    } else {
-                        // Call hook functions for extra processing
-                        if ($name) {
-                            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
-                                trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][cObjTypeAndClassDefault] for adding custom processing will be removed. Use a custom cObject which you can register directly instead.', E_USER_DEPRECATED);
-                            }
-                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] ?? [] as $className) {
-                                $hookObject = GeneralUtility::makeInstance($className);
-                                if (!$hookObject instanceof ContentObjectGetSingleHookInterface) {
-                                    throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetSingleHookInterface::class, 1195043731);
-                                }
-                                /** @var ContentObjectGetSingleHookInterface $hookObject */
-                                $content .= $hookObject->getSingleContentObject($name, (array)$conf, $TSkey, $this);
-                            }
-                        } else {
-                            // Log error in AdminPanel
-                            $warning = sprintf('Content Object "%s" does not exist', $name);
-                            $timeTracker->setTSlogMessage($warning, 2);
-                        }
-                    }
+                $contentObject = $this->getContentObject($name);
+                if ($contentObject) {
+                    $content .= $this->render($contentObject, $conf);
                 }
             }
             if ($timeTracker->LR) {
@@ -1040,260 +983,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Returns a <img> tag with the image file defined by $file and processed according to the properties in the TypoScript array.
-     * Mostly this function is a sub-function to the IMAGE function which renders the IMAGE cObject in TypoScript.
-     * This function is called by "$this->cImage($conf['file'], $conf);" from IMAGE().
-     *
-     * @param string $file File TypoScript resource
-     * @param array $conf TypoScript configuration properties
-     * @return string HTML <img> tag, (possibly wrapped in links and other HTML) if any image found.
-     * @deprecated will be removed in TYPO3 v11.0
-     * @see IMAGE()
-     */
-    public function cImage($file, $conf)
-    {
-        trigger_error('cObj->cImage() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject now.', E_USER_DEPRECATED);
-        $tsfe = $this->getTypoScriptFrontendController();
-        $info = $this->getImgResource($file, $conf['file.']);
-        if (!is_array($info)) {
-            return '';
-        }
-        if (is_file(Environment::getPublicPath() . '/' . $info['3'])) {
-            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($info['3']));
-        } else {
-            $source = $info[3];
-        }
-        // Remove file objects for AssetCollector, as it only allows to store scalar values
-        unset($info['originalFile'], $info['processedFile']);
-        GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
-            $source,
-            $info
-        );
-
-        $layoutKey = $this->stdWrap($conf['layoutKey'], $conf['layoutKey.']);
-        $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
-        $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);
-
-        $altParam = $this->getAltParam($conf);
-        $params = $this->stdWrapValue('params', $conf);
-        if ($params !== '' && $params[0] !== ' ') {
-            $params = ' ' . $params;
-        }
-
-        $imageTagValues = [
-            'width' =>  (int)$info[0],
-            'height' => (int)$info[1],
-            'src' => htmlspecialchars($source),
-            'params' => $params,
-            'altParams' => $altParam,
-            'border' =>  $this->getBorderAttr(' border="' . (int)$conf['border'] . '"'),
-            'sourceCollection' => $sourceCollection,
-            'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
-        ];
-
-        $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        $theValue = $markerTemplateEngine->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
-
-        $linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
-        if ($linkWrap) {
-            $theValue = $this->linkWrap($theValue, $linkWrap);
-        } elseif ($conf['imageLinkWrap']) {
-            $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
-            $theValue = $this->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
-        }
-        $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-        if ((string)$wrap !== '') {
-            $theValue = $this->wrap($theValue, $conf['wrap']);
-        }
-        return $theValue;
-    }
-
-    /**
-     * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict, xhtml_11 or html5
-     * or if the config parameter 'disableImgBorderAttr' is not set.
-     *
-     * @param string $borderAttr The border attribute
-     * @return string The border attribute
-     * @deprecated will be removed in TYPO3 v11.0.
-     */
-    public function getBorderAttr($borderAttr)
-    {
-        trigger_error('cObj->getBorderAttr() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
-        $tsfe = $this->getTypoScriptFrontendController();
-        $docType = $tsfe->xhtmlDoctype;
-        if (
-            $docType !== 'xhtml_strict' && $docType !== 'xhtml_11'
-            && $tsfe->config['config']['doctype'] !== 'html5'
-            && !$tsfe->config['config']['disableImgBorderAttr']
-        ) {
-            return $borderAttr;
-        }
-        return '';
-    }
-
-    /**
-     * Returns the html-template for rendering the image-Tag if no template is defined via typoscript the
-     * default <img> tag template is returned
-     *
-     * @param string $layoutKey rendering key
-     * @param array $conf TypoScript configuration properties
-     * @return string
-     * @deprecated will be removed in TYPO3 v11.0.
-     */
-    public function getImageTagTemplate($layoutKey, $conf)
-    {
-        trigger_error('cObj->getImageTagTemplate() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
-        if ($layoutKey && isset($conf['layout.']) && isset($conf['layout.'][$layoutKey . '.'])) {
-            $imageTagLayout = $this->stdWrap(
-                $conf['layout.'][$layoutKey . '.']['element'] ?? '',
-                $conf['layout.'][$layoutKey . '.']['element.'] ?? []
-            );
-        } else {
-            $imageTagLayout = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
-        }
-        return $imageTagLayout;
-    }
-
-    /**
-     * Render alternate sources for the image tag. If no source collection is given an empty string is returned.
-     *
-     * @param string $layoutKey rendering key
-     * @param array $conf TypoScript configuration properties
-     * @param string $file
-     * @throws \UnexpectedValueException
-     * @return string
-     * @deprecated will be removed in TYPO3 v11.0.
-     */
-    public function getImageSourceCollection($layoutKey, $conf, $file)
-    {
-        trigger_error('cObj->getImageSourceCollection() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
-        $sourceCollection = '';
-        if ($layoutKey
-            && isset($conf['sourceCollection.']) && $conf['sourceCollection.']
-            && (
-                isset($conf['layout.'][$layoutKey . '.']['source']) && $conf['layout.'][$layoutKey . '.']['source']
-                || isset($conf['layout.'][$layoutKey . '.']['source.']) && $conf['layout.'][$layoutKey . '.']['source.']
-            )
-        ) {
-
-            // find active sourceCollection
-            $activeSourceCollections = [];
-            foreach ($conf['sourceCollection.'] as $sourceCollectionKey => $sourceCollectionConfiguration) {
-                if (substr($sourceCollectionKey, -1) === '.') {
-                    if (empty($sourceCollectionConfiguration['if.']) || $this->checkIf($sourceCollectionConfiguration['if.'])) {
-                        $activeSourceCollections[] = $sourceCollectionConfiguration;
-                    }
-                }
-            }
-
-            // apply option split to configurations
-            $tsfe = $this->getTypoScriptFrontendController();
-            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $srcLayoutOptionSplitted = $typoScriptService->explodeConfigurationForOptionSplit((array)$conf['layout.'][$layoutKey . '.'], count($activeSourceCollections));
-
-            // render sources
-            foreach ($activeSourceCollections as $key => $sourceConfiguration) {
-                $sourceLayout = $this->stdWrap(
-                    $srcLayoutOptionSplitted[$key]['source'] ?? '',
-                    $srcLayoutOptionSplitted[$key]['source.'] ?? []
-                );
-
-                $sourceRenderConfiguration = [
-                    'file' => $file,
-                    'file.' => $conf['file.'] ?? null
-                ];
-
-                if (isset($sourceConfiguration['quality']) || isset($sourceConfiguration['quality.'])) {
-                    $imageQuality = $sourceConfiguration['quality'] ?? '';
-                    if (isset($sourceConfiguration['quality.'])) {
-                        $imageQuality = $this->stdWrap($sourceConfiguration['quality'], $sourceConfiguration['quality.']);
-                    }
-                    if ($imageQuality) {
-                        $sourceRenderConfiguration['file.']['params'] = '-quality ' . (int)$imageQuality;
-                    }
-                }
-
-                if (isset($sourceConfiguration['pixelDensity'])) {
-                    $pixelDensity = (int)$this->stdWrap(
-                        $sourceConfiguration['pixelDensity'] ?? '',
-                        $sourceConfiguration['pixelDensity.'] ?? []
-                    );
-                } else {
-                    $pixelDensity = 1;
-                }
-                $dimensionKeys = ['width', 'height', 'maxW', 'minW', 'maxH', 'minH', 'maxWidth', 'maxHeight', 'XY'];
-                foreach ($dimensionKeys as $dimensionKey) {
-                    $dimension = $this->stdWrap(
-                        $sourceConfiguration[$dimensionKey] ?? '',
-                        $sourceConfiguration[$dimensionKey . '.'] ?? []
-                    );
-                    if (!$dimension) {
-                        $dimension = $this->stdWrap(
-                            $conf['file.'][$dimensionKey] ?? '',
-                            $conf['file.'][$dimensionKey . '.'] ?? []
-                        );
-                    }
-                    if ($dimension) {
-                        if (strpos($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
-                            $dimensionParts = explode('c', $dimension, 2);
-                            $dimension = ((int)$dimensionParts[0] * $pixelDensity) . 'c';
-                            if ($dimensionParts[1]) {
-                                $dimension .= $dimensionParts[1];
-                            }
-                        } elseif ($dimensionKey === 'XY') {
-                            $dimensionParts = GeneralUtility::intExplode(',', $dimension, false, 2);
-                            $dimension = $dimensionParts[0] * $pixelDensity;
-                            if ($dimensionParts[1]) {
-                                $dimension .= ',' . $dimensionParts[1] * $pixelDensity;
-                            }
-                        } else {
-                            $dimension = (int)$dimension * $pixelDensity;
-                        }
-                        $sourceRenderConfiguration['file.'][$dimensionKey] = $dimension;
-                        // Remove the stdWrap properties for dimension as they have been processed already above.
-                        unset($sourceRenderConfiguration['file.'][$dimensionKey . '.']);
-                    }
-                }
-                $sourceInfo = $this->getImgResource($sourceRenderConfiguration['file'], $sourceRenderConfiguration['file.']);
-                if ($sourceInfo) {
-                    $sourceConfiguration['width'] = $sourceInfo[0];
-                    $sourceConfiguration['height'] = $sourceInfo[1];
-                    $urlPrefix = '';
-                    if (parse_url($sourceInfo[3], PHP_URL_HOST) === null) {
-                        $urlPrefix = $tsfe->absRefPrefix;
-                    }
-                    $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
-                    $sourceConfiguration['selfClosingTagSlash'] = !empty($tsfe->xhtmlDoctype) ? ' /' : '';
-
-                    $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-                    $oneSourceCollection = $markerTemplateEngine->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
-
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] ?? [] as $className) {
-                        $hookObject = GeneralUtility::makeInstance($className);
-                        if (!$hookObject instanceof ContentObjectOneSourceCollectionHookInterface) {
-                            throw new \UnexpectedValueException(
-                                '$hookObject must implement interface ' . ContentObjectOneSourceCollectionHookInterface::class,
-                                1380007853
-                            );
-                        }
-                        $oneSourceCollection = $hookObject->getOneSourceCollection((array)$sourceRenderConfiguration, (array)$sourceConfiguration, $oneSourceCollection, $this);
-                    }
-
-                    $sourceCollection .= $oneSourceCollection;
-                }
-            }
-        }
-        return $sourceCollection;
-    }
-
-    /**
      * Wraps the input string in link-tags that opens the image in a new window.
      *
      * @param string $string String to wrap, probably an <img> tag
      * @param string|File|FileReference $imageFile The original image file
      * @param array $conf TypoScript properties for the "imageLinkWrap" function
      * @return string The input string, $string, wrapped as configured.
-     * @see cImage()
      * @internal This method should be used within TYPO3 Core only
      */
     public function imageLinkWrap($string, $imageFile, $conf)
@@ -1444,68 +1139,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Wraps the input string by the $wrap value and implements the "linkWrap" data type as well.
-     * The "linkWrap" data type means that this function will find any integer encapsulated in {} (curly braces) in the first wrap part and substitute it with the corresponding page uid from the rootline where the found integer is pointing to the key in the rootline. See link below.
-     *
-     * @param string $content Input string
-     * @param string $wrap A string where the first two parts separated by "|" (vertical line) will be wrapped around the input string
-     * @return string Wrapped output string
-     * @see wrap()
-     * @see cImage()
-     * @deprecated will be removed in TYPO3 v11.0.
-     */
-    public function linkWrap($content, $wrap)
-    {
-        trigger_error('cObj->linkWrap() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
-        $wrapArr = explode('|', $wrap);
-        if (preg_match('/\\{([0-9]*)\\}/', $wrapArr[0], $reg)) {
-            $uid = $this->getTypoScriptFrontendController()->tmpl->rootLine[$reg[1]]['uid'] ?? null;
-            if ($uid) {
-                $wrapArr[0] = str_replace($reg[0], $uid, $wrapArr[0]);
-            }
-        }
-        return trim($wrapArr[0] ?? '') . $content . trim($wrapArr[1] ?? '');
-    }
-
-    /**
-     * An abstraction method which creates an alt or title parameter for an HTML img, applet, area or input element and the FILE content element.
-     * From the $conf array it implements the properties "altText", "titleText" and "longdescURL"
-     *
-     * @param array $conf TypoScript configuration properties
-     * @param bool $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
-     * @return string Parameter string containing alt and title parameters (if any)
-     * @deprecated will be removed in TYPO3 v11.0.
-     */
-    public function getAltParam($conf, $longDesc = true)
-    {
-        trigger_error('cObj->getAltParam() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject.', E_USER_DEPRECATED);
-        $altText = isset($conf['altText.']) ? trim($this->stdWrap($conf['altText'], $conf['altText.'])) : trim($conf['altText']);
-        $titleText = isset($conf['titleText.']) ? trim($this->stdWrap($conf['titleText'], $conf['titleText.'])) : trim($conf['titleText']);
-        if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
-            $longDescUrl = $this->typoLink_URL($conf['longdescURL.']);
-        } else {
-            $longDescUrl = trim($conf['longdescURL']);
-        }
-        $longDescUrl = strip_tags($longDescUrl);
-
-        // "alt":
-        $altParam = ' alt="' . htmlspecialchars($altText) . '"';
-        // "title":
-        $emptyTitleHandling = isset($conf['emptyTitleHandling.']) ? $this->stdWrap($conf['emptyTitleHandling'], $conf['emptyTitleHandling.']) : $conf['emptyTitleHandling'];
-        // Choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
-        if ($titleText || $emptyTitleHandling === 'keepEmpty') {
-            $altParam .= ' title="' . htmlspecialchars($titleText) . '"';
-        } elseif (!$titleText && $emptyTitleHandling === 'useAlt') {
-            $altParam .= ' title="' . htmlspecialchars($altText) . '"';
-        }
-        // "longDesc" URL
-        if ($longDesc && !empty($longDescUrl)) {
-            $altParam .= ' longdesc="' . htmlspecialchars($longDescUrl) . '"';
-        }
-        return $altParam;
-    }
-
-    /**
      * An abstraction method to add parameters to an A tag.
      * Uses the ATagParams property.
      *
@@ -1541,28 +1174,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         return $aTagParams;
-    }
-
-    /**
-     * All extension links should ask this function for additional properties to their tags.
-     * Designed to add for instance an "onclick" property for site tracking systems.
-     *
-     * @param string $URL URL of the website
-     * @param string $TYPE
-     * @return string The additional tag properties
-     * @internal This method will be removed as it serves no purpose anymore in TYPO3 v11.0
-     */
-    public function extLinkATagParams($URL, $TYPE)
-    {
-        $out = '';
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler'])) {
-            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][extLinkATagParamsHandler] will be removed in TYPO3 v11.0. Use a custom LinkHandler instead.', E_USER_DEPRECATED);
-            $extLinkATagParamsHandler = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
-            if (method_exists($extLinkATagParamsHandler, 'main')) {
-                $out .= trim($extLinkATagParamsHandler->main($URL, $TYPE, $this));
-            }
-        }
-        return trim($out) ? ' ' . trim($out) : '';
     }
 
     /***********************************************
@@ -4233,7 +3844,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
                     $res = '<a href="' . htmlspecialchars($linkUrl) . '"'
                         . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
-                        . $aTagParams . $this->extLinkATagParams('http://' . $parts[0], 'url') . '>';
+                        . $aTagParams . '>';
 
                     $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
                     if ((string)$conf['ATagBeforeWrap'] !== '') {
@@ -4964,16 +4575,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Check for link-handler keyword
         $linkHandlerExploded = explode(':', $linkParameterParts['url'], 2);
         $linkHandlerKeyword = $linkHandlerExploded[0] ?? null;
-        $linkHandlerValue = $linkHandlerExploded[1] ?? null;
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword])
-            && (string)$linkHandlerValue !== ''
-        ) {
-            trigger_error('The hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_content.php][typolinkLinkHandler] will be removed in TYPO3 v11.0. Use a custom LinkHandler instead. The used link handler keyword was: ' . $linkHandlerKeyword, E_USER_DEPRECATED);
-            $linkHandlerObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
-            if (method_exists($linkHandlerObj, 'main')) {
-                return $linkHandlerObj->main($linkText, $configuration, $linkHandlerKeyword, $linkHandlerValue, $mixedLinkParameter, $this);
-            }
-        }
 
         if (in_array(strtolower(preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
             // Disallow insecure scheme's like javascript: or data:
@@ -5077,7 +4678,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // We need to backup the URL because ATagParams might call typolink again and change the last URL.
         $url = $this->lastTypoLinkUrl;
         $finalTagParts = [
-            'aTagParams' => $this->getATagParams($conf) . $this->extLinkATagParams($this->lastTypoLinkUrl, $linkDetails['type']),
+            'aTagParams' => $this->getATagParams($conf),
             'url'        => $url,
             'TYPE'       => $linkDetails['type']
         ];
@@ -5504,14 +5105,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $exclude = [];
         $method = (string)($conf['method'] ?? '');
-        if ($method === 'POST') {
-            trigger_error('Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0.', E_USER_WARNING);
-            return '';
-        }
-        if ($method === 'GET,POST' || $method === 'POST,GET') {
-            trigger_error('Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET.', E_USER_WARNING);
-            $method = 'GET';
-        }
         if ($method === 'GET') {
             $currentQueryArray = GeneralUtility::_GET();
         } else {
@@ -5745,64 +5338,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $seconds = $sign * $val . ($val == 1 ? ($labelArr[7] ?? null) : ($labelArr[3] ?? null));
         }
         return $seconds;
-    }
-
-    /**
-     * Sends a notification email
-     *
-     * @param string $message The message content. If blank, no email is sent.
-     * @param string $recipients Comma list of recipient email addresses
-     * @param string $cc Email address of recipient of an extra mail. The same mail will be sent ONCE more; not using a CC header but sending twice.
-     * @param string $senderAddress "From" email address
-     * @param string $senderName Optional "From" name
-     * @param string $replyTo Optional "Reply-To" header email address.
-     * @return bool Returns TRUE if sent
-     * @deprecated ContentObjectRenderer::sendNotifyEmail is deprecated and will be removed in TYPO3 v11. Consider using the mail API directly
-     */
-    public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '')
-    {
-        trigger_error('ContentObjectRenderer::sendNotifyEmail is deprecated and will be removed in TYPO3 v11. Consider using the mail API directly.', E_USER_DEPRECATED);
-        /** @var MailMessage $mail */
-        $mail = GeneralUtility::makeInstance(MailMessage::class);
-        $senderName = trim($senderName);
-        $senderAddress = trim($senderAddress);
-        if ($senderAddress !== '') {
-            $mail->from(new Address($senderAddress, $senderName));
-        }
-        $parsedReplyTo = MailUtility::parseAddresses($replyTo);
-        if (!empty($parsedReplyTo)) {
-            $mail->replyTo($parsedReplyTo);
-        }
-        $message = trim($message);
-        if ($message !== '') {
-            // First line is subject
-            $messageParts = explode(LF, $message, 2);
-            $subject = trim($messageParts[0]);
-            $plainMessage = trim($messageParts[1]);
-            $parsedRecipients = MailUtility::parseAddresses($recipients);
-            if (!empty($parsedRecipients)) {
-                $mail->to(...$parsedRecipients)
-                    ->subject($subject)
-                    ->text($plainMessage);
-                $mail->send();
-            }
-            $parsedCc = MailUtility::parseAddresses($cc);
-            if (!empty($parsedCc)) {
-                $from = $mail->getFrom();
-                /** @var MailMessage $mail */
-                $mail = GeneralUtility::makeInstance(MailMessage::class);
-                if (!empty($parsedReplyTo)) {
-                    $mail->replyTo($parsedReplyTo);
-                }
-                $mail->from($from)
-                    ->to(...$parsedCc)
-                    ->subject($subject)
-                    ->text($plainMessage);
-                $mail->send();
-            }
-            return true;
-        }
-        return false;
     }
 
     /**

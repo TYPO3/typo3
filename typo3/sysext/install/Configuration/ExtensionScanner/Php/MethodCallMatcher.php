@@ -4223,7 +4223,8 @@ return [
         'numberOfMandatoryArguments' => 4,
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
-            'Deprecation-88850-ContentObjectRendererSendNotifyEmail.rst'
+            'Deprecation-88850-ContentObjectRendererSendNotifyEmail.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->getHistoryEntry' => [
@@ -4443,6 +4444,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getBorderAttr' => [
@@ -4450,6 +4452,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getImageTagTemplate' => [
@@ -4457,6 +4460,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getImageSourceCollection' => [
@@ -4464,6 +4468,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->linkWrap' => [
@@ -4471,6 +4476,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getAltParam' => [
@@ -4478,6 +4484,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90861-Image-relatedMethodsWithinContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService->getLabelsWithPrefix' => [

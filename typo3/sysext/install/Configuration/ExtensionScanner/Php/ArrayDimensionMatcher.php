@@ -375,21 +375,25 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClass\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClassDefault\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'extLinkATagParamsHandler\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'typolinkLinkHandler\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'pageIndexing\']' => [

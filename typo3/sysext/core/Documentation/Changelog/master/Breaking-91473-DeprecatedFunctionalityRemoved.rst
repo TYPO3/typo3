@@ -19,6 +19,7 @@ The following PHP classes that have been previously deprecated for v10 have been
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface`
 
 The following PHP class aliases that have been previously deprecated for v10 have been removed:
 
@@ -31,6 +32,13 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getUseCacheHash`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cImage`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getAltParam`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getBorderAttr`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getImageSourceCollection`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getImageTagTemplate`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->linkWrap`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->sendNotifyEmail`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash`
@@ -110,6 +118,9 @@ The following TypoScript options have been dropped:
 
 - Extbase TypoScript option `requireCHashArgumentForActionArguments` for any plugin
 - `typolink.useCacheHash`
+- `typolink.addQueryString.method = POST`
+- `typolink.addQueryString.method = POST,GET`
+- `typolink.addQueryString.method = GET,POST`
 
 The following constants have been dropped:
 
@@ -176,12 +187,15 @@ The following global variables have been removed:
 
 The following hooks have been removed:
 
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace']`
-
 
 The following hooks don't pass the class reference anymore:
 

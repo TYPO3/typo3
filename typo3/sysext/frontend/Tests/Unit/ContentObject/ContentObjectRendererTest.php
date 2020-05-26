@@ -548,47 +548,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function getQueryArgumentsHandlesRemovedMethodsDataProvider(): array
-    {
-        return [
-            'GET,POST' => [
-                'GET,POST',
-                'Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET',
-                '&common=GET&get=GET'
-            ],
-            'POST,GET' => [
-                'POST,GET',
-                'Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET',
-                '&common=GET&get=GET'
-            ],
-            'POST' => [
-                'POST',
-                'Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0',
-                ''
-            ],
-        ];
-    }
-
-    /**
-     * @param string $method
-     * @param string $expectedMessage
-     * @param string $expectedResult
-     *
-     * @test
-     * @dataProvider getQueryArgumentsHandlesRemovedMethodsDataProvider
-     */
-    public function getQueryArgumentsHandlesRemovedMethods(string $method, string $expectedMessage, string $expectedResult): void
-    {
-        $_GET = ['common' => 'GET', 'get' => 'GET'];
-        $configuration = ['method' => $method];
-        $this->expectWarning();
-        $this->expectExceptionMessage($expectedMessage);
-        self::assertSame($expectedResult, $this->subject->getQueryArguments($configuration));
-    }
-
-    /**
      * Encodes square brackets in URL.
      *
      * @param string $string

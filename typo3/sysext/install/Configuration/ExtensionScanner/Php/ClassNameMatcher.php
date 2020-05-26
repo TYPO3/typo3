@@ -1414,6 +1414,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget' => [

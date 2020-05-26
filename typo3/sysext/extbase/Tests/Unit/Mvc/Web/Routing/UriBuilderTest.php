@@ -381,60 +381,6 @@ class UriBuilderTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function buildUriDataProvider(): array
-    {
-        $uriPrefix = '/typo3/index.php?route=%2Ftest%2FPath';
-
-        return [
-            'GET,POST' => [
-                'GET,POST',
-                'Assigning addQueryStringMethod = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET',
-                $uriPrefix . '&common=GET&get=GET'
-            ],
-            'POST,GET' => [
-                'POST,GET',
-                'Assigning addQueryStringMethod = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET',
-                $uriPrefix . '&common=GET&get=GET'
-            ],
-            'POST' => [
-                'POST',
-                'Assigning addQueryStringMethod = POST is not supported anymore since TYPO3 v10.0',
-                $uriPrefix
-            ],
-        ];
-    }
-
-    /**
-     * @param string $method
-     * @param string $expectedMessage
-     * @param string $expectedResult
-     *
-     * @test
-     * @dataProvider buildUriDataProvider
-     */
-    public function buildBackendUriHandlesRemovedMethods(string $method, string $expectedMessage, string $expectedResult): void
-    {
-        $_GET = ['common' => 'GET', 'get' => 'GET', 'route' => '/test/Path'];
-        $this->expectWarning();
-        $this->expectExceptionMessage($expectedMessage);
-        $this->uriBuilder->setAddQueryStringMethod($method);
-        self::assertSame($expectedResult, $this->uriBuilder->buildFrontendUri());
-    }
-
-    /**
-     * Encodes square brackets in URL.
-     *
-     * @param string $string
-     * @return string
-     */
-    private function rawUrlEncodeSquareBracketsInUrl($string)
-    {
-        return str_replace(['[', ']'], ['%5B', '%5D'], $string);
-    }
-
-    /**
      * @test
      */
     public function buildFrontendUriCreatesTypoLink()
