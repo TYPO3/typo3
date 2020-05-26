@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Utility;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Controller\File\ThumbnailController;
@@ -23,7 +22,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Context\Context;
@@ -39,11 +37,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
@@ -744,57 +740,6 @@ class BackendUtility
         $cache->set('pagesTsConfigIdToHash' . $id, $cacheHash, ['pagesTsConfig']);
 
         return $tsConfig;
-    }
-
-    /**
-     * Returns the non-parsed Page TSconfig for page with id, $id
-     *
-     * @param int $id Page uid for which to create Page TSconfig
-     * @param array $rootLine If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
-     * @return array Non-parsed Page TSconfig
-     */
-    public static function getRawPagesTSconfig($id, array $rootLine = null)
-    {
-        trigger_error('BackendUtility::getRawPagesTSconfig will be removed in TYPO3 v11.0. Use PageTsConfigLoader instead.', E_USER_DEPRECATED);
-        if (!is_array($rootLine)) {
-            $rootLine = self::BEgetRootLine($id, '', true);
-        }
-
-        // Order correctly
-        ksort($rootLine);
-        $tsDataArray = [];
-        // Setting default configuration
-        $tsDataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
-        foreach ($rootLine as $k => $v) {
-            if (trim($v['tsconfig_includes'])) {
-                $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
-                // Traversing list
-                foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
-                    if (strpos($includeTsConfigFile, 'EXT:') === 0) {
-                        [$includeTsConfigFileExtensionKey, $includeTsConfigFilename] = explode(
-                            '/',
-                            substr($includeTsConfigFile, 4),
-                            2
-                        );
-                        if ((string)$includeTsConfigFileExtensionKey !== ''
-                            && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
-                            && (string)$includeTsConfigFilename !== ''
-                        ) {
-                            $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
-                            $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
-                            if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
-                                $tsDataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
-                            }
-                        }
-                    }
-                }
-            }
-            $tsDataArray['uid_' . $v['uid']] = $v['TSconfig'];
-        }
-
-        $eventDispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
-        $event = $eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent($tsDataArray, $rootLine));
-        return TypoScriptParser::checkIncludeLines_array($event->getTsConfig());
     }
 
     /*******************************************
@@ -2324,29 +2269,6 @@ class BackendUtility
     }
 
     /**
-     * Returns a JavaScript string (for an onClick handler) which will load the EditDocumentController script that shows the form for editing of the record(s) you have send as params.
-     * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
-     *
-     * @param string $params Parameters sent along to EditDocumentController. This requires a much more details description which you must seek in Inside TYPO3s documentation of the FormEngine API. And example could be '&edit[pages][123] = edit' which will show edit form for page record 123.
-     * @param string $_ (unused)
-     * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
-     *
-     * @return string
-     * @deprecated will be removed in TYPO3 v11.
-     */
-    public static function editOnClick($params, $_ = '', $requestUri = '')
-    {
-        trigger_error(__METHOD__ . ' has been marked as deprecated and will be removed in TYPO3 v11. Consider using regular links and use the UriBuilder API instead.', E_USER_DEPRECATED);
-        if ($requestUri == -1) {
-            $returnUrl = 'T3_THIS_LOCATION';
-        } else {
-            $returnUrl = GeneralUtility::quoteJSvalue(rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI')));
-        }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=') . '+' . $returnUrl . '; return false;';
-    }
-
-    /**
      * Returns a JavaScript string for viewing the page id, $id
      * It will re-use any window already open.
      *
@@ -2536,56 +2458,15 @@ class BackendUtility
      * Returns a URL with a command to TYPO3 Datahandler
      *
      * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-     * @param string|int $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate an URL for JavaScript using T3_THIS_LOCATION
+     * @param string $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI')
      * @return string
      */
     public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('tce_db') . $parameters . '&redirect=';
-        if ((int)$redirectUrl === -1) {
-            trigger_error('Generating URLs to DataHandler for JavaScript click handlers is deprecated. Consider using the href attribute instead.', E_USER_DEPRECATED);
-            $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
-        } else {
-            $url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
-        }
+        $url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
         return $url;
-    }
-
-    /**
-     * Builds the frontend view domain for a given page ID with a given root
-     * line.
-     *
-     * @param int $pageId The page ID to use, must be > 0
-     * @param array|null $rootLine The root line structure to use
-     * @return string The full domain including the protocol http:// or https://, but without the trailing '/'
-     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0. Use PageRouter instead.
-     */
-    public static function getViewDomain($pageId, $rootLine = null)
-    {
-        trigger_error('BackendUtility::getViewDomain() will be removed in TYPO3 v11.0. Use a Site and its PageRouter to link to a page directly', E_USER_DEPRECATED);
-        $domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
-        if (!is_array($rootLine)) {
-            $rootLine = self::BEgetRootLine($pageId);
-        }
-        // Checks alternate domains
-        if (!empty($rootLine)) {
-            try {
-                $site = GeneralUtility::makeInstance(SiteFinder::class)
-                    ->getSiteByPageId((int)$pageId, $rootLine);
-                $uri = $site->getBase();
-            } catch (SiteNotFoundException $e) {
-                // Just use the current domain
-                $uri = new Uri($domain);
-                // Append port number if lockSSLPort is not the standard port 443
-                $portNumber = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
-                if ($portNumber > 0 && $portNumber !== 443 && $portNumber < 65536 && $uri->getScheme() === 'https') {
-                    $uri = $uri->withPort((int)$portNumber);
-                }
-            }
-            return (string)$uri;
-        }
-        return $domain;
     }
 
     /**
@@ -3890,23 +3771,6 @@ class BackendUtility
      * Miscellaneous
      *
      *******************************************/
-    /**
-     * Prints TYPO3 Copyright notice for About Modules etc. modules.
-     *
-     * Warning:
-     * DO NOT prevent this notice from being shown in ANY WAY.
-     * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
-     * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
-     *
-     * @return string Text/Image (HTML) for copyright notice.
-     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0
-     */
-    public static function TYPO3_copyRightNotice()
-    {
-        trigger_error('BackendUtility::TYPO3_copyRightNotice() will be removed in TYPO3 v11.0, use the Typo3Information PHP class instead.', E_USER_DEPRECATED);
-        $copyrightGenerator = GeneralUtility::makeInstance(Typo3Information::class, static::getLanguageService());
-        return $copyrightGenerator->getCopyrightNotice();
-    }
 
     /**
      * Creates ADMCMD parameters for the "viewpage" extension / frontend

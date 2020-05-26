@@ -909,13 +909,15 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-88499-BackendUtilitygetViewDomain.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-88787-BackendUtilityEditOnClick.rst'
+            'Deprecation-88787-BackendUtilityEditOnClick.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext' => [
@@ -930,6 +932,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice' => [
@@ -937,6 +940,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89756-BackendUtilityTYPO3_copyRightNotice.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactory::getInstance' => [

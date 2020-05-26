@@ -27,6 +27,12 @@ The following PHP class methods that have been previously deprecated for v10 hav
 
 The following PHP static class methods that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice`
+
 The following PHP methods have been additionally deprecated and are a no-op now:
 
 The following methods changed signature according to previous deprecations in v10 at the end of the argument list:
