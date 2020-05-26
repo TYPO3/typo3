@@ -1,0 +1,192 @@
+.. include:: ../../Includes.txt
+
+===================================================
+Breaking: #91473 - Deprecated functionality removed
+===================================================
+
+See :issue:`91473`
+
+Description
+===========
+
+The following PHP classes that have been previously deprecated for v10 have been removed:
+
+The following PHP interfaces that have been previously deprecated for v10 have been removed:
+
+- :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
+
+The following PHP class aliases that have been previously deprecated for v10 have been removed:
+
+The following PHP class methods that have been previously deprecated for v10 have been removed:
+
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
+
+The following PHP static class methods that have been previously deprecated for v10 have been removed:
+
+The following PHP methods have been additionally deprecated and are a no-op now:
+
+The following methods changed signature according to previous deprecations in v10 at the end of the argument list:
+
+The following public class properties have been dropped:
+
+The following class methods have changed visibility:
+
+The following class properties have changed visibility:
+
+The following VieHelpers have changed:
+
+The following scheduler tasks have been removed:
+
+The following user TSconfig options have been dropped:
+
+The following TypoScript options have been dropped:
+
+The following constants have been dropped:
+
+The following class constants have been dropped:
+
+- :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreProcessStorage`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileCreate`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileReplace`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileSetContents`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileCreate`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileReplace`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileSetContents`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreGeneratePublicUrl`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_SanitizeFileName`
+- :php:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess`
+- :php:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PostFileProcess`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_BeforeCaching`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_PostProcesss`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GetDataArray_PostProcesss`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_SortDataArray_PostProcesss`
+
+The following class constants have been set to protected:
+
+The following global options are ignored:
+
+The following language files and aliases have been removed:
+
+The following global variables have been removed:
+
+The following hooks have been removed:
+
+The following hooks don't pass the class reference anymore:
+
+The following signals have been removed:
+
+- :php:`PackageManagement::packagesMayHaveChanged`
+- :php:`\TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::getSystemInformation`
+- :php:`\TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::loadMessages`
+- :php:`\TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider::getPageRenderer`
+- :php:`\TYPO3\CMS\Backend\Controller\EditDocumentController::preInitAfter`
+- :php:`\TYPO3\CMS\Backend\Controller\EditDocumentController::initAfter`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfigPreInclude`
+- :php:`\TYPO3\CMS\Beuser\Controller\BackendUserController::switchUser`
+- :php:`\TYPO3\CMS\Core\Database\SoftReferenceIndex::setTypoLinkPartsElement`
+- :php:`\TYPO3\CMS\Core\Database\ReferenceIndex::shouldExcludeTableFromReferenceIndex`
+- :php:`\TYPO3\CMS\Core\Imaging\IconFactory::buildIconForResourceSignal`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreProcessStorage`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileCreate`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileReplace`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileSetContents`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFolderRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileCreate`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileReplace`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileSetContents`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderAdd`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderCopy`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderDelete`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderMove`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFolderRename`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreGeneratePublicUrl`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_SanitizeFileName`
+- :php:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess`
+- :php:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PostFileProcess`
+- :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::PostProcessTreeData`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::tcaIsBeingBuilt`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Dispatcher::afterRequestDispatch`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::beforeCallActionMethod`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::afterMappingSingleRow`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend::beforeGettingObjectData`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend::afterGettingObjectData`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend::endInsertObject`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend::afterUpdateObject`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend::afterPersistObject`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend::afterRemoveObject`
+- :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionInstall`
+- :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionUninstall`
+- :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionT3DImport`
+- :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionStaticSqlImport`
+- :php:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::afterExtensionFileImport`
+- :php:`\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::willInstallExtensions`
+- :php:`\TYPO3\CMS\Extensionmanager\ViewHelper\ProcessAvailableActionsViewHelper::processActions`
+- :php:`\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::tablesDefinitionIsBeingBuilt`
+- :php:`\TYPO3\CMS\Impexp\Utility\ImportExportUtility::afterImportExportInitialisation`
+- :php:`\TYPO3\CMS\Lang\Service\TranslationService::postProcessMirrorUrl`
+- :php:`\TYPO3\CMS\Linkvalidator\LinkAnalyzer::beforeAnalyzeRecord`
+- :php:`\TYPO3\CMS\Seo\Canonical\CanonicalGenerator::beforeGeneratingCanonical`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_BeforeCaching`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_PostProcesss`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GetDataArray_PostProcesss`
+- :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_SortDataArray_PostProcesss`
+
+The following features are now always enabled:
+
+The following features have been removed:
+
+The following database tables have been removed:
+
+The following database fields have been removed:
+
+The following php doc annotations have been removed:
+
+The following global JavaScript functions have been removed:
+
+The following JavaScript modules have been removed:
+
+The following global instances have been removed:
+
+Impact
+======
+
+Instantiating or requiring the PHP classes or calling the PHP methods directly will trigger PHP :php:`E_ERROR` errors.
+
+.. index:: Backend, CLI, FlexForm, Fluid, Frontend, JavaScript, LocalConfiguration, PHP-API, TCA, TSConfig, TypoScript, PartiallyScanned

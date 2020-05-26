@@ -41,23 +41,6 @@ class GridDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
-     */
-    const SIGNAL_GenerateDataArray_BeforeCaching = 'generateDataArray.beforeCaching';
-    /**
-     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
-     */
-    const SIGNAL_GenerateDataArray_PostProcesss = 'generateDataArray.postProcess';
-    /**
-     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
-     */
-    const SIGNAL_GetDataArray_PostProcesss = 'getDataArray.postProcess';
-    /**
-     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
-     */
-    const SIGNAL_SortDataArray_PostProcesss = 'sortDataArray.postProcess';
-
     const GridColumn_Collection = 'Workspaces_Collection';
     const GridColumn_CollectionLevel = 'Workspaces_CollectionLevel';
     const GridColumn_CollectionParent = 'Workspaces_CollectionParent';

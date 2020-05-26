@@ -382,20 +382,6 @@ class ActionController implements ControllerInterface
     }
 
     /**
-     * Emits a signal before the current action is called
-     *
-     * @param array $preparedArguments
-     */
-    protected function emitBeforeCallActionMethodSignal(array $preparedArguments)
-    {
-        trigger_error(
-            __METHOD__ . ' is deprecated and will be removed in version 11.0 - use PSR-14 events instead.',
-            E_USER_DEPRECATED
-        );
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', [static::class, $this->actionMethodName, $preparedArguments]);
-    }
-
-    /**
      * Prepares a view for the current action.
      * By default, this method tries to locate a view with a name matching the current action.
      *

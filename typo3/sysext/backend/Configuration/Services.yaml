@@ -51,30 +51,6 @@ services:
   TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
     public: true
 
-  # Listener for old Signal Slots
-  TYPO3\CMS\Backend\Compatibility\SlotReplacement:
-    tags:
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onSystemInformationToolbarEvent'
-        event: TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onLoginProviderGetPageRenderer'
-        event: TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'emitGetPagesTSconfigPreIncludeSignalBackendUtility'
-        event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onPreInitEditDocumentController'
-        event: TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onInitEditDocumentController'
-        event: TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent
-
   # Category security checks for backend users
   TYPO3\CMS\Backend\Security\CategoryPermissionsAspect:
     tags:

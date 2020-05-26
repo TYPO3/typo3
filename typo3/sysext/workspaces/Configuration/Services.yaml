@@ -29,22 +29,3 @@ services:
     tags:
       - name: 'console.command'
         command: 'workspace:autopublish'
-
-  TYPO3\CMS\Workspaces\Compatibility\SlotReplacement:
-    tags:
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onGenerateDataArrayBeforeCaching'
-        event: TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onGenerateDataArrayPostProcessing'
-        event: TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onGetDataPostProcessing'
-        event: TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'onSortDataPostProcessing'
-        event: TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent

@@ -14,11 +14,3 @@ services:
     tags:
       - name: 'console.command'
         command: 'impexp:import'
-
-  # Listener for old Signal Slots
-  TYPO3\CMS\Impexp\Compatibility\SlotReplacement:
-    tags:
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'emitAfterImportExportInitialisationSignal'
-        event: TYPO3\CMS\Impexp\Event\BeforeImportEvent

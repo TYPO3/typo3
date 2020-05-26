@@ -30,10 +30,3 @@ services:
         identifier: 'rte-check-link-to-file'
         event: TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent
         method: 'checkFileLink'
-
-  TYPO3\CMS\Linkvalidator\Compatibility\SlotReplacement:
-    tags:
-      - name: event.listener
-        identifier: 'legacy-slot'
-        method: 'beforeLinkAnalyzerRecordIsAnalyzed'
-        event: TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent

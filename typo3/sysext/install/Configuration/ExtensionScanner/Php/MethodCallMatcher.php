@@ -4397,6 +4397,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-89870-NewPSR-14EventsForExtbase-relatedSignals.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->init' => [

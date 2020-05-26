@@ -1341,6 +1341,7 @@ return [
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Configuration\TsConfigParser' => [

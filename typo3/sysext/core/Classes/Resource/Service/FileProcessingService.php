@@ -52,16 +52,6 @@ class FileProcessingService
     protected $eventDispatcher;
 
     /**
-     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
-     */
-    const SIGNAL_PreFileProcess = 'preFileProcess';
-
-    /**
-     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. Use the PSR-14 event instead.
-     */
-    const SIGNAL_PostFileProcess = 'postFileProcess';
-
-    /**
      * Creates this object.
      *
      * @param Resource\ResourceStorage $storage

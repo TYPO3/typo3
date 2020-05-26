@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Factory class for FAL objects
  */
-class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
+class ResourceFactory implements SingletonInterface
 {
     /**
      * Gets a singleton instance of this class.
