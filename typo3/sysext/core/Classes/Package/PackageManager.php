@@ -71,11 +71,6 @@ class PackageManager implements SingletonInterface
     protected $packageAliasMap = [];
 
     /**
-     * @var array
-     */
-    protected $runtimeActivatedPackages = [];
-
-    /**
      * Absolute path leading to the various package directories
      * @var string
      */
@@ -316,26 +311,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * Scans all directories for a certain package.
-     *
-     * @param string $packageKey
-     * @return PackageInterface
-     * @deprecated will be removed in TYPO3 v11.0
-     */
-    protected function registerPackageDuringRuntime($packageKey)
-    {
-        $packagePaths = $this->scanPackagePathsForExtensions();
-        $packagePath = $packagePaths[$packageKey];
-        $composerManifest = $this->getComposerManifest($packagePath);
-        $packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath);
-        $this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
-        $packagePath = PathUtility::sanitizeTrailingSeparator($packagePath);
-        $package = new Package($this, $packageKey, $packagePath);
-        $this->registerPackage($package);
-        return $package;
-    }
-
-    /**
      * Fetches all directories from sysext/global/local locations and checks if the extension contains an ext_emconf.php
      *
      * @return array
@@ -520,7 +495,7 @@ class PackageManager implements SingletonInterface
     {
         $packageKey = $this->getPackageKeyFromComposerName($packageKey);
 
-        return isset($this->runtimeActivatedPackages[$packageKey]) || isset($this->packageStatesConfiguration['packages'][$packageKey]);
+        return isset($this->packageStatesConfiguration['packages'][$packageKey]);
     }
 
     /**
@@ -577,19 +552,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * Enables packages during runtime, but no class aliases will be available
-     *
-     * @param string $packageKey
-     * @deprecated will be removed in TYPO3 v11.0
-     */
-    public function activatePackageDuringRuntime($packageKey)
-    {
-        $package = $this->registerPackageDuringRuntime($packageKey);
-        $this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
-        $this->registerTransientClassLoadingInformationForPackage($package);
-    }
-
-    /**
      * @param PackageInterface $package
      * @throws \TYPO3\CMS\Core\Exception
      */
@@ -638,7 +600,7 @@ class PackageManager implements SingletonInterface
     /**
      * Returns an array of \TYPO3\CMS\Core\Package objects of all active packages.
      * A package is active, if it is available and has been activated in the package
-     * manager settings. This method returns runtime activated packages too
+     * manager settings.
      *
      * @return PackageInterface[]
      */
@@ -651,7 +613,7 @@ class PackageManager implements SingletonInterface
                 }
             }
         }
-        return array_merge($this->activePackages, $this->runtimeActivatedPackages);
+        return $this->activePackages;
     }
 
     /**

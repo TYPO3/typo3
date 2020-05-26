@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Core;
 
-use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -92,13 +91,6 @@ class SystemEnvironmentBuilder
      */
     protected static function defineBaseConstants()
     {
-        // Check one of the constants and return early if already defined,
-        // needed if multiple requests are handled in one process, for instance in functional testing.
-        // This check can be removed in TYPO3 v11.0.
-        if (defined('FILE_DENY_PATTERN_DEFAULT')) {
-            return;
-        }
-
         // A linefeed, a carriage return, a CR-LF combination
         defined('LF') ?: define('LF', chr(10));
         defined('CR') ?: define('CR', chr(13));
@@ -108,39 +100,6 @@ class SystemEnvironmentBuilder
         if (!defined('TYPO3_mainDir')) {
             define('TYPO3_mainDir', 'typo3/');
         }
-
-        /**
-         * @deprecated use FileNameAccess class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('FILE_DENY_PATTERN_DEFAULT', FileNameValidator::DEFAULT_FILE_DENY_PATTERN);
-        /**
-         * @deprecated use FILE_DENY_PATTERN and FileNameAccess class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,php8,phpsh,inc,phtml,pht,phar');
-        /**
-         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('TYPO3_copyright_year', '1998-' . date('Y'));
-        /**
-         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('TYPO3_URL_GENERAL', 'https://typo3.org/');
-        /**
-         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
-        /**
-         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('TYPO3_URL_EXCEPTION', 'https://typo3.org/go/exception/CMS/');
-        /**
-         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
-        /**
-         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
-         */
-        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
     }
 
     /**

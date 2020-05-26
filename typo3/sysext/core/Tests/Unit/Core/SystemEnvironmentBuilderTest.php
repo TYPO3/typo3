@@ -39,35 +39,6 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     }
 
     /**
-     * Data provider for 'fileDenyPatternMatchesPhpExtension' test case.
-     *
-     * @return array
-     */
-    public function fileDenyPatternMatchesPhpExtensionDataProvider()
-    {
-        $fileName = StringUtility::getUniqueId('filename');
-        $data = [];
-        $phpExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'phpsh', 'phtml', 'pht'];
-        foreach ($phpExtensions as $extension) {
-            $data[] = [$fileName . '.' . $extension];
-            $data[] = [$fileName . '.' . $extension . '.txt'];
-        }
-        return $data;
-    }
-
-    /**
-     * Tests whether an accordant PHP extension is denied.
-     *
-     * @test
-     * @dataProvider fileDenyPatternMatchesPhpExtensionDataProvider
-     * @param string $phpExtension
-     */
-    public function fileDenyPatternMatchesPhpExtension($phpExtension)
-    {
-        self::assertGreaterThan(0, preg_match('/' . FILE_DENY_PATTERN_DEFAULT . '/', $phpExtension), $phpExtension);
-    }
-
-    /**
      * @test
      */
     public function getPathThisScriptCliReadsLocalPartFromArgv()

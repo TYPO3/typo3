@@ -111,7 +111,6 @@ class Bootstrap
         // singleton instance is required by PackageManager->activePackageDuringRuntime
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
-        static::initializeRuntimeActivatedPackagesFromConfiguration($packageManager);
 
         static::setDefaultTimezone();
         static::setMemoryLimit();
@@ -248,23 +247,6 @@ class Bootstrap
         $packageManager->initialize();
 
         return $packageManager;
-    }
-
-    /**
-     * Activates a package during runtime. This is used in AdditionalConfiguration.php
-     * to enable extensions under conditions.
-     *
-     * @param PackageManager $packageManager
-     */
-    protected static function initializeRuntimeActivatedPackagesFromConfiguration(PackageManager $packageManager)
-    {
-        $packages = $GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] ?? [];
-        if (!empty($packages)) {
-            trigger_error('Support for runtime activated packages will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-            foreach ($packages as $runtimeAddedPackageKey) {
-                $packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
-            }
-        }
     }
 
     /**

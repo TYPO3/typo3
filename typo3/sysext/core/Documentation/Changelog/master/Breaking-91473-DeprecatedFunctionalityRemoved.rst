@@ -47,6 +47,15 @@ The following TypoScript options have been dropped:
 
 The following constants have been dropped:
 
+- :php:`FILE_DENY_PATTERN_DEFAULT`
+- :php:`PHP_EXTENSIONS_DEFAULT`
+- :php:`TYPO3_copyright_year`
+- :php:`TYPO3_URL_DONATE`
+- :php:`TYPO3_URL_EXCEPTION`
+- :php:`TYPO3_URL_GENERAL`
+- :php:`TYPO3_URL_LICENSE`
+- :php:`TYPO3_URL_WIKI_OPCODECACHE`
+
 The following class constants have been dropped:
 
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData`
@@ -90,6 +99,8 @@ The following class constants have been dropped:
 The following class constants have been set to protected:
 
 The following global options are ignored:
+
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']`
 
 The following language files and aliases have been removed:
 
