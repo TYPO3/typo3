@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be4d9fc301f979680ca9f7a1c765bf5a",
+    "content-hash": "00b45341639bf5c1ef8e758d8ed4ef3c",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4465,23 +4465,23 @@
         },
         {
             "name": "friendsoftypo3/phpstan-typo3",
-            "version": "0.2.0",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfTYPO3/phpstan-typo3.git",
-                "reference": "c9f75b4fac427a5e4605aefe3e9b654e6b17e2db"
+                "reference": "d5db3d0b4d5b1db1cf9e4c4139d808d9a105eaf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/c9f75b4fac427a5e4605aefe3e9b654e6b17e2db",
-                "reference": "c9f75b4fac427a5e4605aefe3e9b654e6b17e2db",
+                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/d5db3d0b4d5b1db1cf9e4c4139d808d9a105eaf4",
+                "reference": "d5db3d0b4d5b1db1cf9e4c4139d808d9a105eaf4",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "phpstan/phpstan": "^0.12.14",
-                "typo3/cms-core": "^10.0",
-                "typo3/cms-extbase": "^10.0"
+                "typo3/cms-core": "^10.0 || 11.0.*@dev",
+                "typo3/cms-extbase": "^10.0 || 11.0.*@dev"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.3",
@@ -4500,7 +4500,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "TYPO3 rules for PHPStan",
-            "time": "2020-03-22T16:59:57+00:00"
+            "time": "2020-05-26T08:20:57+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
