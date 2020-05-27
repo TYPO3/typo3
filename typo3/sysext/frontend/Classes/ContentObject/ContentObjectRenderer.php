@@ -1339,7 +1339,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $parameters[$parameterName] = $conf[$parameterName];
                 }
             }
-            $parametersEncoded = base64_encode(serialize($parameters));
+            $parametersEncoded = base64_encode(json_encode($parameters));
             $hmac = GeneralUtility::hmac(implode('|', [$file->getUid(), $parametersEncoded]));
             $params = '&md5=' . $hmac;
             foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
