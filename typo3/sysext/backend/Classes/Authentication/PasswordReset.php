@@ -297,7 +297,7 @@ class PasswordReset implements LoggerAwareInterface
             // no native SHA1/ CONCAT functionality, has to be done in PHP
             $stmt = $queryBuilder->execute();
             while ($row = $stmt->fetch()) {
-                if (hash('sha1', $row['email'] . (string)$row['uid']) === $identity) {
+                if (hash_equals(hash('sha1', $row['email'] . (string)$row['uid']), $identity)) {
                     $user = $row;
                     break;
                 }

@@ -642,7 +642,7 @@ class ResourceCompressor
         $filename = $this->targetDirectory . 'external-' . md5($url);
         // Write only if file does not exist OR md5 of the content is not the same as fetched one
         if (!file_exists(Environment::getPublicPath() . '/' . $filename)
-            || (md5($externalContent) !== md5(file_get_contents(Environment::getPublicPath() . '/' . $filename)))
+            || !hash_equals(md5(file_get_contents(Environment::getPublicPath() . '/' . $filename)), md5($externalContent))
         ) {
             GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent);
         }
