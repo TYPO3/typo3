@@ -40,6 +40,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ShowImageController
 {
+    protected const ALLOWED_PARAMETER_NAMES = ['width', 'height', 'crop', 'bodyTag', 'title'];
+
     /**
      * @var \Psr\Http\Message\ServerRequestInterface
      */
@@ -127,10 +129,13 @@ EOF;
             throw new \InvalidArgumentException('hash does not match', 1476048456);
         }
 
-        // decode the parameters Array
-        $parameters = unserialize(base64_decode($parametersEncoded));
+        // decode the parameters Array - `bodyTag` contains HTML if set and would lead
+        // to a false-positive XSS-detection, that's why parameters are base64-encoded
+        $parameters = json_decode(base64_decode($parametersEncoded), true);
         foreach ($parameters as $parameterName => $parameterValue) {
-            $this->{$parameterName} = $parameterValue;
+            if (in_array($parameterName, static::ALLOWED_PARAMETER_NAMES, true)) {
+                $this->{$parameterName} = $parameterValue;
+            }
         }
 
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
