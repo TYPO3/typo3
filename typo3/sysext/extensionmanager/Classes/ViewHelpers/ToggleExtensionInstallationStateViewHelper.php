@@ -63,11 +63,11 @@ class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
     public function render()
     {
         $extension = $this->arguments['extension'];
-        // Early return if package is protected or is a runtime activated package and can not be unloaded
+        // Early return if package is protected and can not be unloaded
         /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
         $packageManager = $this->objectManager->get(PackageManager::class);
         $package = $packageManager->getPackage($extension['key']);
-        if ($package->isProtected() || in_array($extension['key'], $GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
+        if ($package->isProtected()) {
             return '';
         }
 

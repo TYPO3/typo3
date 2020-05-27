@@ -429,6 +429,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'runtimeActivatedPackages\']' => [
         'restFiles' => [
             'Deprecation-91030-Runtime-ActivatedPackages.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
 ];

@@ -1621,7 +1621,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtLocalconfCacheIdentifier()
     {
-        return 'ext_localconf_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extLocalconf' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'ext_localconf_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extLocalconf');
     }
 
     /**
@@ -1759,7 +1759,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getBaseTcaCacheIdentifier()
     {
-        return 'tca_base_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'tca_code' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'tca_base_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'tca_code');
     }
 
     /**
@@ -1844,7 +1844,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtTablesCacheIdentifier()
     {
-        return 'ext_tables_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extTables' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'ext_tables_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extTables');
     }
 
     /**

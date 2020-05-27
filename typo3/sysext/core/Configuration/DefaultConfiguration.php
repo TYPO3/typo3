@@ -1112,7 +1112,6 @@ return [
         'allowGlobalInstall' => false,
         'allowLocalInstall' => true,
         'excludeForPackaging' => '(?:\\.(?!htaccess$).*|.*~|.*\\.swp|.*\\.bak|node_modules|bower_components)',
-        'runtimeActivatedPackages' => [],
     ],
     'BE' => [
         // Backend Configuration.

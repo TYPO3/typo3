@@ -106,12 +106,6 @@ class Bootstrap
             $coreCache
         );
 
-        // Push PackageManager instance to ExtensionManagementUtility
-        // Should be fetched through the container (later) but currently a PackageManager
-        // singleton instance is required by PackageManager->activePackageDuringRuntime
-        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
-        ExtensionManagementUtility::setPackageManager($packageManager);
-
         static::setDefaultTimezone();
         static::setMemoryLimit();
 
@@ -142,10 +136,12 @@ class Bootstrap
         // makeInstance() method creates classes using the container from now on.
         GeneralUtility::setContainer($container);
 
-        // Reset singleton instances in order for GeneralUtility::makeInstance() to use
-        // ContainerInterface->get() for early services from now on.
+        // Reset LogManager singleton instance in order for GeneralUtility::makeInstance()
+        // to proxy LogManager retrieval to ContainerInterface->get() from now on.
         GeneralUtility::removeSingletonInstance(LogManager::class, $logManager);
-        GeneralUtility::removeSingletonInstance(PackageManager::class, $packageManager);
+
+        // Push PackageManager instance to ExtensionManagementUtility
+        ExtensionManagementUtility::setPackageManager($packageManager);
 
         if ($failsafe) {
             $bootState->done = true;
