@@ -1352,6 +1352,7 @@ return [
     'TYPO3\CMS\Backend\Template\DocumentTemplate' => [
         'restFiles' => [
             'Deprecation-90421-DocumentTemplate.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Felogin\Hooks\CmsLayout' => [

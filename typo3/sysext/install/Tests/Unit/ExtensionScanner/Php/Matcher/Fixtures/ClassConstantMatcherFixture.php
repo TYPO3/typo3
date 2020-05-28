@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 
 /**
  * Fixture file
@@ -27,14 +27,14 @@ class ClassConstantMatcherFixture
     public function aMethod()
     {
         // Matches
-        $foo = \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR;
-        $foo = DocumentTemplate::STATUS_ICON_ERROR;
+        $foo = \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE;
+        $foo = SystemEnvironmentBuilder::REQUESTTYPE_FE;
         $foo = \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT;
 
         // No match
         $foo = \My\Project\AClass::MY_CONSTANT;
-        $foo = \My\Different\DocumentTemplate::STATUS_ICON_ERROR;
+        $foo = \My\Different\SystemEnvironmentBuilder::REQUESTTYPE_FE;
         // @extensionScannerIgnoreLine
-        $foo = DocumentTemplate::STATUS_ICON_ERROR;
+        $foo = SystemEnvironmentBuilder::REQUESTTYPE_FE;
     }
 }

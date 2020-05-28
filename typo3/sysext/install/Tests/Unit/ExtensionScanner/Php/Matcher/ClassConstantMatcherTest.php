@@ -43,7 +43,7 @@ class ClassConstantMatcherTest extends UnitTestCase
         $traverser->addVisitor(new GeneratorClassesResolver());
 
         $configuration = [
-            'TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR' => [
+            'TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE' => [
                 'restFiles' => [
                     'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
                 ],

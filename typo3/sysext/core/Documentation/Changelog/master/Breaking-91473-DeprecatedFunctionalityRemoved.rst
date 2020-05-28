@@ -11,6 +11,8 @@ Description
 
 The following PHP classes that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
+
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
