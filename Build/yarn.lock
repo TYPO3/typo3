@@ -5823,11 +5823,6 @@ npm-conf@^1.1.0:
     config-chain "^1.1.11"
     pify "^3.0.0"
 
-npm-font-source-sans-pro@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/npm-font-source-sans-pro/-/npm-font-source-sans-pro-1.0.2.tgz#c55c8ae368eebdbcaca65425a0d7e1f9a192a03e"
-  integrity sha1-xVyK42juvbysplQloNfh+aGSoD4=
-
 npm-install-checks@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/npm-install-checks/-/npm-install-checks-3.0.2.tgz#ab2e32ad27baa46720706908e5b14c1852de44d9"
@@ -7695,6 +7690,11 @@ source-map@~0.2.0:
   integrity sha1-2rc/vPwrqBm03gO9b26qSBZLP50=
   dependencies:
     amdefine ">=0.0.4"
+
+source-sans-pro@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/source-sans-pro/-/source-sans-pro-3.6.0.tgz#f4167065ebf096136b1b4f141dbd48886dda1486"
+  integrity sha512-C1RFUGu+YASuqpgDRInTM7Y6OwqeWNOuKn7v0P/4Kh66epTI4PYWwPWP5kdA4l/VqzBAWiqoz5dk0trof73R7w==
 
 spdx-correct@^3.0.0:
   version "3.1.0"

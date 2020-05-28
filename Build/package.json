@@ -90,10 +90,10 @@
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
     "muuri": "^0.8.0",
-    "npm-font-source-sans-pro": "^1.0.2",
     "nprogress": "^0.2.0",
     "requirejs": "^2.3.3",
     "sortablejs": "^1.10.1",
+    "source-sans-pro": "^3.6.0",
     "tablesort": "^5.2.0",
     "taboverride": "^4.0.3",
     "tagsort": "1.4.0"
