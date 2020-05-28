@@ -424,8 +424,8 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= paths.node_modules %>npm-font-source-sans-pro/fonts',
-            src: ['**/*'],
+            cwd: '<%= paths.node_modules %>source-sans-pro',
+            src: ['WOFF/OTF/**', 'WOFF2/TTF/**'],
             dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/SourceSansPro'
           },
           {
