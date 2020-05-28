@@ -330,9 +330,9 @@ class RedirectService implements LoggerAwareInterface
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments((int)$pageId, '0', [])
+            new PageArguments((int)$pageId, '0', []),
+            $frontendUserAuthentication
         );
-        $controller->fe_user = $frontendUserAuthentication;
         $controller->fetch_the_id();
         $controller->calculateLinkVars($queryParams);
         $controller->getConfigArray();

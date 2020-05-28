@@ -13,16 +13,18 @@ return [
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController' => [
         'dropped' => [
-            'maximumNumberOfArguments' => 7,
+            'maximumNumberOfArguments' => 5,
             'restFiles' => [
                 'Breaking-82572-RDCTFunctionalityRemoved.rst',
+                'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
             ],
         ],
         'unused' => [
-            'unusedArgumentNumbers' => [ 4 ],
+            'unusedArgumentNumbers' => [ 6, 7 ],
             'restFiles' => [
                 'Deprecation-86002-TSFEConstructorWithNo_cacheArgument.rst',
                 'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+                'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
             ],
         ],
     ],

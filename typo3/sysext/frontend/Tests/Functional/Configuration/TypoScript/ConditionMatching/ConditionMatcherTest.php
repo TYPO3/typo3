@@ -495,7 +495,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     protected function setupFrontendUserContext(array $groups = []): void
     {
-        $frontendUser = new FrontendUserAuthentication();
+        $frontendUser = $GLOBALS['TSFE']->fe_user;
         $frontendUser->user['uid'] = 13;
         $frontendUser->groupData['uid'] = $groups;
 
@@ -536,7 +536,8 @@ class ConditionMatcherTest extends FunctionalTestCase
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getLanguageById(0),
-            new PageArguments($pageId, '0', [])
+            new PageArguments($pageId, '0', []),
+            new FrontendUserAuthentication()
         );
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);

@@ -16,11 +16,16 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -211,10 +216,27 @@ class CObjectViewHelper extends AbstractViewHelper
      */
     protected static function getContentObjectRenderer()
     {
-        return GeneralUtility::makeInstance(
-            ContentObjectRenderer::class,
-            $GLOBALS['TSFE'] ?? GeneralUtility::makeInstance(TypoScriptFrontendController::class, GeneralUtility::makeInstance(Context::class))
-        );
+        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
+            $tsfe = $GLOBALS['TSFE'];
+        } else {
+            $globalRequest = $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
+            $site = $globalRequest->getAttribute('site');
+            if (!($site instanceof SiteInterface)) {
+                $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
+                $site = reset($sites);
+            }
+            $language = $globalRequest->getAttribute('language') ?? $site->getDefaultLanguage();
+            $pageArguments = $globalRequest->getAttribute('routing') ?? new PageArguments(0, 0, []);
+            $tsfe = GeneralUtility::makeInstance(
+                TypoScriptFrontendController::class,
+                GeneralUtility::makeInstance(Context::class),
+                $site,
+                $language,
+                $pageArguments,
+                GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+            );
+        }
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe);
     }
 
     /**

@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -561,12 +562,14 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             return $languageService;
         });
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
         // Constructor calling initPageRenderer()
         new TypoScriptFrontendController(
             new Context(),
             $site,
             $site->getLanguageById(0),
-            new PageArguments(13, '0', [])
+            new PageArguments(13, '0', []),
+            $frontendUserProphecy->reveal()
         );
         // since PageRenderer is a singleton, this can be queried via the makeInstance call
         self::assertEquals('fr-test', GeneralUtility::makeInstance(PageRenderer::class)->getLanguage());
@@ -594,6 +597,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             return $languageService;
         });
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
         // Constructor calling setOutputLanguage()
         $subject = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
@@ -602,7 +606,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                 new Context(),
                 $site,
                 $site->getLanguageById(0),
-                new PageArguments(13, '0', [])
+                new PageArguments(13, '0', []),
+                $frontendUserProphecy->reveal()
             ]
         );
         $languageService = $subject->_get('languageService');

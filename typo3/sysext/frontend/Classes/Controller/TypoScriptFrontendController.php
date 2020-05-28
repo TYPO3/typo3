@@ -46,7 +46,6 @@ use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -224,9 +223,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * The frontend user
      *
-     * @var FrontendUserAuthentication|string
+     * @var FrontendUserAuthentication
      */
-    public $fe_user = '';
+    public $fe_user;
 
     /**
      * Shows whether logins are allowed in branch
@@ -693,36 +692,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *  - SiteLanguage
      *  - PageArguments (containing ID, Type, cHash and MP arguments)
      *
-     * With TYPO3 v11, they will become mandatory and the method arguments will become strongly typed.
-     * For TYPO3 v10 this is built in a way to ensure maximum compatibility.
-     *
      * Also sets a unique string (->uniqueString) for this script instance; A md5 hash of the microtime()
      *
-     * @param Context|array|null $context the Context object to work on, previously defined to set TYPO3_CONF_VARS
-     * @param mixed|SiteInterface $siteOrId The resolved site to work on, previously this was the value of GeneralUtility::_GP('id')
-     * @param SiteLanguage|int|string $siteLanguageOrType The resolved language to work on, previously the value of GeneralUtility::_GP('type')
-     * @param bool|string|PageArguments|null $pageArguments The PageArguments object containing ID, type and GET parameters, previously unused or the value of GeneralUtility::_GP('no_cache')
-     * @param string|FrontendUserAuthentication|null $cHashOrFrontendUser FrontendUserAuthentication object, previously the value of GeneralUtility::_GP('cHash'), use the PageArguments object instead, will be removed in TYPO3 v11.0
-     * @param string|null $_2 previously was used to define the jumpURL, use the PageArguments object instead, will be removed in TYPO3 v11.0
-     * @param string|null $MP The value of GeneralUtility::_GP('MP'), use the PageArguments object instead, will be removed in TYPO3 v11.0
+     * @param Context $context the Context object to work with
+     * @param SiteInterface $site The resolved site to work with
+     * @param SiteLanguage $siteLanguage The resolved language to work with
+     * @param PageArguments $pageArguments The PageArguments object containing Page ID, type and GET parameters
+     * @param FrontendUserAuthentication $frontendUser a FrontendUserAuthentication object
      */
-    public function __construct($context = null, $siteOrId = null, $siteLanguageOrType = null, $pageArguments = null, $cHashOrFrontendUser = null, $_2 = null, $MP = null)
+    public function __construct(Context $context, SiteInterface $site, SiteLanguage $siteLanguage, PageArguments $pageArguments, FrontendUserAuthentication $frontendUser)
     {
-        $this->initializeContextWithGlobalFallback($context);
-
-        // Fetch the request for fetching data (site/language/pageArguments) for compatibility reasons, not needed
-        // in TYPO3 v11.0 anymore.
-        /** @var ServerRequestInterface $request */
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
-
-        $this->initializeSiteWithCompatibility($siteOrId, $request);
-        $this->initializeSiteLanguageWithCompatibility($siteLanguageOrType, $request);
-        $pageArguments = $this->buildPageArgumentsWithFallback($pageArguments, $request);
-        $pageArguments = $this->initializeFrontendUserOrUpdateCHashArgument($cHashOrFrontendUser, $pageArguments);
-        $pageArguments = $this->initializeLegacyMountPointArgument($MP, $pageArguments);
-
+        $this->initializeContext($context);
+        $this->site = $site;
+        $this->language = $siteLanguage;
         $this->setPageArguments($pageArguments);
-
+        $this->fe_user = $frontendUser;
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         $this->initCaches();
@@ -730,153 +714,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->setOutputLanguage();
     }
 
-    /**
-     * Various initialize methods used for fallback, which can be simplified in TYPO3 v11.0
-     */
-    /**
-     * Used to set $this->context. The first argument was $GLOBALS[TYPO3_CONF_VARS] (array) until TYPO3 v8,
-     * so no type hint possible.
-     *
-     * @param Context|array|null $context
-     */
-    private function initializeContextWithGlobalFallback($context): void
+    private function initializeContext(Context $context): void
     {
-        if ($context instanceof Context) {
-            $this->context = $context;
-        } else {
-            // Use the global context for now
-            trigger_error('TypoScriptFrontendController requires a context object as first constructor argument in TYPO3 v11.0, now falling back to the global Context. This fallback layer will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
-            $this->context = GeneralUtility::makeInstance(Context::class);
-        }
+        $this->context = $context;
         if (!$this->context->hasAspect('frontend.preview')) {
             $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
         }
-    }
-
-    /**
-     * Second argument of the constructor. Until TYPO3 v10, this was the Page ID (int/string) but since TYPO3 v10.0
-     * this can also be a SiteInterface object, which will be mandatory in TYPO3 v11.0. If no Site object is given,
-     * this is fetched from the given request object.
-     *
-     * @param SiteInterface|int|string $siteOrId
-     * @param ServerRequestInterface $request
-     */
-    private function initializeSiteWithCompatibility($siteOrId, ServerRequestInterface $request): void
-    {
-        if ($siteOrId instanceof SiteInterface) {
-            $this->site = $siteOrId;
-        } else {
-            trigger_error('TypoScriptFrontendController should evaluate the parameter "id" by the PageArguments object, not by a separate constructor argument. This functionality will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
-            $this->id = $siteOrId;
-            if ($request->getAttribute('site') instanceof SiteInterface) {
-                $this->site = $request->getAttribute('site');
-            } else {
-                throw new \InvalidArgumentException('TypoScriptFrontendController must be constructed with a valid Site object or a resolved site in the current request as fallback. None given.', 1561583122);
-            }
-        }
-    }
-
-    /**
-     * Until TYPO3 v10.0, the third argument of the constructor was given from GET/POST "type" to define the page type
-     * Since TYPO3 v10.0, this argument is requested to be of type SiteLanguage, which will be mandatory in TYPO3 v11.0.
-     * If no SiteLanguage object is given, this is fetched from the given request object.
-     *
-     * @param SiteLanguage|int|string $siteLanguageOrType
-     * @param ServerRequestInterface $request
-     */
-    private function initializeSiteLanguageWithCompatibility($siteLanguageOrType, ServerRequestInterface $request): void
-    {
-        if ($siteLanguageOrType instanceof SiteLanguage) {
-            $this->language = $siteLanguageOrType;
-        } else {
-            trigger_error('TypoScriptFrontendController should evaluate the parameter "type" by the PageArguments object, not by a separate constructor argument. This functionality will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
-            $this->type = $siteLanguageOrType;
-            if ($request->getAttribute('language') instanceof SiteLanguage) {
-                $this->language = $request->getAttribute('language');
-            } else {
-                throw new \InvalidArgumentException('TypoScriptFrontendController must be constructed with a valid SiteLanguage object or a resolved site in the current request as fallback. None given.', 1561583127);
-            }
-        }
-    }
-
-    /**
-     * Since TYPO3 v10.0, the fourth constructor argument should be of type PageArguments. However, until TYPO3 v8,
-     * this was the GET/POST parameter "no_cache". If no PageArguments object is given, the given request is checked
-     * for the PageArguments.
-     *
-     * @param bool|string|PageArguments|null $pageArguments
-     * @param ServerRequestInterface $request
-     * @return PageArguments
-     */
-    private function buildPageArgumentsWithFallback($pageArguments, ServerRequestInterface $request): PageArguments
-    {
-        if ($pageArguments instanceof PageArguments) {
-            return $pageArguments;
-        }
-        if ($request->getAttribute('routing') instanceof PageArguments) {
-            return $request->getAttribute('routing');
-        }
-        trigger_error('TypoScriptFrontendController must be constructed with a valid PageArguments object or a resolved page argument in the current request as fallback. None given.', E_USER_DEPRECATED);
-        $queryParams = $request->getQueryParams();
-        $pageId = $this->id ?: ($queryParams['id'] ?? $request->getParsedBody()['id'] ?? 0);
-        $pageType = $this->type ?: ($queryParams['type'] ?? $request->getParsedBody()['type'] ?? 0);
-        return new PageArguments((int)$pageId, (string)$pageType, [], $queryParams);
-    }
-
-    /**
-     * Since TYPO3 v10.0, the fifth constructor argument is expected to to be of Type FrontendUserAuthentication.
-     * However, up until TYPO3 v9.5 this argument was used to define the "cHash" GET/POST parameter. In order to
-     * ensure maximum compatibility, a deprecation is triggered if an old argument is still used, and PageArguments
-     * are updated accordingly, and returned.
-     *
-     * @param string|FrontendUserAuthentication|null $cHashOrFrontendUser
-     * @param PageArguments $pageArguments
-     * @return PageArguments
-     */
-    private function initializeFrontendUserOrUpdateCHashArgument($cHashOrFrontendUser, PageArguments $pageArguments): PageArguments
-    {
-        if ($cHashOrFrontendUser === null) {
-            return $pageArguments;
-        }
-        if ($cHashOrFrontendUser instanceof FrontendUserAuthentication) {
-            $this->fe_user = $cHashOrFrontendUser;
-            return $pageArguments;
-        }
-        trigger_error('TypoScriptFrontendController should evaluate the parameter "cHash" by the PageArguments object, not by a separate constructor argument. This functionality will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
-        return new PageArguments(
-            $pageArguments->getPageId(),
-            $pageArguments->getPageType(),
-            $pageArguments->getRouteArguments(),
-            array_replace_recursive($pageArguments->getStaticArguments(), ['cHash' => $cHashOrFrontendUser]),
-            $pageArguments->getDynamicArguments()
-        );
-    }
-
-    /**
-     * Since TYPO3 v10.0 the seventh constructor argument is not needed anymore, as all data is already provided by
-     * the given PageArguments object. However, if a specific MP parameter is given anyways, the PageArguments object
-     * is updated and returned.
-     *
-     * @param string|null $MP
-     * @param PageArguments $pageArguments
-     * @return PageArguments
-     */
-    private function initializeLegacyMountPointArgument(?string $MP, PageArguments $pageArguments): PageArguments
-    {
-        if ($MP === null) {
-            return $pageArguments;
-        }
-        trigger_error('TypoScriptFrontendController should evaluate the MountPoint Parameter "MP" by the PageArguments object, not by a separate constructor argument. This functionality will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
-        if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
-            return $pageArguments;
-        }
-        return new PageArguments(
-            $pageArguments->getPageId(),
-            $pageArguments->getPageType(),
-            $pageArguments->getRouteArguments(),
-            array_replace_recursive($pageArguments->getStaticArguments(), ['MP' => $MP]),
-            $pageArguments->getDynamicArguments()
-        );
     }
 
     /**
@@ -955,7 +798,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $userGroups = array_merge($userGroups, array_map('intval', $groupsFromUserRecord));
         }
 
-        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
+        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
 
         // For every 60 seconds the is_online timestamp for a logged-in user is updated
         if ($isUserAndGroupSet) {
@@ -3883,7 +3726,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public static function getGlobalInstance(): ?self
     {
-        if ($GLOBALS['TSFE'] instanceof self) {
+        if (($GLOBALS['TSFE'] ?? null) instanceof self) {
             return $GLOBALS['TSFE'];
         }
 

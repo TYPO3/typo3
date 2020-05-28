@@ -53,6 +53,7 @@ The following methods changed signature according to previous deprecations in v1
 
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl` (arguments 2, 3 and 4 are dropped)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct`
 
 The following public class properties have been dropped:
 

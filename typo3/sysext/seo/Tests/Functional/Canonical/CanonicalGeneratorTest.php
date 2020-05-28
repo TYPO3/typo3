@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
@@ -61,7 +62,8 @@ class CanonicalGeneratorTest extends AbstractTestCase
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments($uid, '0', [])
+            new PageArguments($uid, '0', []),
+            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
         );
         $typoScriptFrontendController->cObj = new ContentObjectRenderer();
         $typoScriptFrontendController->cObj->setLogger(new NullLogger());
