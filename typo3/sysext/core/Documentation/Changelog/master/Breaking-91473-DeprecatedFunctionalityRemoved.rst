@@ -25,6 +25,7 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->setTSconfigPermissions`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLabelsWithPrefix`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput`
@@ -38,6 +39,7 @@ The following PHP static class methods that have been previously deprecated for 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice`
+- :php:`\TYPO3\CMS\Core\Localization\Locales::initialize`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext`
@@ -58,6 +60,7 @@ The following methods changed signature according to previous deprecations in v1
 
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->doesRecordExist` (argument 3 is now an integer)
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->recordInfoWithPermissionCheck` (argument 3 is now an integer)
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->includeLLFile` (arguments 2 and 3 are dropped)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl` (arguments 2, 3 and 4 are dropped)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct`
@@ -69,7 +72,13 @@ The following public class properties have been dropped:
 
 The following class methods have changed visibility:
 
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->debugLL()`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLLL()`
+
 The following class properties have changed visibility:
+
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->LL_files_cache`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService->LL_labels_cache`
 
 The following ViewHelpers have changed:
 
@@ -139,6 +148,8 @@ The following global options are ignored:
 The following language files and aliases have been removed:
 
 The following global variables have been removed:
+
+- :php:`$GLOBALS['LOCAL_LANG']`
 
 The following hooks have been removed:
 

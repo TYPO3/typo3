@@ -228,6 +228,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-88567-GLOBALS_LOCAL_LANG.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Indexer->backend_initIndexer' => [

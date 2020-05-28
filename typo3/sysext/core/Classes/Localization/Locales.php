@@ -152,17 +152,6 @@ class Locales implements SingletonInterface
     }
 
     /**
-     * Initializes the languages.
-     * @return Locales
-     * @deprecated will be removed in TYPO3 v11.0. Use the regular constructor instead.
-     */
-    public static function initialize(): Locales
-    {
-        trigger_error('Locales::initialize() will be removed in TYPO3 v11.0, fetch the instance of a class via GeneralUtility::makeInstance() or DependencyInjection', E_USER_DEPRECATED);
-        return new self();
-    }
-
-    /**
      * Returns the locales.
      *
      * @return array

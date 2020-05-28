@@ -620,13 +620,16 @@ class SetupModuleController
         $langDefault = htmlspecialchars($language->getLL('lang_default'));
         $languageOptions[$langDefault] = '<option value=""' . ($backendUser->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'])) {
+            // get all labels in default language as well
+            $defaultLanguageLabelService = LanguageService::create('default');
+            $defaultLanguageLabelService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
             // Traverse the number of languages
             $locales = GeneralUtility::makeInstance(Locales::class);
             $languages = $locales->getLanguages();
 
             foreach ($languages as $locale => $name) {
                 if ($locale !== 'default') {
-                    $defaultName = isset($GLOBALS['LOCAL_LANG']['default']['lang_' . $locale]) ? $GLOBALS['LOCAL_LANG']['default']['lang_' . $locale][0]['source'] : $name;
+                    $defaultName = $defaultLanguageLabelService->getLL('lang_') ?: $name;
                     $localizedName = htmlspecialchars($language->getLL('lang_' . $locale));
                     if ($localizedName === '') {
                         $localizedName = htmlspecialchars($name);

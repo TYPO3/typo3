@@ -479,7 +479,6 @@ class Bootstrap
         // Those set otherwise:
         unset($GLOBALS['TBE_MODULES_EXT']);
         unset($GLOBALS['TCA_DESCR']);
-        unset($GLOBALS['LOCAL_LANG']);
     }
 
     /**

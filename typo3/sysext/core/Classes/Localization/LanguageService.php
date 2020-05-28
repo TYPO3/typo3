@@ -16,8 +16,6 @@
 namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,19 +41,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LanguageService
 {
-    use PublicPropertyDeprecationTrait;
-    use PublicMethodDeprecationTrait;
-
-    protected $deprecatedPublicProperties = [
-        'LL_files_cache' => 'The runtime cache variable is only used for internal purposes, and should never be accessed from the outside. Accessing this property will stop working in TYPO3 v11.0.',
-        'LL_labels_cache' => 'The runtime cache variable is only used for internal purposes, and should never be accessed from the outside. Accessing this property will stop working in TYPO3 v11.0.'
-    ];
-
-    protected $deprecatedPublicMethods = [
-        'debugLL' => 'Should never be called directly. use the "debugKey" to actually access the method.',
-        'getLLL' => 'Use "getLL()" or "sL()" instead as API methods.',
-    ];
-
     /**
      * This is set to the language that is currently running for the user
      *
@@ -167,7 +152,7 @@ class LanguageService
      */
     public function getLL($index)
     {
-        return $this->getLLL($index, !empty($GLOBALS['LOCAL_LANG']) ? $GLOBALS['LOCAL_LANG'] : $this->labels);
+        return $this->getLLL($index, $this->labels);
     }
 
     /**
@@ -304,47 +289,14 @@ class LanguageService
      * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = TRUE).
      *
      * @param string $fileRef $fileRef is a file-reference
-     * @param bool $setGlobal Setting in global variable $LOCAL_LANG (or returning the variable), do not set this, will be dropped in TYPO3 v11.0
-     * @param bool $mergeLocalOntoDefault do not set this, will be dropped in TYPO3 v11.0
      * @return array returns the loaded label file
      */
-    public function includeLLFile($fileRef, $setGlobal = null, $mergeLocalOntoDefault = null)
+    public function includeLLFile($fileRef)
     {
-        if ($setGlobal !== null) {
-            trigger_error('LanguageService->includeLLFile() with the second argument set will be removed in TYPO3 v11.0, use "includeLLFile()" with only the file reference.', E_USER_DEPRECATED);
-        } else {
-            $setGlobal = true;
-        }
-        if ($mergeLocalOntoDefault !== null) {
-            trigger_error('LanguageService->includeLLFile() with the third argument set will be removed in TYPO3 v11.0, use "includeLLFile()" with only the file reference.', E_USER_DEPRECATED);
-        } else {
-            $mergeLocalOntoDefault = false;
-        }
-        $globalLanguage = [];
-        // Get default file
         $localLanguage = $this->readLLfile($fileRef);
-        if (is_array($localLanguage) && !empty($localLanguage)) {
-            // it depends on, whether we should return the result or set it in the global $LOCAL_LANG array
-            if ($setGlobal) {
-                $globalLanguage = (array)($GLOBALS['LOCAL_LANG'] ?? $this->labels ?: []);
-                ArrayUtility::mergeRecursiveWithOverrule($globalLanguage, $localLanguage);
-            } else {
-                $globalLanguage = $localLanguage;
-            }
-            // Merge local onto default
-            if ($mergeLocalOntoDefault && $this->lang !== 'default' && is_array($globalLanguage[$this->lang]) && is_array($globalLanguage['default'])) {
-                // array_merge can be used so far the keys are not
-                // numeric - which we assume they are not...
-                $globalLanguage['default'] = array_merge($globalLanguage['default'], $globalLanguage[$this->lang]);
-                unset($globalLanguage[$this->lang]);
-            }
+        if (!empty($localLanguage)) {
+            $this->labels = array_replace_recursive($this->labels, $localLanguage);
         }
-        // Return value if not global is set.
-        if (!$setGlobal) {
-            return $globalLanguage;
-        }
-        $this->labels = $globalLanguage;
-        $GLOBALS['LOCAL_LANG'] = $globalLanguage;
         return $localLanguage;
     }
 
@@ -358,7 +310,7 @@ class LanguageService
     protected function includeLanguageFileRaw($fileRef)
     {
         $labels = $this->readLLfile($fileRef);
-        if (is_array($labels) && !empty($labels)) {
+        if (!empty($labels)) {
             // Merge local onto default
             if ($this->lang !== 'default' && is_array($labels[$this->lang]) && is_array($labels['default'])) {
                 // array_merge can be used so far the keys are not
@@ -376,7 +328,7 @@ class LanguageService
      * @param string $fileRef Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
      * @return array value of $LOCAL_LANG found in the included file, empty if non found
      */
-    protected function readLLfile($fileRef)
+    protected function readLLfile($fileRef): array
     {
         if (isset($this->languageFileCache[$fileRef . $this->lang])) {
             return $this->languageFileCache[$fileRef . $this->lang];
@@ -403,36 +355,6 @@ class LanguageService
         $this->languageFileCache[$fileRef . $this->lang] = $localLanguage;
 
         return $localLanguage;
-    }
-
-    /**
-     * Gets labels with a specific fetched from the current locallang file.
-     * This is useful for e.g gathering javascript labels.
-     *
-     * @param string $prefix Prefix to select the correct labels
-     * @param string $strip Sub-prefix to be removed from label names in the result
-     * @return array Processed labels
-     * @deprecated will be removed in TYPO3 v11.0
-     */
-    public function getLabelsWithPrefix($prefix, $strip = '')
-    {
-        trigger_error('LanguageService->getLabelsWithPrefix() will be removed in TYPO3 v11.0. Prefixing labels was used for various Backend-related JavaScript calls, which is not supported anymore. Prefixes should be applied to the label keys / ids directly instead.', E_USER_DEPRECATED);
-        $extraction = [];
-        if (!empty($GLOBALS['LOCAL_LANG']['default'])) {
-            $labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$this->lang]);
-        } else {
-            $labels = array_merge((array)$this->labels['default'], (array)$this->labels[$this->lang]);
-        }
-        // Regular expression to strip the selection prefix and possibly something from the label name:
-        $labelPattern = '#^' . preg_quote($prefix, '#') . '(' . preg_quote($strip, '#') . ')?#';
-        // Iterate through all locallang labels:
-        foreach ($labels as $label => $value) {
-            if (strpos($label, $prefix) === 0) {
-                $key = preg_replace($labelPattern, '', $label);
-                $extraction[$key] = $value;
-            }
-        }
-        return $extraction;
     }
 
     /**

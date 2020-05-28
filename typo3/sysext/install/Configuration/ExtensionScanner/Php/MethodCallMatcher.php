@@ -4485,6 +4485,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService->getLLL' => [
@@ -4492,6 +4493,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService->debugLL' => [
@@ -4499,6 +4501,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting' => [
