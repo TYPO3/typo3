@@ -860,6 +860,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-87894-GeneralUtilityidnaEncode.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Context\LanguageAspectFactory::createFromTypoScript' => [
@@ -924,7 +925,8 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-89631-UseEnvironmentAPIToFetchApplicationContext.rst'
+            'Deprecation-89631-UseEnvironmentAPIToFetchApplicationContext.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig' => [
@@ -955,55 +957,63 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-90800-GeneralUtilityisRunningOnCgiServerApi.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-90147-UnifiedFileNameValidator.rst'
+            'Deprecation-90147-UnifiedFileNameValidator.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Hex2Bin' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Bin2Hex' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst'
+            'Deprecation-91001-VariousMethodsWithinGeneralUtility.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
 ];

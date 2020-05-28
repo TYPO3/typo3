@@ -34,10 +34,25 @@ The following PHP static class methods that have been previously deprecated for 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Hex2Bin`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Bin2Hex`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isRunningOnCgiServerApi`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::presetApplicationContext`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::resetApplicationContext`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern`
 
 The following PHP methods have been additionally deprecated and are a no-op now:
 
 The following methods changed signature according to previous deprecations in v10 at the end of the argument list:
+
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl` (arguments 2, 3 and 4 are dropped)
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
 
 The following public class properties have been dropped:
 

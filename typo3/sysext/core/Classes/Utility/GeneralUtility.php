@@ -22,13 +22,10 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
-use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -81,14 +78,6 @@ class GeneralUtility
      * @var array<string, class-string> Given class name => final class name
      */
     protected static $finalClassNameCache = [];
-
-    /**
-     * The application context
-     *
-     * @var \TYPO3\CMS\Core\Core\ApplicationContext
-     * @deprecated will be removed in TYPO3 v11.
-     */
-    protected static $applicationContext;
 
     /**
      * @var array<string, mixed>
@@ -344,32 +333,6 @@ class GeneralUtility
     }
 
     /**
-     * Transform a regular IPv6 address from hex-representation into binary
-     *
-     * @param string $hex IPv6 address in hex-presentation
-     * @return string Binary representation (16 characters, 128 characters)
-     * @deprecated - will be removed in TYPO3 v11.0. Use the native PHP function inet_pton($hex) instead.
-     */
-    public static function IPv6Hex2Bin($hex)
-    {
-        trigger_error('GeneralUtility::IPv6Hex2Bin() will be removed in TYPO3 v11.0. Use the native PHP function inet_pton($hex) instead.', E_USER_DEPRECATED);
-        return inet_pton($hex);
-    }
-
-    /**
-     * Transform an IPv6 address from binary to hex-representation
-     *
-     * @param string $bin IPv6 address in hex-presentation
-     * @return string Binary representation (16 characters, 128 characters)
-     * @deprecated - will be removed in TYPO3 v11.0. Use the native PHP function inet_ntop($bin) instead.
-     */
-    public static function IPv6Bin2Hex($bin)
-    {
-        trigger_error('GeneralUtility::IPv6Bin2Hex() will be removed in TYPO3 v11.0. Use the native PHP function inet_ntop($bin) instead.', E_USER_DEPRECATED);
-        return inet_ntop($bin);
-    }
-
-    /**
      * Normalize an IPv6 address to full length
      *
      * @param string $address Given IPv6 address
@@ -429,20 +392,6 @@ class GeneralUtility
             }
         }
         return $normalizedAddress;
-    }
-
-    /**
-     * Compress an IPv6 address to the shortest notation
-     *
-     * @param string $address Given IPv6 address
-     * @return string Compressed address
-     * @see normalizeIPv6()
-     * @deprecated will be removed in TYPO3 v11.0. Use the native PHP functions inet_ntop(inet_pton($address)) instead.
-     */
-    public static function compressIPv6($address)
-    {
-        trigger_error('GeneralUtility::compressIPv6() will be removed in TYPO3 v11.0. Use the native PHP functions inet_ntop(inet_pton($address)) instead.', E_USER_DEPRECATED);
-        return inet_ntop(inet_pton($address));
     }
 
     /**
@@ -851,33 +800,6 @@ class GeneralUtility
         }
         $validator = new EmailValidator();
         return $validator->isValid($email, new RFCValidation());
-    }
-
-    /**
-     * Returns an ASCII string (punicode) representation of $value
-     *
-     * @param string $value
-     * @return string An ASCII encoded (punicode) string
-     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0, use PHP's native idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) function directly.
-     */
-    public static function idnaEncode($value)
-    {
-        trigger_error(__METHOD__ . ' will be removed in TYPO3 v11.0. Use PHPs native "idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)" function directly instead.', E_USER_DEPRECATED);
-        // Early return in case input is not a string or empty
-        if (!is_string($value) || empty($value)) {
-            return (string)$value;
-        }
-        // Split on the last "@" since addresses like "foo@bar"@example.org are valid where the only focus
-        // is an email address
-        $atPosition = strrpos($value, '@');
-        if ($atPosition !== false) {
-            $domain = substr($value, $atPosition + 1);
-            $local = substr($value, 0, $atPosition);
-            $domain = (string)HttpUtility::idn_to_ascii($domain);
-            // Return if no @ found or it is placed at the very beginning or end of the email
-            return $local . '@' . $domain;
-        }
-        return (string)HttpUtility::idn_to_ascii($value);
     }
 
     /**
@@ -1720,87 +1642,21 @@ class GeneralUtility
      * If you are having trouble with proxies when reading URLs you can configure your way out of that with settings within $GLOBALS['TYPO3_CONF_VARS']['HTTP'].
      *
      * @param string $url File/URL to read
-     * @param int $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only - deprecated and will be removed in TYPO3 v11.
-     * @param array $requestHeaders HTTP headers to be used in the request - deprecated and will be removed in TYPO3 v11.
-     * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type) - deprecated and will be removed in TYPO3 v11.
      * @return mixed The content from the resource given as input. FALSE if an error has occurred.
      */
-    public static function getUrl($url, $includeHeader = 0, $requestHeaders = null, &$report = null)
+    public static function getUrl($url)
     {
-        if (func_num_args() > 1) {
-            trigger_error('Calling GeneralUtility::getUrl() with more than one argument will not be supported anymore in TYPO3 v11.0. Use RequestFactory and PSR-7 Requests and Response objects to evaluate the results in detail. For local files, use file_get_contents directly.', E_USER_DEPRECATED);
-        }
-        if (isset($report)) {
-            $report['error'] = 0;
-            $report['message'] = '';
-        }
         // Looks like it's an external file, use Guzzle by default
         if (preg_match('/^(?:http|ftp)s?|s(?:ftp|cp):/', $url)) {
             $requestFactory = static::makeInstance(RequestFactory::class);
-            if (is_array($requestHeaders)) {
-                $configuration = ['headers' => $requestHeaders];
-            } else {
-                $configuration = [];
-            }
-            $includeHeader = (int)$includeHeader;
-            $method = $includeHeader === 2 ? 'HEAD' : 'GET';
             try {
-                if (isset($report)) {
-                    $report['lib'] = 'GuzzleHttp';
-                }
-                $response = $requestFactory->request($url, $method, $configuration);
+                $response = $requestFactory->request($url);
             } catch (RequestException $exception) {
-                if (isset($report)) {
-                    $report['error'] = $exception->getCode() ?: 1518707554;
-                    $report['message'] = $exception->getMessage();
-                    $report['exception'] = $exception;
-                }
                 return false;
             }
-            $content = '';
-            // Add the headers to the output
-            if ($includeHeader) {
-                $parsedURL = parse_url($url);
-                $content = $method . ' ' . ($parsedURL['path'] ?? '/')
-                    . (!empty($parsedURL['query']) ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF
-                    . 'Host: ' . $parsedURL['host'] . CRLF
-                    . 'Connection: close' . CRLF;
-                if (is_array($requestHeaders)) {
-                    $content .= implode(CRLF, $requestHeaders) . CRLF;
-                }
-                foreach ($response->getHeaders() as $headerName => $headerValues) {
-                    $content .= $headerName . ': ' . implode(', ', $headerValues) . CRLF;
-                }
-                // Headers are separated from the body with two CRLFs
-                $content .= CRLF;
-            }
-
-            $content .= $response->getBody()->getContents();
-
-            if (isset($report)) {
-                if ($response->getStatusCode() >= 300 && $response->getStatusCode() < 400) {
-                    $report['http_code'] = $response->getStatusCode();
-                    $report['content_type'] = $response->getHeaderLine('Content-Type');
-                    $report['error'] = $response->getStatusCode();
-                    $report['message'] = $response->getReasonPhrase();
-                } elseif (empty($content)) {
-                    $report['error'] = $response->getStatusCode();
-                    $report['message'] = $response->getReasonPhrase();
-                } elseif ($includeHeader) {
-                    // Set only for $includeHeader to work exactly like PHP variant
-                    $report['http_code'] = $response->getStatusCode();
-                    $report['content_type'] = $response->getHeaderLine('Content-Type');
-                }
-            }
+            $content = $response->getBody()->getContents();
         } else {
-            if (isset($report)) {
-                $report['lib'] = 'file';
-            }
             $content = @file_get_contents($url);
-            if ($content === false && isset($report)) {
-                $report['error'] = -1;
-                $report['message'] = 'Couldn\'t get URL: ' . $url;
-            }
         }
         return $content;
     }
@@ -2101,44 +1957,6 @@ class GeneralUtility
             clearstatcache();
         }
         return $OK;
-    }
-
-    /**
-     * Flushes a directory by first moving to a temporary resource, and then
-     * triggering the remove process. This way directories can be flushed faster
-     * to prevent race conditions on concurrent processes accessing the same directory.
-     *
-     * @param string $directory The directory to be renamed and flushed
-     * @param bool $keepOriginalDirectory Whether to only empty the directory and not remove it
-     * @param bool $flushOpcodeCache Also flush the opcode cache right after renaming the directory.
-     * @return bool Whether the action was successful
-     * @deprecated will be removed in TYPO3 v11.0. This is a specific logic needed for the caching framework, and should be implemented where needed directly.
-     */
-    public static function flushDirectory($directory, $keepOriginalDirectory = false, $flushOpcodeCache = false)
-    {
-        trigger_error('GeneralUtility::flushDirectory() will be removed in TYPO3 v11.0. This is a specific logic needed for the caching framework, and should be implemented where needed directly.', E_USER_DEPRECATED);
-        $result = false;
-
-        if (is_link($directory)) {
-            // Avoid attempting to rename the symlink see #87367
-            $directory = realpath($directory);
-        }
-
-        if (is_dir($directory)) {
-            $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove');
-            if (rename($directory, $temporaryDirectory)) {
-                if ($flushOpcodeCache) {
-                    self::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
-                }
-                if ($keepOriginalDirectory) {
-                    static::mkdir($directory);
-                }
-                clearstatcache();
-                $result = static::rmdir($temporaryDirectory, true);
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -2512,30 +2330,6 @@ class GeneralUtility
         }
         $pString = self::implodeArrayForUrl('', $params);
         return $pString ? $parts . '?' . ltrim($pString, '&') : $parts;
-    }
-
-    /**
-     * Takes a full URL, $url, possibly with a querystring and overlays the $getParams arrays values onto the querystring, packs it all together and returns the URL again.
-     * So basically it adds the parameters in $getParams to an existing URL, $url
-     *
-     * @param string $url URL string
-     * @param array $getParams Array of key/value pairs for get parameters to add/overrule with. Can be multidimensional.
-     * @return string Output URL with added getParams.
-     * @deprecated will be removed in TYPO3 v11.0. Use PSR-7 URI objects instead.
-     */
-    public static function linkThisUrl($url, array $getParams = [])
-    {
-        trigger_error('GeneralUtility::linkThisUrl() will be removed in TYPO3 v11.0. Use PSR-7 URI objects instead.', E_USER_DEPRECATED);
-        $parts = parse_url($url);
-        $getP = [];
-        if ($parts['query']) {
-            parse_str($parts['query'], $getP);
-        }
-        ArrayUtility::mergeRecursiveWithOverrule($getP, $getParams);
-        $uP = explode('?', $url);
-        $params = self::implodeArrayForUrl('', $getP);
-        $outurl = $uP[0] . ($params ? '?' . substr($params, 1) : '');
-        return $outurl;
     }
 
     /**
@@ -2921,18 +2715,6 @@ class GeneralUtility
         return Environment::isCli() || !defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL);
     }
 
-    /**
-     * Gets the unixtime as milliseconds.
-     *
-     * @return int The unixtime as milliseconds
-     * @deprecated will be removed in TYPO3 v11.0. Use the native PHP functions round(microtime(true) * 1000) instead.
-     */
-    public static function milliseconds()
-    {
-        trigger_error('GeneralUtility::milliseconds() will be removed in TYPO3 v11.0. Use the native PHP functions round(microtime(true) * 1000) instead.', E_USER_DEPRECATED);
-        return round(microtime(true) * 1000);
-    }
-
     /*************************
      *
      * TYPO3 SPECIFIC FUNCTIONS
@@ -3025,22 +2807,6 @@ class GeneralUtility
                 || static::isFirstPartOfStr($path, Environment::getPublicPath())
                 || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath)
             );
-    }
-
-    /**
-     * Verifies the input filename against the 'fileDenyPattern'. Returns TRUE if OK.
-     *
-     * Filenames are not allowed to contain control characters. Therefore we
-     * always filter on [[:cntrl:]].
-     *
-     * @param string $filename File path to evaluate
-     * @return bool
-     * @deprecated will be removed in TYPO3 v11.0. Use the new FileNameValidator API instead.
-     */
-    public static function verifyFilenameAgainstDenyPattern($filename)
-    {
-        trigger_error('GeneralUtility::verifyFilenameAgainstDenyPattern() will be removed in TYPO3 v11.0. Use FileNameValidator->isValid($filename) instead.', E_USER_DEPRECATED);
-        return self::makeInstance(FileNameValidator::class)->isValid((string)$filename);
     }
 
     /**
@@ -3678,17 +3444,13 @@ class GeneralUtility
      *
      * @param string $serviceType Type of service (service key).
      * @param string $serviceSubType Sub type like file extensions or similar. Defined by the service.
-     * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
+     * @param array $excludeServiceKeys List of service keys which should be excluded in the search for a service
      * @throws \RuntimeException
      * @return object|string[] The service object or an array with error infos.
      */
-    public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = [])
+    public static function makeInstanceService($serviceType, $serviceSubType = '', array $excludeServiceKeys = [])
     {
         $error = false;
-        if (!is_array($excludeServiceKeys)) {
-            trigger_error('GeneralUtility::makeInstanceService expects the third method argument to be an array instead of a comma-separated string. TYPO3 v11.0 will only support arrays as third argument for $excludeServiceKeys', E_USER_DEPRECATED);
-            $excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, true);
-        }
         $requestInfo = [
             'requestedServiceType' => $serviceType,
             'requestedServiceSubType' => $serviceSubType,
@@ -3749,66 +3511,6 @@ class GeneralUtility
     {
         $json = json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
         return $useHtmlEntities ? htmlspecialchars($json) : $json;
-    }
-
-    /**
-     * Set the ApplicationContext
-     *
-     * This function is used by the Bootstrap to hand over the application context. It must not be used anywhere else,
-     * because the context shall never be changed on runtime!
-     *
-     * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
-     * @throws \RuntimeException if applicationContext is overridden
-     * @internal This is not a public API method, do not use in own extensions, will probably be removed in TYPO3 v11.
-     */
-    public static function presetApplicationContext(ApplicationContext $applicationContext)
-    {
-        if (static::$applicationContext === null) {
-            static::$applicationContext = $applicationContext;
-        } else {
-            throw new \RuntimeException('Trying to override applicationContext which has already been defined!', 1376084316);
-        }
-    }
-
-    /**
-     * For testing purposes only!
-     * The functional test framework uses this to reset the internal $application context
-     * variable in between multiple tests before it is re-initialized using presetApplicationContext()
-     * which otherwise throws an exception if the internal variable is already set.
-     *
-     * @internal May be changed or removed any time, will probably be removed in TYPO3 v11.
-     */
-    public static function resetApplicationContext(): void
-    {
-        static::$applicationContext = null;
-    }
-
-    /**
-     * Get the ApplicationContext
-     *
-     * @return \TYPO3\CMS\Core\Core\ApplicationContext
-     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11, use Environment::getContext() instead.
-     */
-    public static function getApplicationContext()
-    {
-        trigger_error('GeneralUtility::getApplicationContext() has been superseded by Environment API. This method will be removed in TYPO3 v11. Use Environment::getContext() instead.', E_USER_DEPRECATED);
-        // Implicitly setting the application context here, but only if it is used, otherwise this does not
-        // need to be populated.
-        if (static::$applicationContext === null) {
-            static::$applicationContext = Environment::getContext();
-        }
-        return static::$applicationContext;
-    }
-
-    /**
-     * Check if the current request is running on a CGI server API
-     * @return bool
-     * @deprecated will be removed in TYPO3 v11.0. Use Environment::isRunningOnCgiServer() instead.
-     */
-    public static function isRunningOnCgiServerApi()
-    {
-        trigger_error('GeneralUtility::isRunningOnCgiServerApi() will be removed in TYPO3 v11.0. Use "Environment::isRunningOnCgiServer()" instead.', E_USER_DEPRECATED);
-        return Environment::isRunningOnCgiServer();
     }
 
     /**

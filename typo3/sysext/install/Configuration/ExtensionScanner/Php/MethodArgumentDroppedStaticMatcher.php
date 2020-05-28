@@ -70,6 +70,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-90956-AlternativeFetchMethodsAndReportsForGeneralUtilitygetUrl.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
 ];

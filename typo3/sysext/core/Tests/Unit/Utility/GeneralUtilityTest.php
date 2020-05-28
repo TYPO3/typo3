@@ -348,9 +348,9 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertFalse(GeneralUtility::cmpIPv6($ip, $list));
     }
 
-    ////////////////////////////////////////////////
-    // Tests concerning normalizeIPv6 / compressIPv6
-    ////////////////////////////////////////////////
+    /////////////////////////////////
+    // Tests concerning normalizeIPv6
+    /////////////////////////////////
     /**
      * Data provider for normalizeIPv6ReturnsCorrectlyNormalizedFormat
      *
