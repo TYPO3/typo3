@@ -55,7 +55,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
             foreach ($items as $itemKey => $itemValue) {
                 if (!is_array($itemValue)) {
                     throw new \UnexpectedValueException(
-                        'Item ' . $itemKey . ' of field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' is no array as expected',
+                        'Item ' . $itemKey . ' of field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' is not an array as expected',
                         1438607163
                     );
                 }
