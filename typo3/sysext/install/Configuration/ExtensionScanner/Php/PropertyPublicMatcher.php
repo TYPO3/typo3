@@ -599,12 +599,14 @@ return [
         'restFiles' => [
             'Deprecation-88792-ForceTemplateParsingInTSFEAndTemplateService.rst',
             'Feature-88792-AddTypoScriptAspectToHandleTypoScriptRenderingContextSettings.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing' => [
         'restFiles' => [
             'Deprecation-88792-ForceTemplateParsingInTSFEAndTemplateService.rst',
             'Feature-88792-AddTypoScriptAspectToHandleTypoScriptRenderingContextSettings.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash' => [

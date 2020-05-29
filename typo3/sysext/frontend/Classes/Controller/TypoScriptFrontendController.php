@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
-use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -334,13 +333,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      */
     protected $no_cacheBeforePageGen = false;
-
-    /**
-     * Passed to TypoScript template class and tells it to force template rendering
-     * @var bool
-     * @deprecated
-     */
-    private $forceTemplateParsing = false;
 
     /**
      * May be set to the pagesTSconfig
@@ -3742,9 +3734,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 return $this->context->hasAspect('frontend.preview');
-            case 'forceTemplateParsing':
-                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
-                return $this->context->hasAspect('typoscript') && $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing');
         }
         return false;
     }
@@ -3774,12 +3763,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 if ($this->context->hasAspect('frontend.preview')) {
                     return $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
-                }
-                break;
-            case 'forceTemplateParsing':
-                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
-                if ($this->context->hasAspect('typoscript')) {
-                    return $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing');
                 }
                 break;
         }
@@ -3813,10 +3796,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, (bool)$propertyValue));
                 break;
-            case 'forceTemplateParsing':
-                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, (bool)$propertyValue));
-                break;
         }
         $this->$propertyName = $propertyValue;
     }
@@ -3841,10 +3820,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, false));
-                break;
-            case 'forceTemplateParsing':
-                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, false));
                 break;
         }
         unset($this->$propertyName);

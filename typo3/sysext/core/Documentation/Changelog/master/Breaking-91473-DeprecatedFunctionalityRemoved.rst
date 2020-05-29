@@ -74,8 +74,10 @@ The following public class properties have been dropped:
 
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->pMap`
+- :php:`\TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash_array`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->forceTemplateParsing`
 
 The following class methods have changed visibility:
 

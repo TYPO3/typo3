@@ -16,9 +16,7 @@
 namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
@@ -44,15 +42,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class TemplateService
 {
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var string[]
-     */
-    private $deprecatedPublicProperties = [
-        'forceTemplateParsing' => 'Using tmpl->forceTemplateParsing is deprecated and will no longer work with TYPO3 v11.0. Use TypoScriptAspect from Context instead.'
-    ];
-
     /**
      * option to enable logging, time-tracking (FE-only)
      * usually, this is only done when
@@ -68,14 +57,6 @@ class TemplateService
      * @var bool
      */
     public $tt_track = true;
-
-    /**
-     * If set, the template is always rendered. Used from Admin Panel.
-     *
-     * @var bool
-     * @deprecated
-     */
-    private $forceTemplateParsing = false;
 
     /**
      * This array is passed on to matchObj by generateConfig().
@@ -421,10 +402,6 @@ class TemplateService
     public function start($theRootLine)
     {
         $cc = [];
-        // @deprecated - can be removed with TYPO3 v11.0
-        if ((bool)$this->forceTemplateParsing) {
-            $this->context->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, true));
-        }
         if (is_array($theRootLine)) {
             $constantsData = [];
             $setupData = [];
