@@ -12,9 +12,17 @@ Description
 The following PHP classes that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\FileMount`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection`
+- :php:`\TYPO3\CMS\Extbase\Domain\Repository\FileMountRepository`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Request`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Response`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter`
+- :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter`
 
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 

@@ -1379,36 +1379,43 @@ return [
     'TYPO3\CMS\Extbase\Domain\Model\FileMount' => [
         'restFiles' => [
             'Deprecation-90686-ModelFileMount.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface' => [

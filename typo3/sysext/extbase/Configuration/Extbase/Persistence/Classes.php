@@ -3,20 +3,6 @@
 declare(strict_types=1);
 
 return [
-    \TYPO3\CMS\Extbase\Domain\Model\FileMount::class => [
-        'tableName' => 'sys_filemounts',
-        'properties' => [
-            'title' => [
-                'fieldName' => 'title'
-            ],
-            'path' => [
-                'fieldName' => 'path'
-            ],
-            'isAbsolutePath' => [
-                'fieldName' => 'base'
-            ],
-        ],
-    ],
     \TYPO3\CMS\Extbase\Domain\Model\FileReference::class => [
         'tableName' => 'sys_file_reference',
     ],
