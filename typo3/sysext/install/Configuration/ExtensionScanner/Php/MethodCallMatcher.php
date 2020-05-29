@@ -4131,6 +4131,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash' => [
@@ -4389,6 +4390,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions' => [
@@ -4396,6 +4398,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\File\BasicFileUtility->setFileExtensionPermissions' => [

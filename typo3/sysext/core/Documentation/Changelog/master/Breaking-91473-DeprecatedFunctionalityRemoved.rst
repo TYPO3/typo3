@@ -22,6 +22,9 @@ The following PHP class aliases that have been previously deprecated for v10 hav
 
 The following PHP class methods that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions`
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads`
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->setTSconfigPermissions`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput`
@@ -53,11 +56,16 @@ The following PHP methods have been additionally deprecated and are a no-op now:
 
 The following methods changed signature according to previous deprecations in v10 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->doesRecordExist` (argument 3 is now an integer)
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->recordInfoWithPermissionCheck` (argument 3 is now an integer)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl` (arguments 2, 3 and 4 are dropped)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct`
 
 The following public class properties have been dropped:
+
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions`
+- :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->pMap`
 
 The following class methods have changed visibility:
 

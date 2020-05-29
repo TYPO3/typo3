@@ -377,18 +377,6 @@ class DataHandler implements LoggerAwareInterface
     public $admin;
 
     /**
-     * Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
-     *
-     * @var array
-     * @deprecated will be removed in TYPO3 11. use PagePermissionAssembler instead.
-     */
-    public $defaultPermissions = [
-        'user' => 'show,edit,delete,new,editcontent',
-        'group' => 'show,edit,new,editcontent',
-        'everybody' => ''
-    ];
-
-    /**
      * @var PagePermissionAssembler
      */
     protected $pagePermissionAssembler;
@@ -437,23 +425,6 @@ class DataHandler implements LoggerAwareInterface
     protected $historyRecords = [];
 
     // Internal static:
-    /**
-     * Permission mapping
-     *
-     * @var array
-     * @deprecated will be removed in TYPO3 11. use PagePermissionAssembler instead.
-     */
-    public $pMap = [
-        'show' => 1,
-        // 1st bit
-        'edit' => 2,
-        // 2nd bit
-        'delete' => 4,
-        // 3rd bit
-        'new' => 8,
-        // 4th bit
-        'editcontent' => 16
-    ];
 
     /**
      * The interval between sorting numbers used with tables with a 'sorting' field defined.
@@ -702,17 +673,6 @@ class DataHandler implements LoggerAwareInterface
             $this->setDefaultsFromUserTS($tcaDefaultOverride);
         }
 
-        // Initializing default permissions for pages
-        $defaultPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'];
-        if (isset($defaultPermissions['user'])) {
-            $this->defaultPermissions['user'] = $defaultPermissions['user'];
-        }
-        if (isset($defaultPermissions['group'])) {
-            $this->defaultPermissions['group'] = $defaultPermissions['group'];
-        }
-        if (isset($defaultPermissions['everybody'])) {
-            $this->defaultPermissions['everybody'] = $defaultPermissions['everybody'];
-        }
         // generates the excludelist, based on TCA/exclude-flag and non_exclude_fields for the user:
         if (!$this->admin) {
             $this->excludedTablesAndFields = array_flip($this->getExcludeListArray());
@@ -812,16 +772,6 @@ class DataHandler implements LoggerAwareInterface
             $cleanFieldArray[$sortColumn] = $prepopulatedFieldArray[$sortColumn];
         }
         return $cleanFieldArray;
-    }
-
-    /**
-     * Dummy method formerly used for file handling.
-     *
-     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.
-     */
-    public function process_uploads()
-    {
-        trigger_error('DataHandler->process_uploads() will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
     }
 
     /*********************************************
@@ -6223,17 +6173,14 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record table name
      * @param int $id Record UID
-     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array. Only integers are supported starting with TYPO3 v11.
+     * @param int $perms Permission restrictions to observe: integer that will be bitwise AND'ed.
      * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
      *
      * @throws \RuntimeException
      * @internal should only be used from within DataHandler
      */
-    public function doesRecordExist($table, $id, $perms)
+    public function doesRecordExist($table, $id, int $perms)
     {
-        if (!MathUtility::canBeInterpretedAsInteger($perms)) {
-            trigger_error('Support for handing in permissions as string into "doesRecordExist" will be not be supported with TYPO3 v11 anymore. Use the Permission BitSet class instead.', E_USER_DEPRECATED);
-        }
         return $this->recordInfoWithPermissionCheck($table, $id, $perms, 'uid, pid') !== false;
     }
 
@@ -6532,12 +6479,12 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record table name
      * @param int $id Record UID
-     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array. With TYPO3 v11, only integers are allowed
+     * @param int $perms Permission restrictions to observe: An integer that will be bitwise AND'ed.
      * @param string $fieldList - fields - default is '*'
      * @throws \RuntimeException
      * @return array|bool Row if exists and accessible, false otherwise
      */
-    protected function recordInfoWithPermissionCheck(string $table, int $id, $perms, string $fieldList = '*')
+    protected function recordInfoWithPermissionCheck(string $table, int $id, int $perms, string $fieldList = '*')
     {
         if ($this->bypassAccessCheckForRecords) {
             $columns = GeneralUtility::trimExplode(',', $fieldList, true);
@@ -6552,27 +6499,6 @@ class DataHandler implements LoggerAwareInterface
                 ->fetch();
 
             return $record ?: false;
-        }
-        // Processing the incoming $perms (from possible string to integer that can be AND'ed)
-        if (!MathUtility::canBeInterpretedAsInteger($perms)) {
-            trigger_error('Support for handing in permissions as string into "recordInfoWithPermissionCheck" will be not be supported with TYPO3 v11 anymore. Use the Permission BitSet class instead.', E_USER_DEPRECATED);
-            if ($table !== 'pages') {
-                switch ($perms) {
-                    case 'edit':
-                    case 'delete':
-                    case 'new':
-                        // This holds it all in case the record is not page!!
-                        if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
-                            $perms = 'edit';
-                        } else {
-                            $perms = 'editcontent';
-                        }
-                        break;
-                }
-            }
-            $perms = (int)(Permission::getMap()[$perms] ?? 0);
-        } else {
-            $perms = (int)$perms;
         }
         if (!$perms) {
             throw new \RuntimeException('Internal ERROR: no permissions to check for non-admin user', 1270853920);
@@ -7259,36 +7185,6 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Setting up perms_* fields in $fieldArray based on TSconfig input
-     * Used for new pages
-     *
-     * @param array $fieldArray Field Array, returned with modifications
-     * @param array $TSConfig_p TSconfig properties
-     * @return array Modified Field Array
-     * @deprecated will be removed in TYPO3 v11.0 - Use PagePermissionAssembler instead.
-     */
-    public function setTSconfigPermissions($fieldArray, $TSConfig_p)
-    {
-        trigger_error('DataHandler->setTSconfigPermissions will be removed in TYPO3 v11.0. Use the PagePermissionAssembler API instead.', E_USER_DEPRECATED);
-        if ((string)$TSConfig_p['userid'] !== '') {
-            $fieldArray['perms_userid'] = (int)$TSConfig_p['userid'];
-        }
-        if ((string)$TSConfig_p['groupid'] !== '') {
-            $fieldArray['perms_groupid'] = (int)$TSConfig_p['groupid'];
-        }
-        if ((string)$TSConfig_p['user'] !== '') {
-            $fieldArray['perms_user'] = MathUtility::canBeInterpretedAsInteger($TSConfig_p['user']) ? $TSConfig_p['user'] : $this->assemblePermissions($TSConfig_p['user']);
-        }
-        if ((string)$TSConfig_p['group'] !== '') {
-            $fieldArray['perms_group'] = MathUtility::canBeInterpretedAsInteger($TSConfig_p['group']) ? $TSConfig_p['group'] : $this->assemblePermissions($TSConfig_p['group']);
-        }
-        if ((string)$TSConfig_p['everybody'] !== '') {
-            $fieldArray['perms_everybody'] = MathUtility::canBeInterpretedAsInteger($TSConfig_p['everybody']) ? $TSConfig_p['everybody'] : $this->assemblePermissions($TSConfig_p['everybody']);
-        }
-        return $fieldArray;
-    }
-
-    /**
      * Returns a fieldArray with default values. Values will be picked up from the TCA array looking at the config key "default" for each column. If values are set in ->defaultValues they will overrule though.
      * Used for new records and during copy operations for defaults
      *
@@ -7452,29 +7348,6 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return $result;
-    }
-
-    /**
-     * Calculates the bitvalue of the permissions given in a string, comma-separated
-     *
-     * @param string $string List of pMap strings
-     * @return int Integer mask
-     * @see setTSconfigPermissions()
-     * @see newFieldArray()
-     * @deprecated will be removed in TYPO3 v11.0 - Use PagePermissionAssembler instead.
-     */
-    public function assemblePermissions($string)
-    {
-        trigger_error('DataHandler->assemblePermissions will be removed in TYPO3 v11.0. Use the PagePermissionAssembler API instead.', E_USER_DEPRECATED);
-        $keyArr = GeneralUtility::trimExplode(',', $string, true);
-        $value = 0;
-        $permissionMap = Permission::getMap();
-        foreach ($keyArr as $key) {
-            if ($key && isset($permissionMap[$key])) {
-                $value |= $permissionMap[$key];
-            }
-        }
-        return $value;
     }
 
     /**

@@ -650,11 +650,13 @@ return [
     'TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions' => [
         'restFiles' => [
             'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->pMap' => [
         'restFiles' => [
             'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
 ];
