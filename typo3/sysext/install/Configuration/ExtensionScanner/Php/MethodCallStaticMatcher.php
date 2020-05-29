@@ -952,6 +952,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-90260-ResourceFactorygetInstancePseudo-factory.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::isRunningOnCgiServerApi' => [

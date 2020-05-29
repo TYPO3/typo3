@@ -95,7 +95,7 @@ class FileFacade
     public function getMetadataUid(): int
     {
         $uid = 0;
-        $method = '_getMetadata';
+        $method = 'getMetadata';
         if (is_callable([$this->resource, $method])) {
             $metadata = call_user_func([$this->resource, $method]);
 

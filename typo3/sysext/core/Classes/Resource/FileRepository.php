@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
-use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -178,33 +176,5 @@ class FileRepository extends AbstractRepository
             }
         );
         return $itemList;
-    }
-
-    /**
-     * Search for files by name in a given folder
-     *
-     * @param Folder $folder
-     * @param string $fileName
-     * @return File[]
-     * @internal
-     * @deprecated Use ResourceStorage::searchFiles instead
-     */
-    public function searchByName(Folder $folder, $fileName)
-    {
-        trigger_error(__METHOD__ . ' is deprecated. Use ResourceStorage::searchFiles instead', \E_USER_DEPRECATED);
-        $searchDemand = FileSearchDemand::createForSearchTerm($fileName)
-            ->addSearchField('sys_file', 'name');
-
-        return iterator_to_array($folder->searchFiles($searchDemand));
-    }
-
-    /**
-     * Return a file index repository
-     *
-     * @return FileIndexRepository
-     */
-    protected function getFileIndexRepository()
-    {
-        return FileIndexRepository::getInstance();
     }
 }

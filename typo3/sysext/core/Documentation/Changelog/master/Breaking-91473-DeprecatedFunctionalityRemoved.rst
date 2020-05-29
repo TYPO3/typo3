@@ -36,6 +36,11 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->setTSconfigPermissions`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLabelsWithPrefix`
+- :php:`\TYPO3\CMS\Core\Resource\File->_getMetaData`
+- :php:`\TYPO3\CMS\Core\Resource\FileRepository->searchByName`
+- :php:`\TYPO3\CMS\Core\Resource\Index\FileIndexRepository->findBySearchWordInMetaData`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceFactory->getInstance`
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->checkFileAndFolderNameFilters`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getUseCacheHash`

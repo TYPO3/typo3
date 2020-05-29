@@ -97,22 +97,6 @@ class File extends AbstractFile
         return array_merge(parent::getProperties(), array_diff_key($this->getMetaData()->get(), parent::getProperties()));
     }
 
-    /**
-     * Returns the MetaData
-     *
-     * @return array
-     * @internal
-     * @deprecated
-     */
-    public function _getMetaData()
-    {
-        trigger_error(
-            'The method ' . __CLASS__ . '::' . __METHOD__ . ' has been marked as deprecated and will be removed in TYPO3 v11. Use `->getMetaData()->get()` instead.',
-            E_USER_DEPRECATED
-        );
-        return $this->getMetaData()->get();
-    }
-
     /******************
      * CONTENTS RELATED
      ******************/

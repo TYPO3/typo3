@@ -40,18 +40,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ResourceFactory implements SingletonInterface
 {
     /**
-     * Gets a singleton instance of this class.
-     *
-     * @return ResourceFactory
-     * @deprecated use regular DI or - if not possible - GeneralUtility::makeInstance instead, as this Factory does not serve any purpose
-     */
-    public static function getInstance()
-    {
-        trigger_error('ResourceFactory::getInstance() will be removed in TYPO3 v11.0. Use constructor-level Dependency Injection or GeneralUtility::makeInstance(ResourceFactory::class) instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(__CLASS__);
-    }
-
-    /**
      * @var ResourceStorage[]
      */
     protected $storageInstances = [];

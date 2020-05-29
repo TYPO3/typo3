@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
-use TYPO3\CMS\Core\Resource\Search\FileSearchQuery;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -571,26 +569,5 @@ class FileIndexRepository implements SingletonInterface
         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
         $refIndexObj->enableRuntimeCache();
         $refIndexObj->updateRefIndexTable($this->table, $id);
-    }
-
-    /**
-     * Search for files by search word in metadata
-     *
-     * @param string $searchWord search word
-     * @deprecated Use FileSearchQuery instead
-     * @return array
-     */
-    public function findBySearchWordInMetaData($searchWord)
-    {
-        trigger_error(__METHOD__ . ' is deprecated. Use FileSearchQuery instead', \E_USER_DEPRECATED);
-        $searchDemand = FileSearchDemand::createForSearchTerm($searchWord);
-        $searchQuery = FileSearchQuery::createForSearchDemand($searchDemand);
-        $result = $searchQuery->execute();
-        $fileRecords = [];
-        while ($fileRecord = $result->fetch()) {
-            $fileRecords[$fileRecord['identifier']] = $fileRecord;
-        }
-
-        return $fileRecords;
     }
 }
