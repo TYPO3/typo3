@@ -150,11 +150,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
         }
 
-        if (isset($conf['useCacheHash'])) {
-            // This option will be removed in TYPO3 v11.0.
-            trigger_error('Setting typolink.useCacheHash has no effect anymore. Remove the option in all your TypoScript code and Fluid templates.', E_USER_DEPRECATED);
-        }
-
         // get config.linkVars and prepend them before the actual GET parameters
         $queryParameters = [];
         parse_str($addQueryParams, $queryParameters);

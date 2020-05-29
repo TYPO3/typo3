@@ -60,7 +60,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *        target="_blank"
  *        class="ico-class" title="some title"
  *        additionalAttributes="{type:'button'}"
- *        useCacheHash="true"
  *    >
  *       Linktext
  *    </f:link.typolink>
@@ -96,8 +95,6 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
         $this->registerArgument('additionalParams', 'string', '', false, '');
         $this->registerArgument('additionalAttributes', 'array', '', false, []);
-        // @deprecated useCacheHash
-        $this->registerArgument('useCacheHash', 'bool', 'Deprecated: You should not need this.', false, null);
         $this->registerArgument('addQueryString', 'bool', '', false, false);
         $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
         $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
@@ -117,9 +114,6 @@ class TypolinkViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        if (isset($arguments['useCacheHash'])) {
-            trigger_error('Using the argument "useCacheHash" in <f:link.typolink> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
-        }
         $parameter = $arguments['parameter'] ?? '';
         $partsAs = $arguments['parts-as'] ?? 'typoLinkParts';
 

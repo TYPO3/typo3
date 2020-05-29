@@ -74,8 +74,6 @@ class PageViewHelper extends AbstractViewHelper
         $this->registerArgument('pageType', 'int', 'type of the target page. See typolink.parameter', false, 0);
         $this->registerArgument('noCache', 'bool', 'set this to disable caching for the target page. You should not need this.', false, false);
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
-        // @deprecated
-        $this->registerArgument('noCacheHash', 'bool', 'Deprecated: Set this to suppress the cHash query parameter created by TypoLink. You should not need this.', false, null);
         $this->registerArgument('section', 'string', 'the anchor to be added to the URI', false, '');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.', false, false);
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute', false, false);
@@ -96,9 +94,6 @@ class PageViewHelper extends AbstractViewHelper
         $additionalParams = $arguments['additionalParams'];
         $pageType = $arguments['pageType'];
         $noCache = $arguments['noCache'];
-        if (isset($arguments['noCacheHash'])) {
-            trigger_error('Using the argument "noCacheHash" in <f:uri.page> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
-        }
         $section = $arguments['section'];
         $language = $arguments['language'] ?? null;
         $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'];

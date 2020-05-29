@@ -511,28 +511,6 @@ class UriBuilder
     }
 
     /**
-     * by default TRUE; if FALSE, no cHash parameter will be appended to the URI
-     * If noCache is set, this setting will be ignored.
-     *
-     * @return static the current UriBuilder to allow method chaining
-     */
-    public function setUseCacheHash(): UriBuilder
-    {
-        trigger_error('Calling UriBuilder->setUseCacheHash() will be removed in TYPO3 v11.0. TYPO3 Core routing is taking care of handling this argument. Simply remove the line to avoid the notice.', E_USER_DEPRECATED);
-        return $this;
-    }
-
-    /**
-     * @return bool
-     * @internal
-     */
-    public function getUseCacheHash(): bool
-    {
-        trigger_error('Calling UriBuilder->getUseCacheHash() will be removed in TYPO3 v11.0. TYPO3 Core routing is taking care of handling this argument. Simply remove the line to avoid the notice.', E_USER_DEPRECATED);
-        return true;
-    }
-
-    /**
      * Returns the arguments being used for the last URI being built.
      * This is only set after build() / uriFor() has been called.
      *

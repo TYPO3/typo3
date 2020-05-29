@@ -128,14 +128,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected $language;
 
     /**
-     * The submitted cHash
-     * @var string
-     * @internal
-     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, as this is now within the PageArguments property.
-     */
-    protected $cHash = '';
-
-    /**
      * @var PageArguments
      * @internal
      */
@@ -349,14 +341,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @deprecated
      */
     private $forceTemplateParsing = false;
-
-    /**
-     * The array which cHash_calc is based on, see PageArgumentValidator class.
-     * @var array
-     * @internal
-     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, see getRelevantParametersForCachingFromPageArguments()
-     */
-    protected $cHash_array = [];
 
     /**
      * May be set to the pagesTSconfig
@@ -1591,36 +1575,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Template and caching related functions.
      *
      *******************************************/
-    /**
-     * Will disable caching if the cHash value was not set when having dynamic arguments in GET query parameters.
-     * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cacheable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
-     *
-     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. The PSR-15 middleware PageArgumentValidator is already taking care of this.
-     */
-    public function reqCHash()
-    {
-        trigger_error('TypoScriptFrontendController->reqCHash() is not needed anymore, as all functionality is handled via the PSR-15 PageArgumentValidator middleware already.', E_USER_DEPRECATED);
-        if (!empty($this->pageArguments->getArguments()['cHash']) || empty($this->pageArguments->getDynamicArguments())) {
-            return;
-        }
-        $queryParams = $this->pageArguments->getDynamicArguments();
-        $queryParams['id'] = $this->pageArguments->getPageId();
-        $argumentsThatWouldRequireCacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class)
-                ->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
-        if (empty($argumentsThatWouldRequireCacheHash)) {
-            return;
-        }
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']) {
-            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                $GLOBALS['TYPO3_REQUEST'],
-                'Request parameters could not be validated (&cHash empty)',
-                ['code' => PageAccessFailureReasons::CACHEHASH_EMPTY]
-            );
-            throw new ImmediateResponseException($response, 1533931354);
-        }
-        $this->disableCache();
-        $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
-    }
 
     protected function setPageArguments(PageArguments $pageArguments): void
     {
@@ -3779,13 +3733,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'domainStartPage':
                 trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return  true;
-            case 'cHash':
-                trigger_error('Property $TSFE->cHash is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return isset($this->pageArguments->getArguments()['cHash']);
-            case 'cHash_array':
-                trigger_error('Property $TSFE->cHash_array is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                $value = $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments);
-                return !empty($value);
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
@@ -3817,12 +3764,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'domainStartPage':
                 trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return $this->site->getRootPageId();
-            case 'cHash':
-                trigger_error('Property $TSFE->cHash is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return $this->pageArguments->getArguments()['cHash'] ?? false;
-            case 'cHash_array':
-                trigger_error('Property $TSFE->cHash_array is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments);
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return $this->sys_language_isocode ?? $this->language->getTwoLetterIsoCode();
@@ -3862,12 +3803,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'domainStartPage':
                 trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 break;
-            case 'cHash':
-                trigger_error('Property $TSFE->cHash is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'cHash_array':
-                trigger_error('Property $TSFE->cHash_array is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 break;
@@ -3896,12 +3831,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         switch ($propertyName) {
             case 'domainStartPage':
                 trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'cHash':
-                trigger_error('Property $TSFE->cHash is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'cHash_array':
-                trigger_error('Property $TSFE->cHash_array is not in use anymore as this information is now stored within the PageArguments object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 break;
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);

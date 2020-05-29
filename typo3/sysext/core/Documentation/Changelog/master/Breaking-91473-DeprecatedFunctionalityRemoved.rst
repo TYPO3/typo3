@@ -27,8 +27,11 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->setTSconfigPermissions`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLabelsWithPrefix`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getUseCacheHash`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->settingLocale`
 
 
@@ -69,6 +72,8 @@ The following public class properties have been dropped:
 
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->pMap`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash_array`
 
 The following class methods have changed visibility:
 
@@ -82,11 +87,24 @@ The following class properties have changed visibility:
 
 The following ViewHelpers have changed:
 
+- :html:`<f:form>` ViewHelper argument "noCacheHash" is dropped
+- :html:`<f:link.action>` ViewHelper argument "noCacheHash" is dropped
+- :html:`<f:link.page>` ViewHelper argument "noCacheHash" is dropped
+- :html:`<f:link.typolink>` ViewHelper argument "useCacheHash" is dropped
+- :html:`<f:uri.action>` ViewHelper argument "noCacheHash" is dropped
+- :html:`<f:uri.page>` ViewHelper argument "noCacheHash" is dropped
+- :html:`<f:uri.typolink>` ViewHelper argument "useCacheHash" is dropped
+- :html:`<f:widget.link>` ViewHelper argument "useCacheHash" is dropped
+- :html:`<f:widget.uri>` ViewHelper argument "useCacheHash" is dropped
+
 The following scheduler tasks have been removed:
 
 The following user TSconfig options have been dropped:
 
 The following TypoScript options have been dropped:
+
+- Extbase TypoScript option `requireCHashArgumentForActionArguments` for any plugin
+- `typolink.useCacheHash`
 
 The following constants have been dropped:
 

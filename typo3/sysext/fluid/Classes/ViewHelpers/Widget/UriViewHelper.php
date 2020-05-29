@@ -43,8 +43,6 @@ class UriViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        // @deprecated
-        $this->registerArgument('useCacheHash', 'bool', 'Deprecated: True whether the cache hash should be appended to the URL', false, null);
         $this->registerArgument('addQueryStringMethod', 'string', 'Method to be used for query string');
         $this->registerArgument('action', 'string', 'Target action');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);
@@ -111,9 +109,6 @@ class UriViewHelper extends AbstractViewHelper
         }
         if (($arguments['format'] ?? '') !== '') {
             $parameters['format'] = $arguments['format'];
-        }
-        if (isset($arguments['useCacheHash'])) {
-            trigger_error('Using the argument "useCacheHash" in <f:widget.uri> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
         }
         $uriBuilder->reset()
             ->setArguments([$argumentPrefix => $parameters])

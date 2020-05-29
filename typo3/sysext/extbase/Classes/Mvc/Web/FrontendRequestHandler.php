@@ -57,10 +57,6 @@ class FrontendRequestHandler extends AbstractRequestHandler
             $request->setIsCached(false);
         }
 
-        if ($this->configurationManager->isFeatureEnabled('requireCHashArgumentForActionArguments')) {
-            trigger_error('The option requireCHashArgumentForActionArguments is removed', E_USER_DEPRECATED);
-        }
-
         /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
         $response = $this->objectManager->get(Response::class);
         $this->dispatcher->dispatch($request, $response);
