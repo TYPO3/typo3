@@ -558,6 +558,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_isocode' => [
         'restFiles' => [
             'Deprecation-88559-TSFE-sys_language_isocode.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Indexer->cHashParams' => [
@@ -568,6 +569,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fePreview' => [
         'restFiles' => [
             'Feature-88791-IntroducePreviewAspectInContext.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->modSharedTSconfig' => [
@@ -612,16 +614,19 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash' => [
         'restFiles' => [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash_array' => [
         'restFiles' => [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->domainStartPage' => [
         'restFiles' => [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->changeLog' => [
@@ -637,6 +642,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->divSection' => [
         'restFiles' => [
             'Deprecation-89722-GMENU_LAYERSRelatedPropertyTSFE-divSection.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_USER_INT_obj' => [

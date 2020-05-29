@@ -182,14 +182,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $pageNotFound = 0;
 
     /**
-     * Domain start page
-     * @var int
-     * @internal
-     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, as this is now within the Site. see $this->site->getRootPageId()
-     */
-    protected $domainStartPage = 0;
-
-    /**
      * Array containing a history of why a requested page was not accessible.
      * @var array
      */
@@ -220,16 +212,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      */
     protected $loginAllowedInBranch_mode = '';
-
-    /**
-     * Flag indication that preview is active. This is based on the login of a
-     * backend user and whether the backend user has read access to the current
-     * page.
-     * @var int
-     * @internal
-     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, as this is now within PreviewAspect
-     */
-    protected $fePreview = 0;
 
     /**
      * Value that contains the simulated usergroup if any
@@ -382,13 +364,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $inlineJS;
 
     /**
-     * Used to accumulate DHTML-layers.
-     * @var string
-     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11, use custom USER_INT objects instead.
-     */
-    public $divSection = '';
-
-    /**
      * Default internal target
      * @var string
      */
@@ -463,13 +438,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var string
      */
     public $displayFieldEditIcons = '';
-
-    /**
-     * Is set to the iso code of the current language
-     * @var string
-     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, as this is now within SiteLanguage->getTwoLetterIsoCode()
-     */
-    protected $sys_language_isocode = '';
 
     /**
      * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
@@ -3677,125 +3645,5 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPageArguments(): PageArguments
     {
         return $this->pageArguments;
-    }
-
-    /**
-     * Deprecation messages for TYPO3 10 - public properties of TSFE which have been (re)moved
-     */
-    /**
-     * Checks if the property of the given name is set.
-     *
-     * Unmarked protected properties must return false as usual.
-     * Marked properties are evaluated by isset().
-     *
-     * This method is not called for public properties.
-     *
-     * @param string $propertyName
-     * @return bool
-     */
-    public function __isset(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'domainStartPage':
-                trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return  true;
-            case 'sys_language_isocode':
-                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'divSection':
-                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return isset($this->$propertyName);
-            case 'fePreview':
-                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
-                return $this->context->hasAspect('frontend.preview');
-        }
-        return false;
-    }
-
-    /**
-     * Gets the value of the property of the given name if tagged.
-     *
-     * The evaluation is done in the assumption that this method is never
-     * reached for a public property.
-     *
-     * @param string $propertyName
-     * @return mixed
-     */
-    public function __get(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'domainStartPage':
-                trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return $this->site->getRootPageId();
-            case 'sys_language_isocode':
-                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                return $this->sys_language_isocode ?? $this->language->getTwoLetterIsoCode();
-            case 'divSection':
-                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'fePreview':
-                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
-                if ($this->context->hasAspect('frontend.preview')) {
-                    return $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
-                }
-                break;
-        }
-        return $this->$propertyName;
-    }
-
-    /**
-     * Sets the property of the given name if tagged.
-     *
-     * Additionally it's allowed to set unknown properties.
-     *
-     * The evaluation is done in the assumption that this method is never
-     * reached for a public property.
-     *
-     * @param string $propertyName
-     * @param mixed $propertyValue
-     */
-    public function __set(string $propertyName, $propertyValue)
-    {
-        switch ($propertyName) {
-            case 'domainStartPage':
-                trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'sys_language_isocode':
-                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'divSection':
-                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'fePreview':
-                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, (bool)$propertyValue));
-                break;
-        }
-        $this->$propertyName = $propertyValue;
-    }
-
-    /**
-     * Unsets the property of the given name if tagged.
-     *
-     * @param string $propertyName
-     */
-    public function __unset(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'domainStartPage':
-                trigger_error('Property $TSFE->domainStartPage is not in use anymore as this information is now stored within the Site object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'sys_language_isocode':
-                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'divSection':
-                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-                break;
-            case 'fePreview':
-                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
-                $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, false));
-                break;
-        }
-        unset($this->$propertyName);
     }
 }

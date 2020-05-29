@@ -86,7 +86,11 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash_array`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->divSection`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->domainStartPage`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fePreview`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->forceTemplateParsing`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_isocode`
 
 The following class methods have changed visibility:
 
