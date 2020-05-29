@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class creates and manages instances of the various form protection
@@ -150,7 +151,7 @@ class FormProtectionFactory
      */
     protected static function isFrontendSession()
     {
-        return TYPO3_MODE === 'FE' && is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fe_user instanceof FrontendUserAuthentication && isset($GLOBALS['TSFE']->fe_user->user['uid']);
+        return ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && $GLOBALS['TSFE']->fe_user instanceof FrontendUserAuthentication && isset($GLOBALS['TSFE']->fe_user->user['uid']);
     }
 
     /**

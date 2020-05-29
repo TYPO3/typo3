@@ -9,7 +9,5 @@ defined('TYPO3_MODE') or die();
 $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
 
 // Register hooks for frontend test
-if (TYPO3_MODE === 'FE') {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing']['FunctionalTest'] =
-        \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply';
-}
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing']['FunctionalTest'] =
+    \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply';
