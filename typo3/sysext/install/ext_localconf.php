@@ -6,36 +6,6 @@ defined('TYPO3_MODE') or die();
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['extensionManagerTables']
     = \TYPO3\CMS\Install\Updates\ExtensionManagerTables::class;
 
-// v8->v9 wizards below this line
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['typo3DbLegacyExtension']
-    = \TYPO3\CMS\Install\Updates\Typo3DbExtractionUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['funcExtension']
-    = \TYPO3\CMS\Install\Updates\FuncExtractionUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['pagesUrltypeField']
-    = \TYPO3\CMS\Install\Updates\MigrateUrlTypesInPagesUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['separateSysHistoryFromLog']
-    = \TYPO3\CMS\Install\Updates\SeparateSysHistoryFromSysLogUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rdctExtension']
-    = \TYPO3\CMS\Install\Updates\RedirectExtractionUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['cshmanualBackendUsers']
-    = \TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['pagesLanguageOverlay']
-    = \TYPO3\CMS\Install\Updates\MigratePagesLanguageOverlayUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['pagesLanguageOverlayBeGroupsAccessRights']
-    = \TYPO3\CMS\Install\Updates\MigratePagesLanguageOverlayBeGroupsAccessRights::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendLayoutIcons']
-    = \TYPO3\CMS\Install\Updates\BackendLayoutIconUpdateWizard::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['redirects']
-    = \TYPO3\CMS\Install\Updates\RedirectsExtensionUpdate::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['adminpanelExtension']
-    = \TYPO3\CMS\Install\Updates\AdminPanelInstall::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['pagesSlugs']
-    = \TYPO3\CMS\Install\Updates\PopulatePageSlugs::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['argon2iPasswordHashes']
-    = \TYPO3\CMS\Install\Updates\Argon2iPasswordHashes::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendUsersConfiguration']
-    = \TYPO3\CMS\Install\Updates\BackendUserConfigurationUpdate::class;
-
 // v9->v10 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rsaauthExtension']
     = \TYPO3\CMS\Install\Updates\RsaauthExtractionUpdate::class;
@@ -47,6 +17,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysActionExt
     = \TYPO3\CMS\Install\Updates\SysActionExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['databaseRowsUpdateWizard']
     = \TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class;
+
+// v10->v11 wizards below this line
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $icons = [

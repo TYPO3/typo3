@@ -262,6 +262,8 @@ The following features are now always enabled:
 
 The following features have been removed:
 
+* All install tool upgrade wizards upgrading from v8 to v9
+
 The following database tables have been removed:
 
 The following database fields have been removed:
