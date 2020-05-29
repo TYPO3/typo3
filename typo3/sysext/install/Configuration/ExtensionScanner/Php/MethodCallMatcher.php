@@ -4233,6 +4233,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->getHistoryData' => [
@@ -4240,6 +4241,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->createChangeLog' => [
@@ -4247,6 +4249,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->shouldPerformRollback' => [
@@ -4254,6 +4257,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->getElementData' => [
@@ -4261,6 +4265,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->performRollback' => [
@@ -4268,6 +4273,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->createMultipleDiff' => [
@@ -4275,6 +4281,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->setLastHistoryEntry' => [
@@ -4282,6 +4289,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->getControllerContext' => [

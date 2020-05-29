@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Backend\History;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
@@ -31,25 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RecordHistory
 {
-    use PublicMethodDeprecationTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var string[]
-     */
-    private $deprecatedPublicMethods = [
-        'getHistoryEntry' => 'Using RecordHistory::getHistoryEntry() is deprecated and will not be possible anymore in TYPO3 v11.0.',
-        'getHistoryData' => 'Using RecordHistory::getHistoryData() is deprecated and will not be possible anymore in TYPO3 v11.0.',
-    ];
-
-    /**
-     * @var string[]
-     */
-    private $deprecatedPublicProperties = [
-        'changeLog' => 'Using changeLog is deprecated and will not be possible anymore in TYPO3 v11.0. Use getChangeLog() instead.',
-        'lastHistoryEntry' => 'Using lastHistoryEntry is deprecated and will not be possible anymore in TYPO3 v11.0. Use getLastHistoryEntryNumber() instead.',
-    ];
-
     /**
      * Maximum number of sys_history steps to show.
      *
@@ -79,11 +58,6 @@ class RecordHistory
     protected $lastHistoryEntry = 0;
 
     /**
-     * @var array
-     */
-    protected $changeLog = [];
-
-    /**
      * Internal cache
      * @var array
      */
@@ -105,17 +79,6 @@ class RecordHistory
     {
         $this->element = $this->sanitizeElementValue($element);
         $this->rollbackFields = $this->sanitizeRollbackFieldsValue($rollbackFields);
-    }
-
-    /**
-     * If a specific history entry is selected, then the relevant element is resolved for that.
-     *
-     * @param int $lastHistoryEntryNumber
-     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use setLastHistoryEntryNumber() instead.
-     */
-    public function setLastHistoryEntry(int $lastHistoryEntryNumber): void
-    {
-        $this->setLastHistoryEntryNumber($lastHistoryEntryNumber);
     }
 
     /**
@@ -157,18 +120,7 @@ class RecordHistory
     }
 
     /**
-     * Creates change log including sub-elements, filling $this->changeLog
-     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use getChangeLog() instead.
-     */
-    public function createChangeLog(): void
-    {
-        $this->changeLog = $this->getChangeLog();
-    }
-
-    /**
      * Creates change log including sub-elements
-     * @noinspection GetSetMethodCorrectnessInspection
-     * @TODO: In v11 remove the property $this->changeLog and the @noinspection above
      */
     public function getChangeLog(): array
     {
@@ -177,27 +129,6 @@ class RecordHistory
             return $this->getHistoryData($table, $recordUid, $this->showSubElements, $this->lastHistoryEntry);
         }
         return [];
-    }
-
-    /**
-     * Whether rollback mode is on
-     * @return bool
-     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0.
-     */
-    public function shouldPerformRollback(): bool
-    {
-        return !empty($this->rollbackFields);
-    }
-
-    /**
-     * An array (0 = tablename, 1 = uid) or false if no element is set
-     *
-     * @return array|bool
-     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0. Use getElementInformation() instead.
-     */
-    public function getElementData()
-    {
-        return !empty($this->element) ? explode(':', $this->element) : false;
     }
 
     /**
@@ -217,36 +148,11 @@ class RecordHistory
         return (string)$this->element;
     }
 
-    /**
-     * Perform rollback via DataHandler
-     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use RecordHistoryRollback::performRollback() instead.
-     */
-    public function performRollback(): void
-    {
-        if (!$this->shouldPerformRollback()) {
-            return;
-        }
-        GeneralUtility::makeInstance(RecordHistoryRollback::class)
-            ->performRollback($this->rollbackFields, $this->getDiff($this->getChangeLog()));
-        $this->legacyUpdates();
-    }
-
     /*******************************
      *
      * build up history
      *
      *******************************/
-
-    /**
-     * Creates a diff between the current version of the records and the selected version
-     *
-     * @return array Diff for many elements
-     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use getDiff() instead.
-     */
-    public function createMultipleDiff(): array
-    {
-        return $this->getDiff($this->changeLog);
-    }
 
     /**
      * Creates a diff between the current version of the records and the selected version
@@ -597,15 +503,5 @@ class RecordHistory
                 $this->element = $elementData['tablename'] . ':' . $elementData['recuid'];
             }
         }
-    }
-
-    /**
-     * @internal
-     * @TODO: In v11 remove this function, this only exists for legacy reasons
-     */
-    public function legacyUpdates(): void
-    {
-        $this->lastHistoryEntry = false;
-        $this->changeLog = $this->getChangeLog();
     }
 }

@@ -53,6 +53,14 @@ The following PHP class aliases that have been previously deprecated for v10 hav
 
 The following PHP class methods that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->createChangeLog`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->createMultipleDiff`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->getElementData`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->getHistoryData`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->getHistoryEntry`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->performRollback`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->setLastHistoryEntry`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->shouldPerformRollback`
 - :php:`\TYPO3\CMS\Core\Console\CommandRegistry->getIterator`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads`
@@ -121,6 +129,8 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->changeLog`
+- :php:`\TYPO3\CMS\Backend\History\RecordHistory->lastHistoryEntry`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->pMap`
 - :php:`\TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing`

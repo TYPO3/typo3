@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\History\RecordHistory;
-use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -116,11 +115,7 @@ class ElementHistoryController
         // or show the full history of a page or a specific record)
         $changeLog = $this->historyObject->getChangeLog();
         if (!empty($changeLog)) {
-            if ($rollbackFields !== null) {
-                GeneralUtility::makeInstance(RecordHistoryRollback::class)
-                    ->performRollback($rollbackFields, $this->historyObject->getDiff($changeLog));
-                $this->historyObject->legacyUpdates();
-            } elseif ($lastHistoryEntry) {
+            if ($lastHistoryEntry) {
                 $completeDiff = $this->historyObject->getDiff($changeLog);
                 $this->displayMultipleDiff($completeDiff);
                 $this->view->assign('showDifferences', true);

@@ -632,11 +632,13 @@ return [
     'TYPO3\CMS\Backend\History\RecordHistory->changeLog' => [
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->lastHistoryEntry' => [
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->divSection' => [
