@@ -930,12 +930,9 @@ class ExtensionManagementUtility
         if (!empty($moduleConfiguration['path'])) {
             $path = $moduleConfiguration['path'];
             $path = '/' . ltrim($path, '/');
-            $legacyPath = '';
         } else {
             $path = str_replace('_', '/', $fullModuleSignature);
-            $path = trim($path, '/');
-            $legacyPath = '/' . $path . '/';
-            $path = '/module/' . $path;
+            $path = '/module/' . trim($path, '/');
         }
 
         $options = [
@@ -949,11 +946,6 @@ class ExtensionManagementUtility
 
         $router = GeneralUtility::makeInstance(Router::class);
         $router->addRoute($routeName, GeneralUtility::makeInstance(Route::class, $path, $options));
-        // bridge to allow to access old name like "/web/ts/" instead of "/module/web/ts/"
-        // @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0.
-        if (!empty($legacyPath)) {
-            $router->addRoute('_legacyroutetomodule_' . $routeName, GeneralUtility::makeInstance(Route::class, $legacyPath, $options));
-        }
     }
 
     /**

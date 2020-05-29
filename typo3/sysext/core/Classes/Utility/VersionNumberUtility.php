@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
 
 /**
@@ -41,61 +40,6 @@ class VersionNumberUtility
             }
         }
         return (int)$version;
-    }
-
-    /**
-     * Returns the three part version number (string) from an integer, eg 4012003 -> '4.12.3'
-     *
-     * @param int $versionInteger Integer representation of version number
-     * @return string Version number as format x.x.x
-     * @throws \InvalidArgumentException if $versionInteger is not an integer
-     * @deprecated
-     */
-    public static function convertIntegerToVersionNumber($versionInteger)
-    {
-        trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
-
-        if (!is_int($versionInteger)) {
-            throw new \InvalidArgumentException(\TYPO3\CMS\Core\Utility\VersionNumberUtility::class . '::convertIntegerToVersionNumber() supports an integer argument only!', 1334072223);
-        }
-        $versionString = str_pad($versionInteger, 9, '0', STR_PAD_LEFT);
-        $parts = [
-            substr($versionString, 0, 3),
-            substr($versionString, 3, 3),
-            substr($versionString, 6, 3)
-        ];
-        return (int)$parts[0] . '.' . (int)$parts[1] . '.' . (int)$parts[2];
-    }
-
-    /**
-     * Splits a version range into an array.
-     *
-     * If a single version number is given, it is considered a minimum value.
-     * If a dash is found, the numbers left and right are considered as minimum and maximum. Empty values are allowed.
-     * If no version can be parsed "0.0.0" — "0.0.0" is the result
-     *
-     * @param string $version A string with a version range.
-     * @return array
-     * @deprecated
-     */
-    public static function splitVersionRange($version)
-    {
-        trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
-
-        $versionRange = [];
-        if (strpos($version, '-') !== false) {
-            $versionRange = explode('-', $version, 2);
-        } else {
-            $versionRange[0] = $version;
-            $versionRange[1] = '';
-        }
-        if (!$versionRange[0]) {
-            $versionRange[0] = '0.0.0';
-        }
-        if (!$versionRange[1]) {
-            $versionRange[1] = '0.0.0';
-        }
-        return $versionRange;
     }
 
     /**
@@ -173,42 +117,5 @@ class VersionNumberUtility
         $result['version_sub'] = $parts[1];
         $result['version_dev'] = $parts[2];
         return $result;
-    }
-
-    /**
-     * Method to raise a version number
-     *
-     * @param string $raise one of "main", "sub", "dev" - the version part to raise by one
-     * @param string $version (like 4.1.20)
-     * @return string
-     * @throws \TYPO3\CMS\Core\Exception
-     * @deprecated
-     */
-    public static function raiseVersionNumber($raise, $version)
-    {
-        trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
-
-        if (!in_array($raise, ['main', 'sub', 'dev'])) {
-            throw new Exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
-        }
-        $parts = GeneralUtility::intExplode('.', $version . '..');
-        $parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);
-        $parts[1] = MathUtility::forceIntegerInRange($parts[1], 0, 999);
-        $parts[2] = MathUtility::forceIntegerInRange($parts[2], 0, 999);
-        switch ((string)$raise) {
-            case 'main':
-                $parts[0]++;
-                $parts[1] = 0;
-                $parts[2] = 0;
-                break;
-            case 'sub':
-                $parts[1]++;
-                $parts[2] = 0;
-                break;
-            case 'dev':
-                $parts[2]++;
-                break;
-        }
-        return $parts[0] . '.' . $parts[1] . '.' . $parts[2];
     }
 }

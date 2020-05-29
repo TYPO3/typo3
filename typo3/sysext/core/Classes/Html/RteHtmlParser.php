@@ -125,18 +125,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     }
 
     /**
-     * Initialize, setting element reference and record PID
-     *
-     * @param string $elRef Element reference, eg "tt_content:bodytext
-     * @param int $recPid PID of the record (page id)
-     * @deprecated will be removed in TYPO3 v11.0, as it serves no purpose anymore
-     */
-    public function init($elRef = '', $recPid = 0)
-    {
-        trigger_error('RteHtmlParser->init() is not needed anymore for RTE transformation, and will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
-    }
-
-    /**
      * Sanitize and streamline given options (usually from RichTextConfiguration results "proc."
      * and set them to the respective properties.
      *
@@ -260,39 +248,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $value = $this->runHtmlParserIfConfigured($value, 'exitHTMLparser_db');
         // Final clean up of linebreaks
         $value = $this->streamlineLineBreaksAfterProcessing($value);
-        return $value;
-    }
-
-    /**********************************************
-     *
-     * Main function
-     *
-     **********************************************/
-    /**
-     * Transform value for RTE based on specConf in the direction specified by $direction (rte/db)
-     * This is the main function called from DataHandler and transfer data classes, but has been superseded
-     * by the methods
-     * - transformTextForRichTextEditor()
-     * - transformTextForPersistence()
-     * to avoid the $direction argument.
-     * Please use the new methods for TYPO3 v10+ - only code
-     *
-     * @param string $value Input value
-     * @param null $_ unused
-     * @param string $direction Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
-     * @param array $thisConfig Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
-     * @return string Output value
-     * @deprecated will be removed in TYPO3 v11.0, use the transformText* methods instead.
-     */
-    public function RTE_transform($value, $_ = null, $direction = 'rte', $thisConfig = [])
-    {
-        trigger_error('RteHtmlParser->RTE_transform() will be removed in TYPO3 v11.0. Use the transformTextFor* methods in the same class instead', E_USER_DEPRECATED);
-        if ($direction === 'rte') {
-            return $this->transformTextForRichTextEditor($value, $thisConfig['proc.'] ?? []);
-        }
-        if ($direction === 'db') {
-            return $this->transformTextForPersistence($value, $thisConfig['proc.'] ?? []);
-        }
         return $value;
     }
 

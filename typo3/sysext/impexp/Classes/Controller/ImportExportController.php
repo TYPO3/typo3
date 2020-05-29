@@ -18,10 +18,8 @@ namespace TYPO3\CMS\Impexp\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -35,10 +33,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Main script class for the Import / Export facility.
  *
- * @todo: In TYPO3 v11 this class is about to become an abstract class
  * @internal this is a TYPO3 Backend controller implementation and not part of TYPO3's Core API.
  */
-class ImportExportController
+abstract class ImportExportController
 {
     /**
      * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module (page id)
@@ -76,7 +73,7 @@ class ImportExportController
      *
      * @var string
      */
-    protected $moduleName = 'xMOD_tximpexp';
+    protected $moduleName = '';
 
     /**
      * ModuleTemplate Container
@@ -161,21 +158,7 @@ class ImportExportController
      * @return ResponseInterface
      * @throws RouteNotFoundException
      */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        // @todo: This method will become abstract in TYPO3 v11.
-        trigger_error('Route identifier xMOD_tximpexp is deprecated and will be removed in TYPO3 v11. Consider using tx_impexp_export or tx_impexp_import instead.', E_USER_DEPRECATED);
-
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $inData = GeneralUtility::_GP('tx_impexp');
-        $routeName = 'tx_impexp_export';
-        if ($inData === null || $inData['action'] === 'import') {
-            $routeName = 'tx_impexp_import';
-        }
-        unset($inData['action']);
-        $target = (string)$uriBuilder->buildUriFromRoute($routeName, ['tx_impexp' => $inData]);
-        return new RedirectResponse($target, 308);
-    }
+    abstract public function mainAction(ServerRequestInterface $request): ResponseInterface;
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.

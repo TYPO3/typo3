@@ -1255,30 +1255,6 @@ class DataMapProcessor
     }
 
     /**
-     * Duplicates an item from data-map and prefixes language title,
-     * if applicable for the accordant field name.
-     *
-     * @param string $tableName
-     * @param string|int $fromId
-     * @param int $language
-     * @param array $fieldNames
-     * @param bool $localize
-     * @return array
-     * @deprecated Not used anymore, split into applyLocalizationReferences() and prefixLanguageTitle()
-     */
-    protected function duplicateFromDataMap(string $tableName, $fromId, int $language, array $fieldNames, bool $localize): array
-    {
-        $data = $this->allDataMap[$tableName][$fromId] ?? [];
-        // just return if localization cannot be applied
-        if (empty($language) || !$localize) {
-            return $data;
-        }
-        $data = $this->applyLocalizationReferences($tableName, $fromId, $language, $fieldNames, $data);
-        $data = $this->prefixLanguageTitle($tableName, $fromId, $language, $data);
-        return $data;
-    }
-
-    /**
      * Applies localization references to given raw data-map item.
      *
      * @param string $tableName

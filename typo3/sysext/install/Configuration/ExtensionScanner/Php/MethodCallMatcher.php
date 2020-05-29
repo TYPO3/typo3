@@ -4423,6 +4423,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-90258-SimplifiedRTEParserAPI.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform' => [
@@ -4430,6 +4431,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-90258-SimplifiedRTEParserAPI.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Console\CommandRegistry->getIterator' => [

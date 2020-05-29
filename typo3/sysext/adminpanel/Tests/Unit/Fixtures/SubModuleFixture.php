@@ -20,25 +20,13 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
-use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
 
-class SubModuleFixture implements ModuleInterface, InitializableInterface, ContentProviderInterface, ModuleSettingsProviderInterface, OnSubmitActorInterface, DataProviderInterface
+class SubModuleFixture implements ModuleInterface, ContentProviderInterface, ModuleSettingsProviderInterface, OnSubmitActorInterface, DataProviderInterface
 {
-
-    /**
-     * Initialize the module - runs early in a TYPO3 request
-     *
-     * @param ServerRequestInterface $request
-     */
-    public function initializeModule(ServerRequestInterface $request): void
-    {
-    }
-
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"

@@ -11,6 +11,12 @@ Description
 
 The following PHP classes that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Configuration\TsConfigParser`
+- :php:`\TYPO3\CMS\Backend\Controller\File\CreateFolderController`
+- :php:`\TYPO3\CMS\Backend\Controller\File\EditFileController`
+- :php:`\TYPO3\CMS\Backend\Controller\File\FileUploadController`
+- :php:`\TYPO3\CMS\Backend\Controller\File\RenameFileController`
+- :php:`\TYPO3\CMS\Backend\Controller\File\ReplaceFileController`
 - :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
 - :php:`\TYPO3\CMS\Core\Console\CommandRequestHandler`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection`
@@ -31,6 +37,7 @@ The following PHP classes that have been previously deprecated for v10 have been
 
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface`
 - :php:`\TYPO3\CMS\Core\Console\RequestHandlerInterface`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface`
@@ -51,6 +58,8 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->setTSconfigPermissions`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->getLabelsWithPrefix`
+- :php:`\TYPO3\CMS\Core\Html\RteHtmlParser->init`
+- :php:`\TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform`
 - :php:`\TYPO3\CMS\Core\Resource\File->_getMetaData`
 - :php:`\TYPO3\CMS\Core\Resource\FileRepository->searchByName`
 - :php:`\TYPO3\CMS\Core\Resource\Index\FileIndexRepository->findBySearchWordInMetaData`
@@ -70,6 +79,7 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->settingLocale`
+- :php:`\TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository->getNumberOfBrokenLinks`
 
 
 The following PHP static class methods that have been previously deprecated for v10 have been removed:
@@ -92,6 +102,9 @@ The following PHP static class methods that have been previously deprecated for 
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::presetApplicationContext`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::resetApplicationContext`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern`
+- :php:`\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertIntegerToVersionNumber`
+- :php:`\TYPO3\CMS\Core\Utility\VersionNumberUtility::splitVersionRange`
+- :php:`\TYPO3\CMS\Core\Utility\VersionNumberUtility::raiseVersionNumber`
 - :php:`\TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName`
 - :php:`\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::hex2bin`
 
@@ -328,7 +341,9 @@ The following database fields have been removed:
 
 - pages.legacy_overlay_uid
 
-The following php doc annotations have been removed:
+The following Backend route identifiers have been removed:
+
+- `xMOD_tximpexp`
 
 The following global JavaScript functions have been removed:
 

@@ -35,38 +35,6 @@ class BrokenLinkRepository
      *
      * @param string $linkTarget Url to check for. Can be a URL (for external links)
      *   a page uid (for db links), a file reference (for file links), etc.
-     * @return int the amount of usages this broken link is used in this installation
-     * @deprecated This method was deprecated in TYPO3 10.3 Use isLinkTargetBrokenLink() instead
-     */
-    public function getNumberOfBrokenLinks(string $linkTarget): int
-    {
-        trigger_error(
-            'BrokenLinkRepository::getNumberOfBrokenLinks() was deprecated in TYPO3 10.3 Use BrokenLinkRepository::isLinkTargetBrokenLink() instead',
-            E_USER_DEPRECATED
-        );
-
-        try {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable(static::TABLE);
-            $queryBuilder
-                ->count('uid')
-                ->from(static::TABLE)
-                ->where(
-                    $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($linkTarget))
-                );
-            return (int)$queryBuilder
-                ->execute()
-                ->fetchColumn(0);
-        } catch (TableNotFoundException $e) {
-            return 0;
-        }
-    }
-
-    /**
-     * Check if linkTarget is in list of broken links.
-     *
-     * @param string $linkTarget Url to check for. Can be a URL (for external links)
-     *   a page uid (for db links), a file reference (for file links), etc.
      * @return bool is the link target a broken link
      */
     public function isLinkTargetBrokenLink(string $linkTarget): bool

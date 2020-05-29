@@ -1245,26 +1245,31 @@ return [
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\EditFileController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController' => [
         'restFiles' => [
-            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\RenameFileController' => [
         'restFiles' => [
-            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\ReplaceFileController' => [
         'restFiles' => [
-            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst'
+            'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Site\Entity\PseudoSite' => [
@@ -1316,6 +1321,7 @@ return [
         'restFiles' => [
             'Deprecation-88807-AdminPanelInitializableInterfaceHasBeenDeprecated.rst',
             'Feature-88807-AdminPanelRequestEnricherInterfaceHasBeenIntroduced.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Console\CommandRequestHandler' => [
@@ -1350,6 +1356,7 @@ return [
     'TYPO3\CMS\Core\Configuration\TsConfigParser' => [
         'restFiles' => [
             'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate' => [

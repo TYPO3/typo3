@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Adminpanel\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
-use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
@@ -199,18 +198,13 @@ class MainController implements SingletonInterface
     {
         foreach ($modules as $module) {
             if (
-                ($module instanceof InitializableInterface || $module instanceof RequestEnricherInterface)
+                ($module instanceof RequestEnricherInterface)
                 && (
                     (($module instanceof ConfigurableInterface) && $module->isEnabled())
                     || (!($module instanceof ConfigurableInterface))
                 )
             ) {
-                if ($module instanceof RequestEnricherInterface) {
-                    $request = $module->enrich($request);
-                } elseif ($module instanceof InitializableInterface) {
-                    $module->initializeModule($request);
-                    trigger_error('Method initializeModule is deprecated use RequestEnricherInterface::enrich instead.', E_USER_DEPRECATED);
-                }
+                $request = $module->enrich($request);
             }
             if ($module instanceof SubmoduleProviderInterface) {
                 $request = $this->initializeModules($request, $module->getSubModules());
