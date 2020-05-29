@@ -4438,6 +4438,7 @@ return [
         'restFiles' => [
             'Feature-89139-AddDependencyInjectionSupportForConsoleCommands.rst',
             'Deprecation-89139-ConsoleCommandsConfigurationFormatCommandsPhp.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cImage' => [

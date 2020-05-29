@@ -125,7 +125,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getConsoleCommandRegistry(ContainerInterface $container): Console\CommandRegistry
     {
-        return new Console\CommandRegistry($container->get(Package\PackageManager::class), $container);
+        return new Console\CommandRegistry($container);
     }
 
     public static function getEventDispatcher(ContainerInterface $container): EventDispatcher\EventDispatcher

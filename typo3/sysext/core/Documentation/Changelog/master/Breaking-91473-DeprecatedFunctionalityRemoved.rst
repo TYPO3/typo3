@@ -12,6 +12,7 @@ Description
 The following PHP classes that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
+- :php:`\TYPO3\CMS\Core\Console\CommandRequestHandler`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\FileMount`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection`
@@ -26,6 +27,7 @@ The following PHP classes that have been previously deprecated for v10 have been
 
 The following PHP interfaces that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Core\Console\RequestHandlerInterface`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface`
 
@@ -40,6 +42,7 @@ The following PHP class aliases that have been previously deprecated for v10 hav
 
 The following PHP class methods that have been previously deprecated for v10 have been removed:
 
+- :php:`\TYPO3\CMS\Core\Console\CommandRegistry->getIterator`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->process_uploads`
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->setTSconfigPermissions`
@@ -300,7 +303,8 @@ The following features are now always enabled:
 
 The following features have been removed:
 
-* All install tool upgrade wizards upgrading from v8 to v9
+- All install tool upgrade wizards upgrading from v8 to v9
+- CLI Command Configuration definition via :file:`Commands.php`
 
 The following database tables have been removed:
 

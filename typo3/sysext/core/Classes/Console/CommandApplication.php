@@ -86,8 +86,6 @@ class CommandApplication implements ApplicationInterface
         // Make sure output is not buffered, so command-line output and interaction can take place
         ob_clean();
 
-        $this->populateAvailableCommands();
-
         $exitCode = $this->application->run($input, $output);
 
         if ($execute !== null) {
@@ -116,18 +114,5 @@ class CommandApplication implements ApplicationInterface
         $this->context->setAspect('visibility', new VisibilityAspect(true, true));
         $this->context->setAspect('workspace', new WorkspaceAspect(0));
         $this->context->setAspect('backend.user', new UserAspect(null));
-    }
-
-    /**
-     * Put all available commands inside the application
-     *
-     * Note: This method will be removed in TYPO3 v11 when support for Configuration/Commands.php is dropped.
-     */
-    protected function populateAvailableCommands(): void
-    {
-        foreach ($this->commandRegistry->getLegacyCommands() as $commandName => $command) {
-            /** @var Command $command */
-            $this->application->add($command);
-        }
     }
 }

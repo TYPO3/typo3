@@ -1321,11 +1321,13 @@ return [
     'TYPO3\CMS\Core\Console\CommandRequestHandler' => [
         'restFiles' => [
             'Deprecation-88839-CLILowlevelRequestHandlers.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Console\RequestHandlerInterface' => [
         'restFiles' => [
             'Deprecation-88839-CLILowlevelRequestHandlers.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser' => [
