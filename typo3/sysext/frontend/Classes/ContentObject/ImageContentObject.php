@@ -58,7 +58,6 @@ class ImageContentObject extends AbstractContentObject
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $info = $this->cObj->getImgResource($file, $conf['file.']);
-        $tsfe->lastImageInfo = $info;
         if (!is_array($info)) {
             return '';
         }
@@ -78,8 +77,6 @@ class ImageContentObject extends AbstractContentObject
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
         $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);
 
-        // This array is used to collect the image-refs on the page...
-        $tsfe->imagesOnPage[] = $source;
         $altParam = $this->getAltParam($conf);
         $params = $this->cObj->stdWrapValue('params', $conf);
         if ($params !== '' && $params[0] !== ' ') {

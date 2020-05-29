@@ -180,18 +180,6 @@ class ImageService implements SingletonInterface
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
         $imageInfoValues = $this->getCompatibilityImageResourceValues($processedImage);
-        if (
-            $this->environmentService->isEnvironmentInFrontendMode()
-            && is_object($GLOBALS['TSFE'])
-        ) {
-            // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
-            // but was never needed to be set in lastImageInfo.
-            // We set it for BC here anyway, as this TSFE property is deprecated anyway.
-            $imageInfoValues['originalFile'] = $processedImage->getOriginalFile();
-            $imageInfoValues['processedFile'] = $processedImage;
-            $GLOBALS['TSFE']->lastImageInfo = $imageInfoValues;
-            $GLOBALS['TSFE']->imagesOnPage[] = $processedImage->getPublicUrl();
-        }
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $processedImage->getPublicUrl(),
             $imageInfoValues

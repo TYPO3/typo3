@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Context\Context;
@@ -94,15 +93,6 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicPropertyDeprecationTrait;
-
-    /**
-     * @var string[]
-     */
-    private $deprecatedPublicProperties = [
-        'imagesOnPage' => 'Using TSFE->imagesOnPage is deprecated and will no longer work with TYPO3 v11.0. Use AssetCollector()->getMedia() instead.',
-        'lastImageInfo' => 'Using TSFE->lastImageInfo is deprecated and will no longer work with TYPO3 v11.0.'
-    ];
 
     /**
      * The page id (int)
@@ -529,22 +519,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var array
      */
     public $accessKey = [];
-
-    /**
-     * Numerical array where image filenames are added if they are referenced in the
-     * rendered document. This includes only TYPO3 generated/inserted images.
-     * @var array
-     * @deprecated
-     */
-    private $imagesOnPage = [];
-
-    /**
-     * Is set in ContentObjectRenderer->cImage() function to the info-array of the
-     * most recent rendered image. The information is used in ImageTextContentObject
-     * @var array
-     * @deprecated
-     */
-    private $lastImageInfo = [];
 
     /**
      * Used to generate page-unique keys. Point is that uniqid() functions is very

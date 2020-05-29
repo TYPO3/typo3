@@ -1055,7 +1055,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         trigger_error('cObj->cImage() will be removed in TYPO3 v11.0. This functionality is integrated into ImageContentObject now.', E_USER_DEPRECATED);
         $tsfe = $this->getTypoScriptFrontendController();
         $info = $this->getImgResource($file, $conf['file.']);
-        $tsfe->lastImageInfo = $info;
         if (!is_array($info)) {
             return '';
         }
@@ -1075,8 +1074,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
         $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);
 
-        // This array is used to collect the image-refs on the page...
-        $tsfe->imagesOnPage[] = $source;
         $altParam = $this->getAltParam($conf);
         $params = $this->stdWrapValue('params', $conf);
         if ($params !== '' && $params[0] !== ' ') {
