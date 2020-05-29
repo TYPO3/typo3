@@ -34,10 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvider
 {
-    /**
-     * @deprecated, will be removed in TYPO3 v11.0, use the EventDispatcher instead of Signal/Slot logic
-     */
-    const SIGNAL_PostProcessTreeData = 'PostProcessTreeData';
     const MODE_CHILDREN = 1;
     const MODE_PARENT = 2;
 
