@@ -125,7 +125,7 @@ class MaintenanceCest extends AbstractCest
         $I->click('Manage languages');
         $I->waitForElementVisible('.modal-dialog');
         $I->see('Manage Language Packs', '.modal-dialog h4');
-        $I->see('Active Languages', '.modal-dialog h3');
+        $I->waitForText('Active languages', 30, '.modal-dialog h3');
         $I->click('.t3js-modal-close');
         $I->waitForElementNotVisible('.modal-dialog');
     }
