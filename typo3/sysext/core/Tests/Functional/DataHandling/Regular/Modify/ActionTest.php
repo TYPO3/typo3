@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Modify;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\AbstractActionTestCase;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 /**

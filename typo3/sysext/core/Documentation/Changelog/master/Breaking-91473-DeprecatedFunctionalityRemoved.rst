@@ -23,6 +23,13 @@ The following PHP interfaces that have been previously deprecated for v10 have b
 
 The following PHP class aliases that have been previously deprecated for v10 have been removed:
 
+* :php:`TYPO3\CMS\Frontend\Page\PageRepository`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface`
+* :php:`TYPO3\CMS\Frontend\Page\PageRepositoryInitHookInterface`
+* :php:`TYPO3\CMS\Lowlevel\Utility\ArrayBrowser`
+
 The following PHP class methods that have been previously deprecated for v10 have been removed:
 
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->assemblePermissions`
