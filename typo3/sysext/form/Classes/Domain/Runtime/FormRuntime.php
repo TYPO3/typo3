@@ -1008,7 +1008,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $pageId = 0;
             $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
 
-            if (TYPO3_MODE === 'FE') {
+            if ($this->getTypoScriptFrontendController() !== null) {
                 $pageId = $this->getTypoScriptFrontendController()->id;
             }
 
@@ -1088,10 +1088,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return TypoScriptFrontendController
+     * @return TypoScriptFrontendController|null
      */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
     {
-        return $GLOBALS['TSFE'];
+        return $GLOBALS['TSFE'] ?? null;
     }
 }

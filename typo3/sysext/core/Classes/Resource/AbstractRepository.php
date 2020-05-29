@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Abstract repository implementing the basic repository methods
@@ -292,13 +293,13 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
     }
 
     /**
-     * Function to return the current TYPO3_MODE.
+     * Function to return the current TYPO3_MODE based on $GLOBALS['TSFE'].
      * This function can be mocked in unit tests to be able to test frontend behaviour.
      *
      * @return string
      */
     protected function getEnvironmentMode()
     {
-        return TYPO3_MODE;
+        return ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController ? 'FE' : 'BE';
     }
 }

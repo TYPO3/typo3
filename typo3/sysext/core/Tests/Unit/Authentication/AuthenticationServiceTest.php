@@ -136,6 +136,7 @@ class AuthenticationServiceTest extends UnitTestCase
     {
         $subject = new AuthenticationService();
         $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $pObjProphecy->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(
@@ -164,6 +165,7 @@ class AuthenticationServiceTest extends UnitTestCase
     {
         $subject = new AuthenticationService();
         $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $pObjProphecy->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(
@@ -193,6 +195,7 @@ class AuthenticationServiceTest extends UnitTestCase
     {
         $subject = new AuthenticationService();
         $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $pObjProphecy->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(
@@ -222,6 +225,7 @@ class AuthenticationServiceTest extends UnitTestCase
     {
         $subject = new AuthenticationService();
         $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $pObjProphecy->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(

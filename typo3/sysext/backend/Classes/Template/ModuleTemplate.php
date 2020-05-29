@@ -255,7 +255,7 @@ class ModuleTemplate
     {
         $this->pageRenderer->loadRequireJsModule('bootstrap');
 
-        if (TYPO3_MODE === 'BE' && $this->getBackendUserAuthentication() && !empty($this->getBackendUserAuthentication()->user)) {
+        if ($this->getBackendUserAuthentication() && !empty($this->getBackendUserAuthentication()->user)) {
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DocumentHeader');
         }

@@ -125,7 +125,7 @@ class AuthenticationService extends AbstractAuthenticationService
         // Get a hashed password instance for the hash stored in db of this user
         $invalidPasswordHashException = null;
         try {
-            $hashInstance = $saltFactory->get($passwordHashInDatabase, TYPO3_MODE);
+            $hashInstance = $saltFactory->get($passwordHashInDatabase, $this->pObj->loginType);
         } catch (InvalidPasswordHashException $invalidPasswordHashException) {
             // Could not find a responsible hash algorithm for given password. This is unusual since other
             // authentication services would usually be called before this one with higher priority. We thus log
@@ -140,7 +140,7 @@ class AuthenticationService extends AbstractAuthenticationService
 
         // An instance of the currently configured salted password mechanism
         // Don't catch InvalidPasswordHashException here: Only install tool should handle those configuration failures
-        $defaultHashInstance = $saltFactory->getDefaultHashInstance(TYPO3_MODE);
+        $defaultHashInstance = $saltFactory->getDefaultHashInstance($this->pObj->loginType);
 
         // We found a hash class that can handle this type of hash
         $isValidPassword = $hashInstance->checkPassword($submittedPassword, $passwordHashInDatabase);
@@ -163,7 +163,7 @@ class AuthenticationService extends AbstractAuthenticationService
 
         if (!$isValidPassword) {
             // Failed login attempt - wrong password
-            $this->writeLogMessage(TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'', $submittedUsername);
+            $this->writeLogMessage($this->pObj->loginType . ' Authentication failed - wrong password for username \'%s\'', $submittedUsername);
             $message = 'Login-attempt from ###IP###, username \'%s\', password not accepted!';
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 1, $message, [$submittedUsername]);
             $this->logger->info(sprintf($message, $submittedUsername));
@@ -191,7 +191,7 @@ class AuthenticationService extends AbstractAuthenticationService
         }
 
         // Responsible, authentication ok, domain lock ok. Log successful login and return 'auth ok, do NOT check other services'
-        $this->writeLogMessage(TYPO3_MODE . ' Authentication successful for username \'%s\'', $submittedUsername);
+        $this->writeLogMessage($this->pObj->loginType . ' Authentication successful for username \'%s\'', $submittedUsername);
         return 200;
     }
 
@@ -361,7 +361,7 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!empty($params)) {
             $message = vsprintf($message, $params);
         }
-        if (TYPO3_MODE === 'FE') {
+        if ($this->pObj->loginType === 'FE') {
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             $timeTracker->setTSlogMessage($message);
         }

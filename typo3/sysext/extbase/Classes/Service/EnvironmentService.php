@@ -26,12 +26,21 @@ use TYPO3\CMS\Core\SingletonInterface;
 class EnvironmentService implements SingletonInterface
 {
     /**
+     * @var bool|null
+     */
+    protected $isFrontendMode;
+
+    /**
      * Detects if TYPO3_MODE is defined and its value is "FE"
      *
      * @return bool
      */
     public function isEnvironmentInFrontendMode(): bool
     {
+        $this->initialize();
+        if ($this->isFrontendMode !== null) {
+            return $this->isFrontendMode;
+        }
         return (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ?: false;
     }
 
@@ -42,6 +51,27 @@ class EnvironmentService implements SingletonInterface
      */
     public function isEnvironmentInBackendMode(): bool
     {
-        return (defined('TYPO3_MODE') && TYPO3_MODE === 'BE') ?: false;
+        return !$this->isEnvironmentInFrontendMode();
+    }
+
+    protected function initialize(): void
+    {
+        if ($this->isFrontendMode !== null) {
+            return;
+        }
+        if (defined('TYPO3_MODE')) {
+            $this->isFrontendMode = TYPO3_MODE === 'FE';
+        }
+    }
+
+    /**
+     * A helper method for tests to simulate TYPO3_MODE behavior, should only be used within TYPO3 Core
+     *
+     * @param bool $isFrontendMode
+     * @internal only used for testing purposes and can be removed at any time.
+     */
+    public function setFrontendMode(bool $isFrontendMode): void
+    {
+        $this->isFrontendMode = $isFrontendMode;
     }
 }
