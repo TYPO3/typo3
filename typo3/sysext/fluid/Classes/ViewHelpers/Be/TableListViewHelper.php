@@ -148,12 +148,8 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $dblist->noControlPanels = true;
         $dblist->sortField = $sortField;
         $dblist->sortRev = $sortDescending;
-        $dblist->script = $_SERVER['REQUEST_URI'];
         $dblist->generateList();
 
-        $js = '// @deprecated' . CRLF . 'var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
-        $html = GeneralUtility::wrapJS($js) . $dblist->HTMLcode;
-
-        return $html;
+        return $dblist->HTMLcode;
     }
 }

@@ -214,25 +214,11 @@ class DatabaseRecordList
     public $duplicateStack = [];
 
     /**
-     * Current script name
-     *
-     * @var string
-     */
-    public $script = 'index.php';
-
-    /**
      * If TRUE, records are listed only if a specific table is selected.
      *
      * @var bool
      */
     public $listOnlyInSingleTableMode = false;
-
-    /**
-     * Script URL
-     *
-     * @var string
-     */
-    public $thisScript = '';
 
     /**
      * @var TranslationConfigurationProvider
@@ -606,7 +592,6 @@ class DatabaseRecordList
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $this->getTranslateTools();
-        $this->determineScriptUrl();
 
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
@@ -3992,26 +3977,6 @@ class DatabaseRecordList
         }
         $out .= $title;
         return $out;
-    }
-
-    /**
-     * Sets the script url depending on being a module or script request
-     */
-    protected function determineScriptUrl()
-    {
-        if ($routePath = GeneralUtility::_GP('route')) {
-            $this->thisScript = (string)$this->uriBuilder->buildUriFromRoutePath($routePath);
-        } else {
-            $this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
-        }
-    }
-
-    /**
-     * @return string
-     */
-    protected function getThisScript()
-    {
-        return strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&';
     }
 
     /**

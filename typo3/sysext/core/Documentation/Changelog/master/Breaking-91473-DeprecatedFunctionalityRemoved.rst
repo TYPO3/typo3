@@ -355,8 +355,15 @@ The following Backend route identifiers have been removed:
 
 - `xMOD_tximpexp`
 
+The following global JavaScript variables have been removed:
+
+- :js:`T3_THIS_LOCATION`
+- :js:`T3_RETURN_URL`
+
 The following global JavaScript functions have been removed:
 
+- :js:`jumpExt`
+- :js:`jumpToUrl`
 - :js:`rawurlencode`
 - :js:`str_replace`
 - :js:`openUrlInWindow`

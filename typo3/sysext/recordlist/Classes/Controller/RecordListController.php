@@ -272,7 +272,6 @@ class RecordListController
         $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $dblist->setModuleData($this->MOD_SETTINGS ?? []);
-        $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_list');
         $dblist->calcPerms = $calcPerms;
         $dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
         $dblist->returnUrl = $this->returnUrl;
@@ -356,18 +355,6 @@ class RecordListController
             $this->moduleTemplate->addJavaScriptCode(
                 'RecordListInlineJS',
                 '
-				function jumpExt(URL,anchor) {
-					console.warn(\'jumpExt() has been marked as deprecated. Consider using regular links instead.\');
-					var anc = anchor?anchor:"";
-					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
-					return false;
-				}
-				function jumpToUrl(URL) {
-					console.warn(\'jumpToUrl() has been marked as deprecated. Consider using regular links or window.location.href instead.\');
-					window.location.href = URL;
-					return false;
-				}
-
 				function setHighlight(id) {
 					top.fsMod.recentIds["web"] = id;
 					top.fsMod.navFrameHighlightedID["web"] = top.fsMod.currentBank + "_" + id; // For highlighting
@@ -376,7 +363,6 @@ class RecordListController
 						top.nav_frame.refresh_nav();
 					}
 				}
-				' . $this->moduleTemplate->redirectUrls($listUrl) . '
 				function editRecords(table,idList,addParams,CBflag) {
 					window.location.href="' . (string)$uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}

@@ -655,31 +655,6 @@ class ModuleTemplate
     }
 
     /**
-     * Returns JavaScript variables setting the returnUrl and thisScript location for use by JavaScript on the page.
-     * Used in fx. db_list.php (Web>List)
-     *
-     * @param string $thisLocation URL to "this location" / current script
-     * @return string Urls are returned as JavaScript variables T3_RETURN_URL and T3_THIS_LOCATION
-     * @internal
-     */
-    public function redirectUrls($thisLocation = '')
-    {
-        $thisLocation = $thisLocation ?: GeneralUtility::linkThisScript([
-            'CB' => '',
-            'SET' => '',
-            'cmd' => '',
-            'popViewId' => ''
-        ]);
-        $out = '
-	// @deprecated
-	var T3_RETURN_URL = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))))) . ';
-	// @deprecated
-	var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode($thisLocation))) . '
-		';
-        return $out;
-    }
-
-    /**
      * Returns the header-bar in the top of most backend modules
      * Closes section if open.
      *
