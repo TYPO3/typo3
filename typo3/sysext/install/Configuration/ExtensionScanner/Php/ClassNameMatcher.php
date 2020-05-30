@@ -1361,16 +1361,19 @@ return [
     'TYPO3\CMS\Felogin\Hooks\CmsLayout' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Felogin\Controller\FrontendLoginController' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Hooks\CmsLayout' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Dispatcher' => [

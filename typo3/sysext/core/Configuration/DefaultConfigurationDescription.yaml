@@ -225,9 +225,6 @@ SYS:
               rearrangedRedirectMiddlewares:
                 type: bool
                 description: 'If on, the middlewares "base redirect" and "redirects" are switched, so that "redirects" (if ext:redirects is installed) is executed before "base redirect". The new ordering aims to be a better default shipped by the TYPO3 core.'
-              felogin.extbase:
-                type: bool
-                description: 'If activated, and if extension "felogin" is loaded, extbase based code will be used instead of pibase version'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

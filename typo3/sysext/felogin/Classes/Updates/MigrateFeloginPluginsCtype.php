@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Updates;
 
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -133,24 +132,13 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
     }
 
     /**
-     * Checks if feature toggle to use extbase version is enabled
-     *
-     * @return bool
-     */
-    protected function isExtbaseFeatureEnabled(): bool
-    {
-        return GeneralUtility::makeInstance(Features::class)
-            ->isFeatureEnabled('felogin.extbase');
-    }
-
-    /**
      * Returns the CType that should be replaced by new CType
      *
      * @return string
      */
     protected function getOldCType(): string
     {
-        return $this->isExtbaseFeatureEnabled() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
+        return self::CTYPE_PIBASE;
     }
 
     /**
@@ -160,6 +148,6 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
      */
     protected function getNewCType(): string
     {
-        return $this->isExtbaseFeatureEnabled() ? self::CTYPE_EXTBASE : self::CTYPE_PIBASE;
+        return self::CTYPE_EXTBASE;
     }
 }

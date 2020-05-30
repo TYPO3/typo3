@@ -24,6 +24,8 @@ The following PHP classes that have been previously deprecated for v10 have been
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter`
+- :php:`\TYPO3\CMS\Felogin\Controller\FrontendLoginController`
+- :php:`\TYPO3\CMS\Felogin\Hooks\CmsLayout`
 - :php:`\TYPO3\CMS\Fluid\ViewHelpers\Widget\AutocompleteViewHelper`
 - :php:`\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController`
 
@@ -226,6 +228,14 @@ The following hooks have been removed:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent']`
 
 The following hooks don't pass the class reference anymore:
 
@@ -304,10 +314,13 @@ The following signals have been removed:
 
 The following features are now always enabled:
 
+- `felogin.extbase`
+
 The following features have been removed:
 
 - All install tool upgrade wizards upgrading from v8 to v9
 - CLI Command Configuration definition via :file:`Commands.php`
+- Pi-based plugin for "felogin" (CType `login`)
 
 The following database tables have been removed:
 

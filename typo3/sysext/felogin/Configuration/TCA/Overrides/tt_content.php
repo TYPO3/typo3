@@ -3,33 +3,15 @@
 defined('TYPO3_MODE') or die();
 
 call_user_func(static function () {
-    $feloginExtbase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
-        ->isFeatureEnabled('felogin.extbase');
+    $contentTypeName = 'felogin_login';
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+        'Felogin',
+        'Login',
+        'Login Form',
+        null,
+        'forms'
+    );
 
-    if ($feloginExtbase) {
-        // Extbase plugin has a different CType
-        $contentTypeName = 'felogin_login';
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            'Felogin',
-            'Login',
-            'Login Form',
-            null,
-            'forms'
-        );
-    } else {
-        $contentTypeName = 'login';
-        // Add CType=login
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-            'tt_content',
-            'CType',
-            [
-                'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.10',
-                'login',
-                'content-elements-login',
-                'forms'
-            ]
-        );
-    }
     // Add the FlexForm
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
         '*',

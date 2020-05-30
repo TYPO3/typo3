@@ -23,7 +23,6 @@ return [
             'fluidBasedPageModule' => true,
             'unifiedPageTranslationHandling' => true,
             'rearrangedRedirectMiddlewares' => true,
-            'felogin.extbase' => true,
         ],
     ],
 ];
