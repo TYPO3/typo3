@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -370,26 +371,40 @@ class SlugHelper
      *
      * @param string $slug proposed slug
      * @param RecordState $state
+     * @param callable $isUnique Callback to check for uniqueness
      * @return string
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws SiteNotFoundException
      */
-    public function buildSlugForUniqueInSite(string $slug, RecordState $state): string
+    protected function buildSlug(string $slug, RecordState $state, callable $isUnique): string
     {
         $slug = $this->sanitize($slug);
         $rawValue = $this->extract($slug);
         $newValue = $slug;
         $counter = 0;
-        while (!$this->isUniqueInSite(
-            $newValue,
-            $state
-        ) && $counter++ < 100
+        while (
+            !call_user_func($isUnique, $newValue, $state)
+            && ++$counter < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
         }
         if ($counter === 100) {
-            $newValue = $this->sanitize($rawValue . '-' . GeneralUtility::shortMD5($rawValue));
+            $uniqueId = StringUtility::getUniqueId();
+            $newValue = $this->sanitize($rawValue . '-' . GeneralUtility::shortMD5($uniqueId));
         }
         return $newValue;
+    }
+
+    /**
+     * Generate a slug with a suffix "/mytitle-1" if that is in use already.
+     *
+     * @param string $slug proposed slug
+     * @param RecordState $state
+     * @return string
+     * @throws SiteNotFoundException
+     */
+    public function buildSlugForUniqueInSite(string $slug, RecordState $state): string
+    {
+        return $this->buildSlug($slug, $state, [$this, 'isUniqueInSite']);
     }
 
     /**
@@ -401,21 +416,7 @@ class SlugHelper
      */
     public function buildSlugForUniqueInPid(string $slug, RecordState $state): string
     {
-        $slug = $this->sanitize($slug);
-        $rawValue = $this->extract($slug);
-        $newValue = $slug;
-        $counter = 0;
-        while (!$this->isUniqueInPid(
-            $newValue,
-            $state
-        ) && $counter++ < 100
-        ) {
-            $newValue = $this->sanitize($rawValue . '-' . $counter);
-        }
-        if ($counter === 100) {
-            $newValue = $this->sanitize($rawValue . '-' . GeneralUtility::shortMD5($rawValue));
-        }
-        return $newValue;
+        return $this->buildSlug($slug, $state, [$this, 'isUniqueInPid']);
     }
 
     /**
@@ -424,25 +425,11 @@ class SlugHelper
      * @param string $slug proposed slug
      * @param RecordState $state
      * @return string
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws SiteNotFoundException
      */
     public function buildSlugForUniqueInTable(string $slug, RecordState $state): string
     {
-        $slug = $this->sanitize($slug);
-        $rawValue = $this->extract($slug);
-        $newValue = $slug;
-        $counter = 0;
-        while (!$this->isUniqueInTable(
-            $newValue,
-            $state
-        ) && $counter++ < 100
-        ) {
-            $newValue = $this->sanitize($rawValue . '-' . $counter);
-        }
-        if ($counter === 100) {
-            $newValue = $this->sanitize($rawValue . '-' . GeneralUtility::shortMD5($rawValue));
-        }
-        return $newValue;
+        return $this->buildSlug($slug, $state, [$this, 'isUniqueInTable']);
     }
 
     /**

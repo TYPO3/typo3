@@ -1,0 +1,123 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
+use TYPO3\CMS\Core\DataHandling\SlugHelper;
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
+{
+    /**
+     * @var string
+     */
+    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Slug/DataSet/';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->importScenarioDataSet('PagesForSlugsUnique');
+        $this->setUpFrontendSite(1);
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+    }
+
+    /**
+     * @test
+     */
+    public function buildSlugForUniqueInSiteRespectsMaxRetryOverflow()
+    {
+        $subject = GeneralUtility::makeInstance(
+            SlugHelper::class,
+            'pages',
+            'slug',
+            [
+                'generatorOptions' => [
+                    'fields' => ['title'],
+                    'prefixParentPageSlug' => true,
+                ],
+            ]
+        );
+
+        $state = RecordStateFactory::forName('pages')->fromArray(['uid' => 'NEW102', 'pid' => 1]);
+        $overflowSlug = $subject->buildSlugForUniqueInSite('/unique-slug', $state);
+        $parts = explode('-', $overflowSlug);
+        if (count($parts) !== 3) {
+            self::fail('No suffix to the slug was created');
+        }
+        $variablePartOfSlug = end($parts);
+        // shordMd5 return value is 10 chars long, so we can use this to assure the function has been called and returned a value
+        self::assertSame(10, strlen($variablePartOfSlug));
+    }
+
+    /**
+     * @test
+     */
+    public function buildSlugForUniqueInPidRespectsMaxRetryOverflow()
+    {
+        $subject = GeneralUtility::makeInstance(
+            SlugHelper::class,
+            'pages',
+            'slug',
+            [
+                'generatorOptions' => [
+                    'fields' => ['title'],
+                    'prefixParentPageSlug' => true,
+                ],
+            ]
+        );
+        $state = RecordStateFactory::forName('pages')->fromArray(['uid' => 'NEW102', 'pid' => 1]);
+        $overflowSlug = $subject->buildSlugForUniqueInPid('/unique-slug', $state);
+        $parts = explode('-', $overflowSlug);
+        if (count($parts) !== 3) {
+            self::fail('No suffix to the slug was created');
+        }
+        $variablePartOfSlug = end($parts);
+        // shordMd5 return value is 10 chars long, so we can use this to assure the function has been called and returned a value
+        self::assertSame(10, strlen($variablePartOfSlug));
+    }
+
+    /**
+     * @test
+     */
+    public function buildSlugForUniqueInTableRespectsMaxRetryOverflow()
+    {
+        $subject = GeneralUtility::makeInstance(
+            SlugHelper::class,
+            'pages',
+            'slug',
+            [
+                'generatorOptions' => [
+                    'fields' => ['title'],
+                    'prefixParentPageSlug' => true,
+                ],
+            ]
+        );
+
+        $state = RecordStateFactory::forName('pages')->fromArray(['uid' => 'NEW102', 'pid' => 1]);
+        $overflowSlug = $subject->buildSlugForUniqueInTable('/unique-slug', $state);
+        $parts = explode('-', $overflowSlug);
+        if (count($parts) !== 3) {
+            self::fail('No suffix to the slug was created');
+        }
+        $variablePartOfSlug = end($parts);
+        // shordMd5 return value is 10 chars long, so we can use this to assure the function has been called and returned a value
+        self::assertSame(10, strlen($variablePartOfSlug));
+    }
+}
