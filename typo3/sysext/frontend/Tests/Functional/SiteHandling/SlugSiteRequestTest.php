@@ -31,11 +31,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class SlugSiteRequestTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -86,7 +81,6 @@ class SlugSiteRequestTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }
@@ -213,10 +207,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame(
             $expectedStatusCode,
             $response->getStatusCode()
-        );
-        self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
         );
         self::assertSame(
             $expectedPageTitle,
@@ -391,10 +381,6 @@ class SlugSiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
-        );
-        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -458,10 +444,6 @@ class SlugSiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
-        );
-        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -522,10 +504,6 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame(
             200,
             $response->getStatusCode()
-        );
-        self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
         );
         self::assertSame(
             $expectedPageTitle,

@@ -281,8 +281,6 @@ class ExtendedTemplateService extends TemplateService
      */
     public function generateConfig_constants()
     {
-        // These vars are also set later on...
-        $this->setup['sitetitle'] = $this->sitetitle;
         // Parse constants
         $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
         // Register comments!
@@ -389,7 +387,7 @@ class ExtendedTemplateService extends TemplateService
                 }
                 $label = $key;
                 // Read only...
-                if (($depth === 'types' || $depth === 'resources' || $depth === 'sitetitle') && $this->bType === 'setup') {
+                if (($depth === 'types') && $this->bType === 'setup') {
                     $label = '<span style="color: #666666;">' . $label . '</span>';
                 } else {
                     if ($this->linkObjects) {

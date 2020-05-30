@@ -63,11 +63,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class MountPointTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Board Games and Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -152,7 +147,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Global',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $this->setUpFrontendRootPage(
@@ -162,7 +156,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Canada',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $this->setUpFrontendRootPage(
@@ -172,7 +165,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME US',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $this->setUpFrontendRootPage(
@@ -182,7 +174,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Archive',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }
@@ -502,7 +493,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $response = $this->executeFrontendRequest(
@@ -558,7 +548,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $this->setUpFrontendRootPage(
@@ -569,7 +558,6 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $response = $this->executeFrontendRequest(

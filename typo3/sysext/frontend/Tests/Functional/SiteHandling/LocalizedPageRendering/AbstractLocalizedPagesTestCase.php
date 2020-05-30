@@ -34,11 +34,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     ];
 
     /**
-     * @var string
-     */
-    protected $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -96,7 +91,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript'],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
 
@@ -134,7 +128,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
 

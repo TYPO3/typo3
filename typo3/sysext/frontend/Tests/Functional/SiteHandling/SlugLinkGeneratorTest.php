@@ -32,11 +32,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 class SlugLinkGeneratorTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -125,7 +120,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
         $this->setUpFrontendRootPage(
@@ -135,7 +129,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Blog',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }

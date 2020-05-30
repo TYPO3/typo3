@@ -3948,11 +3948,6 @@ These values are stored with cached pages which means they are also accessible w
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="sitetitle" type="array">
-			<description><![CDATA[SiteTitle (internal)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="types" type="array">
 			<description><![CDATA[Types (internal)
 type=99 reserved for plaintext display ]]></description>

@@ -187,13 +187,6 @@ class TemplateService
     protected $rowSum;
 
     /**
-     * The current site title field.
-     *
-     * @var string
-     */
-    protected $sitetitle = '';
-
-    /**
      * Tracking all conditions found during parsing of TypoScript. Used for the "all" key in currentPageData
      *
      * @var array|null
@@ -699,9 +692,6 @@ class TemplateService
         // For backend analysis (Template Analyzer) provide the order of added constants/config template IDs
         $this->clearList_const[] = $templateID;
         $this->clearList_setup[] = $templateID;
-        if (trim($row['sitetitle'] ?? null)) {
-            $this->sitetitle = $row['sitetitle'];
-        }
         // If the template record is a Rootlevel record, set the flag and clear the template rootLine (so it starts over from this point)
         if (trim($row['root'] ?? null)) {
             $this->rootId = $pid;
@@ -955,8 +945,6 @@ class TemplateService
 
         // Parse the TypoScript code text for include-instructions!
         $this->processIncludes();
-        // These vars are also set later on...
-        $this->setup['sitetitle'] = $this->sitetitle;
         // ****************************
         // Parse TypoScript Constants
         // ****************************
@@ -1031,10 +1019,6 @@ class TemplateService
         // Basically: This is unsetting/setting of certain reserved keys.
         // ****************************************************************
         // These vars are already set after 'processTemplate', but because $config->setup overrides them (in the line above!), we set them again. They are not changed compared to the value they had in the top of the page!
-        unset($this->setup['sitetitle']);
-        unset($this->setup['sitetitle.']);
-        $this->setup['sitetitle'] = $this->sitetitle;
-        // Unsetting some vars...
         unset($this->setup['types.']);
         unset($this->setup['types']);
         if (is_array($this->setup)) {

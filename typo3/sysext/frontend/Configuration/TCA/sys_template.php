@@ -101,14 +101,6 @@ return [
                 'cols' => 2
             ]
         ],
-        'sitetitle' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.sitetitle',
-            'config' => [
-                'type' => 'input',
-                'size' => 25,
-                'max' => 255
-            ]
-        ],
         'constants' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.constants',
             'config' => [
@@ -212,7 +204,7 @@ return [
     'types' => [
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                title, sitetitle, constants, config,
+                title, constants, config,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.options,
                 clear, root,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.include,

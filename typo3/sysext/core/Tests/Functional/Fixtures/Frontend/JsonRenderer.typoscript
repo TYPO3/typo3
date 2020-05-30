@@ -249,9 +249,6 @@ page {
 	99999 {
 		stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderValues
 		stdWrap.postUserFunc.values {
-			template.children {
-				sitetitle.data = tsfe:tmpl|setup|sitetitle
-			}
 			page.children {
 				uid.data = page:uid
 				pid.data = page:pid

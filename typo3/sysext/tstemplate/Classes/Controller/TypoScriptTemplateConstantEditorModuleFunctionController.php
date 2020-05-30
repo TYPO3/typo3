@@ -131,7 +131,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
         // initialize
         $existTemplate = $this->initialize_editor($this->id, $template_uid);
         if ($existTemplate) {
-            $assigns['siteTitle'] = trim($this->templateRow['sitetitle']);
             $assigns['templateRecord'] = $this->templateRow;
             if ($manyTemplatesMenu) {
                 $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;

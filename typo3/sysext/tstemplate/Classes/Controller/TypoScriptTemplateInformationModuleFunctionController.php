@@ -72,10 +72,10 @@ class TypoScriptTemplateInformationModuleFunctionController
     /**
      * Gets the data for a row of a HTML table in the fluid template
      *
-     * @param string $label The label to be shown (e.g. 'Title:', 'Sitetitle:')
+     * @param string $label The label to be shown (e.g. 'Title:')
      * @param string $data The data/information to be shown (e.g. 'Template for my site')
-     * @param string $field The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
-     * @param int $id The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
+     * @param string $field The field/variable to be sent on clicking the edit icon (e.g. 'title')
+     * @param int $id The field/variable to be sent on clicking the edit icon (e.g. 'title')
      * @return array Data for a row of a HTML table
      */
     protected function tableRowData($label, $data, $field, $id)
@@ -165,7 +165,6 @@ class TypoScriptTemplateInformationModuleFunctionController
             $assigns['LLPrefix'] = 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:';
 
             $assigns['title'] = trim($this->templateRow['title']);
-            $assigns['siteTitle'] = trim($this->templateRow['sitetitle']);
             $assigns['templateRecord'] = $this->templateRow;
             if ($manyTemplatesMenu) {
                 $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
@@ -174,7 +173,6 @@ class TypoScriptTemplateInformationModuleFunctionController
             // Processing:
             $tableRows = [];
             $tableRows[] = $this->tableRowData($lang->getLL('title'), $this->templateRow['title'], 'title', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('sitetitle'), $this->templateRow['sitetitle'], 'sitetitle', $this->templateRow['uid']);
             $tableRows[] = $this->tableRowData($lang->getLL('description'), $this->templateRow['description'], 'description', $this->templateRow['uid']);
             $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($this->templateRow['constants']) ? count(explode(LF, $this->templateRow['constants'])) : 0), 'constants', $this->templateRow['uid']);
             $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($this->templateRow['config']) ? count(explode(LF, $this->templateRow['config'])) : 0), 'config', $this->templateRow['uid']);

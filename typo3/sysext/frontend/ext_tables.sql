@@ -74,7 +74,6 @@ CREATE TABLE fe_users (
 #
 CREATE TABLE sys_template (
 	title varchar(255) DEFAULT '' NOT NULL,
-	sitetitle varchar(255) DEFAULT '' NOT NULL,
 	root tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	clear tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	include_static_file text,

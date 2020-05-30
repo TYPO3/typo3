@@ -55,7 +55,7 @@
                     <f:variable name="web_ts_parameters"
                                 value="{id: template.pid, 'SET[templatesOnPage]': template.uid}" />
                     <a href="{f:be.uri(route:'web_ts', parameters:web_ts_parameters)}"
-                        title="ID: {template.uid} {template.sitetitle}">
+                        title="ID: {template.uid}">
                         <core:IconForRecord table="sys_template" row="{template}" />
                         {template.title -> f:format.crop(maxCharacters: maxCharacters)}
                     </a>

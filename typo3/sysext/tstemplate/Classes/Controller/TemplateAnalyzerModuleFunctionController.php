@@ -141,7 +141,6 @@ class TemplateAnalyzerModuleFunctionController
 
         $assigns['existTemplate'] = $this->initialize_editor($this->id, $template_uid);
         if ($assigns['existTemplate']) {
-            $assigns['siteTitle'] = trim($this->templateRow['sitetitle']);
             $assigns['templateRecord'] = $this->templateRow;
             $assigns['linkWrappedTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title']);
         }

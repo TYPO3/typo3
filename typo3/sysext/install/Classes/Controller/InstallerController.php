@@ -978,7 +978,6 @@ class InstallerController
                         'cruser_id' => 1,
                         'tstamp' => time(),
                         'title' => 'Main TypoScript Rendering',
-                        'sitetitle' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                         'root' => 1,
                         'clear' => 1,
                         'include_static_file' => 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:fluid_styled_content/Configuration/TypoScript/Styling/',

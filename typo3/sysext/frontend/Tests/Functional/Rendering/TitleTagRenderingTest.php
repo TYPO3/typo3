@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -51,10 +50,6 @@ class TitleTagRenderingTest extends FunctionalTestCase
             ['EXT:frontend/Tests/Functional/Rendering/Fixtures/TitleTagRenderingTest.typoscript']
         );
         $this->setUpFrontendSite(1);
-        $this->setSiteTitleToTemplateRecord(
-            1,
-            'Site Title'
-        );
     }
 
     /**
@@ -102,7 +97,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'pageId' => 1000,
                 ],
                 [
-                    'assertRegExp' => '#<title>Site Title: Root 1000</title>#',
+                    'assertRegExp' => '#<title>Root 1000</title>#',
                     'assertNotRegExp' => '',
                 ]
             ],
@@ -111,7 +106,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'pageId' => 1001,
                 ],
                 [
-                    'assertRegExp' => '#<title>Site Title: SEO Root 1001</title>#',
+                    'assertRegExp' => '#<title>SEO Root 1001</title>#',
                     'assertNotRegExp' => '',
                 ]
             ],
@@ -121,8 +116,8 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'noPageTitle' => 1,
                 ],
                 [
-                    'assertRegExp' => '#<title>Site Title</title>#',
-                    'assertNotRegExp' => '',
+                    'assertRegExp' => '',
+                    'assertNotRegExp' => '#<title>Site Title</title>#',
                 ]
             ],
             [
@@ -131,8 +126,8 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'noPageTitle' => 1,
                 ],
                 [
-                    'assertRegExp' => '#<title>Site Title</title>#',
-                    'assertNotRegExp' => '',
+                    'assertRegExp' => '',
+                    'assertNotRegExp' => '#<title>Site Title</title>#',
                 ]
             ],
             [
@@ -183,7 +178,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'pageTitleTS' => 1
                 ],
                 [
-                    'assertRegExp' => '#<title>SITE TITLE: ROOT 1000</title>#',
+                    'assertRegExp' => '#<title>ROOT 1000</title>#',
                     'assertNotRegExp' => '',
                 ]
             ],
@@ -213,28 +208,5 @@ class TitleTagRenderingTest extends FunctionalTestCase
         if ($expectations['assertNotRegExp']) {
             self::assertNotRegExp($expectations['assertNotRegExp'], $content);
         }
-    }
-
-    /**
-     * Adds site title to template record
-     *
-     * @param int $pageId
-     * @param string $siteTitle
-     */
-    protected function setSiteTitleToTemplateRecord(int $pageId, string $siteTitle): void
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
-
-        $template = $connection->select(['uid', 'sitetitle'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetch();
-        if (empty($template)) {
-            self::fail('Cannot find root template on page with id: "' . $pageId . '"');
-        }
-        $updateFields = [];
-        $updateFields['sitetitle'] = $siteTitle;
-        $connection->update(
-            'sys_template',
-            $updateFields,
-            ['uid' => $template['uid']]
-        );
     }
 }

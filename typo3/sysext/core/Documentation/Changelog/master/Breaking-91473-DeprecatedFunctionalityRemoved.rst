@@ -361,6 +361,8 @@ The following features have been removed:
 
 The following database tables have been removed:
 
+- :sql:`sys_template.sitetitle`
+
 The following database fields have been removed:
 
 - pages.legacy_overlay_uid

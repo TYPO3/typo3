@@ -265,7 +265,6 @@ class TypoScriptTemplateModuleController
                     'uid',
                     'pid',
                     'title',
-                    'sitetitle',
                     'root',
                     'hidden',
                     'starttime',

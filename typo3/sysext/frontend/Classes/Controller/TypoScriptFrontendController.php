@@ -2627,10 +2627,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Compiles the content for the page <title> tag.
      *
      * @param string $pageTitle The input title string, typically the "title" field of a page's record.
-     * @param bool $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
-     * @param bool $showTitleFirst If set, then "sitetitle" and $title is swapped
+     * @param bool $noTitle If set, then only the site title is outputted
+     * @param bool $showTitleFirst If set, then website title and $title is swapped
      * @param string $pageTitleSeparator an alternative to the ": " as the separator between site title and page title
-     * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
+     * @return string The page title on the form "[website title]: [input-title]". Not htmlspecialchar()'ed.
      * @see generatePageTitle()
      */
     protected function printTitle(string $pageTitle, bool $noTitle = false, bool $showTitleFirst = false, string $pageTitleSeparator = ''): string
@@ -2666,10 +2666,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             && trim($this->site->getConfiguration()['websiteTitle']) !== ''
         ) {
             return trim($this->site->getConfiguration()['websiteTitle']);
-        }
-        if (!empty($this->tmpl->setup['sitetitle'])) {
-            // @deprecated since TYPO3 v10.2 and will be removed in TYPO3 v11.0
-            return trim($this->tmpl->setup['sitetitle']);
         }
 
         return '';

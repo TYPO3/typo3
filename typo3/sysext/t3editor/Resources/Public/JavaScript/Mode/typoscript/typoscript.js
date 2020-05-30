@@ -773,7 +773,6 @@
         'site_author': kw('site_author'),
         'site_reserved': kw('site_reserved'),
         'sitemap': B,
-        'sitetitle': kw('sitetitle'),
         'siteUrl': kw('siteUrl'),
         'size': kw('size'),
         'solarize': kw('solarize'),

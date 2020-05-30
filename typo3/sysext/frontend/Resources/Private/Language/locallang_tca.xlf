@@ -474,9 +474,6 @@
 			<trans-unit id="sys_template.clear" resname="sys_template.clear">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="sys_template.sitetitle" resname="sys_template.sitetitle">
-				<source>Website Title</source>
-			</trans-unit>
 			<trans-unit id="sys_template.constants" resname="sys_template.constants">
 				<source>Constants</source>
 			</trans-unit>

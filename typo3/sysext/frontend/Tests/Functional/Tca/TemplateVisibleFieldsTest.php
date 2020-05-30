@@ -25,7 +25,6 @@ class TemplateVisibleFieldsTest extends FunctionalTestCase
     protected static $templateFields = [
         'hidden',
         'title',
-        'sitetitle',
         'constants',
         'config',
         'description',

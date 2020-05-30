@@ -31,11 +31,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class SiteRequestTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -86,7 +81,6 @@ class SiteRequestTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }
@@ -180,10 +174,6 @@ class SiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
-        );
-        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -257,10 +247,6 @@ class SiteRequestTest extends AbstractTestCase
         self::assertSame(
             200,
             $response->getStatusCode()
-        );
-        self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
         );
         self::assertSame(
             $expectedPageTitle,
@@ -337,10 +323,6 @@ class SiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
-        );
-        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -401,10 +383,6 @@ class SiteRequestTest extends AbstractTestCase
         self::assertSame(
             200,
             $response->getStatusCode()
-        );
-        self::assertSame(
-            $this->siteTitle,
-            $responseStructure->getScopePath('template/sitetitle')
         );
         self::assertSame(
             $expectedPageTitle,

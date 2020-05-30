@@ -304,6 +304,7 @@ return [
         'restFiles' => [
             'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch' => [

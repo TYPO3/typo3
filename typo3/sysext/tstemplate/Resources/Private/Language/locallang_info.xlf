@@ -21,9 +21,6 @@
 			<trans-unit id="title" resname="title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="sitetitle" resname="sitetitle">
-				<source>Sitetitle</source>
-			</trans-unit>
 			<trans-unit id="description" resname="description">
 				<source>Description</source>
 			</trans-unit>

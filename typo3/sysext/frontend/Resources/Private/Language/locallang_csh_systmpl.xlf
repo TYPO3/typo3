@@ -40,9 +40,6 @@ The Web&gt;Template module contains tools which will help you to edit and valida
 			<trans-unit id="title.description" resname="title.description">
 				<source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="sitetitle.description" resname="sitetitle.description">
-				<source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
-			</trans-unit>
 			<trans-unit id="constants.description" resname="constants.description">
 				<source>TypoScript Constants.</source>
 			</trans-unit>

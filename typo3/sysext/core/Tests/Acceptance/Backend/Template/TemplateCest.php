@@ -88,7 +88,6 @@ class TemplateCest
         $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
         $I->waitForElement('.table-fit');
         $I->see('Title');
-        $I->see('Sitetitle');
         $I->see('Description');
         $I->see('Constants');
         $I->see('Setup');

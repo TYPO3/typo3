@@ -39,11 +39,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 class TypoLinkGeneratorTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -122,7 +117,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }

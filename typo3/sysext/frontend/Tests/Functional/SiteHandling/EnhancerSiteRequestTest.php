@@ -43,11 +43,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 class EnhancerSiteRequestTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -117,7 +112,6 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
 
@@ -128,7 +122,6 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Archive',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }

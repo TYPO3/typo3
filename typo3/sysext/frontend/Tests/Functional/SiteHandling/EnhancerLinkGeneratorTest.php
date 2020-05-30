@@ -40,11 +40,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 class EnhancerLinkGeneratorTest extends AbstractTestCase
 {
     /**
-     * @var string
-     */
-    private $siteTitle = 'A Company that Manufactures Everything Inc';
-
-    /**
      * @var InternalRequestContext
      */
     private $internalRequestContext;
@@ -114,7 +109,6 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
             ]
         );
     }
