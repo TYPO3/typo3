@@ -137,7 +137,7 @@ class FolderTreeView extends AbstractTreeView
 
         if ($this->thisScript) {
             // Activates dynamic AJAX based tree
-            $scopeData = serialize($this->scope);
+            $scopeData = json_encode($this->scope);
             $scopeHash = GeneralUtility::hmac($scopeData);
             $js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
             return '<a class="list-tree-control' . (!$isExpand ? ' list-tree-control-open' : ' list-tree-control-closed') . '" onclick="' . $js . '"><i class="fa"></i></a>';
