@@ -120,7 +120,7 @@ class FileSystemNavigationFrameController
         $scopeHash = $parsedBody['scopeHash'] ?? $queryParams['scopeHash'] ?? '';
 
         if (!empty($scopeData) && hash_equals(GeneralUtility::hmac($scopeData), $scopeHash)) {
-            $this->scopeData = unserialize($scopeData);
+            $this->scopeData = json_decode($scopeData, true);
         }
 
         // Create folder tree object:
