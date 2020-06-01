@@ -172,7 +172,8 @@ class BackendConfigurationManager extends AbstractConfigurationManager
             ->select('uid')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('is_siteroot', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('is_siteroot', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->orderBy('sorting')
             ->execute()
