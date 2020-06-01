@@ -26,7 +26,7 @@ class TypeCheckbox8ItemsProcFunc
      */
     public function itemsProcFunc(&$params)
     {
-        $params['items'][] = array('item 1 from itemProcFunc()', '');
-        $params['items'][] = array('item 2 from itemProcFunc()', '');
+        $params['items'][] = ['item 1 from itemProcFunc()', ''];
+        $params['items'][] = ['item 2 from itemProcFunc()', ''];
     }
 }

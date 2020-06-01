@@ -20,7 +20,6 @@ return [
         ],
     ],
 
-
     'columns' => [
         'hidden' => [
             'exclude' => 1,
@@ -106,15 +105,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'inline_1',
         ],
     ],
-
 
 ];

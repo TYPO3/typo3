@@ -20,7 +20,6 @@ return [
         ],
     ],
 
-
     'columns' => [
         'hidden' => [
             'exclude' => 1,
@@ -140,7 +139,6 @@ return [
             ),
         ],
 
-
         'inline_flex_1' => [
             'exclude' => 1,
             'label' => 'flex_1',
@@ -258,7 +256,6 @@ return [
         ],
     ],
 
-
     'types' => [
         '0' => [
             'showitem' => '
@@ -271,6 +268,5 @@ return [
             ',
         ],
     ],
-
 
 ];

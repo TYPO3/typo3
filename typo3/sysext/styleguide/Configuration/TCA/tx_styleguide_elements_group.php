@@ -20,9 +20,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'hidden' => [
             'exclude' => 1,
@@ -199,7 +197,6 @@ return [
             ],
         ],
 
-
         'group_folder_1' => [
             'exclude' => 1,
             'label' => 'group_folder_1 desription',
@@ -220,7 +217,6 @@ return [
                 'allowed' => 'be_users,be_groups',
             ],
         ],
-
 
         'flex_1' => [
             'exclude' => 1,
@@ -328,9 +324,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -348,6 +342,5 @@ return [
             ',
         ],
     ],
-
 
 ];

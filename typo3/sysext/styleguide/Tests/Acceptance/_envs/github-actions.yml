@@ -1,0 +1,16 @@
+modules:
+  config:
+      WebDriver:
+        url: http://GITHUB_TESTHOST/
+        browser: chrome
+        window_size: 1600x1000
+        wait: 4
+        port: '9515'
+        capabilities:
+          chromeOptions:
+            w3c: false
+            args: ["--disable-gpu", "--headless", "--disable-dev-shm-usage", "--no-sandbox", "--disable-extensions", "--hide-scrollbars"]
+      Db:
+        dsn: 'mysql:host=127.0.0.1'
+        user: 'root'
+        password: 'root'

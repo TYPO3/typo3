@@ -19,9 +19,7 @@ return [
             'disabled' => 'hidden',
         ],
 
-
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -94,7 +92,6 @@ return [
             ],
         ],
 
-
         'input_1' => [
             'exclude' => 1,
             'label' => 'input_1 eval=required',
@@ -124,7 +121,6 @@ return [
             ],
         ],
 
-
         'text_1' => [
             'exclude' => 1,
             'label' => 'text_1 eval=required',
@@ -133,7 +129,6 @@ return [
                 'eval' => 'required',
             ],
         ],
-
 
         'select_1' => [
             'exclude' => 1,
@@ -225,7 +220,6 @@ return [
             ],
         ],
 
-
         'group_1' => [
             'exclude' => 1,
             'label' => 'group_1 db, minitems=1, maxitems=3',
@@ -250,7 +244,6 @@ return [
             ],
         ],
 
-
         'rte_1' => [
             'exclude' => 1,
             'label' => 'rte_1 eval=required',
@@ -272,7 +265,6 @@ return [
                 'foreign_table_field' => 'parenttable',
             ],
         ],
-
 
         'inline_1' => [
             'exclude' => 1,
@@ -308,7 +300,6 @@ return [
                 'maxitems' => 3,
             ],
         ],
-
 
         'flex_1' => [
             'exclude' => 1,
@@ -425,7 +416,6 @@ return [
             ],
         ],
 
-
         'palette_input_1' => [
             'exclude' => 1,
             'label' => 'palette_input_1 eval=required',
@@ -443,9 +433,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -472,12 +460,10 @@ return [
         ],
     ],
 
-
     'palettes' => [
         'palette_1' => [
             'showitem' => 'palette_input_1, palette_input_2',
         ],
     ],
-
 
 ];

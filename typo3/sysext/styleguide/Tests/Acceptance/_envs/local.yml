@@ -1,0 +1,17 @@
+# example local environment
+modules:
+  config:
+      WebDriver:
+        url: http://localhost:8888/
+        browser: chrome
+        window_size: 1600x1000
+        wait: 4
+        port: '9515'
+        capabilities:
+          chromeOptions:
+            w3c: false
+            args: ["--disable-gpu","--disable-dev-shm-usage", "--no-sandbox", "--disable-extensions", "--hide-scrollbars"]
+      Db:
+        dsn: 'mysql:host=127.0.0.1:3306'
+        user: 'root'
+        password: 'root'

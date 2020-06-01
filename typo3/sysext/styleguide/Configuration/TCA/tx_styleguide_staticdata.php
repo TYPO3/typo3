@@ -8,7 +8,6 @@ return [
 
     'columns' => [
 
-
         'value_1' => [
             'label' => 'value_1',
             'config' => [
@@ -17,15 +16,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'value_1',
         ],
     ],
-
 
 ];

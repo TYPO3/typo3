@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+		backupGlobals="true"
+		backupStaticAttributes="false"
+		bootstrap="../.build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
+		colors="true"
+		convertErrorsToExceptions="true"
+		convertWarningsToExceptions="true"
+		forceCoversAnnotation="false"
+		processIsolation="false"
+		stopOnError="false"
+		stopOnFailure="false"
+		stopOnIncomplete="false"
+		stopOnSkipped="false"
+		verbose="false"
+>
+	<testsuites>
+		<testsuite name="Unit Tests">
+			<directory>../Tests/Unit</directory>
+		</testsuite>
+		<testsuite name="Functional Tests">
+			<directory>../Tests/Functional</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../Classes/</directory>
+		</whitelist>
+	</filter>
+</phpunit>

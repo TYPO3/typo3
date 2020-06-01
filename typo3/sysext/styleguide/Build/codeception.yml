@@ -1,0 +1,54 @@
+namespace: TYPO3\CMS\Styleguide\Tests\Acceptance\Support
+suites:
+  acceptance:
+    actor: AcceptanceTester
+    path: .
+    modules:
+      enabled:
+        - WebDriver
+        - Db
+        - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
+        - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login
+        - \TYPO3\CMS\Styleguide\Tests\Acceptance\Support\Helper\Acceptance
+        - Asserts
+      config:
+        WebDriver:
+          url: http://dummy.local/
+          browser: chrome
+        Db:
+          dump:
+            - ../Tests/Acceptance/_data/0_schema.sql
+            - ../Tests/Acceptance/_data/1_be_user.sql
+            - ../Tests/Acceptance/_data/2_styleguide_schema.sql
+          populate: true
+          cleanup: true
+          dsn: 'mysql:host=127.0.0.1:3306'
+          user: 'root'
+          password: 'root'
+          initial_queries:
+            - 'CREATE DATABASE IF NOT EXISTS t3test;'
+            - 'USE t3test;'
+            - 'SET NAMES utf8;'
+        \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
+            sessions:
+              admin: 72ca45e1c0d46b804cc1c3e8bb079659
+    step_decorators:
+      - Codeception\Step\ConditionalAssertion
+      - Codeception\Step\TryTo
+      - Codeception\Step\Retry
+
+extensions:
+  enabled:
+    - Codeception\Extension\RunFailed
+    - Codeception\Extension\Recorder
+
+
+params:
+  - env
+
+paths:
+  tests: ../Tests/Acceptance/
+  output: ../Tests/Acceptance/_output
+  data: ../Tests/Acceptance/_data
+  support: ../Tests/Acceptance/Support
+  envs: ../Tests/Acceptance/_envs

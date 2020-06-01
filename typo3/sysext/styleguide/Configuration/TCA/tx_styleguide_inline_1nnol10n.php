@@ -20,7 +20,6 @@ return [
         ],
     ],
 
-
     'columns' => [
         'hidden' => [
             'exclude' => 1,
@@ -105,9 +104,7 @@ return [
             'maxitems' => 1,
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -119,6 +116,5 @@ return [
             ',
         ],
     ],
-
 
 ];
