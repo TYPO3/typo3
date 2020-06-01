@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,7 +56,6 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     use SiteLanguageAccessorTrait;
     use SiteAccessorTrait;
     use ContextAwareTrait;
-    use PersistedAliasMapperLegacyTrait;
 
     /**
      * @var array

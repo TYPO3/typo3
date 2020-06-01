@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,7 +59,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     use SiteLanguageAccessorTrait;
     use SiteAccessorTrait;
     use ContextAwareTrait;
-    use PersistedPatternMapperLegacyTrait;
 
     protected const PATTERN_RESULT = '#\{(?P<fieldName>[^}]+)\}#';
 

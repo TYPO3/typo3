@@ -19,6 +19,9 @@ The following PHP classes that have been previously deprecated for v10 have been
 - :php:`\TYPO3\CMS\Backend\Controller\File\ReplaceFileController`
 - :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
 - :php:`\TYPO3\CMS\Core\Console\CommandRequestHandler`
+- :php:`\TYPO3\CMS\Core\Routing\Aspect\PersistenceDelegate`
+- :php:`\TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait`
+- :php:`\TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\FileMount`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection`
@@ -40,6 +43,7 @@ The following PHP interfaces that have been previously deprecated for v10 have b
 - :php:`\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface`
 - :php:`\TYPO3\CMS\Core\Console\RequestHandlerInterface`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactoryInterface`
+- :php:`\TYPO3\CMS\Core\Routing\Aspect\DelegateInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface`
 
 The following PHP class aliases that have been previously deprecated for v10 have been removed:
