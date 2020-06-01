@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_mnattr_hotel_offer_rel',
+        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_mnattr_hotel_offer_rel',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -64,7 +64,7 @@ return [
             ]
         ],
         'hotelid' => [
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.hotelid',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.hotelid',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -74,7 +74,7 @@ return [
             ]
         ],
         'offerid' => [
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.offerid',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.offerid',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -95,22 +95,22 @@ return [
         ],
         'quality' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.quality',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.quality',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.quality.I.0', '1'],
-                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.quality.I.1', '2'],
-                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.quality.I.2', '3'],
-                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.quality.I.3', '4'],
-                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.quality.I.4', '5'],
+                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.quality.I.0', '1'],
+                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.quality.I.1', '2'],
+                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.quality.I.2', '3'],
+                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.quality.I.3', '4'],
+                    ['LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.quality.I.4', '5'],
                 ],
             ]
         ],
         'allincl' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_offer_rel.allincl',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.allincl',
             'config' => [
                 'type' => 'check',
             ]
@@ -118,8 +118,8 @@ return [
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title, hotelid, offerid, hotelsort, offersort, quality, allincl,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, hotelid, offerid, hotelsort, offersort, quality, allincl,' .
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
         ]
     ],
     'palettes' => [

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1591192168" source-language="en" datatype="plaintext" original="EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="irre_tutorial">
+		<header/>
+		<body>
+			<trans-unit id="tabs.general" resname="tabs.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+				<source>Visibility</source>
+			</trans-unit>
+
+			<trans-unit id="pages.doktype.div.irre" resname="pages.doktype.div.irre">
+				<source>IRRE Tutorial</source>
+			</trans-unit>
+			<trans-unit id="pages.doktype.I.233" resname="pages.doktype.I.233">
+				<source>IRRE Tutorial Test Page</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_irretutorial_hotels" resname="pages.tx_irretutorial_hotels">
+				<source>Hotels:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_irretutorial_1nff_hotels" resname="tt_content.tx_irretutorial_1nff_hotels">
+				<source>Hotels (1nff):</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_irretutorial_1ncsv_hotels" resname="tt_content.tx_irretutorial_1ncsv_hotels">
+				<source>Hotels (1ncsv):</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_irretutorial_flexform" resname="tt_content.tx_irretutorial_flexform">
+				<source>IRRE:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_irretutorial_flexform.hotels" resname="tt_content.tx_irretutorial_flexform.hotels">
+				<source>IRRE:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.div.irre" resname="tt_content.div.irre">
+				<source>IRRE Tutorial</source>
+			</trans-unit>
+
+			<trans-unit id="tx_irretutorial_1ncsv_hotel" resname="tx_irretutorial_1ncsv_hotel">
+				<source>1:n CSV: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_1ncsv_offer" resname="tx_irretutorial_1ncsv_offer">
+				<source>1:n CSV: Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_1ncsv_price" resname="tx_irretutorial_1ncsv_price">
+				<source>1:n CSV: Prices</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_1nff_hotel" resname="tx_irretutorial_1nff_hotel">
+				<source>1:n FF: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_1nff_offer" resname="tx_irretutorial_1nff_offer">
+				<source>1:n FF: Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_1nff_price" resname="tx_irretutorial_1nff_price">
+				<source>1:n FF: Prices</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnasym_hotel" resname="tx_irretutorial_mnasym_hotel">
+				<source>m:n ASym: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnasym_hotel_offer_rel" resname="tx_irretutorial_mnasym_hotel_offer_rel">
+				<source>m:n ASym: Hotels&lt;-&gt;Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnasym_offer" resname="tx_irretutorial_mnasym_offer">
+				<source>m:n ASym: Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnasym_price" resname="tx_irretutorial_mnasym_price">
+				<source>m:n ASym: Prices</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnmmasym_hotel" resname="tx_irretutorial_mnmmasym_hotel">
+				<source>m:n (MM) ASym: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnmmasym_offer" resname="tx_irretutorial_mnmmasym_offer">
+				<source>m:n (MM) ASym: Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnmmasym_price" resname="tx_irretutorial_mnmmasym_price">
+				<source>m:n (MM) ASym: Prices</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnsym_hotel" resname="tx_irretutorial_mnsym_hotel">
+				<source>m:n Sym: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnsym_hotel_rel" resname="tx_irretutorial_mnsym_hotel_rel">
+				<source>m:n Sym: Hotels&lt;-&gt;Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnattr_hotel" resname="tx_irretutorial_mnattr_hotel">
+				<source>m:n Attr: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnattr_hotel_offer_rel" resname="tx_irretutorial_mnattr_hotel_offer_rel">
+				<source>m:n Attr: Hotels&lt;-&gt;Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_mnattr_offer" resname="tx_irretutorial_mnattr_offer">
+				<source>m:n Attr: Offers</source>
+			</trans-unit>
+
+			<trans-unit id="tx_irretutorial_hotel.title" resname="tx_irretutorial_hotel.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel.offers" resname="tx_irretutorial_hotel.offers">
+				<source>Offers:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel.branches" resname="tx_irretutorial_hotel.branches">
+				<source>Branches:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_rel" resname="tx_irretutorial_hotel_rel">
+				<source>Hotels&lt;-&gt;Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_rel.hotelid" resname="tx_irretutorial_hotel_rel.hotelid">
+				<source>Hotel:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_rel.branchid" resname="tx_irretutorial_hotel_rel.branchid">
+				<source>Branch:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel" resname="tx_irretutorial_hotel_offer_rel">
+				<source>Hotels&lt;-&gt;Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.hotelid" resname="tx_irretutorial_hotel_offer_rel.hotelid">
+				<source>Hotel:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.offerid" resname="tx_irretutorial_hotel_offer_rel.offerid">
+				<source>Offer:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.prices" resname="tx_irretutorial_hotel_offer_rel.prices">
+				<source>Prices:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.quality" resname="tx_irretutorial_hotel_offer_rel.quality">
+				<source>Quality:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.quality.I.0" resname="tx_irretutorial_hotel_offer_rel.quality.I.0">
+				<source>(1 star) *</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.quality.I.1" resname="tx_irretutorial_hotel_offer_rel.quality.I.1">
+				<source>(2 stars) **</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.quality.I.2" resname="tx_irretutorial_hotel_offer_rel.quality.I.2">
+				<source>(3 stars) ***</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.quality.I.3" resname="tx_irretutorial_hotel_offer_rel.quality.I.3">
+				<source>(4 stars) ****</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.quality.I.4" resname="tx_irretutorial_hotel_offer_rel.quality.I.4">
+				<source>(5 stars) *****</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_hotel_offer_rel.allincl" resname="tx_irretutorial_hotel_offer_rel.allincl">
+				<source>all inclusive:</source>
+			</trans-unit>
+
+			<trans-unit id="tx_irretutorial_offer.title" resname="tx_irretutorial_offer.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_offer.hotels" resname="tx_irretutorial_offer.hotels">
+				<source>Hotels:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_offer.prices" resname="tx_irretutorial_offer.prices">
+				<source>Prices:</source>
+			</trans-unit>
+
+			<trans-unit id="tx_irretutorial_price.title" resname="tx_irretutorial_price.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_price.offers" resname="tx_irretutorial_price.offers">
+				<source>Offers:</source>
+			</trans-unit>
+			<trans-unit id="tx_irretutorial_price.price" resname="tx_irretutorial_price.price">
+				<source>Price (EUR):</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

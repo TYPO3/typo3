@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1591192384" source-language="en" datatype="plaintext" original="EXT:blog_example/Resources/Private/Language/locallang_csh.xlf" date="2020-06-03T15:50:00Z" product-name="blog_example">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" resname=".alttitle">
+				<source>Blog Example</source>
+			</trans-unit>
+			<trans-unit id=".description" resname=".description">
+				<source>This is some dummy help. But it's context sensitive!</source>
+			</trans-unit>
+			<trans-unit id=".seeAlso" resname=".seeAlso">
+				<source>_MOD_web_layout:columns_single</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

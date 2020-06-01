@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_mnmmasym_price',
+        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_mnmmasym_price',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -65,7 +65,7 @@ return [
         'title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_price.title',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -74,7 +74,7 @@ return [
         ],
         'price' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_price.price',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.price',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -83,7 +83,7 @@ return [
         ],
         'offers' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_price.offers',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.offers',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_irretutorial_mnmmasym_offer',
@@ -102,8 +102,8 @@ return [
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title, price, offers,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, price, offers,' .
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
         ]
     ],
     'palettes' => [

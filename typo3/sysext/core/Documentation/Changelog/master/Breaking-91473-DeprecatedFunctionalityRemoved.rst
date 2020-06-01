@@ -19,6 +19,7 @@ The following PHP classes that have been previously deprecated for v10 have been
 - :php:`\TYPO3\CMS\Backend\Controller\File\ReplaceFileController`
 - :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate`
 - :php:`\TYPO3\CMS\Core\Console\CommandRequestHandler`
+- :php:`\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser`
 - :php:`\TYPO3\CMS\Core\Routing\Aspect\PersistenceDelegate`
 - :php:`\TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait`
 - :php:`\TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait`
@@ -348,6 +349,7 @@ The following features have been removed:
 - All install tool upgrade wizards upgrading from v8 to v9
 - CLI Command Configuration definition via :file:`Commands.php`
 - Pi-based plugin for "felogin" (CType `login`)
+- XML-based (TYPO3-custom XML format) label parsing
 
 The following database tables have been removed:
 

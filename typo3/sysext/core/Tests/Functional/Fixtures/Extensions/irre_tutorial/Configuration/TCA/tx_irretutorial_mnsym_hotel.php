@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/locallang_db.xml:tx_irretutorial_mnsym_hotel',
+        'title' => 'LLL:EXT:irre_tutorial/locallang_db.xlf:tx_irretutorial_mnsym_hotel',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -65,7 +65,7 @@ return [
         'title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel.title',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -74,7 +74,7 @@ return [
         ],
         'branches' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel.branches',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel.branches',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_irretutorial_mnsym_hotel_rel',
@@ -96,8 +96,8 @@ return [
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title, branches,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, branches,' .
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
         ]
     ],
     'palettes' => [

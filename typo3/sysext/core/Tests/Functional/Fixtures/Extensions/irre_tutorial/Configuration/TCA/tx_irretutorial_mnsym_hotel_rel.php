@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/locallang_db.xml:tx_irretutorial_mnsym_hotel_rel',
+        'title' => 'LLL:EXT:irre_tutorial/locallang_db.xlf:tx_irretutorial_mnsym_hotel_rel',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -64,7 +64,7 @@ return [
             ]
         ],
         'hotelid' => [
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_rel.hotelid',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_rel.hotelid',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -74,7 +74,7 @@ return [
             ]
         ],
         'branchid' => [
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tx_irretutorial_hotel_rel.branchid',
+            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_rel.branchid',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -96,8 +96,8 @@ return [
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title, hotelid, branchid,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, hotelid, branchid,' .
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
     'palettes' => [

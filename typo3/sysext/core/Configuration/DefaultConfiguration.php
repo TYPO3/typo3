@@ -47,10 +47,9 @@ return [
         // System related concerning both frontend and backend.
         'lang' => [
             'format' => [
-                'priority' => 'xlf,xml'
+                'priority' => 'xlf'
             ],
             'parser' => [
-                'xml' => \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class,
                 'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class
             ]
         ],

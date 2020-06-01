@@ -135,7 +135,7 @@ class LocalizationUtility
     }
 
     /**
-     * Loads local-language values by looking for a "locallang.xlf" (or "locallang.xml") file in the plugin resources directory and if found includes it.
+     * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
      * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
      *
      * @param string $languageFilePath

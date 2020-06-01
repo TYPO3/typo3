@@ -1339,6 +1339,7 @@ return [
     'TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser' => [
         'restFiles' => [
             'Deprecation-89037-DeprecatedLocallangXmlParser.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController' => [

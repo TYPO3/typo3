@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person',
+        'title' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person',
         'label' => 'lastname',
         'label_alt' => 'firstname',
         'label_alt_force' => true,
@@ -58,7 +58,7 @@ return [
             ]
         ],
         'firstname' => [
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.firstname',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.firstname',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -67,7 +67,7 @@ return [
             ]
         ],
         'lastname' => [
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.lastname',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.lastname',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -76,7 +76,7 @@ return [
             ]
         ],
         'email' => [
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.email',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.email',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -85,7 +85,7 @@ return [
             ]
         ],
         'tags' => [
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.tags',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
@@ -103,7 +103,7 @@ return [
         ],
         'tags_special' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.tags_special',
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags_special',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',

@@ -966,7 +966,7 @@ class AbstractPlugin
      * plugin class directory ($this->scriptRelPath).
      * Also locallang values set in the TypoScript property "_LOCAL_LANG" are
      * merged onto the values found in the "locallang" file.
-     * Supported file extensions xlf, xml
+     * Supported file extensions xlf
      *
      * @param string $languageFilePath path to the plugin language file in format EXT:....
      */

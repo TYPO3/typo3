@@ -7,7 +7,7 @@
 					<hotels>
 						<TCEforms>
 							<label>
-								LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_flexform.hotels
+								LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tt_content.tx_irretutorial_flexform.hotels
 							</label>
 							<config>
 								<type>inline</type>

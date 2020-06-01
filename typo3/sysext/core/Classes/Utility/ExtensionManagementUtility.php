@@ -1004,7 +1004,7 @@ class ExtensionManagementUtility
      * eg. \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:core/Resources/Private/Language/locallang_csh_pages.xlf'); for the pages table or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf'); for the Web > Page module.
      *
      * @param string $key Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
-     * @param string $file File reference to locallang file, eg. "EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" (or ".xml")
+     * @param string $file File reference to locallang file, eg. "EXT:core/Resources/Private/Language/locallang_csh_pages.xlf"
      */
     public static function addLLrefForTCAdescr($key, $file)
     {

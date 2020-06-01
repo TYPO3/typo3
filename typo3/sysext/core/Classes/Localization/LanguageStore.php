@@ -65,7 +65,7 @@ class LanguageStore implements SingletonInterface
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']) && trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']) !== '') {
             $this->supportedExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']);
         } else {
-            $this->supportedExtensions = ['xlf', 'xml'];
+            $this->supportedExtensions = ['xlf'];
         }
     }
 
