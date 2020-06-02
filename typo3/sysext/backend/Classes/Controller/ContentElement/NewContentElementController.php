@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -264,7 +265,7 @@ class NewContentElementController
                     // Go to DataHandler directly instead of FormEngine
                     if ($wInfo['saveAndClose'] ?? false) {
                         $urlParams = [];
-                        $id = uniqid('NEW');
+                        $id = StringUtility::getUniqueId('NEW');
                         parse_str($wInfo['params'], $urlParams);
                         $urlParams['data']['tt_content'][$id] = $urlParams['defVals']['tt_content'] ?? [];
                         $urlParams['data']['tt_content'][$id]['colPos'] = $this->colPos;

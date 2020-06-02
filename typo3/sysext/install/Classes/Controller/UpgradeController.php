@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
@@ -738,7 +739,7 @@ class UpgradeController extends AbstractController
         $preparedMatches = [];
         foreach ($matches as $match) {
             $preparedHit = [];
-            $preparedHit['uniqueId'] = str_replace('.', '', uniqid((string)random_int(0, mt_getrandmax()), true));
+            $preparedHit['uniqueId'] = StringUtility::getUniqueId();
             $preparedHit['message'] = $match['message'];
             $preparedHit['line'] = $match['line'];
             $preparedHit['indicator'] = $match['indicator'];
@@ -767,7 +768,7 @@ class UpgradeController extends AbstractController
                 array_pop($version);
                 // something like "8.2" .. "8.7" .. "master"
                 $parsedRestFile['version'] = array_pop($version);
-                $parsedRestFile['uniqueId'] = str_replace('.', '', uniqid((string)random_int(0, mt_getrandmax()), true));
+                $parsedRestFile['uniqueId'] = StringUtility::getUniqueId();
                 $preparedHit['restFiles'][] = $parsedRestFile;
             }
             $preparedMatches[] = $preparedHit;

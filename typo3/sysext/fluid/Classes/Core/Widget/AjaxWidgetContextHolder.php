@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -92,7 +93,7 @@ class AjaxWidgetContextHolder implements SingletonInterface
      */
     public function store(WidgetContext $widgetContext)
     {
-        $ajaxWidgetId = md5(uniqid(random_int(0, mt_getrandmax()), true));
+        $ajaxWidgetId = md5(StringUtility::getUniqueId());
         $widgetContext->setAjaxWidgetIdentifier($ajaxWidgetId);
         $this->widgetContexts[$ajaxWidgetId] = $widgetContext;
         $this->storeWidgetContexts();

@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -213,7 +214,7 @@ class PreviewUriBuilder
      */
     protected function compilePreviewKeyword(int $ttl = 172800, int $workspaceId = null): string
     {
-        $keyword = md5(uniqid(microtime(), true));
+        $keyword = md5(StringUtility::getUniqueId());
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_preview')
             ->insert(

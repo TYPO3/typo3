@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Standard graphical functions
@@ -1934,7 +1935,7 @@ class GraphicalFunctions
     public function randomName()
     {
         GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
-        return Environment::getVarPath() . '/transient/' . md5(uniqid('', true));
+        return Environment::getVarPath() . '/transient/' . md5(StringUtility::getUniqueId());
     }
 
     /**
@@ -2556,7 +2557,7 @@ class GraphicalFunctions
 
         if (($type === 'IM' || !$type) && $gfxConf['processor_enabled'] && $gfxConf['processor_path_lzw']) {
             // Use temporary file to prevent problems with read and write lock on same file on network file systems
-            $temporaryName = PathUtility::dirname($theFile) . '/' . md5(uniqid('', true)) . '.gif';
+            $temporaryName = PathUtility::dirname($theFile) . '/' . md5(StringUtility::getUniqueId()) . '.gif';
             // Rename could fail, if a simultaneous thread is currently working on the same thing
             if (@rename($theFile, $temporaryName)) {
                 $cmd = CommandUtility::imageMagickCommand(

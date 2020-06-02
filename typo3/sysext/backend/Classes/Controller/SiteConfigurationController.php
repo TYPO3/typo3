@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -364,7 +365,7 @@ class SiteConfigurationController
                 $this->siteFinder->getSiteByIdentifier($identifier);
                 // Force this identifier to be unique
                 $originalIdentifier = $identifier;
-                $identifier = $identifier . '-' . str_replace('.', '', uniqid((string)random_int(0, mt_getrandmax()), true));
+                $identifier = StringUtility::getUniqueId($identifier . '-');
                 $message = sprintf(
                     $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierRenamed.message'),
                     $originalIdentifier,

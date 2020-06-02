@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Utility\File;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Contains class with basic file management functions
@@ -124,7 +125,7 @@ class BasicFileUtility
                     $insert = '_' . sprintf('%02d', $a);
                 } else {
                     // .. then we try unique-strings...
-                    $insert = '_' . substr(md5(uniqid('', true)), 0, $this->uniquePrecision);
+                    $insert = '_' . substr(md5(StringUtility::getUniqueId()), 0, $this->uniquePrecision);
                 }
                 $theTestFile = $theTempFileBody . $insert . $theOrigExt;
                 $theDestFile = $theDest . '/' . $theTestFile;

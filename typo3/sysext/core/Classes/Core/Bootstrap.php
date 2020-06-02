@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\PharStreamWrapper\Behavior;
 use TYPO3\PharStreamWrapper\Interceptor\ConjunctionInterceptor;
 use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
@@ -75,7 +76,7 @@ class Bootstrap
         ClassLoader $classLoader,
         bool $failsafe = false
     ): ContainerInterface {
-        $requestId = substr(md5(uniqid('', true)), 0, 13);
+        $requestId = substr(md5(StringUtility::getUniqueId()), 0, 13);
 
         static::initializeClassLoader($classLoader);
         if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {

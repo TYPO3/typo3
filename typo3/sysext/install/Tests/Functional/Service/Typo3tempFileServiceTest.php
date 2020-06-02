@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Service;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -41,7 +42,7 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->directoryName = uniqid('test');
+        $this->directoryName = StringUtility::getUniqueId('test');
         $this->directoryPath = $this->instancePath . '/typo3temp/assets/' . $this->directoryName;
     }
 

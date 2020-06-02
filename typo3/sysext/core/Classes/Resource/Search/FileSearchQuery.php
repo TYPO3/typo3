@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\FolderMountsRestriction;
 use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\FolderRestriction;
 use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\SearchTermRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Represents an SQL query to search for files.
@@ -116,7 +117,7 @@ class FileSearchQuery
                     . preg_replace(
                         '/[^a-z0-9]/',
                         '',
-                        uniqid($tableName . $fieldName, true)
+                        StringUtility::getUniqueId($tableName . $fieldName)
                     )
                 ]),
                 true
