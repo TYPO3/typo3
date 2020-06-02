@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -94,7 +95,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         if ($this->hasArgument('id')) {
             $id = $this->arguments['id'];
         } else {
-            $id = 'field' . md5(uniqid());
+            $id = 'field' . md5(StringUtility::getUniqueId());
         }
 
         if (empty($placeholder)) {

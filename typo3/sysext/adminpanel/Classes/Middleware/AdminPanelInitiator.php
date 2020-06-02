@@ -24,6 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * PSR-15 Middleware to initialize the admin panel
@@ -45,7 +46,7 @@ class AdminPanelInitiator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
-            $request = $request->withAttribute('adminPanelRequestId', substr(md5(uniqid('', true)), 0, 13));
+            $request = $request->withAttribute('adminPanelRequestId', substr(md5(StringUtility::getUniqueId()), 0, 13));
             $adminPanelController = GeneralUtility::makeInstance(
                 MainController::class
             );

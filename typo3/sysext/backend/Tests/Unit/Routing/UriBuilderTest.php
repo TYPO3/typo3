@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -107,6 +108,6 @@ class UriBuilderTest extends UnitTestCase
         $this->expectException(RouteNotFoundException::class);
         $this->expectExceptionCode(1476050190);
         $subject = new UriBuilder(new Router());
-        $subject->buildUriFromRoute(uniqid('any'));
+        $subject->buildUriFromRoute(StringUtility::getUniqueId('any'));
     }
 }

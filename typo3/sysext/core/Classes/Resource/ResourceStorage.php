@@ -83,6 +83,7 @@ use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * A "mount point" inside the TYPO3 file handling.
@@ -2624,7 +2625,7 @@ class ResourceStorage implements ResourceStorageInterface
             if ($a <= $maxNumber) {
                 $insert = '_' . sprintf('%02d', $a);
             } else {
-                $insert = '_' . substr(md5(uniqid('', true)), 0, 6);
+                $insert = '_' . substr(md5(StringUtility::getUniqueId()), 0, 6);
             }
             $theTestFile = $theTempFileBody . $insert . $theOrigExt;
             // The destinations file
