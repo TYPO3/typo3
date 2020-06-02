@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ApplicableConjunction;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\EnhancerDeclaration;
@@ -900,7 +901,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         $this->assertGeneratedUriEquals($testSet);
     }
 
-    public function routeRequirementsAreSkippedHavingAspectsDataProvider($parentSet = null): array
+    public function routeRequirementsHavingAspectsAreConsideredDataProvider($parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -916,20 +917,42 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                     ->withTargetPageId(1100)
                     ->withUrl(
                         VariableValue::create(
-                            'https://acme.us/welcome/enhance/[[value]][[pathSuffix]]',
+                            'https://acme.us/welcome/enhance/[[resolveValue]][[pathSuffix]]',
                             Variables::create(['pathSuffix' => ''])
                         )
                     )
             )
             ->withApplicableSet(
                 VariablesContext::create(Variables::create([
-                    'value' => 'hundred',
-                    'resolveValue' => 100,
+                    'value' => 100,
+                    'resolveValue' => 'hundred',
                 ])),
                 VariablesContext::create(Variables::create([
-                    'value' => 'hundred/binary',
-                    'resolveValue' => 1100100,
-                ]))
+                    'value' => 1100100,
+                    'resolveValue' => 'hundred/binary',
+                ])),
+                ApplicableConjunction::create(
+                    VariablesContext::create(Variables::create([
+                        'value' => 100,
+                        'resolveValue' => 'hundred',
+                    ])),
+                    EnhancerDeclaration::create('requirements.value=/[a-z_/]+/')->withConfiguration([
+                        'requirements' => [
+                            'value' => '[a-z_/]+',
+                        ]
+                    ])
+                ),
+                ApplicableConjunction::create(
+                    VariablesContext::create(Variables::create([
+                        'value' => 1100100,
+                        'resolveValue' => 'hundred/binary',
+                    ])),
+                    EnhancerDeclaration::create('requirements.value=/[a-z_/]+/')->withConfiguration([
+                        'requirements' => [
+                            'value' => '[a-z_/]+',
+                        ]
+                    ])
+                )
             )
             ->withApplicableItems($builder->declareEnhancers())
             ->withApplicableSet(
@@ -943,13 +966,6 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                     ])
                 ])
             )
-            ->withApplicableSet(
-                EnhancerDeclaration::create('requirements.value=not-match-when-having-aspect')->withConfiguration([
-                    'requirements' => [
-                        'value' => 'not-match-when-having-aspect',
-                    ]
-                ])
-            )
             ->permute()
             ->getTargetsForDataProvider();
     }
@@ -958,9 +974,9 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
      * @param TestSet $testSet
      *
      * @test
-     * @dataProvider routeRequirementsAreSkippedHavingAspectsDataProvider
+     * @dataProvider routeRequirementsHavingAspectsAreConsideredDataProvider
      */
-    public function routeRequirementsAreSkippedHavingAspects(TestSet $testSet): void
+    public function routeRequirementsHavingAspectsAreConsidered(TestSet $testSet): void
     {
         $this->assertGeneratedUriEquals($testSet);
     }
