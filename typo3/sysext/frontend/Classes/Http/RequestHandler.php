@@ -915,7 +915,7 @@ class RequestHandler implements RequestHandlerInterface
             $replace = false;
             if (is_array($properties)) {
                 $nodeValue = $properties['_typoScriptNodeValue'] ?? '';
-                $value = trim($cObj->stdWrap($nodeValue, $metaTagTypoScript[$key . '.']) ?? '');
+                $value = trim((string)$cObj->stdWrap($nodeValue, $metaTagTypoScript[$key . '.']));
                 if ($value === '' && !empty($properties['value'])) {
                     $value = $properties['value'];
                     $replace = false;
