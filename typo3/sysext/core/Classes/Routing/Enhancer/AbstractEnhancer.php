@@ -57,29 +57,32 @@ abstract class AbstractEnhancer implements EnhancerInterface
      */
     protected function applyRequirements(Route $route, array $requirements, string $namespace = null)
     {
-        if (empty($requirements)) {
-            return;
-        }
-
         $requirements = $this->getVariableProcessor()
             ->deflateKeys($requirements, $namespace, $route->getArguments());
         // only keep requirements that are actually part of the current route path
         $requirements = $this->filterValuesByPathVariables($route, $requirements);
-        // In general requirements are not considered when having aspects defined for a
-        // given variable name and thus aspects are more specific and take precedence:
-        // + since requirements in classic Symfony focus on internal arguments
+        // Symfony's behavior on applying pattern for parameters just concerns values
+        // to be passed either to URL or to internal parameters - they are always the
+        // same, without any transformation.
+        //
+        // TYPO3 extends ("enhances") this behavior by making a difference between values
+        // for generation (resulting in a URL) and matching (resulting in query parameters)
+        // having the following implications and meaning:
+        //
+        // + since requirements in classic Symfony focus on parameters in URLs
         //   and aspects define a mapping between URL part (e.g. 'some-example-news')
         //   and the corresponding internal argument (e.g. 'tx_news_pi1[news]=123')
         // + thus, the requirement definition cannot be used for resolving and generating
         //   a route at the same time (it would have to be e.g. `[\w_._]+` AND `\d+`)
-        // This call overrides default Symfony regular expression pattern `[^/]+` (see
-        // `RouteCompiler::compilePattern()`) with `.+` to allow URI parameters like
-        // `some-example-news/january` as well.
-        $requirements = $this->overrideValuesByAspect($route, $requirements, '.+');
-
-        if (!empty($requirements)) {
-            $route->setRequirements($requirements);
-        }
+        //
+        // Symfony's default regular expression pattern `[^/]+` (see
+        // `RouteCompiler::compilePattern()`) has to be overridden with `.+` to
+        // allow URI parameters like `some-example-news/january` as well.
+        //
+        // Existing `requirements` for TYPO3 route enhancers are not modified, only those
+        // that are not defined and would use Symfony's default pattern.
+        $requirements = $this->defineValuesByAspect($route, $requirements, '.+');
+        $route->setRequirements($requirements);
     }
 
     /**
@@ -103,17 +106,37 @@ abstract class AbstractEnhancer implements EnhancerInterface
 
     /**
      * Overrides items having an aspect definition with a given
-     * $overrideValue in target $values array.
+     * $overrideValue in target $targetValue array.
      *
      * @param Route $route
      * @param array $values
-     * @param string $overrideValue
+     * @param string $targetValue
      * @return array
      */
-    protected function overrideValuesByAspect(Route $route, array $values, string $overrideValue): array
+    protected function overrideValuesByAspect(Route $route, array $values, string $targetValue): array
     {
         foreach (array_keys($route->getAspects()) as $variableName) {
-            $values[$variableName] = $overrideValue;
+            $values[$variableName] = $targetValue;
+        }
+        return $values;
+    }
+
+    /**
+     * Define items having an aspect definition in case they are not defined
+     * with a given $targetValue in target $targetValue array.
+     *
+     * @param Route $route
+     * @param array $values
+     * @param string $targetValue
+     * @return array
+     */
+    protected function defineValuesByAspect(Route $route, array $values, string $targetValue): array
+    {
+        foreach (array_keys($route->getAspects()) as $variableName) {
+            if (isset($values[$variableName])) {
+                continue;
+            }
+            $values[$variableName] = $targetValue;
         }
         return $values;
     }
