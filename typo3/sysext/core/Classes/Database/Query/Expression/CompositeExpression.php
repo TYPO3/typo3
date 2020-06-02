@@ -194,6 +194,6 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
         if ($this->count() === 1) {
             return (string)$this->parts[0];
         }
-        return '(' . implode(') ' . $this->type . ' (', $this->parts) . ')';
+        return '((' . implode(') ' . $this->type . ' (', $this->parts) . '))';
     }
 }

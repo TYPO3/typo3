@@ -659,16 +659,16 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 2,
                 false,
                 [],
-                ' ((`pages`.`perms_everybody` & 2 = 2) OR' .
-                ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))',
+                ' (((`pages`.`perms_everybody` & 2 = 2) OR' .
+                ' (((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))))',
             ],
             'for user with groups' => [
                 8,
                 false,
                 [1, 2],
-                ' ((`pages`.`perms_everybody` & 8 = 8) OR' .
-                ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8))' .
-                ' OR ((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))',
+                ' (((`pages`.`perms_everybody` & 8 = 8) OR' .
+                ' (((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8)))' .
+                ' OR (((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))))',
             ],
         ];
     }

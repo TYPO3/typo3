@@ -31,7 +31,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new WorkspaceRestriction(0);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."t3ver_wsid" = 0) AND (("aTable"."t3ver_oid" = 0) OR ("aTable"."t3ver_state" = 4))', (string)$expression);
+        self::assertSame('(("aTable"."t3ver_wsid" = 0) AND ((("aTable"."t3ver_oid" = 0) OR ("aTable"."t3ver_state" = 4))))', (string)$expression);
     }
 
     /**
@@ -44,7 +44,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new WorkspaceRestriction(42);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."t3ver_wsid" IN (0, 42)) AND (("aTable"."t3ver_oid" = 0) OR ("aTable"."t3ver_state" = 4))', (string)$expression);
+        self::assertSame('(("aTable"."t3ver_wsid" IN (0, 42)) AND ((("aTable"."t3ver_oid" = 0) OR ("aTable"."t3ver_state" = 4))))', (string)$expression);
     }
 
     /**
@@ -83,7 +83,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new WorkspaceRestriction(42, true);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."t3ver_wsid" IN (0, 42)) AND ("t3ver_state" <> 2)', (string)$expression);
+        self::assertSame('(("aTable"."t3ver_wsid" IN (0, 42)) AND ("t3ver_state" <> 2))', (string)$expression);
     }
     /**
      * @test
@@ -95,6 +95,6 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new WorkspaceRestriction(0, true);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."t3ver_wsid" = 0) AND ("t3ver_state" <> 2)', (string)$expression);
+        self::assertSame('(("aTable"."t3ver_wsid" = 0) AND ("t3ver_state" <> 2))', (string)$expression);
     }
 }

@@ -52,7 +52,7 @@ class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->addForTables(new DefaultRestrictionContainer(), ['bt']);
         $expression = $subject->buildExpression(['aTable' => 'aTable', 'bTable' => 'bTable', 'bt' => 'bTable'], $this->expressionBuilder);
 
-        self::assertSame('("bt"."deleted" = 0) AND ("bt"."hidden" = 0)', (string)$expression);
+        self::assertSame('(("bt"."deleted" = 0) AND ("bt"."hidden" = 0))', (string)$expression);
     }
 
     /**

@@ -442,7 +442,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
 
         $compositeExpression = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
-        $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2))))';
+        $expectedSql = '((' . $table . '.sys_language_uid = -1) OR (((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE ((' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0)))))) OR (((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE ((' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2)))))))';
         self::assertSame($expectedSql, $compositeExpression->__toString());
     }
 
@@ -468,7 +468,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $compositeExpression= $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
-        $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND ((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))';
+        $expectedSql = '((' . $table . '.sys_language_uid = -1) OR (((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE ((' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))))) OR (((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE ((' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND (((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))))))';
         self::assertSame($expectedSql, $compositeExpression->__toString());
     }
 
@@ -496,7 +496,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $compositeExpression = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
-        $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND ((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))';
+        $expectedSql = '((' . $table . '.sys_language_uid = -1) OR (((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE ((' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))))) OR (((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE ((' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND (((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))))))';
         self::assertSame($expectedSql, $compositeExpression->__toString());
     }
 
@@ -593,12 +593,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
         return [
             'in be: include all' => ['BE', true, [], true, ''],
             'in be: ignore enable fields but do not include deleted' => ['BE', true, [], false, 'tx_foo_table.deleted_column=0'],
-            'in be: respect enable fields but include deleted' => ['BE', false, [], true, '(tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)'],
-            'in be: respect enable fields and do not include deleted' => ['BE', false, [], false, '(tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200) AND tx_foo_table.deleted_column=0'],
+            'in be: respect enable fields but include deleted' => ['BE', false, [], true, '((tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200))'],
+            'in be: respect enable fields and do not include deleted' => ['BE', false, [], false, '((tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)) AND tx_foo_table.deleted_column=0'],
             'in fe: include all' => ['FE', true, [], true, ''],
             'in fe: ignore enable fields but do not include deleted' => ['FE', true, [], false, 'tx_foo_table.deleted_column=0'],
-            'in fe: ignore only starttime and do not include deleted' => ['FE', true, ['starttime'], false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0)'],
-            'in fe: respect enable fields and do not include deleted' => ['FE', false, [], false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)'],
+            'in fe: ignore only starttime and do not include deleted' => ['FE', true, ['starttime'], false, '((tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0))'],
+            'in fe: respect enable fields and do not include deleted' => ['FE', false, [], false, '((tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200))'],
         ];
     }
 
@@ -664,9 +664,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         return [
             'in be: respectEnableFields=false' => ['BE', false, ''],
-            'in be: respectEnableFields=true' => ['BE', true, '(tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200) AND tx_foo_table.deleted_column=0'],
+            'in be: respectEnableFields=true' => ['BE', true, '((tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)) AND tx_foo_table.deleted_column=0'],
             'in FE: respectEnableFields=false' => ['FE', false, ''],
-            'in FE: respectEnableFields=true' => ['FE', true, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)'],
+            'in FE: respectEnableFields=true' => ['FE', true, '((tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200))'],
         ];
     }
 
@@ -719,6 +719,72 @@ class Typo3DbQueryParserTest extends UnitTestCase
             $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         }
+
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $actualSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
+        self::assertSame($expectedSql, $actualSql);
+        unset($GLOBALS['TCA'][$tableName]);
+    }
+
+    public function providerForRespectEnableFieldsWithOnlyEndtime()
+    {
+        return [
+            'in be: respectEnableFields=false' => ['BE', false, false, ''],
+            'in be: respectEnableFields=true' => ['BE', true, true, '((tx_foo_table.endtime_column = 0) OR (tx_foo_table.endtime_column > 1451779200)) AND tx_foo_table.deleted_column=0'],
+            'in be: respectEnableFields=true and includeDeleted=false' => ['BE', true, false, '((tx_foo_table.endtime_column = 0) OR (tx_foo_table.endtime_column > 1451779200))'],
+            'in FE: respectEnableFields=false' => ['FE', false, false, ''],
+            'in FE: respectEnableFields=true' => ['FE', true, true, '((tx_foo_table.endtime_column = 0) OR (tx_foo_table.endtime_column > 1451779200)) AND tx_foo_table.deleted_column=0'],
+            'in FE: respectEnableFields=true and includeDeleted=false' => ['FE', true, false, '((tx_foo_table.endtime_column = 0) OR (tx_foo_table.endtime_column > 1451779200))'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider providerForRespectEnableFieldsWithOnlyEndtime
+     */
+    public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTime($mode, $respectEnableFields, $respectDeletedElements, $expectedSql)
+    {
+        $tableName = 'tx_foo_table';
+        $GLOBALS['TCA'][$tableName]['ctrl'] = [
+            'enablecolumns' => [
+                'endtime' => 'endtime_column',
+            ],
+            'delete' => 'deleted_column',
+        ];
+        if (!$respectDeletedElements) {
+            unset($GLOBALS['TCA'][$tableName]['ctrl']['delete']);
+        }
+        // simulate time for backend enable fields
+        $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
+        // simulate time for frontend (PageRepository) enable fields
+        $dateAspect = new DateTimeAspect(new \DateTimeImmutable('3.1.2016'));
+        $context = new Context(['date' => $dateAspect]);
+        GeneralUtility::setSingletonInstance(Context::class, $context);
+
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+        $connectionProphet->getExpressionBuilder(Argument::cetera())->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
+        $queryBuilderProphet->expr()->willReturn(
+            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+        );
+        $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getQueryBuilderForTable(Argument::any())->willReturn($queryBuilderProphet->reveal());
+        $connectionPoolProphet->getConnectionForTable(Argument::any())->willReturn($connectionProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $mockQuerySettings */
+        $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
+            ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockQuerySettings->setIgnoreEnableFields(!$respectEnableFields);
+        $mockQuerySettings->setIncludeDeleted(!$respectEnableFields);
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $actualSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);

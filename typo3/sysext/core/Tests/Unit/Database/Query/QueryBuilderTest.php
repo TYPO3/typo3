@@ -961,7 +961,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
@@ -1008,7 +1008,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
@@ -1053,7 +1053,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         self::assertSame($expectedSQL, $subject->getSQL());
 
         $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
@@ -1110,7 +1110,7 @@ class QueryBuilderTest extends UnitTestCase
 
         $subject->resetRestrictions();
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
@@ -1246,7 +1246,7 @@ class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         self::assertSame($expectedSQL, $subject->getSQL());
 
         $clonedQueryBuilder = clone $subject;
@@ -1255,7 +1255,7 @@ class QueryBuilderTest extends UnitTestCase
 
         //change cloned QueryBuilder
         $clonedQueryBuilder->count('*');
-        $expectedCountSQL = 'SELECT COUNT(*) FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $expectedCountSQL = 'SELECT COUNT(*) FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         self::assertSame($expectedCountSQL, $clonedQueryBuilder->getSQL());
 
         //check if the original QueryBuilder has not changed
@@ -1478,7 +1478,7 @@ class QueryBuilderTest extends UnitTestCase
             ->where($expressionBuilder->eq('uid', 1));
 
         $this->connection->executeQuery(
-            'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+            'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 
@@ -1578,7 +1578,7 @@ class QueryBuilderTest extends UnitTestCase
                 ->where($expressionBuilder->eq('uid', 1));
 
         $this->connection->executeQuery(
-            'SELECT * FROM pages LEFT JOIN tt_content content ON (pages.uid = content.pid) AND ((content.deleted = 0) AND (content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+            'SELECT * FROM pages LEFT JOIN tt_content content ON ((pages.uid = content.pid) AND (((content.deleted = 0) AND (content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 
@@ -1627,7 +1627,7 @@ class QueryBuilderTest extends UnitTestCase
                 ->where($expressionBuilder->eq('uid', 1));
 
         $this->connection->executeQuery(
-            'SELECT * FROM tt_content RIGHT JOIN pages pages ON (pages.uid = tt_content.pid) AND ((tt_content.deleted = 0) AND (tt_content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+            'SELECT * FROM tt_content RIGHT JOIN pages pages ON ((pages.uid = tt_content.pid) AND (((tt_content.deleted = 0) AND (tt_content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 

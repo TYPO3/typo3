@@ -111,7 +111,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         $aspect = $this->getPreparedUserAspect(true, false, 2, [13, 14, 15, 16]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_SHOW);
         $expression = $subject->buildExpression(['pages' => 'pages'], $this->expressionBuilder);
-        self::assertEquals('("pages"."perms_everybody" & 1 = 1) OR (("pages"."perms_userid" = 2) AND ("pages"."perms_user" & 1 = 1)) OR (("pages"."perms_groupid" IN (13, 14, 15, 16)) AND ("pages"."perms_group" & 1 = 1))', (string)$expression);
+        self::assertEquals('(("pages"."perms_everybody" & 1 = 1) OR ((("pages"."perms_userid" = 2) AND ("pages"."perms_user" & 1 = 1))) OR ((("pages"."perms_groupid" IN (13, 14, 15, 16)) AND ("pages"."perms_group" & 1 = 1))))', (string)$expression);
     }
 
     /**
@@ -122,6 +122,6 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         $aspect = $this->getPreparedUserAspect(true, false, 42, [13, 14, 15, 16]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_DELETE);
         $expression = $subject->buildExpression(['pages' => 'pages'], $this->expressionBuilder);
-        self::assertEquals('("pages"."perms_everybody" & 4 = 4) OR (("pages"."perms_userid" = 42) AND ("pages"."perms_user" & 4 = 4)) OR (("pages"."perms_groupid" IN (13, 14, 15, 16)) AND ("pages"."perms_group" & 4 = 4))', (string)$expression);
+        self::assertEquals('(("pages"."perms_everybody" & 4 = 4) OR ((("pages"."perms_userid" = 42) AND ("pages"."perms_user" & 4 = 4))) OR ((("pages"."perms_groupid" IN (13, 14, 15, 16)) AND ("pages"."perms_group" & 4 = 4))))', (string)$expression);
     }
 }

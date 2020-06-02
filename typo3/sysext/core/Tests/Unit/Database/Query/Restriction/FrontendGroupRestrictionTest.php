@@ -33,7 +33,7 @@ class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new FrontendGroupRestriction([]);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\')', (string)$expression);
+        self::assertSame('(("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\'))', (string)$expression);
     }
 
     /**
@@ -48,6 +48,6 @@ class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new FrontendGroupRestriction([2, 3]);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'2\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'3\', "aTable"."myGroupField"))', (string)$expression);
+        self::assertSame('(("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'2\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'3\', "aTable"."myGroupField")))', (string)$expression);
     }
 }

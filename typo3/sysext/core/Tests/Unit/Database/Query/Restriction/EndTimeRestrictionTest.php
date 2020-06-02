@@ -53,6 +53,6 @@ class EndTimeRestrictionTest extends AbstractRestrictionTestCase
 
         $subject = new EndTimeRestriction(42);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)', (string)$expression);
+        self::assertSame('(("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42))', (string)$expression);
     }
 }

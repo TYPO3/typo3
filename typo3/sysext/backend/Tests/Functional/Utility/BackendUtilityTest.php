@@ -17,10 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Utility;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BackendUtilityTest extends FunctionalTestCase
@@ -33,13 +37,15 @@ class BackendUtilityTest extends FunctionalTestCase
         'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
+    protected BackendUserAuthentication $backendUser;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
+        $this->backendUser = $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
     }
 
@@ -48,8 +54,7 @@ class BackendUtilityTest extends FunctionalTestCase
      */
     public function givenPageIdCanBeExpanded(): void
     {
-        $backendUser = $this->getBackendUser();
-        $backendUser->groupData['webmounts'] = '1';
+        $this->backendUser->groupData['webmounts'] = '1';
 
         BackendUtility::openPageTree(5, false);
 
@@ -58,7 +63,7 @@ class BackendUtilityTest extends FunctionalTestCase
             '1_1' => '1',
             '1_0' => '1',
         ];
-        $actualSiteHash = $backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
+        $actualSiteHash = $this->backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
         self::assertSame($expectedSiteHash, $actualSiteHash);
     }
 
@@ -67,8 +72,7 @@ class BackendUtilityTest extends FunctionalTestCase
      */
     public function otherBranchesCanBeClosedWhenOpeningPage(): void
     {
-        $backendUser = $this->getBackendUser();
-        $backendUser->groupData['webmounts'] = '1';
+        $this->backendUser->groupData['webmounts'] = '1';
 
         BackendUtility::openPageTree(5, false);
         BackendUtility::openPageTree(4, true);
@@ -81,7 +85,7 @@ class BackendUtilityTest extends FunctionalTestCase
             '1_1' => '1',
             '1_0' => '1',
         ];
-        $actualSiteHash = $backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
+        $actualSiteHash = $this->backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
         self::assertSame($expectedSiteHash, $actualSiteHash);
     }
 
@@ -141,8 +145,97 @@ class BackendUtilityTest extends FunctionalTestCase
         );
     }
 
-    private function getBackendUser(): BackendUserAuthentication
+    public function enableFieldsStatementIsCorrectDataProvider(): array
     {
-        return $GLOBALS['BE_USER'];
+        // Expected sql should contain identifier escaped in mysql/mariadb identifier quotings "`", which are
+        // replaced by corresponding quoting values for other database systems.
+        return [
+            'disabled' => [
+                [
+                    'disabled' => 'disabled',
+                ],
+                false,
+                ' AND `${tableName}`.`disabled` = 0',
+            ],
+            'starttime' => [
+                [
+                    'starttime' => 'starttime',
+                ],
+                false,
+                ' AND `${tableName}`.`starttime` <= 1234567890',
+            ],
+            'endtime' => [
+                [
+                    'endtime' => 'endtime',
+                ],
+                false,
+                ' AND ((`${tableName}`.`endtime` = 0) OR (`${tableName}`.`endtime` > 1234567890))',
+            ],
+            'disabled, starttime, endtime' => [
+                [
+                    'disabled' => 'disabled',
+                    'starttime' => 'starttime',
+                    'endtime' => 'endtime',
+                ],
+                false,
+                ' AND ((`${tableName}`.`disabled` = 0) AND (`${tableName}`.`starttime` <= 1234567890) AND (((`${tableName}`.`endtime` = 0) OR (`${tableName}`.`endtime` > 1234567890))))',
+            ],
+            'disabled inverted' => [
+                [
+                    'disabled' => 'disabled',
+                ],
+                true,
+                ' AND `${tableName}`.`disabled` <> 0',
+            ],
+            'starttime inverted' => [
+                [
+                    'starttime' => 'starttime',
+                ],
+                true,
+                ' AND ((`${tableName}`.`starttime` <> 0) AND (`${tableName}`.`starttime` > 1234567890))',
+            ],
+            'endtime inverted' => [
+                [
+                    'endtime' => 'endtime',
+                ],
+                true,
+                ' AND ((`${tableName}`.`endtime` <> 0) AND (`${tableName}`.`endtime` <= 1234567890))',
+            ],
+            'disabled, starttime, endtime inverted' => [
+                [
+                    'disabled' => 'disabled',
+                    'starttime' => 'starttime',
+                    'endtime' => 'endtime',
+                ],
+                true,
+                ' AND ((`${tableName}`.`disabled` <> 0) OR (((`${tableName}`.`starttime` <> 0) AND (`${tableName}`.`starttime` > 1234567890))) OR (((`${tableName}`.`endtime` <> 0) AND (`${tableName}`.`endtime` <= 1234567890))))',
+            ],
+        ];
+    }
+
+    /**
+     * @param array $enableColumns
+     * @param bool $inverted
+     * @param string $expectation
+     *
+     * @test
+     * @dataProvider enableFieldsStatementIsCorrectDataProvider
+     */
+    public function enableFieldsStatementIsCorrect(array $enableColumns, bool $inverted, string $expectation): void
+    {
+        $platform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();
+        $tableName = uniqid('table');
+        $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'] = $enableColumns;
+        $GLOBALS['SIM_ACCESS_TIME'] = 1234567890;
+        $statement = BackendUtility::BEenableFields($tableName, $inverted);
+        $replaces = [
+            '${tableName}' => $tableName,
+        ];
+        // replace mysql identifier quotings with sqlite identifier qotings in expected sql string
+        if ($platform instanceof SqlitePlatform || $platform instanceof PostgreSQLPlatform) {
+            $replaces['`'] = '"';
+        }
+        $expectation = str_replace(array_keys($replaces), array_values($replaces), $expectation);
+        self::assertSame($expectation, $statement);
     }
 }
