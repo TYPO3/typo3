@@ -199,8 +199,9 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
                 if (empty($this->arguments['alt'])) {
                     $this->tag->addAttribute('alt', $image->hasProperty('alternative') ? $image->getProperty('alternative') : '');
                 }
-                if (empty($this->arguments['title']) && $image->hasProperty('title')) {
-                    $this->tag->addAttribute('title', $image->getProperty('title'));
+                $title = $image->hasProperty('title') ? $image->getProperty('title') : '';
+                if (empty($this->arguments['title']) && $title !== '') {
+                    $this->tag->addAttribute('title', $title);
                 }
             } catch (ResourceDoesNotExistException $e) {
                 // thrown if file does not exist
