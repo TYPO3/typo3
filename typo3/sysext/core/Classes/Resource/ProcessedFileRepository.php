@@ -89,7 +89,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         $originalFile = $this->factory->getFileObject((int)$databaseRow['original']);
         $originalFile->setStorage($this->factory->getStorageObject($originalFile->getProperty('storage')));
         $taskType = $databaseRow['task_type'];
-        $configuration = unserialize($databaseRow['configuration']);
+        $configuration = unserialize($databaseRow['configuration'], ['allowed_classes' => false]);
 
         return GeneralUtility::makeInstance(
             $this->objectType,

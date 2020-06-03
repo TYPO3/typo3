@@ -477,7 +477,7 @@ class TypoScriptParser
                                             }
                                             // unserialize(serialize(...)) may look stupid but is needed because of some reference issues.
                                             // See forge issue #76919 and functional test hasFlakyReferences()
-                                            $this->setVal($objStrName, $setup, unserialize(serialize($res)), 1);
+                                            $this->setVal($objStrName, $setup, unserialize(serialize($res), ['allowed_classes' => false]), 1);
                                             break;
                                         case '>':
                                             if ($this->syntaxHighLight) {
