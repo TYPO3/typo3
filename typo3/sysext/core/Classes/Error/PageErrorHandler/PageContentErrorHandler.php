@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -75,14 +76,17 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $content = null;
             if ($resolvedUrl !== (string)$request->getUri()) {
                 try {
-                    $response = GeneralUtility::makeInstance(RequestFactory::class)->request($resolvedUrl, 'GET');
+                    $subResponse = GeneralUtility::makeInstance(RequestFactory::class)->request($resolvedUrl, 'GET');
                 } catch (\Exception $e) {
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $e->getMessage(), 1544172838);
                 }
-                if ($response->getStatusCode() >= 300) {
-                    throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", status code: ' . $response->getStatusCode(), 1544172839);
+                if ($subResponse->getStatusCode() >= 300) {
+                    throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", status code: ' . $subResponse->getStatusCode(), 1544172839);
                 }
-                return $response->withStatus($this->statusCode);
+                // create new response object and re-use only the body and the content-type of the sub-request
+                return new Response($subResponse->getBody(), $this->statusCode, [
+                    'Content-Type' => $subResponse->getHeader('Content-Type')
+                ]);
             }
             $content = 'The error page could not be resolved, as the error page itself is not accessible';
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
