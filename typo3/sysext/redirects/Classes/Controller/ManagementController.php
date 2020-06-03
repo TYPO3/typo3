@@ -83,13 +83,8 @@ class ManagementController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
-        $this->initializeView($action);
-
-        $result = $this->{$action . 'Action'}($request);
-        if ($result instanceof ResponseInterface) {
-            return $result;
-        }
+        $this->initializeView('overview');
+        $this->overviewAction($request);
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
