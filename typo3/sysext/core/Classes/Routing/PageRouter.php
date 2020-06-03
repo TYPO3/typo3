@@ -404,7 +404,7 @@ class PageRouter implements RouterInterface
             ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class, null, null, $searchLiveRecordsOnly));
 
         $statement = $queryBuilder
-            ->select('uid', 'l10n_parent', 'pid', 'slug', 'mount_pid', 'mount_pid_ol', 't3ver_state', 'doktype')
+            ->select('uid', 'l10n_parent', 'pid', 'slug', 'mount_pid', 'mount_pid_ol', 't3ver_state', 'doktype', 't3ver_wsid', 't3ver_oid')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
