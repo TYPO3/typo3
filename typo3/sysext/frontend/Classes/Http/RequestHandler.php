@@ -736,22 +736,8 @@ class RequestHandler implements RequestHandlerInterface
 		}
 		';
         }
-        // Add inline JS
-        $inlineJS = '';
-        // defined in php
-        if (is_array($controller->inlineJS)) {
-            foreach ($controller->inlineJS as $key => $val) {
-                if (!is_array($val)) {
-                    $inlineJS .= LF . $val . LF;
-                }
-            }
-        }
-        // defined in TS with page.inlineJS
         // Javascript inline code
-        $inline = $controller->cObj->cObjGet($controller->pSetup['jsInline.'] ?? null, 'jsInline.');
-        if ($inline) {
-            $inlineJS .= LF . $inline . LF;
-        }
+        $inlineJS = $controller->cObj->cObjGet($controller->pSetup['jsInline.'] ?? null, 'jsInline.');
         // Javascript inline code for Footer
         $inlineFooterJs = $controller->cObj->cObjGet($controller->pSetup['jsFooterInline.'] ?? null, 'jsFooterInline.');
         // Should minify?

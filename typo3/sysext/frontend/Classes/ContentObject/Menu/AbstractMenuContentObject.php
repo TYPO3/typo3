@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -1414,7 +1415,7 @@ abstract class AbstractMenuContentObject
                 . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($url)) . ','
                 . '\'' . ($conf['newWindow'] ? md5($url) : 'theNewPage') . '\','
                 . GeneralUtility::quoteJSvalue($conf['params']) . '); return false;';
-            $tsfe->setJS('openPic');
+            GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
         }
         // look for type and popup
         // following settings are valid in field target:

@@ -669,4 +669,24 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalJavaScript' => [
+        'restFiles' => [
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalCSS' => [
+        'restFiles' => [
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->JSCode' => [
+        'restFiles' => [
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->inlineJS' => [
+        'restFiles' => [
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+        ],
+    ],
 ];

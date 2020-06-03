@@ -4539,4 +4539,11 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setJS' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+        ],
+    ],
 ];

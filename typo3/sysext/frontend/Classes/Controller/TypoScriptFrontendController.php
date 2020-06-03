@@ -336,35 +336,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $additionalFooterData = [];
 
     /**
-     * Used to accumulate additional JavaScript-code. Works like
-     * additionalHeaderData. Reserved keys at 'openPic' and 'mouseOver'
-     *
-     * @var array
-     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add JavaScript
-     */
-    public $additionalJavaScript = [];
-
-    /**
-     * Used to accumulate additional Style code. Works like additionalHeaderData.
-     *
-     * @var array
-     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add CSS
-     */
-    public $additionalCSS = [];
-
-    /**
-     * @var string
-     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add inline JavaScript
-     */
-    public $JSCode;
-
-    /**
-     * @var string
-     * @internal only used by TYPO3 Core, use AssetCollector or PageRenderer to add inline JavaScript
-     */
-    public $inlineJS;
-
-    /**
      * Default internal target
      * @var string
      */
@@ -2705,14 +2676,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function INTincScript()
     {
-        $this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData'] ?? false)
-            ? $this->config['INTincScript_ext']['additionalHeaderData']
-            : [];
-        $this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData'] ?? false)
-            ? $this->config['INTincScript_ext']['additionalFooterData']
-            : [];
-        $this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'] ?? null;
-        $this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'] ?? null;
+        $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
+        $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
         if (empty($this->config['INTincScript_ext']['pageRenderer'])) {
             $this->initPageRenderer();
         } else {
@@ -2830,51 +2795,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Prepare code and placeholders for additional header and footer files (and make sure that this isn't called twice)
         if ($this->isINTincScript() && !isset($this->config['INTincScript_ext'])) {
-            // Storing the JSCode vars...
-            $this->additionalHeaderData['JSCode'] = $this->JSCode;
-            $this->config['INTincScript_ext']['divKey'] = $this->uniqueHash();
+            $substituteHash = $this->uniqueHash();
+            $this->config['INTincScript_ext']['divKey'] = $substituteHash;
             // Storing the header-data array
             $this->config['INTincScript_ext']['additionalHeaderData'] = $this->additionalHeaderData;
             // Storing the footer-data array
             $this->config['INTincScript_ext']['additionalFooterData'] = $this->additionalFooterData;
-            // Storing the JS-data array
-            $this->config['INTincScript_ext']['additionalJavaScript'] = $this->additionalJavaScript;
-            // Storing the Style-data array
-            $this->config['INTincScript_ext']['additionalCSS'] = $this->additionalCSS;
             // Clearing the array
-            $this->additionalHeaderData = ['<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
+            $this->additionalHeaderData = ['<!--HD_' . $substituteHash . '-->'];
             // Clearing the array
-            $this->additionalFooterData = ['<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
-        } else {
-            // Add javascript in a "regular" fashion
-            $jsCode = trim($this->JSCode);
-            $additionalJavaScript = is_array($this->additionalJavaScript)
-                ? implode(LF, $this->additionalJavaScript)
-                : $this->additionalJavaScript;
-            $additionalJavaScript = trim($additionalJavaScript);
-            if ($jsCode !== '' || $additionalJavaScript !== '') {
-                $doctype = $this->config['config']['doctype'] ?? 'html5';
-                $scriptAttribute = $doctype === 'html5' ? '' : ' type="text/javascript"';
-
-                $this->additionalHeaderData['JSCode'] = '
-<script' . $scriptAttribute . '>
-	/*<![CDATA[*/
-<!--
-' . $additionalJavaScript . '
-' . $jsCode . '
-// -->
-	/*]]>*/
-</script>';
-            }
-            // Add CSS
-            $additionalCss = is_array($this->additionalCSS) ? implode(LF, $this->additionalCSS) : $this->additionalCSS;
-            $additionalCss = trim($additionalCss);
-            if ($additionalCss !== '') {
-                $this->additionalHeaderData['_CSS'] = '
-<style type="text/css">
-' . $additionalCss . '
-</style>';
-            }
+            $this->additionalFooterData = ['<!--FD_' . $substituteHash . '-->'];
         }
     }
 
@@ -3141,26 +3071,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             );
         }
         return $this->pagesTSconfig;
-    }
-
-    /**
-     * Sets JavaScript code in the additionalJavaScript array
-     *
-     * @param string $key is the key in the array, for num-key let the value be empty. Note reserved key: 'openPic'
-     * @param string $content is the content if you want any
-     * @see ContentObjectRenderer::imageLinkWrap()
-     * @internal only used by TYPO3 Core, use PageRenderer or AssetCollector API instead.
-     */
-    public function setJS($key, $content = '')
-    {
-        if ($key === 'openPic') {
-            $this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {
-                var theWindow = window.open(url, winName, winParams);
-                if (theWindow)	{theWindow.focus();}
-            }';
-        } elseif ($key) {
-            $this->additionalJavaScript[$key] = $content;
-        }
     }
 
     /**
