@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -773,9 +774,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Basically this function is about determining whether a backend user is logged in,
      * if he has read access to the page and if he's previewing the page.
      * That all determines which id to show and how to initialize the id.
+     *
+     * @param ServerRequestInterface|null $request
      */
-    public function determineId()
+    public function determineId(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         // Call pre processing function for id determination
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] ?? [] as $functionReference) {
             $parameters = ['parentObject' => $this];
@@ -789,14 +793,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->disableCache();
         }
         // Now, get the id, validate access etc:
-        $this->fetch_the_id();
+        $this->fetch_the_id($request);
         // Check if backend user has read access to this page. If not, recalculate the id.
         if ($this->isBackendUserLoggedIn() && $isPreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
             // Resetting
             $this->clear_preview();
             $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
             // Fetching the id again, now with the preview settings reset.
-            $this->fetch_the_id();
+            $this->fetch_the_id($request);
         }
         // Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
         $this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
@@ -811,7 +815,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
             // Fetching the id again, now with the preview settings reset.
-            $this->fetch_the_id();
+            $this->fetch_the_id($request);
         }
         // Final cleaning.
         // Make sure it's an integer
@@ -986,11 +990,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * A root line is always related to one page. The rootline could be handled
      * indirectly by page objects. Page objects still don't exist.
      *
-     * @throws ServiceUnavailableException
      * @internal
+     * @param ServerRequestInterface|null $request
      */
-    public function fetch_the_id()
+    public function fetch_the_id(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('fetch_the_id initialize/');
         // Set the valid usergroups for FE
@@ -1013,7 +1018,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // We store the originally requested id
         $this->requestedId = $this->id;
         try {
-            $this->getPageAndRootlineWithDomain($this->site->getRootPageId());
+            $this->getPageAndRootlineWithDomain($this->site->getRootPageId(), $request);
         } catch (ShortcutTargetPageNotFoundException $e) {
             $this->pageNotFound = 1;
         }
@@ -1022,28 +1027,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             switch ($this->pageNotFound) {
                 case 1:
                     $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         'ID was not an accessible page',
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED)
                     );
                     break;
                 case 2:
                     $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         'Subsection was found and not accessible',
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
                     );
                     break;
                 case 3:
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         'ID was outside the domain',
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
                     );
                     break;
                 default:
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         'Unspecified error',
                         $this->getPageAccessFailureReasons()
                     );
@@ -1103,7 +1108,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @throws ServiceUnavailableException
      * @throws PageNotFoundException
      */
-    protected function getPageAndRootline()
+    protected function getPageAndRootline(ServerRequestInterface $request)
     {
         $requestedPageRowWithoutGroupCheck = [];
         $this->resolveTranslatedPageId();
@@ -1140,7 +1145,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->logger->error($message);
                 try {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
                     );
@@ -1156,7 +1161,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->logger->error($message);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                    $GLOBALS['TYPO3_REQUEST'],
+                    $request,
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_INVALID_PAGETYPE)
                 );
@@ -1208,7 +1213,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->logger->error($message);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
-                    $GLOBALS['TYPO3_REQUEST'],
+                    $request,
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ROOTLINE_BROKEN)
                 );
@@ -1223,7 +1228,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $message = 'The requested page was not accessible!';
                 try {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_GENERAL)
                     );
@@ -1482,9 +1487,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $rootPageId Page uid of the page where the found site is located
      * @internal
      */
-    public function getPageAndRootlineWithDomain($rootPageId)
+    public function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
     {
-        $this->getPageAndRootline();
+        $this->getPageAndRootline($request);
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
         if (is_array($this->rootLine) && $this->rootLine !== []) {
             $idFound = false;
@@ -1499,7 +1504,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->pageNotFound = 3;
                 $this->id = $rootPageId;
                 // re-get the page and rootline if the id was not found.
-                $this->getPageAndRootline();
+                $this->getPageAndRootline($request);
             }
         }
     }
@@ -1787,10 +1792,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Checks if config-array exists already but if not, gets it
      *
+     * @param ServerRequestInterface|null $request
      * @throws ServiceUnavailableException
      */
-    public function getConfigArray()
+    public function getConfigArray(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         if (!$this->tmpl instanceof TemplateService) {
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
@@ -1816,7 +1823,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $this->logger->alert($message);
                     try {
                         $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                            $GLOBALS['TYPO3_REQUEST'],
+                            $request,
                             $message,
                             ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
                         );
@@ -1877,7 +1884,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->logger->alert($message);
                 try {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         $message,
                         ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
                     );
@@ -1913,10 +1920,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
      *
+     * @param ServerRequestInterface|null $request
      * @internal
      */
-    public function settingLanguage()
+    public function settingLanguage(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
@@ -1934,14 +1943,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // check whether a shortcut is overwritten by a translated page
             // we can only do this now, as this is the place where we get
             // to know about translations
-            $this->checkTranslatedShortcut($languageAspect->getId());
+            $this->checkTranslatedShortcut($languageAspect->getId(), $request);
             // Request the overlay record for the sys_language_uid:
             $olRec = $this->sys_page->getPageOverlay($this->id, $languageAspect->getId());
             if (empty($olRec)) {
                 // If requested translation is not available:
                 if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $GLOBALS['TYPO3_REQUEST'],
+                        $request,
                         'Page is not available in the requested language.',
                         ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
                     );
@@ -1950,7 +1959,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 switch ((string)$languageAspect->getLegacyLanguageMode()) {
                     case 'strict':
                         $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                            $GLOBALS['TYPO3_REQUEST'],
+                            $request,
                             'Page is not available in the requested language (strict).',
                             ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
                         );
@@ -1973,7 +1982,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                 // page rendering with default language, a "page not found" message should be shown
                                 // instead.
                                 $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                    $GLOBALS['TYPO3_REQUEST'],
+                                    $request,
                                     'Page is not available in the requested language (fallbacks did not apply).',
                                     ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
                                 );
@@ -2020,7 +2029,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $message = 'Page is not available in default language.';
             $this->logger->error($message);
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                $GLOBALS['TYPO3_REQUEST'],
+                $request,
                 $message,
                 ['code' => PageAccessFailureReasons::LANGUAGE_DEFAULT_NOT_AVAILABLE]
             );
@@ -2056,8 +2065,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If that is the case, things get corrected to follow that alternative
      * shortcut
      * @param int $languageId
+     * @param ServerRequestInterface $request
      */
-    protected function checkTranslatedShortcut(int $languageId)
+    protected function checkTranslatedShortcut(int $languageId, ServerRequestInterface $request)
     {
         if (!is_null($this->originalShortcutPage)) {
             $originalShortcutPageOverlay = $this->sys_page->getPageOverlay($this->originalShortcutPage['uid'], $languageId);
@@ -2068,7 +2078,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->id = ($this->contentPid = $shortcut['uid']);
                 $this->page = $this->sys_page->getPage($this->id);
                 // Fix various effects on things like menus f.e.
-                $this->fetch_the_id();
+                $this->fetch_the_id($request);
                 $this->tmpl->rootLine = array_reverse($this->rootLine);
             }
         }
@@ -2258,9 +2268,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'parameter' => $parameter,
             'addQueryString' => true,
             'addQueryString.' => ['exclude' => 'id'],
-            // ensure absolute URL is generated when having a valid Site
-            'forceAbsoluteUrl' => $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
-                && $GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site
+            'forceAbsoluteUrl' => true
         ]);
     }
 
@@ -2445,9 +2453,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * By using $TSFE->getPageAndRootline() on the cloned object, all rootline restrictions (extendToSubPages)
      * are evaluated as well.
      *
+     * @param ServerRequestInterface $request
      * @return int the current page ID or another one if resolved properly - usually set to $this->contentPid
      */
-    protected function resolveContentPid(): int
+    protected function resolveContentPid(ServerRequestInterface $request): int
     {
         if (!isset($this->page['content_from_pid']) || empty($this->page['content_from_pid'])) {
             return (int)$this->id;
@@ -2457,7 +2466,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
         $temp_copy_TSFE->id = $this->page['content_from_pid'];
         $temp_copy_TSFE->MP = '';
-        $temp_copy_TSFE->getPageAndRootline();
+        $temp_copy_TSFE->getPageAndRootline($request);
         return (int)$temp_copy_TSFE->id;
     }
     /**
@@ -2468,7 +2477,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        $this->contentPid = $this->resolveContentPid();
+        $this->contentPid = $this->resolveContentPid($request);
         // Global vars...
         $this->indexedDocTitle = $this->page['title'] ?? null;
         // Base url:

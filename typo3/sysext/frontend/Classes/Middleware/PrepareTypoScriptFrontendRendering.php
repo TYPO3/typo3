@@ -68,11 +68,11 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         $this->timeTracker->pull();
         // Get config if not already gotten
         // After this, we should have a valid config-array ready
-        $this->controller->getConfigArray();
+        $this->controller->getConfigArray($request);
 
         // Setting language and locale
         $this->timeTracker->push('Setting language');
-        $this->controller->settingLanguage();
+        $this->controller->settingLanguage($request);
         $this->timeTracker->pull();
 
         // Convert POST data to utf-8 for internal processing if metaCharset is different

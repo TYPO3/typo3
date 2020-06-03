@@ -101,14 +101,14 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
             $controller->no_cache = 1;
         }
 
-        $controller->determineId();
+        $controller->determineId($request);
 
         // No access? Then remove user and re-evaluate the page id
         if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)) {
             unset($GLOBALS['BE_USER']);
             // Register an empty backend user as aspect
             $this->setBackendUserAspect(null);
-            $controller->determineId();
+            $controller->determineId($request);
         }
 
         // Make TSFE globally available
