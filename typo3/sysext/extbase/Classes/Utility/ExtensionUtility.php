@@ -75,19 +75,10 @@ class ExtensionUtility
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = [];
         }
         foreach ($controllerActions as $controllerClassName => $actionsList) {
-            if (class_exists($controllerClassName)) {
-                $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
-                $vendorName = self::resolveVendorFromExtensionAndControllerClassName($extensionName, $controllerClassName);
-                if (!empty($vendorName)) {
-                    self::checkVendorNameFormat($vendorName, $extensionName);
-                }
-            } else {
-                trigger_error(
-                    'Calling ' . __METHOD__ . ' for extension ("' . $extensionName . '") and plugin ("' . $pluginName . '") with controller aliases in argument $controllerActions is deprecated and will stop working in TYPO3 11.0.',
-                    E_USER_DEPRECATED
-                );
-                $controllerAlias = $controllerClassName;
-                $controllerClassName = static::getControllerClassName((string)$vendorName, $extensionName, '', $controllerAlias);
+            $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
+            $vendorName = self::resolveVendorFromExtensionAndControllerClassName($extensionName, $controllerClassName);
+            if (!empty($vendorName)) {
+                self::checkVendorNameFormat($vendorName, $extensionName);
             }
 
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName] = [
@@ -95,17 +86,6 @@ class ExtensionUtility
                 'alias' => $controllerAlias,
                 'actions' => GeneralUtility::trimExplode(',', $actionsList)
             ];
-
-            if (isset($nonCacheableControllerActions[$controllerAlias]) && !empty($nonCacheableControllerActions[$controllerAlias])) {
-                trigger_error(
-                    'Calling ' . __METHOD__ . ' for extension ("' . $extensionName . '") and plugin ("' . $pluginName . '") with controller aliases in argument $nonCacheableControllerActions is deprecated and will stop working in TYPO3 11.0.',
-                    E_USER_DEPRECATED
-                );
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions'] = GeneralUtility::trimExplode(
-                    ',',
-                    $nonCacheableControllerActions[$controllerAlias]
-                );
-            }
 
             if (isset($nonCacheableControllerActions[$controllerClassName]) && !empty($nonCacheableControllerActions[$controllerClassName])) {
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions'] = GeneralUtility::trimExplode(
@@ -253,19 +233,10 @@ tt_content.' . $pluginSignature . ' {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = [];
         }
         foreach ($controllerActions as $controllerClassName => $actionsList) {
-            if (class_exists($controllerClassName)) {
-                $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
-                $vendorName = self::resolveVendorFromExtensionAndControllerClassName($extensionName, $controllerClassName);
-                if (!empty($vendorName)) {
-                    self::checkVendorNameFormat($vendorName, $extensionName);
-                }
-            } else {
-                trigger_error(
-                    'Calling ' . __METHOD__ . ' with controller aliases is deprecated and will stop working in TYPO3 11.0.',
-                    E_USER_DEPRECATED
-                );
-                $controllerAlias = $controllerClassName;
-                $controllerClassName = static::getControllerClassName($vendorName, $extensionName, '', $controllerAlias);
+            $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
+            $vendorName = self::resolveVendorFromExtensionAndControllerClassName($extensionName, $controllerClassName);
+            if (!empty($vendorName)) {
+                self::checkVendorNameFormat($vendorName, $extensionName);
             }
 
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerClassName] = [
