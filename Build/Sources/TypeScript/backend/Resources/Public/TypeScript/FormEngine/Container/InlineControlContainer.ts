@@ -388,20 +388,20 @@ class InlineControlContainer {
   }
 
   private registerEnableDisableButton(): void {
-    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const objectId = (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId;
+      const objectId = (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId;
       const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
-      const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + this.dataset.hiddenField + ']';
+      const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + target.dataset.hiddenField + ']';
       const hiddenValueCheckBox = <HTMLInputElement>document.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
       const hiddenValueInput = <HTMLInputElement>document.querySelector('[name="' + hiddenFieldName + '"');
 
       if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
         hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
         hiddenValueInput.value = hiddenValueCheckBox.checked ? '1' : '0';
-        TBE_EDITOR.fieldChanged_fName(hiddenFieldName, hiddenFieldName);
+        TBE_EDITOR.fieldChanged(this.container.dataset.localTable, this.container.dataset.uid, this.container.dataset.localField, hiddenFieldName);
       }
 
       const hiddenClass = 't3-form-field-container-inline-hidden';
@@ -417,7 +417,7 @@ class InlineControlContainer {
       }
 
       Icons.getIcon(toggleIcon, Icons.sizes.small).then((markup: string): void => {
-        this.replaceChild(document.createRange().createContextualFragment(markup), this.querySelector('.t3js-icon'));
+        target.replaceChild(document.createRange().createContextualFragment(markup), target.querySelector('.t3js-icon'));
       });
     }).delegateTo(this.container, Selectors.enableDisableRecordButtonSelector);
   }
@@ -649,7 +649,7 @@ class InlineControlContainer {
       this.toggleContainerControls(false);
     }
 
-    TBE_EDITOR.fieldChanged_fName((<HTMLInputElement>formField).name, formField);
+    TBE_EDITOR.fieldChanged(this.container.dataset.localTable, this.container.dataset.uid, this.container.dataset.localField, formField);
   }
 
   /**

@@ -286,8 +286,21 @@ class InlineControlContainer extends AbstractContainer
         if (!empty($config['appearance']['enabledControls']['new'])) {
             $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
         }
+
+        $formGroupAttributes = [
+            'class' => 'form-group',
+            'id' => $nameObject,
+            'data-uid' => $row['uid'],
+            'data-local-table' => $top['table'],
+            'data-local-field' => $top['field'],
+            'data-foreign-table' => $foreign_table,
+            'data-object-group' => $nameObject . '-' . $foreign_table,
+            'data-form-field' => $nameForm,
+            'data-appearance' => json_encode($config['appearance']),
+        ];
+
         // Wrap all inline fields of a record with a <div> (like a container)
-        $html = '<div class="form-group" id="' . htmlspecialchars($nameObject) . '" data-uid="' . htmlspecialchars($row['uid']) . '" data-foreign-table="' . htmlspecialchars($foreign_table) . '" data-object-group="' . htmlspecialchars($nameObject) . '-' . htmlspecialchars($foreign_table) . '" data-form-field="' . htmlspecialchars($nameForm) . '" data-appearance="' . htmlspecialchars(json_encode($config['appearance'])) . '">';
+        $html = '<div ' . GeneralUtility::implodeAttributes($formGroupAttributes, true) . '>';
 
         $fieldInformationResult = $this->renderFieldInformation();
         $html .= $fieldInformationResult['html'];

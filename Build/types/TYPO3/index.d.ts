@@ -84,7 +84,6 @@ declare namespace TYPO3 {
 
 declare namespace TBE_EDITOR {
   export let fieldChanged: Function;
-  export let fieldChanged_fName: Function;
 }
 
 /**

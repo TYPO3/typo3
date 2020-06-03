@@ -56,17 +56,6 @@ var TBE_EDITOR = {
 
     return result;
   },
-  fieldChanged_fName: function(fName, el) {
-    var idx = 2;
-    var table = TBE_EDITOR.split(fName, "[", idx);
-    var uid = TBE_EDITOR.split(fName, "[", idx + 1);
-    var field = TBE_EDITOR.split(fName, "[", idx + 2);
-
-    table = table.substr(0, table.length - 1);
-    uid = uid.substr(0, uid.length - 1);
-    field = field.substr(0, field.length - 1);
-    TBE_EDITOR.fieldChanged(table, uid, field, el);
-  },
   fieldChanged: function(table, uid, field, el) {
     var theField = 'data[' + table + '][' + uid + '][' + field + ']';
     TBE_EDITOR.isChanged = 1;
@@ -152,9 +141,7 @@ var TBE_EDITOR = {
 };
 
 // backwards compatibility for extensions
-var TBE_EDITOR_setHiddenContent = TBE_EDITOR.setHiddenContent;
 var TBE_EDITOR_isChanged = TBE_EDITOR.isChanged;
-var TBE_EDITOR_fieldChanged_fName = TBE_EDITOR.fieldChanged_fName;
 var TBE_EDITOR_fieldChanged = TBE_EDITOR.fieldChanged;
 var TBE_EDITOR_isFormChanged = TBE_EDITOR.isFormChanged;
 var TBE_EDITOR_submitForm = TBE_EDITOR.submitForm;
