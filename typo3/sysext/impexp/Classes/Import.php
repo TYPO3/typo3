@@ -1613,7 +1613,7 @@ class Import extends ImportExport
         }
         GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
         $this->fileIDMap[$fileID] = $fileName;
-        if (md5(file_get_contents($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
+        if (hash_equals(md5(file_get_contents($fileName)), $this->dat['files'][$fileID]['content_md5'])) {
             return true;
         }
         $this->error('ERROR: File content "' . $fileName . '" was corrupted');
@@ -1746,7 +1746,7 @@ class Import extends ImportExport
         }
         $datString = fread($fd, (int)$initStrDat[2]);
         fread($fd, 1);
-        if (md5($datString) === $initStrDat[0]) {
+        if (hash_equals($initStrDat[0], md5($datString))) {
             if ($initStrDat[1]) {
                 if ($this->compress) {
                     $datString = gzuncompress($datString);
@@ -1799,7 +1799,7 @@ class Import extends ImportExport
         }
         $datString = substr($filecontent, $pointer, (int)$initStrDat[2]);
         $pointer += (int)$initStrDat[2] + 1;
-        if (md5($datString) === $initStrDat[0]) {
+        if (hash_equals($initStrDat[0], md5($datString))) {
             if ($initStrDat[1]) {
                 if ($this->compress) {
                     $datString = gzuncompress($datString);

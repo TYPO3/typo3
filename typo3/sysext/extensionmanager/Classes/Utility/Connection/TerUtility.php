@@ -120,7 +120,7 @@ class TerUtility
                 throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() ' . 'functions are not available!', 1344761814);
             }
         }
-        if (md5($parts[2]) === $parts[0]) {
+        if (hash_equals($parts[0], md5($parts[2]))) {
             $output = unserialize($parts[2], ['allowed_classes' => false]);
             if (!is_array($output)) {
                 throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
