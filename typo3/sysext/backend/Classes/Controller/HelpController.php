@@ -38,6 +38,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class HelpController
 {
+    protected const ALLOWED_ACTIONS = ['index', 'all', 'detail'];
+
     /**
      * Section identifiers
      */
@@ -94,6 +96,10 @@ class HelpController
                     'action' => 'index',
                 ]), 303);
             }
+        }
+
+        if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
+            return new HtmlResponse('Action not allowed', 400);
         }
 
         $this->initializeView($action);

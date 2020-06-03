@@ -59,6 +59,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class SiteConfigurationController
 {
+    protected const ALLOWED_ACTIONS = ['overview', 'edit', 'save', 'delete'];
+
     /**
      * @var ModuleTemplate
      */
@@ -97,7 +99,13 @@ class SiteConfigurationController
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
+
+        if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
+            return new HtmlResponse('Action not allowed', 400);
+        }
+
         $this->initializeView($action);
+
         $result = call_user_func_array([$this, $action . 'Action'], [$request]);
         if ($result instanceof ResponseInterface) {
             return $result;
