@@ -64,7 +64,6 @@ use TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject;
 use TYPO3\CMS\Frontend\ContentObject\RecordsContentObject;
 use TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject;
-use TYPO3\CMS\Frontend\ContentObject\TemplateContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
@@ -119,7 +118,6 @@ class ContentObjectRendererTest extends UnitTestCase
         'CASEFUNC' => CaseContentObject::class,
         'LOAD_REGISTER' => LoadRegisterContentObject::class,
         'RESTORE_REGISTER' => RestoreRegisterContentObject::class,
-        'TEMPLATE' => TemplateContentObject::class,
         'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
         'SVG' => ScalableVectorGraphicsContentObject::class,
         'EDITPANEL' => EditPanelContentObject::class

@@ -1568,4 +1568,9 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\TemplateContentObject' => [
+        'restFiles' => [
+            'Breaking-91562-CObjectTEMPLATERemoved.rst'
+        ],
+    ],
 ];
