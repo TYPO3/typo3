@@ -236,7 +236,7 @@ class CleanFlexFormsCommand extends Command
                 if ($fullRecord[$columnName]) {
                     // Clean XML and check against the record fetched from the database
                     $newXML = $flexObj->cleanFlexFormXML($tableName, $columnName, $fullRecord);
-                    if (md5($fullRecord[$columnName]) !== md5($newXML)) {
+                    if (!hash_equals(md5($fullRecord[$columnName]), md5($newXML))) {
                         $dirtyFlexFormFields[$tableName . ':' . $uid . ':' . $columnName] = $fullRecord;
                     }
                 }
