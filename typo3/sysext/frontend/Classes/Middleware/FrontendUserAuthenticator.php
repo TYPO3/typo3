@@ -101,7 +101,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface
     ): ServerRequestInterface {
         [$sessionId, $hash] = explode('-', $frontendSessionKey);
         // If the session key hash check is OK, set the cookie
-        if (md5($sessionId . '/' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) === (string)$hash) {
+        if (hash_equals(md5($sessionId . '/' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), (string)$hash)) {
             $cookieName = FrontendUserAuthentication::getCookieName();
 
             // keep the global cookie overwriting for now, as long as FrontendUserAuthentication does not
