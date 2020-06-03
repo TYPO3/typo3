@@ -80,9 +80,7 @@ class ActionDispatcher {
 
   private registerEvents(): void {
     new RegularEvent('click', this.handleClickEvent.bind(this))
-      .delegateTo(document, '[data-dispatch-action]:not([data-dispatch-immediately])');
-    document.querySelectorAll('[data-dispatch-action][data-dispatch-immediately]')
-      .forEach(this.delegateTo.bind(this));
+      .delegateTo(document, '[data-dispatch-action]');
   }
 
   private handleClickEvent(evt: Event, target: HTMLElement): void {

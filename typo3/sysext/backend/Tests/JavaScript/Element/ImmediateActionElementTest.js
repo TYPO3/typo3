@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+define(["require","exports","TYPO3/CMS/Backend/Element/ImmediateActionElement","TYPO3/CMS/Backend/ModuleMenu","TYPO3/CMS/Backend/Viewport"],(function(e,a,t,c,n){"use strict";Object.defineProperty(a,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/Element/ImmediateActionElement:",()=>{let e;beforeEach(()=>{e=document.createElement("div"),document.body.appendChild(e)}),afterEach(()=>{e.remove(),e=null}),it("dispatches action when created via constructor",()=>{const a=n.Topbar.refresh,c={callback:()=>{}};spyOn(c,"callback").and.callThrough(),n.Topbar.refresh=c.callback;const l=new t.ImmediateActionElement;l.setAttribute("action","TYPO3.Backend.Topbar.refresh"),expect(c.callback).not.toHaveBeenCalled(),e.appendChild(l),expect(c.callback).toHaveBeenCalled(),n.Topbar.refresh=a}),it("dispatches action when created via createElement",()=>{const a=n.Topbar.refresh,t={callback:()=>{}};spyOn(t,"callback").and.callThrough(),n.Topbar.refresh=t.callback;const c=document.createElement("typo3-immediate-action");c.setAttribute("action","TYPO3.Backend.Topbar.refresh"),expect(t.callback).not.toHaveBeenCalled(),e.appendChild(c),expect(t.callback).toHaveBeenCalled(),n.Topbar.refresh=a}),it("dispatches action when created from string",()=>{const a=c.App.refreshMenu,t={callback:()=>{}};spyOn(t,"callback").and.callThrough(),c.App.refreshMenu=t.callback;const n=document.createRange().createContextualFragment('<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>').querySelector("typo3-immediate-action");expect(t.callback).not.toHaveBeenCalled(),e.appendChild(n),expect(t.callback).toHaveBeenCalled(),c.App.refreshMenu=a}),it("dispatches action when created via innerHTML",()=>{const a=c.App.refreshMenu,t={callback:()=>{}};spyOn(t,"callback").and.callThrough(),c.App.refreshMenu=t.callback,e.innerHTML='<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>',expect(t.callback).toHaveBeenCalled(),c.App.refreshMenu=a})})}));

@@ -361,22 +361,16 @@ class SetupModuleController
                 $this->storeIncomingData($postData);
             }
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->content .= '<form action="' . (string)$uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         if ($this->languageUpdate) {
-            $this->moduleTemplate->addJavaScriptCode('languageUpdate', '
-                if (top && top.TYPO3.ModuleMenu.App) {
-                    top.TYPO3.ModuleMenu.App.refreshMenu();
-                }
-                if (top && top.TYPO3.Backend.Topbar) {
-                    top.TYPO3.Backend.Topbar.refresh();
-                }
-            ');
+            $this->content .= $this->buildInstructionDataTag('TYPO3.ModuleMenu.App.refreshMenu');
+            $this->content .= $this->buildInstructionDataTag('TYPO3.Backend.Topbar.refresh');
         }
         if ($this->pagetreeNeedsRefresh) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
-        // Use a wrapper div
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->content .= '<form action="' . (string)$uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         $this->content .= '<div id="user-setup-wrapper">';
         $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'));
         $this->addFlashMessages();
@@ -400,6 +394,14 @@ class SetupModuleController
         $this->moduleTemplate->setContent($this->content);
         $this->content .= '</form>';
         return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    protected function buildInstructionDataTag(string $dispatchAction): string
+    {
+        return sprintf(
+            '<typo3-immediate-action action="%s"></typo3-immediate-action>' . "\n",
+            htmlspecialchars($dispatchAction)
+        );
     }
 
     /**

@@ -261,6 +261,7 @@ class ModuleTemplate
         }
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
     }
 
     /**
