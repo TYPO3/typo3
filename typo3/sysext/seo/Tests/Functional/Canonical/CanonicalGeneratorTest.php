@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -63,11 +64,12 @@ class CanonicalGeneratorTest extends AbstractTestCase
             $site->getDefaultLanguage(),
             new PageArguments($uid, '0', [])
         );
+        $request = ServerRequestFactory::fromGlobals();
         $typoScriptFrontendController->cObj = new ContentObjectRenderer();
         $typoScriptFrontendController->cObj->setLogger(new NullLogger());
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        $typoScriptFrontendController->getPageAndRootlineWithDomain(1);
+        $typoScriptFrontendController->getPageAndRootlineWithDomain(1, $request);
         return $typoScriptFrontendController;
     }
 
