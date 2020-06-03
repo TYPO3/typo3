@@ -68,7 +68,8 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         }
         if ($installToolPassword !== '' && $hashInstance !== null) {
             $isDefaultPassword = $hashInstance->checkPassword('joh316', $installToolPassword);
-        } elseif ($installToolPassword === md5('joh316')) {
+        } elseif ($installToolPassword === 'bacb98acf97e0b6112b1d1b650b84971') {
+            // using MD5 of legacy default password 'joh316'
             $isDefaultPassword = true;
         }
         if ($isDefaultPassword) {
