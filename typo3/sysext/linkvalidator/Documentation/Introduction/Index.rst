@@ -129,6 +129,6 @@ Feedback
 
 If you find a bug in this manual or in the extension in general,
 please file an issue in the bug tracker of this extension:
-`http://forge.typo3.org/projects/extension-linkvalidator/issues
-<http://forge.typo3.org/projects/extension-linkvalidator/issues>`_
+`https://forge.typo3.org/projects/extension-linkvalidator/issues
+<https://forge.typo3.org/projects/extension-linkvalidator/issues>`_
 

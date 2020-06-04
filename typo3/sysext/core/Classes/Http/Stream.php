@@ -68,7 +68,7 @@ class Stream implements StreamInterface
      * This method MUST NOT raise an exception in order to conform with PHP's
      * string casting operations.
      *
-     * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
+     * @see https://php.net/manual/en/language.oop5.magic.php#object.tostring
      * @return string
      */
     public function __toString()
@@ -309,7 +309,7 @@ class Stream implements StreamInterface
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.
      *
-     * @link http://php.net/manual/en/function.stream-get-meta-data.php
+     * @link https://php.net/manual/en/function.stream-get-meta-data.php
      *
      * @param string $key Specific metadata to retrieve.
      *

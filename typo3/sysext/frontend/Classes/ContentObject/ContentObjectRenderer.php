@@ -1853,7 +1853,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * Reliable results only for character codes in the integer range 0 - 127.
      *
-     * @see http://php.net/manual/en/function.chr.php
+     * @see https://php.net/manual/en/function.chr.php
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for char.
      * @return string The processed input value
@@ -1881,7 +1881,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for hash.
      * @return string The processed input value
-     * @link http://php.net/manual/de/function.hash-algos.php for a list of supported hash algorithms
+     * @link https://php.net/manual/de/function.hash-algos.php for a list of supported hash algorithms
      */
     public function stdWrap_hash($content = '', array $conf = [])
     {

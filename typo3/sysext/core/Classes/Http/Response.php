@@ -172,7 +172,7 @@ class Response extends Message implements ResponseInterface
      * immutability of the message, and MUST return an instance that has the
      * updated status and reason phrase.
      *
-     * @link http://tools.ietf.org/html/rfc7231#section-6
+     * @link https://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
      * @param int $code The 3-digit integer result code to set.
@@ -202,7 +202,7 @@ class Response extends Message implements ResponseInterface
      * listed in the IANA HTTP Status Code Registry) for the response's
      * status code.
      *
-     * @link http://tools.ietf.org/html/rfc7231#section-6
+     * @link https://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */

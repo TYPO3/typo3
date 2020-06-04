@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Service;
 /**
  * Class with helper functions for clearing the PHP opcache.
  * It auto detects the opcache system and invalidates/resets it.
- * http://forge.typo3.org/issues/55252
+ * https://forge.typo3.org/issues/55252
  * Supported opcaches are: OPcache >= 7.0 (PHP 5.5)
  */
 class OpcodeCacheService

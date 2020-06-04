@@ -95,7 +95,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Return the current element
      *
-     * @link http://php.net/manual/en/iterator.current.php
+     * @link https://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
      */
     public function current()
@@ -107,7 +107,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Move forward to next element
      *
-     * @link http://php.net/manual/en/iterator.next.php
+     * @link https://php.net/manual/en/iterator.next.php
      */
     public function next()
     {
@@ -118,7 +118,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Return the key of the current element
      *
-     * @link http://php.net/manual/en/iterator.key.php
+     * @link https://php.net/manual/en/iterator.key.php
      * @return int 0 on failure.
      */
     public function key()
@@ -131,7 +131,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Checks if current position is valid
      *
-     * @link http://php.net/manual/en/iterator.valid.php
+     * @link https://php.net/manual/en/iterator.valid.php
      * @return bool The return value will be casted to boolean and then evaluated.
      */
     public function valid()
@@ -143,7 +143,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Rewind the Iterator to the first element
      *
-     * @link http://php.net/manual/en/iterator.rewind.php
+     * @link https://php.net/manual/en/iterator.rewind.php
      */
     public function rewind()
     {
@@ -154,7 +154,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * String representation of object
      *
-     * @link http://php.net/manual/en/serializable.serialize.php
+     * @link https://php.net/manual/en/serializable.serialize.php
      * @return string the string representation of the object or &null;
      */
     public function serialize()
@@ -169,7 +169,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Constructs the object
      *
-     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @link https://php.net/manual/en/serializable.unserialize.php
      * @param string $serialized The string representation of the object
      * @return mixed the original value unserialized.
      */
@@ -183,7 +183,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * (PHP 5 >= 5.1.0)
      * Count elements of an object
      *
-     * @link http://php.net/manual/en/countable.count.php
+     * @link https://php.net/manual/en/countable.count.php
      * @return int The custom count as an integer.
      */
     public function count()

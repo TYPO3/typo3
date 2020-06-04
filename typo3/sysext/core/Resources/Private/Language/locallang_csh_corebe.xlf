@@ -444,7 +444,7 @@ If you want to extend the number of history states to above the default 20 you c
 			<trans-unit id="_history_log.seeAlso" resname="_history_log.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:history_sum,
 Configuring History using Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
-Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+Undo/History article | https://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_history_log.image" resname="_history_log.image" xml:space="preserve">
@@ -470,7 +470,7 @@ Finally you can revert either the whole record to this state in history by the r
 			</trans-unit>
 			<trans-unit id="_history_sum.seeAlso" resname="_history_sum.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:history_entry,
-Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+Undo/History article | https://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_history_sum.image" resname="_history_sum.image">

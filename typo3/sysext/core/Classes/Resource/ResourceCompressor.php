@@ -673,7 +673,7 @@ class ResourceCompressor
         // Remove certain whitespace.
         // There are different conditions for removing leading and trailing
         // whitespace.
-        // @see http://php.net/manual/regexp.reference.subpatterns.php
+        // @see https://php.net/manual/regexp.reference.subpatterns.php
         $contents = preg_replace(
             '<
 				# Strip leading and trailing whitespace.

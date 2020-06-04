@@ -33,7 +33,7 @@ Usage:
 		20.header = Cache-control: Private
 	}
 
-See also: http://php.net/header
+See also: https://php.net/header
 
 Impact
 ======

@@ -283,7 +283,7 @@ options.elements.<formElementIdentifier>.dateFormat
       If the internal Datatype is \DateTime which is true for the form element types "DatePicker" and "Date",
       the object needs to be converted into a string value.
       This option allows you to define the format of the date.
-      You can use every format accepted by PHP's date() function (http://php.net/manual/en/function.date.php#refsect1-function.date-parameters).
+      You can use every format accepted by PHP's date() function (https://php.net/manual/en/function.date.php#refsect1-function.date-parameters).
       The default value is "U" which means a Unix timestamp.
 
 

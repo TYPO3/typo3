@@ -18,7 +18,7 @@ return [
         'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_price.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
-        // @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
+        // @see https://forge.typo3.org/issues/29278 which solves it implicitly in the Core
         // 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
         'shadowColumnsForMovePlaceholders' => 'parentid,parenttable,parentidentifier',
     ],

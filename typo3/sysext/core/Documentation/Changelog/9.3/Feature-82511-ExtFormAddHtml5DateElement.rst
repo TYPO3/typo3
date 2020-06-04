@@ -26,7 +26,7 @@ definition including the new :yaml:`DateRange` validator:
     label: Date
     defaultValue: '2018-03-02'
     properties:
-      # default if not defined: 'd.m.Y' (http://php.net/manual/de/datetime.createfromformat.php#refsect1-datetime.createfromformat-parameters)
+      # default if not defined: 'd.m.Y' (https://php.net/manual/de/datetime.createfromformat.php#refsect1-datetime.createfromformat-parameters)
       displayFormat: 'd.m.Y'
       fluidAdditionalAttributes:
         min: '2018-03-01'
@@ -86,7 +86,7 @@ The minimum date and the maximum date can be configured through the validator op
         identifier: DateRange
         options:
           # The PHP \DateTime object format of the `minimum` and `maximum` option
-          # @see http://php.net/manual/de/datetime.createfromformat.php#refsect1-datetime.createfromformat-parameters
+          # @see https://php.net/manual/de/datetime.createfromformat.php#refsect1-datetime.createfromformat-parameters
           # 'Y-m-d' is the default value of this validator and must have this value
           # if you use this validator in combination with the `Date` form element.
           # This is because the HTML5 date value is always a RFC 3339 'full-date' format (Y-m-d)

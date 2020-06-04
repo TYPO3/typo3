@@ -2814,7 +2814,7 @@ elements.<formElementIdentifier>.dateFormat
       If the internal datatype is :php:`\DateTime` which is true for the form element types
       :yaml:`DatePicker` and :yaml:`Date`, the object needs to be converted into a string value.
       This option allows you to define the format of the date in case of such a conversion.
-      You can use every format accepted by the PHP :php:`date()` function (http://php.net/manual/en/function.date.php#refsect1-function.date-parameters).
+      You can use every format accepted by the PHP :php:`date()` function (https://php.net/manual/en/function.date.php#refsect1-function.date-parameters).
       The default value is "U" which leads to a Unix timestamp.
 
 

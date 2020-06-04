@@ -670,7 +670,7 @@ class Indexer
     /**
      * Index External URLs HTML content
      *
-     * @param string $externalUrl URL, eg. "http://typo3.org/
+     * @param string $externalUrl URL, eg. "https://typo3.org/
      * @see indexRegularDocument()
      */
     public function indexExternalUrl($externalUrl)
@@ -2044,7 +2044,7 @@ class Indexer
      *
      * @param string $keywordList
      * @return string
-     * @see http://forge.typo3.org/issues/14959
+     * @see https://forge.typo3.org/issues/14959
      */
     protected function addSpacesToKeywordList($keywordList)
     {
