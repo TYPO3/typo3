@@ -16,10 +16,8 @@ namespace TYPO3\CMS\T3editor\Form\Element;
  */
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\T3editor\Exception\InvalidModeException;
 use TYPO3\CMS\T3editor\Mode;
 use TYPO3\CMS\T3editor\Registry\AddonRegistry;
@@ -41,13 +39,6 @@ class T3editorElement extends AbstractFormElement
      * @var string
      */
     protected $mode = '';
-
-    /**
-     * Relative path to EXT:t3editor
-     *
-     * @var string
-     */
-    protected $extPath = '';
 
     /**
      * Default field information enabled for this element.
@@ -93,12 +84,9 @@ class T3editorElement extends AbstractFormElement
      */
     public function render(): array
     {
-        $this->extPath = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('t3editor'));
-        $codeMirrorPath = $this->extPath . 'Resources/Public/JavaScript/Contrib/cm';
-
         $this->resultArray = $this->initializeResultArray();
-        $this->resultArray['stylesheetFiles'][] = $codeMirrorPath . '/lib/codemirror.css';
-        $this->resultArray['stylesheetFiles'][] = $this->extPath . '/Resources/Public/Css/t3editor.css';
+        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/cm/lib/codemirror.css';
+        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
         $this->resultArray['requireJsModules'][] = [
             'TYPO3/CMS/T3editor/T3editor' => 'function(T3editor) {T3editor.observeEditorCandidates()}'
         ];
