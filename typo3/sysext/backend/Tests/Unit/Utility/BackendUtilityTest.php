@@ -151,7 +151,7 @@ class BackendUtilityTest extends UnitTestCase
     ///////////////////////////////////////
     /**
      * @test
-     * @see http://forge.typo3.org/issues/20994
+     * @see https://forge.typo3.org/issues/20994
      */
     public function getProcessedValueForZeroStringIsZero()
     {

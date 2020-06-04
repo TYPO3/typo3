@@ -97,7 +97,7 @@ Email validator
 """""""""""""""
 
 The 'Email validator' checks if the given value is a valid email address.
-The format of a valid email address is defined in `RFC 3696 <http://tools.ietf.org/html/rfc3696>`_.
+The format of a valid email address is defined in `RFC 3696 <https://tools.ietf.org/html/rfc3696>`_.
 The standard allows international characters and the multiple appearance
 of the @ sign.
 
@@ -153,7 +153,7 @@ Non-XML text validator
 The 'Non-XML text validator' checks if the given value is a valid text
 (contains no XML tags). This basically means, that tags are stripped.
 In this special case quotes are not encoded (see `filter_var()
-<http://php.net/filter_var>`_ for more information.
+<https://php.net/filter_var>`_ for more information.
 
 Be aware that the value of this check entirely depends on the output
 context. The validated text is not expected to be secure in every

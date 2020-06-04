@@ -422,7 +422,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $cacheControlHeader = 'no-cache, must-revalidate';
         $pragmaHeader = 'no-cache';
         // Prevent error message in IE when using a https connection
-        // see http://forge.typo3.org/issues/24125
+        // see https://forge.typo3.org/issues/24125
         if (strpos(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'), 'MSIE') !== false
             && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
             // Some IEs can not handle no-cache

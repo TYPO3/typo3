@@ -936,7 +936,7 @@ class GeneralUtility
      * Convert the domain part to punicode if it does not look like a regular
      * domain name. Only the domain part because RFC3986 specifies the the rest of
      * the url may not contain special characters:
-     * http://tools.ietf.org/html/rfc3986#appendix-A
+     * https://tools.ietf.org/html/rfc3986#appendix-A
      *
      * @param string $url The URL to be validated
      * @return bool Whether the given URL is valid
@@ -2985,7 +2985,7 @@ class GeneralUtility
      *
      * @param string $theFile File path to evaluate
      * @return bool TRUE, $theFile is allowed path string, FALSE otherwise
-     * @see http://php.net/manual/en/security.filesystem.nullbytes.php
+     * @see https://php.net/manual/en/security.filesystem.nullbytes.php
      */
     public static function validPathStr($theFile)
     {

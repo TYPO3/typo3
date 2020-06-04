@@ -108,7 +108,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             // use the request object for fetching the cookie information.
             $_COOKIE[$cookieName] = $sessionId;
             if (isset($_SERVER['HTTP_COOKIE'])) {
-                // See http://forge.typo3.org/issues/27740
+                // See https://forge.typo3.org/issues/27740
                 $_SERVER['HTTP_COOKIE'] .= ';' . $cookieName . '=' . $sessionId;
             }
             // Add the cookie to the Server Request object

@@ -67,7 +67,7 @@ class MathUtility
      *
      * Note: Integer casting from objects or arrays is considered undefined and thus will return false.
      *
-     * @see http://php.net/manual/en/language.types.integer.php#language.types.integer.casting.from-other
+     * @see https://php.net/manual/en/language.types.integer.php#language.types.integer.casting.from-other
      * @param mixed $var Any input variable to test
      * @return bool Returns TRUE if string is an integer
      */

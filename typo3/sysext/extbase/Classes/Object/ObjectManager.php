@@ -58,7 +58,7 @@ class ObjectManager implements ObjectManagerInterface
      * since elements will be recreated and are just a local cache,
      * but not required for runtime logic and behaviour.
      *
-     * @see http://forge.typo3.org/issues/36820
+     * @see https://forge.typo3.org/issues/36820
      * @return array Names of the properties to be serialized
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -73,7 +73,7 @@ class ObjectManager implements ObjectManagerInterface
      * Initializes the properties again that have been removed by
      * a call to the __sleep() method on serialization before.
      *
-     * @see http://forge.typo3.org/issues/36820
+     * @see https://forge.typo3.org/issues/36820
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __wakeup()

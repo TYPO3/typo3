@@ -27,7 +27,7 @@ class TextValidator extends AbstractValidator
      * The validated text is not expected to be secure in every circumstance, if you
      * want to be sure of that, use a customized regular expression or filter on output.
      *
-     * See http://php.net/filter_var for details.
+     * See https://php.net/filter_var for details.
      *
      * @param mixed $value The value that should be validated
      */

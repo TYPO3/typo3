@@ -13,7 +13,7 @@ Description
 The class \Throwable was added in PHP7 as new parent of \Exceptions. This leads to the issue that
 ExceptionHandlers need to change the API of their exception handling method. To support PHP 5.5, 5.6 and 7.0
 we need to remove the type hint. It will later be set to \Throwable if we only support PHP 7.0 and newer.
-See http://php.net/manual/en/migration70.incompatible.php
+See https://php.net/manual/en/migration70.incompatible.php
 
 
 Impact
