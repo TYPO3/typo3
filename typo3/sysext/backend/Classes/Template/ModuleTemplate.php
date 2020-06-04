@@ -377,13 +377,9 @@ class ModuleTemplate
         }
         $this->view->assign('uiBlock', $this->uiBlock);
         $this->view->assign('flashMessageQueueIdentifier', $this->getFlashMessageQueue()->getIdentifier());
-        $renderedPage = $this->pageRenderer->render(PageRenderer::PART_HEADER);
-        $renderedPage .= $this->bodyTag;
-        $renderedPage .= $this->view->render();
+        $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render());
         $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
-        $renderedPage .= $this->pageRenderer->render(PageRenderer::PART_FOOTER);
-
-        return $renderedPage;
+        return $this->pageRenderer->render();
     }
 
     /**
