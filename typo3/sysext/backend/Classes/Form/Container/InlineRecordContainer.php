@@ -198,11 +198,15 @@ class InlineRecordContainer extends AbstractContainer
                 // in case of site_language we don't have the full form engine options, so fallbacks need to be taken into account
                 $originalUniqueValue = ($uniqueValueValues['table'] ?? $foreignTable) . '_' . ($uniqueValueValues['uid'] ?? $uniqueValueValues);
             }
+
+            // The hashed object id needs a non-numeric prefix, the value is used as ID selector in JavaScript
+            $hashedObjectId = 'hash-' . md5($objectId);
             $containerAttributes = [
                 'id' => $objectId . '_div',
                 'class' => 'form-irre-object panel panel-default panel-condensed ' . trim(implode(' ', $classes)),
                 'data-object-uid' => $record['uid'],
                 'data-object-id' => $objectId,
+                'data-object-id-hash' => $hashedObjectId,
                 'data-field-name' => $appendFormFieldNames,
                 'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
                 'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
@@ -211,7 +215,7 @@ class InlineRecordContainer extends AbstractContainer
 
             $html = '
 				<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
-					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($objectId) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
+					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
