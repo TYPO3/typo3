@@ -882,7 +882,7 @@ class Indexer
                         $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
-                            'localPath' => $this->createLocalPath($tagAttributes[0]['href'])
+                            'localPath' => $this->createLocalPath(urldecode($tagAttributes[0]['href']))
                         ];
                     }
                 }
