@@ -13,6 +13,7 @@
 
 import 'bootstrap';
 import * as $ from 'jquery';
+import BrowserSession = require('./Storage/BrowserSession');
 import Client = require('./Storage/Client');
 
 /**
@@ -20,9 +21,6 @@ import Client = require('./Storage/Client');
  * @exports TYPO3/CMS/Backend/Tabs
  */
 class Tabs {
-
-  public storage: any;
-  protected cacheTimeInSeconds: number = 1800;
   protected storeLastActiveTab: boolean = true;
 
   /**
@@ -33,8 +31,6 @@ class Tabs {
   }
 
   constructor() {
-    this.storage = Client;
-
     const that = this;
     $((): void => {
       $('.t3js-tabs').each(function(this: Element): void {
@@ -53,6 +49,9 @@ class Tabs {
         });
       });
     });
+
+    // Remove legacy values from localStorage
+    Client.unsetByPrefix('tabs-');
   }
 
   /**
@@ -62,12 +61,7 @@ class Tabs {
    * @returns {string}
    */
   public receiveActiveTab(id: string): string {
-    const target = this.storage.get(id) || '';
-    const expire = this.storage.get(id + '.expire') || 0;
-    if (expire > Tabs.getTimestamp()) {
-      return target;
-    }
-    return '';
+    return BrowserSession.get(id) || '';
   }
 
   /**
@@ -77,10 +71,8 @@ class Tabs {
    * @param {string} target
    */
   public storeActiveTab(id: string, target: string): void {
-    this.storage.set(id, target);
-    this.storage.set(id + '.expire', Tabs.getTimestamp() + this.cacheTimeInSeconds);
+    BrowserSession.set(id, target);
   }
 }
 
-const tabs = new Tabs();
-export = tabs;
+export = new Tabs();
