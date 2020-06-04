@@ -536,7 +536,7 @@ class InlineControlContainer {
     const isLoaded = recordFieldsContainer !== null && !recordContainer.classList.contains(States.notLoaded);
 
     if (!isLoaded) {
-      const progress = this.getProgress(objectId);
+      const progress = this.getProgress(objectId, recordContainer.dataset.objectIdHash);
 
       if (!isLoading) {
         const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_details'));
@@ -772,9 +772,10 @@ class InlineControlContainer {
 
   /**
    * @param {string} objectId
+   * @param {string} objectIdHash
    */
-  private getProgress(objectId: string): any {
-    const headerIdentifier = '#' + objectId + '_header';
+  private getProgress(objectId: string, objectIdHash: string): any {
+    const headerIdentifier = '#' + objectIdHash + '_header';
     let progress: any;
 
     if (typeof this.progessQueue[objectId] !== 'undefined') {
@@ -851,10 +852,11 @@ class InlineControlContainer {
     }
 
     records.forEach((recordUid: string, index: number): void => {
-      const headerIdentifier = objectId + Separators.structureSeparator + recordUid + '_header';
+      const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId + Separators.structureSeparator + recordUid);
+      const headerIdentifier = recordContainer.dataset.objectIdHash + '_header';
       const headerElement = document.getElementById(headerIdentifier);
-
       const sortUp = headerElement.querySelector('[data-action="sort"][data-direction="' + SortDirections.UP + '"]');
+
       if (sortUp !== null) {
         let iconIdentifier = 'actions-move-up';
         if (index === 0) {
