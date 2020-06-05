@@ -195,7 +195,7 @@ class ExtensionRepository extends Repository
             ->execute()
             ->fetchAll();
 
-        $dataMapper = $this->objectManager->get(DataMapper::class);
+        $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         return $dataMapper->map(Extension::class, $result);
     }
 

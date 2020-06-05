@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -25,11 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionModelUtilityTest extends UnitTestCase
 {
-    /**
-     * @var bool Reset singletons created by subject
-     */
-    protected $resetSingletonInstances = true;
-
     /**
      * @test
      */
@@ -42,11 +35,7 @@ class ExtensionModelUtilityTest extends UnitTestCase
                 'fn_lib' => ''
             ]
         ]);
-        /** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
         $dependencyUtility = new ExtensionModelUtility();
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock->method('get')->willReturn(new Dependency());
-        $dependencyUtility->injectObjectManager($objectManagerMock);
         $objectStorage = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
         self::assertInstanceOf(\SplObjectStorage::class, $objectStorage);
     }
@@ -65,14 +54,6 @@ class ExtensionModelUtilityTest extends UnitTestCase
         ]);
 
         $dependencyUtility = new ExtensionModelUtility();
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        // ensure we get a new dependency on subsequent calls
-        $objectManagerMock->method('get')->willReturnCallback(
-            static function () {
-                return new Dependency();
-            }
-        );
-        $dependencyUtility->injectObjectManager($objectManagerMock);
         $dependencyObjects = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
         $identifiers = [];
         foreach ($dependencyObjects as $resultingDependency) {
@@ -144,14 +125,6 @@ class ExtensionModelUtilityTest extends UnitTestCase
     {
         $serializedDependencies = serialize($dependencies);
         $dependencyUtility = new ExtensionModelUtility();
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        // ensure we get a new dependency on subsequent calls
-        $objectManagerMock->method('get')->willReturnCallback(
-            static function () {
-                return new Dependency();
-            }
-        );
-        $dependencyUtility->injectObjectManager($objectManagerMock);
         $dependencyObjects = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
         foreach ($dependencyObjects as $resultingDependency) {
             self::assertSame($returnValue[0], $resultingDependency->getLowestVersion());

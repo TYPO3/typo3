@@ -186,8 +186,7 @@ class ListController extends AbstractModuleController
                     $extensionKey => $availableExtensions[$extensionKey]
                 ]
             );
-            /** @var ExtensionModelUtility $extensionModelUtility */
-            $extensionModelUtility = $this->objectManager->get(ExtensionModelUtility::class);
+            $extensionModelUtility = GeneralUtility::makeInstance(ExtensionModelUtility::class);
             $extension = $extensionModelUtility->mapExtensionArrayToModel($extensionArray[$extensionKey]);
         } else {
             throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
@@ -229,8 +228,7 @@ class ListController extends AbstractModuleController
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
         if ($importExportInstalled) {
             try {
-                /** @var Helper $repositoryHelper */
-                $repositoryHelper = $this->objectManager->get(Helper::class);
+                $repositoryHelper = GeneralUtility::makeInstance(Helper::class);
                 // Check if a TER update has been done at all, if not, fetch it directly
                 // Repository needs an update, but not because of the extension hash has changed
                 $isExtListUpdateNecessary = $repositoryHelper->isExtListUpdateNecessary();

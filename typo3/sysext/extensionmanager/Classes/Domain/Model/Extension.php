@@ -16,9 +16,9 @@
 namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 
 /**
@@ -66,11 +66,6 @@ class Extension extends AbstractEntity
         7 => 'deprecated',
         999 => 'n/a'
     ];
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
 
     /**
      * @var string
@@ -167,14 +162,6 @@ class Extension extends AbstractEntity
      * @var int
      */
     protected $position = 0;
-
-    /**
-     * @param ObjectManager $objectManager
-     */
-    public function injectObjectManager(ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * @param string $authorEmail
@@ -531,7 +518,7 @@ class Extension extends AbstractEntity
     public function getDependencies()
     {
         if (!is_object($this->dependencies)) {
-            $extensionModelUtility = $this->objectManager->get(ExtensionModelUtility::class);
+            $extensionModelUtility = GeneralUtility::makeInstance(ExtensionModelUtility::class);
             $this->setDependencies($extensionModelUtility->convertDependenciesToObjects($this->getSerializedDependencies()));
         }
         return $this->dependencies;

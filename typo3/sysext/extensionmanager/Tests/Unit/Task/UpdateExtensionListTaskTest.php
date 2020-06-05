@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
@@ -52,21 +52,11 @@ class UpdateExtensionListTaskTest extends UnitTestCase
                 ->expects(self::once())
                 ->method('updateExtList');
 
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-                ->expects(self::at(0))
-                ->method('get')
-                ->with(Helper::class)
-                ->willReturn($repositoryHelper);
-
+        GeneralUtility::setSingletonInstance(Helper::class, $repositoryHelper);
         $persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)->disableOriginalConstructor()->getMock();
-        $objectManagerMock
-                ->expects(self::at(1))
-                ->method('get')
-                ->willReturn($persistenceManagerMock);
+        GeneralUtility::setSingletonInstance(PersistenceManager::class, $persistenceManagerMock);
 
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerMock);
-
+        /** @var UpdateExtensionListTask|MockObject $task */
         $task = $this->getMockBuilder(UpdateExtensionListTask::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -80,26 +70,14 @@ class UpdateExtensionListTaskTest extends UnitTestCase
     public function executeCallsPersistAllOnPersistenceManager()
     {
         $repositoryHelper = $this->createMock(Helper::class);
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects(self::at(0))
-            ->method('get')
-            ->with(Helper::class)
-            ->willReturn($repositoryHelper);
+        GeneralUtility::setSingletonInstance(Helper::class, $repositoryHelper);
 
         $persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $persistenceManagerMock
             ->expects(self::once())
             ->method('persistAll');
-
-        $objectManagerMock
-                ->expects(self::at(1))
-                ->method('get')
-                ->willReturn($persistenceManagerMock);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerMock);
-
-        /** @var UpdateExtensionListTask|PHPUnit_Framework_MockObject_MockObject $task */
+        GeneralUtility::setSingletonInstance(PersistenceManager::class, $persistenceManagerMock);
+        /** @var UpdateExtensionListTask|MockObject $task */
         $task = $this->getMockBuilder(UpdateExtensionListTask::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()

@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
@@ -123,11 +122,6 @@ class ExtensionListUtility implements \SplObserver
     protected $extensionModel;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * Only import extensions newer than this date (timestamp),
      * see constructor
      *
@@ -144,11 +138,9 @@ class ExtensionListUtility implements \SplObserver
      */
     public function __construct()
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->repositoryRepository = $this->objectManager->get(RepositoryRepository::class);
-        $this->extensionRepository = $this->objectManager->get(ExtensionRepository::class);
-        $this->extensionModel = $this->objectManager->get(Extension::class);
+        $this->repositoryRepository = GeneralUtility::makeInstance(RepositoryRepository::class);
+        $this->extensionRepository = GeneralUtility::makeInstance(ExtensionRepository::class);
+        $this->extensionModel = GeneralUtility::makeInstance(Extension::class);
         // @todo catch parser exception
         $this->parser = XmlParserFactory::getParserInstance('extension');
         if (is_object($this->parser)) {

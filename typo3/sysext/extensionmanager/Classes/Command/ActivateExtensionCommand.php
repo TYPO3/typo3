@@ -25,8 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -34,6 +32,25 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class ActivateExtensionCommand extends Command
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var InstallUtility
+     */
+    private $installUtility;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        InstallUtility $installUtility
+    ) {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->installUtility = $installUtility;
+        parent::__construct();
+    }
+
     /**
      * Defines the allowed options for this command
      */
@@ -63,13 +80,11 @@ class ActivateExtensionCommand extends Command
         // Ensure the _cli_ user is authenticated because the extension might import data
         Bootstrap::initializeBackendAuthentication();
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
         // Emits packages may have changed signal
-        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(new PackagesMayHaveChangedEvent());
+        $this->eventDispatcher->dispatch(new PackagesMayHaveChangedEvent());
 
         // Do the installation process
-        $objectManager->get(InstallUtility::class)->install($extensionKey);
+        $this->installUtility->install($extensionKey);
 
         $io->success('Activated extension ' . $extensionKey . ' successfully.');
         return 0;

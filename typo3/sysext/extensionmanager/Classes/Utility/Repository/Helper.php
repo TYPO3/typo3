@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Repository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -73,16 +72,10 @@ class Helper implements SingletonInterface
      */
     protected $extensionRepository;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
     public function __construct()
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $repositoryRepository = $this->objectManager->get(RepositoryRepository::class);
-        $this->extensionRepository = $this->objectManager->get(ExtensionRepository::class);
+        $repositoryRepository = GeneralUtility::makeInstance(RepositoryRepository::class);
+        $this->extensionRepository = GeneralUtility::makeInstance(ExtensionRepository::class);
         /** @var Repository $repository */
         $repository = $repositoryRepository->findOneTypo3OrgRepository();
         if (is_object($repository)) {
@@ -306,7 +299,7 @@ class Helper implements SingletonInterface
             // no further problems - start of import process
             if ($updateNecessity === 0) {
                 $uid = $this->repository->getUid();
-                $objExtListImporter = $this->objectManager->get(ExtensionListUtility::class);
+                $objExtListImporter = GeneralUtility::makeInstance(ExtensionListUtility::class);
                 $objExtListImporter->import($this->getLocalExtListFile(), $uid);
                 $updated = true;
             }

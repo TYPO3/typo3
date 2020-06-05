@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\Report;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
@@ -46,11 +45,6 @@ class ExtensionStatus implements StatusProviderInterface
     protected $error = '';
 
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * @var RepositoryRepository
      */
     protected $repositoryRepository;
@@ -66,21 +60,20 @@ class ExtensionStatus implements StatusProviderInterface
     protected $languageService;
 
     /**
-     * Default constructor
+     * @param LanguageService $languageService
      */
-    public function __construct()
+    public function __construct(LanguageService $languageService = null)
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->repositoryRepository = $this->objectManager->get(RepositoryRepository::class);
-        $this->listUtility = $this->objectManager->get(ListUtility::class);
-        $this->languageService = $this->objectManager->get(LanguageService::class);
+        $this->repositoryRepository = GeneralUtility::makeInstance(RepositoryRepository::class);
+        $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);
+        $this->languageService = $languageService ?? LanguageService::createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
     /**
      * Determines extension manager status
      *
-     * @return array List of statuses
+     * @return Status[] List of statuses
      */
     public function getStatus()
     {
@@ -120,8 +113,7 @@ class ExtensionStatus implements StatusProviderInterface
             $severity = Status::OK;
         }
 
-        /** @var Status $status */
-        $status = $this->objectManager->get(
+        $status = GeneralUtility::makeInstance(
             Status::class,
             $this->languageService->getLL('report.status.mainRepository.title'),
             $value,
@@ -211,7 +203,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = Status::ERROR;
         }
-        $result->loaded = $this->objectManager->get(
+        $result->loaded = GeneralUtility::makeInstance(
             Status::class,
             $this->languageService->getLL('report.status.loadedExtensions.title'),
             $value,
@@ -242,7 +234,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = Status::WARNING;
         }
-        $result->existing = $this->objectManager->get(
+        $result->existing = GeneralUtility::makeInstance(
             Status::class,
             $this->languageService->getLL('report.status.existingExtensions.title'),
             $value,
@@ -273,7 +265,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = Status::WARNING;
         }
-        $result->loadedoutdated = $this->objectManager->get(
+        $result->loadedoutdated = GeneralUtility::makeInstance(
             Status::class,
             $this->languageService->getLL('report.status.loadedOutdatedExtensions.title'),
             $value,
@@ -304,7 +296,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = Status::WARNING;
         }
-        $result->existingoutdated = $this->objectManager->get(
+        $result->existingoutdated = GeneralUtility::makeInstance(
             Status::class,
             $this->languageService->getLL('report.status.existingOutdatedExtensions.title'),
             $value,

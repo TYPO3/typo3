@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
 
@@ -50,7 +51,7 @@ class UpdateScriptController extends AbstractModuleController
      */
     public function showAction($extensionKey)
     {
-        $updateScriptUtility = $this->objectManager->get(UpdateScriptUtility::class);
+        $updateScriptUtility = GeneralUtility::makeInstance(UpdateScriptUtility::class);
         $updateScriptResult = $updateScriptUtility->executeUpdateIfNeeded($extensionKey);
         $this->view
             ->assign('updateScriptResult', $updateScriptResult)

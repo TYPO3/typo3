@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
@@ -34,17 +32,6 @@ class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
      * @var string
      */
     protected $tagName = 'a';
-
-    /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
-    protected $objectManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * Initialize arguments
@@ -64,14 +51,12 @@ class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
     {
         $extension = $this->arguments['extension'];
         // Early return if package is protected and can not be unloaded
-        /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
-        $packageManager = $this->objectManager->get(PackageManager::class);
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         $package = $packageManager->getPackage($extension['key']);
         if ($package->isProtected()) {
             return '';
         }
 
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $action = 'toggleExtensionInstallationState';
         $uri = $uriBuilder->reset()->uriFor($action, [
@@ -83,7 +68,6 @@ class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
         $icon = $extension['installed'] ? 'uninstall' : 'install';
         $this->tag->addAttribute('class', 'onClickMaskExtensionManager btn btn-default');
 
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->tag->setContent($iconFactory->getIcon('actions-system-extension-' . $icon, Icon::SIZE_SMALL)->render());
         return $this->tag->render();

@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
@@ -30,18 +29,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
  */
 class UpdateScriptViewHelper extends ActionViewHelper
 {
-
-    /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
-    protected $objectManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
     /**
      * initialize arguments
      */
@@ -61,9 +48,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
         $extensionKey = $this->arguments['extensionKey'];
 
         // If the "class.ext_update.php" file exists, build link to the update script screen
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility $updateScriptUtility */
-        $updateScriptUtility = $this->objectManager->get(UpdateScriptUtility::class);
-        /** @var IconFactory $iconFactory */
+        $updateScriptUtility = GeneralUtility::makeInstance(UpdateScriptUtility::class);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($updateScriptUtility->checkUpdateScriptExists($extensionKey)) {
             /** @var UriBuilder $uriBuilder */

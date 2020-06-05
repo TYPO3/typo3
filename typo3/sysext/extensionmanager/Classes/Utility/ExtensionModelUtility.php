@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
@@ -27,19 +27,6 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 class ExtensionModelUtility
 {
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManager $objectManager
-     */
-    public function injectObjectManager(ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * Map a legacy extension array to an object
      *
      * @param array $extensionArray
@@ -47,7 +34,7 @@ class ExtensionModelUtility
      */
     public function mapExtensionArrayToModel(array $extensionArray)
     {
-        $extension = $this->objectManager->get(Extension::class);
+        $extension = GeneralUtility::makeInstance(Extension::class);
         $extension->setExtensionKey($extensionArray['key']);
         if (isset($extensionArray['version'])) {
             $extension->setVersion($extensionArray['version']);
@@ -85,7 +72,7 @@ class ExtensionModelUtility
                     } else {
                         $highest = '';
                     }
-                    $dependencyObject = $this->objectManager->get(Dependency::class);
+                    $dependencyObject = GeneralUtility::makeInstance(Dependency::class);
                     $dependencyObject->setType($dependencyType);
                     // dynamically migrate 'cms' dependency to 'core' dependency
                     // see also \TYPO3\CMS\Core\Package\Package::getPackageMetaData

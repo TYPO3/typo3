@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
 
-use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,7 +49,7 @@ class ExtensionStatusTest extends UnitTestCase
     /**
      * @var LanguageService
      */
-    protected $mockLanguageService;
+    protected $languageService;
 
     /**
      * Set up
@@ -63,8 +62,8 @@ class ExtensionStatusTest extends UnitTestCase
         $this->mockRepositoryRepository = $this->getMockBuilder(RepositoryRepository::class)
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
-        $this->mockLanguageService = $this->createMock(LanguageService::class);
         $this->resetSingletonInstances = true;
+        $this->languageService = $this->prophesize(LanguageService::class)->reveal();
     }
 
     /**
@@ -126,9 +125,9 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusCallsMainRepositoryForMainRepositoryStatusResult(): void
     {
-        [$repositoryRepositoryProphecy] = $this->setUpRepositoryStatusTests();
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
+        $repositoryRepositoryProphecy = $this->setUpRepositoryStatusTests();
+        $subject = new ExtensionStatus($this->languageService);
+        $subject->getStatus();
 
         $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->shouldHaveBeenCalled();
     }
@@ -138,14 +137,14 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorStatusIfRepositoryIsNotFound(): void
     {
-        [$repositoryRepositoryProphecy, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(0, true, false);
-
+        $repositoryRepositoryProphecy = $this->setUpRepositoryStatusTests(0, true, false);
         $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->willReturn(null);
 
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::ERROR)->shouldHaveBeenCalled();
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['mainRepositoryStatus'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::ERROR);
     }
 
     /**
@@ -153,29 +152,17 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsNoticeIfRepositoryUpdateIsLongerThanSevenDaysAgo(): void
     {
-        [$repositoryRepositoryProphecy, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(0, true, false);
+        $repositoryRepositoryProphecy = $this->setUpRepositoryStatusTests(0, true, false);
 
         $repository = new Repository();
         $repository->setLastUpdate(new \DateTime('-14days'));
         $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->willReturn($repository);
 
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::NOTICE)->shouldHaveBeenCalled();
-    }
-
-    /**
-     * @test
-     */
-    public function getStatusReturnsOkIfUpdatedLessThanSevenDaysAgo(): void
-    {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests();
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::OK)->shouldHaveBeenCalled();
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['mainRepositoryStatus'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::NOTICE);
     }
 
     /**
@@ -183,12 +170,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsOkForLoadedExtensionIfNoInsecureExtensionIsLoaded(): void
     {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests();
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::OK)->shouldHaveBeenCalled();
+        $this->setUpRepositoryStatusTests();
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['mainRepositoryStatus'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::OK);
     }
 
     /**
@@ -196,12 +183,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorForLoadedExtensionIfInsecureExtensionIsLoaded(): void
     {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(-1);
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::ERROR)->shouldHaveBeenCalled();
+        $this->setUpRepositoryStatusTests(-1);
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['extensionsSecurityStatusInstalled'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::ERROR);
     }
 
     /**
@@ -209,12 +196,13 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsOkForExistingExtensionIfNoInsecureExtensionExists(): void
     {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(0, false);
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::OK)->shouldHaveBeenCalled();
+        $this->setUpRepositoryStatusTests(0, false);
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        foreach ($status as $statusObject) {
+            self::assertInstanceOf(Status::class, $statusObject);
+            self::assertEquals($statusObject->getSeverity(), Status::OK);
+        }
     }
 
     /**
@@ -222,12 +210,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsWarningForExistingExtensionIfInsecureExtensionExistsButIsNotLoaded(): void
     {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(-1, false);
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::WARNING)->shouldHaveBeenCalled();
+        $this->setUpRepositoryStatusTests(-1, false);
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['extensionsSecurityStatusNotInstalled'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::WARNING);
     }
 
     /**
@@ -235,12 +223,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsWarningForLoadedExtensionIfOutdatedExtensionIsLoaded(): void
     {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(-2, true);
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::WARNING)->shouldHaveBeenCalled();
+        $this->setUpRepositoryStatusTests(-2, true);
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['extensionsOutdatedStatusInstalled'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::WARNING);
     }
 
     /**
@@ -248,33 +236,26 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorForExistingExtensionIfOutdatedExtensionExists(): void
     {
-        [, $objectManagerProphecy] = $this->setUpRepositoryStatusTests(-2, false);
-
-        $extensionStatus = new ExtensionStatus();
-        $extensionStatus->getStatus();
-
-        $objectManagerProphecy->get(Status::class, Argument::any(), Argument::any(), Argument::any(), Status::WARNING)->shouldHaveBeenCalled();
+        $this->setUpRepositoryStatusTests(-2, false);
+        $subject = new ExtensionStatus($this->languageService);
+        $status = $subject->getStatus();
+        $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
+        self::assertInstanceOf(Status::class, $statusObject);
+        self::assertEquals($statusObject->getSeverity(), Status::WARNING);
     }
 
     /**
      * @param int $reviewState
      * @param bool $installed
      * @param bool $setupRepositoryStatusOk
-     * @return array
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function setUpRepositoryStatusTests(int $reviewState = 0, bool $installed = true, bool $setupRepositoryStatusOk = true): array
+    protected function setUpRepositoryStatusTests(int $reviewState = 0, bool $installed = true, bool $setupRepositoryStatusOk = true)
     {
         $mockTerObject = new Extension();
         $mockTerObject->setVersion('1.0.6');
         $mockTerObject->setReviewState($reviewState);
 
-        $mockExtensionList = [
-            'enetcache' => [
-                'installed' => $installed,
-                'terObject' => $mockTerObject,
-            ],
-        ];
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
         /** @var $mockListUtility ListUtility|\PHPUnit\Framework\MockObject\MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
@@ -282,20 +263,21 @@ class ExtensionStatusTest extends UnitTestCase
         $mockListUtility
             ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->willReturn($mockExtensionList);
+            ->willReturn([
+                'enetcache' => [
+                    'installed' => $installed,
+                    'terObject' => $mockTerObject,
+                ],
+            ]);
 
         $repositoryRepositoryProphecy = $this->prophesize(RepositoryRepository::class);
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        $objectManagerProphecy->get(RepositoryRepository::class)->willReturn($repositoryRepositoryProphecy->reveal());
-        $objectManagerProphecy->get(ListUtility::class)->willReturn($mockListUtility);
-        $objectManagerProphecy->get(LanguageService::class)->willReturn($this->mockLanguageService);
-        $objectManagerProphecy->get(Status::class, Argument::cetera())->willReturn(new Status('test status', 'test status value'));
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
+        GeneralUtility::setSingletonInstance(RepositoryRepository::class, $repositoryRepositoryProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ListUtility::class, $mockListUtility);
         if ($setupRepositoryStatusOk) {
             $repository = new Repository();
             $repository->setLastUpdate(new \DateTime('-4days'));
             $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->willReturn($repository);
         }
-        return [$repositoryRepositoryProphecy, $objectManagerProphecy];
+        return $repositoryRepositoryProphecy;
     }
 }

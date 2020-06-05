@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extensionmanager\Task;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -35,9 +34,8 @@ class UpdateExtensionListTask extends AbstractTask
     public function execute()
     {
         // Throws exceptions if something went wrong
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $objectManager->get(Helper::class)->updateExtList();
-        $objectManager->get(PersistenceManager::class)->persistAll();
+        GeneralUtility::makeInstance(Helper::class)->updateExtList();
+        GeneralUtility::makeInstance(PersistenceManager::class)->persistAll();
         return true;
     }
 }

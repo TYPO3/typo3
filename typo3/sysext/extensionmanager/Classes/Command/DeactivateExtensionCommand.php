@@ -22,8 +22,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -31,6 +29,22 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class DeactivateExtensionCommand extends Command
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var InstallUtility
+     */
+    private $installUtility;
+
+    public function __construct(InstallUtility $installUtility)
+    {
+        $this->installUtility = $installUtility;
+        parent::__construct();
+    }
+
     /**
      * Defines the allowed options for this command
      */
@@ -56,8 +70,7 @@ class DeactivateExtensionCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $extensionKey = $input->getArgument('extensionkey');
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $objectManager->get(InstallUtility::class)->uninstall($extensionKey);
+        $this->installUtility->uninstall($extensionKey);
 
         $io->success('Deactivated extension "' . $extensionKey . '" successfully.');
         return 0;

@@ -36,6 +36,7 @@ services:
   TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings: ~
 
   TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper:
+    public: true
     shared: false
 
   cache.extbase:
