@@ -82,7 +82,7 @@
     "cropperjs": "^1.5.9",
     "d3": "^4.13.0",
     "devbridge-autocomplete": "^1.4.11",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "flatpickr": "^4.6.3",
     "font-awesome": "^4.7.0",
     "imagesloaded": "^4.1.4",
     "jquery": "^3.5.1",

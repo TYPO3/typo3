@@ -18,7 +18,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
         'type': 'date',
         'value': 10000000,
         'config': [],
-        'result': '26-4-1970'
+        'result': '26-04-1970'
       },
       {
         'description': 'works for type date with iso date',
@@ -39,7 +39,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
         'type': 'datetime',
         'value': 10000000,
         'config': [],
-        'result': '17:46 26-4-1970'
+        'result': '17:46 26-04-1970'
       },
       {
         'description': 'works for type datetime with iso date',
@@ -108,7 +108,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
         'type': 'date',
         'value': 10000000,
         'config': [],
-        'result': '4-26-1970'
+        'result': '04-26-1970'
       },
       {
         'description': 'works for type date with iso date in US mode',
@@ -122,7 +122,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
         'type': 'datetime',
         'value': 10000000,
         'config': [],
-        'result': '17:46 4-26-1970'
+        'result': '17:46 04-26-1970'
       },
       {
         'description': 'works for type datetime with iso date in US mode',

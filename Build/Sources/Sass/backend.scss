@@ -18,6 +18,7 @@
 // Components
 //
 @import "component/colorpicker";
+@import "component/datetimepicker";
 @import "component/svgtree";
 @import "component/elementbrowser";
 @import "component/modal";
@@ -37,11 +38,6 @@
 @import "module/tstemplate";
 @import "module/viewpage";
 @import "module/workspaces";
-
-//
-// Components from bootstrap plugins
-//
-@import "bootstrap-datetimepicker";
 
 //
 // Include chosen CSS file

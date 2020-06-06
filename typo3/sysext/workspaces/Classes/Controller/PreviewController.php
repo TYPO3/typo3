@@ -219,7 +219,7 @@ class PreviewController
     protected function generateJavascript(): string
     {
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
+        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         // If another page module was specified, replace the default Page module with the new one

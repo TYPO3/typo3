@@ -1373,7 +1373,6 @@ class PageRenderer implements SingletonInterface
             'cropperjs' => $corePath . 'cropper.min',
             'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
             'bootstrap' => $corePath . 'bootstrap/bootstrap',
-            'twbs/bootstrap-datetimepicker' => $corePath . 'bootstrap-datetimepicker',
             'autosize' => $corePath . 'autosize',
             'taboverride' => $corePath . 'taboverride.min',
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
@@ -1382,6 +1381,7 @@ class PageRenderer implements SingletonInterface
             'tablesort' => $corePath . 'tablesort',
             'tablesort.dotsep' => $corePath . 'tablesort.dotsep',
             'broadcastchannel' => $corePath . 'broadcastchannel-polyfill',
+            'flatpickr' => $corePath . 'flatpickr',
         ];
         $requireJsConfig['public']['shim'] = [
             'tablesort.dotsep' => ['deps' => ['tablesort']],

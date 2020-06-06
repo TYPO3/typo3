@@ -11,9 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import moment from 'moment';
+import flatpickr = require('flatpickr/flatpickr.min');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import moment = require('moment');
 import PersistentStorage = require('./Storage/Persistent');
+import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
+
+interface FlatpickrInputElement extends HTMLInputElement {
+  _flatpickr: any;
+}
 
 /**
  * Module: TYPO3/CMS/Backend/DateTimePicker
@@ -22,8 +28,7 @@ import PersistentStorage = require('./Storage/Persistent');
  */
 class DateTimePicker {
   private fieldSelector: string = '.t3js-datetimepicker';
-  private format: string = (opener != null && typeof opener.top.TYPO3 !== 'undefined' ? opener.top : top)
-    .TYPO3.settings.DateTimePicker.DateFormat;
+  private format: string = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat;
 
   /**
    * Format a given date for the hidden FormEngine field
@@ -43,7 +48,7 @@ class DateTimePicker {
   }
 
   constructor(selector?: string) {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initialize(selector);
     });
   }
@@ -53,128 +58,192 @@ class DateTimePicker {
    * note: this function can be called multiple times (e.g. after AJAX requests) because it only
    * applies to fields which haven't been used yet.
    */
-  public initialize(selector?: string): void {
-    // fetch the date time fields that haven't been initialized yet
-    const $dateTimeFields = $(selector || this.fieldSelector).filter((index: number, element: HTMLElement): boolean => {
-      return typeof $(element).data('DateTimePicker') === 'undefined';
-    });
+  public initialize(element?: string | HTMLElement): void {
+    let dateTimePickers;
+    if (element instanceof HTMLElement) {
+      if (element.dataset.datepickerInitialized !== 'undefined') {
+        return;
+      }
 
-    if ($dateTimeFields.length > 0) {
-      require(['twbs/bootstrap-datetimepicker'], (): void => {
-        let userLocale = PersistentStorage.get('lang');
-        // Fix our made up locale "ch"
-        if (userLocale === 'ch') {
-          userLocale = 'zh-cn';
-        }
-        const setLocale = userLocale ? moment.locale(userLocale) : '';
-
-        // initialize the datepicker on each selected element
-        $dateTimeFields.each((index: number, element: HTMLElement): void => {
-          this.initializeField($(element), setLocale);
-        });
-
-        $dateTimeFields.on('blur', (e: JQueryEventObject): void => {
-          const $element = $(e.currentTarget);
-          const $hiddenField = $element.parent().parent().find('input[type="hidden"]');
-
-          if ($element.val() === '') {
-            $hiddenField.val('');
-          } else {
-            const type = $element.data('dateType');
-            const format = $element.data('DateTimePicker').format();
-            const date = moment.utc($element.val(), format);
-            if (date.isValid()) {
-              $hiddenField.val(DateTimePicker.formatDateForHiddenField(date, type));
-            } else {
-              $element.val(DateTimePicker.formatDateForHiddenField(moment.utc($hiddenField.val()), type));
-            }
-          }
-        });
-
-        // on datepicker change, write the selected date with the timezone offset to the hidden field
-        $dateTimeFields.on('dp.change', (e: any): void => {
-          const $element = $(e.currentTarget);
-          const $hiddenField = $element.parent().parent().find('input[type=hidden]');
-          const type = $element.data('dateType');
-          let value = '';
-
-          if ($element.val() !== '') {
-            value = DateTimePicker.formatDateForHiddenField(e.date.utc(), type);
-          }
-          $hiddenField.val(value);
-
-          document.dispatchEvent(new CustomEvent('formengine.dp.change',  {
-            detail: {
-              element: $element,
-            }
-          }));
-        });
+      dateTimePickers = [element];
+    } else {
+      console.warn('Initializing all date pickers globally has been marked as deprecated. Please pass a specific element.');
+      dateTimePickers = Array.from(document.querySelectorAll(element as string || this.fieldSelector)).filter((inputElement: HTMLInputElement): boolean => {
+        return typeof inputElement.dataset.datepickerInitialized === 'undefined';
       });
     }
+
+    if (dateTimePickers.length === 0) {
+      return;
+    }
+
+    let userLocale = PersistentStorage.get('lang');
+    if (userLocale === '') {
+      userLocale = 'default';
+    } else if (userLocale === 'ch') {
+      // Fix our made up locale "ch"
+      userLocale = 'zh';
+    }
+
+    dateTimePickers.forEach((inputElement: HTMLInputElement): void => {
+      inputElement.dataset.datepickerInitialized = '1';
+      require(['flatpickr/locales'], (): void => {
+        this.initializeField(inputElement, userLocale);
+      });
+    });
   }
 
   /**
    * Initialize a single field
    *
-   * @param {JQuery} $element
+   * @param {HTMLInputElement} inputElement
    * @param {string} locale
    */
-  private initializeField($element: JQuery, locale: string): void {
+  private initializeField(inputElement: HTMLInputElement, locale: string): void {
+    const scrollEvent = this.getScrollEvent();
+    const options = this.getDateOptions(inputElement);
+    options.locale = locale;
+    options.onOpen = [
+      (): void => {
+        scrollEvent.bindTo(document.querySelector('.t3js-module-body'))
+      }
+    ];
+    options.onClose = (): void => {
+      scrollEvent.release();
+    };
+
+    // initialize the date time picker on this element
+    const dateTimePicker = flatpickr(inputElement, options);
+
+    inputElement.addEventListener('input', (): void => {
+      // Update selected date in picker
+      const value = dateTimePicker._input.value
+      const parsedDate = dateTimePicker.parseDate(value)
+      const formattedDate = dateTimePicker.formatDate(parsedDate, dateTimePicker.config.dateFormat)
+
+      if (value === formattedDate) {
+        dateTimePicker.setDate(value);
+      }
+    });
+
+    inputElement.addEventListener('change', (e: Event): void => {
+      e.stopImmediatePropagation();
+
+      const target = (e.target as FlatpickrInputElement);
+      const hiddenField = inputElement.parentElement.parentElement.querySelector('input[type="hidden"]') as HTMLInputElement;
+
+      if (target.value !== '') {
+        const type = target.dataset.dateType;
+        const date = moment.utc(target.value, target._flatpickr.config.dateFormat);
+        if (date.isValid()) {
+          hiddenField.value = DateTimePicker.formatDateForHiddenField(date, type);
+        } else {
+          target.value = DateTimePicker.formatDateForHiddenField(moment.utc(hiddenField.value), type);
+        }
+      } else {
+        hiddenField.value = '';
+      }
+
+      target.dispatchEvent(new Event('formengine.dp.change'));
+    });
+  }
+
+  /**
+   * Due to some whack CSS the scrollPosition of the document stays 0 which renders a stuck date time picker.
+   * Because of this the position is recalculated on scrolling `.t3js-module-body`.
+   *
+   * @return {ThrottleEvent}
+   */
+  private getScrollEvent(): ThrottleEvent {
+    return new ThrottleEvent('scroll', (): void => {
+      const activeFlatpickrElement = document.querySelector('.flatpickr-input.active') as FlatpickrInputElement;
+      if (activeFlatpickrElement === null) {
+        return;
+      }
+
+      const bounds = activeFlatpickrElement.getBoundingClientRect();
+      const additionalOffset = 2;
+      const calendarHeight = activeFlatpickrElement._flatpickr.calendarContainer.offsetHeight;
+      const distanceFromBottom = window.innerHeight - bounds.bottom
+      const showOnTop = distanceFromBottom < calendarHeight && bounds.top > calendarHeight;
+
+      let newPosition;
+      let arrowClass;
+      if (showOnTop) {
+        newPosition = bounds.y - calendarHeight - additionalOffset;
+        arrowClass = 'arrowBottom';
+      } else {
+        newPosition = bounds.y + bounds.height + additionalOffset;
+        arrowClass = 'arrowTop';
+      }
+
+      activeFlatpickrElement._flatpickr.calendarContainer.style.top = newPosition + 'px';
+      activeFlatpickrElement._flatpickr.calendarContainer.classList.remove('arrowBottom', 'arrowTop');
+      activeFlatpickrElement._flatpickr.calendarContainer.classList.add(arrowClass);
+    }, 15);
+  }
+
+  /**
+   * Initialize a single field
+   *
+   * @param {HTMLInputElement} inputElement
+   */
+  private getDateOptions(inputElement: HTMLInputElement): { [key: string]: any } {
     const format = this.format;
-    const type = $element.data('dateType');
+    const type = inputElement.dataset.dateType;
     const options = {
-      calendarWeeks: true,
-      format: '',
-      locale: '',
-      sideBySide: true,
-      showTodayButton: true,
-      toolbarPlacement: 'bottom',
-      icons: {
-        time: 'fa fa-clock-o',
-        date: 'fa fa-calendar',
-        up: 'fa fa-chevron-up',
-        down: 'fa fa-chevron-down',
-        previous: 'fa fa-chevron-left',
-        next: 'fa fa-chevron-right',
-        today: 'fa fa-calendar-o',
-        clear: 'fa fa-trash',
+      allowInput: true,
+      dateFormat: '',
+      defaultDate: inputElement.value,
+      enableSeconds: false,
+      enableTime: false,
+      formatDate: (date: Date, format: string) => {
+        return moment(date).format(format);
       },
+      parseDate: (datestr: string, format: string): Date => {
+        return moment(datestr, format, true).toDate();
+      },
+      maxDate: '',
+      minDate: '',
+      minuteIncrement: 1,
+      noCalendar: false,
+      weekNumbers: true,
     };
 
     // set options based on type
     switch (type) {
       case 'datetime':
-        options.format = format[1];
+        options.dateFormat = format[1];
+        options.enableTime = true;
         break;
       case 'date':
-        options.format = format[0];
+        options.dateFormat = format[0];
         break;
       case 'time':
-        options.format = 'HH:mm';
+        options.dateFormat = 'HH:mm';
+        options.enableTime = true;
+        options.noCalendar = true;
         break;
       case 'timesec':
-        options.format = 'HH:mm:ss';
+        options.dateFormat = 'HH:mm:ss';
+        options.enableSeconds = true;
+        options.enableTime = true;
+        options.noCalendar = true;
         break;
       case 'year':
-        options.format = 'YYYY';
+        options.dateFormat = 'Y';
         break;
       default:
     }
 
-    // datepicker expects the min and max dates to be formatted with options.format but unix timestamp given
-    if ($element.data('dateMindate')) {
-      $element.data('dateMindate', moment.unix($element.data('dateMindate')).format(options.format));
+    if (inputElement.dataset.dateMindate !== 'undefined') {
+      options.minDate = inputElement.dataset.dateMindate;
     }
-    if ($element.data('dateMaxdate')) {
-      $element.data('dateMaxdate', moment.unix($element.data('dateMaxdate')).format(options.format));
-    }
-
-    if (locale) {
-      options.locale = locale;
+    if (inputElement.dataset.dateMaxdate !== 'undefined') {
+      options.maxDate = inputElement.dataset.dateMaxdate;
     }
 
-    // initialize the date time picker on this element
-    $element.datetimepicker(options);
+    return options;
   }
 }
 

@@ -85,14 +85,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '2016-02-29T00:00:00+00:00',
                 'comment' => 'inputdatetime_2 dbType=date eval=date Check valid leap year input',
             ],
-            [
-                'label' => 'inputdatetime_2',
-                'inputValue' => '29-02-2015',
-                'expectedValue' => '01-03-2015',
-                'expectedInternalValue' => '2015-03-01T00:00:00Z',
-                'expectedValueAfterSave' => '2015-03-01T00:00:00+00:00',
-                'comment' => 'inputdatetime_2 dbType=date eval=date Check invalid leap year transformation',
-            ],
         ];
     }
 
@@ -123,27 +115,11 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
             ],
             [
                 'label' => 'inputdatetime_3',
-                'inputValue' => '05:23 13-13-2016',
-                'expectedValue' => '05:23 13-01-2017',
-                'expectedInternalValue' => '2017-01-13T05:23:00Z',
-                'expectedValueAfterSave' => '2017-01-13T05:23:00+00:00',
-                'comment' => 'inputdatetime_3 eval=datetime month transformation',
-            ],
-            [
-                'label' => 'inputdatetime_3',
                 'inputValue' => '05:23 29-02-2016',
                 'expectedValue' => '05:23 29-02-2016',
                 'expectedInternalValue' => '2016-02-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_3 eval=datetime Check valid leap year input',
-            ],
-            [
-                'label' => 'inputdatetime_3',
-                'inputValue' => '05:23 29-02-2015',
-                'expectedValue' => '05:23 01-03-2015',
-                'expectedInternalValue' => '2015-03-01T05:23:00Z',
-                'expectedValueAfterSave' => '2015-03-01T05:23:00+00:00',
-                'comment' => 'inputdatetime_3 eval=datetime Check invalid leap year transformation',
             ],
         ];
     }
@@ -172,38 +148,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedInternalValue' => '1970-01-01T13:30:00Z',
                 'expectedValueAfterSave' => '1970-01-01T13:30:00+00:00',
                 'comment' => 'inputdatetime_5 eval=time time input',
-            ],
-            [
-                'label' => 'inputdatetime_5',
-                'inputValue' => '123',
-                'expectedValue' => '12:03',
-                'expectedInternalValue' => '1970-01-01T12:03:00Z',
-                'expectedValueAfterSave' => '1970-01-01T12:03:00+00:00',
-                'comment' => 'inputdatetime_5 eval=time seconds input',
-            ],
-            [
-                'label' => 'inputdatetime_5',
-                'inputValue' => '12345',
-                'expectedValue' => '12:34',
-                'expectedInternalValue' => '1970-01-01T12:34:00Z',
-                'expectedValueAfterSave' => '1970-01-01T12:34:00+00:00',
-                'comment' => 'inputdatetime_5 eval=time overflow',
-            ],
-            [
-                'label' => 'inputdatetime_5',
-                'inputValue' => '12:04+5',
-                'expectedValue' => '12:09',
-                'expectedInternalValue' => '1970-01-01T12:09:00Z',
-                'expectedValueAfterSave' => '1970-01-01T12:09:00+00:00',
-                'comment' => 'inputdatetime_5 eval=time addition calculation',
-            ],
-            [
-                'label' => 'inputdatetime_5',
-                'inputValue' => '12:09-3',
-                'expectedValue' => '12:06',
-                'expectedInternalValue' => '1970-01-01T12:06:00Z',
-                'expectedValueAfterSave' => '1970-01-01T12:06:00+00:00',
-                'comment' => 'inputdatetime_5 eval=time subtraction calculation',
             ],
         ];
     }
@@ -236,27 +180,11 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                     ],
                     [
                         'label' => 'inputdatetime_4',
-                        'inputValue' => '05:23 13-13-2016',
-                        'expectedValue' => '05:23 13-01-2017',
-                        'expectedInternalValue' => '2017-01-13T05:23:00Z',
-                        'expectedValueAfterSave' => '2017-01-13T05:23:00+00:00',
-                        'comment' => 'inputdatetime_4 dbType=datetime eval=datetime next month',
-                    ],
-                    [
-                        'label' => 'inputdatetime_4',
                         'inputValue' => '05:23 29-02-2016',
                         'expectedValue' => '05:23 29-02-2016',
                         'expectedInternalValue' => '2016-02-29T05:23:00Z',
                         'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                         'comment' => 'inputdatetime_4 dbType=datetime eval=datetime Check valid leap year input',
-                    ],
-                    [
-                        'label' => 'inputdatetime_4',
-                        'inputValue' => '05:23 29-02-2015',
-                        'expectedValue' => '05:23 01-03-2015',
-                        'expectedInternalValue' => '2015-03-01T05:23:00Z',
-                        'expectedValueAfterSave' => '2015-03-01T05:23:00+00:00',
-                        'comment' => 'inputdatetime_4 dbType=datetime eval=datetime Check invalid leap year transformation',
                     ],
                     [
                         'label' => 'inputdatetime_6',
@@ -265,22 +193,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                         'expectedInternalValue' => '1970-01-01T13:30:00Z',
                         'expectedValueAfterSave' => '1970-01-01T13:30:00+00:00',
                         'comment' => 'inputdatetime_6 eval=timesec as time',
-                    ],
-                    [
-                        'label' => 'inputdatetime_6',
-                        'inputValue' => '12345',
-                        'expectedValue' => '12:34:05',
-                        'expectedInternalValue' => '1970-01-01T12:34:05Z',
-                        'expectedValueAfterSave' => '1970-01-01T12:34:05+00:00',
-                        'comment' => 'inputdatetime_6 eval=timesec as timestamp',
-                    ],
-                    [
-                        'label' => 'inputdatetime_6',
-                        'inputValue' => '12:04:04+5',
-                        'expectedValue' => '12:09:04',
-                        'expectedInternalValue' => '1970-01-01T12:09:04Z',
-                        'expectedValueAfterSave' => '1970-01-01T12:09:04+00:00',
-                        'comment' => 'inputdatetime_6 eval=timesec addition input',
                     ],
         ];
     }

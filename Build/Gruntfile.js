@@ -91,7 +91,6 @@ module.exports = function (grunt) {
         includePaths: [
           'node_modules/bootstrap-sass/assets/stylesheets',
           'node_modules/font-awesome/scss',
-          'node_modules/eonasdan-bootstrap-datetimepicker/src/sass',
           'node_modules/tagsort'
         ]
       },
@@ -514,12 +513,13 @@ module.exports = function (grunt) {
           'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
           'cropper.min.js': 'cropperjs/dist/cropper.min.js',
           'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
-          'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
           'autosize.js': 'autosize/dist/autosize.min.js',
           /* disabled for removed sourcemap reference in file
           'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
           */
           'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
+          'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.min.js',
+          'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
           /* disabled until autocomplete formatGroup is fixed to pass on the index too
@@ -565,6 +565,7 @@ module.exports = function (grunt) {
       thirdparty: {
         files: {
           "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],
@@ -575,8 +576,7 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
-          "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.node_modules %>chosen-js/chosen.jquery.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js": ["<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js"]
+          "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.node_modules %>chosen-js/chosen.jquery.js"]
         }
       },
       t3editor: {

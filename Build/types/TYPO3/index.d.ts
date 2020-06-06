@@ -134,6 +134,8 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
 
 declare module 'muuri';
 declare module 'cm/lib/codemirror';
+declare module 'flatpickr/flatpickr.min';
+declare module 'moment';
 declare module 'Sortable';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';

@@ -562,8 +562,8 @@ define(['jquery',
   FormEngine.reinitialize = function() {
     // Apply "close" button to all input / datetime fields
     const clearables = Array.from(document.querySelectorAll('.t3js-clearable')).filter(inputElement => {
-      // Filter input fields being a date time picker and a color picker
-      return !inputElement.classList.contains('t3js-datetimepicker') && !inputElement.classList.contains('t3js-color-picker');
+      // Filter input fields being a color picker
+      return !inputElement.classList.contains('t3js-color-picker');
     });
     if (clearables.length > 0) {
       require(['TYPO3/CMS/Backend/Input/Clearable'], function() {

@@ -162,10 +162,13 @@ define([
             return '';
           }
           theTime = new Date(parsedInt * 1000);
+          const day = (theTime.getUTCDate()).toString(10).padStart(2, '0');
+          const month = (theTime.getUTCMonth() + 1).toString(10).padStart(2, '0');
+          const year = this.getYear(theTime);
           if (FormEngineValidation.USmode) {
-            theString = (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate() + '-' + this.getYear(theTime);
+            theString = month + '-' + day + '-' + year;
           } else {
-            theString = theTime.getUTCDate() + '-' + (theTime.getUTCMonth() + 1) + '-' + this.getYear(theTime);
+            theString = day + '-' + month + '-' + year;
           }
         }
         break;
@@ -465,26 +468,26 @@ define([
       case 'datetime':
         if (value !== '') {
           theCmd = value.substr(0, 1);
-          returnValue = FormEngineValidation.parseDateTime(value, theCmd);
+          returnValue = FormEngineValidation.parseDateTime(value);
         }
         break;
       case 'date':
         if (value !== '') {
           theCmd = value.substr(0, 1);
-          returnValue = FormEngineValidation.parseDate(value, theCmd);
+          returnValue = FormEngineValidation.parseDate(value);
         }
         break;
       case 'time':
       case 'timesec':
         if (value !== '') {
           theCmd = value.substr(0, 1);
-          returnValue = FormEngineValidation.parseTime(value, theCmd, command);
+          returnValue = FormEngineValidation.parseTime(value, command);
         }
         break;
       case 'year':
         if (value !== '') {
           theCmd = value.substr(0, 1);
-          returnValue = FormEngineValidation.parseYear(value, theCmd);
+          returnValue = FormEngineValidation.parseYear(value);
         }
         break;
       case 'null':
@@ -646,42 +649,18 @@ define([
    * Parse datetime value
    *
    * @param {String} value
-   * @param {String} command
    * @returns {*}
    */
-  FormEngineValidation.parseDateTime = function(value, command) {
-    var today = new Date();
-    var values = FormEngineValidation.split(value);
-    var add = 0;
-    switch (command) {
-      case 'd':
-      case 't':
-      case 'n':
-        FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      case '+':
-      case '-':
-        if (FormEngineValidation.lastTime === 0) {
-          FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
-        }
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      default:
-        var index = value.indexOf(' ');
-        if (index !== -1) {
-          var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
-          FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0, index), value.substr(0, 1), 'time');
-        } else {
-          // only date, no time
-          FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
-        }
+  FormEngineValidation.parseDateTime = function(value) {
+      var index = value.indexOf(' ');
+      if (index !== -1) {
+        var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length));
+        FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0, index), 'time');
+      } else {
+        // only date, no time
+        FormEngineValidation.lastTime = FormEngineValidation.parseDate(value);
+
     }
-    FormEngineValidation.lastTime += add * 24 * 60 * 60;
     return FormEngineValidation.lastTime;
   };
 
@@ -689,53 +668,27 @@ define([
    * Parse date value
    *
    * @param {String} value
-   * @param {String} command
    * @returns {*}
    */
-  FormEngineValidation.parseDate = function(value, command) {
+  FormEngineValidation.parseDate = function(value) {
     var today = new Date();
     var values = FormEngineValidation.split(value);
-    var add = 0;
-    switch (command) {
-      case 'd':
-      case 't':
-      case 'n':
-        FormEngineValidation.lastDate = FormEngineValidation.getTimestamp(today);
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      case '+':
-      case '-':
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      default:
-        var index = 4;
-        if (values.valPol[index]) {
-          add = FormEngineValidation.pol(values.valPol[index], FormEngineValidation.parseInt(values.values[index]));
-        }
-        if (values.values[1] && values.values[1].length > 2) {
-          if (values.valPol[2]) {
-            add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
-          }
-          var temp = values.values[1];
-          values = FormEngineValidation.splitSingle(temp);
-        }
 
-        var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
-        var usMode = FormEngineValidation.USmode ? 1 : 2;
-        var month = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCMonth() + 1;
-        usMode = FormEngineValidation.USmode ? 2 : 1;
-        var day = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCDate();
-
-
-        var theTime = moment.utc();
-        theTime.year(parseInt(year)).month(parseInt(month) - 1).date(parseInt(day)).hour(0).minute(0).second(0);
-        FormEngineValidation.lastDate = theTime.unix();
+    if (values.values[1] && values.values[1].length > 2) {
+      var temp = values.values[1];
+      values = FormEngineValidation.splitSingle(temp);
     }
-    FormEngineValidation.lastDate += add * 24 * 60 * 60;
+
+    var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
+    var usMode = FormEngineValidation.USmode ? 1 : 2;
+    var month = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCMonth() + 1;
+    usMode = FormEngineValidation.USmode ? 2 : 1;
+
+    var day = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCDate();
+    var theTime = moment.utc();
+    theTime.year(parseInt(year)).month(parseInt(month) - 1).date(parseInt(day)).hour(0).minute(0).second(0);
+    FormEngineValidation.lastDate = theTime.unix();
+
     return FormEngineValidation.lastDate;
   };
 
@@ -743,63 +696,25 @@ define([
    * Parse time value
    *
    * @param {String} value
-   * @param {String} command
    * @param {String} type
    * @returns {*}
    */
-  FormEngineValidation.parseTime = function(value, command, type) {
+  FormEngineValidation.parseTime = function(value, type) {
     var today = new Date();
     var values = FormEngineValidation.split(value);
-    var add = 0;
-    switch (command) {
-      case 'd':
-      case 't':
-      case 'n':
-        FormEngineValidation.lastTime = FormEngineValidation.getTimeSecs(today);
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      case '+':
-      case '-':
-        if (FormEngineValidation.lastTime == 0) {
-          FormEngineValidation.lastTime = FormEngineValidation.getTimeSecs(today);
-        }
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      default:
-        var index = (type === 'timesec') ? 4 : 3;
-        if (values.valPol[index]) {
-          add = FormEngineValidation.pol(values.valPol[index], FormEngineValidation.parseInt(values.values[index]));
-        }
-        if (values.values[1] && values.values[1].length > 2) {
-          if (values.valPol[2]) {
-            add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
-          }
-          var temp = values.values[1];
-          values = FormEngineValidation.splitSingle(temp);
-        }
-        var sec = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : today.getUTCSeconds();
-        if (sec > 59) {
-          sec = 59;
-        }
-        var min = (values.values[2]) ? FormEngineValidation.parseInt(values.values[2]) : today.getUTCMinutes();
-        if (min > 59) {
-          min = 59;
-        }
-        var hour = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : today.getUTCHours();
-        if (hour >= 24) {
-          hour = 0;
-        }
 
-        var theTime = moment.utc();
-        theTime.year(1970).month(0).date(1).hour(hour).minute(min).second(type === 'timesec' ? sec : 0);
-
-        FormEngineValidation.lastTime = theTime.unix();
+    if (values.values[1] && values.values[1].length > 2) {
+      var temp = values.values[1];
+      values = FormEngineValidation.splitSingle(temp);
     }
-    FormEngineValidation.lastTime += add * 60;
+
+    var sec = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : today.getUTCSeconds();
+    var min = (values.values[2]) ? FormEngineValidation.parseInt(values.values[2]) : today.getUTCMinutes();
+    var hour = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : today.getUTCHours();
+    var theTime = moment.utc();
+    theTime.year(1970).month(0).date(1).hour(hour).minute(min).second(type === 'timesec' ? sec : 0);
+
+    FormEngineValidation.lastTime = theTime.unix();
     if (FormEngineValidation.lastTime < 0) {
       FormEngineValidation.lastTime += 24 * 60 * 60;
     }
@@ -810,36 +725,13 @@ define([
    * Parse year value
    *
    * @param {String} value
-   * @param {String} command
    * @returns {*}
    */
-  FormEngineValidation.parseYear = function(value, command) {
+  FormEngineValidation.parseYear = function(value) {
     var today = new Date();
     var values = FormEngineValidation.split(value);
-    var add = 0;
-    switch (command) {
-      case 'd':
-      case 't':
-      case 'n':
-        FormEngineValidation.lastYear = FormEngineValidation.getYear(today);
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      case '+':
-      case '-':
-        if (values.valPol[1]) {
-          add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
-        }
-        break;
-      default:
-        if (values.valPol[2]) {
-          add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
-        }
-        var year = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
-        FormEngineValidation.lastYear = year;
-    }
-    FormEngineValidation.lastYear += add;
+
+    FormEngineValidation.lastYear = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
     return FormEngineValidation.lastYear;
   };
 

@@ -16,11 +16,14 @@ import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class InputDateTimeElement {
+  private element: HTMLInputElement = null;
+
   constructor(elementId: string) {
     DocumentService.ready().then((): void => {
+      this.element = document.getElementById(elementId) as HTMLInputElement;
       this.registerEventHandler();
       require(['../../DateTimePicker'], (DateTimePicker: any): void => {
-        DateTimePicker.initialize('#' + elementId)
+        DateTimePicker.initialize(this.element)
       });
     });
   }
