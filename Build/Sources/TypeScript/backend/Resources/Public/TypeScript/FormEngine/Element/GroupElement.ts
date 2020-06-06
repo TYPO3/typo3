@@ -12,7 +12,7 @@
  */
 
 import {AbstractSortableSelectItems} from './AbstractSortableSelectItems';
-import * as $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import FormEngineSuggest = require('../../FormEngineSuggest');
 
 class GroupElement extends AbstractSortableSelectItems {
@@ -21,7 +21,7 @@ class GroupElement extends AbstractSortableSelectItems {
   constructor(elementId: string) {
     super();
 
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.element = <HTMLSelectElement>document.getElementById(elementId);
       this.registerEventHandler();
       this.registerSuggest();

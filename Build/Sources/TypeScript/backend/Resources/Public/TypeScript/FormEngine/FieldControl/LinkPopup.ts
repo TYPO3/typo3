@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import Modal = require('../../Modal');
 
@@ -22,7 +22,7 @@ class LinkPopup {
   private controlElement: HTMLElement = null;
 
   constructor(controlElementId: string) {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.controlElement = <HTMLElement>document.querySelector(controlElementId);
       this.controlElement.addEventListener('click', this.handleControlClick);
     });

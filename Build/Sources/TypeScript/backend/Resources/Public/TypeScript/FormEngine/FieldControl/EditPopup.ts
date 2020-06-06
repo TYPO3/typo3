@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 /**
  * Handles the "Edit popup" field control that renders a new FormEngine instance
@@ -21,7 +21,7 @@ class EditPopup {
   private assignedFormField: HTMLSelectElement = null;
 
   constructor(controlElementId: string) {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.controlElement = <HTMLAnchorElement>document.querySelector(controlElementId);
       this.assignedFormField = <HTMLSelectElement>document.querySelector(
         'select[data-formengine-input-name="' + this.controlElement.dataset.element + '"]',

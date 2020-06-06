@@ -13,13 +13,13 @@
 
 import {Resizable} from './Modifier/Resizable';
 import {Tabbable} from './Modifier/Tabbable';
-import * as $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 class TextTableElement {
   private element: HTMLTextAreaElement = null;
 
   constructor(elementId: string) {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.element = <HTMLTextAreaElement>document.getElementById(elementId);
 
       Resizable.enable(this.element);
