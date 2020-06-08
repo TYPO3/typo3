@@ -51,23 +51,6 @@ class BasicFileUtility
      */
     public $uniquePrecision = 6;
 
-    /**********************************
-     *
-     * Checking functions
-     *
-     **********************************/
-
-    /**
-     * Sets the file permissions, used in DataHandler e.g.
-     *
-     * @param string $allowedFilePermissions
-     * @param string $deniedFilePermissions
-     */
-    public function setFileExtensionPermissions($allowedFilePermissions, $deniedFilePermissions)
-    {
-        trigger_error('BasicFileUtility->setFileExtensionPermissions() serves no purpose anymore. Any usages can be removed, as the FAL API is handling file permissions.', E_USER_DEPRECATED);
-    }
-
     /**
      * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
      *
@@ -138,12 +121,6 @@ class BasicFileUtility
 
         return null;
     }
-
-    /*********************
-     *
-     * Cleaning functions
-     *
-     *********************/
 
     /**
      * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'

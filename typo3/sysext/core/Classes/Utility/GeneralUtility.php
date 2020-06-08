@@ -3060,19 +3060,12 @@ class GeneralUtility
      *
      * @param string $funcName Function/Method reference or Closure.
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
-     * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
+     * @param object|null $ref Reference to be passed along (typically "$this" - being a reference to the calling object)
      * @return mixed Content from method/function call
      * @throws \InvalidArgumentException
      */
-    public static function callUserFunction($funcName, &$params, &$ref = null)
+    public static function callUserFunction($funcName, &$params, ?object $ref = null)
     {
-        if (!($ref === null || is_object($ref))) {
-            trigger_error(
-                sprintf('Argument "$ref" is of type "%s" which is deprecated since TYPO3 10.3. "$ref" must be of type "object" or null as of version 11.0', gettype($ref)),
-                E_USER_DEPRECATED
-            );
-        }
-
         // Check if we're using a closure and invoke it directly.
         if (is_object($funcName) && is_a($funcName, \Closure::class)) {
             return call_user_func_array($funcName, [&$params, &$ref]);
@@ -3090,19 +3083,16 @@ class GeneralUtility
                     // Call method:
                     $content = call_user_func_array([&$classObj, $parts[1]], [&$params, &$ref]);
                 } else {
-                    $errorMsg = 'No method name \'' . $parts[1] . '\' in class ' . $parts[0];
-                    throw new \InvalidArgumentException($errorMsg, 1294585865);
+                    throw new \InvalidArgumentException('No method name \'' . $parts[1] . '\' in class ' . $parts[0], 1294585865);
                 }
             } else {
-                $errorMsg = 'No class named ' . $parts[0];
-                throw new \InvalidArgumentException($errorMsg, 1294585866);
+                throw new \InvalidArgumentException('No class named ' . $parts[0], 1294585866);
             }
         } elseif (function_exists($funcName)) {
             // It's a function
             $content = call_user_func_array($funcName, [&$params, &$ref]);
         } else {
-            $errorMsg = 'No function named: ' . $funcName;
-            throw new \InvalidArgumentException($errorMsg, 1294585867);
+            throw new \InvalidArgumentException('No function named: ' . $funcName, 1294585867);
         }
         return $content;
     }

@@ -1108,19 +1108,15 @@ class ExtensionManagementUtility
      *
      * @param string $serviceType Service type
      * @param string $serviceSubType Service sub type
-     * @param mixed $excludeServiceKeys Service keys that should be excluded in the search for a service. Array or comma list.
+     * @param array $excludeServiceKeys Service keys that should be excluded in the search for a service.
      * @return mixed Service info array if a service was found, FALSE otherwise
      */
-    public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = [])
+    public static function findService($serviceType, $serviceSubType = '', array $excludeServiceKeys = [])
     {
         $serviceKey = false;
         $serviceInfo = false;
         $priority = 0;
         $quality = 0;
-        if (!is_array($excludeServiceKeys)) {
-            trigger_error('ExtensionManagementUtility::findService() expects the third method argument to be an array instead of a comma-separated string. TYPO3 v11.0 will only support arrays as third argument for $excludeServiceKeys', E_USER_DEPRECATED);
-            $excludeServiceKeys = GeneralUtility::trimExplode(',', $excludeServiceKeys, true);
-        }
         if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {
             foreach ($GLOBALS['T3_SERVICES'][$serviceType] as $key => $info) {
                 if (in_array($key, $excludeServiceKeys)) {

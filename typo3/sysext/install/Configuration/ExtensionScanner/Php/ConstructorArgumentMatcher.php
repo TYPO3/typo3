@@ -35,6 +35,7 @@ return [
             'restFiles' => [
                 'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
                 'Deprecation-87305-UseConstructorInjectionInDataMapper.rst',
+                'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
             ],
         ]
     ],

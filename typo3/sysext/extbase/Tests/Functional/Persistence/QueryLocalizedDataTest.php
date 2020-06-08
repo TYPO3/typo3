@@ -1200,7 +1200,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
     }
 
     /**
-     * This is a copy of the ObjectAccess::getPropertyPath, but with third argument of getPropertyInternal set as true,
+     * This is a copy of the ObjectAccess::getPropertyPath, but with the fallback
      * to access protected properties, and iterator_to_array added.
      *
      * @param mixed $subject Object or array to get the property path from
@@ -1213,13 +1213,16 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $propertyPathSegments = explode('.', $propertyPath);
         try {
             foreach ($propertyPathSegments as $pathSegment) {
-                $subject = ObjectAccess::getPropertyInternal($subject, $pathSegment, true);
+                $subject = ObjectAccess::getPropertyInternal($subject, $pathSegment);
                 if ($subject instanceof \SplObjectStorage || $subject instanceof ObjectStorage) {
                     $subject = iterator_to_array(clone $subject, false);
                 }
             }
         } catch (PropertyNotAccessibleException $error) {
-            return null;
+            // Workaround for this test
+            $propertyReflection = new \ReflectionProperty($subject, $pathSegment);
+            $propertyReflection->setAccessible(true);
+            return $propertyReflection->getValue($subject);
         }
         return $subject;
     }

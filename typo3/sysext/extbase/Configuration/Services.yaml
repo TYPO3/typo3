@@ -37,8 +37,6 @@ services:
 
   TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper:
     shared: false
-    arguments:
-      $query: null
 
   cache.extbase:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface

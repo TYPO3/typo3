@@ -78,6 +78,7 @@ The following PHP class methods that have been previously deprecated for v10 hav
 - :php:`\TYPO3\CMS\Core\Resource\Index\FileIndexRepository->findBySearchWordInMetaData`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceFactory->getInstance`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->checkFileAndFolderNameFilters`
+- :php:`\TYPO3\CMS\Core\Utility\BasicFileUtility->setFileExtensionPermissions`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getUseCacheHash`
@@ -125,11 +126,18 @@ The following PHP methods have been additionally deprecated and are a no-op now:
 
 The following methods changed signature according to previous deprecations in v10 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->updateIndex` (argument 2 is now either null or ProgressListenerInterface, not boolean anymore)
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->doesRecordExist` (argument 3 is now an integer)
 - :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->recordInfoWithPermissionCheck` (argument 3 is now an integer)
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->includeLLFile` (arguments 2 and 3 are dropped)
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction` (arguments 3 no expects an object or null)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl` (arguments 2, 3 and 4 are dropped)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` (arguments 3 :php:`$excludeServiceKeys` is now an array)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->__construct` (argument :php:`$query` is removed)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Reflection\ObjectAccess->setProperty` (argument :php:`$forceDirectAccess` is removed)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Reflection\ObjectAccess->getProperty` (argument :php:`$forceDirectAccess` is removed)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Reflection\ObjectAccess->getPropertyInternal` (argument :php:`$forceDirectAccess` is removed)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct`
 
 The following public class properties have been dropped:

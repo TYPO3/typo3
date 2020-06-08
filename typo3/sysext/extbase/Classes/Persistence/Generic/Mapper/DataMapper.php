@@ -97,7 +97,6 @@ class DataMapper
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param QueryInterface|null $query
      */
     public function __construct(
         ReflectionService $reflectionService,
@@ -106,10 +105,8 @@ class DataMapper
         DataMapFactory $dataMapFactory,
         QueryFactoryInterface $queryFactory,
         ObjectManagerInterface $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        ?QueryInterface $query = null
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->query = $query;
         $this->reflectionService = $reflectionService;
         $this->qomFactory = $qomFactory;
         $this->persistenceSession = $persistenceSession;
@@ -117,14 +114,6 @@ class DataMapper
         $this->queryFactory = $queryFactory;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-
-        if ($query !== null) {
-            trigger_error(
-                'Constructor argument $query will be removed in TYPO3 v11.0, use setQuery method instead.',
-                E_USER_DEPRECATED
-            );
-            $this->query = $query;
-        }
     }
 
     /**

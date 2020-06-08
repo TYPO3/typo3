@@ -303,7 +303,9 @@ class DatabaseIntegrityController
             $testOnly = (bool)GeneralUtility::_GP('_check');
             $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
             $refIndexObj->enableRuntimeCache();
-            [, $recordsCheckedString, , $errors] = $refIndexObj->updateIndex($testOnly);
+            $result = $refIndexObj->updateIndex($testOnly);
+            $recordsCheckedString = $result['resultText'];
+            $errors = $result['errors'];
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 !empty($errors) ? implode("\n", $errors) : 'Index Integrity was perfect!',

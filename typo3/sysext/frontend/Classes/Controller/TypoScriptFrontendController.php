@@ -784,7 +784,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             } else {
                 $userGroups = [0, -2];
             }
-            $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user ?: null, $userGroups));
+            $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
             // Fetching the id again, now with the preview settings reset.
             $this->fetch_the_id($request);
         }

@@ -45,7 +45,6 @@ class ObjectAccess
      * Get a property of a given object.
      * Tries to get the property the following ways:
      * - if the target is an array, and has this property, we call it.
-     * - if super cow powers should be used, fetch value through reflection
      * - if public getter method exists, call it.
      * - if the target object is an instance of ArrayAccess, it gets the property
      * on it if it exists.
@@ -54,13 +53,12 @@ class ObjectAccess
      *
      * @param mixed $subject Object or array to get the property from
      * @param string $propertyName name of the property to retrieve
-     * @param bool $forceDirectAccess directly access property using reflection(!)
      *
      * @throws \InvalidArgumentException in case $subject was not an object or $propertyName was not a string
      * @throws Exception\PropertyNotAccessibleException
      * @return mixed Value of the property
      */
-    public static function getProperty($subject, string $propertyName, bool $forceDirectAccess = false)
+    public static function getProperty($subject, string $propertyName)
     {
         if (!is_object($subject) && !is_array($subject)) {
             throw new \InvalidArgumentException(
@@ -68,8 +66,7 @@ class ObjectAccess
                 1237301367
             );
         }
-
-        return self::getPropertyInternal($subject, $propertyName, $forceDirectAccess);
+        return self::getPropertyInternal($subject, $propertyName);
     }
 
     /**
@@ -81,19 +78,14 @@ class ObjectAccess
      *
      * @param mixed $subject Object or array to get the property from
      * @param string $propertyName name of the property to retrieve
-     * @param bool $forceDirectAccess directly access property using reflection(!)
      *
      * @throws Exception\PropertyNotAccessibleException
      * @return mixed Value of the property
      * @internal
      */
-    public static function getPropertyInternal($subject, string $propertyName, bool $forceDirectAccess = false)
+    public static function getPropertyInternal($subject, string $propertyName)
     {
-        if ($forceDirectAccess === true) {
-            trigger_error('Argument $forceDirectAccess will be removed in TYPO3 11.0', E_USER_DEPRECATED);
-        }
-
-        if (!$forceDirectAccess && ($subject instanceof \SplObjectStorage || $subject instanceof ObjectStorage)) {
+        if ($subject instanceof \SplObjectStorage || $subject instanceof ObjectStorage) {
             $subject = iterator_to_array(clone $subject, false);
         }
 
@@ -114,7 +106,7 @@ class ObjectAccess
         }
 
         if (is_object($subject)) {
-            return self::getObjectPropertyValue($subject, $propertyPath, $forceDirectAccess);
+            return self::getObjectPropertyValue($subject, $propertyPath);
         }
 
         if (is_array($subject)) {
@@ -163,18 +155,13 @@ class ObjectAccess
      * @param mixed $subject The target object or array
      * @param string $propertyName Name of the property to set
      * @param mixed $propertyValue Value of the property
-     * @param bool $forceDirectAccess directly access property using reflection(!)
      *
      * @throws \InvalidArgumentException in case $object was not an object or $propertyName was not a string
      * @return bool TRUE if the property could be set, FALSE otherwise
      */
-    public static function setProperty(&$subject, string $propertyName, $propertyValue, bool $forceDirectAccess = false): bool
+    public static function setProperty(&$subject, string $propertyName, $propertyValue): bool
     {
-        if ($forceDirectAccess === true) {
-            trigger_error('Argument $forceDirectAccess will be removed in TYPO3 11.0', E_USER_DEPRECATED);
-        }
-
-        if (is_array($subject) || ($subject instanceof \ArrayAccess && !$forceDirectAccess)) {
+        if (is_array($subject) || $subject instanceof \ArrayAccess) {
             $subject[$propertyName] = $propertyValue;
             return true;
         }
@@ -187,19 +174,6 @@ class ObjectAccess
             $accessor->setValue($subject, $propertyName, $propertyValue);
             return true;
         }
-
-        if ($forceDirectAccess) {
-            if (property_exists($subject, $propertyName)) {
-                $propertyReflection = new \ReflectionProperty($subject, $propertyName);
-                $propertyReflection->setAccessible(true);
-                $propertyReflection->setValue($subject, $propertyValue);
-            } else {
-                $subject->{$propertyName} = $propertyValue;
-            }
-
-            return true;
-        }
-
         return false;
     }
 
@@ -379,12 +353,10 @@ class ObjectAccess
     /**
      * @param object $subject
      * @param PropertyPath $propertyPath
-     * @param bool $forceDirectAccess
      * @return mixed
      * @throws Exception\PropertyNotAccessibleException
-     * @throws \ReflectionException
      */
-    private static function getObjectPropertyValue(object $subject, PropertyPath $propertyPath, bool $forceDirectAccess)
+    private static function getObjectPropertyValue(object $subject, PropertyPath $propertyPath)
     {
         $accessor = self::createAccessor();
 
@@ -392,19 +364,7 @@ class ObjectAccess
             return $accessor->getValue($subject, $propertyPath);
         }
 
-        $propertyName = (string)$propertyPath;
-
-        if (!$forceDirectAccess) {
-            throw new PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1476109666);
-        }
-
-        if (!property_exists($subject, $propertyName)) {
-            throw new PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
-        }
-
-        $propertyReflection = new \ReflectionProperty($subject, $propertyName);
-        $propertyReflection->setAccessible(true);
-        return $propertyReflection->getValue($subject);
+        throw new PropertyNotAccessibleException('The property "' . (string)$propertyPath . '" on the subject does not exist.', 1476109666);
     }
 
     /**

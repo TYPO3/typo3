@@ -1063,29 +1063,14 @@ class ReferenceIndex implements LoggerAwareInterface
      * Updating Index (External API)
      *
      * @param bool $testOnly If set, only a test
-     * @param bool|ProgressListenerInterface|null $cli_echo If set, output CLI status - but can now be of type ProgressListenerInterface, which should be used instead.
+     * @param ProgressListenerInterface|null $progressListener If set, the current progress is added to the listener
      * @return array Header and body status content
      */
-    public function updateIndex($testOnly, $cli_echo = null)
+    public function updateIndex($testOnly, ?ProgressListenerInterface $progressListener = null)
     {
-        $progressListener = null;
-        if ($cli_echo instanceof ProgressListenerInterface) {
-            $progressListener = $cli_echo;
-            $cli_echo = null;
-        }
-        if ($cli_echo !== null) {
-            trigger_error('The second argument of ReferenceIndex->updateIndex() will not work in TYPO3 v11 anymore. Use the ProgressListener to show detailed results', E_USER_DEPRECATED);
-        } else {
-            // default value for now
-            $cli_echo = false;
-        }
         $errors = [];
         $tableNames = [];
         $recCount = 0;
-        $headerContent = $testOnly ? 'Reference Index being TESTED (nothing written, remove the "--check" argument)' : 'Reference Index being Updated';
-        if ($cli_echo) {
-            echo '*******************************************' . LF . $headerContent . LF . '*******************************************' . LF;
-        }
         // Traverse all tables:
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $refIndexConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'])
@@ -1141,9 +1126,6 @@ class ReferenceIndex implements LoggerAwareInterface
                     if ($progressListener) {
                         $progressListener->log($error, LogLevel::WARNING);
                     }
-                    if ($cli_echo) {
-                        echo $error . LF;
-                    }
                 }
             }
             if ($progressListener) {
@@ -1192,9 +1174,6 @@ class ReferenceIndex implements LoggerAwareInterface
                 if ($progressListener) {
                     $progressListener->log($error, LogLevel::WARNING);
                 }
-                if ($cli_echo) {
-                    echo $error . LF;
-                }
                 if (!$testOnly) {
                     $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
                     $queryBuilder->delete('sys_refindex')
@@ -1218,15 +1197,12 @@ class ReferenceIndex implements LoggerAwareInterface
             if ($progressListener) {
                 $progressListener->log($error, LogLevel::WARNING);
             }
-            if ($cli_echo) {
-                echo $error . LF;
-            }
             if (!$testOnly) {
                 $this->removeReferenceIndexDataFromUnusedDatabaseTables($tableNames);
             }
         }
         $errorCount = count($errors);
-        $recordsCheckedString = $recCount . ' records from ' . count($tableNames) . ' tables were checked/updated.' . LF;
+        $recordsCheckedString = $recCount . ' records from ' . count($tableNames) . ' tables were checked/updated.';
         if ($progressListener) {
             if ($errorCount) {
                 $progressListener->log($recordsCheckedString . 'Updates: ' . $errorCount, LogLevel::WARNING);
@@ -1234,14 +1210,11 @@ class ReferenceIndex implements LoggerAwareInterface
                 $progressListener->log($recordsCheckedString . 'Index Integrity was perfect!', LogLevel::INFO);
             }
         }
-        if ($cli_echo) {
-            echo $recordsCheckedString . ($errorCount ? 'Updates: ' . $errorCount : 'Index Integrity was perfect!') . LF;
-        }
         if (!$testOnly) {
             $registry = GeneralUtility::makeInstance(Registry::class);
             $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
         }
-        return [$headerContent, trim($recordsCheckedString), $errorCount, $errors];
+        return ['resultText' => trim($recordsCheckedString), 'errors' => $errors];
     }
 
     protected function getAmountOfUnusedTablesInReferenceIndex(array $tableNames): int
