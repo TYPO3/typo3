@@ -64,7 +64,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $hiddenHeaderNote = '';
             // If header layout is set to 'hidden', display an accordant note:
             if ($record['header_layout'] == 100) {
-                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.hidden')) . ']</em>';
+                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6')) . ']</em>';
             }
             $outHeader = $record['date']
                 ? htmlspecialchars($itemLabels['date'] . ' ' . BackendUtility::date($record['date'])) . '<br />'
