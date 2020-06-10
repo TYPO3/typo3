@@ -5,7 +5,7 @@ rules:
 #	- PHPStan\Rules\Arrays\DeadForeachRule
 #	- PHPStan\Rules\Comparison\NumberComparisonOperatorsConstantConditionRule
 	- PHPStan\Rules\DeadCode\NoopRule
-	- PHPStan\Rules\DeadCode\UnreachableStatementRule
+#	- PHPStan\Rules\DeadCode\UnreachableStatementRule
 	- PHPStan\Rules\Exceptions\DeadCatchRule
 #	- PHPStan\Rules\Functions\CallToFunctionStamentWithoutSideEffectsRule
 	- PHPStan\Rules\Methods\CallToMethodStamentWithoutSideEffectsRule

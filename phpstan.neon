@@ -10,6 +10,8 @@ parameters:
   # Set to true during local runs to find unmatched ignored errors. bamboo needs this to be set to false.
   reportUnmatchedIgnoredErrors: false
 
+  scanDirectories:
+    - %currentWorkingDirectory%/typo3/sysext/
   paths:
     - %currentWorkingDirectory%/typo3/sysext/
 
@@ -21,7 +23,7 @@ parameters:
 
   ignoreErrors:
     # ignored errors for level 0
-    - '#Undefined variable: \$_EXTKEY#'
+    - '#Variable \$_EXTKEY might not be defined\.#'
     -
       message: '#Instantiated class Composer\\Util\\Filesystem not found\.#'
       path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Composer/CliEntryPoint.php
