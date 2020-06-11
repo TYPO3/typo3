@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
@@ -29,19 +28,15 @@ class EmConfUtility implements SingletonInterface
      * Returns the $EM_CONF array from an extensions ext_emconf.php file
      *
      * @param string $extensionKey the extension name
-     * @param array $extension Extension information array
+     * @param string $absolutePath path to the ext_emconf.php
      * @return array|bool EMconf array values or false if no ext_emconf.php found.
      */
-    public function includeEmConf(string $extensionKey, array $extension)
+    public function includeEmConf(string $extensionKey, string $absolutePath)
     {
         $_EXTKEY = $extensionKey;
-        if (!empty($extension['packagePath'])) {
-            $path = $extension['packagePath'] . 'ext_emconf.php';
-        } else {
-            $path = Environment::getPublicPath() . '/' . $extension['siteRelPath'] . 'ext_emconf.php';
-        }
+        $path = rtrim($absolutePath, '/') . '/ext_emconf.php';
         $EM_CONF = null;
-        if (file_exists($path)) {
+        if (!empty($absolutePath) && file_exists($path)) {
             include $path;
             if (is_array($EM_CONF[$_EXTKEY])) {
                 return $EM_CONF[$_EXTKEY];

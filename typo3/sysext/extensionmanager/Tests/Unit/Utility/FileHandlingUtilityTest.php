@@ -47,10 +47,8 @@ class FileHandlingUtilityTest extends UnitTestCase
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
-        $relPath = 'typo3temp/var/tests/ext-' . $extKey . '/';
         $this->fakedExtensions[$extKey] = [
-            'siteRelPath' => $relPath,
-            'siteAbsPath' => $absExtPath
+            'packagePath' => $absExtPath
         ];
         if ($extkeyOnly === true) {
             return $extKey;
@@ -297,7 +295,7 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
             ]
         ];
-        $rootPath = ($extDirPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath']);
+        $rootPath = ($extDirPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath']);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_call('writeExtensionFiles', $files, $rootPath);
         self::assertTrue(file_exists($rootPath . 'ChangeLog'));
@@ -359,7 +357,7 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     public function createDirectoriesForExtensionFilesCreatesDirectories()
     {
-        $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath'];
+        $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $directories = [
             'doc/',
             'mod/doc/'
@@ -386,7 +384,7 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'category' => 'Frontend',
             ]
         ];
-        $rootPath = $this->fakedExtensions[$extKey]['siteAbsPath'];
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
         $emConfUtilityMock = $this->getAccessibleMock(EmConfUtility::class, ['constructEmConf']);
         $emConfUtilityMock->expects(self::once())->method('constructEmConf')->with($extensionData)->willReturn(var_export($extensionData['EM_CONF'], true));
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);

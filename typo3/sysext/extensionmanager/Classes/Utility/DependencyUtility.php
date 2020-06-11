@@ -425,7 +425,7 @@ class DependencyUtility implements SingletonInterface
         $this->setAvailableExtensions();
         $extensionData = $this->emConfUtility->includeEmConf(
             $dependency->getIdentifier(),
-            $this->availableExtensions[$dependency->getIdentifier()]
+            $this->availableExtensions[$dependency->getIdentifier()]['packagePath'] ?? ''
         );
         return $dependency->isVersionCompatible($extensionData['version']);
     }

@@ -171,7 +171,7 @@ class ActionController extends AbstractController
     protected function reloadExtensionDataAction($extension)
     {
         $extension = $this->installUtility->enrichExtensionWithDetails($extension, false);
-        $registryKey = $extension['siteRelPath'] . 'ext_tables_static+adt.sql';
+        $registryKey = PathUtility::stripPathSitePrefix($extension['packagePath']) . 'ext_tables_static+adt.sql';
 
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->remove('extensionDataImport', $registryKey);

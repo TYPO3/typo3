@@ -15,11 +15,11 @@
 
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
@@ -51,19 +51,19 @@ class ReloadSqlDataViewHelper extends ActionViewHelper
         $extension = $this->arguments['extension'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        $staticSqlDataFile = $extension['siteRelPath'] . 'ext_tables_static+adt.sql';
-        if (!file_exists(Environment::getPublicPath() . '/' . $staticSqlDataFile)) {
+        $staticSqlDataFile = $extension['packagePath'] . 'ext_tables_static+adt.sql';
+        if (!file_exists($staticSqlDataFile)) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
 
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $oldMd5Hash = $registry->get(static::$registryNamespace, $staticSqlDataFile);
+        $oldMd5Hash = $registry->get(static::$registryNamespace, PathUtility::stripPathSitePrefix($staticSqlDataFile));
 
         $md5HashIsEqual = true;
         // We used to only store "1" in the database when data was imported
         // No need to compare file content here and just show the reload icon
         if (!empty($oldMd5Hash) && $oldMd5Hash !== 1) {
-            $currentMd5Hash = md5_file(Environment::getPublicPath() . '/' . $staticSqlDataFile);
+            $currentMd5Hash = md5_file($staticSqlDataFile);
             $md5HashIsEqual = $oldMd5Hash === $currentMd5Hash;
         }
 

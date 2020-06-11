@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -121,7 +120,6 @@ class ListUtility implements SingletonInterface
                 $installationType = $this->getInstallTypeForPackage($package);
                 if ($filter === '' || $filter === $installationType) {
                     $this->availableExtensions[$package->getPackageKey()] = [
-                        'siteRelPath' => str_replace(Environment::getPublicPath() . '/', '', $package->getPackagePath()),
                         'packagePath' => $package->getPackagePath(),
                         'type' => $installationType,
                         'key' => $package->getPackageKey(),
@@ -195,7 +193,7 @@ class ListUtility implements SingletonInterface
     public function enrichExtensionsWithEmConfInformation(array $extensions)
     {
         foreach ($extensions as $extensionKey => $properties) {
-            $emconf = $this->emConfUtility->includeEmConf($extensionKey, $properties);
+            $emconf = $this->emConfUtility->includeEmConf($extensionKey, $properties['packagePath'] ?? '');
             if (is_array($emconf)) {
                 $extensions[$extensionKey] = array_merge($emconf, $properties);
             } else {

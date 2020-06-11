@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
@@ -187,10 +188,10 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     public function processExtensionSetup(string $extensionKey): void
     {
         $extension = $this->enrichExtensionWithDetails($extensionKey, false);
-        $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
-        $this->importStaticSqlFile($extensionKey, $extension['siteRelPath']);
-        $import = $this->importT3DFile($extensionKey, $extension['siteRelPath']);
-        $this->importSiteConfiguration($extension['siteRelPath'], $import);
+        $this->importInitialFiles($extension['packagePath'], $extensionKey);
+        $this->importStaticSqlFile($extensionKey, $extension['packagePath']);
+        $import = $this->importT3DFile($extensionKey, $extension['packagePath']);
+        $this->importSiteConfiguration($extensionKey, $extension['packagePath'], $import);
     }
 
     /**
@@ -439,11 +440,12 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Execution state is saved in the this->registry, so it only happens once
      *
      * @param string $extensionKey
-     * @param string $extensionSiteRelPath
+     * @param string $packagePath
      * @return Import|null
      */
-    protected function importT3DFile($extensionKey, $extensionSiteRelPath): ?Import
+    protected function importT3DFile($extensionKey, $packagePath): ?Import
     {
+        $extensionSiteRelPath = PathUtility::stripPathSitePrefix($packagePath);
         $registryKeysToCheck = [
             $extensionSiteRelPath . 'Initialisation/data.t3d',
             $extensionSiteRelPath . 'Initialisation/dataImported',
@@ -456,11 +458,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         }
         $importFileToUse = null;
         $possibleImportFiles = [
-            $extensionSiteRelPath . 'Initialisation/data.t3d',
-            $extensionSiteRelPath . 'Initialisation/data.xml'
+            $packagePath . 'Initialisation/data.t3d',
+            $packagePath . 'Initialisation/data.xml'
         ];
         foreach ($possibleImportFiles as $possibleImportFile) {
-            if (!file_exists(Environment::getPublicPath() . '/' . $possibleImportFile)) {
+            if (!file_exists($possibleImportFile)) {
                 continue;
             }
             $importFileToUse = $possibleImportFile;
@@ -468,7 +470,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         if ($importFileToUse !== null) {
             $importExportUtility = GeneralUtility::makeInstance(ImportExportUtility::class);
             try {
-                $importResult = $importExportUtility->importT3DFile(Environment::getPublicPath() . '/' . $importFileToUse, 0);
+                $importResult = $importExportUtility->importT3DFile($importFileToUse, 0);
                 $this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
                 $this->eventDispatcher->dispatch(new AfterExtensionDatabaseContentHasBeenImportedEvent($extensionKey, $importFileToUse, $importResult, $this));
                 return $importExportUtility->getImport();
@@ -484,13 +486,13 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Execution state is saved in the this->registry, so it only happens once
      *
      * @param string $extensionKey
-     * @param string $extensionSiteRelPath
+     * @param string $packagePath
      */
-    protected function importStaticSqlFile(string $extensionKey, $extensionSiteRelPath)
+    protected function importStaticSqlFile(string $extensionKey, $packagePath)
     {
-        $extTablesStaticSqlRelFile = $extensionSiteRelPath . 'ext_tables_static+adt.sql';
+        $extTablesStaticSqlFile = $packagePath . 'ext_tables_static+adt.sql';
+        $extTablesStaticSqlRelFile = PathUtility::stripPathSitePrefix($extTablesStaticSqlFile);
         if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
-            $extTablesStaticSqlFile = Environment::getPublicPath() . '/' . $extTablesStaticSqlRelFile;
             $shortFileHash = '';
             if (file_exists($extTablesStaticSqlFile)) {
                 $extTablesStaticSqlContent = (string)file_get_contents($extTablesStaticSqlFile);
@@ -498,7 +500,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
                 $this->importStaticSql($extTablesStaticSqlContent);
             }
             $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $shortFileHash);
-            $this->eventDispatcher->dispatch(new AfterExtensionStaticDatabaseContentHasBeenImportedEvent($extensionKey, $extTablesStaticSqlRelFile, $this));
+            $this->eventDispatcher->dispatch(new AfterExtensionStaticDatabaseContentHasBeenImportedEvent($extensionKey, $extTablesStaticSqlFile, $this));
         }
     }
 
@@ -506,23 +508,22 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Imports files from Initialisation/Files to fileadmin
      * via lowlevel copy directory method
      *
-     * @param string $extensionSiteRelPath relative path to extension dir
+     * @param string $packagePath absolute path to extension dir
      * @param string $extensionKey
      */
-    protected function importInitialFiles($extensionSiteRelPath, $extensionKey)
+    protected function importInitialFiles($packagePath, $extensionKey)
     {
-        $importRelFolder = $extensionSiteRelPath . 'Initialisation/Files';
+        $importFolder = $packagePath . 'Initialisation/Files';
+        $importRelFolder = PathUtility::stripPathSitePrefix($importFolder);
         if (!$this->registry->get('extensionDataImport', $importRelFolder)) {
-            $importFolder = Environment::getPublicPath() . '/' . $importRelFolder;
             if (file_exists($importFolder)) {
-                $destinationRelPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . $extensionKey;
-                $destinationAbsolutePath = Environment::getPublicPath() . '/' . $destinationRelPath;
+                $destinationAbsolutePath = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . $extensionKey);
                 if (!file_exists($destinationAbsolutePath) &&
                     GeneralUtility::isAllowedAbsPath($destinationAbsolutePath)
                 ) {
                     GeneralUtility::mkdir($destinationAbsolutePath);
                 }
-                GeneralUtility::copyDirectory($importRelFolder, $destinationRelPath);
+                GeneralUtility::copyDirectory($importFolder, $destinationAbsolutePath);
                 $this->registry->set('extensionDataImport', $importRelFolder, 1);
                 $this->eventDispatcher->dispatch(new AfterExtensionFilesHaveBeenImportedEvent($extensionKey, $destinationAbsolutePath, $this));
             }
@@ -530,13 +531,13 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * @param string $extensionSiteRelPath
+     * @param string $extensionKey
+     * @param string $packagePath
      * @param Import|null $import
      */
-    protected function importSiteConfiguration(string $extensionSiteRelPath, Import $import = null): void
+    protected function importSiteConfiguration(string $extensionKey, string $packagePath, Import $import = null): void
     {
-        $importRelFolder = $extensionSiteRelPath . 'Initialisation/Site';
-        $importAbsFolder = Environment::getPublicPath() . '/' . $importRelFolder;
+        $importAbsFolder = $packagePath . 'Initialisation/Site';
         $destinationFolder = Environment::getConfigPath() . '/sites';
 
         if (!is_dir($importAbsFolder)) {
@@ -556,7 +557,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
                     $this->logger->warning(
                         sprintf(
                             'Skipped importing site configuration from %s due to existing site identifier %s',
-                            $extensionSiteRelPath,
+                            $extensionKey,
                             $siteIdentifier
                         )
                     );

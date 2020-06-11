@@ -271,9 +271,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         if (file_exists($rootPath . 'ext_emconf.php')) {
             $emConfFileData = $this->emConfUtility->includeEmConf(
                 $extensionData['extKey'],
-                [
-                    'packagePath' => $rootPath
-                ]
+                $rootPath
             );
             $emConfFileData = is_array($emConfFileData) ? $emConfFileData : [];
         }

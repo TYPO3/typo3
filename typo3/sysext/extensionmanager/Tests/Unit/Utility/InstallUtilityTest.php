@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
@@ -69,7 +70,7 @@ class InstallUtilityTest extends UnitTestCase
         $this->extensionKey = 'dummy';
         $this->extensionData = [
             'key' => $this->extensionKey,
-            'siteRelPath' => '',
+            'packagePath' => '',
         ];
         $this->installMock = $this->getAccessibleMock(
             InstallUtility::class,
@@ -139,11 +140,9 @@ class InstallUtilityTest extends UnitTestCase
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
-        $relativeVarPath = ltrim(str_replace(Environment::getProjectPath(), '', Environment::getVarPath()), '/');
-        $relPath = $relativeVarPath . '/tests/' . $extKey . '/';
         GeneralUtility::mkdir($absExtPath);
         $this->fakedExtensions[$extKey] = [
-            'siteRelPath' => $relPath
+            'packagePath' => $absExtPath
         ];
         return $extKey;
     }
@@ -260,7 +259,8 @@ class InstallUtilityTest extends UnitTestCase
     public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue)
     {
         $extKey = $this->createFakeExtension();
-        $absPath = Environment::getProjectPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $absPath = $this->fakedExtensions[$extKey]['packagePath'];
+        $relPath = PathUtility::stripPathSitePrefix($absPath);
         GeneralUtility::mkdir($absPath . 'Initialisation');
         file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
         $registryMock = $this->getMockBuilder(Registry::class)
@@ -271,8 +271,8 @@ class InstallUtilityTest extends UnitTestCase
             ->method('get')
             ->willReturnMap(
                 [
-                    ['extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsFalse, null, false],
-                    ['extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsTrue, null, true],
+                    ['extensionDataImport', $relPath . 'Initialisation/' . $registryNameReturnsFalse, null, false],
+                    ['extensionDataImport', $relPath . 'Initialisation/' . $registryNameReturnsTrue, null, true],
                 ]
             );
         $installMock = $this->getAccessibleMock(
@@ -286,7 +286,7 @@ class InstallUtilityTest extends UnitTestCase
         $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->_set('registry', $registryMock);
         $installMock->expects(self::never())->method('getImportExportUtility');
-        $installMock->_call('importT3DFile', $extKey, $this->fakedExtensions[$extKey]['siteRelPath']);
+        $installMock->_call('importT3DFile', $extKey, $this->fakedExtensions[$extKey]['packagePath']);
     }
 
     /**
@@ -296,7 +296,7 @@ class InstallUtilityTest extends UnitTestCase
     {
         // prepare an extension with a shipped site config
         $extKey = $this->createFakeExtension();
-        $absPath = Environment::getProjectPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $absPath = $this->fakedExtensions[$extKey]['packagePath'];
         $config = Yaml::dump(['dummy' => true]);
         $siteIdentifier = 'site_identifier';
         GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
@@ -312,7 +312,7 @@ class InstallUtilityTest extends UnitTestCase
 
         $availableExtensions = [
             $extKey => [
-                'siteRelPath' => $this->fakedExtensions[$extKey]['siteRelPath'],
+                'packagePath' => $this->fakedExtensions[$extKey]['packagePath'],
             ],
         ];
         $listUtility->enrichExtensionsWithEmConfInformation($availableExtensions)->willReturn($availableExtensions);
@@ -355,7 +355,7 @@ class InstallUtilityTest extends UnitTestCase
     {
         // prepare an extension with a shipped site config
         $extKey = $this->createFakeExtension();
-        $absPath = Environment::getProjectPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $absPath = $this->fakedExtensions[$extKey]['packagePath'];
         $siteIdentifier = 'site_identifier';
         GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
         file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', Yaml::dump(['dummy' => true]));
@@ -380,7 +380,7 @@ class InstallUtilityTest extends UnitTestCase
 
         $availableExtensions = [
             $extKey => [
-                'siteRelPath' => $this->fakedExtensions[$extKey]['siteRelPath'],
+                'packagePath' => $this->fakedExtensions[$extKey]['packagePath'],
             ],
         ];
         $listUtility->enrichExtensionsWithEmConfInformation($availableExtensions)->willReturn($availableExtensions);
