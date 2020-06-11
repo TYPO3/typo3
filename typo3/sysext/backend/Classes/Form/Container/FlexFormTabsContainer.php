@@ -104,9 +104,8 @@ class FlexFormTabsContainer extends AbstractContainer
                     'description' => trim($sheetDataStructure['ROOT']['sheetDescription']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
                     'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
                 ];
-
-                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);
             }
+            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);
         }
 
         $fieldInformationResult = $this->renderFieldInformation();
