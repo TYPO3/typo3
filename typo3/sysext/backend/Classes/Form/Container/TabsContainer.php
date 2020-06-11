@@ -90,8 +90,8 @@ class TabsContainer extends AbstractContainer
                     'label' => $tabWithLabelAndElements['label'],
                     'content' => $childArray['html'],
                 ];
-                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray, false);
             }
+            $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray, false);
         }
 
         $resultArray['html'] = $this->renderTabMenu($tabElements, $domIdPrefix);
