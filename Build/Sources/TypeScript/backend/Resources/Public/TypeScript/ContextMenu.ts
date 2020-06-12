@@ -15,6 +15,7 @@ import * as $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import ContextMenuActions = require('./ContextMenuActions');
+import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 
 interface MousePosition {
   X: number;
@@ -116,7 +117,7 @@ class ContextMenu {
     });
 
     // register mouse movement inside the document
-    $(document).on('mousemove', this.storeMousePositionEvent);
+    new ThrottleEvent('mousemove', this.storeMousePositionEvent.bind(this), 50).bindTo(document);
   }
 
   /**

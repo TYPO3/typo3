@@ -20,7 +20,7 @@
                 >
                     <button
                         title="{module.description}"
-                        class="modulemenu-action t3js-modulemenu-action"
+                        class="modulemenu-action t3js-modulemenu-action {f:if(condition: '{module.children} && {currentLevel} == 1', then: 't3js-modulemenu-collapsible')}"
                         role="menuitem"
                         id="{module.name}"
                         data-modulename="{module.name}"

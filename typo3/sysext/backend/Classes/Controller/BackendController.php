@@ -128,7 +128,6 @@ class BackendController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/InfoWindow');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage/Persistent', 'function(PersistentStorage) {

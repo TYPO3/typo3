@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
-import ModuleMenu = require('./ModuleMenu');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 /**
  * Module: TYPO3/CMS/Backend/Toolbar
@@ -25,31 +25,18 @@ class Toolbar {
   }
 
   private static initializeEvents(): void {
-    $('.t3js-toolbar-item').parent().on('hidden.bs.dropdown', (): void => {
-      $('.scaffold')
-        .removeClass('scaffold-toolbar-expanded')
-        .removeClass('scaffold-search-expanded');
-    });
-    $(document).on('click', '.toolbar-item [data-modulename]', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-      const moduleName = $(evt.target).closest('[data-modulename]').data('modulename');
-      ModuleMenu.App.showModule(moduleName);
-    });
-    $(document).on('click', '.t3js-topbar-button-toolbar', (): void => {
-      $('.scaffold')
-        .removeClass('scaffold-modulemenu-expanded')
-        .removeClass('scaffold-search-expanded')
-        .toggleClass('scaffold-toolbar-expanded');
-    });
-    $(document).on('click', '.t3js-topbar-button-search', (): void => {
-      $('.scaffold')
-        .removeClass('scaffold-modulemenu-expanded')
-        .removeClass('scaffold-toolbar-expanded')
-        .toggleClass('scaffold-search-expanded');
-    });
+    new RegularEvent('click', (): void => {
+      const scaffold = document.querySelector('.scaffold');
+      scaffold.classList.remove('scaffold-modulemenu-expanded', 'scaffold-search-expanded');
+      scaffold.classList.toggle('scaffold-toolbar-expanded');
+    }).bindTo(document.querySelector('.t3js-topbar-button-toolbar'));
+
+    new RegularEvent('click', (): void => {
+      const scaffold = document.querySelector('.scaffold');
+      scaffold.classList.remove('scaffold-modulemenu-expanded', 'scaffold-toolbar-expanded');
+      scaffold.classList.toggle('scaffold-search-expanded');
+    }).bindTo(document.querySelector('.t3js-topbar-button-search'))
   }
 }
 
-$((): void => {
-  Toolbar.initialize();
-});
+DocumentService.ready().then(Toolbar.initialize);

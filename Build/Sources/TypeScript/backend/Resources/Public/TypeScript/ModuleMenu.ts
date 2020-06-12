@@ -21,6 +21,7 @@ import ClientRequest = require('./Event/ClientRequest');
 import TriggerRequest = require('./Event/TriggerRequest');
 import InteractionRequest = require('./Event/InteractionRequest');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 interface Module {
   name: string;
@@ -185,16 +186,16 @@ class ModuleMenu {
    *
    * @param {string} name
    * @param {string} params
-   * @param {JQueryEventObject} event
+   * @param {Event} event
    * @returns {JQueryDeferred<TriggerRequest>}
    */
-  public showModule(name: string, params?: string, event?: JQueryEventObject): JQueryDeferred<TriggerRequest> {
+  public showModule(name: string, params?: string, event: Event = null): JQueryDeferred<TriggerRequest> {
     params = params || '';
     const moduleData = ModuleMenu.getRecordFromName(name);
     return this.loadModuleComponents(
       moduleData,
       params,
-      new ClientRequest('typo3.showModule', event ? event.originalEvent : null),
+      new ClientRequest('typo3.showModule', event),
     );
   }
 
@@ -228,54 +229,51 @@ class ModuleMenu {
   }
 
   private initializeEvents(): void {
-    $(document).on('click', '.t3js-modulemenu-action', (e: JQueryEventObject): void => {
-      const $element = $(e.currentTarget);
-      const $group = $(e.currentTarget).parent('.modulemenu-group');
-      const $groupContainer = $group.find('.modulemenu-group-container');
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
+      const moduleGroup = target.closest('.modulemenu-group');
+      const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
+      const ariaExpanded = target.attributes.getNamedItem('aria-expanded').value === 'true';
 
-      if ($element.attr('aria-expanded') === 'true') {
-        ModuleMenu.addCollapsedMainMenuItem($element.attr('id'));
-        $group.addClass('modulemenu-group-collapsed').removeClass('modulemenu-group-expanded');
-        $element.attr('aria-expanded', 'false');
-        $groupContainer.attr('aria-hidden', 'true');
-        $groupContainer.stop().slideUp({
-          'complete': function() {
-            Viewport.doLayout();
-          }
-        });
-      } else if ($element.attr('aria-expanded') === 'false') {
-        ModuleMenu.removeCollapseMainMenuItem($element.attr('id'));
-        $group.addClass('modulemenu-group-expanded').removeClass('modulemenu-group-collapsed');
-        $element.attr('aria-expanded', 'true');
-        $groupContainer.attr('aria-hidden', 'false');
-        $groupContainer.stop().slideDown({
-          'complete': function() {
-            Viewport.doLayout();
-          }
-        });
+      if (ariaExpanded) {
+        ModuleMenu.addCollapsedMainMenuItem(target.id);
+      } else {
+        ModuleMenu.removeCollapseMainMenuItem(target.id);
       }
 
-      if ($element.attr('data-link')) {
+      moduleGroup.classList.toggle('.modulemenu-group-collapsed', ariaExpanded);
+      moduleGroup.classList.toggle('.modulemenu-group-expanded', !ariaExpanded);
+
+      moduleGroupContainer.attributes.getNamedItem('aria-visible').value = (!ariaExpanded).toString();
+      target.attributes.getNamedItem('aria-expanded').value = (!ariaExpanded).toString();
+
+      $(moduleGroupContainer).stop().slideToggle({
+        'complete': function() {
+          Viewport.doLayout();
+        }
+      });
+    }).delegateTo(document.querySelector('.t3js-modulemenu'), '.t3js-modulemenu-collapsible');
+
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
+      if (typeof target.dataset.link !== 'undefined') {
         e.preventDefault();
-        this.showModule($(e.currentTarget).attr('id'), '', e);
+        this.showModule(target.id, '', e);
       }
-    });
+    }).delegateTo(document, '.t3js-modulemenu-action');
 
-    // register clicking on sub modules
-    $(document).on('click', '.t3js-topbar-button-modulemenu', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
+    new RegularEvent('click', (e: Event): void => {
+      e.preventDefault();
       ModuleMenu.toggleMenu();
-    },
-    );
-    $(document).on('click', '.t3js-scaffold-content-overlay', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
+    }).bindTo(document.querySelector('.t3js-topbar-button-modulemenu'));
+
+    new RegularEvent('click', (e: Event): void => {
+      e.preventDefault();
       ModuleMenu.toggleMenu(true);
-    },
-    );
-    $(document).on('click', '.t3js-topbar-button-navigationcomponent', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
+    }).bindTo(document.querySelector('.t3js-scaffold-content-overlay'));
+
+    new RegularEvent('click', (e: Event): void => {
+      e.preventDefault();
       Viewport.NavigationContainer.toggle();
-    });
+    }).bindTo(document.querySelector('.t3js-topbar-button-navigationcomponent'));
   }
 
   /**
