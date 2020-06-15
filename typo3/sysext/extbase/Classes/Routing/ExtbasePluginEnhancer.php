@@ -87,14 +87,24 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         $routePath = $this->modifyRoutePath($configuration['routePath']);
         $routePath = $variableProcessor->deflateRoutePath($routePath, $this->namespace, $arguments);
         unset($configuration['routePath']);
+        $options = array_merge($defaultPageRoute->getOptions(), ['_enhancer' => $this, 'utf8' => true, '_arguments' => $arguments]);
+        $route = new Route(rtrim($defaultPageRoute->getPath(), '/') . '/' . ltrim($routePath, '/'), [], [], $options);
+
         $defaults = array_merge_recursive(
             $defaultPageRoute->getDefaults(),
-            $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], $this->namespace, $arguments),
-            // apply '_controller' to route defaults
+            $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], $this->namespace, $arguments)
+        );
+        // only keep `defaults` that are actually used in `routePath`
+        $defaults = $this->filterValuesByPathVariables(
+            $route,
+            $defaults
+        );
+        // apply '_controller' to route defaults
+        $defaults = array_merge_recursive(
+            $defaults,
             array_intersect_key($configuration, ['_controller' => true])
         );
-        $options = array_merge($defaultPageRoute->getOptions(), ['_enhancer' => $this, 'utf8' => true, '_arguments' => $arguments]);
-        $route = new Route(rtrim($defaultPageRoute->getPath(), '/') . '/' . ltrim($routePath, '/'), $defaults, [], $options);
+        $route->setDefaults($defaults);
         $this->applyRouteAspects($route, $this->aspects ?? [], $this->namespace);
         $this->applyRequirements($route, $this->configuration['requirements'] ?? [], $this->namespace);
         return $route;
@@ -132,11 +142,12 @@ class ExtbasePluginEnhancer extends PluginEnhancer
             unset($parameters[$this->namespace]['action']);
             unset($parameters[$this->namespace]['controller']);
             $compiledRoute = $variant->compile();
+            // contains all given parameters, even if not used as variables in route
             $deflatedParameters = $this->deflateParameters($variant, $parameters);
             $variables = array_flip($compiledRoute->getPathVariables());
             $mergedParams = array_replace($variant->getDefaults(), $deflatedParameters);
             // all params must be given, otherwise we exclude this variant
-            if ($diff = array_diff_key($variables, $mergedParams)) {
+            if ($variables === [] || array_diff_key($variables, $mergedParams) !== []) {
                 continue;
             }
             $variant->addOptions(['deflatedParameters' => $deflatedParameters]);
