@@ -108,8 +108,10 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $routePath = $variableProcessor->deflateRoutePath($routePath, null, $arguments);
         $variant = clone $defaultPageRoute;
         $variant->setPath(rtrim($variant->getPath(), '/') . '/' . ltrim($routePath, '/'));
-        $variant->setDefaults($variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], null, $arguments));
         $variant->addOptions(['_enhancer' => $this, '_arguments' => $arguments]);
+        $defaults = $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], null, $arguments);
+        // only keep `defaults` that are actually used in `routePath`
+        $variant->setDefaults($this->filterValuesByPathVariables($variant, $defaults));
         $this->applyRouteAspects($variant, $this->aspects ?? []);
         $this->applyRequirements($variant, $this->configuration['requirements'] ?? []);
         return $variant;
@@ -124,11 +126,12 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $defaultPageRoute = $collection->get('default');
         $variant = $this->getVariant($defaultPageRoute, $this->configuration);
         $compiledRoute = $variant->compile();
+        // contains all given parameters, even if not used as variables in route
         $deflatedParameters = $this->getVariableProcessor()->deflateParameters($parameters, $variant->getArguments());
         $variables = array_flip($compiledRoute->getPathVariables());
         $mergedParams = array_replace($variant->getDefaults(), $deflatedParameters);
         // all params must be given, otherwise we exclude this variant
-        if ($diff = array_diff_key($variables, $mergedParams)) {
+        if ($variables === [] || array_diff_key($variables, $mergedParams) !== []) {
             return;
         }
         $variant->addOptions(['deflatedParameters' => $deflatedParameters]);

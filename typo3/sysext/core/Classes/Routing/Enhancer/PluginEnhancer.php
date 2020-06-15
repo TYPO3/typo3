@@ -121,9 +121,9 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $variant = clone $defaultPageRoute;
         $variant->setPath(rtrim($variant->getPath(), '/') . '/' . ltrim($routePath, '/'));
         $variant->addOptions(['_enhancer' => $this, '_arguments' => $arguments]);
-        $variant->setDefaults(
-            $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], $this->namespace, $arguments)
-        );
+        $defaults = $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], $this->namespace, $arguments);
+        // only keep `defaults` that are actually used in `routePath`
+        $variant->setDefaults($this->filterValuesByPathVariables($variant, $defaults));
         $this->applyRouteAspects($variant, $this->aspects ?? [], $this->namespace);
         $this->applyRequirements($variant, $this->configuration['requirements'] ?? [], $this->namespace);
         return $variant;
@@ -142,11 +142,12 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $defaultPageRoute = $collection->get('default');
         $variant = $this->getVariant($defaultPageRoute, $this->configuration);
         $compiledRoute = $variant->compile();
+        // contains all given parameters, even if not used as variables in route
         $deflatedParameters = $this->deflateParameters($variant, $parameters);
         $variables = array_flip($compiledRoute->getPathVariables());
         $mergedParams = array_replace($variant->getDefaults(), $deflatedParameters);
         // all params must be given, otherwise we exclude this variant
-        if ($diff = array_diff_key($variables, $mergedParams)) {
+        if ($variables === [] || array_diff_key($variables, $mergedParams) !== []) {
             return;
         }
         $variant->addOptions(['deflatedParameters' => $deflatedParameters]);

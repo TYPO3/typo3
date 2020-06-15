@@ -205,6 +205,8 @@ class PageRouter implements RouterInterface
             }
             $pageCollection->addNamePrefix($collectionPrefix . '_');
             $fullCollection->addCollection($pageCollection);
+            // set default route flag after all routes have been processed
+            $defaultRouteForPage->setOption('_isDefault', true);
         }
 
         $matcher = new PageUriMatcher($fullCollection);
@@ -319,8 +321,13 @@ class PageRouter implements RouterInterface
         );
         $generator = new UrlGenerator($collection, $context);
         $generator->injectMappableProcessor($mappableProcessor);
-        $allRoutes = $collection->all();
-        $allRoutes = array_reverse($allRoutes, true);
+        // set default route flag after all routes have been processed
+        $defaultRouteForPage->setOption('_isDefault', true);
+        $allRoutes = GeneralUtility::makeInstance(RouteSorter::class)
+            ->withRoutes($collection->all())
+            ->withOriginalParameters($originalParameters)
+            ->sortRoutesForGeneration()
+            ->getRoutes();
         $matchedRoute = null;
         $pageRouteResult = null;
         $uri = null;
