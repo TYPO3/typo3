@@ -2240,7 +2240,7 @@ class Indexer
         } else {
             $newFreq = $freq / $mapFactor;
         }
-        return $newFreq;
+        return (int)$newFreq;
     }
 
     /********************************
