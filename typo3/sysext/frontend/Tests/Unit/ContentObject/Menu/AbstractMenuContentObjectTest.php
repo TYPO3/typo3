@@ -274,14 +274,21 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         return [
             'no configuration' => [
                 [],
+                '0',
                 'colPos = 0'
             ],
             'with useColPos 2' => [
-                ['useColPos' => 2],
+                [
+                    'useColPos' => 2
+                ],
+                '2',
                 'colPos = 2'
             ],
             'with useColPos -1' => [
-                ['useColPos' => -1],
+                [
+                    'useColPos' => -1
+                ],
+                '-1',
                 ''
             ],
             'with stdWrap useColPos' => [
@@ -290,6 +297,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                         'wrap' => '2|'
                     ]
                 ],
+                '2',
                 'colPos = 2'
             ]
         ];
@@ -299,9 +307,10 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @test
      * @dataProvider sectionIndexQueriesWithDifferentColPosDataProvider
      * @param array $configuration
+     * @param array $colPosFromStdWrapValue
      * @param string $whereClausePrefix
      */
-    public function sectionIndexQueriesWithDifferentColPos($configuration, $whereClausePrefix)
+    public function sectionIndexQueriesWithDifferentColPos($configuration, $colPosFromStdWrapValue, $whereClausePrefix)
     {
         $statementProphet = $this->prophesize(Statement::class);
         $statementProphet->fetch()->willReturn([]);
@@ -321,8 +330,16 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         ];
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
-        $cObject->expects(self::once())->method('exec_getQuery')
-            ->with('tt_content', $queryConfiguration)->willReturn($statementProphet->reveal());
+        $cObject
+            ->expects(self::at(0))
+            ->method('stdWrapValue')
+            ->with('useColPos', $configuration)
+            ->willReturn($colPosFromStdWrapValue);
+        $cObject
+            ->expects(self::once())
+            ->method('exec_getQuery')
+            ->with('tt_content', $queryConfiguration)
+            ->willReturn($statementProphet->reveal());
         $this->subject->_set('parent_cObj', $cObject);
 
         $this->subject->_call('sectionIndex', 'field', 12);
@@ -383,6 +400,13 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $runtimeCacheMock->expects(self::once())->method('set')->with(self::anything(), ['result' => $expectedResult]);
 
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
+        $cObjectMock = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
+        $cObjectMock
+            ->expects(self::at(0))
+            ->method('stdWrapValue')
+            ->with('excludeUidList', ['excludeUidList' => $excludeUidList])
+            ->willReturn($excludeUidList);
+        $this->subject->parent_cObj = $cObjectMock;
         $this->subject->expects(self::once())->method('getRuntimeCache')->willReturn($runtimeCacheMock);
         $this->prepareSectionIndexTest();
 

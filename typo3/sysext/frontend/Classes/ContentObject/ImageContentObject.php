@@ -73,7 +73,7 @@ class ImageContentObject extends AbstractContentObject
             $info
         );
 
-        $layoutKey = $this->cObj->stdWrap($conf['layoutKey'], $conf['layoutKey.']);
+        $layoutKey = $this->cObj->stdWrapValue('layoutKey', $conf);
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
         $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);
 
@@ -97,14 +97,14 @@ class ImageContentObject extends AbstractContentObject
         $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $theValue = $markerTemplateEngine->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
 
-        $linkWrap = isset($conf['linkWrap.']) ? $this->cObj->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
+        $linkWrap = $this->cObj->stdWrapValue('linkWrap', $conf);
         if ($linkWrap) {
             $theValue = $this->linkWrap($theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap']) {
             $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
-        $wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ((string)$wrap !== '') {
             $theValue = $this->cObj->wrap($theValue, $conf['wrap']);
         }
@@ -143,10 +143,7 @@ class ImageContentObject extends AbstractContentObject
     protected function getImageTagTemplate($layoutKey, $conf): string
     {
         if ($layoutKey && isset($conf['layout.']) && isset($conf['layout.'][$layoutKey . '.'])) {
-            return $this->cObj->stdWrap(
-                $conf['layout.'][$layoutKey . '.']['element'] ?? '',
-                $conf['layout.'][$layoutKey . '.']['element.'] ?? []
-            );
+            return $this->cObj->stdWrapValue('element', $conf['layout.'][$layoutKey . '.']);
         }
         return '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
     }
@@ -188,45 +185,24 @@ class ImageContentObject extends AbstractContentObject
 
             // render sources
             foreach ($activeSourceCollections as $key => $sourceConfiguration) {
-                $sourceLayout = $this->cObj->stdWrap(
-                    $srcLayoutOptionSplitted[$key]['source'] ?? '',
-                    $srcLayoutOptionSplitted[$key]['source.'] ?? []
-                );
+                $sourceLayout = $this->cObj->stdWrapValue('source', $srcLayoutOptionSplitted[$key] ?? []);
 
                 $sourceRenderConfiguration = [
                     'file' => $file,
                     'file.' => $conf['file.'] ?? null
                 ];
 
-                if (isset($sourceConfiguration['quality']) || isset($sourceConfiguration['quality.'])) {
-                    $imageQuality = $sourceConfiguration['quality'] ?? '';
-                    if (isset($sourceConfiguration['quality.'])) {
-                        $imageQuality = $this->cObj->stdWrap($sourceConfiguration['quality'], $sourceConfiguration['quality.']);
-                    }
-                    if ($imageQuality) {
-                        $sourceRenderConfiguration['file.']['params'] = '-quality ' . (int)$imageQuality;
-                    }
+                $imageQuality = $this->cObj->stdWrapValue('quality', $sourceConfiguration);
+                if ($imageQuality) {
+                    $sourceRenderConfiguration['file.']['params'] = '-quality ' . (int)$imageQuality;
                 }
 
-                if (isset($sourceConfiguration['pixelDensity'])) {
-                    $pixelDensity = (int)$this->cObj->stdWrap(
-                        $sourceConfiguration['pixelDensity'] ?? '',
-                        $sourceConfiguration['pixelDensity.'] ?? []
-                    );
-                } else {
-                    $pixelDensity = 1;
-                }
+                $pixelDensity = (int)$this->cObj->stdWrapValue('pixelDensity', $sourceConfiguration, 1);
                 $dimensionKeys = ['width', 'height', 'maxW', 'minW', 'maxH', 'minH', 'maxWidth', 'maxHeight', 'XY'];
                 foreach ($dimensionKeys as $dimensionKey) {
-                    $dimension = $this->cObj->stdWrap(
-                        $sourceConfiguration[$dimensionKey] ?? '',
-                        $sourceConfiguration[$dimensionKey . '.'] ?? []
-                    );
+                    $dimension = $this->cObj->stdWrapValue($dimensionKey, $sourceConfiguration);
                     if (!$dimension) {
-                        $dimension = $this->cObj->stdWrap(
-                            $conf['file.'][$dimensionKey] ?? '',
-                            $conf['file.'][$dimensionKey . '.'] ?? []
-                        );
+                        $dimension = $this->cObj->stdWrapValue($dimensionKey, $conf['file.'] ?? []);
                     }
                     if ($dimension) {
                         if (strpos($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
@@ -314,8 +290,8 @@ class ImageContentObject extends AbstractContentObject
      */
     public function getAltParam($conf, $longDesc = true)
     {
-        $altText = isset($conf['altText.']) ? trim($this->cObj->stdWrap($conf['altText'], $conf['altText.'])) : trim($conf['altText']);
-        $titleText = isset($conf['titleText.']) ? trim($this->cObj->stdWrap($conf['titleText'], $conf['titleText.'])) : trim($conf['titleText']);
+        $altText = trim($this->cObj->stdWrapValue('altText', $conf));
+        $titleText = trim($this->cObj->stdWrapValue('titleText', $conf));
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
             $longDescUrl = $this->cObj->typoLink_URL($conf['longdescURL.']);
         } else {
@@ -326,7 +302,7 @@ class ImageContentObject extends AbstractContentObject
         // "alt":
         $altParam = ' alt="' . htmlspecialchars($altText) . '"';
         // "title":
-        $emptyTitleHandling = isset($conf['emptyTitleHandling.']) ? $this->cObj->stdWrap($conf['emptyTitleHandling'], $conf['emptyTitleHandling.']) : $conf['emptyTitleHandling'];
+        $emptyTitleHandling = $this->cObj->stdWrapValue('emptyTitleHandling', $conf);
         // Choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
         if ($titleText || $emptyTitleHandling === 'keepEmpty') {
             $altParam .= ' title="' . htmlspecialchars($titleText) . '"';

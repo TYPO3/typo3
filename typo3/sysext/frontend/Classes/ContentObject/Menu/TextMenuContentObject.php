@@ -70,7 +70,9 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I = [];
             $this->I['key'] = $key;
             $this->I['val'] = $val;
-            $this->I['title'] = isset($this->I['val']['stdWrap.']) ? $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']), $this->I['val']['stdWrap.']) : $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
+            $this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
+            $this->I['title.'] = $this->I['val']['stdWrap.'];
+            $this->I['title'] = $this->WMcObj->stdWrapValue('title', $this->I);
             $this->I['uid'] = $this->menuArr[$key]['uid'];
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
             $this->I['pid'] = $this->menuArr[$key]['pid'];
@@ -83,23 +85,20 @@ class TextMenuContentObject extends AbstractMenuContentObject
             }
             // Make link tag
             $this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
-            if (isset($this->I['val']['additionalParams.'])) {
-                $this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
-            }
+            $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
             $this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
             if (empty($this->I['linkHREF'])) {
                 $this->I['val']['doNotLinkIt'] = 1;
             }
             // Title attribute of links:
-            $titleAttrValue = isset($this->I['val']['ATagTitle.']) ? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt'] : $this->I['val']['ATagTitle'] . $this->I['accessKey']['alt'];
+            $titleAttrValue = $this->WMcObj->stdWrapValue('ATagTitle', $this->I['val']);
+            $titleAttrValue .= $this->I['accessKey']['alt'];
             if ($titleAttrValue !== '') {
                 $this->I['linkHREF']['title'] = $titleAttrValue;
             }
 
             // stdWrap for doNotLinkIt
-            if (isset($this->I['val']['doNotLinkIt.'])) {
-                $this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrap($this->I['val']['doNotLinkIt'], $this->I['val']['doNotLinkIt.']);
-            }
+            $this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrapValue('doNotLinkIt', $this->I['val']);
             // Compile link tag
             if (!$this->I['val']['doNotLinkIt']) {
                 $this->I['val']['doNotLinkIt'] = 0;
@@ -129,9 +128,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['parts']['before'] = $this->getBeforeAfter('before');
             $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
             // stdWrap for doNotShowLink
-            if (isset($this->I['val']['doNotShowLink.'])) {
-                $this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrap($this->I['val']['doNotShowLink'], $this->I['val']['doNotShowLink.']);
-            }
+            $this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrapValue('doNotShowLink', $this->I['val']);
             if (!$this->I['val']['doNotShowLink']) {
                 $this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0];
                 $this->I['parts']['ATag_begin'] = $this->I['A1'];
@@ -150,7 +147,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // Merge parts + beforeAllWrap
             $this->I['theItem'] = implode('', $this->I['parts']);
             // allWrap:
-            $allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
+            $allWrap = $this->WMcObj->stdWrapValue('allWrap', $this->I['val']);
             $this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
             if ($this->I['val']['subst_elementUid']) {
                 $this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
@@ -178,7 +175,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
      */
     protected function getBeforeAfter($pref)
     {
-        $processedPref = isset($this->I['val'][$pref . '.']) ? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref . '.']) : $this->I['val'][$pref];
+        $processedPref = $this->WMcObj->stdWrapValue($pref, $this->I['val']);
         if (isset($this->I['val'][$pref . 'Wrap'])) {
             return $this->WMcObj->wrap($processedPref, $this->I['val'][$pref . 'Wrap']);
         }
@@ -198,7 +195,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
         if (!$this->I['spacer']) {
             $this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
         }
-        $part = isset($this->I['val']['wrapItemAndSub.']) ? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.']) : $this->I['val']['wrapItemAndSub'];
+        $part = $this->WMcObj->stdWrapValue('wrapItemAndSub', $this->I['val']);
         $this->WMresult .= $part ? $this->WMcObj->wrap($this->I['theItem'], $part) : $this->I['theItem'];
     }
 

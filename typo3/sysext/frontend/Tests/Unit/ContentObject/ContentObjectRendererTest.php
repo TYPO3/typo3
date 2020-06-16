@@ -7342,6 +7342,12 @@ class ContentObjectRendererTest extends UnitTestCase
                 'default',
                 'default',
             ],
+            'default value null is returned' => [
+                'ifNull',
+                [],
+                null,
+                null
+            ],
             'existing key and array returns stdWrap' => [
                 'test',
                 [
@@ -7357,16 +7363,16 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @param string $key
      * @param array $configuration
-     * @param string $defaultValue
-     * @param string $expected
+     * @param string|null $defaultValue
+     * @param string|null $expected
      * @dataProvider stdWrap_stdWrapValueDataProvider
      * @test
      */
     public function stdWrap_stdWrapValue(
         string $key,
         array $configuration,
-        string $defaultValue,
-        string $expected
+        $defaultValue,
+        $expected
     ): void {
         $result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
         self::assertEquals($expected, $result);

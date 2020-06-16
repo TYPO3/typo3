@@ -233,31 +233,19 @@ abstract class AbstractMenuContentObject
             $this->tmpl = $tmpl;
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
-            if (trim($this->conf['alwaysActivePIDlist']) || isset($this->conf['alwaysActivePIDlist.'])) {
-                if (isset($this->conf['alwaysActivePIDlist.'])) {
-                    $this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrap(
-                        $this->conf['alwaysActivePIDlist'],
-                        $this->conf['alwaysActivePIDlist.']
-                    );
-                }
+            $this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf);
+            if (trim($this->conf['alwaysActivePIDlist'])) {
                 $this->alwaysActivePIDlist = GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
             }
             // includeNotInMenu initialized:
-            $includeNotInMenu = $this->conf['includeNotInMenu'];
-            $includeNotInMenuConf = $this->conf['includeNotInMenu.'] ?? null;
-            $this->conf['includeNotInMenu'] = is_array($includeNotInMenuConf)
-                ? $this->parent_cObj->stdWrap($includeNotInMenu, $includeNotInMenuConf)
-                : $includeNotInMenu;
+            $this->conf['includeNotInMenu'] = $this->parent_cObj->stdWrapValue('includeNotInMenu', $this->conf, false);
             // exclude doktypes that should not be shown in menu (e.g. backend user section)
             if ($this->conf['excludeDoktypes']) {
                 $this->excludedDoktypes = GeneralUtility::intExplode(',', $this->conf['excludeDoktypes']);
             }
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(
-                isset($conf['entryLevel.']) ? $this->parent_cObj->stdWrap(
-                    $conf['entryLevel'],
-                    $conf['entryLevel.']
-                ) : $conf['entryLevel'],
+                $this->parent_cObj->stdWrapValue('entryLevel', $this->conf),
                 $this->tmpl->rootLine
             );
             // Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
@@ -322,10 +310,7 @@ abstract class AbstractMenuContentObject
             // an invalid value if .special=directory was set
             $directoryLevel = 0;
             if ($this->conf['special'] === 'directory') {
-                $value = isset($this->conf['special.']['value.']) ? $this->parent_cObj->stdWrap(
-                    $this->conf['special.']['value'],
-                    $this->conf['special.']['value.']
-                ) : $this->conf['special.']['value'];
+                $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
                 if ($value === '') {
                     $value = $tsfe->page['uid'];
                 }
@@ -506,17 +491,12 @@ abstract class AbstractMenuContentObject
         $alternativeSortingField = trim($this->mconf['alternativeSortingField']) ?: 'sorting';
 
         // Additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
-        $additionalWhere = $this->mconf['additionalWhere'] ?? '';
-        if (isset($this->mconf['additionalWhere.'])) {
-            $additionalWhere = $this->parent_cObj->stdWrap($additionalWhere, $this->mconf['additionalWhere.']);
-        }
+        $additionalWhere = $this->parent_cObj->stdWrapValue('additionalWhere', $this->mconf);
         $additionalWhere .= $this->getDoktypeExcludeWhere();
 
         // ... only for the FIRST level of a HMENU
         if ($this->menuNumber == 1 && $this->conf['special']) {
-            $value = isset($this->conf['special.']['value.'])
-                ? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
-                : $this->conf['special.']['value'];
+            $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
             switch ($this->conf['special']) {
                 case 'userfunction':
                     $menuItems = $this->prepareMenuItemsForUserSpecificMenu($value, $alternativeSortingField);
@@ -898,7 +878,7 @@ abstract class AbstractMenuContentObject
             $specialValue = $tsfe->page['uid'];
         }
         if ($this->conf['special.']['setKeywords'] || $this->conf['special.']['setKeywords.']) {
-            $kw = isset($this->conf['special.']['setKeywords.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['setKeywords'], $this->conf['special.']['setKeywords.']) : $this->conf['special.']['setKeywords'];
+            $kw = $this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
         } else {
             // The page record of the 'value'.
             $value_rec = $this->sys_page->getPage($specialValue);
@@ -935,9 +915,7 @@ abstract class AbstractMenuContentObject
         $limit = MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
         // Start point
         $eLevel = $this->parent_cObj->getKey(
-            isset($this->conf['special.']['entryLevel.'])
-            ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.'])
-            : $this->conf['special.']['entryLevel'],
+            $this->parent_cObj->stdWrapValue('entryLevel', $this->conf['special.'] ?? []),
             $this->tmpl->rootLine
         );
         $startUid = (int)$this->tmpl->rootLine[$eLevel]['uid'];
@@ -1027,9 +1005,7 @@ abstract class AbstractMenuContentObject
     protected function prepareMenuItemsForRootlineMenu()
     {
         $menuItems = [];
-        $range = isset($this->conf['special.']['range.'])
-            ? $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.'])
-            : $this->conf['special.']['range'];
+        $range = $this->parent_cObj->stdWrapValue('range', $this->conf['special.'] ?? []);
         $begin_end = explode('|', $range);
         $begin_end[0] = (int)$begin_end[0];
         if (!MathUtility::canBeInterpretedAsInteger($begin_end[1])) {
@@ -1330,10 +1306,8 @@ abstract class AbstractMenuContentObject
         // Setting main target:
         if ($altTarget) {
             $mainTarget = $altTarget;
-        } elseif ($this->mconf['target.']) {
-            $mainTarget = $this->parent_cObj->stdWrap($this->mconf['target'], $this->mconf['target.']);
         } else {
-            $mainTarget = $this->mconf['target'];
+            $mainTarget = $this->parent_cObj->stdWrapValue('target', $this->mconf);
         }
         // Creating link:
         $addParams = $this->mconf['addParams'] . $MP_params;
@@ -1528,9 +1502,7 @@ abstract class AbstractMenuContentObject
         // Make submenu if the page is the next active
         $menuType = $this->conf[($this->menuNumber + 1) . $objSuffix];
         // stdWrap for expAll
-        if (isset($this->mconf['expAll.'])) {
-            $this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
-        }
+        $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf);
         if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
             try {
                 $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
@@ -1829,10 +1801,7 @@ abstract class AbstractMenuContentObject
      */
     protected function getBannedUids()
     {
-        $excludeUidList = isset($this->conf['excludeUidList.'])
-            ? $this->parent_cObj->stdWrap($this->conf['excludeUidList'], $this->conf['excludeUidList.'])
-            : $this->conf['excludeUidList'];
-
+        $excludeUidList = $this->parent_cObj->stdWrapValue('excludeUidList', $this->conf);
         if (!trim($excludeUidList)) {
             return [];
         }
@@ -1900,15 +1869,7 @@ abstract class AbstractMenuContentObject
         if (!is_array($basePageRow)) {
             return [];
         }
-        $tsfe = $this->getTypoScriptFrontendController();
-        $configuration = $this->mconf['sectionIndex.'] ?? [];
-        $useColPos = 0;
-        if (trim($configuration['useColPos'] ?? '') !== ''
-            || (isset($configuration['useColPos.']) && is_array($configuration['useColPos.']))
-        ) {
-            $useColPos = $tsfe->cObj->stdWrap($configuration['useColPos'] ?? '', $configuration['useColPos.'] ?? []);
-            $useColPos = (int)$useColPos;
-        }
+        $useColPos = (int)$this->parent_cObj->stdWrapValue('useColPos', $this->mconf['sectionIndex.'] ?? [], 0);
         $selectSetup = [
             'pidInList' => $pid,
             'orderBy' => $altSortField,

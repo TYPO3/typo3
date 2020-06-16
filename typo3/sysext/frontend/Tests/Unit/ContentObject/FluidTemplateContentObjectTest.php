@@ -134,11 +134,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects(self::at(0))
+            ->expects(self::at(1))
             ->method('stdWrap')
             ->with('dummyPath', ['wrap' => '|5/']);
         $this->contentObjectRenderer
-            ->expects(self::at(1))
+            ->expects(self::at(2))
             ->method('stdWrap')
             ->with('', ['field' => 'someField']);
         $this->subject->render(
@@ -164,6 +164,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsTemplateFileInView(): void
     {
         $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects(self::at(1))
+            ->method('stdWrapValue')
+            ->with('file')
+            ->willReturn(Environment::getFrameworkBasePath() . '/core/bar.html');
         $this->standaloneView
             ->expects(self::any())
             ->method('setTemplatePathAndFilename')
@@ -203,7 +208,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsTemplateFileByTemplateNameInView(): void
     {
         $this->addMockViewToSubject();
-
+        $this->contentObjectRenderer
+            ->expects(self::at(1))
+            ->method('stdWrapValue')
+            ->with('templateName')
+            ->willReturn('foo');
         $this->standaloneView
             ->expects(self::any())
             ->method('getFormat')
@@ -231,10 +240,19 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
 
+        $configuration = [
+            'templateName' => 'TEXT',
+            'templateName.' => ['value' => 'bar'],
+            'templateRootPaths.' => [
+                0 => 'dummyPath1/',
+                1 => 'dummyPath2/'
+            ]
+        ];
+
         $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('TEXT', ['value' => 'bar'])
+            ->expects(self::at(1))
+            ->method('stdWrapValue')
+            ->with('templateName', $configuration)
             ->willReturn('bar');
         $this->standaloneView
             ->expects(self::any())
@@ -245,16 +263,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ->method('setTemplate')
             ->with('bar');
 
-        $this->subject->render(
-            [
-                'templateName' => 'TEXT',
-                'templateName.' => ['value' => 'bar'],
-                'templateRootPaths.' => [
-                    0 => 'dummyPath1/',
-                    1 => 'dummyPath2/'
-                ]
-            ]
-        );
+        $this->subject->render($configuration);
     }
 
     /**
@@ -263,6 +272,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsLayoutRootPathInView(): void
     {
         $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects(self::at(2))
+            ->method('stdWrapValue')
+            ->willReturn('foo/bar.html');
         $this->standaloneView
             ->expects(self::once())
             ->method('setLayoutRootPaths')
@@ -273,14 +286,20 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsStandardWrapForLayoutRootPath(): void
+    public function renderCallsStandardWrapValueForLayoutRootPath(): void
     {
         $this->addMockViewToSubject();
+        $configuration = [
+            'layoutRootPath' => 'foo',
+            'layoutRootPath.' => [
+                'bar' => 'baz'
+            ]
+        ];
         $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
-        $this->subject->render(['layoutRootPath' => 'foo', 'layoutRootPath.' => ['bar' => 'baz']]);
+            ->expects(self::at(2))
+            ->method('stdWrapValue')
+            ->with('layoutRootPath', $configuration);
+        $this->subject->render($configuration);
     }
 
     /**
@@ -290,7 +309,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects(self::at(0))
+            ->expects(self::at(3))
             ->method('stdWrap')
             ->with('FILE', ['file' => 'foo/bar.html']);
         $this->subject->render(
@@ -328,6 +347,15 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath(): void
     {
         $this->addMockViewToSubject();
+        $configuration = [
+            'layoutRootPath' => 'foo/main.html',
+            'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']
+        ];
+        $this->contentObjectRenderer
+            ->expects(self::at(2))
+            ->method('stdWrapValue')
+            ->with('layoutRootPath', $configuration)
+            ->willReturn('foo/main.html');
         $this->standaloneView
             ->expects(self::once())
             ->method('setLayoutRootPaths')
@@ -336,10 +364,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 10 => Environment::getPublicPath() . '/foo/bar.html',
                 20 => Environment::getPublicPath() . '/foo/bar2.html'
             ]);
-        $this->subject->render([
-            'layoutRootPath' => 'foo/main.html',
-            'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']
-        ]);
+        $this->subject->render($configuration);
     }
 
     /**
@@ -348,11 +373,17 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsPartialRootPathInView(): void
     {
         $this->addMockViewToSubject();
+        $configuration = ['partialRootPath' => 'foo/bar.html'];
+        $this->contentObjectRenderer
+            ->expects(self::at(3))
+            ->method('stdWrapValue')
+            ->with('partialRootPath', $configuration)
+            ->willReturn('foo/bar.html');
         $this->standaloneView
             ->expects(self::once())
             ->method('setPartialRootPaths')
             ->with([Environment::getPublicPath() . '/foo/bar.html']);
-        $this->subject->render(['partialRootPath' => 'foo/bar.html']);
+        $this->subject->render($configuration);
     }
 
     /**
@@ -362,7 +393,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects(self::at(0))
+            ->expects(self::at(4))
             ->method('stdWrap')
             ->with('FILE', ['file' => 'foo/bar.html']);
         $this->subject->render(
@@ -381,14 +412,18 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsStandardWrapForPartialRootPath(): void
+    public function renderCallsStandardWrapValueForPartialRootPath(): void
     {
         $this->addMockViewToSubject();
+        $configuration = [
+            'partialRootPath' => 'foo',
+            'partialRootPath.' => ['bar' => 'baz']
+        ];
         $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
-        $this->subject->render(['partialRootPath' => 'foo', 'partialRootPath.' => ['bar' => 'baz']]);
+            ->expects(self::at(3))
+            ->method('stdWrapValue')
+            ->with('partialRootPath', $configuration);
+        $this->subject->render($configuration);
     }
 
     /**
@@ -410,6 +445,15 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function fallbacksForPartialRootPathAreAppendedToPartialRootPath(): void
     {
         $this->addMockViewToSubject();
+        $configuration = [
+            'partialRootPath' => 'main',
+            'partialRootPaths.' => [10 => 'foo', 20 => 'bar']
+        ];
+        $this->contentObjectRenderer
+            ->expects(self::at(3))
+            ->method('stdWrapValue')
+            ->with('partialRootPath', $configuration)
+            ->willReturn(Environment::getPublicPath() . '/main');
         $this->standaloneView
             ->expects(self::once())
             ->method('setPartialRootPaths')
@@ -418,7 +462,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 10 => Environment::getPublicPath() . '/foo',
                 20 => Environment::getPublicPath() . '/bar'
             ]);
-        $this->subject->render(['partialRootPath' => 'main', 'partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
+        $this->subject->render($configuration);
     }
 
     /**
@@ -427,24 +471,36 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsFormatInView(): void
     {
         $this->addMockViewToSubject();
+        $configuration = [
+            'format' => 'xml'
+        ];
+        $this->contentObjectRenderer
+            ->expects(self::at(0))
+            ->method('stdWrapValue')
+            ->with('format', $configuration)
+            ->willReturn('xml');
         $this->standaloneView
             ->expects(self::once())
             ->method('setFormat')
             ->with('xml');
-        $this->subject->render(['format' => 'xml']);
+        $this->subject->render($configuration);
     }
 
     /**
      * @test
      */
-    public function renderCallsStandardWrapForFormat(): void
+    public function renderCallsStandardWrapValueForFormat(): void
     {
         $this->addMockViewToSubject();
+        $configuration = [
+            'format' => 'foo',
+            'format.' => ['bar' => 'baz']
+        ];
         $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
-        $this->subject->render(['format' => 'foo', 'format.' => ['bar' => 'baz']]);
+            ->expects(self::at(0))
+            ->method('stdWrapValue')
+            ->with('format', $configuration);
+        $this->subject->render($configuration);
     }
 
     /**
@@ -453,37 +509,40 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsExtbasePluginNameInRequest(): void
     {
         $this->addMockViewToSubject();
-        $this->request
-            ->expects(self::once())
-            ->method('setPluginName')
-            ->with('foo');
+        $this->contentObjectRenderer
+            ->expects(self::at(4))
+            ->method('stdWrapValue')
+            ->with('pluginName', ['pluginName' => 'foo'])
+            ->willReturn('foo');
         $configuration = [
             'extbase.' => [
                 'pluginName' => 'foo',
             ],
         ];
+        $this->request
+            ->expects(self::once())
+            ->method('setPluginName')
+            ->with('foo');
         $this->subject->render($configuration);
     }
 
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbasePluginName(): void
+    public function renderCallsStandardWrapValueForExtbasePluginName(): void
     {
         $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
         $configuration = [
-            'extbase.' => [
-                'pluginName' => 'foo',
-                'pluginName.' => [
-                    'bar' => 'baz',
-                ],
-            ],
+            'pluginName' => 'foo',
+            'pluginName.' => [
+                'bar' => 'baz',
+            ]
         ];
-        $this->subject->render($configuration);
+        $this->contentObjectRenderer
+            ->expects(self::at(4))
+            ->method('stdWrapValue')
+            ->with('pluginName', $configuration);
+        $this->subject->render(['extbase.' => $configuration]);
     }
 
     /**
@@ -492,6 +551,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsExtbaseControllerExtensionNameInRequest(): void
     {
         $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects(self::at(5))
+            ->method('stdWrapValue')
+            ->with('controllerExtensionName', ['controllerExtensionName' => 'foo'])
+            ->willReturn('foo');
         $this->request
             ->expects(self::once())
             ->method('setControllerExtensionName')
@@ -507,22 +571,20 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbaseControllerExtensionName(): void
+    public function renderCallsStandardWrapValueForExtbaseControllerExtensionName(): void
     {
         $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
         $configuration = [
-            'extbase.' => [
-                'controllerExtensionName' => 'foo',
-                'controllerExtensionName.' => [
-                    'bar' => 'baz',
-                ],
+            'controllerExtensionName' => 'foo',
+            'controllerExtensionName.' => [
+                'bar' => 'baz',
             ],
         ];
-        $this->subject->render($configuration);
+        $this->contentObjectRenderer
+            ->expects(self::at(5))
+            ->method('stdWrapValue')
+            ->with('controllerExtensionName', $configuration);
+        $this->subject->render(['extbase.' => $configuration]);
     }
 
     /**
@@ -531,6 +593,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsExtbaseControllerNameInRequest(): void
     {
         $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects(self::at(6))
+            ->method('stdWrapValue')
+            ->with('controllerName', ['controllerName' => 'foo'])
+            ->willReturn('foo');
         $this->request
             ->expects(self::once())
             ->method('setControllerName')
@@ -546,22 +613,20 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsStandardWrapForExtbaseControllerName(): void
+    public function renderCallsStandardWrapValueForExtbaseControllerName(): void
     {
         $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
         $configuration = [
-            'extbase.' => [
-                'controllerName' => 'foo',
-                'controllerName.' => [
-                    'bar' => 'baz',
-                ],
+            'controllerName' => 'foo',
+            'controllerName.' => [
+                'bar' => 'baz',
             ],
         ];
-        $this->subject->render($configuration);
+        $this->contentObjectRenderer
+            ->expects(self::at(6))
+            ->method('stdWrapValue')
+            ->with('controllerName', $configuration);
+        $this->subject->render(['extbase.' => $configuration]);
     }
 
     /**
@@ -570,6 +635,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsExtbaseControllerActionNameInRequest(): void
     {
         $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects(self::at(7))
+            ->method('stdWrapValue')
+            ->with('controllerActionName', ['controllerActionName' => 'foo'])
+            ->willReturn('foo');
         $this->request
             ->expects(self::once())
             ->method('setControllerActionName')
@@ -588,19 +658,17 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderCallsStandardWrapForExtbaseControllerActionName(): void
     {
         $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
         $configuration = [
-            'extbase.' => [
-                'controllerActionName' => 'foo',
-                'controllerActionName.' => [
-                    'bar' => 'baz',
-                ],
+            'controllerActionName' => 'foo',
+            'controllerActionName.' => [
+                'bar' => 'baz',
             ],
         ];
-        $this->subject->render($configuration);
+        $this->contentObjectRenderer
+            ->expects(self::at(7))
+            ->method('stdWrapValue')
+            ->with('controllerActionName', $configuration);
+        $this->subject->render(['extbase.' => $configuration]);
     }
 
     /**

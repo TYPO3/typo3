@@ -45,15 +45,7 @@ class CategoryMenuUtility
         $selectedPages = [];
         $categoriesPerPage = [];
         // Determine the name of the relation field
-        $relationField = '';
-        if (isset($configuration['relation.'])) {
-            $relationField = $parentObject->parent_cObj->stdWrap(
-                $configuration['relation'],
-                $configuration['relation.']
-            );
-        } elseif (isset($configuration['relation'])) {
-            $relationField = $configuration['relation'];
-        }
+        $relationField = $parentObject->getParentContentObject()->stdWrapValue('relation', $configuration);
         // Get the pages for each selected category
         $selectedCategories = GeneralUtility::intExplode(',', $selectedCategories, true);
         foreach ($selectedCategories as $aCategory) {
@@ -87,8 +79,8 @@ class CategoryMenuUtility
         }
 
         // Sort the pages according to the sorting property
-        self::$sortingField = isset($configuration['sorting.']) ? $parentObject->getParentContentObject()->stdWrap($configuration['sorting'], $configuration['sorting.']) : $configuration['sorting'];
-        $order = isset($configuration['order.']) ? $parentObject->getParentContentObject()->stdWrap($configuration['order'], $configuration['order.']) : $configuration['order'];
+        self::$sortingField = $parentObject->getParentContentObject()->stdWrapValue('sorting', $configuration);
+        $order = $parentObject->getParentContentObject()->stdWrapValue('order', $configuration);
         $selectedPages = $this->sortPages($selectedPages, $order);
 
         return $selectedPages;

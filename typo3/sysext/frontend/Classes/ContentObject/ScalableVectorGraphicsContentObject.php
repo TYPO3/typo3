@@ -31,9 +31,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     public function render($conf = []): string
     {
-        $renderMode = isset($conf['renderMode.'])
-            ? $this->cObj->stdWrap($conf['renderMode'], $conf['renderMode.'])
-            : $conf['renderMode'];
+        $renderMode = $this->cObj->stdWrapValue('renderMode', $conf);
 
         if ($renderMode === 'inline') {
             return $this->renderInline($conf);
@@ -71,7 +69,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
             // remove xml version tag
             $content = $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
         } else {
-            $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
+            $value = $this->cObj->stdWrapValue('value', $conf);
             if (!empty($value)) {
                 $content = [];
                 $content[] = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . (int)$width . '" height="' . (int)$height . '">';
@@ -127,7 +125,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     protected function resolveAbsoluteSourcePath(array $conf): string
     {
-        $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
+        $src = $this->cObj->stdWrapValue('src', $conf);
         return GeneralUtility::getFileAbsFileName($src);
     }
 
@@ -140,8 +138,8 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     {
         $isDefaultWidth = false;
         $isDefaultHeight = false;
-        $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
-        $height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
+        $width = $this->cObj->stdWrapValue('width', $conf);
+        $height = $this->cObj->stdWrapValue('height', $conf);
 
         if (empty($width)) {
             $isDefaultWidth = true;

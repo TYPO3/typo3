@@ -47,23 +47,10 @@ class FilesContentObject extends AbstractContentObject
         $splitConf = GeneralUtility::makeInstance(TypoScriptService::class)
             ->explodeConfigurationForOptionSplit($conf, $availableFileObjectCount);
 
-        $start = 0;
-        if (!empty($conf['begin'])) {
-            $start = (int)$conf['begin'];
-        }
-        if (!empty($conf['begin.'])) {
-            $start = (int)$this->cObj->stdWrap($start, $conf['begin.']);
-        }
+        $start = (int)$this->cObj->stdWrapValue('begin', $conf, 0);
         $start = MathUtility::forceIntegerInRange($start, 0, $availableFileObjectCount);
 
-        $limit = $availableFileObjectCount;
-        if (!empty($conf['maxItems'])) {
-            $limit = (int)$conf['maxItems'];
-        }
-        if (!empty($conf['maxItems.'])) {
-            $limit = (int)$this->cObj->stdWrap($limit, $conf['maxItems.']);
-        }
-
+        $limit = (int)$this->cObj->stdWrapValue('maxItems', $conf, $availableFileObjectCount);
         $end = MathUtility::forceIntegerInRange($start + $limit, $start, $availableFileObjectCount);
 
         if (isset($GLOBALS['TSFE'])) {
@@ -147,15 +134,9 @@ class FilesContentObject extends AbstractContentObject
         }
 
         // Enable sorting for multiple fileObjects
-        $sortingProperty = '';
-        if ((isset($conf['sorting']) && $conf['sorting']) || (isset($conf['sorting.']) && $conf['sorting.'])) {
-            $sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
-        }
+        $sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
         if ($sortingProperty !== '') {
-            $sortingDirection = $conf['sorting.']['direction'] ?? '';
-            if (isset($conf['sorting.']['direction.'])) {
-                $sortingDirection = $this->cObj->stdWrap($sortingDirection, $conf['sorting.']['direction.']);
-            }
+            $sortingDirection = $this->cObj->stdWrapValue('direction', $conf['sorting.'] ?? []);
             $fileCollector->sort($sortingProperty, $sortingDirection);
         }
 
@@ -173,7 +154,7 @@ class FilesContentObject extends AbstractContentObject
     {
 
         // It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
-        $referencesFieldName = $this->cObj->stdWrapValue('fieldName', $configuration['references.']);
+        $referencesFieldName = $this->cObj->stdWrapValue('fieldName', $configuration['references.'] ?? []);
 
         // If no reference fieldName is set, there's nothing to do
         if (empty($referencesFieldName)) {

@@ -157,9 +157,7 @@ class FluidTemplateContentObject extends AbstractContentObject
         ) {
             $templateRootPaths = $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']);
             $this->view->setTemplateRootPaths($templateRootPaths);
-            $templateName = isset($conf['templateName.'])
-                ? $this->cObj->stdWrap($conf['templateName'] ?? '', $conf['templateName.'])
-                : $conf['templateName'];
+            $templateName = $this->cObj->stdWrapValue('templateName', $conf);
             $this->view->setTemplate($templateName);
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
             // Fetch the Fluid template by template cObject
@@ -173,9 +171,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $this->view->setTemplateSource($templateSource);
         } else {
             // Fetch the Fluid template by file stdWrap
-            $file = isset($conf['file.'])
-                ? $this->cObj->stdWrap($conf['file'] ?? '', $conf['file.'])
-                : ($conf['file'] ?? '');
+            $file = $this->cObj->stdWrapValue('file', $conf);
             // Get the absolute file name
             $templatePathAndFilename = GeneralUtility::getFileAbsFileName($file);
             $this->view->setTemplatePathAndFilename($templatePathAndFilename);
@@ -191,10 +187,8 @@ class FluidTemplateContentObject extends AbstractContentObject
     {
         // Override the default layout path via typoscript
         $layoutPaths = [];
-        if (isset($conf['layoutRootPath']) || isset($conf['layoutRootPath.'])) {
-            $layoutRootPath = isset($conf['layoutRootPath.'])
-                ? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.'])
-                : $conf['layoutRootPath'];
+        $layoutRootPath = $this->cObj->stdWrapValue('layoutRootPath', $conf);
+        if ($layoutRootPath) {
             $layoutPaths[] = GeneralUtility::getFileAbsFileName($layoutRootPath);
         }
         if (isset($conf['layoutRootPaths.'])) {
@@ -213,10 +207,8 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function setPartialRootPath(array $conf)
     {
         $partialPaths = [];
-        if (isset($conf['partialRootPath']) || isset($conf['partialRootPath.'])) {
-            $partialRootPath = isset($conf['partialRootPath.'])
-                ? $this->cObj->stdWrap($conf['partialRootPath'], $conf['partialRootPath.'])
-                : $conf['partialRootPath'];
+        $partialRootPath = $this->cObj->stdWrapValue('partialRootPath', $conf);
+        if ($partialRootPath) {
             $partialPaths[] = GeneralUtility::getFileAbsFileName($partialRootPath);
         }
         if (isset($conf['partialRootPaths.'])) {
@@ -234,9 +226,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setFormat(array $conf)
     {
-        $format = isset($conf['format.'])
-            ? $this->cObj->stdWrap($conf['format'] ?? '', $conf['format.'])
-            : ($conf['format'] ?? '');
+        $format = $this->cObj->stdWrapValue('format', $conf);
         if ($format) {
             $this->view->setFormat($format);
         }
@@ -249,27 +239,19 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setExtbaseVariables(array $conf)
     {
-        $requestPluginName = isset($conf['extbase.']['pluginName.'])
-            ? $this->cObj->stdWrap($conf['extbase.']['pluginName'] ?? '', $conf['extbase.']['pluginName.'])
-            : ($conf['extbase.']['pluginName'] ?? '');
+        $requestPluginName = $this->cObj->stdWrapValue('pluginName', $conf['extbase.'] ?? []);
         if ($requestPluginName) {
             $this->view->getRequest()->setPluginName($requestPluginName);
         }
-        $requestControllerExtensionName = isset($conf['extbase.']['controllerExtensionName.'])
-            ? $this->cObj->stdWrap($conf['extbase.']['controllerExtensionName'] ?? '', $conf['extbase.']['controllerExtensionName.'])
-            : ($conf['extbase.']['controllerExtensionName'] ?? '');
+        $requestControllerExtensionName = $this->cObj->stdWrapValue('controllerExtensionName', $conf['extbase.'] ?? []);
         if ($requestControllerExtensionName) {
             $this->view->getRequest()->setControllerExtensionName($requestControllerExtensionName);
         }
-        $requestControllerName = isset($conf['extbase.']['controllerName.'])
-            ? $this->cObj->stdWrap($conf['extbase.']['controllerName'] ?? '', $conf['extbase.']['controllerName.'])
-            : ($conf['extbase.']['controllerName'] ?? '');
+        $requestControllerName = $this->cObj->stdWrapValue('controllerName', $conf['extbase.'] ?? []);
         if ($requestControllerName) {
             $this->view->getRequest()->setControllerName($requestControllerName);
         }
-        $requestControllerActionName = isset($conf['extbase.']['controllerActionName.'])
-            ? $this->cObj->stdWrap($conf['extbase.']['controllerActionName'] ?? '', $conf['extbase.']['controllerActionName.'])
-            : ($conf['extbase.']['controllerActionName'] ?? '');
+        $requestControllerActionName = $this->cObj->stdWrapValue('controllerActionName', $conf['extbase.'] ?? []);
         if ($requestControllerActionName) {
             $this->view->getRequest()->setControllerActionName($requestControllerActionName);
         }

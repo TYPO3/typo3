@@ -60,7 +60,7 @@ class RecordsContentObject extends AbstractContentObject
             ++$GLOBALS['TSFE']->recordRegister[$originalRec];
         }
 
-        $tables = isset($conf['tables.']) ? $this->cObj->stdWrap($conf['tables'], $conf['tables.']) : $conf['tables'];
+        $tables = $this->cObj->stdWrapValue('tables', $conf);
         if ($tables) {
             $tablesArray = array_unique(GeneralUtility::trimExplode(',', $tables, true));
             // Add tables which have a configuration (note that this may create duplicate entries)
@@ -74,12 +74,12 @@ class RecordsContentObject extends AbstractContentObject
 
             // Get the data, depending on collection method.
             // Property "source" is considered more precise and thus takes precedence over "categories"
-            $source = isset($conf['source.']) ? $this->cObj->stdWrap($conf['source'], $conf['source.']) : $conf['source'];
-            $categories = isset($conf['categories.']) ? $this->cObj->stdWrap($conf['categories'], $conf['categories.']) : $conf['categories'];
+            $source = $this->cObj->stdWrapValue('source', $conf);
+            $categories = $this->cObj->stdWrapValue('categories', $conf);
             if ($source) {
                 $this->collectRecordsFromSource($source, $tablesArray);
             } elseif ($categories) {
-                $relationField = isset($conf['categories.']['relation.']) ? $this->cObj->stdWrap($conf['categories.']['relation'], $conf['categories.']['relation.']) : $conf['categories.']['relation'];
+                $relationField = $this->cObj->stdWrapValue('relation', $conf['categories.'] ?? []);
                 $this->collectRecordsFromCategories($categories, $tablesArray, $relationField);
             }
             $itemArrayCount = count($this->itemArray);
@@ -102,7 +102,7 @@ class RecordsContentObject extends AbstractContentObject
                     }
                     // Might be unset during the overlay process
                     if (is_array($row)) {
-                        $dontCheckPid = isset($conf['dontCheckPid.']) ? $this->cObj->stdWrap($conf['dontCheckPid'], $conf['dontCheckPid.']) : $conf['dontCheckPid'];
+                        $dontCheckPid = $this->cObj->stdWrapValue('dontCheckPid', $conf);
                         if (!$dontCheckPid) {
                             $validPageId = $this->getPageRepository()->filterAccessiblePageIds([$row['pid']]);
                             $row = !empty($validPageId) ? $row : '';
@@ -123,7 +123,7 @@ class RecordsContentObject extends AbstractContentObject
                 }
             }
         }
-        $wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {
             $theValue = $this->cObj->wrap($theValue, $wrap);
         }

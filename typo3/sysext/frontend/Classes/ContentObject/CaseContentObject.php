@@ -32,13 +32,11 @@ class CaseContentObject extends AbstractContentObject
             return '';
         }
 
-        $setCurrent = isset($conf['setCurrent.'])
-            ? $this->cObj->stdWrap($conf['setCurrent'] ?? '', $conf['setCurrent.'])
-            : ($conf['setCurrent'] ?? null);
+        $setCurrent = $this->cObj->stdWrapValue('setCurrent', $conf);
         if ($setCurrent) {
             $this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
         }
-        $key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
+        $key = $this->cObj->stdWrapValue('key', $conf, null);
         $key = isset($conf[$key]) && (string)$conf[$key] !== '' ? $key : 'default';
         // If no "default" property is available, then an empty string is returned
         if ($key === 'default' && !isset($conf['default'])) {

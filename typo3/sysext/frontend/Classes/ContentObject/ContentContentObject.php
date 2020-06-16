@@ -40,28 +40,25 @@ class ContentContentObject extends AbstractContentObject
         $theValue = '';
         $originalRec = $frontendController->currentRecord;
         // If the currentRecord is set, we register, that this record has invoked this function.
-        // It's should not be allowed to do this again then!!
+        // It should not be allowed to do this again then!!
         if ($originalRec) {
             ++$frontendController->recordRegister[$originalRec];
         }
-        $conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
+        $conf['table'] = trim($this->cObj->stdWrapValue('table', $conf));
         $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
         $renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
         $renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
         $renderObjConf = $conf['renderObj.'];
-        $slide = isset($conf['slide.']) ? (int)$this->cObj->stdWrap($conf['slide'], $conf['slide.']) : (int)$conf['slide'];
+        $slide = (int)$this->cObj->stdWrapValue('slide', $conf);
         if (!$slide) {
             $slide = 0;
         }
-        $slideCollect = isset($conf['slide.']['collect.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.']) : (int)$conf['slide.']['collect'];
+        $slideCollect = (int)$this->cObj->stdWrapValue('collect', $conf['slide.'] ?? []);
         if (!$slideCollect) {
             $slideCollect = 0;
         }
-        $slideCollectReverse = isset($conf['slide.']['collectReverse.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.']) : (int)$conf['slide.']['collectReverse'];
-        $slideCollectReverse = (bool)$slideCollectReverse;
-        $slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.'])
-            ? (bool)$this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.'])
-            : (bool)$conf['slide.']['collectFuzzy'];
+        $slideCollectReverse = (bool)$this->cObj->stdWrapValue('collectReverse', $conf['slide.'] ?? []);
+        $slideCollectFuzzy = (bool)$this->cObj->stdWrapValue('collectFuzzy', $conf['slide.'] ?? []);
         if (!$slideCollect) {
             $slideCollectFuzzy = true;
         }
@@ -117,7 +114,7 @@ class ContentContentObject extends AbstractContentObject
             }
         } while ($again && $slide && ((string)$tmpValue === '' && $slideCollectFuzzy || $slideCollect));
 
-        $wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {
             $theValue = $this->cObj->wrap($theValue, $wrap);
         }

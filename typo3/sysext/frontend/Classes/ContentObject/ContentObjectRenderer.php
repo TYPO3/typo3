@@ -1311,8 +1311,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $key The config variable key (from TS array).
      * @param array $config The TypoScript array.
-     * @param string $defaultValue Optional default value.
-     * @return string Value of the config variable
+     * @param string|null $defaultValue Optional default value.
+     * @return string|null Value of the config variable
      */
     public function stdWrapValue($key, array $config, $defaultValue = '')
     {
