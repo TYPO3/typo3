@@ -694,7 +694,7 @@ class AdministrationRepository
                 $pageIds[] = (int)$row['uid'];
             }
             if ($depth > 1) {
-                $pageIds[] = array_merge($pageIds, $this->getPageTreeIds((int)$row['uid'], $depth - 1, $begin - 1));
+                $pageIds = array_merge($pageIds, $this->getPageTreeIds((int)$row['uid'], $depth - 1, $begin - 1));
             }
         }
         return $pageIds;
