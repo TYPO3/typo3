@@ -2496,7 +2496,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
 
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');
-            $result = $queryBuilder->select('*')
+            $rowCount = $queryBuilder->count('uid')
                 ->from('sys_log')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -2516,15 +2516,16 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                         $queryBuilder->createNamedParameter($theTimeBack, \PDO::PARAM_INT)
                     )
                 )
-                ->orderBy('tstamp')
-                ->execute();
-
-            $rowCount = $queryBuilder
-                ->count('uid')
                 ->execute()
                 ->fetchColumn(0);
+
             // Check for more than $max number of error failures with the last period.
             if ($rowCount > $max) {
+                $result = $queryBuilder
+                    ->select('*')
+                    ->orderBy('tstamp')
+                    ->execute();
+
                 // OK, so there were more than the max allowed number of login failures - so we will send an email then.
                 $subject = 'TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
                 $email_body = 'There have been some attempts (' . $rowCount . ') to login at the TYPO3
