@@ -1056,7 +1056,7 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
-        if (!in_array(strtolower($name), $this->jsLibs)) {
+        if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
                 'type' => $type,
@@ -1095,7 +1095,7 @@ class PageRenderer implements SingletonInterface
     public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
     {
         $name .= '_jsFooterLibrary';
-        if (!in_array(strtolower($name), $this->jsLibs)) {
+        if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
                 'type' => $type,
