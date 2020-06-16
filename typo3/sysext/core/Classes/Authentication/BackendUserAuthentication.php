@@ -2387,7 +2387,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         }
 
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');
-        $result = $queryBuilder->select('*')
+        $rowCount = $queryBuilder->count('uid')
             ->from('sys_log')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -2407,15 +2407,16 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     $queryBuilder->createNamedParameter($theTimeBack, \PDO::PARAM_INT)
                 )
             )
-            ->orderBy('tstamp')
-            ->execute();
-
-        $rowCount = $queryBuilder
-            ->count('uid')
             ->execute()
             ->fetchColumn(0);
+
         // Check for more than $max number of error failures with the last period.
         if ($rowCount > $max) {
+            $result = $queryBuilder
+                ->select('*')
+                ->orderBy('tstamp')
+                ->execute();
+
             // OK, so there were more than the max allowed number of login failures - so we will send an email then.
             $this->sendLoginAttemptEmail($result, $email);
             // Login failure attempt written to log
