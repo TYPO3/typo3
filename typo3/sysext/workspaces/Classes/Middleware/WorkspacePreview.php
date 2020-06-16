@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Routing\RouteResultInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
@@ -73,41 +73,48 @@ class WorkspacePreview implements MiddlewareInterface
     {
         $addInformationAboutDisabledCache = false;
         $keyword = $this->getPreviewInputCode($request);
-        if ($keyword) {
-            switch ($keyword) {
-                case 'IGNORE':
-                    break;
-                case 'LOGOUT':
-                    // "log out", and unset the cookie
-                    $this->setCookie('', $request->getAttribute('normalizedParams'));
-                    $message = $this->getLogoutTemplateMessage($request->getQueryParams()['returnUrl'] ?? '');
-                    return new HtmlResponse($message);
-                default:
-                    $pageArguments = $request->getAttribute('routing', null);
-                    // A keyword was found in a query parameter or in a cookie
-                    // If the keyword is valid, activate a BE User and override any existing BE Users
-                    $configuration = $this->getPreviewConfigurationFromRequest($request, $keyword);
-                    if (is_array($configuration) && $configuration['fullWorkspace'] > 0 && $pageArguments instanceof PageArguments) {
-                        $previewUser = $this->initializePreviewUser(
-                            (int)$configuration['fullWorkspace'],
-                            $pageArguments->getPageId()
-                        );
-                        if ($previewUser) {
-                            $GLOBALS['BE_USER'] = $previewUser;
-                            // Register the preview user as aspect
-                            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $previewUser);
-                        }
-                    }
+        $setCookieOnCurrentRequest = false;
+        /** @var NormalizedParams $normalizedParams */
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $context = GeneralUtility::makeInstance(Context::class);
+
+        // First, if a Log out is happening, a custom HTML output page is shown and the request exits with removing
+        // the cookie for the backend preview.
+        if ($keyword === 'LOGOUT') {
+            // "log out", and unset the cookie
+            $message = $this->getLogoutTemplateMessage($request->getQueryParams()['returnUrl'] ?? '');
+            $response = new HtmlResponse($message);
+            return $this->addCookie('', $normalizedParams, $response);
+        }
+
+        // If the keyword is ignore, then the preview is not managed as "Preview User" but handled
+        // via the regular backend user or even no user if the GET parameter ADMCMD_noBeUser is set
+        if (!empty($keyword) && $keyword !== 'IGNORE') {
+            $routeResult = $request->getAttribute('routing', null);
+            // A keyword was found in a query parameter or in a cookie
+            // If the keyword is valid, activate a BE User and override any existing BE Users
+            // (in case workspace ID was given and a corresponding site to be used was found)
+            $previewWorkspaceId = $this->getWorkspaceIdFromRequest($request, $keyword);
+            if ($previewWorkspaceId > 0 && $routeResult instanceof RouteResultInterface) {
+                $previewUser = $this->initializePreviewUser($previewWorkspaceId);
+                if ($previewUser instanceof PreviewUserAuthentication) {
+                    $GLOBALS['BE_USER'] = $previewUser;
+                    // Register the preview user as aspect
+                    $this->setBackendUserAspect($context, $previewUser);
+                    // If the GET parameter is set, and we have a valid Preview User, the cookie needs to be
+                    // set and the GET parameter should be removed.
+                    $setCookieOnCurrentRequest = $request->getQueryParams()[$this->previewKey] ?? false;
+                }
             }
         }
 
         // If "ADMCMD_noBeUser" is set, then ensure that there is no workspace preview and no BE User logged in.
         // This option is solely used to ensure that a be user can preview the live version of a page in the
         // workspace preview module.
-        if ($request->getQueryParams()['ADMCMD_noBeUser']) {
+        if ($request->getQueryParams()['ADMCMD_noBeUser'] ?? null) {
             $GLOBALS['BE_USER'] = null;
             // Register the backend user as aspect
-            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), null);
+            $this->setBackendUserAspect($context, null);
             // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
             $request = $request->withAttribute('noCache', true);
             $addInformationAboutDisabledCache = true;
@@ -115,13 +122,12 @@ class WorkspacePreview implements MiddlewareInterface
 
         $response = $handler->handle($request);
 
-        // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
-        if ($addInformationAboutDisabledCache) {
+        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $addInformationAboutDisabledCache) {
             $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
         }
 
         // Add an info box to the frontend content
-        if ($GLOBALS['TSFE']->doWorkspacePreview() && $GLOBALS['TSFE']->isOutputting(true)) {
+        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $GLOBALS['TSFE']->isOutputting(true) && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
             $previewInfo = $this->renderPreviewInfo($GLOBALS['TSFE'], $request->getAttribute('normalizedParams'));
             $body = $response->getBody();
             $body->rewind();
@@ -132,6 +138,10 @@ class WorkspacePreview implements MiddlewareInterface
             $response = $response->withBody($body);
         }
 
+        // If the GET parameter ADMCMD_prev is set, then a cookie is set for the next request to keep the preview user
+        if ($setCookieOnCurrentRequest) {
+            $response = $this->addCookie($keyword, $normalizedParams, $response);
+        }
         return $response;
     }
 
@@ -176,10 +186,10 @@ class WorkspacePreview implements MiddlewareInterface
      *
      * @param ServerRequestInterface $request
      * @param string $inputCode
-     * @return array|null Preview configuration array from sys_preview record.
+     * @return int|null Workspace ID stored in the preview configuration array of a sys_preview record.
      * @throws \Exception
      */
-    protected function getPreviewConfigurationFromRequest(ServerRequestInterface $request, string $inputCode): ?array
+    protected function getWorkspaceIdFromRequest(ServerRequestInterface $request, string $inputCode): ?int
     {
         $previewData = $this->getPreviewData($inputCode);
         if (!is_array($previewData)) {
@@ -194,39 +204,33 @@ class WorkspacePreview implements MiddlewareInterface
         if (!$previewConfig['fullWorkspace']) {
             throw new \Exception('Preview configuration did not include a workspace preview', 1294585190);
         }
-        // If the GET parameter ADMCMD_prev is set, then a cookie is set for the next request
-        if ($request->getQueryParams()[$this->previewKey] ?? false) {
-            $this->setCookie($inputCode, $request->getAttribute('normalizedParams'));
-        }
-        return $previewConfig;
+        return (int)$previewConfig['fullWorkspace'];
     }
 
     /**
-     * Creates a preview user and sets the workspace ID and the current page ID (for accessing the page)
+     * Creates a preview user and sets the workspace ID
      *
      * @param int $workspaceUid the workspace ID to set
-     * @param mixed $requestedPageId pageID to the current page
-     * @return PreviewUserAuthentication|bool if the set up of the workspace was successful, the user is returned.
+     * @return PreviewUserAuthentication|null if the set up of the workspace was successful, the user is returned.
      */
-    protected function initializePreviewUser(int $workspaceUid, $requestedPageId)
+    protected function initializePreviewUser(int $workspaceUid): ?PreviewUserAuthentication
     {
-        if ($workspaceUid > 0) {
-            $previewUser = GeneralUtility::makeInstance(PreviewUserAuthentication::class);
-            $previewUser->setWebmounts([$requestedPageId]);
-            if ($previewUser->setTemporaryWorkspace($workspaceUid)) {
-                return $previewUser;
-            }
+        $previewUser = GeneralUtility::makeInstance(PreviewUserAuthentication::class);
+        if ($previewUser->setTemporaryWorkspace($workspaceUid)) {
+            return $previewUser;
         }
-        return false;
+        return null;
     }
 
     /**
-     * Sets a cookie for logging in a preview user
+     * Adds a cookie for logging in a preview user into the HTTP response
      *
-     * @param string $inputCode
+     * @param string $keyword
      * @param NormalizedParams $normalizedParams
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    protected function setCookie(string $inputCode, NormalizedParams $normalizedParams)
+    protected function addCookie(string $keyword, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
     {
         $cookieSameSite = $this->sanitizeSameSiteCookieValue(
             strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
@@ -236,7 +240,7 @@ class WorkspacePreview implements MiddlewareInterface
 
         $cookie = new Cookie(
             $this->previewKey,
-            $inputCode,
+            $keyword,
             0,
             $normalizedParams->getSitePath(),
             null,
@@ -245,7 +249,7 @@ class WorkspacePreview implements MiddlewareInterface
             false,
             $cookieSameSite
         );
-        header('Set-Cookie: ' . $cookie->__toString(), false);
+        return $response->withAddedHeader('Set-Cookie', $cookie->__toString());
     }
 
     /**
@@ -394,11 +398,11 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'] ?: GeneralUtility::makeInstance(LanguageService::class);
+        return $GLOBALS['LANG'] ?: LanguageService::create('default');
     }
 
     /**
-     * Register the backend user as aspect
+     * Register or override the backend user as aspect, as well as the workspace information the user object is holding
      *
      * @param Context $context
      * @param BackendUserAuthentication $user
