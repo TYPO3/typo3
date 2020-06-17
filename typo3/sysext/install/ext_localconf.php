@@ -95,11 +95,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['pr
 if (!\TYPO3\CMS\Core\Core\Environment::isCli()) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = \TYPO3\CMS\Install\Report\EnvironmentStatusReport::class;
 }
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)
-    ->connect(
-        \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::class,
-        'loadMessages',
-        \TYPO3\CMS\Install\SystemInformation\Typo3VersionMessage::class,
-        'appendMessage'
-    );
