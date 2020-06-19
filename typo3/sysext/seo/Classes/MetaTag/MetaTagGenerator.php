@@ -141,10 +141,9 @@ class MetaTagGenerator
             $cropArea = $cropVariantCollection->getCropArea($cropVariant);
             $crop = $cropArea->makeAbsoluteBasedOnFile($file);
 
-            $cropInformation = $crop->asArray();
-
             $processingConfiguration = [
-                'crop' => $crop
+                'crop' => $crop,
+                'maxWidth' => 2000
             ];
 
             $processedImage = $file->getOriginalFile()->process(
@@ -156,8 +155,8 @@ class MetaTagGenerator
 
             $socialImages[] = [
                 'url' => $imageUri,
-                'width' => floor($cropInformation['width']),
-                'height' => floor($cropInformation['height']),
+                'width' => floor($processedImage->getProperty('width')),
+                'height' => floor($processedImage->getProperty('height')),
                 'alternative' => $arguments['alternative'],
             ];
         }
