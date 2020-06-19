@@ -4076,15 +4076,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if (MathUtility::canBeInterpretedAsInteger($file)) {
                         $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray ?? []);
                         if (!empty($treatIdAsReference)) {
-                            $file = $this->getResourceFactory()->getFileReferenceObject($file);
-                            $fileObject = $file->getOriginalFile();
+                            $fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
+                            $fileObject = $fileReference->getOriginalFile();
                         } else {
                             $fileObject = $this->getResourceFactory()->getFileObject($file);
                         }
                     } elseif (preg_match('/^(0|[1-9][0-9]*):/', $file)) { // combined identifier
                         $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
                     } else {
-                        if (isset($importedFile) && !empty($importedFile) && !empty($fileArray['import'])) {
+                        if ($importedFile && !empty($fileArray['import'])) {
                             $file = $fileArray['import'] . $file;
                         }
                         $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
@@ -4109,8 +4109,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $processingConfiguration['noScale'] = $this->stdWrapValue('noScale', $fileArray ?? []);
                 $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray ?? []);
                 $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray ?? []);
-                if ($file instanceof FileReference) {
-                    $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($file, $fileArray);
+                if (isset($fileReference)) {
+                    $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($fileReference, $fileArray);
                 } else {
                     $processingConfiguration['crop'] = $this->getCropAreaFromFromTypoScriptSettings($fileObject, $fileArray);
                 }
@@ -4154,11 +4154,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
             }
         }
-        // If image was processed by GIFBUILDER:
-        // ($imageResource indicates that it was processed the regular way)
-        if (!isset($imageResource)) {
+        // Triggered when the resolved file object isn't considered as image, processing failed and likely other scenarios
+        // This code path dates back to pre FAL times and should be deprecated and removed eventually
+        if (!isset($imageResource) && is_string($file)) {
             try {
-                $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize((string)$file);
+                $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
                 $info = GeneralUtility::makeInstance(GifBuilder::class)->imageMagickConvert($theImage, 'WEB');
                 $info['origFile'] = $theImage;
                 // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
