@@ -157,7 +157,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
             'id': id + '_offset_x',
             'class': 'form-control t3js-emconf-offsetfield',
             'data-target': '#' + id,
-            'value': $.trim(valArr[0]),
+            'value': valArr[0]?.trim(),
           }),
         ),
       );
@@ -168,7 +168,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
             'id': id + '_offset_y',
             'class': 'form-control t3js-emconf-offsetfield',
             'data-target': '#' + id,
-            'value': $.trim(valArr[1]),
+            'value': valArr[1]?.trim(),
           }),
         ),
       );
@@ -198,7 +198,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
             'id': id + '_wrap_start',
             'class': 'form-control t3js-emconf-wrapfield',
             'data-target': '#' + id,
-            'value': $.trim(valArr[0]),
+            'value': valArr[0]?.trim(),
           }),
         ),
         $('<div>', {'class': 'form-multigroup-item'}).append(
@@ -206,7 +206,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
             'id': id + '_wrap_end',
             'class': 'form-control t3js-emconf-wrapfield',
             'data-target': '#' + id,
-            'value': $.trim(valArr[1]),
+            'value': valArr[1]?.trim(),
           }),
         ),
       );
