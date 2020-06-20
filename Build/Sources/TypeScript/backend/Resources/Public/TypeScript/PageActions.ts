@@ -156,7 +156,7 @@ class PageActions {
     });
 
     $inputFieldWrap.find('[data-action="submit"]').on('click', (): void => {
-      const newPageTitle = $.trim($inputField.val());
+      const newPageTitle = $inputField.val().trim();
       if (newPageTitle !== '' && this.$pageTitle.text() !== newPageTitle) {
         this.saveChanges($inputField);
       } else {

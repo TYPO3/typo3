@@ -884,7 +884,7 @@ class Backend extends Workspaces {
 
       Modal.advanced({
         type: Modal.types.default,
-        title: TYPO3.lang['window.recordInformation'].replace('{0}', $.trim($tr.find('.t3js-title-live').text())),
+        title: TYPO3.lang['window.recordInformation'].replace('{0}', $tr.find('.t3js-title-live').text().trim()),
         content: $content,
         severity: SeverityEnum.info,
         buttons: modalButtons,
