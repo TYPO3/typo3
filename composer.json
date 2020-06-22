@@ -110,6 +110,9 @@
 		"psr/http-message-implementation": "1.0"
 	},
 	"extra": {
+		"typo3/class-alias-loader": {
+			"always-add-alias-loader": true
+		},
 		"branch-alias": {
 			"dev-master": "11.0.x-dev"
 		}
