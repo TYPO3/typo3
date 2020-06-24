@@ -1,3 +1,4 @@
+# Fully cached page, no plugin
 config.pageTitleProviders {
   testMetaProvider {
     provider = TYPO3\CMS\TestMeta\PageTitle\CustomPageTitleProvider

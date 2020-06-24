@@ -29,8 +29,10 @@ class MetaPluginController
     public function setMetaData($content, $configuration): string
     {
         $pageId = $GLOBALS['TYPO3_REQUEST']->getQueryParams()['id'];
-        GeneralUtility::makeInstance(CustomPageTitleProvider::class)
-            ->setTitle('static title with pageId: ' . $pageId . ' and pluginNumber: ' . $configuration['pluginNumber']);
+        if (!empty($configuration['setTitle'])) {
+            GeneralUtility::makeInstance(CustomPageTitleProvider::class)
+                          ->setTitle('static title with pageId: ' . $pageId . ' and pluginNumber: ' . $configuration['pluginNumber']);
+        }
         $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('og:title');
         $metaTagManager->addProperty(
             'og:title',

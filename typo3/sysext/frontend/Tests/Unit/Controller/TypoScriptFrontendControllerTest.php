@@ -489,6 +489,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
         $pageTitleProvider = $this->prophesize(PageTitleProviderManager::class);
         $pageTitleProvider->getTitle()->willReturn($pageTitle);
+        $pageTitleProvider->getPageTitleCache()->willReturn([]);
         GeneralUtility::setSingletonInstance(PageTitleProviderManager::class, $pageTitleProvider->reveal());
 
         $nullCacheBackend = new NullBackend('');

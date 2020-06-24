@@ -1,9 +1,8 @@
-# Cached page, one cached, one uncached plugin last
+# Cached page, one cached that sets title, one uncached plugin last
 config.pageTitleProviders {
   testMetaProvider {
     provider = TYPO3\CMS\TestMeta\PageTitle\CustomPageTitleProvider
     before = record
-    after = altPageTitle
   }
 }
 
@@ -22,5 +21,5 @@ page.20 = USER_INT
 page.20 {
   userFunc = TYPO3\CMS\TestMeta\Controller\MetaPluginController->setMetaData
   pluginNumber = 20
-  setTitle = 1
+  setTitle = 0
 }

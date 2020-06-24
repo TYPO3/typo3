@@ -27,6 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageTitleProviderManager implements SingletonInterface
 {
     /**
+     * @var array
+     */
+    private $pageTitleCache = [];
+
+    /**
      * @return string
      * @throws \TYPO3\CMS\Core\Cache\Exception
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
@@ -45,13 +50,34 @@ class PageTitleProviderManager implements SingletonInterface
             if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
                 /** @var PageTitleProviderInterface $titleProviderObject */
                 $titleProviderObject = GeneralUtility::makeInstance($configuration['provider']);
-                if ($pageTitle = $titleProviderObject->getTitle()) {
+                if (($pageTitle = $titleProviderObject->getTitle())
+                    || ($pageTitle = $this->pageTitleCache[$configuration['provider']] ?? '') !== ''
+                ) {
+                    $this->pageTitleCache[$configuration['provider']] = $pageTitle;
                     break;
                 }
             }
         }
 
         return $pageTitle;
+    }
+
+    /**
+     * @return array
+     * @internal
+     */
+    public function getPageTitleCache(): array
+    {
+        return $this->pageTitleCache;
+    }
+
+    /**
+     * @param array $pageTitleCache
+     * @internal
+     */
+    public function setPageTitleCache(array $pageTitleCache): void
+    {
+        $this->pageTitleCache = $pageTitleCache;
     }
 
     /**
