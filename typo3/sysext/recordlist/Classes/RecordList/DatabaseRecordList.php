@@ -3324,6 +3324,7 @@ class DatabaseRecordList
                     }
                 } elseif ($fieldType === 'text'
                     || $fieldType === 'flex'
+                    || $fieldType === 'slug'
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {
                     $constraints[] = $expressionBuilder->like(
@@ -3365,6 +3366,7 @@ class DatabaseRecordList
                 }
                 if ($fieldType === 'text'
                     || $fieldType === 'flex'
+                    || $fieldType === 'slug'
                     || $fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules))
                 ) {
                     if ($searchConstraint->count() !== 0) {

@@ -62,7 +62,7 @@ return [
             'page-contentFromPid-hideinmenu' => 'apps-pagetree-page-content-from-page-hideinmenu',
             'default' => 'apps-pagetree-page-default'
         ],
-        'searchFields' => 'title,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
+        'searchFields' => 'title,nav_title,subtitle,url,slug,keywords,description,abstract,author,author_email'
     ],
     'interface' => [
         'maxDBListItems' => 30,

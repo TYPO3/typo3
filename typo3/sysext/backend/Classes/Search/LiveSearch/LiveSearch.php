@@ -306,6 +306,7 @@ class LiveSearch
                     );
                 } elseif ($fieldType === 'text'
                     || $fieldType === 'flex'
+                    || $fieldType === 'slug'
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {
                     // Otherwise and if the field makes sense to be searched, assemble a like condition
@@ -357,6 +358,7 @@ class LiveSearch
                 // Assemble the search condition only if the field makes sense to be searched
                 if ($fieldType === 'text'
                     || $fieldType === 'flex'
+                    || $fieldType === 'slug'
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {
                     if ($searchConstraint->count() !== 0) {
