@@ -32,6 +32,11 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
     use LoggerAwareTrait;
 
     /**
+     * @var array
+     */
+    private $pageTitleCache = [];
+
+    /**
      * @return string
      */
     public function getTitle(): string
@@ -53,11 +58,14 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
             if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
                 /** @var PageTitleProviderInterface $titleProviderObject */
                 $titleProviderObject = GeneralUtility::makeInstance($configuration['provider']);
-                if ($pageTitle = $titleProviderObject->getTitle()) {
+                if (($pageTitle = $titleProviderObject->getTitle())
+                    || ($pageTitle = $this->pageTitleCache[$configuration['provider']] ?? '') !== ''
+                ) {
                     $this->logger->debug(
                         'Page title provider ' . $configuration['provider'] . ' used',
                         ['title' => $pageTitle, 'providerUsed' => $configuration['provider']]
                     );
+                    $this->pageTitleCache[$configuration['provider']] = $pageTitle;
                     break;
                 }
                 $this->logger->debug(
@@ -68,6 +76,24 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
         }
 
         return $pageTitle;
+    }
+
+    /**
+     * @return array
+     * @internal
+     */
+    public function getPageTitleCache(): array
+    {
+        return $this->pageTitleCache;
+    }
+
+    /**
+     * @param array $pageTitleCache
+     * @internal
+     */
+    public function setPageTitleCache(array $pageTitleCache): void
+    {
+        $this->pageTitleCache = $pageTitleCache;
     }
 
     /**
