@@ -83,6 +83,7 @@ class PluginsTest extends AbstractTestCase
             'page:uid:3' => [3, 'static title with pageId: 3 and pluginNumber: 20', 'OG title from a controller with pageId: 3 and pluginNumber: 20'],
             'page:uid:4' => [4, 'static title with pageId: 4 and pluginNumber: 20', 'OG title from a controller with pageId: 4 and pluginNumber: 20'],
             'page:uid:5' => [5, 'static title with pageId: 5 and pluginNumber: 10', 'OG title from a controller with pageId: 5 and pluginNumber: 10'],
+            'page:uid:6' => [6, 'static title with pageId: 6 and pluginNumber: 10', 'OG title from a controller with pageId: 6 and pluginNumber: 20'],
         ];
     }
 
