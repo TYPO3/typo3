@@ -67,6 +67,9 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     const PARAM_BOOL = \PDO::PARAM_BOOL; // 5
 
+    /** @var ExpressionBuilder */
+    protected $_expr;
+
     /**
      * @var array
      */
@@ -457,5 +460,15 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         }
 
         return (string)parent::lastInsertId($tableName);
+    }
+
+    /**
+     * Gets the ExpressionBuilder for the connection.
+     *
+     * @return ExpressionBuilder
+     */
+    public function getExpressionBuilder()
+    {
+        return $this->_expr;
     }
 }

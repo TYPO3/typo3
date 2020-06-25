@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,12 +73,23 @@ class QueryBuilder
     protected $additionalRestrictions;
 
     /**
+     * List of table aliases which are completely ignored
+     * when generating the table restrictions in the where-clause.
+     *
+     * Aliases added here are part of a LEFT/RIGHT JOIN, having
+     * their restrictions applied in the JOIN's ON condition already.
+     *
+     * @var string[]
+     */
+    private $restrictionsAppliedInJoinCondition = [];
+
+    /**
      * Initializes a new QueryBuilder.
      *
      * @param Connection $connection The DBAL Connection.
-     * @param QueryRestrictionContainerInterface $restrictionContainer
-     * @param \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder
-     * @param array $additionalRestrictions
+     * @param QueryRestrictionContainerInterface|null $restrictionContainer
+     * @param \Doctrine\DBAL\Query\QueryBuilder|null $concreteQueryBuilder
+     * @param array|null $additionalRestrictions
      */
     public function __construct(
         Connection $connection,
@@ -105,6 +118,7 @@ class QueryBuilder
     {
         foreach ($this->additionalRestrictions as $restrictionClass => $options) {
             if (empty($options['disabled'])) {
+                /** @var QueryRestrictionInterface $restriction */
                 $restriction = GeneralUtility::makeInstance($restrictionClass);
                 $restrictionContainer->add($restriction);
             }
@@ -190,7 +204,7 @@ class QueryBuilder
     /**
      * Executes this query using the bound parameters and their types.
      *
-     * @return \Doctrine\DBAL\Driver\Statement|int
+     * @return Statement|int
      */
     public function execute()
     {
@@ -461,7 +475,7 @@ class QueryBuilder
      *
      * @param string $delete The table whose rows are subject to the deletion.
      *                       Will be quoted according to database platform automatically.
-     * @param string $alias The table alias used in the constructed query.
+     * @param string|null $alias The table alias used in the constructed query.
      *                      Will be quoted according to database platform automatically.
      *
      * @return QueryBuilder This QueryBuilder instance.
@@ -481,7 +495,7 @@ class QueryBuilder
      * a certain table
      *
      * @param string $update The table whose rows are subject to the update.
-     * @param string $alias The table alias used in the constructed query.
+     * @param string|null $alias The table alias used in the constructed query.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -515,7 +529,7 @@ class QueryBuilder
      * given alias, forming a cartesian product with any existing query roots.
      *
      * @param string $from The table. Will be quoted according to database platform automatically.
-     * @param string $alias The alias of the table. Will be quoted according to database platform automatically.
+     * @param string|null $alias The alias of the table. Will be quoted according to database platform automatically.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -535,7 +549,7 @@ class QueryBuilder
      * @param string $fromAlias The alias that points to a from clause.
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
-     * @param string $condition The condition for the join.
+     * @param string|null $condition The condition for the join.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -557,7 +571,7 @@ class QueryBuilder
      * @param string $fromAlias The alias that points to a from clause.
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
-     * @param string $condition The condition for the join.
+     * @param string|null $condition The condition for the join.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -579,12 +593,18 @@ class QueryBuilder
      * @param string $fromAlias The alias that points to a from clause.
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
-     * @param string $condition The condition for the join.
+     * @param string|null $condition The condition for the join.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function leftJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
     {
+        $condition = $this->expr()->andX(
+            $condition,
+            $this->restrictionContainer->buildExpression([$alias ?? $join => $join], $this->expr())
+        );
+        $this->restrictionsAppliedInJoinCondition[] = $alias ?? $join;
+
         $this->concreteQueryBuilder->leftJoin(
             $this->quoteIdentifier($fromAlias),
             $this->quoteIdentifier($join),
@@ -601,12 +621,27 @@ class QueryBuilder
      * @param string $fromAlias The alias that points to a from clause.
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
-     * @param string $condition The condition for the join.
+     * @param string|null $condition The condition for the join.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function rightJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
     {
+        $fromTable = $fromAlias;
+        // find the table belonging to the $fromAlias, if it's an alias at all
+        foreach ($this->getQueryPart('from') ?: [] as $from) {
+            if (isset($from['alias']) && $this->unquoteSingleIdentifier($from['alias']) === $fromAlias) {
+                $fromTable = $this->unquoteSingleIdentifier($from['table']);
+                break;
+            }
+        }
+
+        $condition = $this->expr()->andX(
+            $condition,
+            $this->restrictionContainer->buildExpression([$fromAlias => $fromTable], $this->expr())
+        );
+        $this->restrictionsAppliedInJoinCondition[] = $fromAlias;
+
         $this->concreteQueryBuilder->rightJoin(
             $this->quoteIdentifier($fromAlias),
             $this->quoteIdentifier($join),
@@ -804,7 +839,7 @@ class QueryBuilder
      * Replaces any previously specified orderings, if any.
      *
      * @param string $fieldName The fieldName to order by. Will be quoted according to database platform automatically.
-     * @param string $order The ordering direction. No automatic quoting/escaping.
+     * @param string|null $order The ordering direction. No automatic quoting/escaping.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -819,7 +854,7 @@ class QueryBuilder
      * Adds an ordering to the query results.
      *
      * @param string $fieldName The fieldName to order by. Will be quoted according to database platform automatically.
-     * @param string $order The ordering direction.
+     * @param string|null $order The ordering direction.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -904,7 +939,7 @@ class QueryBuilder
      *
      * @param mixed $value
      * @param int $type
-     * @param string $placeHolder The name to bind with. The string must start with a colon ':'.
+     * @param string|null $placeHolder The name to bind with. The string must start with a colon ':'.
      *
      * @return string the placeholder name used.
      */
@@ -1129,7 +1164,9 @@ class QueryBuilder
         foreach ($this->getQueryPart('from') as $from) {
             $tableName = $this->unquoteSingleIdentifier($from['table']);
             $tableAlias = isset($from['alias']) ? $this->unquoteSingleIdentifier($from['alias']) : $tableName;
-            $queriedTables[$tableAlias] = $tableName;
+            if (!in_array($tableAlias, $this->restrictionsAppliedInJoinCondition, true)) {
+                $queriedTables[$tableAlias] = $tableName;
+            }
         }
 
         // Loop through all JOIN tables
@@ -1137,7 +1174,9 @@ class QueryBuilder
             foreach ($joins as $join) {
                 $tableName = $this->unquoteSingleIdentifier($join['joinTable']);
                 $tableAlias = isset($join['joinAlias']) ? $this->unquoteSingleIdentifier($join['joinAlias']) : $tableName;
-                $queriedTables[$tableAlias] = $tableName;
+                if (!in_array($tableAlias, $this->restrictionsAppliedInJoinCondition, true)) {
+                    $queriedTables[$tableAlias] = $tableName;
+                }
             }
         }
 
