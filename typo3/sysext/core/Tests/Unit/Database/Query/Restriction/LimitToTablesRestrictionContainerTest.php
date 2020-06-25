@@ -82,15 +82,4 @@ class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->removeByType(DeletedRestriction::class);
         $subject->buildExpression(['aTable' => 'aTable', 'bTable' => 'bTable', 'bt' => 'bTable'], $this->expressionBuilder);
     }
-
-    /**
-     * @test
-     */
-    public function buildRestrictionsThrowsExceptionWhenGivenAliasIsNotInQueriedTables(): void
-    {
-        $this->expectException(\LogicException::class);
-        $subject = new LimitToTablesRestrictionContainer();
-        $subject->addForTables(new HiddenRestriction(), ['bt']);
-        $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-    }
 }

@@ -588,9 +588,12 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->quoteIdentifier('alias')
             ->shouldBeCalled()
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->leftJoin('fromAlias', 'join', 'alias', null)
+        $this->concreteQueryBuilder->leftJoin('fromAlias', 'join', 'alias', Argument::cetera())
             ->shouldBeCalled()
             ->willReturn($this->subject);
+
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal());
+        $this->connection->getExpressionBuilder()->willReturn($expressionBuilder);
 
         $this->subject->leftJoin('fromAlias', 'join', 'alias');
     }
@@ -609,9 +612,14 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->quoteIdentifier('alias')
             ->shouldBeCalled()
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->rightJoin('fromAlias', 'join', 'alias', null)
+        $this->concreteQueryBuilder->rightJoin('fromAlias', 'join', 'alias', Argument::cetera())
             ->shouldBeCalled()
             ->willReturn($this->subject);
+
+        $this->concreteQueryBuilder->getQueryPart('from')->willReturn([]);
+
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal());
+        $this->connection->getExpressionBuilder()->willReturn($expressionBuilder);
 
         $this->subject->rightJoin('fromAlias', 'join', 'alias');
     }
@@ -1542,6 +1550,104 @@ class QueryBuilderTest extends UnitTestCase
 
         $this->connection->executeQuery(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $subject->execute();
+    }
+
+    /**
+     * @test
+     */
+    public function restrictionsAreAppliedInJoinConditionForLeftJoins(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
+            'delete' => 'deleted',
+            'enablecolumns' => [
+                'disabled' => 'hidden',
+            ],
+        ];
+
+        $this->connection->quoteIdentifier(Argument::cetera())
+                         ->willReturnArgument(0);
+        $this->connection->quoteIdentifiers(Argument::cetera())
+                         ->willReturnArgument(0);
+
+        $connectionBuilder = GeneralUtility::makeInstance(
+            \Doctrine\DBAL\Query\QueryBuilder::class,
+            $this->connection->reveal()
+        );
+
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal());
+        $this->connection->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $subject = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $connectionBuilder
+        );
+
+        $subject->select('*')
+                ->from('pages')
+                ->leftJoin(
+                    'pages',
+                    'tt_content',
+                    'content',
+                    'pages.uid = content.pid'
+                )
+                ->where($expressionBuilder->eq('uid', 1));
+
+        $this->connection->executeQuery(
+            'SELECT * FROM pages LEFT JOIN tt_content content ON (pages.uid = content.pid) AND ((content.deleted = 0) AND (content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $subject->execute();
+    }
+
+    /**
+     * @test
+     */
+    public function restrictionsAreAppliedInJoinConditionForRightJoins(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
+            'delete' => 'deleted',
+            'enablecolumns' => [
+                'disabled' => 'hidden',
+            ],
+        ];
+
+        $this->connection->quoteIdentifier(Argument::cetera())
+                         ->willReturnArgument(0);
+        $this->connection->quoteIdentifiers(Argument::cetera())
+                         ->willReturnArgument(0);
+
+        $connectionBuilder = GeneralUtility::makeInstance(
+            \Doctrine\DBAL\Query\QueryBuilder::class,
+            $this->connection->reveal()
+        );
+
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal());
+        $this->connection->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $subject = new QueryBuilder(
+            $this->connection->reveal(),
+            null,
+            $connectionBuilder
+        );
+
+        $subject->select('*')
+                ->from('tt_content')
+                ->rightJoin(
+                    'tt_content',
+                    'pages',
+                    'pages',
+                    'pages.uid = tt_content.pid'
+                )
+                ->where($expressionBuilder->eq('uid', 1));
+
+        $this->connection->executeQuery(
+            'SELECT * FROM tt_content RIGHT JOIN pages pages ON (pages.uid = tt_content.pid) AND ((tt_content.deleted = 0) AND (tt_content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
             Argument::cetera()
         )->shouldBeCalled();
 

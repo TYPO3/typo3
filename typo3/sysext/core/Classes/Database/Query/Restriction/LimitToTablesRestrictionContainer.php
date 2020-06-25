@@ -105,10 +105,9 @@ class LimitToTablesRestrictionContainer implements QueryRestrictionContainerInte
 
         $filteredTables = [];
         foreach ($this->applicableTableAliases[$name] as $tableAlias) {
-            if (!isset($queriedTables[$tableAlias])) {
-                throw new \LogicException(sprintf('Applicable table alias "%s" is not in queried tables', $tableAlias), 1558354033);
+            if (isset($queriedTables[$tableAlias])) {
+                $filteredTables[$tableAlias] = $queriedTables[$tableAlias];
             }
-            $filteredTables[$tableAlias] = $queriedTables[$tableAlias];
         }
 
         return $filteredTables;
