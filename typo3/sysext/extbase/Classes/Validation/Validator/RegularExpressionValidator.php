@@ -26,7 +26,8 @@ class RegularExpressionValidator extends AbstractValidator
      * @var array
      */
     protected $supportedOptions = [
-        'regularExpression' => ['', 'The regular expression to use for validation, used as given', 'string', true]
+        'regularExpression' => ['', 'The regular expression to use for validation, used as given', 'string', true],
+        'errorMessage' => ['', 'Error Message to show when validation fails', 'string', false],
     ];
 
     /**
@@ -39,16 +40,31 @@ class RegularExpressionValidator extends AbstractValidator
     {
         $result = preg_match($this->options['regularExpression'], $value);
         if ($result === 0) {
+            $errorMessage = $this->getErrorMessage();
             $this->addError(
-                $this->translateErrorMessage(
-                    'validator.regularexpression.nomatch',
-                    'extbase'
-                ),
+                $errorMessage,
                 1221565130
             );
         }
         if ($result === false) {
             throw new InvalidValidationOptionsException('regularExpression "' . $this->options['regularExpression'] . '" in RegularExpressionValidator contained an error.', 1298273089);
         }
+    }
+
+    protected function getErrorMessage(): string
+    {
+        $errorMessage = $this->options['errorMessage'] ?? '';
+        // if custom message is no locallang reference
+        if ($errorMessage && strpos($errorMessage, 'LLL') === false) {
+            return $errorMessage;
+        }
+        if (!$errorMessage) {
+            // fallback to default message
+            $errorMessage = 'validator.regularexpression.nomatch';
+        }
+        return $this->translateErrorMessage(
+            $errorMessage,
+            'extbase'
+        );
     }
 }
