@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Repository;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Configuration\RedirectCleanupConfiguration;
 
 /**
  * Class for accessing redirect records from the database
@@ -158,5 +160,45 @@ class RedirectRepository
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder;
+    }
+
+    public function removeRecordsByConfguration(RedirectCleanupConfiguration $redirectCleanupConfiguration)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder
+            ->delete('sys_redirect')
+            ->where(
+                $queryBuilder->expr()->eq('protected', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
+
+        if ($redirectCleanupConfiguration->getHitCount() !== null) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->lt('hitcount', $queryBuilder->createNamedParameter($redirectCleanupConfiguration->getHitCount(), \PDO::PARAM_INT))
+            );
+        }
+        if ($redirectCleanupConfiguration->getDomains() !== []) {
+            $queryBuilder
+                ->andWhere('source_host IN (:domains)')
+                ->setParameter('domains', $redirectCleanupConfiguration->getDomains(), Connection::PARAM_STR_ARRAY);
+        }
+        if ($redirectCleanupConfiguration->getStatusCodes() !== []) {
+            $queryBuilder
+                ->andWhere('target_statuscode IN (:statusCodes)')
+                ->setParameter('statusCodes', $redirectCleanupConfiguration->getStatusCodes(), Connection::PARAM_INT_ARRAY);
+        }
+        if ($redirectCleanupConfiguration->getDays() !== null) {
+            $timeStamp = (new \DateTimeImmutable($redirectCleanupConfiguration->getDays() . ' days ago'))->getTimestamp();
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->lt('createdon', $queryBuilder->createNamedParameter($timeStamp, \PDO::PARAM_INT))
+            );
+        }
+        if ($redirectCleanupConfiguration->getPath() !== null) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->like('source_path', ':path'))
+                ->setParameter('path', $redirectCleanupConfiguration->getPath(), \PDO::PARAM_STR);
+        }
+
+        $queryBuilder->execute();
     }
 }

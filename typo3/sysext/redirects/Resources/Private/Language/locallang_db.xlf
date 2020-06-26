@@ -66,6 +66,12 @@
 			<trans-unit id="tabs.redirectCount" resname="tabs.redirectCount">
 				<source>Statistics</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.protected" resname="sys_redirect.protected">
+				<source>Protected</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.protected.description" resname="sys_redirect.protected">
+				<source>When enabled, this redirect will be skipped by scheduled cleanup tasks that might delete redirects under certain conditions.</source>
+			</trans-unit>
 			<trans-unit id="sys_redirect.is_regexp" resname="sys_redirect.is_regexp">
 				<source>Is regular expression?</source>
 			</trans-unit>

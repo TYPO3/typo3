@@ -18,6 +18,27 @@
 			<trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode">
 				<source>HTTP Status Code for the redirect, 301 is the default</source>
 			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.name" resname="cleanupRedirectsTask.name">
+				<source>Cleanup Redirects Task</source>
+			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.description" resname="cleanupRedirectsTask.description">
+				<source>Cleanup old redirects periodically for defined conditions like age, hit count or domains.</source>
+			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.label.days" resname="cleanupRedirectsTask.label.days">
+				<source><![CDATA[Age of records in days ( query usage: createdon < :age )]]></source>
+			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.label.domains" resname="cleanupRedirectsTask.label.domains">
+				<source><![CDATA[Domain(s) comma separated ( query usage: source_host IN (:domains) )]]></source>
+			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.label.hitCount" resname="cleanupRedirectsTask.label.hitCount">
+				<source><![CDATA[Hit Count ( query usage: hitcount < :hitCount )]]></source>
+			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.label.path" resname="cleanupRedirectsTask.label.path">
+				<source><![CDATA[Path pattern ( query usage: source_path LIKE :path )]]></source>
+			</trans-unit>
+			<trans-unit id="cleanupRedirectsTask.label.statusCodes" resname="cleanupRedirectsTask.label.statusCodes">
+				<source><![CDATA[Status code(s) comma separated ( query usage: target_statuscode IN (:statusCodes) )]]></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -21,6 +21,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
@@ -51,7 +52,8 @@ class IntegrityServiceTest extends FunctionalTestCase
             new RedirectService(
                 new RedirectCacheService(),
                 $this->prophesize(LinkService::class)->reveal(),
-                $siteFinder
+                $siteFinder,
+                new RedirectRepository()
             ),
             $siteFinder
         );

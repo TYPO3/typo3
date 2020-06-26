@@ -18,6 +18,11 @@ services:
       - name: 'console.command'
         command: 'redirects:checkintegrity'
 
+  TYPO3\CMS\Redirects\Command\CleanupRedirectsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'redirects:cleanup'
+
   TYPO3\CMS\Redirects\EventListener\RecordHistoryRollbackEventsListener:
     tags:
       - name: event.listener

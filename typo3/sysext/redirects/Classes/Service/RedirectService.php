@@ -38,6 +38,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
+use TYPO3\CMS\Redirects\Configuration\RedirectCleanupConfiguration;
+use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
 /**
  * Creates a proper URL to redirect from a matched redirect of a request
@@ -63,11 +65,17 @@ class RedirectService implements LoggerAwareInterface
      */
     protected $siteFinder;
 
-    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService, SiteFinder $siteFinder)
+    /**
+     * @var RedirectRepository
+     */
+    protected $redirectRepository;
+
+    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService, SiteFinder $siteFinder, RedirectRepository $redirectRepository)
     {
         $this->redirectCacheService = $redirectCacheService;
         $this->linkService = $linkService;
         $this->siteFinder = $siteFinder;
+        $this->redirectRepository = $redirectRepository;
     }
 
     /**
@@ -128,6 +136,11 @@ class RedirectService implements LoggerAwareInterface
         }
 
         return null;
+    }
+
+    public function cleanupRedirectsByConfiguration(RedirectCleanupConfiguration $redirectCleanupConfiguration): void
+    {
+        $this->redirectRepository->removeRecordsByConfguration($redirectCleanupConfiguration);
     }
 
     /**

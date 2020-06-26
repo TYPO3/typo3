@@ -5,6 +5,7 @@ CREATE TABLE sys_redirect (
 	source_host varchar(255) DEFAULT '' NOT NULL,
 	source_path varchar(2048) DEFAULT '' NOT NULL,
 	is_regexp tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	protected tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	force_https tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	respect_query_parameters tinyint(1) unsigned DEFAULT '0' NOT NULL,

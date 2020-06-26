@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -59,6 +60,11 @@ class RedirectServiceTest extends UnitTestCase
      */
     protected $siteFinder;
 
+    /**
+     * @var ObjectProphecy|RedirectRepository
+     */
+    protected $redirectRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -66,8 +72,9 @@ class RedirectServiceTest extends UnitTestCase
         $this->redirectCacheServiceProphecy = $this->prophesize(RedirectCacheService::class);
         $this->linkServiceProphecy = $this->prophesize(LinkService::class);
         $this->siteFinder = $this->prophesize(SiteFinder::class);
+        $this->redirectRepository = $this->prophesize(RedirectRepository::class);
 
-        $this->redirectService = new RedirectService($this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal());
+        $this->redirectService = new RedirectService($this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal(), $this->redirectRepository->reveal());
         $this->redirectService->setLogger($loggerProphecy->reveal());
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
@@ -578,7 +585,7 @@ class RedirectServiceTest extends UnitTestCase
         $redirectService = $this->getAccessibleMock(
             RedirectService::class,
             ['getUriFromCustomLinkDetails'],
-            [$this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal()],
+            [$this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal(), $this->redirectRepository->reveal()],
             '',
             true
         );
