@@ -8114,8 +8114,9 @@ class DataHandler implements LoggerAwareInterface
      * Imagemagick calls because the size information has
      * to be fetched again after clearing.
      * - all caches inside the cache manager that are inside the group "system"
-     * - they are only needed to build up the core system and templates,
-     *   use "temp_cached" or "system" to do that
+     * - they are only needed to build up the core system and templates.
+     *   If the group of system caches needs to be deleted explicitly, use
+     *   flushCachesInGroup('system') of CacheManager directly.
      *
      * $cacheCmd=[integer]
      * Clears cache for the page pointed to by $cacheCmd (an integer).
