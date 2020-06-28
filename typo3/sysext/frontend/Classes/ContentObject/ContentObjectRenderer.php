@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -1463,8 +1464,20 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_lang($content = '', $conf = [])
     {
         $currentLanguageCode = $this->getTypoScriptFrontendController()->getLanguage()->getTypo3Language();
-        if ($currentLanguageCode && isset($conf['lang.'][$currentLanguageCode])) {
+        if (!$currentLanguageCode) {
+            return $content;
+        }
+        if (isset($conf['lang.'][$currentLanguageCode])) {
             $content = $conf['lang.'][$currentLanguageCode];
+        } else {
+            // Check language dependencies
+            $locales = GeneralUtility::makeInstance(Locales::class);
+            foreach ($locales->getLocaleDependencies($currentLanguageCode) as $languageCode) {
+                if (isset($conf['lang.'][$languageCode])) {
+                    $content = $conf['lang.'][$languageCode];
+                    break;
+                }
+            }
         }
         return $content;
     }
