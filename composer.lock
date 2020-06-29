@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a3876621a6a69d1826034146021adab",
+    "content-hash": "7c760a15bfc27ce74e1c2146af72dc14",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -8174,8 +8174,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -8389,6 +8389,7 @@
         "php": "^7.2",
         "ext-pdo": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-pcre": "*",
         "ext-session": "*",
         "ext-xml": "*"
