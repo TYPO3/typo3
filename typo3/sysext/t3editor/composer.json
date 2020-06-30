@@ -19,6 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
+		"ext-libxml": "*",
 		"typo3/cms-core": "11.0.*@dev"
 	},
 	"conflict": {
