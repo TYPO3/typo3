@@ -5381,7 +5381,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Init vars:
-        $allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state' . $addSelectFields;
+        $allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state,l10n_parent' . $addSelectFields;
         $depth = (int)$depth;
         $begin = (int)$begin;
         $theList = [];

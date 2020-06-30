@@ -100,6 +100,35 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function getMenuWithMountPoint()
+    {
+        $subject = new PageRepository();
+        $rows = $subject->getMenu([1000]);
+        self::assertEquals('root default language', $rows[1003]['title']);
+        self::assertEquals('1001', $rows[1003]['uid']);
+        self::assertEquals('1001-1003', $rows[1003]['_MP_PARAM']);
+        self::assertCount(2, $rows);
+    }
+
+    /**
+     * @test
+     */
+    public function getMenuPageOverlayWithMountPoint()
+    {
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
+        $rows = $subject->getMenu([1000]);
+        self::assertEquals('root translation', $rows[1003]['title']);
+        self::assertEquals('1001', $rows[1003]['uid']);
+        self::assertEquals('1002', $rows[1003]['_PAGES_OVERLAY_UID']);
+        self::assertEquals('1001-1003', $rows[1003]['_MP_PARAM']);
+        self::assertCount(2, $rows);
+    }
+
+    /**
+     * @test
+     */
     public function getPageOverlayById()
     {
         $subject = new PageRepository();
@@ -398,6 +427,36 @@ class PageRepositoryTest extends FunctionalTestCase
         );
 
         self::assertSame($expectedSQL, $subject->where_hid_del);
+    }
+
+    ////////////////////////////////
+    // Tests concerning mountpoints
+    ////////////////////////////////
+    ///
+    /**
+     * @test
+     */
+    public function getMountPointInfoForDefaultLanguage()
+    {
+        $subject = new PageRepository();
+        $mountPointInfo = $subject->getMountPointInfo(1003);
+        self::assertEquals('1001-1003', $mountPointInfo['MPvar']);
+    }
+
+    /**
+     * @test
+     */
+    public function getMountPointInfoForTranslation()
+    {
+        $mpVar = '1001-1003';
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
+        $mountPointInfo = $subject->getMountPointInfo(1003);
+        self::assertEquals($mpVar, $mountPointInfo['MPvar']);
+
+        $mountPointInfo = $subject->getMountPointInfo(1004);
+        self::assertEquals($mpVar, $mountPointInfo['MPvar']);
     }
 
     ////////////////////////////////

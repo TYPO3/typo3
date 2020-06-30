@@ -586,7 +586,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryResult = $queryBuilder
-                ->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
+                ->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state', 'l10n_parent')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(

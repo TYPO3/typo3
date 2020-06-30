@@ -132,4 +132,46 @@
         <title>Attrappe 1-3-9</title>
         <deleted>0</deleted>
     </pages>
+    <pages>
+        <uid>1000</uid>
+        <pid>0</pid>
+        <doktype>1</doktype>
+        <sys_language_uid>0</sys_language_uid>
+        <title>MountPoint tests</title>
+    </pages>
+
+    <pages>
+        <uid>1001</uid>
+        <pid>1000</pid>
+        <doktype>1</doktype>
+        <sys_language_uid>0</sys_language_uid>
+        <title>root default language</title>
+    </pages>
+    <pages>
+        <uid>1002</uid>
+        <pid>1000</pid>
+        <doktype>1</doktype>
+        <l10n_parent>1001</l10n_parent>
+        <sys_language_uid>1</sys_language_uid>
+        <title>root translation</title>
+    </pages>
+    <pages>
+        <uid>1003</uid>
+        <pid>1000</pid>
+        <doktype>7</doktype>
+        <mount_pid>1001</mount_pid>
+        <mount_pid_ol>1</mount_pid_ol>
+        <sys_language_uid>0</sys_language_uid>
+        <title>Mount default language</title>
+    </pages>
+    <pages>
+        <uid>1004</uid>
+        <pid>1000</pid>
+        <doktype>7</doktype>
+        <mount_pid>1001</mount_pid>
+        <mount_pid_ol>1</mount_pid_ol>
+        <l10n_parent>1003</l10n_parent>
+        <sys_language_uid>1</sys_language_uid>
+        <title>Mount translation</title>
+    </pages>
 </dataset>
