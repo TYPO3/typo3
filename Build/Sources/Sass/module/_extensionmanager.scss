@@ -22,6 +22,28 @@
 }
 
 .extension-list {
+    th {
+        &:nth-child(1),
+        &:nth-child(2) {
+            width: 4%;
+        }
+
+        &:nth-child(3),
+        &:nth-child(4) {
+            width: 30%;
+        }
+
+        &:nth-child(5),
+        &:nth-child(6),
+        &:nth-child(7) {
+            width: 7%;
+        }
+
+        &:nth-child(8) {
+            width: 11%;
+        }
+    }
+
     .installed td {
         background-color: #ccdec2;
     }
@@ -41,6 +63,10 @@
     .inactive {
         color: #aaa;
     }
+}
+
+.extension-list-search {
+    padding-right: 2.3em;
 }
 
 .extension-icon {
