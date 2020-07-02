@@ -133,6 +133,15 @@
         <no_index>1</no_index>
     </pages>
     <pages>
+        <uid>18</uid>
+        <pid>1</pid>
+        <title>Sitemap priority 1.0</title>
+        <tstamp>1491811200</tstamp>
+        <slug>/sitemap-priority-1</slug>
+        <deleted>0</deleted>
+        <sitemap_priority>1.0</sitemap_priority>
+    </pages>
+    <pages>
         <uid>100</uid>
         <pid>0</pid>
         <title>Root FR</title>
