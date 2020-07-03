@@ -10,19 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-import AbstractClientStorage from './AbstractClientStorage';
-
-/**
- * Module: TYPO3/CMS/Backend/Storage/Client
- * Wrapper for localStorage
- * @exports TYPO3/CMS/Backend/Storage/Client
- */
-class Client extends AbstractClientStorage {
-  public constructor() {
-    super();
-    this.storage = localStorage;
-  }
-}
-
-export = new Client();
+define(["require","exports","./AbstractClientStorage"],(function(e,t,s){"use strict";class r extends s.default{constructor(){super(),this.storage=sessionStorage}}return new r}));

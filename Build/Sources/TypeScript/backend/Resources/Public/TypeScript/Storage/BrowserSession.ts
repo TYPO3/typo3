@@ -14,15 +14,15 @@
 import AbstractClientStorage from './AbstractClientStorage';
 
 /**
- * Module: TYPO3/CMS/Backend/Storage/Client
- * Wrapper for localStorage
- * @exports TYPO3/CMS/Backend/Storage/Client
+ * Module: TYPO3/CMS/Backend/Storage/BrowserSession
+ * Wrapper for sessionStorage
+ * @exports TYPO3/CMS/Backend/Storage/BrowserSession
  */
-class Client extends AbstractClientStorage {
+class BrowserSession extends AbstractClientStorage {
   public constructor() {
     super();
-    this.storage = localStorage;
+    this.storage = sessionStorage;
   }
 }
 
-export = new Client();
+export = new BrowserSession();
