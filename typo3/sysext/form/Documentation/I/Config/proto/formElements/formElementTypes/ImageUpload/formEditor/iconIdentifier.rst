@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          ImageUpload:
            formEditor:
-             iconIdentifier: t3-form-icon-image-upload
+             iconIdentifier: form-image-upload
 
 .. :aspect:`Good to know`
       ToDo

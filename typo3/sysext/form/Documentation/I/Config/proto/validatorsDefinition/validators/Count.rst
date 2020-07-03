@@ -127,7 +127,7 @@ formeditor.iconIdentifier
 
          Count:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
 
 .. :aspect:`Good to know`
@@ -161,7 +161,7 @@ formeditor.label
 
          Count:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
 
 :aspect:`Good to know`

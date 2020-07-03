@@ -108,4 +108,4 @@ formEditor
               label: formEditor.elements.Url.label
               group: html5
               groupSorting: 300
-              iconIdentifier: t3-form-icon-url
+              iconIdentifier: form-url

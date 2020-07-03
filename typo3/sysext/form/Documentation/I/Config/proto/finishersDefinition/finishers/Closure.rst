@@ -99,7 +99,7 @@ formeditor.iconIdentifier
 
          Closure:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.Closure.editor.header.label
              predefinedDefaults:
                options:
@@ -136,7 +136,7 @@ formeditor.label
 
          Closure:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.Closure.editor.header.label
              predefinedDefaults:
                options:
@@ -173,7 +173,7 @@ formeditor.predefinedDefaults
 
          Closure:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.Closure.editor.header.label
              predefinedDefaults:
                options:

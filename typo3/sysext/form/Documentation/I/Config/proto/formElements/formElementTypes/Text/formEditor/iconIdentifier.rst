@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Text:
            formEditor:
-             iconIdentifier: t3-form-icon-text
+             iconIdentifier: form-text
 
 .. :aspect:`Good to know`
       ToDo

@@ -78,7 +78,7 @@ formeditor.iconIdentifier
 
          Float:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.Float.label
 
 .. :aspect:`Good to know`
@@ -112,7 +112,7 @@ formeditor.label
 
          Float:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.Float.label
 
 :aspect:`Good to know`

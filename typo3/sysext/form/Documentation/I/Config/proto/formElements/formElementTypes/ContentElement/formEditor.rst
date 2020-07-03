@@ -44,4 +44,4 @@ formEditor
              label: formEditor.elements.ContentElement.label
              group: custom
              groupSorting: 700
-             iconIdentifier: t3-form-icon-content-element
+             iconIdentifier: form-content-element

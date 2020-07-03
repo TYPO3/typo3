@@ -64,4 +64,4 @@ formEditor
              label: formEditor.elements.Hidden.label
              group: custom
              groupSorting: 300
-             iconIdentifier: t3-form-icon-hidden
+             iconIdentifier: form-hidden

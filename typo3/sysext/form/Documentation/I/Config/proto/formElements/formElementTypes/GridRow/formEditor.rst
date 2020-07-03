@@ -60,4 +60,4 @@ formEditor
              groupSorting: 300
              _isCompositeFormElement: true
              _isGridRowFormElement: true
-             iconIdentifier: t3-form-icon-gridrow
+             iconIdentifier: form-gridrow

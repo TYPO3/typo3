@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          ContentElement:
            formEditor:
-             iconIdentifier: t3-form-icon-content-element
+             iconIdentifier: form-content-element
 
 .. :aspect:`Good to know`
       ToDo

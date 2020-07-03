@@ -135,4 +135,4 @@ formEditor
              label: formEditor.elements.ImageUpload.label
              group: custom
              groupSorting: 400
-             iconIdentifier: t3-form-icon-image-upload
+             iconIdentifier: form-image-upload

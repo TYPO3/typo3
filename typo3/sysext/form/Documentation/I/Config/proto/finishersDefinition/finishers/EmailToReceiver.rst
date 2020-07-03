@@ -542,7 +542,7 @@ formeditor.iconIdentifier
 
          EmailToReceiver:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
              predefinedDefaults:
                options:
@@ -590,7 +590,7 @@ formeditor.label
 
          EmailToReceiver:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
              predefinedDefaults:
                options:
@@ -638,7 +638,7 @@ formeditor.predefinedDefaults
 
          EmailToReceiver:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
              predefinedDefaults:
                options:

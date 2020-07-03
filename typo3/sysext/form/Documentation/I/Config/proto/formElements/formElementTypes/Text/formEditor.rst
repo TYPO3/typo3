@@ -241,4 +241,4 @@ formEditor
              label: formEditor.elements.Text.label
              group: input
              groupSorting: 100
-             iconIdentifier: t3-form-icon-text
+             iconIdentifier: form-text

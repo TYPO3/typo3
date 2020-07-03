@@ -127,7 +127,7 @@ formeditor.iconIdentifier
 
          NumberRange:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
 
 .. :aspect:`Good to know`
@@ -161,7 +161,7 @@ formeditor.label
 
          NumberRange:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
 
 :aspect:`Good to know`

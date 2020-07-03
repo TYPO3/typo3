@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          StaticText:
            formEditor:
-             iconIdentifier: t3-form-icon-static-text
+             iconIdentifier: form-static-text
 
 .. :aspect:`Good to know`
       ToDo

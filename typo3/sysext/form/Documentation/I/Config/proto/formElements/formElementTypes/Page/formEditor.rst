@@ -51,4 +51,4 @@ formEditor
              groupSorting: 100
              _isTopLevelFormElement: true
              _isCompositeFormElement: true
-             iconIdentifier: t3-form-icon-page
+             iconIdentifier: form-page

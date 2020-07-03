@@ -46,9 +46,9 @@ implementationClassName
 
          EmailAddress:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
- 
+
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
@@ -80,7 +80,7 @@ formeditor.iconIdentifier
 
          EmailAddress:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
 
 .. :aspect:`Good to know`
@@ -115,7 +115,7 @@ formeditor.label
 
          EmailAddress:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
 
 :aspect:`Good to know`

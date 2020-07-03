@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Email:
            formEditor:
-             iconIdentifier: t3-form-icon-email
+             iconIdentifier: form-email
 
 .. :aspect:`Good to know`
       ToDo

@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Checkbox:
            formEditor:
-             iconIdentifier: t3-form-icon-checkbox
+             iconIdentifier: form-checkbox
 
 .. :aspect:`Good to know`
       ToDo

@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Telephone:
            formEditor:
-             iconIdentifier: t3-form-icon-telephone
+             iconIdentifier: form-telephone
 
 .. :aspect:`Good to know`
       ToDo

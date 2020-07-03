@@ -59,4 +59,4 @@ formEditor
              group: container
              groupSorting: 100
              _isCompositeFormElement: true
-             iconIdentifier: t3-form-icon-fieldset
+             iconIdentifier: form-fieldset

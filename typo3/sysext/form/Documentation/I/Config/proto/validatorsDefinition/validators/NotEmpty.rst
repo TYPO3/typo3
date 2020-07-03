@@ -81,7 +81,7 @@ formeditor.iconIdentifier
 
          NotEmpty:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.FormElement.editor.requiredValidator.label
 
 .. :aspect:`Good to know`
@@ -115,7 +115,7 @@ formeditor.label
 
          NotEmpty:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.FormElement.editor.requiredValidator.label
 
 :aspect:`Good to know`

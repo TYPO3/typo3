@@ -70,4 +70,4 @@ formEditor
              label: formEditor.elements.Checkbox.label
              group: select
              groupSorting: 100
-             iconIdentifier: t3-form-icon-checkbox
+             iconIdentifier: form-checkbox

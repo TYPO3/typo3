@@ -241,4 +241,4 @@ formEditor
              label: formEditor.elements.Password.label
              group: input
              groupSorting: 300
-             iconIdentifier: t3-form-icon-password
+             iconIdentifier: form-password

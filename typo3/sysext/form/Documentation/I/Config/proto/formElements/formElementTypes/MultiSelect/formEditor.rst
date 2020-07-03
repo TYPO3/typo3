@@ -128,4 +128,4 @@ formEditor
              label: formEditor.elements.MultiSelect.label
              group: select
              groupSorting: 500
-             iconIdentifier: t3-form-icon-multi-select
+             iconIdentifier: form-multi-select

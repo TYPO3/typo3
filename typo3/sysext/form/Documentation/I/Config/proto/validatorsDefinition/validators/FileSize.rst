@@ -127,7 +127,7 @@ formeditor.iconIdentifier
 
              FileSize:
                formEditor:
-                 iconIdentifier: t3-form-icon-validator
+                 iconIdentifier: form-validator
                  label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
 
 .. :aspect:`Good to know`
@@ -161,7 +161,7 @@ formeditor.label
 
              FileSize:
                formEditor:
-                 iconIdentifier: t3-form-icon-validator
+                 iconIdentifier: form-validator
                  label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
 
 :aspect:`Good to know`

@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          MultiSelect:
            formEditor:
-             iconIdentifier: t3-form-icon-multi-select
+             iconIdentifier: form-multi-select
 
 .. :aspect:`Good to know`
       ToDo

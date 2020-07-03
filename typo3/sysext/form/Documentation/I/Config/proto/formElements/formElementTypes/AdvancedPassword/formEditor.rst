@@ -242,4 +242,4 @@ formEditor
              label: formEditor.elements.AdvancedPassword.label
              group: custom
              groupSorting: 500
-             iconIdentifier: t3-form-icon-advanced-password
+             iconIdentifier: form-advanced-password

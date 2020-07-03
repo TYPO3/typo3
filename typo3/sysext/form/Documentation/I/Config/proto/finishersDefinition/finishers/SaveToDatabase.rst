@@ -439,7 +439,7 @@ formeditor.iconIdentifier
 
          SaveToDatabase:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label
              predefinedDefaults:
                options: {  }
@@ -475,7 +475,7 @@ formeditor.label
 
          SaveToDatabase:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label
              predefinedDefaults:
                options: {  }
@@ -511,7 +511,7 @@ formeditor.predefinedDefaults
 
          SaveToDatabase:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label
              predefinedDefaults:
                options: {  }

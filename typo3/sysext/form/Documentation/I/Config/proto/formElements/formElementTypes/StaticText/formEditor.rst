@@ -43,4 +43,4 @@ formEditor
              label: formEditor.elements.StaticText.label
              group: custom
              groupSorting: 600
-             iconIdentifier: t3-form-icon-static-text
+             iconIdentifier: form-static-text

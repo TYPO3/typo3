@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          SingleSelect:
            formEditor:
-             iconIdentifier: t3-form-icon-single-select
+             iconIdentifier: form-single-select
 
 .. :aspect:`Good to know`
       ToDo

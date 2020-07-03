@@ -46,7 +46,7 @@ implementationClassName
 
          DateTime:
            implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator
- 
+
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
@@ -78,7 +78,7 @@ formeditor.iconIdentifier
 
          DateTime:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.DatePicker.validators.DateTime.editor.header.label
 
 .. :aspect:`Good to know`
@@ -112,7 +112,7 @@ formeditor.label
 
          DateTime:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.DatePicker.validators.DateTime.editor.header.label
 
 :aspect:`Good to know`

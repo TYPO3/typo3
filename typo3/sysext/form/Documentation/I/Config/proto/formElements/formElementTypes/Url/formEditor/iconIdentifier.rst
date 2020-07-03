@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Url:
            formEditor:
-             iconIdentifier: t3-form-icon-url
+             iconIdentifier: form-url
 
 .. :aspect:`Good to know`
       ToDo

@@ -107,4 +107,4 @@ formEditor
               label: formEditor.elements.Email.label
               group: html5
               groupSorting: 100
-              iconIdentifier: t3-form-icon-email
+              iconIdentifier: form-email

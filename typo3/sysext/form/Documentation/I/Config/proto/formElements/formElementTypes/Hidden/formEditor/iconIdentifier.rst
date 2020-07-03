@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Hidden:
            formEditor:
-             iconIdentifier: t3-form-icon-hidden
+             iconIdentifier: form-hidden
 
 .. :aspect:`Good to know`
       ToDo

@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          Fieldset:
            formEditor:
-             iconIdentifier: t3-form-icon-fieldset
+             iconIdentifier: form-fieldset
 
 .. :aspect:`Good to know`
       ToDo

@@ -130,7 +130,7 @@ formeditor.iconIdentifier
 
          StringLength:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.StringLength.label
 
 .. :aspect:`Good to know`
@@ -164,7 +164,7 @@ formeditor.label
 
          StringLength:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.StringLength.label
 
 :aspect:`Good to know`

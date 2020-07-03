@@ -147,4 +147,4 @@ formEditor
              label: formEditor.elements.FileUpload.label
              group: custom
              groupSorting: 100
-             iconIdentifier: t3-form-icon-file-upload
+             iconIdentifier: form-file-upload

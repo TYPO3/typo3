@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          AdvancedPassword:
            formEditor:
-             iconIdentifier: t3-form-icon-advanced-password
+             iconIdentifier: form-advanced-password
 
 .. :aspect:`Good to know`
       ToDo

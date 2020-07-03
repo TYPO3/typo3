@@ -110,4 +110,4 @@ formEditor
               label: formEditor.elements.Telephone.label
               group: html5
               groupSorting: 200
-              iconIdentifier: t3-form-icon-telephone
+              iconIdentifier: form-telephone

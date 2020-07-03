@@ -126,4 +126,4 @@ formEditor
               label: formEditor.elements.Number.label
               group: html5
               groupSorting: 400
-              iconIdentifier: t3-form-icon-number
+              iconIdentifier: form-number

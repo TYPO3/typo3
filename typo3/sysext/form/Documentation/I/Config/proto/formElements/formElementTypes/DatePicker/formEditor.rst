@@ -100,7 +100,7 @@ formEditor
              label: formEditor.elements.DatePicker.label
              group: custom
              groupSorting: 200
-             iconIdentifier: t3-form-icon-date-picker
+             iconIdentifier: form-date-picker
              propertyCollections:
                validators:
                  10:

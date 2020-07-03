@@ -84,4 +84,4 @@ formEditor
              label: formEditor.elements.RadioButton.label
              group: select
              groupSorting: 300
-             iconIdentifier: t3-form-icon-radio-button
+             iconIdentifier: form-radio-button

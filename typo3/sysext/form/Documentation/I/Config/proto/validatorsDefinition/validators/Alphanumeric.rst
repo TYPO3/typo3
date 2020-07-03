@@ -78,7 +78,7 @@ formeditor.iconIdentifier
 
          Alphanumeric:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
 
 .. :aspect:`Good to know`
@@ -112,7 +112,7 @@ formeditor.label
 
          Alphanumeric:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
 
 :aspect:`Good to know`

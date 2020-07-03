@@ -256,7 +256,7 @@ formeditor.iconIdentifier
 
          Confirmation:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.Confirmation.editor.header.label
              predefinedDefaults:
                options:
@@ -293,7 +293,7 @@ formeditor.label
 
          Confirmation:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.Confirmation.editor.header.label
              predefinedDefaults:
                options:
@@ -330,7 +330,7 @@ formeditor.predefinedDefaults
 
          Confirmation:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.Confirmation.editor.header.label
              predefinedDefaults:
                options:

@@ -430,7 +430,7 @@ Full default configuration
               groupSorting: 100
               _isTopLevelFormElement: true
               _isCompositeFormElement: true
-              iconIdentifier: t3-form-icon-page
+              iconIdentifier: form-page
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\Page
             renderingOptions:
               _isTopLevelFormElement: true
@@ -470,7 +470,7 @@ Full default configuration
               groupSorting: 200
               _isTopLevelFormElement: true
               _isCompositeFormElement: false
-              iconIdentifier: t3-form-icon-summary-page
+              iconIdentifier: form-summary-page
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\Page
             renderingOptions:
               _isTopLevelFormElement: true
@@ -518,7 +518,7 @@ Full default configuration
               group: container
               groupSorting: 100
               _isCompositeFormElement: true
-              iconIdentifier: t3-form-icon-fieldset
+              iconIdentifier: form-fieldset
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\Section
             properties:
               containerClassAttribute: input
@@ -568,7 +568,7 @@ Full default configuration
               groupSorting: 300
               _isCompositeFormElement: true
               _isGridRowFormElement: true
-              iconIdentifier: t3-form-icon-gridrow
+              iconIdentifier: form-gridrow
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GridRow
             properties:
               containerClassAttribute: input
@@ -812,7 +812,7 @@ Full default configuration
               label: formEditor.elements.Text.label
               group: input
               groupSorting: 100
-              iconIdentifier: t3-form-icon-text
+              iconIdentifier: form-text
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -1042,7 +1042,7 @@ Full default configuration
               label: formEditor.elements.Password.label
               group: input
               groupSorting: 300
-              iconIdentifier: t3-form-icon-password
+              iconIdentifier: form-password
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -1273,7 +1273,7 @@ Full default configuration
               label: formEditor.elements.AdvancedPassword.label
               group: custom
               groupSorting: 500
-              iconIdentifier: t3-form-icon-advanced-password
+              iconIdentifier: form-advanced-password
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -1495,7 +1495,7 @@ Full default configuration
               label: formEditor.elements.Textarea.label
               group: input
               groupSorting: 200
-              iconIdentifier: t3-form-icon-textarea
+              iconIdentifier: form-textarea
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -1775,7 +1775,7 @@ Full default configuration
               label: formEditor.elements.Hidden.label
               group: custom
               groupSorting: 300
-              iconIdentifier: t3-form-icon-hidden
+              iconIdentifier: form-hidden
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -1986,7 +1986,7 @@ Full default configuration
               label: formEditor.elements.Email.label
               group: html5
               groupSorting: 100
-              iconIdentifier: t3-form-icon-email
+              iconIdentifier: form-email
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -2203,7 +2203,7 @@ Full default configuration
               label: formEditor.elements.Telephone.label
               group: html5
               groupSorting: 200
-              iconIdentifier: t3-form-icon-telephone
+              iconIdentifier: form-telephone
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -2422,7 +2422,7 @@ Full default configuration
               label: formEditor.elements.Url.label
               group: html5
               groupSorting: 300
-              iconIdentifier: t3-form-icon-url
+              iconIdentifier: form-url
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -2622,7 +2622,7 @@ Full default configuration
               label: formEditor.elements.Number.label
               group: html5
               groupSorting: 400
-              iconIdentifier: t3-form-icon-number
+              iconIdentifier: form-number
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -2678,7 +2678,7 @@ Full default configuration
               label: formEditor.elements.Checkbox.label
               group: select
               groupSorting: 100
-              iconIdentifier: t3-form-icon-checkbox
+              iconIdentifier: form-checkbox
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: 'input checkbox'
@@ -2781,7 +2781,7 @@ Full default configuration
               label: formEditor.elements.MultiCheckbox.label
               group: select
               groupSorting: 400
-              iconIdentifier: t3-form-icon-multi-checkbox
+              iconIdentifier: form-multi-checkbox
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: 'input checkbox'
@@ -2892,7 +2892,7 @@ Full default configuration
               label: formEditor.elements.MultiSelect.label
               group: select
               groupSorting: 500
-              iconIdentifier: t3-form-icon-multi-select
+              iconIdentifier: form-multi-select
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -2959,7 +2959,7 @@ Full default configuration
               label: formEditor.elements.RadioButton.label
               group: select
               groupSorting: 300
-              iconIdentifier: t3-form-icon-radio-button
+              iconIdentifier: form-radio-button
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -3033,7 +3033,7 @@ Full default configuration
               label: formEditor.elements.SingleSelect.label
               group: select
               groupSorting: 200
-              iconIdentifier: t3-form-icon-single-select
+              iconIdentifier: form-single-select
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -3116,7 +3116,7 @@ Full default configuration
               label: formEditor.elements.DatePicker.label
               group: custom
               groupSorting: 200
-              iconIdentifier: t3-form-icon-date-picker
+              iconIdentifier: form-date-picker
               propertyCollections:
                 validators:
                   10:
@@ -3165,7 +3165,7 @@ Full default configuration
               label: formEditor.elements.StaticText.label
               group: custom
               groupSorting: 600
-              iconIdentifier: t3-form-icon-static-text
+              iconIdentifier: form-static-text
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               text: ''
@@ -3195,7 +3195,7 @@ Full default configuration
               label: formEditor.elements.ContentElement.label
               group: custom
               groupSorting: 700
-              iconIdentifier: t3-form-icon-content-element
+              iconIdentifier: form-content-element
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               contentElementUid: ''
@@ -3323,7 +3323,7 @@ Full default configuration
               label: formEditor.elements.FileUpload.label
               group: custom
               groupSorting: 100
-              iconIdentifier: t3-form-icon-file-upload
+              iconIdentifier: form-file-upload
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload
             properties:
               containerClassAttribute: input
@@ -3447,7 +3447,7 @@ Full default configuration
               label: formEditor.elements.ImageUpload.label
               group: custom
               groupSorting: 400
-              iconIdentifier: t3-form-icon-image-upload
+              iconIdentifier: form-image-upload
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload
             properties:
               containerClassAttribute: input
@@ -3465,7 +3465,7 @@ Full default configuration
           Closure:
             implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.Closure.editor.header.label
               predefinedDefaults:
                 options:
@@ -3477,7 +3477,7 @@ Full default configuration
               templateRootPaths:
                 10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.Confirmation.editor.header.label
               predefinedDefaults:
                 options:
@@ -3487,7 +3487,7 @@ Full default configuration
             options:
               templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
               predefinedDefaults:
                 options:
@@ -3558,7 +3558,7 @@ Full default configuration
             options:
               templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
               predefinedDefaults:
                 options:
@@ -3642,12 +3642,12 @@ Full default configuration
           DeleteUploads:
             implementationClassName: TYPO3\CMS\Form\Domain\Finishers\DeleteUploadsFinisher
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.DeleteUploads.editor.header.label
           FlashMessage:
             implementationClassName: TYPO3\CMS\Form\Domain\Finishers\FlashMessageFinisher
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
               predefinedDefaults:
                 options:
@@ -3659,7 +3659,7 @@ Full default configuration
           Redirect:
             implementationClassName: TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.Redirect.editor.header.label
               predefinedDefaults:
                 options:
@@ -3687,7 +3687,7 @@ Full default configuration
           SaveToDatabase:
             implementationClassName: TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher
             formEditor:
-              iconIdentifier: t3-form-icon-finisher
+              iconIdentifier: form-finisher
               label: formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label
               predefinedDefaults:
                 options: {  }
@@ -3695,27 +3695,27 @@ Full default configuration
           NotEmpty:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.FormElement.editor.requiredValidator.label
           DateTime:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.DatePicker.validators.DateTime.editor.header.label
           Alphanumeric:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
           Text:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\TextValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.Text.label
           StringLength:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.StringLength.label
               predefinedDefaults:
                 options:
@@ -3724,27 +3724,27 @@ Full default configuration
           EmailAddress:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
           Integer:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.Integer.label
           Float:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\FloatValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.Float.label
           Number:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.Number.label
           NumberRange:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
               predefinedDefaults:
                 options:
@@ -3753,7 +3753,7 @@ Full default configuration
           RegularExpression:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
               predefinedDefaults:
                 options:
@@ -3761,7 +3761,7 @@ Full default configuration
           Count:
             implementationClassName: TYPO3\CMS\Form\Mvc\Validation\CountValidator
             formEditor:
-              iconIdentifier: t3-form-icon-validator
+              iconIdentifier: form-validator
               label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
               predefinedDefaults:
                 options:
@@ -3770,7 +3770,7 @@ Full default configuration
           FileSize:
             implementationClassName: TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator
             formEditor:
-              iconIdentifier: 't3-form-icon-validator'
+              iconIdentifier: 'form-validator'
               label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
               predefinedDefaults:
                 options:

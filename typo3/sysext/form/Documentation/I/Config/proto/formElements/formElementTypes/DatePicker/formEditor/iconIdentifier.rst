@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          DatePicker:
            formEditor:
-             iconIdentifier: t3-form-icon-date-picker
+             iconIdentifier: form-date-picker
 
 .. :aspect:`Good to know`
       ToDo

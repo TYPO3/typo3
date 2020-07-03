@@ -242,7 +242,7 @@ formeditor.iconIdentifier
 
          FlashMessage:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
              predefinedDefaults:
                options:
@@ -283,7 +283,7 @@ formeditor.label
 
          FlashMessage:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
              predefinedDefaults:
                options:
@@ -324,7 +324,7 @@ formeditor.predefinedDefaults
 
          FlashMessage:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
              predefinedDefaults:
                options:

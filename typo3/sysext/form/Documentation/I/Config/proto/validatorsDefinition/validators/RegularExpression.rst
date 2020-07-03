@@ -102,7 +102,7 @@ formeditor.iconIdentifier
 
          RegularExpression:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
 
 .. :aspect:`Good to know`
@@ -136,7 +136,7 @@ formeditor.label
 
          RegularExpression:
            formEditor:
-             iconIdentifier: t3-form-icon-validator
+             iconIdentifier: form-validator
              label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
 
 :aspect:`Good to know`

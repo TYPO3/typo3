@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          RadioButton:
            formEditor:
-             iconIdentifier: t3-form-icon-radio-button
+             iconIdentifier: form-radio-button
 
 .. :aspect:`Good to know`
       ToDo

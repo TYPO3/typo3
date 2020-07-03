@@ -238,4 +238,4 @@ formEditor
              label: formEditor.elements.Textarea.label
              group: input
              groupSorting: 200
-             iconIdentifier: t3-form-icon-textarea
+             iconIdentifier: form-textarea

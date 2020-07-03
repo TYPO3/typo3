@@ -69,7 +69,7 @@ formeditor.iconIdentifier
 
          DeleteUploads:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.DeleteUploads.editor.header.label
 
 .. :aspect:`Good to know`
@@ -103,7 +103,7 @@ formeditor.label
 
          DeleteUploads:
            formEditor:
-             iconIdentifier: t3-form-icon-finisher
+             iconIdentifier: form-finisher
              label: formEditor.elements.Form.finisher.DeleteUploads.editor.header.label
 
 :aspect:`Good to know`

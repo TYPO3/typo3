@@ -20,7 +20,7 @@ formEditor.iconIdentifier
 
          GridRow:
            formEditor:
-             iconIdentifier: t3-form-icon-gridrow
+             iconIdentifier: form-gridrow
 
 .. :aspect:`Good to know`
       ToDo

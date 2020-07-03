@@ -119,4 +119,4 @@ formEditor
              label: formEditor.elements.MultiCheckbox.label
              group: select
              groupSorting: 400
-             iconIdentifier: t3-form-icon-multi-checkbox
+             iconIdentifier: form-multi-checkbox

@@ -91,4 +91,4 @@ formEditor
              label: formEditor.elements.SingleSelect.label
              group: select
              groupSorting: 200
-             iconIdentifier: t3-form-icon-single-select
+             iconIdentifier: form-single-select
