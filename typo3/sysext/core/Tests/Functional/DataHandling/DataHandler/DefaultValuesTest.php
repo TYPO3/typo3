@@ -145,4 +145,23 @@ TCAdefaults.tt_content.header = local space
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
         self::assertEquals($newContentRecord['header'], 'local space');
     }
+
+    /**
+     * @test
+     */
+    public function defaultValueForNullTextfieldsIsConsidered(): void
+    {
+        // New content element without bodytext
+        $GLOBALS['TCA']['tt_content']['columns']['bodytext']['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['enableRichtext'] = true;
+        $map = $this->actionService->createNewRecord('tt_content', self::PAGE_DATAHANDLER, [
+            'header' => 'Random header',
+            'bodytext' => null
+        ]);
+        $newContentId = reset($map['tt_content']);
+        $map = $this->actionService->localizeRecord('tt_content', $newContentId, 1);
+        $translatedContentId = reset($map['tt_content']);
+        $newContentRecord = BackendUtility::getRecord('tt_content', $translatedContentId);
+        self::assertNull($newContentRecord['bodytext']);
+    }
 }

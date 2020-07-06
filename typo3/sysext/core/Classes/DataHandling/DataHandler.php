@@ -1759,12 +1759,16 @@ class DataHandler implements LoggerAwareInterface
         if ($this->dontProcessTransformations) {
             return $valueArray;
         }
+        // Keep null as value
+        if ($value === null) {
+            return $valueArray;
+        }
         if (isset($tcaFieldConf['enableRichtext']) && (bool)$tcaFieldConf['enableRichtext'] === true) {
             $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
             $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
             $richtextConfiguration = $richtextConfigurationProvider->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
             $rteParser = GeneralUtility::makeInstance(RteHtmlParser::class);
-            $valueArray['value'] = $rteParser->transformTextForPersistence($value, $richtextConfiguration['proc.'] ?? []);
+            $valueArray['value'] = $rteParser->transformTextForPersistence((string)$value, $richtextConfiguration['proc.'] ?? []);
         }
 
         return $valueArray;
