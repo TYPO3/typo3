@@ -283,7 +283,7 @@ class LoginController implements LoggerAwareInterface
             'loginRefresh' => $this->loginRefresh,
             'loginNewsItems' => $this->getSystemNews(),
             'referrerCheckEnabled' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('security.backend.enforceReferrer'),
-            'loginUrl' => (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login'),
+            'loginUrl' => (string)$request->getUri(),
             'loginProviderIdentifier' => $this->loginProviderIdentifier,
             'loginProviders' => $this->loginProviders
         ]);

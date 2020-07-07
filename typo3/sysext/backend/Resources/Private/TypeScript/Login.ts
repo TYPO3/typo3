@@ -14,6 +14,7 @@
 import 'bootstrap';
 import * as $ from 'jquery';
 import 'TYPO3/CMS/Backend/jquery.clearable';
+import Client = require('TYPO3/CMS/Backend/Storage/Client');
 
 /**
  * Module: TYPO3/CMS/Backend/Login
@@ -111,8 +112,7 @@ class BackendLogin {
   }
 
   private checkDocumentReferrerSupport(): void {
-    const referrerRefresh = '#referrer-refresh';
-    const referrerRefreshed = document.location.hash === referrerRefresh;
+    const referrerRefreshed = Client.get('referrerRefresh') === '1';
     const loginUrlWrapper = document.getElementById(this.options.loginUrlWrapper) as HTMLAnchorElement;
     if (loginUrlWrapper === null
       || typeof loginUrlWrapper.dataset.referrerCheckEnabled === 'undefined'
@@ -123,9 +123,7 @@ class BackendLogin {
 
     if (typeof document.referrer === 'string' && document.referrer !== '') {
       if (referrerRefreshed) {
-        // refresh again to re-enable auto-focus
-        this.ready = false;
-        document.location.href = document.location.href.replace(/#[^#]*$/, '');
+        Client.unset('referrerRefresh');
       }
       return;
     }
@@ -135,8 +133,7 @@ class BackendLogin {
     } else {
       this.ready = false;
 
-      // We have to click a real <a> tag as some browsers won't update their referrer doing otherwise
-      loginUrlWrapper.href += referrerRefresh;
+      Client.set('referrerRefresh', '1');
       loginUrlWrapper.click();
     }
   }
