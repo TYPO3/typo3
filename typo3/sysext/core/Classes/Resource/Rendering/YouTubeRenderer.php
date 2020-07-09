@@ -144,6 +144,9 @@ class YouTubeRenderer implements FileRendererInterface
         if (!empty($options['mute']) || !empty($options['muted'])) {
             $urlParams[] = 'mute=1';
         }
+        if (!empty($options['playsinline'])) {
+            $urlParams[] = 'playsinline=1';
+        }
         if (!empty($options['modestbranding'])) {
             $urlParams[] = 'modestbranding=1';
         }
