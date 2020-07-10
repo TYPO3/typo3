@@ -181,8 +181,8 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
         foreach ($domainEntries as $domainEntry) {
             $domainName = $domainEntry['domainName'];
             $target = $domainEntry['redirectTo'];
-            $sourceDetails = parse_url($domainName);
-            $targetDetails = parse_url($target);
+            $sourceDetails = $this->getDomainDetails($domainName);
+            $targetDetails = $this->getDomainDetails($target);
             $redirectRecord = [
                 'deleted' => (int)$domainEntry['deleted'],
                 'disabled' => (int)$domainEntry['hidden'],
@@ -228,5 +228,21 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
         return [
             DatabaseUpdatedPrerequisite::class
         ];
+    }
+
+    /**
+     * parse_url('example.com/bar') returns ['path' => 'example.com/bar'] - it does not
+     * split into 'host' and 'path' if there is no scheme. Adding a scheme in this case
+     * leads to more reliable sys_domain transitions.
+     *
+     * @param string $domainName
+     * @return string[]
+     */
+    protected function getDomainDetails(string $domainName): array
+    {
+        if (substr($domainName, 0, 4) === 'http') {
+            return parse_url($domainName);
+        }
+        return parse_url('https://' . $domainName);
     }
 }
