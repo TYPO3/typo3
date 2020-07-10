@@ -38,7 +38,6 @@ class BackendGroupsVisibleFieldsTest extends FunctionalTestCase
         'file_mountpoints',
         'file_permissions',
         'category_perms',
-        'lockToDomain',
         'TSconfig',
     ];
 

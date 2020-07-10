@@ -24,7 +24,7 @@ return [
             '1' => 'status-user-admin',
             'default' => 'status-user-backend'
         ],
-        'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
+        'useColumnsForDefaultValues' => 'usergroup,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'username,email,realName'
     ],
@@ -96,16 +96,6 @@ return [
                 ['maxitems' => 1],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
-        ],
-        'lockToDomain' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:lockToDomain',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim',
-                'max' => 50,
-                'softref' => 'substitute'
-            ]
         ],
         'db_mountpoints' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts',
@@ -385,7 +375,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces,
                 workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
-                lockToDomain, disableIPlock, TSconfig,
+                disableIPlock, TSconfig,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 --palette--;;timeRestriction,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,

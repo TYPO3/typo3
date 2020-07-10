@@ -17,7 +17,6 @@ return [
         'typeicon_classes' => [
             'default' => 'status-user-group-frontend'
         ],
-        'useColumnsForDefaultValues' => 'lockToDomain',
         'searchFields' => 'title,description'
     ],
     'columns' => [
@@ -60,16 +59,6 @@ return [
                 'maxitems' => 20
             ]
         ],
-        'lockToDomain' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.lockToDomain',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim',
-                'max' => 50
-            ]
-        ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
@@ -95,7 +84,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                 title,subgroup,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.tabs.options,
-                lockToDomain, TSconfig,
+                TSconfig,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 hidden,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,

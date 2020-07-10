@@ -31,11 +31,6 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * @var string
      */
-    protected $lockToDomain = '';
-
-    /**
-     * @var string
-     */
     protected $description = '';
 
     /**
@@ -72,26 +67,6 @@ class FrontendUserGroup extends AbstractEntity
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Sets the lockToDomain value
-     *
-     * @param string $lockToDomain
-     */
-    public function setLockToDomain($lockToDomain)
-    {
-        $this->lockToDomain = $lockToDomain;
-    }
-
-    /**
-     * Returns the lockToDomain value
-     *
-     * @return string
-     */
-    public function getLockToDomain()
-    {
-        return $this->lockToDomain;
     }
 
     /**

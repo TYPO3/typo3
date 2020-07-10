@@ -42,7 +42,6 @@ class FrontendUsersVisibleFieldsTest extends FunctionalTestCase
         'email',
         'www',
         'image',
-        'lockToDomain',
         'TSconfig',
         'starttime',
         'endtime',

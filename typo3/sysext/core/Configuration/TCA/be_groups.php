@@ -19,7 +19,7 @@ return [
             'disabled' => 'hidden'
         ],
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups',
-        'useColumnsForDefaultValues' => 'lockToDomain, file_permissions',
+        'useColumnsForDefaultValues' => 'file_permissions',
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'title'
     ],
@@ -203,16 +203,6 @@ return [
                 ],
             ]
         ],
-        'lockToDomain' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:lockToDomain',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim',
-                'max' => 50,
-                'softref' => 'substitute'
-            ]
-        ],
         'groupMods' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods',
             'config' => [
@@ -282,7 +272,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.mounts_and_workspaces,
                 workspace_perms, db_mountpoints, file_mountpoints, file_permissions, category_perms,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.options,
-                lockToDomain, TSconfig,
+                TSconfig,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 hidden,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,

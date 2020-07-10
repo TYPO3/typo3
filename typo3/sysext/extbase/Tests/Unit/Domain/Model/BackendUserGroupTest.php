@@ -432,24 +432,6 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLockToDomainInitiallyReturnsEmptyString()
-    {
-        self::assertSame('', $this->subject->getLockToDomain());
-    }
-
-    /**
-     * @test
-     */
-    public function setLockToDomainSetsLockToDomain()
-    {
-        $lockToDomain = 'foo.bar';
-        $this->subject->setLockToDomain($lockToDomain);
-        self::assertSame($lockToDomain, $this->subject->getLockToDomain());
-    }
-
-    /**
-     * @test
-     */
     public function getTsConfigInitiallyReturnsEmptyString()
     {
         self::assertSame('', $this->subject->getTsConfig());

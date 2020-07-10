@@ -74,9 +74,6 @@ return [
             'fileOperationPermissions' => [
                 'fieldName' => 'file_permissions'
             ],
-            'lockToDomain' => [
-                'fieldName' => 'lockToDomain'
-            ],
             'tsConfig' => [
                 'fieldName' => 'TSconfig'
             ],
@@ -84,19 +81,9 @@ return [
     ],
     \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class => [
         'tableName' => 'fe_users',
-        'properties' => [
-            'lockToDomain' => [
-                'fieldName' => 'lockToDomain'
-            ],
-        ],
     ],
     \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup::class => [
         'tableName' => 'fe_groups',
-        'properties' => [
-            'lockToDomain' => [
-                'fieldName' => 'lockToDomain'
-            ],
-        ],
     ],
     \TYPO3\CMS\Extbase\Domain\Model\Category::class => [
         'tableName' => 'sys_category',

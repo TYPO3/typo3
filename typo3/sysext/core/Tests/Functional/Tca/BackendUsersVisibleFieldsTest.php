@@ -40,7 +40,6 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
         'file_mountpoints',
         'file_permissions',
         'category_perms',
-        'lockToDomain',
         'TSconfig',
         'starttime',
         'endtime',
@@ -52,7 +51,6 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
         'workspace_perms',
         'file_permissions',
         'category_perms',
-        'lockToDomain',
     ];
 
     /**

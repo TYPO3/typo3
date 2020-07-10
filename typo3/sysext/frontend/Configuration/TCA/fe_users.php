@@ -18,7 +18,7 @@ return [
         'typeicon_classes' => [
             'default' => 'status-user-frontend'
         ],
-        'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
+        'useColumnsForDefaultValues' => 'usergroup,disable,starttime,endtime',
         'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company,description'
     ],
     'columns' => [
@@ -51,17 +51,6 @@ return [
                 'size' => 6,
                 'minitems' => 1,
                 'maxitems' => 50
-            ]
-        ],
-        'lockToDomain' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.lockToDomain',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim',
-                'max' => 50,
-                'softref' => 'substitute'
             ]
         ],
         'name' => [
@@ -292,7 +281,7 @@ return [
                 --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.personelData,
                     company, title, name, --palette--;;2, address, zip, city, country, telephone, fax, email, www, image,
                 --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.options,
-                    lockToDomain, TSconfig,
+                    TSconfig,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     disable,--palette--;;timeRestriction,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,

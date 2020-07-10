@@ -77,18 +77,6 @@ The first (top) group in the list is the group which will, by default, be the ow
 be_groups</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description" resname="lockToDomain.description">
-				<source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
-			</trans-unit>
-			<trans-unit id="lockToDomain.details" resname="lockToDomain.details">
-				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
-			</trans-unit>
-			<trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" xml:space="preserve">
-				<source>be_groups:lockToDomain,
-fe_users:lockToDomain,
-fe_groups:lockToDomain</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="disableIPlock.description" resname="disableIPlock.description">
 				<source>Disable the lock of the backend users session to the remote IP number.</source>
 			</trans-unit>

@@ -435,9 +435,6 @@
 			<trans-unit id="fe_users.usergroup" resname="fe_users.usergroup">
 				<source>Groups</source>
 			</trans-unit>
-			<trans-unit id="fe_users.lockToDomain" resname="fe_users.lockToDomain">
-				<source>Lock to Domain</source>
-			</trans-unit>
 			<trans-unit id="fe_users.tabs.personelData" resname="fe_users.tabs.personelData">
 				<source>Personal Data</source>
 			</trans-unit>
@@ -455,9 +452,6 @@
 			</trans-unit>
 			<trans-unit id="fe_groups.title" resname="fe_groups.title">
 				<source>Group Title</source>
-			</trans-unit>
-			<trans-unit id="fe_groups.lockToDomain" resname="fe_groups.lockToDomain">
-				<source>Lock to Domain</source>
 			</trans-unit>
 			<trans-unit id="fe_groups.subgroup" resname="fe_groups.subgroup">
 				<source>Subgroups</source>

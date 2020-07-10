@@ -1485,7 +1485,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      */
     public function fetchGroups($grList, $idList = '')
     {
-        // Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
+        // Fetching records of the groups in $grList:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->usergroup_table);
         $expressionBuilder = $queryBuilder->expr();
         $constraints = $expressionBuilder->andX(
@@ -1498,14 +1498,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 $queryBuilder->createNamedParameter(
                     GeneralUtility::intExplode(',', $grList),
                     Connection::PARAM_INT_ARRAY
-                )
-            ),
-            $expressionBuilder->orX(
-                $expressionBuilder->eq('lockToDomain', $queryBuilder->quote('')),
-                $expressionBuilder->isNull('lockToDomain'),
-                $expressionBuilder->eq(
-                    'lockToDomain',
-                    $queryBuilder->createNamedParameter(GeneralUtility::getIndpEnv('HTTP_HOST'), \PDO::PARAM_STR)
                 )
             )
         );

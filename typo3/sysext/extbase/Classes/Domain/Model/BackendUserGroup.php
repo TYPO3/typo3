@@ -98,11 +98,6 @@ class BackendUserGroup extends AbstractEntity
     /**
      * @var string
      */
-    protected $lockToDomain = '';
-
-    /**
-     * @var string
-     */
     protected $tsConfig = '';
 
     /**
@@ -481,26 +476,6 @@ class BackendUserGroup extends AbstractEntity
     public function setDirectoryRemoveRecursivelyAllowed($value)
     {
         $this->setPermission(self::DIRECTORY_REMOVE_RECURSIVELY, $value);
-    }
-
-    /**
-     * Setter for lock to domain
-     *
-     * @param string $lockToDomain
-     */
-    public function setLockToDomain($lockToDomain)
-    {
-        $this->lockToDomain = $lockToDomain;
-    }
-
-    /**
-     * Getter for lock to domain
-     *
-     * @return string
-     */
-    public function getLockToDomain()
-    {
-        return $this->lockToDomain;
     }
 
     /**

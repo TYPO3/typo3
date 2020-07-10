@@ -153,7 +153,6 @@ class AuthenticationServiceTest extends UnitTestCase
         );
         $dbUser = [
             'password' => 'aPlainTextPassword',
-            'lockToDomain' => ''
         ];
         self::assertEquals(100, $subject->authUser($dbUser));
     }
@@ -183,7 +182,6 @@ class AuthenticationServiceTest extends UnitTestCase
         $dbUser = [
             // a phpass hash of 'myPassword'
             'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
-            'lockToDomain' => ''
         ];
         self::assertSame(0, $subject->authUser($dbUser));
     }
@@ -213,43 +211,7 @@ class AuthenticationServiceTest extends UnitTestCase
         $dbUser = [
             // an argon2i hash of 'myPassword'
             'password' => '$argon2i$v=19$m=65536,t=16,p=1$eGpyelFZbkpRdXN3QVhsUA$rd4abz2fcuksGu3b3fipglQZtHbIy+M3XoIS+sNVSl4',
-            'lockToDomain' => ''
         ];
         self::assertSame(200, $subject->authUser($dbUser));
-    }
-
-    /**
-     * @test
-     */
-    public function authUserReturns0IfPasswordMatchButDomainLockDoesNotMatch(): void
-    {
-        $subject = new AuthenticationService();
-        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $pObjProphecy->loginType = 'BE';
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $subject->setLogger($loggerProphecy->reveal());
-        $subject->initAuth(
-            'authUserBE',
-            [
-                'uident_text' => 'myPassword',
-                'uname' => 'lolli'
-            ],
-            [
-                'db_user' => [
-                    'table' => 'be_users',
-                    'username_column' => 'username',
-                ],
-                'REMOTE_HOST' => '',
-                'HTTP_HOST' => 'example.com',
-            ],
-            $pObjProphecy->reveal()
-        );
-        $dbUser = [
-            // an argon2i hash of 'myPassword'
-            'password' => '$argon2i$v=19$m=65536,t=16,p=2$LnUzc3ZISWJwQWlSbmpkYw$qD1sRsJFzkUmjcEaKzDeg6LtflwdTpo49VbH3tMeMXU',
-            'username' => 'lolli',
-            'lockToDomain' => 'not.example.com'
-        ];
-        self::assertSame(0, $subject->authUser($dbUser));
     }
 }

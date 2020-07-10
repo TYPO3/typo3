@@ -4,7 +4,6 @@
         <uid>1</uid>
         <pid>0</pid>
         <title>editor group</title>
-        <lockToDomain></lockToDomain>
         <workspace_perms>0</workspace_perms>
         <db_mountpoints>1,3,4,5,40</db_mountpoints>
         <tstamp>1544454571</tstamp>

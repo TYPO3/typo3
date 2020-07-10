@@ -16,7 +16,6 @@ CREATE TABLE cache_treelist (
 #
 CREATE TABLE fe_groups (
 	title varchar(50) DEFAULT '' NOT NULL,
-	lockToDomain varchar(50) DEFAULT '' NOT NULL,
 	subgroup tinytext,
 	TSconfig text
 );
@@ -53,7 +52,6 @@ CREATE TABLE fe_users (
 	telephone varchar(30) DEFAULT '' NOT NULL,
 	fax varchar(30) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
-	lockToDomain varchar(50) DEFAULT '' NOT NULL,
 	uc blob,
 	title varchar(40) DEFAULT '' NOT NULL,
 	zip varchar(10) DEFAULT '' NOT NULL,

@@ -203,19 +203,6 @@ Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStarted
 			<trans-unit id="hidden.details" resname="hidden.details">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description" resname="lockToDomain.description">
-				<source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
-			</trans-unit>
-			<trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve">
-				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
-Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
-			</trans-unit>
-			<trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" xml:space="preserve">
-				<source>be_users:lockToDomain,
-fe_users:lockToDomain,
-fe_groups:lockToDomain</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="groupMods.description" resname="groupMods.description">
 				<source>Select available backend modules for the group members.</source>
 			</trans-unit>

@@ -86,8 +86,7 @@ class AuthenticationService extends AbstractAuthenticationService
     }
 
     /**
-     * Authenticate a user: Check submitted user credentials against stored hashed password,
-     * check domain lock if configured.
+     * Authenticate a user: Check submitted user credentials against stored hashed password.
      *
      * Returns one of the following status codes:
      *  >= 200: User authenticated successfully. No more checking is needed by other auth services.
@@ -113,12 +112,9 @@ class AuthenticationService extends AbstractAuthenticationService
         $submittedUsername = (string)$this->login['uname'];
         $submittedPassword = (string)$this->login['uident_text'];
         $passwordHashInDatabase = $user['password'];
-        $queriedDomain = $this->authInfo['HTTP_HOST'];
-        $configuredDomainLock = $user['lockToDomain'];
         $userDatabaseTable = $this->db_user['table'];
 
         $isReHashNeeded = false;
-        $isDomainLockMet = false;
 
         $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
 
@@ -152,13 +148,6 @@ class AuthenticationService extends AbstractAuthenticationService
                 // instances of the same class.
                 $isReHashNeeded = true;
             }
-            if (empty($configuredDomainLock)) {
-                // No domain restriction set for user in db. This is ok.
-                $isDomainLockMet = true;
-            } elseif (!strcasecmp($configuredDomainLock, $queriedDomain)) {
-                // Domain restriction set and it matches given host. Ok.
-                $isDomainLockMet = true;
-            }
         }
 
         if (!$isValidPassword) {
@@ -171,16 +160,6 @@ class AuthenticationService extends AbstractAuthenticationService
             return 0;
         }
 
-        if (!$isDomainLockMet) {
-            // Password ok, but configured domain lock not met
-            $errorMessage = 'Login-attempt from ###IP###, username \'%s\', locked domain \'%s\' did not match \'%s\'!';
-            $this->writeLogMessage($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain);
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 1, $errorMessage, [$user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain]);
-            $this->logger->info(sprintf($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain));
-            // Responsible, authentication ok, but domain lock not ok, do NOT check other services
-            return 0;
-        }
-
         if ($isReHashNeeded) {
             // Given password validated but a re-hash is needed. Do so.
             $this->updatePasswordHashInDatabase(
@@ -190,7 +169,7 @@ class AuthenticationService extends AbstractAuthenticationService
             );
         }
 
-        // Responsible, authentication ok, domain lock ok. Log successful login and return 'auth ok, do NOT check other services'
+        // Responsible, authentication ok. Log successful login and return 'auth ok, do NOT check other services'
         $this->writeLogMessage($this->pObj->loginType . ' Authentication successful for username \'%s\'', $submittedUsername);
         return 200;
     }
@@ -236,17 +215,6 @@ class AuthenticationService extends AbstractAuthenticationService
                         $queryBuilder->expr()->in(
                             'uid',
                             $queryBuilder->createNamedParameter($groups, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->orX(
-                            $queryBuilder->expr()->eq(
-                                'lockToDomain',
-                                $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                            ),
-                            $queryBuilder->expr()->isNull('lockToDomain'),
-                            $queryBuilder->expr()->eq(
-                                'lockToDomain',
-                                $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'], \PDO::PARAM_STR)
-                            )
                         )
                     )
                     ->execute();
@@ -273,7 +241,7 @@ class AuthenticationService extends AbstractAuthenticationService
      */
     public function getSubGroups($grList, $idList, &$groups)
     {
-        // Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
+        // Fetching records of the groups in $grList:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
         if (!empty($this->authInfo['showHiddenRecords'])) {
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
@@ -288,17 +256,6 @@ class AuthenticationService extends AbstractAuthenticationService
                     $queryBuilder->createNamedParameter(
                         GeneralUtility::intExplode(',', $grList, true),
                         Connection::PARAM_INT_ARRAY
-                    )
-                ),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq(
-                        'lockToDomain',
-                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                    ),
-                    $queryBuilder->expr()->isNull('lockToDomain'),
-                    $queryBuilder->expr()->eq(
-                        'lockToDomain',
-                        $queryBuilder->createNamedParameter($this->authInfo['HTTP_HOST'], \PDO::PARAM_STR)
                     )
                 )
             )
