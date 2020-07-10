@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {MessageUtility} from '../../Utility/MessageUtility';
 import {AjaxDispatcher} from './../InlineRelation/AjaxDispatcher';
 import {InlineResponseInterface} from './../InlineRelation/InlineResponseInterface';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import NProgress = require('nprogress');
 import Sortable = require('Sortable');
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
@@ -214,7 +214,7 @@ class InlineControlContainer {
    * @param {string} elementId
    */
   constructor(elementId: string) {
-    $((): void => {
+    DocumentService.ready().then((document: Document): void => {
       this.container = <HTMLElement>document.getElementById(elementId);
       this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
 
@@ -406,7 +406,7 @@ class InlineControlContainer {
 
       const hiddenClass = 't3-form-field-container-inline-hidden';
       const isHidden = recordContainer.classList.contains(hiddenClass);
-      let toggleIcon: string = '';
+      let toggleIcon: string;
 
       if (isHidden) {
         toggleIcon = 'actions-edit-hide';
@@ -640,7 +640,7 @@ class InlineControlContainer {
 
     (<HTMLInputElement>formField).value = records.join(',');
     (<HTMLInputElement>formField).classList.add('has-change');
-    $(document).trigger('change');
+    document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
     this.setUnique(newUid, selectedValue);
@@ -669,7 +669,7 @@ class InlineControlContainer {
 
       (<HTMLInputElement>formField).value = records.join(',');
       (<HTMLInputElement>formField).classList.add('has-change');
-      $(document).trigger('change');
+      document.dispatchEvent(new Event('change'));
 
       this.redrawSortingButtons(this.container.dataset.objectGroup, records);
     }
@@ -722,8 +722,8 @@ class InlineControlContainer {
 
     (<HTMLInputElement>formField).value = records.join(',');
     (<HTMLInputElement>formField).classList.add('has-change');
-    $(document).trigger('inline:sorting-changed');
-    $(document).trigger('change');
+    document.dispatchEvent(new Event('inline:sorting-changed'));
+    document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
   }

@@ -12,7 +12,7 @@
  */
 
 import {AbstractSortableSelectItems} from './AbstractSortableSelectItems';
-import $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import SelectBoxFilter = require('./Extra/SelectBoxFilter');
 
@@ -23,7 +23,7 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
   constructor(selectedOptionsElementId: string, availableOptionsElementId: string) {
     super();
 
-    $((): void => {
+    DocumentService.ready().then((document: Document): void => {
       this.selectedOptionsElement = <HTMLSelectElement>document.getElementById(selectedOptionsElementId);
       this.availableOptionsElement = <HTMLSelectElement>document.getElementById(availableOptionsElementId);
       this.registerEventHandler();
@@ -47,7 +47,7 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
               optionElement.textContent,
               optionElement.getAttribute('title'),
               exclusiveValues,
-              $(optionElement),
+              optionElement,
             );
           });
         }

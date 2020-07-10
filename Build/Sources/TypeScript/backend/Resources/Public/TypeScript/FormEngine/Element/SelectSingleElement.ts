@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 interface SelectSingleElementOptions {
   [key: string]: any;
@@ -23,43 +23,52 @@ interface SelectSingleElementOptions {
  */
 class SelectSingleElement {
   public initialize = (selector: string, options: SelectSingleElementOptions): void => {
-    let $selectElement: JQuery = $(selector);
-    let $groupIconContainer: JQuery = $selectElement.prev('.input-group-icon');
+    let selectElement: HTMLSelectElement = document.querySelector(selector);
     options = options || {};
 
-    $selectElement.on('change', (e: JQueryEventObject): void => {
-      let $me: JQuery = $(e.target);
+    new RegularEvent('change', (e: Event): void => {
+      const target = e.target as HTMLSelectElement;
+      const groupIconContainer: HTMLElement = target.parentElement.querySelector('.input-group-icon');
 
       // Update prepended select icon
-      $groupIconContainer.html($selectElement.find(':selected').data('icon'));
+      if (groupIconContainer !== null) {
+        groupIconContainer.innerHTML = (target.options[target.selectedIndex].dataset.icon);
+      }
 
-      let $selectIcons: JQuery = $me.closest('.t3js-formengine-field-item').find('.t3js-forms-select-single-icons');
-      $selectIcons.find('.item.active').removeClass('active');
-      $selectIcons.find('[data-select-index="' + $me.prop('selectedIndex') + '"]').closest('.item').addClass('active');
-    });
+      const selectIcons: HTMLElement = target.closest('.t3js-formengine-field-item').querySelector('.t3js-forms-select-single-icons');
+      if (selectIcons !== null) {
+        const activeItem = selectIcons.querySelector('.item.active');
+        if (activeItem !== null) {
+          activeItem.classList.remove('active');
+        }
+
+        const selectionIcon = selectIcons.querySelector('[data-select-index="' + target.selectedIndex + '"]');
+        if (selectionIcon !== null)  {
+          selectionIcon.closest('.item').classList.add('active');
+        }
+      }
+    }).bindTo(selectElement);
 
     // Append optionally passed additional "change" event callback
     if (typeof options.onChange === 'function') {
-      $selectElement.on('change', options.onChange);
+      new RegularEvent('change', options.onChange).bindTo(selectElement);
     }
 
     // Append optionally passed additional "focus" event callback
     if (typeof options.onFocus === 'function') {
-      $selectElement.on('focus', options.onFocus);
+      new RegularEvent('focus', options.onFocus).bindTo(selectElement);
     }
 
-    $selectElement.closest('.form-control-wrap').find('.t3js-forms-select-single-icons a').on('click', (e: JQueryEventObject): boolean => {
-      let $me: JQuery = $(e.target);
-      let $selectIcon: JQuery = $me.closest('[data-select-index]');
+    new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
+      const currentActive = target.closest('.t3js-forms-select-single-icons').querySelector('.item.active');
+      if (currentActive !== null) {
+        currentActive.classList.remove('active');
+      }
 
-      $me.closest('.t3js-forms-select-single-icons').find('.item.active').removeClass('active');
-      $selectElement
-        .prop('selectedIndex', $selectIcon.data('selectIndex'))
-        .trigger('change');
-      $selectIcon.closest('.item').addClass('active');
-
-      return false;
-    });
+      selectElement.selectedIndex = parseInt(target.dataset.selectIndex, 10);
+      selectElement.dispatchEvent(new Event('change'));
+      target.closest('.item').classList.add('active');
+    }).delegateTo(selectElement.closest('.form-control-wrap'), '.t3js-forms-select-single-icons .item:not(.active) a');
   }
 }
 

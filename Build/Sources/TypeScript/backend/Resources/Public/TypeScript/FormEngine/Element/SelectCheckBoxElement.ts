@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 enum Identifier {
   toggleAll = '.t3js-toggle-checkboxes',
@@ -22,17 +22,18 @@ enum Identifier {
 
 class SelectCheckBoxElement {
   private checkBoxId: string = '';
-  private $table: JQuery = null;
-  private checkedBoxes: JQuery = null;
+  private table: HTMLTableElement = null;
+  private checkedBoxes: NodeListOf<HTMLInputElement> = null;
 
   /**
    * Determines whether all available checkboxes are checked
    *
-   * @param {JQuery} $checkBoxes
+   * @param {NodeListOf<HTMLInputElement>} checkBoxes
    * @return {boolean}
    */
-  private static allCheckBoxesAreChecked($checkBoxes: JQuery): boolean {
-    return $checkBoxes.length === $checkBoxes.filter(':checked').length;
+  private static allCheckBoxesAreChecked(checkBoxes: NodeListOf<HTMLInputElement>): boolean {
+    const checkboxArray = Array.from(checkBoxes);
+    return checkBoxes.length === checkboxArray.filter((checkBox: HTMLInputElement) => checkBox.checked).length;
   }
 
   /**
@@ -40,9 +41,9 @@ class SelectCheckBoxElement {
    */
   constructor(checkBoxId: string) {
     this.checkBoxId = checkBoxId;
-    $((): void => {
-      this.$table = $('#' + checkBoxId).closest('table');
-      this.checkedBoxes = this.$table.find(Identifier.singleItem + ':checked');
+    DocumentService.ready().then((document: Document): void => {
+      this.table = document.getElementById(checkBoxId).closest('table');
+      this.checkedBoxes = this.table.querySelectorAll(Identifier.singleItem + ':checked');
 
       this.enableTriggerCheckBox();
       this.registerEventHandler();
@@ -53,38 +54,39 @@ class SelectCheckBoxElement {
    * Registers the events for clicking the "Toggle all" and the single item checkboxes
    */
   private registerEventHandler(): void {
-    this.$table.on('change', Identifier.toggleAll, (e: JQueryEventObject): void => {
-      const $me = $(e.currentTarget);
-      const $checkBoxes = this.$table.find(Identifier.singleItem);
-      const checkIt = !SelectCheckBoxElement.allCheckBoxesAreChecked($checkBoxes);
+    new RegularEvent('change', (e: Event, currentTarget: HTMLInputElement): void => {
+      const checkBoxes: NodeListOf<HTMLInputElement> = this.table.querySelectorAll(Identifier.singleItem);
+      const checkIt = !SelectCheckBoxElement.allCheckBoxesAreChecked(checkBoxes);
 
-      $checkBoxes.prop('checked', checkIt);
-      $me.prop('checked', checkIt);
-      FormEngine.Validation.markFieldAsChanged($me);
-    }).on('change', Identifier.singleItem, (): void => {
-      this.setToggleAllState();
-    }).on('click', Identifier.revertSelection, (): void => {
-      this.$table.find(Identifier.singleItem).each((_: number, checkbox: HTMLInputElement): void => {
-        checkbox.checked = this.checkedBoxes.index(checkbox) > -1;
+      checkBoxes.forEach((checkBox: HTMLInputElement): void => {
+        checkBox.checked = checkIt;
+      });
+      currentTarget.checked = checkIt;
+    }).delegateTo(this.table, Identifier.toggleAll);
+
+    new RegularEvent('change', this.setToggleAllState.bind(this)).delegateTo(this.table, Identifier.singleItem);
+
+    new RegularEvent('click', (): void => {
+      const checkBoxes = this.table.querySelectorAll(Identifier.singleItem);
+      const checkedCheckBoxesAsArray = Array.from(this.checkedBoxes);
+      checkBoxes.forEach((checkBox: HTMLInputElement): void => {
+        checkBox.checked = checkedCheckBoxesAsArray.includes(checkBox);
       });
       this.setToggleAllState();
-    });
+    }).delegateTo(this.table, Identifier.revertSelection);
   }
 
   private setToggleAllState(): void {
-    const $checkBoxes = this.$table.find(Identifier.singleItem);
-    const checkIt = SelectCheckBoxElement.allCheckBoxesAreChecked($checkBoxes);
-
-    this.$table.find(Identifier.toggleAll).prop('checked', checkIt);
+    const checkBoxes: NodeListOf<HTMLInputElement> = this.table.querySelectorAll(Identifier.singleItem);
+    (this.table.querySelector(Identifier.toggleAll) as HTMLInputElement).checked = SelectCheckBoxElement.allCheckBoxesAreChecked(checkBoxes);
   }
 
   /**
    * Enables the "Toggle all" checkbox on document load if all child checkboxes are checked
    */
   private enableTriggerCheckBox(): void {
-    const $checkBoxes = this.$table.find(Identifier.singleItem);
-    const checkIt = SelectCheckBoxElement.allCheckBoxesAreChecked($checkBoxes);
-    $('#' + this.checkBoxId).prop('checked', checkIt);
+    const checkBoxes: NodeListOf<HTMLInputElement> = this.table.querySelectorAll(Identifier.singleItem);
+    (document.getElementById(this.checkBoxId) as HTMLInputElement).checked = SelectCheckBoxElement.allCheckBoxesAreChecked(checkBoxes);
   }
 }
 

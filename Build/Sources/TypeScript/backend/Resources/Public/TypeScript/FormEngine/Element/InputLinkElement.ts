@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 enum Selectors {
   toggleSelector = '.t3js-form-field-inputlink-explanation-toggle',
@@ -28,7 +28,7 @@ class InputLinkElement {
   private icon: HTMLSpanElement = null;
 
   constructor(elementId: string) {
-    $((): void => {
+    DocumentService.ready().then((document: Document): void => {
       this.element = <HTMLSelectElement>document.getElementById(elementId);
       this.container = <HTMLElement>this.element.closest('.t3js-form-field-inputlink');
       this.toggleSelector = <HTMLButtonElement>this.container.querySelector(Selectors.toggleSelector);

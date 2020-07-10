@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 enum Selectors {
   fieldContainerSelector = '.t3js-formengine-field-group',
@@ -25,7 +25,7 @@ enum Selectors {
 class SelectBoxFilter {
   private selectElement: HTMLSelectElement = null;
   private filterText: string = '';
-  private $availableOptions: JQuery = null;
+  private availableOptions: NodeListOf<HTMLOptionElement> = null;
 
   constructor(selectElement: HTMLSelectElement) {
     this.selectElement = selectElement;
@@ -39,16 +39,13 @@ class SelectBoxFilter {
       return;
     }
 
-    wizardsElement.addEventListener('keyup', (e: Event): void => {
-      if ((<HTMLElement>e.target).matches(Selectors.filterTextFieldSelector)) {
-        this.filter((<HTMLInputElement>e.target).value);
-      }
-    });
-    wizardsElement.addEventListener('change', (e: Event): void => {
-      if ((<HTMLElement>e.target).matches(Selectors.filterSelectFieldSelector)) {
-        this.filter((<HTMLInputElement>e.target).value);
-      }
-    });
+    new RegularEvent('input', (e: Event): void => {
+      this.filter((<HTMLInputElement>e.target).value);
+    }).delegateTo(wizardsElement, Selectors.filterTextFieldSelector);
+
+    new RegularEvent('change', (e: Event): void => {
+      this.filter((<HTMLInputElement>e.target).value);
+    }).delegateTo(wizardsElement, Selectors.filterSelectFieldSelector);
   }
 
   /**
@@ -58,17 +55,13 @@ class SelectBoxFilter {
    */
   private filter(filterText: string): void {
     this.filterText = filterText;
-    if (!this.$availableOptions) {
-      this.$availableOptions = $(this.selectElement).find('option').clone();
+    if (this.availableOptions === null) {
+      this.availableOptions = this.selectElement.querySelectorAll('option');
     }
 
-    this.selectElement.innerHTML = '';
     const matchFilter = new RegExp(filterText, 'i');
-
-    this.$availableOptions.each((i: number, el: HTMLElement): void => {
-      if (filterText.length === 0 || el.textContent.match(matchFilter)) {
-        this.selectElement.appendChild(el);
-      }
+    this.availableOptions.forEach((option: HTMLOptionElement): void => {
+      option.hidden = filterText.length > 0 && option.textContent.match(matchFilter) === null;
     });
   }
 }

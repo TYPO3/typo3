@@ -11,12 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class InputDateTimeElement {
   constructor(elementId: string) {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.registerEventHandler();
       require(['../../DateTimePicker'], (DateTimePicker: any): void => {
         DateTimePicker.initialize('#' + elementId)
@@ -25,11 +26,15 @@ class InputDateTimeElement {
   }
 
   private registerEventHandler(): void {
-    $(document).on('formengine.dp.change', (event: JQueryEventObject, $field: JQuery): void => {
+    new RegularEvent('formengine.dp.change', (e: CustomEvent): void => {
       FormEngine.Validation.validate();
-      FormEngine.Validation.markFieldAsChanged($field);
-      $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
-    });
+      FormEngine.Validation.markFieldAsChanged(e.detail.element);
+
+      document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
+        btn.classList.remove('disabled');
+        btn.disabled = false;
+      });
+    }).bindTo(document);
   }
 }
 

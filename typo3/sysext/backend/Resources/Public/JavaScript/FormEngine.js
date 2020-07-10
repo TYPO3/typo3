@@ -85,9 +85,14 @@ define(['jquery',
    * @param {string} label The visible name in the selector
    * @param {string} title The title when hovering over it
    * @param {string} exclusiveValues If the select field has exclusive options that are not combine-able
-   * @param {$} $optionEl The jQuery object of the selected <option> tag
+   * @param {HTMLOptionElement|JQuery} optionEl The HTMLOptionElement object of the selected <option> tag
    */
-  FormEngine.setSelectOptionFromExternalSource = function(fieldName, value, label, title, exclusiveValues, $optionEl) {
+  FormEngine.setSelectOptionFromExternalSource = function(fieldName, value, label, title, exclusiveValues, optionEl) {
+    if (optionEl instanceof $) {
+      console.warn('Passing the 6th argument (optionEl) of FormEngine.setSelectOptionFromExternalSource as a jQuery object has been marked as deprecated. Pass an element of type HTMLOptionElement instead.');
+      optionEl = optionEl.get(0);
+    }
+
     exclusiveValues = String(exclusiveValues);
 
     var $fieldEl,
@@ -155,8 +160,11 @@ define(['jquery',
           }
         }
 
-        if (reenableOptions && typeof $optionEl !== 'undefined') {
-          $optionEl.closest('select').find('[disabled]').removeClass('hidden').prop('disabled', false)
+        if (reenableOptions && typeof optionEl !== 'undefined') {
+          optionEl.closest('select').querySelectorAll('[disabled]').forEach(function (disabledOption) {
+            disabledOption.classList.remove('hidden');
+            disabledOption.disabled = false;
+          });
         }
       }
 
@@ -173,8 +181,9 @@ define(['jquery',
           }
         });
 
-        if (addNewValue && typeof $optionEl !== 'undefined') {
-          $optionEl.addClass('hidden').prop('disabled', true);
+        if (addNewValue && typeof optionEl !== 'undefined') {
+          optionEl.classList.add('hidden');
+          optionEl.disabled = true;
         }
       }
 

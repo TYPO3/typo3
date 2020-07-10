@@ -125,6 +125,38 @@ class Utility {
 
     return obj;
   }
+
+  /**
+   * Performs a deep merge of `source` into `target`.
+   * Mutates `target` only but not its objects and arrays.
+   *
+   * @author inspired by [jhildenbiddle](https://stackoverflow.com/a/48218209/4828813).
+   */
+  public static mergeDeep(...objects: object[]) {
+    type IndexedObject = { [key: string]: any };
+    const isObject = (obj: any) => {
+      return obj && typeof obj === 'object';
+    };
+
+    return objects.reduce((prev: IndexedObject, obj: IndexedObject): IndexedObject => {
+      Object.keys(obj).forEach((key: string): void => {
+        const pVal = prev[key];
+        const oVal = obj[key];
+
+        if (Array.isArray(pVal) && Array.isArray(oVal)) {
+          prev[key] = pVal.concat(...oVal);
+        }
+        else if (isObject(pVal) && isObject(oVal)) {
+          prev[key] = Utility.mergeDeep(pVal, oVal);
+        }
+        else {
+          prev[key] = oVal;
+        }
+      });
+
+      return prev;
+    }, {});
+  }
 }
 
 export = Utility;

@@ -265,7 +265,7 @@ class RichTextElement extends AbstractFormElement
                                 });
                             }
                         });
-                        $(document).on(\'inline:sorting-changed\', function() {
+                        document.addEventListener(\'inline:sorting-changed\', function() {
                             CKEDITOR.instances["' . $fieldId . '"].destroy();
                             CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
                         });

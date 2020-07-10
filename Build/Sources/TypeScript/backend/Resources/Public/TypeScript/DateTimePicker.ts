@@ -103,7 +103,11 @@ class DateTimePicker {
           }
           $hiddenField.val(value);
 
-          $(document).trigger('formengine.dp.change', [$element]);
+          document.dispatchEvent(new CustomEvent('formengine.dp.change',  {
+            detail: {
+              element: $element,
+            }
+          }));
         });
       });
     }
