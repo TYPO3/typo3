@@ -390,6 +390,66 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function pageRendererRendersDataAttributeInScriptTags(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $subject = $this->createPageRenderer();
+        $subject->setLanguage('default');
+
+        $subject->addJsFooterLibrary(
+            'test',
+            '/fileadmin/test.js',
+            tagAttributes: [
+                'type' => 'text/javascript',
+                'data-foo' => 'JsFooterLibrary',
+                'data-bar' => 'baz',
+            ]
+        );
+        $expectedJsFooterLibrary = '<script src="/fileadmin/test.js" type="text/javascript" data-foo="JsFooterLibrary" data-bar="baz"></script>';
+
+        $subject->addJsLibrary(
+            'test2',
+            '/fileadmin/test2.js',
+            'text/javascript',
+            tagAttributes: [
+                'data-foo' => 'JsLibrary',
+                'data-bar' => 'baz',
+            ]
+        );
+        $expectedJsLibrary = '<script src="/fileadmin/test2.js" type="text/javascript" data-foo="JsLibrary" data-bar="baz"></script>';
+
+        $subject->addJsFile(
+            '/fileadmin/test3.js',
+            'text/javascript',
+            tagAttributes: [
+                'data-foo' => 'JsFile',
+                'data-bar' => 'baz',
+            ]
+        );
+        $expectedJsFile = '<script src="/fileadmin/test3.js" type="text/javascript" data-foo="JsFile" data-bar="baz"></script>';
+
+        $subject->addJsFooterFile(
+            '/fileadmin/test4.js',
+            'text/javascript',
+            tagAttributes: [
+                'data-foo' => 'JsFooterFile',
+                'data-bar' => 'baz',
+            ]
+        );
+        $expectedJsFooter = '<script src="/fileadmin/test4.js" type="text/javascript" data-foo="JsFooterFile" data-bar="baz"></script>';
+
+        $renderedString = $subject->render();
+
+        self::assertStringContainsString($expectedJsFooterLibrary, $renderedString);
+        self::assertStringContainsString($expectedJsLibrary, $renderedString);
+        self::assertStringContainsString($expectedJsFile, $renderedString);
+        self::assertStringContainsString($expectedJsFooter, $renderedString);
+    }
+
+    /**
+     * @test
+     */
     public function pageRendererMergesRequireJsPackagesOnConsecutiveCalls(): void
     {
         $sessionBackend = $this->prophesize(SessionBackendInterface::class);
@@ -438,5 +498,39 @@ class PageRendererTest extends FunctionalTestCase
         $subject->loadRequireJs();
         $renderedString = $subject->render();
         self::assertStringContainsString($expectedConfiguration, $renderedString);
+    }
+
+    /**
+     * @test
+     */
+    public function pageRendererRendersDataAttributeInCssTags(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $subject = $this->createPageRenderer();
+        $subject->setLanguage('default');
+
+        $subject->addCssFile(
+            '/fileadmin/test.css',
+            tagAttributes: [
+                'data-foo' => 'CssFile',
+                'data-bar' => 'baz',
+            ]
+        );
+        $expectedCssFile = '<link rel="stylesheet" href="/fileadmin/test.css" media="all" data-foo="CssFile" data-bar="baz" />';
+
+        $subject->addCssLibrary(
+            '/fileadmin/test.css',
+            tagAttributes: [
+                'data-foo' => 'CssLibrary',
+                'data-bar' => 'baz',
+            ]
+        );
+        $expectedCssLibrary = '<link rel="stylesheet" href="/fileadmin/test.css" media="all" data-foo="CssLibrary" data-bar="baz" />';
+
+        $renderedString = $subject->render();
+
+        self::assertStringContainsString($expectedCssFile, $renderedString);
+        self::assertStringContainsString($expectedCssLibrary, $renderedString);
     }
 }

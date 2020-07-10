@@ -1074,8 +1074,9 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
+     * @param array<string, string> $tagAttributes Key => value list of tag attributes
      */
-    public function addJsLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
         if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
@@ -1092,6 +1093,7 @@ class PageRenderer implements SingletonInterface
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
                 'nomodule' => $nomodule,
+                'tagAttributes' => $tagAttributes,
             ];
         }
     }
@@ -1112,8 +1114,9 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
+     * @param array<string, string> $tagAttributes Key => value list of tag attributes
      */
-    public function addJsFooterLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsFooterLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
         $name .= '_jsFooterLibrary';
         if (!isset($this->jsLibs[strtolower($name)])) {
@@ -1131,6 +1134,7 @@ class PageRenderer implements SingletonInterface
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
                 'nomodule' => $nomodule,
+                'tagAttributes' => $tagAttributes,
             ];
         }
     }
@@ -1150,8 +1154,9 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
+     * @param array<string, string> $tagAttributes Key => value list of tag attributes
      */
-    public function addJsFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
@@ -1168,6 +1173,7 @@ class PageRenderer implements SingletonInterface
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
                 'nomodule' => $nomodule,
+                'tagAttributes' => $tagAttributes,
             ];
         }
     }
@@ -1187,8 +1193,9 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      * @param bool $nomodule Flag if property 'nomodule="nomodule"' should be added to JavaScript tags
+     * @param array<string, string> $tagAttributes Key => value list of tag attributes
      */
-    public function addJsFooterFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false)
+    public function addJsFooterFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
@@ -1205,6 +1212,7 @@ class PageRenderer implements SingletonInterface
                 'defer' => $defer,
                 'crossorigin' => $crossorigin,
                 'nomodule' => $nomodule,
+                'tagAttributes' => $tagAttributes,
             ];
         }
     }
@@ -1262,8 +1270,9 @@ class PageRenderer implements SingletonInterface
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $inline
+     * @param array<string, string> $tagAttributes Key => value list of tag attributes
      */
-    public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false)
+    public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false, array $tagAttributes = [])
     {
         if (!isset($this->cssFiles[$file])) {
             $this->cssFiles[$file] = [
@@ -1277,6 +1286,7 @@ class PageRenderer implements SingletonInterface
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar,
                 'inline' => $inline,
+                'tagAttributes' => $tagAttributes,
             ];
         }
     }
@@ -1294,8 +1304,9 @@ class PageRenderer implements SingletonInterface
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $inline
+     * @param array<string, string> $tagAttributes Key => value list of tag attributes
      */
-    public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false)
+    public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false, array $tagAttributes = [])
     {
         if (!isset($this->cssLibs[$file])) {
             $this->cssLibs[$file] = [
@@ -1309,6 +1320,7 @@ class PageRenderer implements SingletonInterface
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar,
                 'inline' => $inline,
+                'tagAttributes' => $tagAttributes,
             ];
         }
     }
@@ -2205,11 +2217,19 @@ class PageRenderer implements SingletonInterface
         if ($includeInline && @is_file($file)) {
             $tag = $this->createInlineCssTagFromFile($file, $properties);
         } else {
-            $tag = '<link rel="' . htmlspecialchars($properties['rel'] ?? '')
-                . '" href="' . htmlspecialchars($file)
-                . '" media="' . htmlspecialchars($properties['media'] ?? '') . '"'
-                . (($properties['title'] ?? false) ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
-                . $this->endingSlash . '>';
+            $tagAttributes = [];
+            if ($properties['rel'] ?? false) {
+                $tagAttributes['rel'] = $properties['rel'];
+            }
+            $tagAttributes['href'] = $file;
+            if ($properties['media'] ?? false) {
+                $tagAttributes['media'] = $properties['media'];
+            }
+            if ($properties['title'] ?? false) {
+                $tagAttributes['title'] = $properties['title'];
+            }
+            $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
+            $tag = '<link ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . $this->endingSlash . '>';
         }
         if ($properties['allWrap'] ?? false) {
             $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
@@ -2253,14 +2273,28 @@ class PageRenderer implements SingletonInterface
         $jsFooterLibs = '';
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
-                $properties['file'] = $this->getStreamlinedFileName($properties['file'] ?? '');
-                $type = ($properties['type'] ?? false) ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
-                $async = ($properties['async'] ?? false) ? ' async="async"' : '';
-                $defer = ($properties['defer'] ?? false) ? ' defer="defer"' : '';
-                $nomodule = ($properties['nomodule'] ?? false) ? ' nomodule="nomodule"' : '';
-                $integrity = ($properties['integrity'] ?? false) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
-                $crossorigin = ($properties['crossorigin'] ?? false) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
-                $tag = '<script src="' . htmlspecialchars($properties['file']) . '"' . $type . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
+                $tagAttributes = [];
+                $tagAttributes['src'] = $this->getStreamlinedFileName($properties['file'] ?? '');
+                if ($properties['type'] ?? false) {
+                    $tagAttributes['type'] = $properties['type'];
+                }
+                if ($properties['async'] ?? false) {
+                    $tagAttributes['async'] = 'async';
+                }
+                if ($properties['defer'] ?? false) {
+                    $tagAttributes['defer'] = 'defer';
+                }
+                if ($properties['nomodule'] ?? false) {
+                    $tagAttributes['nomodule'] = 'nomodule';
+                }
+                if ($properties['integrity'] ?? false) {
+                    $tagAttributes['integrity'] = $properties['integrity'];
+                }
+                if ($properties['crossorigin'] ?? false) {
+                    $tagAttributes['crossorigin'] = $properties['crossorigin'];
+                }
+                $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
+                $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
                 if ($properties['allWrap'] ?? false) {
                     $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -2297,14 +2331,28 @@ class PageRenderer implements SingletonInterface
         $jsFooterFiles = '';
         if (!empty($this->jsFiles)) {
             foreach ($this->jsFiles as $file => $properties) {
-                $file = $this->getStreamlinedFileName($file);
-                $type = ($properties['type'] ?? false) ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
-                $async = ($properties['async'] ?? false) ? ' async="async"' : '';
-                $defer = ($properties['defer'] ?? false) ? ' defer="defer"' : '';
-                $nomodule = ($properties['nomodule'] ?? false) ? ' nomodule="nomodule"' : '';
-                $integrity = ($properties['integrity'] ?? false) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
-                $crossorigin = ($properties['crossorigin'] ?? false) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
-                $tag = '<script src="' . htmlspecialchars($file) . '"' . $type . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
+                $tagAttributes = [];
+                $tagAttributes['src'] = $this->getStreamlinedFileName($file);
+                if ($properties['type'] ?? false) {
+                    $tagAttributes['type'] = $properties['type'];
+                }
+                if ($properties['async'] ?? false) {
+                    $tagAttributes['async'] = 'async';
+                }
+                if ($properties['defer'] ?? false) {
+                    $tagAttributes['defer'] = 'defer';
+                }
+                if ($properties['nomodule'] ?? false) {
+                    $tagAttributes['nomodule'] = 'nomodule';
+                }
+                if ($properties['integrity'] ?? false) {
+                    $tagAttributes['integrity'] = $properties['integrity'];
+                }
+                if ($properties['crossorigin'] ?? false) {
+                    $tagAttributes['crossorigin'] = $properties['crossorigin'];
+                }
+                $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
+                $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
                 if ($properties['allWrap'] ?? false) {
                     $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -2772,10 +2820,15 @@ class PageRenderer implements SingletonInterface
             return '';
         }
         $cssInlineFix = $this->relativeCssPathFixer->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
-        return '<style'
-            . ' media="' . htmlspecialchars($properties['media'] ?? '') . '"'
-            . (($properties['title'] ?? false) ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
-            . '>' . LF
+        $tagAttributes = [];
+        if ($properties['media'] ?? false) {
+            $tagAttributes['media'] = $properties['media'];
+        }
+        if ($properties['title'] ?? false) {
+            $tagAttributes['title'] = $properties['title'];
+        }
+        $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
+        return '<style ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '>' . LF
             . '/*<![CDATA[*/' . LF . '<!-- ' . LF
             . $cssInlineFix
             . '-->' . LF . '/*]]>*/' . LF . '</style>' . LF;
