@@ -371,7 +371,30 @@ class Check implements CheckInterface
             // Disabled by default on Ubuntu OS but this is okay since the Core does not use them
             'pcntl_',
         ];
+
+        // List of disable_functions which would not trigger an error, but only a warning
+        $configuredAllowedDisableFunctions = $GLOBALS['TYPO3_CONF_VARS']['SYS']['allowedPhpDisableFunctions'] ?? [];
+        if (!is_array($configuredAllowedDisableFunctions)) {
+            $configuredAllowedDisableFunctions = [];
+        }
+        $foundAllowedDisableFunctions = [];
+
+        // Iterate all functions that are currently disabled by PHP ($disabledFunctionsArray).
+        // Each disabled function ($disabledFunction) is checked whether it may be acceptable
+        // to be disabled (based on $configuredAllowedDisableFunctions).
+        // If good to be disabled: Remove from $disabledFunctionsArray (which is emitted later on),
+        //                         and also add to $foundAllowedDisableFunctions for reporting.
+        // Else: Check if the function is maybe whitelisted because unused by core ($findStrings)
+        //       and if so, also remove from $disabledFunctionsArray
+        // What remains then in $disabledFunctionsArray is the list of disabled functions that
+        // need to be reported.
         foreach ($disabledFunctionsArray as $key => $disabledFunction) {
+            if (in_array($disabledFunction, $configuredAllowedDisableFunctions, true)) {
+                unset($disabledFunctionsArray[$key]);
+                $foundAllowedDisableFunctions[] = $disabledFunction;
+                continue;
+            }
+
             foreach ($findStrings as $findString) {
                 if (str_contains($disabledFunction, $findString)) {
                     unset($disabledFunctionsArray[$key]);
@@ -380,22 +403,41 @@ class Check implements CheckInterface
         }
 
         if ($disabledFunctions !== '') {
-            if (!empty($disabledFunctionsArray)) {
+            // Error for disable_functions which are not explicitly allowed
+            if ($disabledFunctionsArray !== []) {
                 $this->messageQueue->enqueue(new FlashMessage(
-                    'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . LF
-                        . 'These function(s) are disabled. TYPO3 uses some of those, so there might be trouble.'
-                        . ' TYPO3 is designed to use the default set of PHP functions plus some common extensions.'
-                        . ' Possibly these functions are disabled'
-                        . ' due to security considerations and most likely the list would include a function like'
-                        . ' exec() which is used by TYPO3 at various places. Depending on which exact functions'
-                        . ' are disabled, some parts of the system may just break without further notice.',
+                    'disable_functions=' . implode(' ', $disabledFunctionsArray) . LF
+                    . '- These function(s) are disabled. TYPO3 uses some of those, so there might be trouble.'
+                    . ' TYPO3 is designed to use the default set of PHP functions plus some common extensions.'
+                    . ' Possibly these functions are disabled'
+                    . ' due to security considerations and often the list would include a function like'
+                    . ' exec() which is used by TYPO3 at various places. Depending on which exact functions'
+                    . ' are disabled, some parts of the system may just break without further notice. Known acceptable'
+                    . ' exemptions can be muted by adding those to'
+                    . ' $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'allowedPhpDisableFunctions\'] in your system'
+                    . ' configuration.',
                     'Some PHP functions disabled',
                     ContextualFeedbackSeverity::ERROR
                 ));
-            } else {
+            }
+            // Warning for disable_functions which are explicitly allowed
+            if ($foundAllowedDisableFunctions !== []) {
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'disable_functions=' . implode(' ', $foundAllowedDisableFunctions) . LF
+                    . '- These function(s) are disabled. TYPO3 or installed extensions may use some of those, but the'
+                    . ' error reporting for them is explicitly muted in your installation via configuration variable'
+                    . ' $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'allowedPhpDisableFunctions\'].'
+                    . ' Please ensure by yourself that these functions are not used by TYPO3 or any other installed package.',
+                    'Some PHP functions disabled, but considered irrelevant',
+                    ContextualFeedbackSeverity::WARNING
+                ));
+            }
+            // Notice for known irrelevant functions (e.g. pcntl_*)
+            // Only shown if none of the two FlashMessages above are emitted.
+            if ($disabledFunctionsArray === [] && $foundAllowedDisableFunctions === []) {
                 $this->messageQueue->enqueue(new FlashMessage(
                     'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . LF
-                        . 'These function(s) are disabled. TYPO3 uses currently none of those, so you are good to go.',
+                        . '- These function(s) are disabled. TYPO3 uses currently none of those, so you are good to go.',
                     'Some PHP functions currently disabled but OK'
                 ));
             }
