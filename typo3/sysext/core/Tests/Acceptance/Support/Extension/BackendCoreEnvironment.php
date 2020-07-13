@@ -43,7 +43,6 @@ class BackendCoreEnvironment extends BackendEnvironment
             'extensionmanager',
             'setup',
             'backend',
-            'about',
             'belog',
             'install',
             'frontend',

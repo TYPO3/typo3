@@ -63,3 +63,17 @@ $GLOBALS['TBE_STYLES']['skins']['backend'] = [
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
     ]
 );
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+    'help',
+    'AboutAbout',
+    'top',
+    null,
+    [
+        'routeTarget' => \TYPO3\CMS\Backend\Controller\AboutController::class . '::indexAction',
+        'access' => 'user,group',
+        'name' => 'help_AboutAbout',
+        'icon' => 'EXT:backend/Resources/Public/Icons/module-about.svg',
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf'
+    ]
+);

@@ -283,7 +283,7 @@ module.exports = function (grunt) {
       module_icons: {
         files: [
           {
-            dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg',
+            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-about.svg',
             src: '<%= paths.t3icons %>module/module-about.svg'
           },
           {

@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\About\Controller;
+namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
@@ -180,8 +180,8 @@ class AboutController
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:about/Resources/Private/Templates/About']);
-        $this->view->setPartialRootPaths(['EXT:about/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:about/Resources/Private/Layouts']);
+        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/About']);
+        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/About']);
+        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
     }
 }

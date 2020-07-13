@@ -42,7 +42,6 @@ class PageTreeCoreEnvironment extends BackendEnvironment
             'extensionmanager',
             'setup',
             'backend',
-            'about',
             'belog',
             'install',
             'frontend',

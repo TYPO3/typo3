@@ -1,0 +1,13 @@
+<div class="panel panel-default">
+    <div class="panel-body panel-body-highlightlinks">
+        <h2 class="h4">
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:donation_header" />
+        </h2>
+        <p>
+            {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:donation_message') -> f:format.raw()}
+        </p>
+        <a href="{donationUrl}" class="btn btn-default" title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:donation_button')}" target="_blank" rel="noreferrer">
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:donation_button" />
+        </a>
+    </div>
+</div>

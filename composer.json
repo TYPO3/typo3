@@ -183,7 +183,6 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\CMS\\About\\": "typo3/sysext/about/Classes/",
 			"TYPO3\\CMS\\Adminpanel\\": "typo3/sysext/adminpanel/Classes/",
 			"TYPO3\\CMS\\Backend\\": "typo3/sysext/backend/Classes/",
 			"TYPO3\\CMS\\Belog\\": "typo3/sysext/belog/Classes/",
