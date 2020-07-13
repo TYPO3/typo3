@@ -15,9 +15,9 @@ Introduction
 
    Get in touch with us:
 
-     - Find us on `Slack <https://typo3.slack.com>`_ and join the channel
-       ``#ext:form``.
-     - Use the "Edit me on Github" function.
+   - Find us on `Slack <https://typo3.slack.com>`_ and join the channel
+     ``#ext:form``.
+   - Use the "Edit on Github" function.
 
 
 .. _what-does-it-do:
