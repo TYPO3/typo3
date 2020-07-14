@@ -6,7 +6,8 @@
         <div class="col-sm-8">
             <f:if condition="{currentVersion} && {copyrightYear}">
                 <p>
-                    {f:translate(key: 'LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:cms_description',
+                    {f:translate(key: 'widgets.t3information.text',
+                    extensionName: 'dashboard',
                     arguments: '{
                     0: currentVersion,
                     1: "&copy; {copyrightYear}",
@@ -18,7 +19,7 @@
         <div class="col-sm-4">
             <img src="{f:uri.resource(path: 'Images/typo3_orange.svg', extensionName: 'backend')}"
                 class="widget-t3information-logo"
-                alt="{f:translate(key:'LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:typo3_logo')}"/>
+                alt="{f:translate(key:'widgets.t3information.logo', extensionName: 'dashboard')}"/>
         </div>
     </div>
 
