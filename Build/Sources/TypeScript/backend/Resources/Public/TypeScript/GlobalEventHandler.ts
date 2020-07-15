@@ -26,7 +26,8 @@ type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
  *   + `data-action-navigate="..."` navigates to URL
  *     + `$value` URL taken from value of current element
  *     + `$data` URL taken from `data-navigate-value`
- *     + `$data=~s/$value/` URL taken from `data-navigate-value`, substituting literal `${value}`
+ *     + `$data=~s/$value/` URL taken from `data-navigate-value`,
+ *        substituting literal `${value}` and `$[value]` of current element
  * + `data-global-event="click"`
  *   + @todo
  *
@@ -54,25 +55,25 @@ class GlobalEventHandler {
 
   private handleChangeEvent(evt: Event, resolvedTarget: HTMLElement): void {
     evt.preventDefault();
-    this.handleSubmitAction(evt, resolvedTarget)
-      || this.handleNavigateAction(evt, resolvedTarget);
+    this.handleFormChildSubmitAction(evt, resolvedTarget)
+      || this.handleFormChildNavigateAction(evt, resolvedTarget);
   }
 
   private handleClickEvent(evt: Event, resolvedTarget: HTMLElement): void {
     evt.preventDefault();
   }
 
-  private handleSubmitAction(evt: Event, resolvedTarget: HTMLElement): boolean {
-    const action: string = resolvedTarget.dataset.actionSubmit;
-    if (!action) {
+  private handleFormChildSubmitAction(evt: Event, resolvedTarget: HTMLElement): boolean {
+    const actionSubmit: string = resolvedTarget.dataset.actionSubmit;
+    if (!actionSubmit) {
       return false;
     }
     // @example [data-action-submit]="$form"
-    if (action === '$form' && this.isHTMLFormChildElement(resolvedTarget)) {
+    if (actionSubmit === '$form' && this.isHTMLFormChildElement(resolvedTarget)) {
       (resolvedTarget as HTMLFormChildElement).form.submit();
       return true;
     }
-    const formCandidate = document.querySelector(action);
+    const formCandidate = document.querySelector(actionSubmit);
     if (formCandidate instanceof HTMLFormElement) {
       formCandidate.submit();
       return true;
@@ -80,27 +81,32 @@ class GlobalEventHandler {
     return false;
   }
 
-  private handleNavigateAction(evt: Event, resolvedTarget: HTMLElement): boolean {
-    const action: string = resolvedTarget.dataset.actionNavigate;
-    if (!action) {
+  private handleFormChildNavigateAction(evt: Event, resolvedTarget: HTMLElement): boolean {
+    const actionNavigate: string = resolvedTarget.dataset.actionNavigate;
+    if (!actionNavigate) {
       return false;
     }
     const value = this.resolveHTMLFormChildElementValue(resolvedTarget);
     const navigateValue = resolvedTarget.dataset.navigateValue;
-    if (action === '$data=~s/$value/' && navigateValue && value !== null) {
-      // replacing `${value}` and its URL encoded representation
-      window.location.href = navigateValue.replace(/(\$\{value\}|%24%7Bvalue%7D)/gi, value);
+    if (actionNavigate === '$data=~s/$value/' && navigateValue && value !== null) {
+      window.location.href = this.substituteValueVariable(navigateValue, value);
       return true;
     }
-    if (action === '$data' && navigateValue) {
+    if (actionNavigate === '$data' && navigateValue) {
       window.location.href = navigateValue;
       return true;
     }
-    if (action === '$value' && value) {
+    if (actionNavigate === '$value' && value) {
       window.location.href = value;
       return true;
     }
     return false;
+  }
+
+  private substituteValueVariable(haystack: string, substitute: string): string {
+    // replacing `${value}` and `$[value]` and its URL encoded representation
+    // (`${value}` is difficult to achieve with Fluid, that's why there's `$[value]` as well)
+    return haystack.replace(/(\$\{value\}|%24%7Bvalue%7D|\$\[value\]|%24%5Bvalue%5D)/gi, substitute);
   }
 
   private isHTMLFormChildElement(element: HTMLElement): boolean {
