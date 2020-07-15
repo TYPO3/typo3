@@ -67,7 +67,7 @@ class PaginateController extends AbstractWidgetController
         ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], false);
         $this->numberOfObjects = count($this->objects);
         $itemsPerPage = (int)$this->configuration['itemsPerPage'];
-        $this->numberOfPages = $itemsPerPage > 0 ? ceil($this->numberOfObjects / $itemsPerPage) : 0;
+        $this->numberOfPages = $itemsPerPage > 0 ? (int)ceil($this->numberOfObjects / $itemsPerPage) : 0;
     }
 
     /**
@@ -76,12 +76,12 @@ class PaginateController extends AbstractWidgetController
     public function indexAction($currentPage = 1)
     {
         // set current page
-        $this->currentPage = (int)$currentPage;
-        if ($this->currentPage < 1) {
-            $this->currentPage = 1;
-        }
+        $this->currentPage = max((int)$currentPage, 1);
+        $this->currentPage = min($this->numberOfPages, $this->currentPage);
+
         if ($this->currentPage > $this->numberOfPages) {
             // set $modifiedObjects to NULL if the page does not exist
+            // (happens when numberOfPages is zero, not having any items)
             $modifiedObjects = null;
         } else {
             // modify query
