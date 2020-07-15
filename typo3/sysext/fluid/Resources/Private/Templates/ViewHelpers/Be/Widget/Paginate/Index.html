@@ -2,24 +2,7 @@
     <f:render section="paginator" arguments="{pagination: pagination, recordsLabel: configuration.recordsLabel}" />
 </f:if>
 
-<f:if condition="{configuration.insertAbove} || {configuration.insertBelow}">
-    <script>
-        function goToPage(formObject) {
-            var formField = formObject.elements['paginator-target-page'];
-            var url = formField.dataset.url;
-            var numberOfPages = parseInt(formField.dataset.numberOfPages);
-            var page = parseInt(formField.value);
-            if (page > numberOfPages) {
-                page = numberOfPages;
-            } else if (page < 1) {
-                page = 1;
-            }
-            url = url.replace('987654321', page);
-            self.location.href = url;
-            return false;
-        }
-    </script>
-</f:if>
+<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/ActionDispatcher'}" />
 
 <f:renderChildren arguments="{contentArguments}" />
 
@@ -73,8 +56,12 @@
                 <span>
                     <f:translate key="widget.pagination.page" />
 
-                    <form onsubmit="return goToPage(this);" style="display:inline;">
-                        <f:form.textfield additionalAttributes="{min: '1', data-number-of-pages: '{pagination.numberOfPages}', data-url: '{f:widget.uri(arguments:\'{currentPage: 987654321}\')}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" type="number" />
+                    <form style="display:inline;"
+                        data-global-event="submit"
+                        data-action-navigate="$form=~s/$value/"
+                        data-navigate-value="{f:widget.uri(arguments:'{currentPage: \'$[value]\'}')}"
+                        data-value-selector="input[name='paginator-target-page']">
+                        <f:form.textfield additionalAttributes="{min: '1', data-number-of-pages: '{pagination.numberOfPages}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" type="number" />
                     </form>
 
                     / {pagination.numberOfPages}

@@ -28,6 +28,11 @@ type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
  *     + `$data` URL taken from `data-navigate-value`
  *     + `$data=~s/$value/` URL taken from `data-navigate-value`,
  *        substituting literal `${value}` and `$[value]` of current element
+ * + `data-global-event="submit"`
+ *   + `data-value-selector`="..."` retrieves `$value` from corresponding CSS selector
+ *   + `data-action-navigate="..."` navigates to URL
+ *     + `$form=~s/$value/` URL taken from `form[action]`,
+ *        substituting literal `${value}` and `$[value]` taken from `data-value-selector`
  * + `data-global-event="click"`
  *   + @todo
  *
@@ -40,6 +45,7 @@ class GlobalEventHandler {
   private options = {
     onChangeSelector: '[data-global-event="change"]',
     onClickSelector: '[data-global-event="click"]',
+    onSubmitSelector: 'form[data-global-event="submit"]',
   };
 
   constructor() {
@@ -51,6 +57,8 @@ class GlobalEventHandler {
       .delegateTo(document, this.options.onChangeSelector);
     new RegularEvent('click', this.handleClickEvent.bind(this))
       .delegateTo(document, this.options.onClickSelector);
+    new RegularEvent('submit', this.handleSubmitEvent.bind(this))
+      .delegateTo(document, this.options.onSubmitSelector);
   }
 
   private handleChangeEvent(evt: Event, resolvedTarget: HTMLElement): void {
@@ -61,6 +69,11 @@ class GlobalEventHandler {
 
   private handleClickEvent(evt: Event, resolvedTarget: HTMLElement): void {
     evt.preventDefault();
+  }
+
+  private handleSubmitEvent(evt: Event, resolvedTarget: HTMLFormElement): void {
+    evt.preventDefault();
+    this.handleFormNavigateAction(evt, resolvedTarget);
   }
 
   private handleFormChildSubmitAction(evt: Event, resolvedTarget: HTMLElement): boolean {
@@ -98,6 +111,26 @@ class GlobalEventHandler {
     }
     if (actionNavigate === '$value' && value) {
       window.location.href = value;
+      return true;
+    }
+    return false;
+  }
+
+  private handleFormNavigateAction(evt: Event, resolvedTarget: HTMLFormElement): boolean {
+    const formAction = resolvedTarget.action;
+    const actionNavigate: string = resolvedTarget.dataset.actionNavigate;
+    if (!formAction || !actionNavigate) {
+      return false;
+    }
+    const navigateValue = resolvedTarget.dataset.navigateValue;
+    const valueSelector = resolvedTarget.dataset.valueSelector;
+    const value = this.resolveHTMLFormChildElementValue(resolvedTarget.querySelector(valueSelector));
+    if (actionNavigate === '$form=~s/$value/' && navigateValue && value !== null) {
+      window.location.href = this.substituteValueVariable(navigateValue, value);
+      return true;
+    }
+    if (actionNavigate === '$form') {
+      window.location.href = formAction;
       return true;
     }
     return false;
