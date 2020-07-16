@@ -793,6 +793,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->id = ($this->contentPid = (int)$this->id);
         // Make sure it's an integer
         $this->type = (int)$this->type;
+        // Setting language and fetch translated page
+        $this->settingLanguage($request);
         // Call post processing function for id determination:
         $_params = ['pObj' => &$this];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
@@ -2027,7 +2029,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } catch (RootLineException $e) {
             $this->rootLine = [];
         }
-        $this->tmpl->updateRootlineData($this->rootLine);
     }
 
     /**
