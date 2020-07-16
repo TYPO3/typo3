@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Info\Controller;
 
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -184,18 +185,13 @@ class TranslationStatusController
                 '</a>' .
                 ((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') .
                 '</td>';
+            $previewUriBuilder = PreviewUriBuilder::create((int)$data['row']['uid']);
             // DEFAULT language:
             // "View page" link is created:
-            $viewPageLink = '<a href="#" onclick="' . htmlspecialchars(
-                BackendUtility::viewOnClick(
-                    $data['row']['uid'],
-                    '',
-                    null,
-                    '',
-                    '',
-                    '&L=###LANG_UID###'
-                )
-            ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
+            $viewPageLink = '<a href="#" ' . $previewUriBuilder
+                    ->withAdditionalQueryParameters('&L=###LANG_UID###')
+                    ->serializeDispatcherAttributes()
+                . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['row']['l18n_cfg'] ?? 0));
             $status = $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? 'danger' : 'success';
@@ -208,16 +204,8 @@ class TranslationStatusController
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ]);
-            $info = '<a href="#" onclick="' . htmlspecialchars(
-                BackendUtility::viewOnClick(
-                    $data['row']['uid'],
-                    '',
-                    null,
-                    '',
-                    '',
-                    ''
-                )
-            ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
+            $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
+                . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(

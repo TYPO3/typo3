@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
@@ -146,16 +147,13 @@ class LanguageColumn extends AbstractGridObject
         return $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage');
     }
 
-    public function getViewPageOnClick(): string
+    public function getPreviewUrlAttributes(): string
     {
         $pageId = $this->context->getPageId();
-        return BackendUtility::viewOnClick(
-            $pageId,
-            '',
-            BackendUtility::BEgetRootLine($pageId),
-            '',
-            '',
-            '&L=' . $this->context->getSiteLanguage()->getLanguageId()
-        );
+        $languageId = $this->context->getSiteLanguage()->getLanguageId();
+        return PreviewUriBuilder::create($pageId)
+            ->withRootLine(BackendUtility::BEgetRootLine($pageId))
+            ->withAdditionalQueryParameters('&L=' . $languageId)
+            ->serializeDispatcherAttributes();
     }
 }

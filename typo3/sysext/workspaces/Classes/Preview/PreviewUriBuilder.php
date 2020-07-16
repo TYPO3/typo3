@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Preview;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder as BackendPreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,6 +33,7 @@ use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Workspaces\Event\RetrievedPreviewUrlEvent;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -51,13 +54,19 @@ class PreviewUriBuilder
     protected $workspaceService;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @var int
      */
     protected $previewLinkLifetime;
 
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher, WorkspaceService $workspaceService)
     {
-        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
+        $this->eventDispatcher = $eventDispatcher;
+        $this->workspaceService = $workspaceService;
         $this->previewLinkLifetime = $this->workspaceService->getPreviewLinkLifetime();
     }
 
@@ -130,7 +139,7 @@ class PreviewUriBuilder
     }
 
     /**
-     * Generates a view Uri for an element.
+     * Generates a view URI for an element.
      *
      * @param string $table Table to be used
      * @param int $uid Uid of the version(!) record
@@ -140,8 +149,22 @@ class PreviewUriBuilder
      */
     public function buildUriForElement(string $table, int $uid, array $liveRecord = null, array $versionRecord = null): string
     {
+        $previewUri = $this->createPreviewUriForElement($table, $uid, $liveRecord, $versionRecord);
+        $event = new RetrievedPreviewUrlEvent($table, $uid, $previewUri, [
+            'liveRecord' => $liveRecord,
+            'versionRecord' => $versionRecord,
+        ]);
+        /** @var RetrievedPreviewUrlEvent $event */
+        $event = $this->eventDispatcher->dispatch($event);
+        $previewUri = (string)($event->getPreviewUri() ?? '');
+        return $previewUri;
+    }
+
+    protected function createPreviewUriForElement(string $table, int $uid, array $liveRecord = null, array $versionRecord = null): ?UriInterface
+    {
         if ($table === 'pages') {
-            return BackendUtility::viewOnClick((int)BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
+            return BackendPreviewUriBuilder::create((int)BackendUtility::getLiveVersionIdOfRecord('pages', $uid))
+                ->buildUri();
         }
 
         if ($liveRecord === null) {
@@ -163,12 +186,13 @@ class PreviewUriBuilder
         }
 
         $pageTsConfig = BackendUtility::getPagesTSconfig($previewPageId);
-        $viewUrl = '';
-
         // Directly use determined direct page id
         if ($table === 'tt_content') {
-            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
-        } elseif (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
+            return BackendPreviewUriBuilder::create($previewPageId)
+                ->withAdditionalQueryParameters($additionalParameters)
+                ->buildUri();
+        }
+        if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
             // Analyze Page TSconfig options.workspaces.previewPageId
             if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table])) {
                 $previewConfiguration = $pageTsConfig['options.']['workspaces.']['previewPageId.'][$table];
@@ -182,22 +206,11 @@ class PreviewUriBuilder
             } else {
                 $previewPageId = (int)$previewConfiguration;
             }
-            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
-        } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
-            // Call user function to render the single record view
-            $_params = [
-                'table' => $table,
-                'uid' => $uid,
-                'record' => $liveRecord,
-                'liveRecord' => $liveRecord,
-                'versionRecord' => $versionRecord,
-            ];
-            $_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
-            $null = null;
-            $viewUrl = GeneralUtility::callUserFunction($_funcRef, $_params, $null);
+            return BackendPreviewUriBuilder::create($previewPageId)
+                ->withAdditionalQueryParameters($additionalParameters)
+                ->buildUri();
         }
-
-        return $viewUrl;
+        return null;
     }
 
     /**

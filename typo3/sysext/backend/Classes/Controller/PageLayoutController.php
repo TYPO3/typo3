@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -751,16 +752,12 @@ class PageLayoutController
             && !VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
             $languageParameter = $this->current_sys_language ? ('&L=' . $this->current_sys_language) : '';
-            $onClick = BackendUtility::viewOnClick(
-                $this->pageinfo['uid'],
-                '',
-                BackendUtility::BEgetRootLine($this->pageinfo['uid']),
-                '',
-                '',
-                $languageParameter
-            );
+            $previewDataAttributes = PreviewUriBuilder::create($this->pageinfo['uid'])
+                ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+                ->withAdditionalQueryParameters($languageParameter)
+                ->buildDispatcherDataAttributes();
             $viewButton = $this->buttonBar->makeLinkButton()
-                ->setOnClick($onClick)
+                ->setDataAttributes($previewDataAttributes ?? [])
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                 ->setHref('#');

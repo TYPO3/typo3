@@ -14,7 +14,9 @@
 import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import shortcutMenu = require('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
+import windowManager = require('TYPO3/CMS/Backend/WindowManager');
 import documentService = require('TYPO3/CMS/Core/DocumentService');
+import Utility = require('TYPO3/CMS/Backend/Utility');
 
 /**
  * Module: TYPO3/CMS/Backend/ActionDispatcher
@@ -35,21 +37,12 @@ class ActionDispatcher {
       // all other payload values are expected to be serialized to unicode literals
       const json = element.dataset.dispatchArgs.replace(/&quot;/g, '"');
       const args = JSON.parse(json);
-      return args instanceof Array ? ActionDispatcher.trimItems(args) : null;
+      return args instanceof Array ? Utility.trimItems(args) : null;
     } else if (element.dataset.dispatchArgsList) {
       const args = element.dataset.dispatchArgsList.split(',');
-      return ActionDispatcher.trimItems(args);
+      return Utility.trimItems(args);
     }
     return null;
-  }
-
-  private static trimItems(items: any[]): any[] {
-    return items.map((item: any) => {
-      if (item instanceof String) {
-        return item.trim();
-      }
-      return item;
-    });
   }
 
   private static enrichItems(items: any[], evt: Event, target: HTMLElement): any[] {
@@ -75,6 +68,7 @@ class ActionDispatcher {
     this.delegates = {
       'TYPO3.InfoWindow.showItem': InfoWindow.showItem.bind(null),
       'TYPO3.ShortcutMenu.createShortcut': shortcutMenu.createShortcut.bind(shortcutMenu),
+      'TYPO3.WindowManager.localOpen': windowManager.localOpen.bind(windowManager),
     };
   }
 

@@ -24,6 +24,7 @@ import Utility = require('TYPO3/CMS/Backend/Utility');
 import Viewport = require('TYPO3/CMS/Backend/Viewport');
 import Wizard = require('TYPO3/CMS/Backend/Wizard');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
+import windowManager = require('TYPO3/CMS/Backend/WindowManager');
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -275,7 +276,7 @@ class Backend extends Workspaces {
     }).on('click', '[data-action="nextstage"]', (e: JQueryEventObject): void => {
       this.sendToStage($(e.currentTarget).closest('tr'), 'next');
     }).on('click', '[data-action="changes"]', this.viewChanges)
-      .on('click', '[data-action="preview"]', this.openPreview)
+      .on('click', '[data-action="preview"]', this.openPreview.bind(this))
       .on('click', '[data-action="open"]', (e: JQueryEventObject): void => {
         const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
         let newUrl = TYPO3.settings.FormEngine.moduleUrl
@@ -899,18 +900,18 @@ class Backend extends Workspaces {
   /**
    * Opens a record in a preview window
    *
-   * @param {Event} e
+   * @param {JQueryEventObject} evt
    */
-  private openPreview = (e: JQueryEventObject): void => {
-    const $tr = $(e.currentTarget).closest('tr');
+  private openPreview(evt: JQueryEventObject): void {
+    const $tr = $(evt.currentTarget).closest('tr');
 
     this.sendRemoteRequest(
       this.generateRemoteActionsPayload('viewSingleRecord', [
         $tr.data('table'), $tr.data('uid'),
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
-      // eslint-disable-next-line no-eval
-      eval((await response.resolve())[0].result);
+      const previewUri: string = (await response.resolve())[0].result;
+      windowManager.localOpen(previewUri);
     });
   }
 

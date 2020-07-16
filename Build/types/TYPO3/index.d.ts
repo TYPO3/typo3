@@ -22,6 +22,7 @@ declare namespace TYPO3 {
   export let Storage: any;
   export let Tooltip: any;
   export let Utility: any;
+  export let WindowManager: any;
   export let Wizard: any;
   export let WorkspacesMenu: any;
   export let settings: any;

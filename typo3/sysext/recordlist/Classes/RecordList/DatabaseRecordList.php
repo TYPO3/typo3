@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -514,10 +515,12 @@ class DatabaseRecordList
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
             if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
-                $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id));
+                $previewDataAttributes = PreviewUriBuilder::create((int)$this->id)
+                    ->withRootLine(BackendUtility::BEgetRootLine($this->id))
+                    ->buildDispatcherDataAttributes();
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
-                    ->setOnClick($onClick)
+                    ->setDataAttributes($previewDataAttributes ?? [])
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
@@ -1024,9 +1027,9 @@ class DatabaseRecordList
      * @param string $table
      * @param array $row
      *
-     * @return string
+     * @return PreviewUriBuilder
      */
-    protected function getOnClickForRow(string $table, array $row): string
+    protected function getPreviewUriBuilder(string $table, array $row): PreviewUriBuilder
     {
         if ($table === 'tt_content') {
             // Link to a content element, possibly translated and with anchor
@@ -1035,29 +1038,21 @@ class DatabaseRecordList
             if ($language > 0) {
                 $additionalParams = '&L=' . $language;
             }
-            $onClick = BackendUtility::viewOnClick(
-                $this->id,
-                '',
-                null,
-                '#c' . $row['uid'],
-                '',
-                $additionalParams
-            );
+            $previewUriBuilder = PreviewUriBuilder::create((int)$this->id)
+                ->withSection('#c' . $row['uid'])
+                ->withAdditionalQueryParameters($additionalParams);
         } elseif ($table === 'pages' && $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0) {
             // Link to a page translation needs uid of default language page as id
-            $onClick = BackendUtility::viewOnClick(
-                $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']],
-                '',
-                null,
-                '',
-                '',
-                '&L=' . (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]
-            );
+            $languageParentId = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
+            $language = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+            $previewUriBuilder = PreviewUriBuilder::create($languageParentId)
+                ->withSection('#c' . $row['uid'])
+                ->withAdditionalQueryParameters('&L=' . $language);
         } else {
             // Link to a page in the default language
-            $onClick = BackendUtility::viewOnClick($row['uid']);
+            $previewUriBuilder = PreviewUriBuilder::create((int)$row['uid']);
         }
-        return $onClick;
+        return $previewUriBuilder;
     }
 
     /**
@@ -1691,11 +1686,9 @@ class DatabaseRecordList
         // "Show" link (only pages and tt_content elements)
         if ($table === 'pages' || $table === 'tt_content') {
             if (!$isDeletePlaceHolder) {
-                $onClick = $this->getOnClickForRow($table, $row);
-                $viewAction = '<a class="btn btn-default" href="#" onclick="'
-                    . htmlspecialchars(
-                        $onClick
-                    ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
+                $attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes();
+                $viewAction = '<a class="btn btn-default" href="#" ' . $attributes
+                     . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
                 if ($table === 'pages') {
                     $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
                 } else {
@@ -3083,8 +3076,8 @@ class DatabaseRecordList
             case 'show':
                 // "Show" link (only pages and tt_content elements)
                 if ($table === 'pages' || $table === 'tt_content') {
-                    $onClick = $this->getOnClickForRow($table, $row);
-                    $code = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars(
+                    $attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes();
+                    $code = '<a href="#" ' . $attributes . ' title="' . htmlspecialchars(
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')
                     ) . '">' . $code . '</a>';
                 }

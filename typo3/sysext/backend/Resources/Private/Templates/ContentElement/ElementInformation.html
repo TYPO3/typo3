@@ -210,7 +210,7 @@
 <f:section name="action">
     <div class="btn-group" role="group">
         <f:if condition="{line.webListUrl}">
-            <a class="btn btn-default btn-sm" href="#" onclick="{line.viewOnClick}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
+            <a class="btn btn-default btn-sm" href="#" {line.previewUrlAttributes -> f:format.raw()} title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
                 <core:icon identifier="actions-document-view" size="small" />
             </a>
         </f:if>

@@ -29,6 +29,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -185,6 +186,11 @@ class EditDocumentController
      * @var string
      */
     protected $viewUrl;
+
+    /**
+     * @var string|null
+     */
+    protected $previewCode;
 
     /**
      * Alternative title for the document handler.
@@ -773,10 +779,9 @@ class EditDocumentController
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
-        $this->moduleTemplate->addJavaScriptCode(
-            'previewCode',
-            (isset($parsedBody['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
-        );
+        if (isset($parsedBody['_savedokview']) && $this->popViewId) {
+            $this->previewCode = $this->generatePreviewCode();
+        }
         // Set context sensitive menu
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
@@ -785,46 +790,22 @@ class EditDocumentController
     }
 
     /**
-     * Generate the Javascript for opening the preview window
+     * Generates markup for immediate action dispatching.
      *
      * @return string
      */
     protected function generatePreviewCode(): string
     {
         $previewPageId = $this->getPreviewPageId();
-        $previewPageRootLine = BackendUtility::BEgetRootLine($previewPageId);
         $anchorSection = $this->getPreviewUrlAnchorSection();
+        $previewPageRootLine = BackendUtility::BEgetRootLine($previewPageId);
+        $previewUrlParameters = $this->getPreviewUrlParameters($previewPageId);
 
-        try {
-            $previewUrlParameters = $this->getPreviewUrlParameters($previewPageId);
-            return '
-            if (window.opener) {
-                '
-                . BackendUtility::viewOnClick(
-                    $previewPageId,
-                    '',
-                    $previewPageRootLine,
-                    $anchorSection,
-                    $this->viewUrl,
-                    $previewUrlParameters,
-                    false
-                )
-                . '
-            } else {
-            '
-                . BackendUtility::viewOnClick(
-                    $previewPageId,
-                    '',
-                    $previewPageRootLine,
-                    $anchorSection,
-                    $this->viewUrl,
-                    $previewUrlParameters
-                )
-                . '
-            }';
-        } catch (UnableToLinkToPageException $e) {
-            return '';
-        }
+        return PreviewUriBuilder::create($previewPageId, $this->viewUrl)
+            ->withRootLine($previewPageRootLine)
+            ->withSection($anchorSection)
+            ->withAdditionalQueryParameters($previewUrlParameters)
+            ->buildImmediateActionElement([PreviewUriBuilder::OPTION_SWITCH_FOCUS => null]);
     }
 
     /**
@@ -998,7 +979,7 @@ class EditDocumentController
      */
     protected function main(ServerRequestInterface $request): void
     {
-        $body = '';
+        $body = $this->previewCode ?? '';
         // Begin edit
         if (is_array($this->editconf)) {
             $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
@@ -1020,7 +1001,7 @@ class EditDocumentController
                     $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
                     BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
                 }
-                $body = $this->formResultCompiler->addCssFiles();
+                $body .= $this->formResultCompiler->addCssFiles();
                 $body .= $this->compileForm($editForm);
                 $body .= $this->formResultCompiler->printNeededJSFunctions();
                 $body .= '</form>';

@@ -27,6 +27,20 @@ class Utility {
   }
 
   /**
+   * Trims string items.
+   *
+   * @param {string[]|any[]} items
+   */
+  public static trimItems(items: any[]): any[] {
+    return items.map((item: any) => {
+      if (item instanceof String) {
+        return item.trim();
+      }
+      return item;
+    });
+  }
+
+  /**
    * Splits a string by a given delimiter and converts the values to integer
    *
    * @param {string} delimiter

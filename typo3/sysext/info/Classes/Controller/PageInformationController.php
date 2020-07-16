@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Info\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -405,10 +406,11 @@ class PageInformationController
                         ];
                         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                        $onClick = BackendUtility::viewOnClick($row['uid'], '', BackendUtility::BEgetRootLine($row['uid']));
-
+                        $attributes = PreviewUriBuilder::create((int)$row['uid'])
+                            ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
+                            ->serializeDispatcherAttributes();
                         $eI =
-                            '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="btn btn-default" title="' .
+                            '<a href="#" ' . $attributes . ' class="btn btn-default" title="' .
                             htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
                             $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
                             '</a>';

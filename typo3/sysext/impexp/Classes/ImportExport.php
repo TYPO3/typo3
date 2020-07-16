@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Impexp;
 
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -594,9 +595,10 @@ abstract class ImportExport
             $pInfo['title'] = htmlspecialchars($record['title']);
             // View page:
             if ($table === 'pages') {
-                $viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
+                $viewID = $this->mode === 'export' ? (int)$uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
                 if ($viewID) {
-                    $pInfo['title'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($viewID)) . 'return false;">' . $pInfo['title'] . '</a>';
+                    $attributes = PreviewUriBuilder::create($viewID)->serializeDispatcherAttributes();
+                    $pInfo['title'] = '<a href="#" ' . $attributes . $pInfo['title'] . '</a>';
                 }
             }
         }

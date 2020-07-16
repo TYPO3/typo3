@@ -13,6 +13,8 @@
 
 import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
 import viewportObject = require('TYPO3/CMS/Backend/Viewport');
+import windowManager = require('TYPO3/CMS/Backend/WindowManager');
+import Utility = require('TYPO3/CMS/Backend/Utility');
 
 /**
  * Module: TYPO3/CMS/Backend/Element/ImmediateActionElement
@@ -25,6 +27,7 @@ import viewportObject = require('TYPO3/CMS/Backend/Viewport');
  */
 export class ImmediateActionElement extends HTMLElement {
   private action: string;
+  private args: any[] = [];
 
   private static getDelegate(action: string): Function {
     switch (action) {
@@ -32,6 +35,8 @@ export class ImmediateActionElement extends HTMLElement {
         return moduleMenuApp.App.refreshMenu.bind(moduleMenuApp);
       case 'TYPO3.Backend.Topbar.refresh':
         return viewportObject.Topbar.refresh.bind(viewportObject.Topbar);
+      case 'TYPO3.WindowManager.localOpen':
+        return windowManager.localOpen.bind(windowManager);
       default:
         throw Error('Unknown action "' + action + '"');
     }
@@ -41,7 +46,7 @@ export class ImmediateActionElement extends HTMLElement {
    * Observed attributes handled by `attributeChangedCallback`.
    */
   public static get observedAttributes(): string[] {
-    return ['action'];
+    return ['action', 'args', 'args-list'];
   }
 
   /**
@@ -50,6 +55,15 @@ export class ImmediateActionElement extends HTMLElement {
   public attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
     if (name === 'action') {
       this.action = newValue;
+    } else if (name === 'args') {
+      // `&quot;` is the only literal of a PHP `json_encode` that needs to be substituted
+      // all other payload values are expected to be serialized to unicode literals
+      const json = newValue.replace(/&quot;/g, '"');
+      const args = JSON.parse(json);
+      this.args = args instanceof Array ? Utility.trimItems(args) : [];
+    } else if (name === 'args-list') {
+      const args = newValue.split(',');
+      this.args = Utility.trimItems(args);
     }
   }
 
@@ -61,8 +75,7 @@ export class ImmediateActionElement extends HTMLElement {
     if (!this.action) {
       throw new Error('Missing mandatory action attribute');
     }
-    // @todo similar to ActionDispatcher, it might be required to pass custom arguments
-    ImmediateActionElement.getDelegate(this.action).apply(null, []);
+    ImmediateActionElement.getDelegate(this.action).apply(null, this.args);
   }
 }
 

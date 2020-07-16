@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -82,8 +83,11 @@ class SortSubPagesController
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('pages_sort')
             ->setFieldName('pages_sort');
+        $previewDataAttributes = PreviewUriBuilder::create($parentPageUid)
+            ->withRootLine(BackendUtility::BEgetRootLine($parentPageUid))
+            ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
-            ->setOnClick(BackendUtility::viewOnClick($parentPageUid, '', BackendUtility::BEgetRootLine($parentPageUid)))
+            ->setDataAttributes($previewDataAttributes ?? [])
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');

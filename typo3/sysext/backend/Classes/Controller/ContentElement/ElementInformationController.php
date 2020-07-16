@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -621,8 +622,10 @@ class ElementInformationController
             // Recordlist button
             $actions['webListUrl'] = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
-            // View page button
-            $actions['viewOnClick'] = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
+            $previewUriBuilder = PreviewUriBuilder::create((int)$uid)
+                ->withRootLine(BackendUtility::BEgetRootLine($uid));
+            // View page button (`previewUrlAttributes` is the substitute for previous `viewOnClick`)
+            $actions['previewUrlAttributes'] = $previewUriBuilder->serializeDispatcherAttributes();
         }
 
         return $actions;

@@ -926,6 +926,13 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 7,
+        'restFiles' => [
+            'Important-91123-AvoidUsingBackendUtilityViewOnClick.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,

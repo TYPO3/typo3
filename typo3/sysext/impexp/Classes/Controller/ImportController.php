@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Impexp\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -254,16 +255,14 @@ class ImportController extends ImportExportController
         if ($this->id && is_array($this->pageinfo) || $this->getBackendUser()->isAdmin() && !$this->id) {
             if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
                 // View
-                $onClick = BackendUtility::viewOnClick(
-                    $this->pageinfo['uid'],
-                    '',
-                    BackendUtility::BEgetRootLine($this->pageinfo['uid'])
-                );
+                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+                    ->buildDispatcherDataAttributes();
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setHref('#')
                     ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-                    ->setOnClick($onClick);
+                    ->setDataAttributes($previewDataAttributes ?? []);
                 $buttonBar->addButton($viewButton);
             }
         }

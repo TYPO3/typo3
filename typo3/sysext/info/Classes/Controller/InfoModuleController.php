@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Info\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -260,13 +261,12 @@ class InfoModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // View page
+        $previewDataAttributes =PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+            ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+            ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
             ->setHref('#')
-            ->setOnClick(BackendUtility::viewOnClick(
-                $this->pageinfo['uid'],
-                '',
-                BackendUtility::BEgetRootLine($this->pageinfo['uid'])
-            ))
+            ->setDataAttributes($previewDataAttributes ?? [])
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);

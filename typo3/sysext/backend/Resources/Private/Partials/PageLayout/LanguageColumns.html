@@ -31,7 +31,7 @@
                 <td class="t3-page-column t3-page-lang-label nowrap">
                     <div class="btn-group">
                         <f:if condition="{languageColumn.allowViewPage}">
-                            <a href="#" class="btn btn-default btn-sm" onclick="{languageColumn.viewPageOnClick}" title="{languageColumn.viewPageLinkTitle}">
+                            <a href="#" class="btn btn-default btn-sm" {languageColumn.previewUrlAttributes -> f:format.raw()} title="{languageColumn.viewPageLinkTitle}">
                                 <core:icon identifier="actions-view" />
                             </a>
                         </f:if>

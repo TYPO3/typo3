@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
@@ -740,15 +741,11 @@ class PageLayoutView implements LoggerAwareInterface
             $viewLink = '';
             // "View page" icon is added:
             if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                $onClick = BackendUtility::viewOnClick(
-                    $this->id,
-                    '',
-                    BackendUtility::BEgetRootLine($this->id),
-                    '',
-                    '',
-                    '&L=' . $languageId
-                );
-                $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
+                $attributes = PreviewUriBuilder::create($this->id)
+                    ->withRootLine(BackendUtility::BEgetRootLine($this->id))
+                    ->withAdditionalQueryParameters('&L=' . $languageId)
+                    ->serializeDispatcherAttributes();
+                $viewLink = '<a href="#" class="btn btn-default btn-sm" ' . $attributes . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             }
             // Language overlay page header:
             if ($languageId) {

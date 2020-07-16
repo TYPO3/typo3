@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -372,13 +373,12 @@ class NewRecordController
                 ];
             }
             if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
+                $previewDataAttributes = PreviewUriBuilder::create($this->pageinfo['uid'])
+                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+                    ->buildDispatcherDataAttributes();
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
-                    ->setOnClick(BackendUtility::viewOnClick(
-                        $this->pageinfo['uid'],
-                        '',
-                        BackendUtility::BEgetRootLine($this->pageinfo['uid'])
-                    ))
+                    ->setDataAttributes($previewDataAttributes ?? [])
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-view-page',
