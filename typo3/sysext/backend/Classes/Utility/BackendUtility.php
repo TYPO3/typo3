@@ -1143,8 +1143,7 @@ class BackendUtility
                         . '</span>';
                 }
                 if ($linkInfoPopup) {
-                    // @todo Should we add requireJsModule again (should be loaded in most/all cases)
-                    // loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
+                    // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
                     $attributes = GeneralUtility::implodeAttributes([
                         'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
                         'data-dispatch-args-list' => '_FILE,' . (int)$fileObject->getUid(),
@@ -2504,8 +2503,7 @@ class BackendUtility
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         if (!empty($options)) {
-            // @todo Should we add requireJsModule again (should be loaded in most/all cases)
-            // loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+            // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
             $attributes = GeneralUtility::implodeAttributes([
                 'name' => $elementName,
                 'class' => 'form-control',
@@ -2559,9 +2557,7 @@ class BackendUtility
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         if (!empty($options)) {
-            // @todo Should we add requireJsModule again (should be loaded in most/all cases)
-            // loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
-            $onChange = 'window.location.href = ' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value;';
+            // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
             $attributes = GeneralUtility::implodeAttributes([
                 'name' => $elementName,
                 'data-menu-identifier' => $dataMenuIdentifier,
@@ -2602,8 +2598,7 @@ class BackendUtility
         $addParams = '',
         $tagParams = ''
     ) {
-        // @todo Should we add requireJsModule again (should be loaded in most/all cases)
-        // loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
         $attributes = GeneralUtility::implodeAttributes([
             'type' => 'checkbox',
