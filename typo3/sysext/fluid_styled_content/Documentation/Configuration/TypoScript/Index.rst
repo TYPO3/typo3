@@ -13,7 +13,7 @@ in the directory :file:`EXT:fluid_styled_content/Configuration/TypoScript/`.
 .. figure:: Images/FileStructure.png
    :alt: Structure of the TypoScript files
 
-   Structure of the TypoScript files
+   Structure of the TypoScript files (since version v9.3 file extension is `.typoscript`)
 
 In this folder there are two files:
 
