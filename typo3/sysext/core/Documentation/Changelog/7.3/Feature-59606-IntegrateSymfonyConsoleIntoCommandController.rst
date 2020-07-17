@@ -15,74 +15,74 @@ provides various methods directly from the CommandController's `output` member:
 
 * TableHelper
 
-	* outputTable($rows, $headers = NULL)
+  * outputTable($rows, $headers = NULL)
 
 * DialogHelper
 
-	* select($question, $choices, $default = NULL, $multiSelect = false, $attempts = FALSE)
-	* ask($question, $default = NULL, array $autocomplete = array())
-	* askConfirmation($question, $default = TRUE)
-	* askHiddenResponse($question, $fallback = TRUE)
-	* askAndValidate($question, $validator, $attempts = FALSE, $default = NULL, array $autocomplete = NULL)
-	* askHiddenResponseAndValidate($question, $validator, $attempts = FALSE, $fallback = TRUE)
+  * select($question, $choices, $default = NULL, $multiSelect = false, $attempts = FALSE)
+  * ask($question, $default = NULL, array $autocomplete = array())
+  * askConfirmation($question, $default = TRUE)
+  * askHiddenResponse($question, $fallback = TRUE)
+  * askAndValidate($question, $validator, $attempts = FALSE, $default = NULL, array $autocomplete = NULL)
+  * askHiddenResponseAndValidate($question, $validator, $attempts = FALSE, $fallback = TRUE)
 
 * ProgressHelper
 
-	* progressStart($max = NULL)
-	* progressSet($current)
-	* progressAdvance($step = 1)
-	* progressFinish()
+  * progressStart($max = NULL)
+  * progressSet($current)
+  * progressAdvance($step = 1)
+  * progressFinish()
 
 Here's an example showing of some of those functions:
 
 .. code-block:: php
 
-	namespace Acme\Demo\Command;
+   namespace Acme\Demo\Command;
 
-	use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+   use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
-	/**
-	 * My command
-	 */
-	class MyCommandController extends CommandController {
+   /**
+    * My command
+    */
+   class MyCommandController extends CommandController {
 
-		/**
-		 * @return string
-		 */
-		public function myCommand() {
-			// render a table
-			$this->output->outputTable(array(
-				array('Bob', 34, 'm'),
-				array('Sally', 21, 'f'),
-				array('Blake', 56, 'm')
-			),
-			array('Name', 'Age', 'Gender'));
+      /**
+       * @return string
+       */
+      public function myCommand() {
+         // render a table
+         $this->output->outputTable(array(
+            array('Bob', 34, 'm'),
+            array('Sally', 21, 'f'),
+            array('Blake', 56, 'm')
+         ),
+         array('Name', 'Age', 'Gender'));
 
-			// select
-			$colors = array('red', 'blue', 'yellow');
-			$selectedColorIndex = $this->output->select('Please select one color', $colors, 'red');
-			$this->outputLine('You choose the color %s.', array($colors[$selectedColorIndex]));
+         // select
+         $colors = array('red', 'blue', 'yellow');
+         $selectedColorIndex = $this->output->select('Please select one color', $colors, 'red');
+         $this->outputLine('You choose the color %s.', array($colors[$selectedColorIndex]));
 
-			// ask
-			$name = $this->output->ask('What is your name?' . PHP_EOL, 'Bob', array('Bob', 'Sally', 'Blake'));
-			$this->outputLine('Hello %s.', array($name));
+         // ask
+         $name = $this->output->ask('What is your name?' . PHP_EOL, 'Bob', array('Bob', 'Sally', 'Blake'));
+         $this->outputLine('Hello %s.', array($name));
 
-			// prompt
-			$likesDogs = $this->output->askConfirmation('Do you like dogs?');
-			if ($likesDogs) {
-				$this->outputLine('You do like dogs!');
-			}
+         // prompt
+         $likesDogs = $this->output->askConfirmation('Do you like dogs?');
+         if ($likesDogs) {
+            $this->outputLine('You do like dogs!');
+         }
 
-			// progress
-			$this->output->progressStart(600);
-			for ($i = 0; $i < 300; $i ++) {
-				$this->output->progressAdvance();
-				usleep(5000);
-			}
-			$this->output->progressFinish();
+         // progress
+         $this->output->progressStart(600);
+         for ($i = 0; $i < 300; $i ++) {
+            $this->output->progressAdvance();
+            usleep(5000);
+         }
+         $this->output->progressFinish();
 
-		}
-	}
+      }
+   }
 
 
 Impact

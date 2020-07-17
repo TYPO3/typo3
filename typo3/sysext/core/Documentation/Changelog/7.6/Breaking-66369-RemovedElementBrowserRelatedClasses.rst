@@ -12,11 +12,11 @@ Description
 
 The following classes have been removed without replacement
 
-	* TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface
-	* TYPO3\CMS\Recordlist\Browser\ElementBrowser
-	* TYPO3\CMS\Rtehtmlarea\BrowseLinks
-	* TYPO3\CMS\Rtehtmlarea\FolderTree
-	* TYPO3\CMS\Rtehtmlarea\PageTree
+* TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface
+* TYPO3\CMS\Recordlist\Browser\ElementBrowser
+* TYPO3\CMS\Rtehtmlarea\BrowseLinks
+* TYPO3\CMS\Rtehtmlarea\FolderTree
+* TYPO3\CMS\Rtehtmlarea\PageTree
 
 
 Impact

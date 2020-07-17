@@ -17,7 +17,8 @@ The widget identifier is used to create the GET parameter names.
 A good value for the `customWidgetId` is the {contentObjectData.uid} to ensure no collisions happen.
 
 Example:
-.. code-block:: html
+
+.. code-block:: xml
 
    <f:widget.paginate customWidgetId="{contentObjectData.uid}" ...></f:widget.paginate>
 

@@ -14,10 +14,10 @@ The PHP-based query cache functionality within the Extbase persistence layer has
 
 The following public methods within the Extbase persistence layer have been removed:
 
- * :php:`Typo3DbBackend->quoteTextValueCallback()`
- * :php:`Typo3DbBackend->initializeObject()`
- * :php:`Typo3DbBackend->injectCacheManager()`
- * Interface definition in :php:`QuerySettingsInterface->getUseQueryCache()`
+* :php:`Typo3DbBackend->quoteTextValueCallback()`
+* :php:`Typo3DbBackend->initializeObject()`
+* :php:`Typo3DbBackend->injectCacheManager()`
+* Interface definition in :php:`QuerySettingsInterface->getUseQueryCache()`
 
 The TypoScript configuration :ts:`config.tx_extbase.persistence.useQueryCache` has no effect anymore.
 

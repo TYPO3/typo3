@@ -22,9 +22,9 @@ Affected dependency injection services are the following boolean services:
 The services variables can be substituted by using dynamic Symfony
 environment parameters:
 
- - "%env(TYPO3:isUnix)%"
- - "%env(TYPO3:isWindows)%"
- - "%env(TYPO3:isCli)%"
- - "%env(TYPO3:isComposerMode)%"
+- "%env(TYPO3:isUnix)%"
+- "%env(TYPO3:isWindows)%"
+- "%env(TYPO3:isCli)%"
+- "%env(TYPO3:isComposerMode)%"
 
 .. index:: PHP-API, ext:core

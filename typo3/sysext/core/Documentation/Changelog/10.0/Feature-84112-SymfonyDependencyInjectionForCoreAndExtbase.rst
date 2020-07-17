@@ -193,24 +193,24 @@ autoregistration into a registry service :php:`MyRegistry`.
 Impact
 ======
 
- * Symfony automatically resolves interfaces to classes when only one class
-   implementing an interface is available. Otherwise an explicit alias is required.
-   That means you SHOULD define an alias for interface to class mappings where
-   the implementation currently defaults to the interface minus the trailing Interface
-   suffix (which is the default for Extbase).
+* Symfony automatically resolves interfaces to classes when only one class
+  implementing an interface is available. Otherwise an explicit alias is required.
+  That means you SHOULD define an alias for interface to class mappings where
+  the implementation currently defaults to the interface minus the trailing Interface
+  suffix (which is the default for Extbase).
 
- * Dependency Injection can be added to constructors of existing services
-   without being breaking. :php:`GeneralUtility::makeInstance(ServiceName::class)`
-   will keep working,  as :php:`makeInstance` has been adapted to resort to the
-   symfony container.
+* Dependency Injection can be added to constructors of existing services
+  without being breaking. :php:`GeneralUtility::makeInstance(ServiceName::class)`
+  will keep working,  as :php:`makeInstance` has been adapted to resort to the
+  symfony container.
 
- * Cyclic dependencies are not supported with Symfony DI (Extbase DI did so).
+* Cyclic dependencies are not supported with Symfony DI (Extbase DI did so).
 
- * Prototypes/Data classes (non singletons, e.g. models) that need both,
-   runtime constructor arguments (as passed to
-   :php:`\TYPO3\CMS\Extbase\Object\ObjectManager->get()`) and injected dependencies
-   are not supported in :php:`\Psr\Container\ContainerInterface->get()`.
-   It is suggested to switch to factories or stick with the object manager for now.
+* Prototypes/Data classes (non singletons, e.g. models) that need both,
+  runtime constructor arguments (as passed to
+  :php:`\TYPO3\CMS\Extbase\Object\ObjectManager->get()`) and injected dependencies
+  are not supported in :php:`\Psr\Container\ContainerInterface->get()`.
+  It is suggested to switch to factories or stick with the object manager for now.
 
 
 .. index:: PHP-API, ext:core

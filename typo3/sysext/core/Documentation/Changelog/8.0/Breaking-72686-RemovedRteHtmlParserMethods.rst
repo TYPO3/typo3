@@ -12,13 +12,13 @@ Description
 
 The following methods within `RteHtmlParser` have been removed without substitution:
 
-    * `RteHtmlParser->siteUrl()`
-    * `RteHtmlParser->getUrl()`
+* `RteHtmlParser->siteUrl()`
+* `RteHtmlParser->getUrl()`
 
 The second method parameter of the following methods have been removed as they have no effect anymore:
 
-    * `RteHtmlParser->HTMLcleaner_db()`
-    * `RteHtmlParser->getKeepTags()`
+* `RteHtmlParser->HTMLcleaner_db()`
+* `RteHtmlParser->getKeepTags()`
 
 
 Impact

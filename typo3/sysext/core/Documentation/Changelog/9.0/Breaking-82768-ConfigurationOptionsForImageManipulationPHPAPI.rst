@@ -18,22 +18,22 @@ or removed/renamed as part of the streaming process, removing the possibility to
 override any of the settings other than via the :php:`init()` method within
 GraphicalFunctions:
 
- * :php:`GraphicalFunctions->gdlibExtensions`
- * :php:`GraphicalFunctions->imageFileExt`
- * :php:`GraphicalFunctions->webImageExt`
- * :php:`GraphicalFunctions->NO_IM_EFFECTS`
- * :php:`GraphicalFunctions->NO_IMAGE_MAGICK`
- * :php:`GraphicalFunctions->mayScaleUp`
- * :php:`GraphicalFunctions->dontCompress`
- * :php:`GraphicalFunctions->dontUnlinkTempFiles`
- * :php:`GraphicalFunctions->absPrefix`
- * :php:`GraphicalFunctions->im5fx_blurSteps`
- * :php:`GraphicalFunctions->im5fx_sharpenSteps`
- * :php:`GraphicalFunctions->pixelLimitGif`
- * :php:`GraphicalFunctions->colMap`
- * :php:`GraphicalFunctions->csConvObj`
- * :php:`GraphicalFunctions->jpegQuality`
- * :php:`GraphicalFunctions->OFFSET`
+* :php:`GraphicalFunctions->gdlibExtensions`
+* :php:`GraphicalFunctions->imageFileExt`
+* :php:`GraphicalFunctions->webImageExt`
+* :php:`GraphicalFunctions->NO_IM_EFFECTS`
+* :php:`GraphicalFunctions->NO_IMAGE_MAGICK`
+* :php:`GraphicalFunctions->mayScaleUp`
+* :php:`GraphicalFunctions->dontCompress`
+* :php:`GraphicalFunctions->dontUnlinkTempFiles`
+* :php:`GraphicalFunctions->absPrefix`
+* :php:`GraphicalFunctions->im5fx_blurSteps`
+* :php:`GraphicalFunctions->im5fx_sharpenSteps`
+* :php:`GraphicalFunctions->pixelLimitGif`
+* :php:`GraphicalFunctions->colMap`
+* :php:`GraphicalFunctions->csConvObj`
+* :php:`GraphicalFunctions->jpegQuality`
+* :php:`GraphicalFunctions->OFFSET`
 
 Additionally, the option to disable the deletion of tempFiles have been removed.
 

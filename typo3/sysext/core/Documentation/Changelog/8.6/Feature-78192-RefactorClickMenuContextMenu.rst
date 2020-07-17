@@ -84,13 +84,13 @@ Based on the JSON data ContextMenu.js is rendering a context-menu. If one of the
 
 For example usage of this API see:
 
- - Beuser item provider :php:`\TYPO3\CMS\Beuser\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Beuser/ContextMenuActions`
- - Impexp item provider :php:`\TYPO3\CMS\Impexp\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Impexp/ContextMenuActions`
- - Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Version/ContextMenuActions`
- - Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Version/ContextMenuActions`
- - Filelist item providers :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileDragProvider`, :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider`,
-   :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileStorageProvider`, :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FilemountsProvider`
-   and requireJS module :javascript:`TYPO3/CMS/Filelist/ContextMenuActions`
+- Beuser item provider :php:`\TYPO3\CMS\Beuser\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Beuser/ContextMenuActions`
+- Impexp item provider :php:`\TYPO3\CMS\Impexp\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Impexp/ContextMenuActions`
+- Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Version/ContextMenuActions`
+- Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Version/ContextMenuActions`
+- Filelist item providers :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileDragProvider`, :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider`,
+  :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileStorageProvider`, :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FilemountsProvider`
+  and requireJS module :javascript:`TYPO3/CMS/Filelist/ContextMenuActions`
 
 
 .. index:: Backend, JavaScript, PHP-API, TSConfig
