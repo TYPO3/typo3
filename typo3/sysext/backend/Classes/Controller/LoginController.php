@@ -405,12 +405,7 @@ class LoginController
         if ($this->loginRefresh) {
             $formProtection->setSessionTokenFromRegistry();
             $formProtection->persistSessionToken();
-            $this->pageRenderer->addJsInlineCode('loginRefresh', '
-				if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.LoginRefresh) {
-					window.opener.TYPO3.LoginRefresh.startTask();
-					window.close();
-				}
-			');
+        // triggering `TYPO3/CMS/Backend/LoginRefresh` module happens in `TYPO3/CMS/Backend/Login`
         } else {
             $formProtection->storeSessionTokenInRegistry();
             $this->redirectToUrl();

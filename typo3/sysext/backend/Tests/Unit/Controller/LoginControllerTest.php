@@ -15,9 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use Prophecy\Argument;
-use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -93,92 +90,6 @@ class LoginControllerTest extends UnitTestCase
             $this->prophesize(ServerRequest::class)->reveal(),
             $this->prophesize(PageRenderer::class)->reveal()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function checkRedirectAddsJavaScriptForCaseLoginRefresh(): void
-    {
-        $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
-        $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $authenticationProphecy->getTSConfig()->willReturn([
-            'auth.' => [
-                'BE.' => [
-                    'redirectToURL' => 'http://example.com'
-                ]
-            ]
-        ]);
-        $authenticationProphecy->writeUC()->willReturn();
-        $this->prophesizeFormProtection();
-        $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
-
-        $this->loginControllerMock = $this->getAccessibleMock(
-            LoginController::class,
-            ['isLoginInProgress', 'redirectToUrl'],
-            [],
-            '',
-            false
-        );
-
-        $GLOBALS['BE_USER']->user['uid'] = 1;
-        $this->loginControllerMock->method('isLoginInProgress')->willReturn(false);
-        $this->loginControllerMock->_set('loginRefresh', true);
-        /** @var ObjectProphecy|PageRenderer $pageRendererProphecy */
-        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
-        /** @var MethodProphecy $inlineCodeProphecy */
-        $inlineCodeProphecy = $pageRendererProphecy->addJsInlineCode('loginRefresh', Argument::cetera());
-        $this->loginControllerMock->_set('pageRenderer', $pageRendererProphecy->reveal());
-
-        $this->loginControllerMock->_call(
-            'checkRedirect',
-            $this->prophesize(ServerRequest::class)->reveal()
-        );
-
-        $inlineCodeProphecy->shouldHaveBeenCalledTimes(1);
-    }
-
-    /**
-     * @test
-     */
-    public function checkRedirectAddsJavaScriptForCaseLoginRefreshWhileLoginIsInProgress(): void
-    {
-        $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
-        $authenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $authenticationProphecy->getTSConfig()->willReturn([
-            'auth.' => [
-                'BE.' => [
-                    'redirectToURL' => 'http://example.com'
-                ]
-            ]
-        ]);
-        $authenticationProphecy->writeUC()->willReturn();
-        $GLOBALS['BE_USER'] = $authenticationProphecy->reveal();
-        $this->prophesizeFormProtection();
-
-        $this->loginControllerMock = $this->getAccessibleMock(
-            LoginController::class,
-            ['isLoginInProgress', 'redirectToUrl'],
-            [],
-            '',
-            false
-        );
-
-        $GLOBALS['BE_USER']->user['uid'] = 1;
-        $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
-        $this->loginControllerMock->_set('loginRefresh', true);
-        /** @var ObjectProphecy|PageRenderer $pageRendererProphecy */
-        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
-        /** @var MethodProphecy $inlineCodeProphecy */
-        $inlineCodeProphecy = $pageRendererProphecy->addJsInlineCode('loginRefresh', Argument::cetera());
-        $this->loginControllerMock->_set('pageRenderer', $pageRendererProphecy->reveal());
-
-        $this->loginControllerMock->_call(
-            'checkRedirect',
-            $this->prophesize(ServerRequest::class)->reveal()
-        );
-
-        $inlineCodeProphecy->shouldHaveBeenCalledTimes(1);
     }
 
     /**

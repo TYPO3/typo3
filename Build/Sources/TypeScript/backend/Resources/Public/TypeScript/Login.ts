@@ -51,6 +51,7 @@ class BackendLogin {
       useridentField: '.t3js-login-userident-field',
     };
 
+    this.checkLoginRefresh();
     this.checkCookieSupport();
     this.checkForInterfaceCookie();
     this.checkDocumentReferrerSupport();
@@ -158,6 +159,16 @@ class BackendLogin {
   private hideCookieWarning(): void {
     $(this.options.formFields).removeClass('hidden');
     $(this.options.errorNoCookies).addClass('hidden');
+  }
+
+  private checkLoginRefresh(): void {
+    const loginRefresh = document.querySelector(this.options.loginForm + ' input[name="loginRefresh"]');
+    if (loginRefresh instanceof HTMLInputElement && loginRefresh.value) {
+      if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.LoginRefresh) {
+        window.opener.TYPO3.LoginRefresh.startTask();
+        window.close();
+      }
+    }
   }
 
   /**

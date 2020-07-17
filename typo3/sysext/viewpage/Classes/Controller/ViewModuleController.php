@@ -136,7 +136,14 @@ class ViewModuleController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($targetUrl)
-            ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
+            ->setDataAttributes([
+                'dispatch-action' => 'TYPO3.WindowManager.localOpen',
+                'dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                    $targetUrl,
+                    true, // switchFocus
+                    'newTYPO3frontendWindow', // windowName,
+                ]),
+            ])
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);

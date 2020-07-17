@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -1743,18 +1744,20 @@ class EditDocumentController
             $requestUri = GeneralUtility::linkThisScript([
                 'returnUrl' => $closeUrl,
             ]);
-            $aOnClick = 'vHWin=window.open('
-                . GeneralUtility::quoteJSvalue($requestUri) . ','
-                . GeneralUtility::quoteJSvalue(md5($this->R_URI))
-                . ',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
-
             $openInNewWindowButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()
                 ->makeLinkButton()
                 ->setHref('#')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
                 ->setIcon($this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
-                ->setOnClick($aOnClick);
-
+                ->setDataAttributes([
+                    'dispatch-action' => 'TYPO3.WindowManager.localOpen',
+                    'dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                        $requestUri,
+                        true, // switchFocus
+                        md5($this->R_URI), // windowName,
+                        'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1', // windowFeatures
+                    ]),
+                ]);
             $buttonBar->addButton($openInNewWindowButton, $position, $group);
         }
     }
@@ -2555,12 +2558,7 @@ class EditDocumentController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
