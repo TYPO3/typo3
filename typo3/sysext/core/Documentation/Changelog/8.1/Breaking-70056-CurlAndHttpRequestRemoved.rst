@@ -12,43 +12,43 @@ Description
 
 The following PHP classes have been removed:
 
-   * :php:`TYPO3\CMS\Core\Http\HttpRequest`
-   * :php:`TYPO3\CMS\Core\Http\Observer\Download`
+* :php:`TYPO3\CMS\Core\Http\HttpRequest`
+* :php:`TYPO3\CMS\Core\Http\Observer\Download`
 
 The following configuration options have been removed:
 
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlUse]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyNTLM]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyServer]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyTunnel]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyUserPass]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlTimeout]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][adapter]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][protocol_version]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][follow_redirects]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][max_redirects]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][strict_redirects]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_host]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_port]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_user]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_password]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_auth_scheme]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_verify_peer]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_verify_host]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_cafile]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_capath]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_local_cert]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_passphrase]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][userAgent]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlUse]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyNTLM]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyServer]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyTunnel]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlProxyUserPass]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][SYS][curlTimeout]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][adapter]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][protocol_version]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][follow_redirects]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][max_redirects]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][strict_redirects]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_host]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_port]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_user]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_password]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy_auth_scheme]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_verify_peer]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_verify_host]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_cafile]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_capath]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_local_cert]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_passphrase]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][userAgent]`
 
 The following properties have been renamed:
 
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][userAgent]` is now called :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][headers][User-Agent]`
-   * :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][protocol_version]` is now called :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][version]`
-   * All proxy-related options are unified within :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy]`
-   * All redirect-related options (HTTP/follow_redirects, HTTP/max_redirects, HTTP/strict_redirects) are unified within :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][allow_redirects]`
-   * All options related to SSL private keys (HTTP/ssl_local_cert, HTTP/ssl_passphrase) are merged into :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_key]`
-   * All options related to verify SSL peers are merged into :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][verify]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][userAgent]` is now called :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][headers][User-Agent]`
+* :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][protocol_version]` is now called :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][version]`
+* All proxy-related options are unified within :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][proxy]`
+* All redirect-related options (HTTP/follow_redirects, HTTP/max_redirects, HTTP/strict_redirects) are unified within :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][allow_redirects]`
+* All options related to SSL private keys (HTTP/ssl_local_cert, HTTP/ssl_passphrase) are merged into :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][ssl_key]`
+* All options related to verify SSL peers are merged into :php:`$GLOBALS[TYPO3_CONF_VARS][HTTP][verify]`
 
 Additionally, the dependency to the PEAR Package "Http_Request2" (composer package name `pear/http_request2`) has
 been removed in favor of the PHP library Guzzle.

@@ -17,18 +17,18 @@ values: `\TYPO3\CMS\Core\Resource\DuplicationBehavior`.
 
 Provided constants are:
 
- * `DuplicationBehavior::CANCEL`
- * `DuplicationBehavior::REPLACE`
- * `DuplicationBehavior::RENAME`
+* `DuplicationBehavior::CANCEL`
+* `DuplicationBehavior::REPLACE`
+* `DuplicationBehavior::RENAME`
 
 Before this change there were two sets of strings used to define the behavior upon conflicts.
 
- * Set1: `cancel`, `replace` and `changeName`
- * Set2: `cancel`, `overrideExistingFile` and `renameNewFile`
+* Set1: `cancel`, `replace` and `changeName`
+* Set2: `cancel`, `overrideExistingFile` and `renameNewFile`
 
 As they are redundant they are now represented by a new set of constants:
 
- * `CANCEL`, `REPLACE` and `RENAME`
+* `CANCEL`, `REPLACE` and `RENAME`
 
 All usages of strings of the former sets have been replaced with their counterparts from the new set. In the enumeration
 the former values have been mapped to the new values and marked for deprecation.
@@ -57,7 +57,7 @@ Example
 
 .. code-block:: php
 
-	$resourceStorage->copyFile($file, $targetFolder, 'target-file-name', DuplicationBehavior::RENAME);
+   $resourceStorage->copyFile($file, $targetFolder, 'target-file-name', DuplicationBehavior::RENAME);
 
 
 .. index:: FAL, PHP-API, Backend

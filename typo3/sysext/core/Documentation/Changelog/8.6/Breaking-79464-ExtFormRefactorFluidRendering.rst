@@ -53,54 +53,74 @@ Migration
 
 If you override/ extend
 
-    `TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.templateRootPaths`
-    `TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.partialRootPaths`
-    `TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.layoutRootPaths`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.templateRootPaths
+    TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.partialRootPaths
+    TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.layoutRootPaths
 
 move it to
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.templateRootPaths`
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.partialRootPaths`
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.layoutRootPaths`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.templateRootPaths
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.partialRootPaths
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.layoutRootPaths
 
 
 If you override/ extend
 
-    `TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.skipUnknownElements`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin.renderingOptions.skipUnknownElements
 
 move it to
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.skipUnknownElements`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.skipUnknownElements
 
 
 If you defined
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.<formElementType>.rendererClassName`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.<formElementType>.rendererClassName
 
 for a <formElementType> which is *NOT* 'Form', you have to remove this setting.
 
 
 If you defined
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.renderableNameInTemplate`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.renderableNameInTemplate
 
 you have to use
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.templateName`
+.. code-block:: typoscript
+
+   TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.templateName
 
 `templateName` is the partial path, relative to `TYPO3.CMS.Form.prototypes.<prototypeName>.formElementsDefinition.Form.renderingOptions.partialRootPaths`
 
 
 If you defined custom form editor templates within
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formEditor.formEditorTemplates`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formEditor.formEditorTemplates
 
 you have to move this to
 
-    `TYPO3.CMS.Form.prototypes.<prototypeName>.formEditor.formEditorPartials`
+.. code-block:: typoscript
+
+    TYPO3.CMS.Form.prototypes.<prototypeName>.formEditor.formEditorPartials
 
 
 If you defined a custom form editor stage template which depends on a default form editor stage template you have to redefine it:
+
+.. code-block:: none
 
     Stage/Text => Stage/SimpleTemplate
     Stage/Password => Stage/SimpleTemplate
@@ -128,7 +148,7 @@ Please look at the files within `EXT:form/Resources/Private/Frontend/Partials`
 to see what has happened.
 The main change is that you have to wrap the markup with
 
-.. code-block:: html
+.. code-block:: xml
 
     <formvh:renderRenderable renderable="{element}">
         some form element
