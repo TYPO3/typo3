@@ -33,9 +33,9 @@ Migration
 
 You have the following options to migrate:
 
- - Introduce an explicit :php:`inject*()` method (e.g. :php:`injectMyProperty()`)
- - Use constructor injection
- - Make the property public (think about whether this is desired in terms of software design)
+- Introduce an explicit :php:`inject*()` method (e.g. :php:`injectMyProperty()`)
+- Use constructor injection
+- Make the property public (think about whether this is desired in terms of software design)
 
 
 An inject method would look like this:

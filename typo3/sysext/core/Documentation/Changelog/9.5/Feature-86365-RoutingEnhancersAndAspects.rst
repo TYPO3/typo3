@@ -116,9 +116,9 @@ Plugin Enhancer
 The Plugin Enhancer works with plugins on a page that are commonly known as `Pi-Based Plugins`, where previously
 the following GET/POST variables were used:
 
-   * `index.php?id=13&tx_felogin_pi1[forgot]=1` (form to request token)
-   * `index.php?id=13&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
-     (form to actually recover password, `%7C` is URL-encoded pipe character `|`)
+* `index.php?id=13&tx_felogin_pi1[forgot]=1` (form to request token)
+* `index.php?id=13&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
+  (form to actually recover password, `%7C` is URL-encoded pipe character `|`)
 
 The base for the plugin enhancer is to configure a so-called "namespace", in this case `tx_felogin_pi1` - the plugin's
 namespace.
@@ -149,10 +149,10 @@ we would need to set up multiple configurations of Plugin Enhancer for forgot an
 
 If URLs are generated with the given parameters to link to a page, the results will look like this:
 
-   * `https://www.example.com/path-to/my-page/forgot-password`
-     (for `index.php?id=13&tx_felogin_pi1[forgot]=1`)
-   * `https://www.example.com/path-to/my-page/forgot-password/82/12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
-     (for `index.php?id=13&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`)
+* `https://www.example.com/path-to/my-page/forgot-password`
+  (for `index.php?id=13&tx_felogin_pi1[forgot]=1`)
+* `https://www.example.com/path-to/my-page/forgot-password/82/12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
+  (for `index.php?id=13&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`)
 
 If the input given to generate the URL does not meet the requirements, the route enhancer does not offer the
 variant and the parameters are added to the URL as regular query parameters. If e.g. the user parameter would be more

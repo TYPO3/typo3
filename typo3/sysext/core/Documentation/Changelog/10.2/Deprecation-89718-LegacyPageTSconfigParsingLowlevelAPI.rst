@@ -51,18 +51,17 @@ Usages for fetching all available PageTS of a page/rootline in one large string:
     $tsConfigString = $loader->load($rootLine);
 
 
-The string is parsed (and conditions are applied) with the Parser:
+The string is parsed (and conditions are applied) with the Parser::
 
-:php:
-            $parser = GeneralUtility::makeInstance(
-                PageTsConfigParser::class,
-                $typoScriptParser,
-                $hashCache
-            );
-            $pagesTSconfig = $parser->parse(
-                $tsConfigString,
-                $conditionMatcher
-            );
+   $parser = GeneralUtility::makeInstance(
+       PageTsConfigParser::class,
+       $typoScriptParser,
+       $hashCache
+   );
+   $pagesTSconfig = $parser->parse(
+       $tsConfigString,
+       $conditionMatcher
+   );
 
 Extension developers should rely on this syntax rather than
 on :php:`$GLOBALS['TSFE']->getPagesTSconfig()` or :php:`BackendUtility::getPagesTsConfig()`, or the deprecated method / class.

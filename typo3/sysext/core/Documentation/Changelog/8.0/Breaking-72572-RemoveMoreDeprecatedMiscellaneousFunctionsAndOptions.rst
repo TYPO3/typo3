@@ -12,14 +12,14 @@ Description
 
 Removed more deprecated miscellaneous functions and options:
 
- * Linking to a php file directly in `ClickMenu` has been removed.
- * Functionality of `$TBE_STYLES['background']` has been removed.
- * The option `DocumentTemplate->JScodeLibArray` has been removed.
- * The option `$TYPO3_CONF_VARS[SYS][displayErrors]` set to "2" will throw an exception.
- * The deprecated icons fallback for `actions-system-refresh` and `actions-system-extension-update-disabled` has been removed.
- * An extension may not refer to `ext:cms` in composer.json or ext_emconf.php file. The fallback has been removed.
- * The method `loadNewTcaColumnsConfigFiles` has been removed.
- * Usage of the field "static_lang_isocode" has stopped working. Use the built-in language field "language_isocode" in sys_language records.
+* Linking to a php file directly in `ClickMenu` has been removed.
+* Functionality of `$TBE_STYLES['background']` has been removed.
+* The option `DocumentTemplate->JScodeLibArray` has been removed.
+* The option `$TYPO3_CONF_VARS[SYS][displayErrors]` set to "2" will throw an exception.
+* The deprecated icons fallback for `actions-system-refresh` and `actions-system-extension-update-disabled` has been removed.
+* An extension may not refer to `ext:cms` in composer.json or ext_emconf.php file. The fallback has been removed.
+* The method `loadNewTcaColumnsConfigFiles` has been removed.
+* Usage of the field "static_lang_isocode" has stopped working. Use the built-in language field "language_isocode" in sys_language records.
 
 
 Impact

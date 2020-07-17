@@ -12,8 +12,8 @@ Description
 
 The functionality to map tags explicitly from the HtmlParser code has been removed:
 
-    * `HtmlParser::mapTags()`
-    * `RteHtmlParser::defaultTStagMapping()`
+* `HtmlParser::mapTags()`
+* `RteHtmlParser::defaultTStagMapping()`
 
 
 Impact
