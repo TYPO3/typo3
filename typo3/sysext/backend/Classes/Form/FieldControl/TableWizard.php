@@ -47,8 +47,8 @@ class TableWizard extends AbstractNode
 
         // Handle options and fallback
         $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.tableWizard';
-        $xmlOutput = isset($options['xmlOutput']) ? (int)$options['xmlOutput'] : 0;
-        $numNewRows = isset($options['numNewRows']) ? (int)$options['numNewRows'] : 5;
+        $xmlOutput = (int)($options['xmlOutput'] ?? 0);
+        $numNewRows = (int)($options['numNewRows'] ?? 1);
 
         $prefixOfFormElName = 'data[' . $this->data['tableName'] . '][' . $this->data['databaseRow']['uid'] . '][' . $this->data['fieldName'] . ']';
         $flexFormPath = '';
@@ -82,6 +82,7 @@ class TableWizard extends AbstractNode
                 'href' => (string)$uriBuilder->buildUriFromRoute('wizard_table', $urlParameters),
             ],
             'requireJsModules' => [
+                'TYPO3/CMS/Backend/Element/TableWizardElement',
                 ['TYPO3/CMS/Backend/FormEngine/FieldControl/TableWizard' => 'function(FieldControl) {new FieldControl(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
             ],
         ];

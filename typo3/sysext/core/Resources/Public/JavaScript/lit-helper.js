@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","lit-html"],(function(e,r,n){"use strict";Object.defineProperty(r,"__esModule",{value:!0}),r.renderHTML=void 0,r.renderHTML=e=>{const r=document.createElement("div");return n.render(e,r),r.innerHTML}}));
+define(["require","exports","lit-html","lit-html/directives/unsafe-html","lit-html/directives/until","TYPO3/CMS/Backend/Icons","TYPO3/CMS/Backend/Element/SpinnerElement"],(function(e,n,t,i,l,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.icon=n.lll=n.renderHTML=void 0,n.renderHTML=e=>{const n=document.createElement("div");return t.render(e,n),n.innerHTML},n.lll=e=>window.TYPO3&&window.TYPO3.lang&&"string"==typeof window.TYPO3.lang[e]?window.TYPO3.lang[e]:"",n.icon=(e,n="small")=>{const d=r.getIcon(e,n).then(e=>t.html`${i.unsafeHTML(e)}`);return t.html`${l.until(d,t.html`<typo3-backend-spinner size="${n}"></typo3-backend-spinner>`)}`}}));

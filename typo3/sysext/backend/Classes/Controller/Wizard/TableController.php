@@ -119,6 +119,8 @@ class TableController extends AbstractWizardController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Element/TableWizardElement');
+        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf', 'table_');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         $this->init($request);
 
@@ -163,9 +165,9 @@ class TableController extends AbstractWizardController
         $this->TABLECFG = $parsedBody['TABLE'] ?? $queryParams['TABLE'] ?? null;
         // Setting options:
         $this->xmlStorage = $this->P['params']['xmlOutput'];
-        $this->numNewRows = MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
+        $this->numNewRows = MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 10, 1);
         // Textareas or input fields:
-        $this->inputStyle = isset($this->TABLECFG['textFields']) ? (bool)$this->TABLECFG['textFields'] : true;
+        $this->inputStyle = (bool)($this->TABLECFG['textFields'] ?? true);
         $this->tableParsing_delimiter = '|';
         $this->tableParsing_quote = '';
     }
@@ -329,109 +331,15 @@ class TableController extends AbstractWizardController
      */
     protected function getTableWizard(array $configuration): string
     {
-        // Traverse the rows:
-        $tRows = [];
-        $k = 0;
-        $countLines = count($configuration);
-        foreach ($configuration as $cellArr) {
-            if (is_array($cellArr)) {
-                // Initialize:
-                $cells = [];
-                $a = 0;
-                // Traverse the columns:
-                foreach ($cellArr as $cellContent) {
-                    if ($this->inputStyle) {
-                        $cells[] = '<input class="form-control" type="text" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
-                    } else {
-                        $cellContent = preg_replace('/<br[ ]?[\\/]?>/i', LF, $cellContent);
-                        $cells[] = '<textarea class="form-control" rows="6" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . htmlspecialchars($cellContent) . '</textarea>';
-                    }
-                    // Increment counter:
-                    $a++;
-                }
-                // CTRL panel for a table row (move up/down/around):
-                $onClick = 'document.wizardForm.action+=' . GeneralUtility::quoteJSvalue('#ANC_' . (($k + 1) * 2 - 2)) . ';';
-                $onClick = ' onclick="' . htmlspecialchars($onClick) . '"';
-                $ctrl = '';
-                if ($k !== 0) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_up][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_up')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-up"></span></button>';
-                } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_bottom')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-down"></span></button>';
-                }
-                if ($k + 1 !== $countLines) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_down][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_down')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-down"></span></button>';
-                } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[row_top][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_top')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-up"></span></button>';
-                }
-                $ctrl .= '<button class="btn btn-default" name="TABLE[row_remove][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_removeRow')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-trash"></span></button>';
-                $ctrl .= '<button class="btn btn-default" name="TABLE[row_add][' . ($k + 1) * 2 . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_addRow')) . '"' . $onClick . '><span class="t3-icon fa fa-fw fa-plus"></span></button>';
-                $tRows[] = '
-					<tr>
-						<td>
-							<a name="ANC_' . ($k + 1) * 2 . '"></a>
-							<span class="btn-group' . ($this->inputStyle ? '' : '-vertical') . '">' . $ctrl . '</span>
-						</td>
-						<td>' . implode('</td>
-						<td>', $cells) . '</td>
-					</tr>';
-                // Increment counter:
-                $k++;
-            }
-        }
-        // CTRL panel for a table column (move left/right/around/delete)
-        $cells = [];
-        $cells[] = '';
-        // Finding first row:
-        $firstRow = reset($configuration);
-        if (is_array($firstRow)) {
-            $cols = count($firstRow);
-            for ($a = 1; $a <= $cols; $a++) {
-                $b = $a * 2;
-                $ctrl = '';
-                if ($a !== 1) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_left][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_left')) . '"><span class="t3-icon fa fa-fw fa-angle-left"></span></button>';
-                } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_end][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_end')) . '"><span class="t3-icon fa fa-fw fa-angle-double-right"></span></button>';
-                }
-                if ($a != $cols) {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_right][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_right')) . '"><span class="t3-icon fa fa-fw fa-angle-right"></span></button>';
-                } else {
-                    $ctrl .= '<button class="btn btn-default" name="TABLE[col_start][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_start')) . '"><span class="t3-icon fa fa-fw fa-angle-double-left"></span></button>';
-                }
-                $ctrl .= '<button class="btn btn-default" name="TABLE[col_remove][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_removeColumn')) . '"><span class="t3-icon fa fa-fw fa-trash"></span></button>';
-                $ctrl .= '<button class="btn btn-default" name="TABLE[col_add][' . $b . ']" title="' . htmlspecialchars($this->getLanguageService()->getLL('table_addColumn')) . '"><span class="t3-icon fa fa-fw fa-plus"></span></button>';
-                $cells[] = '<span class="btn-group">' . $ctrl . '</span>';
-            }
-            $tRows[] = '
-				<tfoot>
-					<tr>
-						<td>' . implode('</td>
-						<td>', $cells) . '</td>
-					</tr>
-				</tfoot>';
-        }
-        $content = '';
-        // Implode all table rows into a string, wrapped in table tags.
-        $content .= '
-
-			<!-- Table wizard -->
-			<div class="table-fit table-fit-inline-block">
-				<table id="typo3-tablewizard" class="table table-center">
-					' . implode('', $tRows) . '
-				</table>
-			</div>';
-        // Input type checkbox:
-        $content .= '
-
-			<!-- Input mode check box: -->
-			<div class="checkbox">
-				<input type="hidden" name="TABLE[textFields]" value="0" />
-				<label for="textFields">
-					<input type="checkbox" data-global-event="change" data-action-submit="$form" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' />
-					' . $this->getLanguageService()->getLL('table_smallFields') . '
-				</label>
-			</div>';
-        return $content;
+        return sprintf(
+            '<typo3-backend-table-wizard %s></typo3-backend-table-wizard>',
+            GeneralUtility::implodeAttributes([
+                'id' => 'typo3-tablewizard',
+                'type' => $this->inputStyle ? 'input' : 'textarea',
+                'append-rows' => $this->numNewRows,
+                'table' => GeneralUtility::jsonEncodeForHtmlAttribute($configuration, false),
+            ], true)
+        );
     }
 
     /**
@@ -440,114 +348,6 @@ class TableController extends AbstractWizardController
      */
     protected function manipulateTable(): void
     {
-        if ($this->TABLECFG['col_remove']) {
-            $kk = key($this->TABLECFG['col_remove']);
-            $cmd = 'col_remove';
-        } elseif ($this->TABLECFG['col_add']) {
-            $kk = key($this->TABLECFG['col_add']);
-            $cmd = 'col_add';
-        } elseif ($this->TABLECFG['col_start']) {
-            $kk = key($this->TABLECFG['col_start']);
-            $cmd = 'col_start';
-        } elseif ($this->TABLECFG['col_end']) {
-            $kk = key($this->TABLECFG['col_end']);
-            $cmd = 'col_end';
-        } elseif ($this->TABLECFG['col_left']) {
-            $kk = key($this->TABLECFG['col_left']);
-            $cmd = 'col_left';
-        } elseif ($this->TABLECFG['col_right']) {
-            $kk = key($this->TABLECFG['col_right']);
-            $cmd = 'col_right';
-        } elseif ($this->TABLECFG['row_remove']) {
-            $kk = key($this->TABLECFG['row_remove']);
-            $cmd = 'row_remove';
-        } elseif ($this->TABLECFG['row_add']) {
-            $kk = key($this->TABLECFG['row_add']);
-            $cmd = 'row_add';
-        } elseif ($this->TABLECFG['row_top']) {
-            $kk = key($this->TABLECFG['row_top']);
-            $cmd = 'row_top';
-        } elseif ($this->TABLECFG['row_bottom']) {
-            $kk = key($this->TABLECFG['row_bottom']);
-            $cmd = 'row_bottom';
-        } elseif ($this->TABLECFG['row_up']) {
-            $kk = key($this->TABLECFG['row_up']);
-            $cmd = 'row_up';
-        } elseif ($this->TABLECFG['row_down']) {
-            $kk = key($this->TABLECFG['row_down']);
-            $cmd = 'row_down';
-        } else {
-            $kk = '';
-            $cmd = '';
-        }
-        if ($cmd && MathUtility::canBeInterpretedAsInteger($kk)) {
-            if (strpos($cmd, 'row_') === 0) {
-                switch ($cmd) {
-                    case 'row_remove':
-                        unset($this->TABLECFG['c'][$kk]);
-                        break;
-                    case 'row_add':
-                        for ($a = 1; $a <= $this->numNewRows; $a++) {
-                            // Checking if set: The point is that any new row between existing rows
-                            // will be TRUE after one row is added while if rows are added in the bottom
-                            // of the table there will be no existing rows to stop the addition of new rows
-                            // which means it will add up to $this->numNewRows rows then.
-                            if (!isset($this->TABLECFG['c'][$kk + $a])) {
-                                $this->TABLECFG['c'][$kk + $a] = [];
-                            } else {
-                                break;
-                            }
-                        }
-                        break;
-                    case 'row_top':
-                        $this->TABLECFG['c'][1] = $this->TABLECFG['c'][$kk];
-                        unset($this->TABLECFG['c'][$kk]);
-                        break;
-                    case 'row_bottom':
-                        $this->TABLECFG['c'][10000000] = $this->TABLECFG['c'][$kk];
-                        unset($this->TABLECFG['c'][$kk]);
-                        break;
-                    case 'row_up':
-                        $this->TABLECFG['c'][$kk - 3] = $this->TABLECFG['c'][$kk];
-                        unset($this->TABLECFG['c'][$kk]);
-                        break;
-                    case 'row_down':
-                        $this->TABLECFG['c'][$kk + 3] = $this->TABLECFG['c'][$kk];
-                        unset($this->TABLECFG['c'][$kk]);
-                        break;
-                }
-                ksort($this->TABLECFG['c']);
-            }
-            if (strpos($cmd, 'col_') === 0) {
-                foreach ($this->TABLECFG['c'] as $cAK => $value) {
-                    switch ($cmd) {
-                        case 'col_remove':
-                            unset($this->TABLECFG['c'][$cAK][$kk]);
-                            break;
-                        case 'col_add':
-                            $this->TABLECFG['c'][$cAK][$kk + 1] = '';
-                            break;
-                        case 'col_start':
-                            $this->TABLECFG['c'][$cAK][1] = $this->TABLECFG['c'][$cAK][$kk];
-                            unset($this->TABLECFG['c'][$cAK][$kk]);
-                            break;
-                        case 'col_end':
-                            $this->TABLECFG['c'][$cAK][1000000] = $this->TABLECFG['c'][$cAK][$kk];
-                            unset($this->TABLECFG['c'][$cAK][$kk]);
-                            break;
-                        case 'col_left':
-                            $this->TABLECFG['c'][$cAK][$kk - 3] = $this->TABLECFG['c'][$cAK][$kk];
-                            unset($this->TABLECFG['c'][$cAK][$kk]);
-                            break;
-                        case 'col_right':
-                            $this->TABLECFG['c'][$cAK][$kk + 3] = $this->TABLECFG['c'][$cAK][$kk];
-                            unset($this->TABLECFG['c'][$cAK][$kk]);
-                            break;
-                    }
-                    ksort($this->TABLECFG['c'][$cAK]);
-                }
-            }
-        }
         // Convert line breaks to <br /> tags:
         foreach ($this->TABLECFG['c'] as $a => $value) {
             foreach ($this->TABLECFG['c'][$a] as $b => $value2) {
