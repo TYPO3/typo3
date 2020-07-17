@@ -2,8 +2,8 @@
 <div>
     <span {recordTooltip}><core:iconForRecord table="{table}" row="{elRow}" />{recordTitle -> f:format.raw()}</span>
     <div>
-        <input type="hidden" name="makeCopy" value="0" />
-        <input type="checkbox" name="makeCopy" id="makeCopy" value="1"{makeCopyChecked} onclick="{makeCopyOnClick}" />
+        <input type="checkbox" name="makeCopy" id="makeCopy" value="1" {makeCopyChecked}
+                data-global-event="change" data-action-navigate="$data" data-navigate-value="{makeCopyUrl}">
         <label for="makeCopy" class="t3-label-valign-top"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:makeCopy" /></label>
     </div>
 </div>

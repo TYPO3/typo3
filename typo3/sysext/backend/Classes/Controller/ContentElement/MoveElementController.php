@@ -151,9 +151,8 @@ class MoveElementController
             $assigns['recordTooltip'] = BackendUtility::getRecordToolTip($elRow, $this->table);
             $assigns['recordTitle'] = BackendUtility::getRecordTitle($this->table, $elRow, true);
             // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy])) . ';';
             $assigns['makeCopyChecked'] = $this->makeCopy ? ' checked="checked"' : '';
-            $assigns['makeCopyOnClick'] = $onClick;
+            $assigns['makeCopyUrl'] = GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy]);
             // IF the table is "pages":
             if ((string)$this->table === 'pages') {
                 // Get page record (if accessible):
