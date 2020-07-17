@@ -26,6 +26,18 @@ class SecurityUtility {
     this.documentRef = documentRef;
   }
 
+  public getRandomHexValue(length: number): string {
+    if (length <= 0 || length !== Math.ceil(length)) {
+      throw new SyntaxError('Length must be a positive integer');
+    }
+    const values = new Uint8Array(Math.ceil(length / 2));
+    crypto.getRandomValues(values);
+    return Array.from(values)
+      .map((item: number): string => item.toString(16).padStart(2, '0'))
+      .join('')
+      .substr(0, length);
+  }
+
   /**
    * Encodes HTML to use according entities. Behavior is similar to PHP's
    * htmlspecialchars. Input might contain XSS, output has it encoded.
