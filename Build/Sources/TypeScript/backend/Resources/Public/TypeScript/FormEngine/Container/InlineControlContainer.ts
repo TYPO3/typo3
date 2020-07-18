@@ -39,7 +39,7 @@ enum Selectors {
   synchronizeLocalizeRecordButtonSelector = '.t3js-synchronizelocalize-button',
   uniqueValueSelectors = 'select.t3js-inline-unique',
   revertUniqueness = '.t3js-revert-unique',
-  controlContainerButtons = '.t3js-inline-controls',
+  controlContainer = '.t3js-inline-controls',
 }
 
 enum States {
@@ -764,7 +764,8 @@ class InlineControlContainer {
    * @param {boolean} visible
    */
   private toggleContainerControls(visible: boolean): void {
-    const controlContainerButtons = this.container.querySelectorAll(Selectors.controlContainerButtons + ' a');
+    const controlContainer = this.container.querySelector(Selectors.controlContainer);
+    const controlContainerButtons = controlContainer.querySelectorAll('a');
     controlContainerButtons.forEach((button: HTMLElement): void => {
       button.style.display = visible ? null : 'none';
     });

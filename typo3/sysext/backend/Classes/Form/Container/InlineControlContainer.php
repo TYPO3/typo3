@@ -409,7 +409,7 @@ class InlineControlContainer extends AbstractContainer
             case 'newRecord':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createnew'));
                 $icon = 'actions-add';
-                $className = 'typo3-newRecordLink';
+                $className = 'typo3-newRecordLink t3js-inline-controls';
                 $attributes['class'] = 'btn btn-default t3js-create-new-button';
                 if (!empty($conf['inline']['inlineNewButtonStyle'])) {
                     $attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
