@@ -538,4 +538,14 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Testing #2'));
     }
+
+    /**
+     * @test
+     * Publish, PublishAll and Discard currently not implemented - they make little sense
+     */
+    public function inlineLocalizeSynchronizeLocalizeMissing(): void
+    {
+        parent::inlineLocalizeSynchronizeLocalizeMissing();
+        $this->assertAssertionDataSet('inlineLocalizeSynchronizeLocalizeMissing');
+    }
 }

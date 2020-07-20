@@ -4583,6 +4583,9 @@ class DataHandler implements LoggerAwareInterface
         // Perform synchronization/localization: Possibly add unlocalized records for original language:
         if ($action === 'localize' || $action === 'synchronize') {
             foreach ($elementsOriginal as $originalId => $item) {
+                if ($this->isRecordLocalized((string)$item['table'], (int)$item['id'], (int)$language)) {
+                    continue;
+                }
                 $item['id'] = $this->localize($item['table'], $item['id'], $language);
                 $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
                 $dbAnalysisCurrent->itemArray[] = $item;
@@ -4593,6 +4596,9 @@ class DataHandler implements LoggerAwareInterface
                     continue;
                 }
                 $item = $elementsOriginal[$childId];
+                if ($this->isRecordLocalized((string)$item['table'], (int)$item['id'], (int)$language)) {
+                    continue;
+                }
                 $item['id'] = $this->localize($item['table'], $item['id'], $language);
                 $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
                 $dbAnalysisCurrent->itemArray[] = $item;
@@ -4625,6 +4631,21 @@ class DataHandler implements LoggerAwareInterface
         if (!empty($updateFields)) {
             $this->updateDB($table, $id, $updateFields);
         }
+    }
+
+    /**
+     * Returns true if a localization of a record exists.
+     *
+     * @param string $table
+     * @param int $uid
+     * @param int $language
+     * @return bool
+     */
+    protected function isRecordLocalized(string $table, int $uid, int $language): bool
+    {
+        $row = BackendUtility::getRecordWSOL($table, $uid);
+        $localizations = BackendUtility::getRecordLocalization($table, $uid, $language, 'pid=' . (int)$row['pid']);
+        return !empty($localizations);
     }
 
     /*********************************************
