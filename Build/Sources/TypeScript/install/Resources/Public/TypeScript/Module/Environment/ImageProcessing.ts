@@ -72,8 +72,8 @@ class ImageProcessing extends AbstractInteractableModule {
 
     const $twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
     const promises: Array<Promise<any>> = [];
-    modalContent.find(this.selectorTestContainer).each((index: number, element: any): void => {
-      const $container: JQuery = $(element);
+    modalContent.find(this.selectorTestContainer).each((index: number, container: any): void => {
+      const $container: JQuery = $(container);
       const testType: string = $container.data('test');
       const message: any = InfoBox.render(Severity.loading, 'Loading...', '');
       $container.empty().html(message);
@@ -85,7 +85,7 @@ class ImageProcessing extends AbstractInteractableModule {
             if (data.success === true) {
               $container.empty();
               if (Array.isArray(data.status)) {
-                data.status.forEach((): void => {
+                data.status.forEach((element: any): void => {
                   const aMessage = InfoBox.render(element.severity, element.title, element.message);
                   $container.append(aMessage);
                 });
