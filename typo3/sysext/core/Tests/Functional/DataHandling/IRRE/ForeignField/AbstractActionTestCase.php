@@ -495,4 +495,33 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             ]
         );
     }
+
+    public function inlineLocalizeSynchronizeLocalizeMissing(): void
+    {
+        // Translate page 89 first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Localize CE 297 which has two hotels, those are localized, too.
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds['tt_content'][self::VALUE_ContentIdFirst];
+        $this->recordIds['localizedHotelId'] = $newTableIds['tx_irretutorial_1nff_hotel'][self::VALUE_HotelIdFirst];
+        // Delete one localized hotel (and its children) again.
+        // We end up with having one localized hotel child and a missing one, while both exist in default language.
+        $this->actionService->deleteRecord('tx_irretutorial_1nff_hotel', $this->recordIds['localizedHotelId']);
+        // Now inlineLocalizeSynchronize->localize - This is the 'localize all records' button when inline
+        // 'appearance' 'showAllLocalizationLink' has been enabled. It should re-localize the missing hotel again.
+        $this->actionService->invoke(
+            [],
+            [
+                'tt_content' => [
+                    $this->recordIds['localizedContentId'] => [
+                        'inlineLocalizeSynchronize' => [
+                            'field' => 'tx_irretutorial_1nff_hotels',
+                            'language' => 1,
+                            'action' => 'localize',
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
 }

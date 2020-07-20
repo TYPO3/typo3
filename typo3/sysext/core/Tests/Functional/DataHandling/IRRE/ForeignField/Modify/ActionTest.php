@@ -692,4 +692,13 @@ class ActionTest extends AbstractActionTestCase
             ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
     }
+
+    /**
+     * @test
+     */
+    public function inlineLocalizeSynchronizeLocalizeMissing(): void
+    {
+        parent::inlineLocalizeSynchronizeLocalizeMissing();
+        $this->assertAssertionDataSet('inlineLocalizeSynchronizeLocalizeMissing');
+    }
 }
