@@ -847,7 +847,15 @@ class DataHandlerHook
             $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
             // If not swapped, delete the record from the database
             if (!$swapIntoWS) {
-                $dataHandler->deleteEl($table, $swapWith, true, true);
+                if ($table === 'pages') {
+                    // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
+                    // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
+                    // page which at the same time belong to our current version page, and would delete them.
+                    // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
+                    $dataHandler->deleteEl($table, $swapWith, true, true, false);
+                } else {
+                    $dataHandler->deleteEl($table, $swapWith, true, true);
+                }
             }
 
             //Update reference index for live workspace too:

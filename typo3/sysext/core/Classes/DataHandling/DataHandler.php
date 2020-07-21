@@ -4665,12 +4665,13 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Record UID
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+     * @param bool $deleteRecordsOnPage If false and if deleting pages, records on the page will not be deleted (edge case while swapping workspaces)
      * @internal should only be used from within DataHandler
      */
-    public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false)
+    public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
     {
         if ($table === 'pages') {
-            $this->deletePages($uid, $noRecordCheck, $forceHardDelete);
+            $this->deletePages($uid, $noRecordCheck, $forceHardDelete, $deleteRecordsOnPage);
         } else {
             $this->deleteVersionsForRecord($table, $uid, $forceHardDelete);
             $this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
@@ -4872,9 +4873,10 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Page id
      * @param bool $force If TRUE, pages are not checked for permission.
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+     * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
      * @internal should only be used from within DataHandler
      */
-    public function deletePages($uid, $force = false, $forceHardDelete = false)
+    public function deletePages($uid, $force = false, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
     {
         $uid = (int)$uid;
         if ($uid === 0) {
@@ -4894,7 +4896,7 @@ class DataHandler implements LoggerAwareInterface
         // Perform deletion if not error:
         if (is_array($res)) {
             foreach ($res as $deleteId) {
-                $this->deleteSpecificPage($deleteId, $forceHardDelete);
+                $this->deleteSpecificPage($deleteId, $forceHardDelete, $deleteRecordsOnPage);
             }
         } else {
             /** @var FlashMessage $flashMessage */
@@ -4907,45 +4909,91 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Delete a page and all records on it.
+     * Delete a page (or set deleted field to 1) and all records on it.
      *
      * @param int $uid Page id
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+     * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
      * @internal
      * @see deletePages()
      */
-    public function deleteSpecificPage($uid, $forceHardDelete = false)
+    public function deleteSpecificPage($uid, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
     {
         $uid = (int)$uid;
-        if ($uid) {
+        if (!$uid) {
+            // Early void return on invalid uid
+            return;
+        }
+        $forceHardDelete = (bool)$forceHardDelete;
+
+        // Delete either a default language page or a translated page
+        $pageIdInDefaultLanguage = $this->getDefaultLanguagePageId($uid);
+        $isPageTranslation = false;
+        $pageLanguageId = 0;
+        if ($pageIdInDefaultLanguage !== $uid) {
+            // For translated pages, translated records in other tables (eg. tt_content) for the
+            // to-delete translated page have their pid field set to the uid of the default language record,
+            // NOT the uid of the translated page record.
+            // If a translated page is deleted, only translations of records in other tables of this language
+            // should be deleted. The code checks if the to-delete page is a translated page and
+            // adapts the query for other tables to use the uid of the default language page as pid together
+            // with the language id of the translated page.
+            $isPageTranslation = true;
+            $pageLanguageId = $this->pageInfo($uid, $GLOBALS['TCA']['pages']['ctrl']['languageField']);
+        }
+
+        if ($deleteRecordsOnPage) {
             $tableNames = $this->compileAdminTables();
             foreach ($tableNames as $table) {
-                if ($table !== 'pages') {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable($table);
+                if ($table === 'pages' || ($isPageTranslation && !BackendUtility::isTableLocalizable($table))) {
+                    // Skip pages table. And skip table if not translatable, but a translated page is deleted
+                    continue;
+                }
 
-                    $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $queryBuilder
+                    ->select('uid')
+                    ->from($table);
 
-                    $statement = $queryBuilder
-                        ->select('uid')
-                        ->from($table)
-                        ->where($queryBuilder->expr()->eq(
+                if ($isPageTranslation) {
+                    // Only delete records in the specified language
+                    $queryBuilder->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                            $queryBuilder->createNamedParameter($pageLanguageId, \PDO::PARAM_INT)
+                        )
+                    );
+                } else {
+                    // Delete all records on this page
+                    $queryBuilder->where(
+                        $queryBuilder->expr()->eq(
                             'pid',
                             $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                        ))
-                        ->execute();
+                        )
+                    );
+                }
+                $statement = $queryBuilder->execute();
 
-                    while ($row = $statement->fetch()) {
-                        $this->copyMovedRecordToNewLocation($table, $row['uid']);
-                        $this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
-                        $this->deleteRecord($table, $row['uid'], true, $forceHardDelete);
-                    }
+                while ($row = $statement->fetch()) {
+                    // Handle a detail related to workspace placeholder records, delete any
+                    // further workspace overlays for the record in question, then delete the record.
+                    $this->copyMovedRecordToNewLocation($table, $row['uid']);
+                    $this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
+                    $this->deleteRecord($table, $row['uid'], true, $forceHardDelete);
                 }
             }
-            $this->copyMovedRecordToNewLocation('pages', $uid);
-            $this->deleteVersionsForRecord('pages', $uid, $forceHardDelete);
-            $this->deleteRecord('pages', $uid, true, $forceHardDelete);
         }
+
+        // Handle a detail related to workspace placeholder records, delete any
+        // further workspace overlays for the page in question, then delete the page.
+        $this->copyMovedRecordToNewLocation('pages', $uid);
+        $this->deleteVersionsForRecord('pages', $uid, $forceHardDelete);
+        $this->deleteRecord('pages', $uid, true, $forceHardDelete);
     }
 
     /**
@@ -6887,7 +6935,7 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Update Reference Index (sys_refindex) for a record
-     * Should be called any almost any update to a record which could affect references inside the record.
+     * Should be called on almost any update to a record which could affect references inside the record.
      *
      * @param string $table Table name
      * @param int $id Record UID
