@@ -511,7 +511,7 @@ class DataHandlerHook
                             $allElements = explode(',', $elementName);
                             // Traverse them, and find the history of each
                             foreach ($allElements as $elRef) {
-                                list($eTable, $eUid) = explode(':', $elRef);
+                                [$eTable, $eUid] = explode(':', $elRef);
 
                                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                     ->getQueryBuilderForTable('sys_log');
@@ -574,7 +574,7 @@ class DataHandlerHook
         if (!empty($emails)) {
             $previewUriBuilder = GeneralUtility::makeInstance(PreviewUriBuilder::class);
             // Path to record is found:
-            list($elementTable, $elementUid) = explode(':', $elementName);
+            [$elementTable, $elementUid] = explode(':', $elementName);
             $elementUid = (int)$elementUid;
             $elementRecord = BackendUtility::getRecord($elementTable, $elementUid);
             $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
@@ -702,7 +702,7 @@ class DataHandlerHook
             if ($noTablePrefix) {
                 $id = (int)$userIdent;
             } else {
-                list($table, $id) = GeneralUtility::revExplode('_', $userIdent, 2);
+                [$table, $id] = GeneralUtility::revExplode('_', $userIdent, 2);
             }
             if ($table === 'be_users' || $noTablePrefix) {
                 if ($userRecord = BackendUtility::getRecord('be_users', $id, 'uid,email,lang,realName', BackendUtility::BEenableFields('be_users'))) {
@@ -1071,7 +1071,15 @@ class DataHandlerHook
             // Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
             if (!$swapIntoWS && $t3ver_state['curVersion'] > 0) {
                 // For delete + completely delete!
-                $dataHandler->deleteEl($table, $swapWith, true, true);
+                if ($table === 'pages') {
+                    // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
+                    // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
+                    // page which at the same time belong to our current version page, and would delete them.
+                    // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
+                    $dataHandler->deleteEl($table, $swapWith, true, true, false);
+                } else {
+                    $dataHandler->deleteEl($table, $swapWith, true, true);
+                }
             }
 
             //Update reference index for live workspace too:

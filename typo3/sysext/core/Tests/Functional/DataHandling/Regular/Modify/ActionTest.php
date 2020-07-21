@@ -583,6 +583,20 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * See DataSet/localizePageAndContentsAndDeletePageLocalization.csv
+     */
+    public function localizePageAndContentsAndDeletePageLocalization()
+    {
+        // Create localized page and localize content elements first
+        parent::localizePageAndContents();
+
+        // Deleting the localized page should also delete its localized records
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
+    }
+
+    /**
+     * @test
      * @see DataSet/changePageRecordSorting.csv
      */
     public function changePageSorting()

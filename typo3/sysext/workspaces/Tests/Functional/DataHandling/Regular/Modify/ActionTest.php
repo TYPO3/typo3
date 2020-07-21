@@ -394,7 +394,23 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
     /**
      * @test
-     * @see DataSet/copyPageRecord.csv
+     * See DataSet/localizePageAndContentsAndDeletePageLocalization
+     */
+    public function localizePageAndContentsAndDeletePageLocalization()
+    {
+        // Create localized page and localize content elements first
+        parent::localizePageAndContents();
+
+        // Deleting the localized page in workspace should also delete its localized records
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+
+        $response = $this->getFrontendResponse($this->recordIds['localizedPageId'], self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId, false);
+        $this->assertContains('PageNotFoundException', $response->getError());
+    }
+
+    /**
+     * @test
+     * See DataSet/copyPageRecord.csv
      */
     public function copyPage()
     {
