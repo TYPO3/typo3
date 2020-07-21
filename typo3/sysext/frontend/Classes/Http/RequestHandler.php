@@ -390,15 +390,11 @@ class RequestHandler implements RequestHandlerInterface
             $stylesFromPlugins = '';
             foreach ($controller->tmpl->setup['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
-                    if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($controller->config['config']['removeDefaultCss'])) {
-                        if (isset($iCSScode['_CSS_DEFAULT_STYLE.'])) {
-                            $cssDefaultStyle = $controller->cObj->stdWrap($iCSScode['_CSS_DEFAULT_STYLE'], $iCSScode['_CSS_DEFAULT_STYLE.']);
-                        } else {
-                            $cssDefaultStyle = $iCSScode['_CSS_DEFAULT_STYLE'];
-                        }
+                    if ($iCSScode['_CSS_DEFAULT_STYLE'] ?? false && empty($controller->config['config']['removeDefaultCss'])) {
+                        $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode);
                         $stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
                     }
-                    if ($iCSScode['_CSS_PAGE_STYLE'] && empty($controller->config['config']['removePageCss'])) {
+                    if ($iCSScode['_CSS_PAGE_STYLE'] ?? false && empty($controller->config['config']['removePageCss'])) {
                         $cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
                         if (isset($iCSScode['_CSS_PAGE_STYLE.'])) {
                             $cssPageStyle = $controller->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);

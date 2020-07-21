@@ -79,11 +79,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             /** @var TypolinkModifyLinkConfigForPageLinksHookInterface $hookObject */
             $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
         }
-        if ($conf['no_cache.']) {
-            $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrap($conf['no_cache'], $conf['no_cache.']);
-        }
+        $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrapValue('no_cache', $conf);
 
-        $sectionMark = trim(isset($conf['section.']) ? (string)$this->contentObjectRenderer->stdWrap($conf['section'], $conf['section.']) : (string)$conf['section']);
+        $sectionMark = trim((string)$this->contentObjectRenderer->stdWrapValue('section', $conf));
         if ($sectionMark === '' && isset($linkDetails['fragment'])) {
             $sectionMark = $linkDetails['fragment'];
         }
@@ -115,7 +113,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // Query Params:
         $addQueryParams = $conf['addQueryString'] ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.']) : '';
-        $addQueryParams .= isset($conf['additionalParams.']) ? trim((string)$this->contentObjectRenderer->stdWrap($conf['additionalParams'], $conf['additionalParams.'])) : trim((string)$conf['additionalParams']);
+        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf));
         if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
             $addQueryParams = '';
         }

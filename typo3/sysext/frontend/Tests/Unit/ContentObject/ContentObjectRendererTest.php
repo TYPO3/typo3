@@ -7357,6 +7357,17 @@ class ContentObjectRendererTest extends UnitTestCase
                 'default',
                 'VALUE'
             ],
+            'the string "0" from stdWrap will be returned' => [
+                'test',
+                [
+                    'test' => '',
+                    'test.' => [
+                        'wrap' => '|0'
+                    ]
+                ],
+                '100',
+                '0'
+            ]
         ];
     }
 
@@ -7375,7 +7386,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $expected
     ): void {
         $result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
-        self::assertEquals($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**

@@ -995,7 +995,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function imageLinkWrap($string, $imageFile, $conf)
     {
         $string = (string)$string;
-        $enable = isset($conf['enable.']) ? $this->stdWrap($conf['enable'], $conf['enable.']) : $conf['enable'];
+        $enable = $this->stdWrapValue('enable', $conf);
         if (!$enable) {
             return $string;
         }
@@ -1020,7 +1020,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($content === $string && $file !== null) {
             $parameterNames = ['width', 'height', 'effects', 'bodyTag', 'title', 'wrap', 'crop'];
             $parameters = [];
-            $sample = isset($conf['sample.']) ? $this->stdWrap($conf['sample'], $conf['sample.']) : $conf['sample'];
+            $sample = $this->stdWrapValue('sample', $conf);
             if ($sample) {
                 $parameters['sample'] = 1;
             }
@@ -1039,7 +1039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
             }
             $url = $this->getTypoScriptFrontendController()->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
-            $directImageLink = isset($conf['directImageLink.']) ? $this->stdWrap($conf['directImageLink'], $conf['directImageLink.']) : $conf['directImageLink'];
+            $directImageLink = $this->stdWrapValue('directImageLink', $conf);
             if ($directImageLink) {
                 $imgResourceConf = [
                     'file' => $imageFile,
@@ -1055,28 +1055,24 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $target = '';
             $xhtmlDocType = $this->getTypoScriptFrontendController()->xhtmlDoctype;
             if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11') {
-                $target = isset($conf['target.'])
-                    ? (string)$this->stdWrap($conf['target'], $conf['target.'])
-                    : (string)$conf['target'];
+                $target = (string)$this->stdWrapValue('target', $conf);
                 if ($target === '') {
                     $target = 'thePicture';
                 }
             }
             $a1 = '';
             $a2 = '';
-            $conf['JSwindow'] = isset($conf['JSwindow.']) ? $this->stdWrap($conf['JSwindow'], $conf['JSwindow.']) : $conf['JSwindow'];
+            $conf['JSwindow'] = $this->stdWrapValue('JSwindow', $conf);
             if ($conf['JSwindow']) {
-                if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.']) {
-                    $altUrl = isset($conf['JSwindow.']['altUrl.']) ? $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']) : $conf['JSwindow.']['altUrl'];
-                    if ($altUrl) {
-                        $url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode($imageFile) . $params);
-                    }
+                $altUrl = $this->stdWrapValue('altUrl', $conf['JSwindow.'] ?? []);
+                if ($altUrl) {
+                    $url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode($imageFile) . $params);
                 }
 
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $conf);
-                $JSwindowExpand = isset($conf['JSwindow.']['expand.']) ? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.']) : $conf['JSwindow.']['expand'];
+                $JSwindowExpand = $this->stdWrapValue('expand', $conf['JSwindow.'] ?? []);
                 $offset = GeneralUtility::intExplode(',', $JSwindowExpand . ',');
-                $newWindow = isset($conf['JSwindow.']['newWindow.']) ? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.']) : $conf['JSwindow.']['newWindow'];
+                $newWindow = $this->stdWrapValue('newWindow', $conf['JSwindow.'] ?? []);
                 $params = [
                     'width' => ($processedFile->getProperty('width') + $offset[0]),
                     'height' => ($processedFile->getProperty('height') + $offset[1]),
@@ -1084,7 +1080,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     'menubar' => '0'
                 ];
                 // params override existing parameters from above, or add more
-                $windowParams = isset($conf['JSwindow.']['params.']) ? $this->stdWrap($conf['JSwindow.']['params'], $conf['JSwindow.']['params.']) : $conf['JSwindow.']['params'];
+                $windowParams = $this->stdWrapValue('params', $conf['JSwindow.'] ?? []);
                 $windowParams = explode(',', $windowParams);
                 foreach ($windowParams as $windowParam) {
                     [$paramKey, $paramValue] = explode('=', $windowParam);
@@ -1150,12 +1146,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getATagParams($conf, $addGlobal = 1)
     {
-        $aTagParams = '';
-        if ($conf['ATagParams.'] ?? false) {
-            $aTagParams = ' ' . $this->stdWrap($conf['ATagParams'], $conf['ATagParams.']);
-        } elseif ($conf['ATagParams'] ?? false) {
-            $aTagParams = ' ' . $conf['ATagParams'];
-        }
+        $aTagParams = ' ' . $this->stdWrapValue('ATagParams', $conf);
         if ($addGlobal) {
             $aTagParams = ' ' . trim($this->getTypoScriptFrontendController()->ATagParams . $aTagParams);
         }
@@ -1237,9 +1228,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Cache handling
         if (isset($conf['cache.']) && is_array($conf['cache.'])) {
-            $conf['cache.']['key'] = $this->stdWrap($conf['cache.']['key'], $conf['cache.']['key.']);
-            $conf['cache.']['tags'] = $this->stdWrap($conf['cache.']['tags'], $conf['cache.']['tags.']);
-            $conf['cache.']['lifetime'] = $this->stdWrap($conf['cache.']['lifetime'], $conf['cache.']['lifetime.']);
+            $conf['cache.']['key'] = $this->stdWrapValue('key', $conf['cache.']);
+            $conf['cache.']['tags'] = $this->stdWrapValue('tags', $conf['cache.']);
+            $conf['cache.']['lifetime'] = $this->stdWrapValue('lifetime', $conf['cache.']);
             $conf['cacheRead'] = 1;
             $conf['cacheStore'] = 1;
         }
@@ -1311,8 +1302,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $key The config variable key (from TS array).
      * @param array $config The TypoScript array.
-     * @param string|null $defaultValue Optional default value.
-     * @return string|null Value of the config variable
+     * @param string|int|null $defaultValue Optional default value.
+     * @return string|int|null Value of the config variable
      */
     public function stdWrapValue($key, array $config, $defaultValue = '')
     {
@@ -1326,7 +1317,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $defaultValue;
         }
         $stdWrapped = $this->stdWrap($config[$key], $config[$key . '.']);
-        return $stdWrapped ?: $defaultValue;
+        // The string "0" should be returned.
+        return $stdWrapped !== '' ? $stdWrapped : $defaultValue;
     }
 
     /**
@@ -1372,9 +1364,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_addPageCacheTags($content = '', $conf = [])
     {
-        $tags = isset($conf['addPageCacheTags.'])
-            ? $this->stdWrap($conf['addPageCacheTags'], $conf['addPageCacheTags.'])
-            : $conf['addPageCacheTags'];
+        $tags = $this->stdWrapValue('addPageCacheTags', $conf);
         if (!empty($tags)) {
             $cacheTags = GeneralUtility::trimExplode(',', $tags, true);
             $this->getTypoScriptFrontendController()->addCacheTags($cacheTags);
@@ -1643,20 +1633,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_strPad($content = '', $conf = [])
     {
         // Must specify a length in conf for this to make sense
-        $length = 0;
+        $length = (int)$this->stdWrapValue('length', $conf['strPad.'] ?? [], 0);
         // Padding with space is PHP-default
-        $padWith = ' ';
+        $padWith = $this->stdWrapValue('padWith', $conf['strPad.'] ?? [], ' ');
         // Padding on the right side is PHP-default
         $padType = STR_PAD_RIGHT;
-        if (!empty($conf['strPad.']['length'])) {
-            $length = isset($conf['strPad.']['length.']) ? $this->stdWrap($conf['strPad.']['length'], $conf['strPad.']['length.']) : $conf['strPad.']['length'];
-            $length = (int)$length;
-        }
-        if (isset($conf['strPad.']['padWith']) && (string)$conf['strPad.']['padWith'] !== '') {
-            $padWith = isset($conf['strPad.']['padWith.']) ? $this->stdWrap($conf['strPad.']['padWith'], $conf['strPad.']['padWith.']) : $conf['strPad.']['padWith'];
-        }
+
         if (!empty($conf['strPad.']['type'])) {
-            $type = isset($conf['strPad.']['type.']) ? $this->stdWrap($conf['strPad.']['type'], $conf['strPad.']['type.']) : $conf['strPad.']['type'];
+            $type = $this->stdWrapValue('type', $conf['strPad.'] ?? []);
             if (strtolower($type) === 'left') {
                 $padType = STR_PAD_LEFT;
             } elseif (strtolower($type) === 'both') {
@@ -1886,7 +1870,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_hash($content = '', array $conf = [])
     {
-        $algorithm = isset($conf['hash.']) ? $this->stdWrap($conf['hash'], $conf['hash.']) : $conf['hash'];
+        $algorithm = $this->stdWrapValue('hash', $conf);
         if (function_exists('hash') && in_array($algorithm, hash_algos())) {
             return hash($algorithm, $content);
         }
@@ -2688,53 +2672,51 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         if (isset($conf['isTrue']) || isset($conf['isTrue.'])) {
-            $isTrue = isset($conf['isTrue.']) ? trim($this->stdWrap($conf['isTrue'], $conf['isTrue.'])) : trim($conf['isTrue']);
+            $isTrue = trim($this->stdWrapValue('isTrue', $conf));
             if (!$isTrue) {
                 $flag = false;
             }
         }
         if (isset($conf['isFalse']) || isset($conf['isFalse.'])) {
-            $isFalse = isset($conf['isFalse.']) ? trim($this->stdWrap($conf['isFalse'], $conf['isFalse.'])) : trim($conf['isFalse']);
+            $isFalse = trim($this->stdWrapValue('isFalse', $conf));
             if ($isFalse) {
                 $flag = false;
             }
         }
         if (isset($conf['isPositive']) || isset($conf['isPositive.'])) {
-            $number = isset($conf['isPositive.']) ? $this->calc($this->stdWrap($conf['isPositive'], $conf['isPositive.'])) : $this->calc($conf['isPositive']);
+            $number = $this->calc($this->stdWrapValue('isPositive', $conf));
             if ($number < 1) {
                 $flag = false;
             }
         }
         if ($flag) {
-            $value = isset($conf['value.'])
-                ? trim($this->stdWrap($conf['value'] ?? '', $conf['value.']))
-                : trim($conf['value'] ?? '');
+            $value = trim($this->stdWrapValue('value', $conf));
             if (isset($conf['isGreaterThan']) || isset($conf['isGreaterThan.'])) {
-                $number = isset($conf['isGreaterThan.']) ? trim($this->stdWrap($conf['isGreaterThan'], $conf['isGreaterThan.'])) : trim($conf['isGreaterThan']);
+                $number = trim($this->stdWrapValue('isGreaterThan', $conf));
                 if ($number <= $value) {
                     $flag = false;
                 }
             }
             if (isset($conf['isLessThan']) || isset($conf['isLessThan.'])) {
-                $number = isset($conf['isLessThan.']) ? trim($this->stdWrap($conf['isLessThan'], $conf['isLessThan.'])) : trim($conf['isLessThan']);
+                $number = trim($this->stdWrapValue('isLessThan', $conf));
                 if ($number >= $value) {
                     $flag = false;
                 }
             }
             if (isset($conf['equals']) || isset($conf['equals.'])) {
-                $number = isset($conf['equals.']) ? trim($this->stdWrap($conf['equals'], $conf['equals.'])) : trim($conf['equals']);
+                $number = trim($this->stdWrapValue('equals', $conf));
                 if ($number != $value) {
                     $flag = false;
                 }
             }
             if (isset($conf['isInList']) || isset($conf['isInList.'])) {
-                $number = isset($conf['isInList.']) ? trim($this->stdWrap($conf['isInList'], $conf['isInList.'])) : trim($conf['isInList']);
+                $number = trim($this->stdWrapValue('isInList', $conf));
                 if (!GeneralUtility::inList($value, $number)) {
                     $flag = false;
                 }
             }
             if (isset($conf['bitAnd']) || isset($conf['bitAnd.'])) {
-                $number = isset($conf['bitAnd.']) ? trim($this->stdWrap($conf['bitAnd'], $conf['bitAnd.'])) : trim($conf['bitAnd']);
+                $number = trim($this->stdWrapValue('bitAnd', $conf));
                 if ((new BitSet($number))->get($value) === false) {
                     $flag = false;
                 }
@@ -3104,29 +3086,28 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $valArr = explode($conf['token'], $value);
 
         // return value directly by returnKey. No further processing
-        if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey'] ?? null) || ($conf['returnKey.'] ?? false))
-        ) {
-            $key = isset($conf['returnKey.']) ? (int)$this->stdWrap($conf['returnKey'], $conf['returnKey.']) : (int)$conf['returnKey'];
+        if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey'] ?? null) || ($conf['returnKey.'] ?? false))) {
+            $key = (int)$this->stdWrapValue('returnKey', $conf);
             return $valArr[$key] ?? '';
         }
 
         // return the amount of elements. No further processing
         if (!empty($valArr) && ($conf['returnCount'] || $conf['returnCount.'])) {
-            $returnCount = isset($conf['returnCount.']) ? (bool)$this->stdWrap($conf['returnCount'], $conf['returnCount.']) : (bool)$conf['returnCount'];
+            $returnCount = (bool)$this->stdWrapValue('returnCount', $conf);
             return $returnCount ? count($valArr) : 0;
         }
 
         // calculate splitCount
         $splitCount = count($valArr);
-        $max = isset($conf['max.']) ? (int)$this->stdWrap($conf['max'], $conf['max.']) : (int)$conf['max'];
+        $max = (int)$this->stdWrapValue('max', $conf);
         if ($max && $splitCount > $max) {
             $splitCount = $max;
         }
-        $min = isset($conf['min.']) ? (int)$this->stdWrap($conf['min'], $conf['min.']) : (int)$conf['min'];
+        $min = (int)$this->stdWrapValue('min', $conf);
         if ($min && $splitCount < $min) {
             $splitCount = $min;
         }
-        $wrap = isset($conf['wrap.']) ? (string)$this->stdWrap($conf['wrap'], $conf['wrap.']) : (string)$conf['wrap'];
+        $wrap = (string)$this->stdWrapValue('wrap', $conf);
         $cObjNumSplitConf = isset($conf['cObjNum.']) ? (string)$this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : (string)$conf['cObjNum'];
         $splitArr = [];
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
@@ -3146,7 +3127,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.'])
                     : $this->cObjGet($conf[$objName . '.'], $objName . '.');
             }
-            $wrap = isset($splitArr[$a]['wrap.']) ? $this->stdWrap($splitArr[$a]['wrap'], $splitArr[$a]['wrap.']) : $splitArr[$a]['wrap'];
+            $wrap = $this->stdWrapValue('wrap', $splitArr[$a]);
             if ($wrap) {
                 $value = $this->wrap($value, $wrap);
             }
@@ -3186,22 +3167,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         if ((isset($configuration['search']) || isset($configuration['search.'])) && (isset($configuration['replace']) || isset($configuration['replace.']))) {
             // Gets the strings
-            $search = isset($configuration['search.']) ? $this->stdWrap($configuration['search'], $configuration['search.']) : $configuration['search'];
-            $replace = isset($configuration['replace.'])
-                ? $this->stdWrap($configuration['replace'] ?? null, $configuration['replace.'])
-                : $configuration['replace'] ?? null;
-            $useRegularExpression = false;
+            $search = $this->stdWrapValue('search', $configuration);
+            $replace = $this->stdWrapValue('replace', $configuration, null);
+
             // Determines whether regular expression shall be used
-            if (isset($configuration['useRegExp'])
-                || (isset($configuration['useRegExp.']) && $configuration['useRegExp.'])
-            ) {
-                $useRegularExpression = isset($configuration['useRegExp.']) ? (bool)$this->stdWrap($configuration['useRegExp'], $configuration['useRegExp.']) : (bool)$configuration['useRegExp'];
-            }
-            $useOptionSplitReplace = false;
+            $useRegularExpression = (bool)$this->stdWrapValue('useRegExp', $configuration, false);
+
             // Determines whether replace-pattern uses option-split
-            if (isset($configuration['useOptionSplitReplace']) || isset($configuration['useOptionSplitReplace.'])) {
-                $useOptionSplitReplace = isset($configuration['useOptionSplitReplace.']) ? (bool)$this->stdWrap($configuration['useOptionSplitReplace'], $configuration['useOptionSplitReplace.']) : (bool)$configuration['useOptionSplitReplace'];
-            }
+            $useOptionSplitReplace = (bool)$this->stdWrapValue('useOptionSplitReplace', $configuration, false);
 
             // Performs a replacement by preg_replace()
             if ($useRegularExpression) {
@@ -3261,12 +3234,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function round($content, array $conf = [])
     {
-        $decimals = isset($conf['decimals.'])
-            ? $this->stdWrap($conf['decimals'] ?? '', $conf['decimals.'])
-            : ($conf['decimals'] ?? null);
-        $type = isset($conf['roundType.'])
-            ? $this->stdWrap($conf['roundType'] ?? '', $conf['roundType.'])
-            : ($conf['roundType'] ?? null);
+        $decimals = (int)$this->stdWrapValue('decimals', $conf, 0);
+        $type = $this->stdWrapValue('roundType', $conf);
         $floatVal = (float)$content;
         switch ($type) {
             case 'ceil':
@@ -3278,7 +3247,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             case 'round':
 
             default:
-                $content = round($floatVal, (int)$decimals);
+                $content = round($floatVal, $decimals);
         }
         return $content;
     }
@@ -3293,15 +3262,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function numberFormat($content, $conf)
     {
-        $decimals = isset($conf['decimals.'])
-            ? (int)$this->stdWrap($conf['decimals'] ?? '', $conf['decimals.'])
-            : (int)($conf['decimals'] ?? 0);
-        $dec_point = isset($conf['dec_point.'])
-            ? $this->stdWrap($conf['dec_point'] ?? '', $conf['dec_point.'])
-            : ($conf['dec_point'] ?? null);
-        $thousands_sep = isset($conf['thousands_sep.'])
-            ? $this->stdWrap($conf['thousands_sep'] ?? '', $conf['thousands_sep.'])
-            : ($conf['thousands_sep'] ?? null);
+        $decimals = (int)$this->stdWrapValue('decimals', $conf, 0);
+        $dec_point = $this->stdWrapValue('dec_point', $conf, '.');
+        $thousands_sep = $this->stdWrapValue('thousands_sep', $conf, ',');
         return number_format((float)$content, $decimals, $dec_point, $thousands_sep);
     }
 
@@ -3691,9 +3654,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), true);
         $nonWrappedTag = $conf['nonWrappedTag'];
-        $defaultAlign = isset($conf['defaultAlign.'])
-            ? trim($this->stdWrap($conf['defaultAlign'] ?? '', $conf['defaultAlign.']))
-            : trim($conf['defaultAlign'] ?? '');
+        $defaultAlign = trim($this->stdWrapValue('defaultAlign', $conf));
 
         $str_content = '';
         foreach ($lParts as $k => $l) {
@@ -3830,15 +3791,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $linktxt = substr($linktxt, 0, -1);
                         }
                     }
-                    if (isset($conf['extTarget'])) {
-                        if (isset($conf['extTarget.'])) {
-                            $target = $this->stdWrap($conf['extTarget'], $conf['extTarget.']);
-                        } else {
-                            $target = $conf['extTarget'];
-                        }
-                    } else {
-                        $target = $this->getTypoScriptFrontendController()->extTarget;
-                    }
+                    $target = $this->stdWrapValue('extTarget', $conf, $this->getTypoScriptFrontendController()->extTarget);
 
                     // check for jump URLs or similar
                     $linkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_COMMON, $scheme . $parts[0], $conf);
@@ -3847,7 +3800,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
                         . $aTagParams . '>';
 
-                    $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+                    $wrap = $this->stdWrapValue('wrap', $conf);
                     if ((string)$conf['ATagBeforeWrap'] !== '') {
                         $res = $res . $this->wrap($linktxt, $wrap) . '</a>';
                     } else {
@@ -3894,7 +3847,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 [$mailToUrl, $linktxt] = $this->getMailTo($parts[0], $linktxt);
                 $mailToUrl = $tsfe->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
                 $res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
-                $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+                $wrap = $this->stdWrapValue('wrap', $conf);
                 if ((string)$conf['ATagBeforeWrap'] !== '') {
                     $res = $res . $this->wrap($linktxt, $wrap) . '</a>';
                 } else {
@@ -3967,7 +3920,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
 
                     if (MathUtility::canBeInterpretedAsInteger($file)) {
-                        $treatIdAsReference = isset($fileArray['treatIdAsReference.']) ? $this->stdWrap($fileArray['treatIdAsReference'], $fileArray['treatIdAsReference.']) : $fileArray['treatIdAsReference'];
+                        $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray);
                         if (!empty($treatIdAsReference)) {
                             $file = $this->getResourceFactory()->getFileReferenceObject($file);
                             $fileObject = $file->getOriginalFile();
@@ -3989,16 +3942,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             if ($fileObject instanceof File) {
                 $processingConfiguration = [];
-                $processingConfiguration['width'] = isset($fileArray['width.']) ? $this->stdWrap($fileArray['width'], $fileArray['width.']) : $fileArray['width'];
-                $processingConfiguration['height'] = isset($fileArray['height.']) ? $this->stdWrap($fileArray['height'], $fileArray['height.']) : $fileArray['height'];
-                $processingConfiguration['fileExtension'] = isset($fileArray['ext.']) ? $this->stdWrap($fileArray['ext'], $fileArray['ext.']) : $fileArray['ext'];
-                $processingConfiguration['maxWidth'] = isset($fileArray['maxW.']) ? (int)$this->stdWrap($fileArray['maxW'], $fileArray['maxW.']) : (int)$fileArray['maxW'];
-                $processingConfiguration['maxHeight'] = isset($fileArray['maxH.']) ? (int)$this->stdWrap($fileArray['maxH'], $fileArray['maxH.']) : (int)$fileArray['maxH'];
-                $processingConfiguration['minWidth'] = isset($fileArray['minW.']) ? (int)$this->stdWrap($fileArray['minW'], $fileArray['minW.']) : (int)$fileArray['minW'];
-                $processingConfiguration['minHeight'] = isset($fileArray['minH.']) ? (int)$this->stdWrap($fileArray['minH'], $fileArray['minH.']) : (int)$fileArray['minH'];
-                $processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
-                $processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
-                $processingConfiguration['frame'] = isset($fileArray['frame.']) ? (int)$this->stdWrap($fileArray['frame'], $fileArray['frame.']) : (int)$fileArray['frame'];
+                $processingConfiguration['width'] = $this->stdWrapValue('width', $fileArray);
+                $processingConfiguration['height'] = $this->stdWrapValue('height', $fileArray);
+                $processingConfiguration['fileExtension'] = $this->stdWrapValue('ext', $fileArray);
+                $processingConfiguration['maxWidth'] = (int)$this->stdWrapValue('maxW', $fileArray);
+                $processingConfiguration['maxHeight'] = (int)$this->stdWrapValue('maxH', $fileArray);
+                $processingConfiguration['minWidth'] = (int)$this->stdWrapValue('minW', $fileArray);
+                $processingConfiguration['minHeight'] = (int)$this->stdWrapValue('minH', $fileArray);
+                $processingConfiguration['noScale'] = $this->stdWrapValue('noScale', $fileArray);
+                $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray);
+                $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray);
                 if ($file instanceof FileReference) {
                     $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($file, $fileArray);
                 } else {
@@ -4618,11 +4571,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $linkText = (string)$linkText;
         $tsfe = $this->getTypoScriptFrontendController();
 
-        $linkParameter = trim(
-            (isset($conf['parameter.']))
-            ? $this->stdWrap($conf['parameter'] ?? '', $conf['parameter.'])
-            : ($conf['parameter'] ?? '')
-        );
+        $linkParameter = trim($this->stdWrapValue('parameter', $conf));
         $this->lastTypoLinkUrl = '';
         $this->lastTypoLinkTarget = '';
 
@@ -4798,9 +4747,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
 
-        $wrap = isset($conf['wrap.'])
-            ? $this->stdWrap($conf['wrap'] ?? '', $conf['wrap.'])
-            : $conf['wrap'] ?? '';
+        $wrap = $this->stdWrapValue('wrap', $conf);
 
         if ($conf['ATagBeforeWrap'] ?? false) {
             return $finalAnchorTag . $this->wrap($linkText, $wrap) . '</a>';
@@ -6094,7 +6041,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $constraints[] = $expressionBuilder->eq($table . '.uid', 0);
         }
 
-        $where = isset($conf['where.']) ? trim($this->stdWrap($conf['where'], $conf['where.'])) : trim($conf['where']);
+        $where = trim($this->stdWrapValue('where', $conf));
         if ($where) {
             $constraints[] = QueryHelper::stripLogicalOperatorPrefix($where);
         }
@@ -6119,19 +6066,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $queryParts['where'] = $expressionBuilder->andX(...$constraints);
         }
         // GROUP BY
-        if (trim($conf['groupBy'])) {
-            $groupBy = isset($conf['groupBy.'])
-                ? trim($this->stdWrap($conf['groupBy'], $conf['groupBy.']))
-                : trim($conf['groupBy']);
+        $groupBy = trim($this->stdWrapValue('groupBy', $conf));
+        if ($groupBy) {
             $queryParts['groupBy'] = QueryHelper::parseGroupBy($groupBy);
         }
 
         // ORDER BY
-        if (trim($conf['orderBy'])) {
-            $orderByString = isset($conf['orderBy.'])
-                ? trim($this->stdWrap($conf['orderBy'], $conf['orderBy.']))
-                : trim($conf['orderBy']);
-
+        $orderByString = trim($this->stdWrapValue('orderBy', $conf));
+        if ($orderByString) {
             $queryParts['orderBy'] = QueryHelper::parseOrderBy($orderByString);
         }
 
@@ -6298,6 +6240,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 continue;
             }
             // Parse definition
+            // todo else value is always null
             $tempValue = isset($conf['markers.'][$dottedMarker])
                 ? $this->stdWrap($conf['markers.'][$dottedMarker]['value'], $conf['markers.'][$dottedMarker])
                 : $conf['markers.'][$dottedMarker]['value'];
@@ -6543,10 +6486,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function calculateCacheLifetime(array $configuration)
     {
-        $lifetimeConfiguration = $configuration['lifetime'] ?? '';
-        $lifetimeConfiguration = isset($configuration['lifetime.'])
-            ? $this->stdWrap($lifetimeConfiguration, $configuration['lifetime.'])
-            : $lifetimeConfiguration;
+        $configuration['lifetime'] = $configuration['lifetime'] ?? '';
+        $lifetimeConfiguration = $this->stdWrapValue('lifetime', $configuration);
 
         $lifetime = null; // default lifetime
         if (strtolower($lifetimeConfiguration) === 'unlimited') {
@@ -6565,10 +6506,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function calculateCacheTags(array $configuration)
     {
-        $tags = $configuration['tags'] ?? '';
-        $tags = isset($configuration['tags.'])
-            ? $this->stdWrap($tags, $configuration['tags.'])
-            : $tags;
+        $configuration['tags'] = $configuration['tags'] ?? '';
+        $tags = $this->stdWrapValue('tags', $configuration);
         return empty($tags) ? [] : GeneralUtility::trimExplode(',', $tags);
     }
 
@@ -6580,10 +6519,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function calculateCacheKey(array $configuration)
     {
-        $key = $configuration['key'] ?? '';
-        return isset($configuration['key.'])
-            ? $this->stdWrap($key, $configuration['key.'])
-            : $key;
+        $configuration['key'] = $configuration['key'] ?? '';
+        return $this->stdWrapValue('key', $configuration);
     }
 
     /**

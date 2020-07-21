@@ -303,7 +303,7 @@ class MenuProcessor implements DataProcessorInterface
         }
         // Process special value
         if (isset($this->menuConfig['special.']['value.'])) {
-            $this->menuConfig['special.']['value'] = $this->cObj->stdWrap($this->menuConfig['special.']['value'], $this->menuConfig['special.']['value.']);
+            $this->menuConfig['special.']['value'] = $this->cObj->stdWrapValue('value', $this->menuConfig['special.']);
             unset($this->menuConfig['special.']['value.']);
         }
     }

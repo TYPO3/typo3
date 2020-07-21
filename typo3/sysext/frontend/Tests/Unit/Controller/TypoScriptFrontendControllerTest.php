@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -81,6 +82,9 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     public function headerAndFooterMarkersAreReplacedDuringIntProcessing()
     {
         $GLOBALS['TSFE'] = $this->setupTsfeMockForHeaderFooterReplacementCheck();
+        $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRendererProphecy->stdWrapValue(Argument::cetera())->willReturn('');
+        $GLOBALS['TSFE']->cObj = $contentObjectRendererProphecy->reveal();
         $GLOBALS['TSFE']->INTincScript();
         self::assertStringContainsString('headerData', $GLOBALS['TSFE']->content);
         self::assertStringContainsString('footerData', $GLOBALS['TSFE']->content);
@@ -536,6 +540,10 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManager = $this->prophesize(CacheManager::class);
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+
+        $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRendererProphecy->stdWrapValue(Argument::cetera())->willReturn('');
+        $this->subject->cObj = $contentObjectRendererProphecy->reveal();
 
         $this->subject->generatePageTitle();
         self::assertSame($pageTitle, $this->subject->indexedDocTitle);

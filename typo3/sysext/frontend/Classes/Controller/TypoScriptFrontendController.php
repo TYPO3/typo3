@@ -2583,17 +2583,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function generatePageTitle(): string
     {
-        $pageTitleSeparator = '';
-
         // Check for a custom pageTitleSeparator, and perform stdWrap on it
-        if (isset($this->config['config']['pageTitleSeparator']) && $this->config['config']['pageTitleSeparator'] !== '') {
-            $pageTitleSeparator = $this->config['config']['pageTitleSeparator'];
-
-            if (isset($this->config['config']['pageTitleSeparator.']) && is_array($this->config['config']['pageTitleSeparator.'])) {
-                $pageTitleSeparator = $this->cObj->stdWrap($pageTitleSeparator, $this->config['config']['pageTitleSeparator.']);
-            } else {
-                $pageTitleSeparator .= ' ';
-            }
+        $pageTitleSeparator = $this->cObj->stdWrapValue('pageTitleSeparator', $this->config['config'] ?? []);
+        if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($this->config['config']['pageTitleSeparator'] ?? '')) {
+            $pageTitleSeparator .= ' ';
         }
 
         $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
@@ -2613,10 +2606,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             (bool)($this->config['config']['pageTitleFirst'] ?? false),
             $pageTitleSeparator
         );
+        $this->config['config']['pageTitle'] = $titleTagContent;
         // stdWrap around the title tag
-        if (isset($this->config['config']['pageTitle.']) && is_array($this->config['config']['pageTitle.'])) {
-            $titleTagContent = $this->cObj->stdWrap($titleTagContent, $this->config['config']['pageTitle.']);
-        }
+        $titleTagContent = $this->cObj->stdWrapValue('pageTitle', $this->config['config']);
 
         // config.noPageTitle = 2 - means do not render the page title
         if (isset($this->config['config']['noPageTitle']) && (int)$this->config['config']['noPageTitle'] === 2) {

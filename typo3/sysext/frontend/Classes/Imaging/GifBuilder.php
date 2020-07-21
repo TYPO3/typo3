@@ -148,25 +148,15 @@ class GifBuilder extends GraphicalFunctions
             // Getting sorted list of TypoScript keys from setup.
             $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
             // Setting the background color, passing it through stdWrap
-            if ($conf['backColor.'] || $conf['backColor']) {
-                $this->setup['backColor'] = isset($this->setup['backColor.']) ? trim($this->cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.'])) : $this->setup['backColor'];
-            }
+            $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup);
             if (!$this->setup['backColor']) {
                 $this->setup['backColor'] = 'white';
             }
-            if ($conf['transparentColor.'] || $conf['transparentColor']) {
-                $this->setup['transparentColor_array'] = isset($this->setup['transparentColor.']) ? explode('|', trim($this->cObj->stdWrap($this->setup['transparentColor'], $this->setup['transparentColor.']))) : explode('|', trim($this->setup['transparentColor']));
-            }
-            if (isset($this->setup['transparentBackground.'])) {
-                $this->setup['transparentBackground'] = $this->cObj->stdWrap($this->setup['transparentBackground'], $this->setup['transparentBackground.']);
-            }
-            if (isset($this->setup['reduceColors.'])) {
-                $this->setup['reduceColors'] = $this->cObj->stdWrap($this->setup['reduceColors'], $this->setup['reduceColors.']);
-            }
+            $this->setup['transparentColor_array'] = explode('|', trim($this->cObj->stdWrapValue('transparentColor', $this->setup)));
+            $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup);
+            $this->setup['reduceColors'] = $this->cObj->stdWrapValue('reduceColors', $this->setup);
             // Set default dimensions
-            if (isset($this->setup['XY.'])) {
-                $this->setup['XY'] = $this->cObj->stdWrap($this->setup['XY'], $this->setup['XY.']);
-            }
+            $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup);
             if (!$this->setup['XY']) {
                 $this->setup['XY'] = '120,50';
             }
@@ -180,7 +170,7 @@ class GifBuilder extends GraphicalFunctions
                         case 'TEXT':
                             if ($this->setup[$theKey . '.'] = $this->checkTextObj($conf)) {
                                 // Adjust font width if max size is set:
-                                $maxWidth = isset($this->setup[$theKey . '.']['maxWidth.']) ? $this->cObj->stdWrap($this->setup[$theKey . '.']['maxWidth'], $this->setup[$theKey . '.']['maxWidth.']) : $this->setup[$theKey . '.']['maxWidth'];
+                                $maxWidth = $this->cObj->stdWrapValue('maxWidth', $this->setup[$theKey . '.'] ?? []);
                                 if ($maxWidth) {
                                     $this->setup[$theKey . '.']['fontSize'] = $this->fontResize($this->setup[$theKey . '.']);
                                 }
@@ -252,13 +242,9 @@ class GifBuilder extends GraphicalFunctions
             }
             // Calculate offsets on elements
             $this->setup['XY'] = $this->calcOffset($this->setup['XY']);
-            if (isset($this->setup['offset.'])) {
-                $this->setup['offset'] = $this->cObj->stdWrap($this->setup['offset'], $this->setup['offset.']);
-            }
+            $this->setup['offset'] = $this->cObj->stdWrapValue('offset', $this->setup);
             $this->setup['offset'] = $this->calcOffset($this->setup['offset']);
-            if (isset($this->setup['workArea.'])) {
-                $this->setup['workArea'] = $this->cObj->stdWrap($this->setup['workArea'], $this->setup['workArea.']);
-            }
+            $this->setup['workArea'] = $this->cObj->stdWrapValue('workArea', $this->setup);
             $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
@@ -268,7 +254,7 @@ class GifBuilder extends GraphicalFunctions
 
                         case 'IMAGE':
                             if (isset($this->setup[$theKey . '.']['offset.'])) {
-                                $this->setup[$theKey . '.']['offset'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['offset'], $this->setup[$theKey . '.']['offset.']);
+                                $this->setup[$theKey . '.']['offset'] = $this->cObj->stdWrapValue('offset', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['offset.']);
                             }
                             if ($this->setup[$theKey . '.']['offset']) {
@@ -279,7 +265,7 @@ class GifBuilder extends GraphicalFunctions
 
                         case 'ELLIPSE':
                             if (isset($this->setup[$theKey . '.']['dimensions.'])) {
-                                $this->setup[$theKey . '.']['dimensions'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['dimensions'], $this->setup[$theKey . '.']['dimensions.']);
+                                $this->setup[$theKey . '.']['dimensions'] = $this->cObj->stdWrapValue('dimensions', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['dimensions.']);
                             }
                             if ($this->setup[$theKey . '.']['dimensions']) {
@@ -288,7 +274,7 @@ class GifBuilder extends GraphicalFunctions
                             break;
                         case 'WORKAREA':
                             if (isset($this->setup[$theKey . '.']['set.'])) {
-                                $this->setup[$theKey . '.']['set'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['set'], $this->setup[$theKey . '.']['set.']);
+                                $this->setup[$theKey . '.']['set'] = $this->cObj->stdWrapValue('set', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['set.']);
                             }
                             if ($this->setup[$theKey . '.']['set']) {
@@ -297,7 +283,7 @@ class GifBuilder extends GraphicalFunctions
                             break;
                         case 'CROP':
                             if (isset($this->setup[$theKey . '.']['crop.'])) {
-                                $this->setup[$theKey . '.']['crop'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['crop'], $this->setup[$theKey . '.']['crop.']);
+                                $this->setup[$theKey . '.']['crop'] = $this->cObj->stdWrapValue('crop', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['crop.']);
                             }
                             if ($this->setup[$theKey . '.']['crop']) {
@@ -306,14 +292,14 @@ class GifBuilder extends GraphicalFunctions
                             break;
                         case 'SCALE':
                             if (isset($this->setup[$theKey . '.']['width.'])) {
-                                $this->setup[$theKey . '.']['width'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['width'], $this->setup[$theKey . '.']['width.']);
+                                $this->setup[$theKey . '.']['width'] = $this->cObj->stdWrapValue('width', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['width.']);
                             }
                             if ($this->setup[$theKey . '.']['width']) {
                                 $this->setup[$theKey . '.']['width'] = $this->calcOffset($this->setup[$theKey . '.']['width']);
                             }
                             if (isset($this->setup[$theKey . '.']['height.'])) {
-                                $this->setup[$theKey . '.']['height'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['height'], $this->setup[$theKey . '.']['height.']);
+                                $this->setup[$theKey . '.']['height'] = $this->cObj->stdWrapValue('height', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['height.']);
                             }
                             if ($this->setup[$theKey . '.']['height']) {
@@ -325,8 +311,8 @@ class GifBuilder extends GraphicalFunctions
             }
             // Get trivial data
             $XY = GeneralUtility::intExplode(',', $this->setup['XY']);
-            $maxWidth = isset($this->setup['maxWidth.']) ? (int)$this->cObj->stdWrap($this->setup['maxWidth'], $this->setup['maxWidth.']) : (int)$this->setup['maxWidth'];
-            $maxHeight = isset($this->setup['maxHeight.']) ? (int)$this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.']) : (int)$this->setup['maxHeight'];
+            $maxWidth = (int)$this->cObj->stdWrapValue('maxWidth', $this->setup);
+            $maxHeight = (int)$this->cObj->stdWrapValue('maxHeight', $this->setup);
             $XY[0] = MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
             $XY[1] = MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
             $this->XY = $XY;
@@ -419,7 +405,7 @@ class GifBuilder extends GraphicalFunctions
                         foreach ($conf as $key => $value) {
                             $parameter = rtrim($key, '.');
                             if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                $conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+                                $conf[$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                 $isStdWrapped[$parameter] = 1;
                             }
                         }
@@ -440,7 +426,7 @@ class GifBuilder extends GraphicalFunctions
                                     foreach ($conf['shadow.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
                                         if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                            $conf['shadow.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+                                            $conf['shadow.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                             $isStdWrapped[$parameter] = 1;
                                         }
                                     }
@@ -451,7 +437,7 @@ class GifBuilder extends GraphicalFunctions
                                     foreach ($conf['emboss.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
                                         if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                            $conf['emboss.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+                                            $conf['emboss.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                             $isStdWrapped[$parameter] = 1;
                                         }
                                     }
@@ -462,7 +448,7 @@ class GifBuilder extends GraphicalFunctions
                                     foreach ($conf['outline.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
                                         if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                            $conf['outline.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+                                            $conf['outline.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                             $isStdWrapped[$parameter] = 1;
                                         }
                                     }
@@ -561,7 +547,7 @@ class GifBuilder extends GraphicalFunctions
         foreach ($conf as $key => $value) {
             $parameter = rtrim($key, '.');
             if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                $conf[$parameter] = $cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+                $conf[$parameter] = $cObj->stdWrap($parameter, $conf);
                 $isStdWrapped[$parameter] = 1;
             }
         }

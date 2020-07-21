@@ -321,13 +321,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         $this->menuConfig = array_merge($this->menuConfig, $this->processorConfiguration);
 
         // Process languages
-        if (empty($this->menuConfig['languages']) && empty($this->menuConfig['languages.'])) {
-            $this->menuConfig['special.']['value'] = 'auto';
-        } elseif (!empty($this->menuConfig['languages.'])) {
-            $this->menuConfig['special.']['value'] = $this->cObj->stdWrap($this->menuConfig['languages'], $this->menuConfig['languages.']);
-        } else {
-            $this->menuConfig['special.']['value'] = $this->menuConfig['languages'];
-        }
+        $this->menuConfig['special.']['value'] = $this->cObj->stdWrapValue('languages', $this->menuConfig, 'auto');
 
         // Filter configuration
         foreach ($this->menuConfig as $key => $value) {
@@ -450,11 +444,11 @@ class LanguageMenuProcessor implements DataProcessorInterface
     {
         // Support of stdWrap for parameters
         if (isset($conf['language.'])) {
-            $conf['language'] = $this->cObj->stdWrap($conf['language'], $conf['language.']);
+            $conf['language'] = $this->cObj->stdWrapValue('language', $conf);
             unset($conf['language.']);
         }
         if (isset($conf['field.'])) {
-            $conf['field'] = $this->cObj->stdWrap($conf['field'], $conf['field.']);
+            $conf['field'] = $this->cObj->stdWrapValue('field', $conf);
             unset($conf['field.']);
         }
 
