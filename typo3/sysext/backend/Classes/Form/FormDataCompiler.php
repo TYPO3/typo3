@@ -198,7 +198,7 @@ class FormDataCompiler
             // This entry holds the row of the language source record.
             'sourceLanguageRow' => null,
             // If the handled row is a localized row and a transOrigDiffSourceField is defined, this
-            // is the unserialized version of it. The diff source field is basically a shadow version
+            // is the json_decode() version of it. The diff source field is basically a shadow version
             // of the default language record at the time when the language overlay record was created.
             // This is used later to compare the default record with this content to show a "diff" if
             // the default language record changed meanwhile.

@@ -65,9 +65,9 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                     && !empty($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']])
                 ) {
                     $defaultLanguageKey = $result['tableName'] . ':' . (int)$result['databaseRow']['uid'];
-                    $result['defaultLanguageDiffRow'][$defaultLanguageKey] = unserialize(
-                        $result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']],
-                        ['allowed_classes' => false]
+                    $result['defaultLanguageDiffRow'][$defaultLanguageKey] = json_decode(
+                        (string)$result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']] ?? '',
+                        true
                     );
                 }
 

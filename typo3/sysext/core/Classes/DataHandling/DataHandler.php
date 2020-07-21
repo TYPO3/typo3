@@ -1381,9 +1381,9 @@ class DataHandler implements LoggerAwareInterface
         ) {
             $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
             BackendUtility::workspaceOL($table, $originalLanguageRecord);
-            $originalLanguage_diffStorage = unserialize(
-                $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']],
-                ['allowed_classes' => false]
+            $originalLanguage_diffStorage = json_decode(
+                (string)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] ?? '',
+                true
             );
         }
 
@@ -1450,7 +1450,7 @@ class DataHandler implements LoggerAwareInterface
                         }
                         // Add the value of the original record to the diff-storage content:
                         if ($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
-                            $originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
+                            $originalLanguage_diffStorage[$field] = (string)$originalLanguageRecord[$field];
                             $diffStorageFlag = true;
                         }
                     } elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
@@ -1475,7 +1475,7 @@ class DataHandler implements LoggerAwareInterface
             && !array_key_exists($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'], $fieldArray)
         ) {
             // If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
-            $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
+            $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = json_encode($originalLanguage_diffStorage);
         }
         // Return fieldArray
         return $fieldArray;

@@ -149,7 +149,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'text' => 'localized text',
                 'sys_language_uid' => 2,
                 'l10n_parent' => 23,
-                'l10n_diffsource' => serialize($diffSource),
+                'l10n_diffsource' => json_encode($diffSource),
             ],
             'processedTca' => [
                 'ctrl' => [

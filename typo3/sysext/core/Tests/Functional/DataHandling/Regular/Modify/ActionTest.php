@@ -81,6 +81,22 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/modifyTranslatedContent.csv
+     */
+    public function modifyTranslatedContent()
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::modifyTranslatedContent();
+        $this->assertAssertionDataSet('modifyTranslatedContent');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing Translation #3'));
+    }
+
+    /**
+     * @test
      * See DataSet/deleteContentRecord.csv
      */
     public function deleteContent()

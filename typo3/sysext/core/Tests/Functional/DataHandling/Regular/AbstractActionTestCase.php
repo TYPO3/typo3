@@ -90,6 +90,14 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
+     * See DataSet/modifyTranslatedContent.csv
+     */
+    public function modifyTranslatedContent()
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
+    }
+
+    /**
      * See DataSet/hideContent.csv
      */
     public function hideContent()
