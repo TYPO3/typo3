@@ -17,14 +17,31 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Reflection\DocBlock\Tags;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Factory\StaticMethod;
+use phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 
 /**
  * Class TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_
  */
-class Null_ implements StaticMethod
+class Null_ implements Tag, StaticMethod
 {
-    public static function create($body)
+    public function getName(): string
     {
+        return 'Null';
+    }
+
+    public static function create($body): void
+    {
+    }
+
+    public function render(?Formatter $formatter = null): string
+    {
+        return '';
+    }
+
+    public function __toString(): string
+    {
+        return '';
     }
 }
