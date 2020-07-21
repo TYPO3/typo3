@@ -104,6 +104,9 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
             $recordData[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = $languageId;
         }
+        if ($tableName === 'pages' && empty($recordData['is_siteroot'])) {
+            $recordData['is_siteroot'] = $row['is_siteroot'];
+        }
 
         $slug = GeneralUtility::makeInstance(SlugHelper::class, $tableName, $fieldName, $fieldConfig);
         if ($mode === 'auto') {
