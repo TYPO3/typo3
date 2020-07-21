@@ -1382,9 +1382,10 @@ define(
        * @param {Node} node
        */
       setExpandedState: function(node) {
-        document
-          .getElementById('identifier-' + this.getNodeStateIdentifier(node))
-          .setAttribute('aria-expanded', (node.hasChildren ? node.expanded : null));
+        var nodeElement = document.getElementById('identifier-' + this.getNodeStateIdentifier(node));
+        if (nodeElement) {
+          nodeElement.setAttribute('aria-expanded', (node.hasChildren ? node.expanded : null));
+        }
       },
 
       /**
