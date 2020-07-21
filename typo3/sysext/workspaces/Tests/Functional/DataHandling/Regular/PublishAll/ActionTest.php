@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\PublishAll;
 
 use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 /**
  * Functional test for the DataHandler
@@ -327,6 +328,27 @@ class ActionTest extends AbstractActionTestCase
 
         $response = $this->executeFrontendRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)
+        );
+        self::assertEquals(404, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     * See DataSet/localizePageAndContentsAndDeletePageLocalization
+     */
+    public function localizePageAndContentsAndDeletePageLocalization()
+    {
+        // Create localized page and localize content elements first
+        parent::localizePageAndContents();
+
+        // Deleting the localized page in workspace should also delete its localized records
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
+
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())->withPageId($this->recordIds['localizedPageId']),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         self::assertEquals(404, $response->getStatusCode());
     }
