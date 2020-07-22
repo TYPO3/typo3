@@ -52,6 +52,7 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  *        sortDescending="true"
  *        readOnly="true"
  *        enableClickMenu="false"
+ *        enableControlPanels="true"
  *        clickTitleMode="info"
  *        />
  *
@@ -98,6 +99,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $this->registerArgument('sortDescending', 'bool', 'if TRUE records will be sorted in descending order', false, false);
         $this->registerArgument('readOnly', 'bool', 'if TRUE, the edit icons won\'t be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!', false, false);
         $this->registerArgument('enableClickMenu', 'bool', 'enables context menu', false, true);
+        $this->registerArgument('enableControlPanels', 'bool', 'enables control panels', false, false);
         $this->registerArgument('clickTitleMode', 'string', 'one of "edit", "show" (only pages, tt_content), "info');
     }
 
@@ -121,9 +123,13 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $readOnly = $this->arguments['readOnly'];
         $enableClickMenu = $this->arguments['enableClickMenu'];
         $clickTitleMode = $this->arguments['clickTitleMode'];
+        $enableControlPanels = $this->arguments['enableControlPanels'];
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
+        if ($enableControlPanels === true) {
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        }
 
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         /** @var \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $dblist */
@@ -145,7 +151,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $dblist->dontShowClipControlPanels = true;
         $dblist->displayFields = false;
         $dblist->setFields = [$tableName => $fieldList];
-        $dblist->noControlPanels = true;
+        $dblist->noControlPanels = !$enableControlPanels;
         $dblist->sortField = $sortField;
         $dblist->sortRev = $sortDescending;
         $dblist->generateList();
