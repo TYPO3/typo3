@@ -640,7 +640,7 @@ class InlineControlContainer extends AbstractContainer
             }
             $item .= '
             <span class="input-group-btn">
-                <a href="#" class="btn btn-default" title="' . $createNewRelationText . '">
+                <a href="#" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
                     ' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
                 </a>
             </span>';
