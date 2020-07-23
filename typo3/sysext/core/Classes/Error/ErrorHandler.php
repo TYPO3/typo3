@@ -156,10 +156,11 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             $this->logger->log(LogLevel::normalizeLevel(LogLevel::NOTICE) - $severity, $message);
         }
 
-        // Write error message to TSlog (admin panel)
-        $timeTracker = $this->getTimeTracker();
-        if (is_object($timeTracker)) {
-            $timeTracker->setTSlogMessage($message, $severity + 1);
+        try {
+            // Write error message to TSlog (admin panel)
+            $this->getTimeTracker()->setTSlogMessage($message, $severity + 1);
+        } catch (\Throwable $e) {
+            // Silently catch in case an error occurs before the DI container is in place
         }
         // Write error message to sys_log table (ext: belog, Tools->Log)
         if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
