@@ -67,7 +67,7 @@ return [
         'typo3/cms-frontend/base-redirect-resolver' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\SiteBaseRedirectResolver::class,
             'after' => [
-                'typo3/cms-frontend/site-resolver',
+                'typo3/cms-frontend/site',
             ],
             'before' => [
                 'typo3/cms-frontend/static-route-resolver'

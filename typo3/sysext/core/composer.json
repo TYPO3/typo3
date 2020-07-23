@@ -72,7 +72,7 @@
 		"phpspec/prophecy": "^1.7.5",
 		"phpstan/phpstan": "^0.12.44",
 		"typo3/cms-styleguide": "~11.0.0",
-		"typo3/testing-framework": "^6.4.2"
+		"typo3/testing-framework": "^6.4.3"
 	},
 	"suggest": {
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
