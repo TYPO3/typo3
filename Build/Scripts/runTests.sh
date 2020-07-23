@@ -158,6 +158,10 @@ Examples:
     # Run unit tests in phpunit verbose mode with xdebug on PHP 7.3 and filter for test canRetrieveValueWithGP
     ./Build/Scripts/runTests.sh -x -p 7.3 -e "-v --filter canRetrieveValueWithGP"
 
+    # Run functional tests in phpunit with a filtered test method name in a specified file
+    # example will currently execute two tests, both of which start with the search term
+    ./Build/Scripts/runTests.sh -s functional -e "--filter deleteContent" typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php
+
     # Run unit tests with PHP 7.3 and have xdebug enabled
     ./Build/Scripts/runTests.sh -x -p 7.3
 
