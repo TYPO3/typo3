@@ -221,7 +221,11 @@ class SelectCheckBoxElement extends AbstractFormElement
                     }
 
                     if (is_array($group['header'])) {
-                        $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse" role="tabpanel">';
+                        if(is_bool($config['expandAll']) && $config['expandAll']) {
+                            $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse in" role="tabpanel">';
+                        } else {
+                            $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse" role="tabpanel">';
+                        }
                     }
                     $checkboxId = uniqid($groupId);
                     $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall'));
