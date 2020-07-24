@@ -764,7 +764,7 @@ abstract class AbstractTreeView
         $a = 0;
         $res = $this->getDataInit($uid);
         $c = $this->getDataCount($res);
-        $crazyRecursionLimiter = 999;
+        $crazyRecursionLimiter = 9999;
         $idH = [];
         // Traverse the records:
         while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
