@@ -83,6 +83,7 @@
 		"codeception/module-asserts": "^1.1",
 		"codeception/module-filesystem": "^1.0",
 		"codeception/module-webdriver": "^1.0.1",
+		"composer/package-versions-deprecated": "^1.10",
 		"friendsofphp/php-cs-fixer": "^2.16.1",
 		"friendsoftypo3/phpstan-typo3": "^0.3.0",
 		"php-webdriver/webdriver": "^1.8",
