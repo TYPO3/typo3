@@ -221,7 +221,8 @@ class SelectCheckBoxElement extends AbstractFormElement
                     }
 
                     if (is_array($group['header'])) {
-                        $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse" role="tabpanel">';
+                        $expandAll = (bool)($config['appearance']['expandAll'] ?? false) ? 'in' : '';
+                        $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse ' . $expandAll . '" role="tabpanel">';
                     }
                     $checkboxId = StringUtility::getUniqueId($groupId);
                     $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall'));
