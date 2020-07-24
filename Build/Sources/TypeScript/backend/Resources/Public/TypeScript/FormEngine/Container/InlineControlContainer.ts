@@ -285,7 +285,9 @@ class InlineControlContainer {
           objectId += Separators.structureSeparator + this.dataset.recordUid;
         }
 
-        me.importRecord([objectId], this.dataset.recordUid);
+        const recordUid = this.dataset.recordUid ?? (me.container.querySelector(Selectors.createNewRecordBySelectorSelector) as HTMLInputElement)?.value
+
+        me.importRecord([objectId, recordUid]);
       }
     }).delegateTo(this.container, Selectors.createNewRecordButtonSelector);
   }
