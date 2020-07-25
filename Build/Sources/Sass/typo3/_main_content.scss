@@ -82,19 +82,6 @@ img.absmiddle {
     vertical-align: middle;
 }
 
-.smallCheckboxes {
-    height: 12px;
-    margin: 0;
-    width: 12px;
-}
-
-.alignToInputText,
-.alignToInputText:hover {
-    margin-top: 5px;
-    margin-right: 2px;
-    vertical-align: top;
-}
-
 .nowrap {
     white-space: nowrap;
 }
@@ -107,13 +94,8 @@ img.absmiddle {
 // TYPO3 styles for basic elements
 //
 
-tr:hover .t3-page-ce a,
-tr:hover .x-tree a {
+tr:hover .t3-page-ce a {
     text-decoration: none;
-}
-
-a.t3-link {
-    text-decoration: underline;
 }
 
 em {
@@ -217,43 +199,6 @@ div.diff-g {
 
 .not-found a {
     color: #ccc;
-}
-
-//
-// Red span tag color (warning, notice)
-//
-
-table.warningbox {
-    border: solid 2px black;
-    background-color: yellow;
-    margin: 20px 0;
-
-    td {
-        padding: 20px;
-        font-weight: bold;
-
-        a {
-            text-decoration: underline;
-        }
-    }
-}
-
-div.warningbox {
-    border: solid 2px black;
-    background-color: yellow;
-    font-weight: bold;
-    margin: 10px 0;
-    padding: 10px;
-}
-
-span.warningboxheader {
-    margin-left: 5px;
-}
-
-// all buttons have the "click" mouse cursor
-
-.t3-btn {
-    cursor: pointer;
 }
 
 .media-gallery__list {

@@ -38,15 +38,6 @@ $docheader-border: rgb(195, 195, 195);
     .buttongroup {
         float: left;
         margin-right: 6px;
-
-        .c-inputButton {
-            color: inherit;
-            padding: 0;
-        }
-
-        input.c-inputButton {
-            text-indent: -1000px;
-        }
     }
 
     select {
@@ -69,31 +60,5 @@ $docheader-border: rgb(195, 195, 195);
                 cursor: default;
             }
         }
-    }
-
-    .typo3-docheader-functions,
-    .typo3-docheader-buttons {
-        color: $docheader-text;
-        overflow: hidden;
-        padding: 0 24px;
-    }
-
-    // first row
-    .typo3-docheader-functions {
-        height: 27px;
-        line-height: 27px;
-
-        // overwrite defaults from normalize.css
-        select {
-            color: $docheader-text;
-        }
-    }
-
-    // second row
-    .typo3-docheader-buttons {
-        height: 22px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-        border-bottom: 1px solid #c3c3c3;
     }
 }

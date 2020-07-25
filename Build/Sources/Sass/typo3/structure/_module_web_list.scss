@@ -58,7 +58,6 @@ div.typo3-synchronizationLink {
     display: inline;
 }
 
-div#typo3-newRecordLink img,
 div.typo3-newRecordLink img,
 div.typo3-localizationLink img,
 div.typo3-synchronizationLink img {
@@ -66,55 +65,13 @@ div.typo3-synchronizationLink img {
     vertical-align: middle;
 }
 
-input.smallCheckboxes {
-    height: 12px;
-    margin: 0;
-    padding: 0;
-    vertical-align: middle;
-    width: 12px;
-}
-
 div.typo3-listOptions {
     margin: 0 0 24px;
-}
-
-.t3-list-table-header-icon-down {
-    display: inline-block;
-    height: 6px;
-    padding: 5px 4px;
-    width: 9px;
-}
-
-.t3-list-table-header-icon-right {
-    display: inline-block;
-    height: 8px;
-    padding: 4px 5px;
-    width: 7px;
 }
 
 .db_list-searchbox-toolbar {
     .form-inline {
         margin-top: -0.5em;
         margin-bottom: 0;
-    }
-}
-
-.typo3-docheader-buttons {
-    + .db_list-searchbox-toolbar {
-        @include box-shadow(0 3px 0 rgba(0, 0, 0, 0.15));
-
-        position: absolute;
-        z-index: 999;
-        width: 100%;
-
-        .panel {
-            border-radius: 0;
-            border: 0;
-            margin: 0;
-        }
-
-        .panel-default {
-            background-color: #eee;
-        }
     }
 }
