@@ -168,6 +168,7 @@ class ProcessingRule
         if ($this->dataType !== null) {
             $value = $this->propertyMapper->convert($value, $this->dataType, $this->propertyMappingConfiguration);
             $messages = $this->propertyMapper->getMessages();
+            $this->propertyMapper->resetMessages();
         } else {
             $messages = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get(Result::class);

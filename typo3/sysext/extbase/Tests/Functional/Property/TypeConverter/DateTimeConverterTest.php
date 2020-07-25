@@ -31,14 +31,14 @@ class DateTimeConverterTest extends FunctionalTestCase
     public function convertFromReturnsAnErrorWhenConvertingIntegersToDateTime()
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
-
         $dateTime = $propertyMapper->convert(0, \DateTime::class);
 
         self::assertNull($dateTime);
-        self::assertTrue($propertyMapper->getMessages()->hasErrors());
+        $messages = $propertyMapper->getMessages();
+        self::assertTrue($messages->hasErrors());
         self::assertSame(
             'The date "%s" was not recognized (for format "%s").',
-            $propertyMapper->getMessages()->getFirstError()->getMessage()
+            $messages->getFirstError()->getMessage()
         );
     }
 
@@ -304,10 +304,11 @@ class DateTimeConverterTest extends FunctionalTestCase
         );
 
         self::assertNull($dateTime);
-        self::assertTrue($propertyMapper->getMessages()->hasErrors());
+        $messages = $propertyMapper->getMessages();
+        self::assertTrue($messages->hasErrors());
         self::assertSame(
             'Could not convert the given date parts into a DateTime object because one or more parts were 0.',
-            $propertyMapper->getMessages()->getFirstError()->getMessage()
+            $messages->getFirstError()->getMessage()
         );
     }
 

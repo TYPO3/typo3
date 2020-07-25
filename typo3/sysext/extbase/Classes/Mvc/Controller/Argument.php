@@ -273,6 +273,7 @@ class Argument
             }
         }
         $this->validationResults->merge($this->propertyMapper->getMessages());
+        $this->propertyMapper->resetMessages();
         return $this;
     }
 

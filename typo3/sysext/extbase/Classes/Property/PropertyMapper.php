@@ -91,6 +91,7 @@ class PropertyMapper implements SingletonInterface
      */
     public function initializeObject()
     {
+        $this->resetMessages();
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] as $typeConverterClassName) {
             $typeConverter = $this->objectManager->get($typeConverterClassName);
             foreach ($typeConverter->getSupportedSourceTypes() as $supportedSourceType) {
@@ -117,7 +118,6 @@ class PropertyMapper implements SingletonInterface
             $configuration = $this->configurationBuilder->build();
         }
         $currentPropertyPath = [];
-        $this->messages = new Result();
         try {
             $result = $this->doMapping($source, $targetType, $configuration, $currentPropertyPath);
             if ($result instanceof Error) {
@@ -133,13 +133,21 @@ class PropertyMapper implements SingletonInterface
     }
 
     /**
-     * Get the messages of the last Property Mapping
+     * Get the messages of the last Property Mapping.
      *
      * @return \TYPO3\CMS\Extbase\Error\Result
      */
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Resets the messages of the last Property Mapping.
+     */
+    public function resetMessages(): void
+    {
+        $this->messages = new Result();
     }
 
     /**
