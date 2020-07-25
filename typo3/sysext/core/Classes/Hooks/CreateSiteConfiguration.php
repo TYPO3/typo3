@@ -51,6 +51,7 @@ class CreateSiteConfiguration
          *   - live workspace
          *   - resolved uids
          *   - pages on root level
+         *   - pages in default language
          *   - non-versioned records
          *   - allowed doktypes
          *   - not bulk importing things via CLI
@@ -60,6 +61,7 @@ class CreateSiteConfiguration
             || $dataHandler->BE_USER->workspace > 0
             || !isset($dataHandler->substNEWwithIDs[$id])
             || (int)$fieldValues['pid'] !== 0
+            || (int)$fieldValues['l10n_parent'] !== 0
             || (isset($fieldValues['t3ver_oid']) && (int)$fieldValues['t3ver_oid'] > 0)
             || !in_array((int)$fieldValues['doktype'], $this->allowedPageTypes, true)
             || $dataHandler->isImporting
