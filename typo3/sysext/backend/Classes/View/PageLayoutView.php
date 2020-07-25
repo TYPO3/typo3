@@ -978,7 +978,7 @@ class PageLayoutView implements LoggerAwareInterface
                     $link = '<a href="' . htmlspecialchars($url) . '" '
                         . 'title="' . $title . '"'
                         . 'data-title="' . $title . '"'
-                        . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '">'
+                        . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '">'
                         . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -1081,7 +1081,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 $singleElementHTML .= '<a href="' . htmlspecialchars($url) . '" '
                                     . 'title="' . $title . '"'
                                     . 'data-title="' . $title . '"'
-                                    . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '">'
+                                    . 'class="btn btn-default btn-sm ' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '">'
                                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                                     . ' '
                                     . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -1506,7 +1506,7 @@ class PageLayoutView implements LoggerAwareInterface
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
-            $theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" class="' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '" '
+            $theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" class="' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard disabled' : '') . '" '
                 . 'title="' . $title . '"'
                 . 'data-title="' . $title . '">'
                 . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';

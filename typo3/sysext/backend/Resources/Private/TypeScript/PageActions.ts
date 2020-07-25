@@ -227,6 +227,7 @@ class PageActions {
    * Activate New Content Element Wizard
    */
   private initializeNewContentElementWizard(): void {
+    $(IdentifierEnum.newButton).removeClass('disabled');
     $(IdentifierEnum.newButton).click((e: JQueryEventObject): void => {
       e.preventDefault();
 

@@ -694,7 +694,7 @@ class NewRecordController
                             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
-                                . '<a href="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
+                                . '<a href="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard disabled">'
                                 . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard'))
                                 . '</a>'
                                 . '</li>'
