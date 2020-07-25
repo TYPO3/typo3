@@ -226,15 +226,6 @@ $tree-control-icon-size: 12px;
     }
 }
 
-[id=ext-lowlevel-Modules-Configuration-index-php] {
-    .active {
-        > .list-tree-group {
-            display: inline-block;
-            color: $brand-danger;
-        }
-    }
-}
-
 //
 // Treeline Icons
 //
@@ -298,18 +289,6 @@ $tree-control-icon-size: 12px;
     }
 }
 
-#typo3-pagetree #typo3-docheader div.buttonsright {
-    margin-right: 3px;
-}
-
-body#typo3-alt-db-navframe-php div.c-notice {
-    border: 1px solid black;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    padding: 5px;
-    width: 95%;
-}
-
 //
 // AJAX Page Tree
 //
@@ -339,11 +318,6 @@ span.dragIcon {
 //
 // Tree
 //
-#typo3-pagetree-deletionDropZone .x-panel-body {
-    background-position: right;
-    background-repeat: repeat-y;
-}
-
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php],
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body,
 [id=typo3-pagetree-treeContainer] {
@@ -362,11 +336,6 @@ span.dragIcon {
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-docheader {
     padding-left: 10px;
     padding-right: 10px;
-}
-
-.x-layout-split {
-    width: 1px;
-    background-color: $navigation-border;
 }
 
 //

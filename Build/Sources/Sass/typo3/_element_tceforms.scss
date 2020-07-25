@@ -6,17 +6,6 @@
     width: 100%;
 }
 
-.t3-form-field-container {
-    display: block;
-}
-
-//
-// TCEforms Flexforms
-//
-.t3-form-field-container-inline-placeHolder .t3-form-field-header-inline > span {
-    display: none;
-}
-
 .sortableHandle {
     cursor: move;
 }
@@ -27,11 +16,6 @@
 .t3-flex-section {
     clear: both;
     margin: 5px 0;
-}
-
-.t3-form-field-header-flexsection {
-    width: 100%;
-    height: 16px;
 }
 
 .t3-form-field-add-flexsection {
@@ -45,27 +29,6 @@
     clear: both;
 }
 
-.t3-flex-section-content,
-.t3-form-field-record-flexsection {
-    background: #eee;
-    padding: 5px 0;
-}
-
-.t3-flex-section-content > div,
-.t3-form-field-record-flexsection > div {
-    margin: 0 10px;
-}
-
-.t3-flex-section-header-preview {
-    font-style: italic;
-    width: 100px;
-    display: inline-block;
-    padding-left: 10px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
 // preview image in sys_file records
 img.t3-tceforms-sysfile-imagepreview {
     float: left;
@@ -73,85 +36,9 @@ img.t3-tceforms-sysfile-imagepreview {
     margin-bottom: 10px;
 }
 
-* html div#typo3-docbody .typo3-TCEforms {
-    margin-top: 20px;
-}
-
-.typo3-TCEforms img[src*="clear.gif"] {
-    z-index: 0;
-}
-
-//
-// TCEforms
-//
-table#typo3-altdoc-header input,
-.c-inputButton {
-    background: none;
-    border: 0;
-}
-
-.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date {
-    top: -4px;
-}
-
-.typo3-TCEforms table#typo3-altdoc-header input:hover,
-.c-inputButton:hover {
-    background: none;
-    border: 0;
-}
-
 .typo3-TCEforms span.typo3-TCEforms-newToken {
     color: #900;
     font-weight: bold;
-}
-
-.typo3-TCEforms span.typo3-TCEforms-helpText {
-    background: transparent;
-    color: #fff;
-}
-
-table.typo3-TCEforms-select-checkbox {
-    background-color: #fff;
-    border: 1px solid #aaa;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
-    tr.c-header td {
-        background-color: #fff;
-        font-weight: bold;
-    }
-
-    tr:nth-child(2n) {
-        background-color: #f7f7f7;
-    }
-
-    tr.c-selectedItem {
-        background-color: #d8ecd0;
-    }
-
-    tr.c-invalidItem {
-        color: #ddd;
-    }
-
-    tr:hover {
-        background-color: #dedede;
-    }
-
-    tr.c-selectedItem:hover {
-        background-color: #abd99a;
-    }
-
-    tr.c-invalidItem:hover {
-        background-color: transparent;
-    }
-
-    tr td.c-labelCell {
-        white-space: nowrap;
-    }
-}
-
-.form-field-inputlink-explanation {
-    background: #eee;
 }
 
 // show text of default language under the translated input field
@@ -185,15 +72,6 @@ table.typo3-TCEforms-select-checkbox {
     margin-right: 5px;
 }
 
-// Default. Always used on main-palettes in the bottom of the forms
-
-.typo3-TCEforms .typo3-TCEforms-checkboxArray td {
-    padding-right: 5px;
-}
-
-div.typo3-TCEforms-suggest-choises a {
-    cursor: pointer;
-}
 //
 // TCEforms Flexforms
 //
@@ -219,23 +97,9 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
     opacity: 0.3;
 }
 
-.t3-form-field-header-inline table {
-    vertical-align: top;
-}
-
 //
 // TCEforms Sections
 //
-.t3-tceforms-fieldReadOnly span.t3-icon {
-    position: absolute;
-    right: 3px;
-    top: 4px;
-}
-
-.t3-tceforms-widget-null-wrapper + .t3-form-field-item {
-    display: inline-block;
-}
-
 .t3-form-field-disable {
     display: none;
 }
@@ -258,25 +122,6 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 // this is required for the eval=null field checkbox
 .t3-form-field-eval-null-checkbox {
     z-index: 150;
-}
-
-.t3-form-palette-field-label {
-    text-indent: 2px;
-}
-
-//
-// TCEforms Tree
-//
-
-.t3-form-field-item .x-tree input.x-tree-node-cb {
-    height: auto;
-    margin: 0 0 0 1px;
-    vertical-align: middle;
-}
-
-// state: the form field was modified
-.t3-form-field-label.t3-form-field-state-changed {
-    color: #004fb0;
 }
 
 .icon-list {
