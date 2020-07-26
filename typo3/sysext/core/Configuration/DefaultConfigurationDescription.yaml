@@ -434,7 +434,7 @@ FE:
               '2': 'Use the first two parts of the visitors'' IPv4 address (e.g. "192.168") as part of the session locking of Frontend Users'
               '3': 'Use the first three parts of the visitors'' IPv4 address (e.g. "192.168.13") as part of the session locking of Frontend Users'
               '4': 'Use the visitors'' full IPv4 address (e.g. "192.168.13.84") as part of the session locking of Frontend Users (highest security)'
-            description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv4-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for session (next to the user agent).'
+            description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv4-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for the session.'
         lockIPv6:
             type: int
             allowedValues:
@@ -447,7 +447,7 @@ FE:
               '6': 'Use the first six blocks (96 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e") as part of the session locking of Backend Users'
               '7': 'Use the first seven blocks (112 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370") as part of the session locking of Backend Users'
               '8': 'Use the visitors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
-            description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv6-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for session (next to the user agent).'
+            description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv6-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for the session.'
         loginSecurityLevel:
             type: text
             description: 'See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". The client/server communication should be secured with HTTPS.'
