@@ -441,8 +441,8 @@ FE:
               '1': 'Use the first part of the visitors'' IPv4 address (e.g. "192.") as part of the session locking of Frontend Users'
               '2': 'Default - Use the first two parts of the visitors'' IPv4 address (e.g. "192.168") as part of the session locking of Frontend Users'
               '3': 'Use the first three parts of the visitors'' IPv4 address (e.g. "192.168.13") as part of the session locking of Frontend Users'
-              '4': 'Use the full visitors'' IPv4 address (e.g. "192.168.13.84") as part of the session locking of Frontend Users (highest security)'
-            description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session. Enhances security but may throw off users that may change IP during their session (in which case you can lower it to 2 or 3). The integer indicates how many parts of the IP address to include in the check for session (next to the user agent)..'
+              '4': 'Use the visitors'' full IPv4 address (e.g. "192.168.13.84") as part of the session locking of Frontend Users (highest security)'
+            description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session. Enhances security but may throw off users that may change IP during their session (in which case you can lower it to 2 or 3). The integer indicates how many parts of the IP address to include in the check for the session.'
         loginSecurityLevel:
             type: text
             description: 'See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". Alternative authentication services can implement higher levels if preferred. For example, "rsa" level uses RSA password encryption (only if the rsaauth extension is installed).'
