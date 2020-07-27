@@ -363,6 +363,11 @@ select {
     > .form-wizards-element {
         display: table-cell;
         width: 100%;
+
+        .col-icon img {
+            max-width: 2em;
+            max-height: 2em;
+        }
     }
 
     > .form-wizards-items-top {
