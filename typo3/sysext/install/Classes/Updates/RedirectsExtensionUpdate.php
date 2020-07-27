@@ -188,7 +188,7 @@ class RedirectsExtensionUpdate extends AbstractDownloadExtensionUpdate
             }
 
             if (empty($sourceDetails['path']) || $sourceDetails['path'] === '/') {
-                $redirectRecord['source_path'] = '.*';
+                $redirectRecord['source_path'] = '#.*#';
                 $redirectRecord['is_regexp'] = 1;
             } else {
                 // Remove the / and add a "/" always before, and at the very end, if path is not empty
