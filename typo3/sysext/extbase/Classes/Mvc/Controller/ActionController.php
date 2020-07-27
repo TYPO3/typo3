@@ -127,6 +127,93 @@ class ActionController implements ControllerInterface
     protected $response;
 
     /**
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected $signalSlotDispatcher;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
+     * Contains the settings of the current extension
+     *
+     * @var array
+     */
+    protected $settings;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
+     */
+    protected $validatorResolver;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
+     */
+    protected $arguments;
+
+    /**
+     * An array of supported request types. By default only web requests are supported.
+     * Modify or replace this array if your specific controller supports certain
+     * (additional) request types.
+     *
+     * @var array
+     */
+    protected $supportedRequestTypes = [Request::class];
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     */
+    protected $controllerContext;
+
+    /**
+     * @var ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+    }
+
+    /**
+     * Injects the object manager
+     *
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+        $this->arguments = $this->objectManager->get(Arguments::class);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     */
+    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
+    {
+        $this->signalSlotDispatcher = $signalSlotDispatcher;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
+     */
+    public function injectValidatorResolver(ValidatorResolver $validatorResolver)
+    {
+        $this->validatorResolver = $validatorResolver;
+    }
+
+    /**
      * @param ViewResolverInterface $viewResolver
      * @internal
      */
@@ -173,81 +260,25 @@ class ActionController implements ControllerInterface
     }
 
     /**
-     * Handles a request. The result output is returned by altering the given response.
+     * Initializes the view before invoking an action method.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
+     * Override this method to solve assign variables common for all actions
+     * or prepare the view in another way before the action is called.
      *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @param ViewInterface $view The view to be initialized
      */
-    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    protected function initializeView(ViewInterface $view)
     {
-        if (!$this->canProcessRequest($request)) {
-            throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
-        }
-
-        $setRequestCallable = [$response, 'setRequest'];
-        if (is_callable($setRequestCallable)) {
-            $setRequestCallable($request);
-        }
-        $this->request = $request;
-        $this->request->setDispatched(true);
-        $this->response = $response;
-        $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $this->uriBuilder->setRequest($request);
-        $this->actionMethodName = $this->resolveActionMethodName();
-        $this->initializeActionMethodArguments();
-        $this->initializeActionMethodValidators();
-        $this->mvcPropertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($request, $this->arguments);
-        $this->initializeAction();
-        $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
-        if (method_exists($this, $actionInitializationMethodName)) {
-            call_user_func([$this, $actionInitializationMethodName]);
-        }
-        $this->mapRequestArgumentsToControllerArguments();
-        $this->controllerContext = $this->buildControllerContext();
-        $this->view = $this->resolveView();
-        if ($this->view !== null) {
-            $this->initializeView($this->view);
-        }
-        $this->callActionMethod();
-        $this->renderAssetsForRequest($request);
     }
 
     /**
-     * Method which initializes assets that should be attached to the response
-     * for the given $request, which contains parameters that an override can
-     * use to determine which assets to add via PageRenderer.
+     * Initializes the controller before invoking an action method.
      *
-     * This default implementation will attempt to render the sections "HeaderAssets"
-     * and "FooterAssets" from the template that is being rendered, inserting the
-     * rendered content into either page header or footer, as appropriate. Both
-     * sections are optional and can be used one or both in combination.
-     *
-     * You can add assets with this method without worrying about duplicates, if
-     * for example you do this in a plugin that gets used multiple time on a page.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
+     * Override this method to solve tasks which all actions have in
+     * common.
      */
-    protected function renderAssetsForRequest($request)
+    protected function initializeAction()
     {
-        if (!$this->view instanceof TemplateView) {
-            // Only TemplateView (from Fluid engine, so this includes all TYPO3 Views based
-            // on TYPO3's AbstractTemplateView) supports renderSection(). The method is not
-            // declared on ViewInterface - so we must assert a specific class. We silently skip
-            // asset processing if the View doesn't match, so we don't risk breaking custom Views.
-            return;
-        }
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $variables = ['request' => $request, 'arguments' => $this->arguments];
-        $headerAssets = $this->view->renderSection('HeaderAssets', $variables, true);
-        $footerAssets = $this->view->renderSection('FooterAssets', $variables, true);
-        if (!empty(trim($headerAssets))) {
-            $pageRenderer->addHeaderData($headerAssets);
-        }
-        if (!empty(trim($footerAssets))) {
-            $pageRenderer->addFooterData($footerAssets);
-        }
     }
 
     /**
@@ -332,6 +363,99 @@ class ActionController implements ControllerInterface
                 $validator->addValidator($baseValidatorConjunction);
             }
             $argument->setValidator($validator);
+        }
+    }
+
+    /**
+     * Collects the base validators which were defined for the data type of each
+     * controller argument and adds them to the argument's validator chain.
+     */
+    public function initializeControllerArgumentsBaseValidators()
+    {
+        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        foreach ($this->arguments as $argument) {
+            $validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+            if ($validator !== null) {
+                $argument->setValidator($validator);
+            }
+        }
+    }
+
+    /**
+     * Handles a request. The result output is returned by altering the given response.
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
+     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
+     *
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     */
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    {
+        if (!$this->canProcessRequest($request)) {
+            throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
+        }
+
+        $setRequestCallable = [$response, 'setRequest'];
+        if (is_callable($setRequestCallable)) {
+            $setRequestCallable($request);
+        }
+        $this->request = $request;
+        $this->request->setDispatched(true);
+        $this->response = $response;
+        $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $this->uriBuilder->setRequest($request);
+        $this->actionMethodName = $this->resolveActionMethodName();
+        $this->initializeActionMethodArguments();
+        $this->initializeActionMethodValidators();
+        $this->mvcPropertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($request, $this->arguments);
+        $this->initializeAction();
+        $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
+        if (method_exists($this, $actionInitializationMethodName)) {
+            call_user_func([$this, $actionInitializationMethodName]);
+        }
+        $this->mapRequestArgumentsToControllerArguments();
+        $this->controllerContext = $this->buildControllerContext();
+        $this->view = $this->resolveView();
+        if ($this->view !== null) {
+            $this->initializeView($this->view);
+        }
+        $this->callActionMethod();
+        $this->renderAssetsForRequest($request);
+    }
+
+    /**
+     * Method which initializes assets that should be attached to the response
+     * for the given $request, which contains parameters that an override can
+     * use to determine which assets to add via PageRenderer.
+     *
+     * This default implementation will attempt to render the sections "HeaderAssets"
+     * and "FooterAssets" from the template that is being rendered, inserting the
+     * rendered content into either page header or footer, as appropriate. Both
+     * sections are optional and can be used one or both in combination.
+     *
+     * You can add assets with this method without worrying about duplicates, if
+     * for example you do this in a plugin that gets used multiple time on a page.
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
+     */
+    protected function renderAssetsForRequest($request)
+    {
+        if (!$this->view instanceof TemplateView) {
+            // Only TemplateView (from Fluid engine, so this includes all TYPO3 Views based
+            // on TYPO3's AbstractTemplateView) supports renderSection(). The method is not
+            // declared on ViewInterface - so we must assert a specific class. We silently skip
+            // asset processing if the View doesn't match, so we don't risk breaking custom Views.
+            return;
+        }
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $variables = ['request' => $request, 'arguments' => $this->arguments];
+        $headerAssets = $this->view->renderSection('HeaderAssets', $variables, true);
+        $footerAssets = $this->view->renderSection('FooterAssets', $variables, true);
+        if (!empty(trim($headerAssets))) {
+            $pageRenderer->addHeaderData($headerAssets);
+        }
+        if (!empty(trim($footerAssets))) {
+            $pageRenderer->addFooterData($footerAssets);
         }
     }
 
@@ -494,28 +618,6 @@ class ActionController implements ControllerInterface
     }
 
     /**
-     * Initializes the view before invoking an action method.
-     *
-     * Override this method to solve assign variables common for all actions
-     * or prepare the view in another way before the action is called.
-     *
-     * @param ViewInterface $view The view to be initialized
-     */
-    protected function initializeView(ViewInterface $view)
-    {
-    }
-
-    /**
-     * Initializes the controller before invoking an action method.
-     *
-     * Override this method to solve tasks which all actions have in
-     * common.
-     */
-    protected function initializeAction()
-    {
-    }
-
-    /**
      * A special action which is called if the originally intended action could
      * not be called, for example if the arguments were not valid.
      *
@@ -628,98 +730,11 @@ class ActionController implements ControllerInterface
     }
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected $signalSlotDispatcher;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * Contains the settings of the current extension
-     *
-     * @var array
-     */
-    protected $settings;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-     */
-    protected $validatorResolver;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
-     */
-    protected $arguments;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
-     */
-    public function injectValidatorResolver(ValidatorResolver $validatorResolver)
-    {
-        $this->validatorResolver = $validatorResolver;
-    }
-
-    /**
-     * An array of supported request types. By default only web requests are supported.
-     * Modify or replace this array if your specific controller supports certain
-     * (additional) request types.
-     *
-     * @var array
-     */
-    protected $supportedRequestTypes = [Request::class];
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-     */
-    protected $controllerContext;
-
-    /**
      * @return ControllerContext
      */
     public function getControllerContext()
     {
         return $this->controllerContext;
-    }
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-    }
-
-    /**
-     * Injects the object manager
-     *
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-        $this->arguments = $this->objectManager->get(Arguments::class);
     }
 
     /**
@@ -913,21 +928,6 @@ class ActionController implements ControllerInterface
         }
         $this->response->setContent($content);
         throw new StopActionException('throwStatus', 1476045871);
-    }
-
-    /**
-     * Collects the base validators which were defined for the data type of each
-     * controller argument and adds them to the argument's validator chain.
-     */
-    public function initializeControllerArgumentsBaseValidators()
-    {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-        foreach ($this->arguments as $argument) {
-            $validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-            if ($validator !== null) {
-                $argument->setValidator($validator);
-            }
-        }
     }
 
     /**
