@@ -60,7 +60,7 @@ class LinkPopup extends AbstractNode
                 'itemName' => $itemName,
                 'hmac' => GeneralUtility::hmac('editform' . $itemName, 'wizard_js'),
                 'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
-                'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc'])),
+                'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc']), 'backend-link-browser'),
             ],
         ];
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */

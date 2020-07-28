@@ -74,7 +74,7 @@ class EditPopup extends AbstractNode
                 'flexFormDataStructurePath' => $flexFormDataStructurePath,
                 'hmac' => GeneralUtility::hmac('editform' . $itemName, 'wizard_js'),
                 'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
-                'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc'])),
+                'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc']), 'backend-link-browser'),
             ],
         ];
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
