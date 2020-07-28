@@ -147,7 +147,9 @@ class ExtbasePluginEnhancer extends PluginEnhancer
             $variables = array_flip($compiledRoute->getPathVariables());
             $mergedParams = array_replace($variant->getDefaults(), $deflatedParameters);
             // all params must be given, otherwise we exclude this variant
-            if ($variables === [] || array_diff_key($variables, $mergedParams) !== []) {
+            // (it is allowed that $variables is empty - in this case variables are
+            // "given" implicitly through controller-action pair in `_controller`)
+            if (array_diff_key($variables, $mergedParams)) {
                 continue;
             }
             $variant->addOptions(['deflatedParameters' => $deflatedParameters]);
