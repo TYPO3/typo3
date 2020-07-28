@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -1061,14 +1060,22 @@ class DataHandlerHook
             if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($tcaTable);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
-
+                $queryBuilder->getRestrictions()->removeAll();
                 $result = $queryBuilder
                     ->select('uid')
                     ->from($tcaTable)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                        ),
+                        // t3ver_oid >= 0 basically omits placeholder records here, those would otherwise
+                        // fail to delete later in version_clearWSID() and would create "can't do that" log entries.
+                        $queryBuilder->expr()->gt(
+                            't3ver_oid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
+                    )
                     ->orderBy('uid')
                     ->execute();
 
