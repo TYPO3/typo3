@@ -960,8 +960,15 @@ class DataHandlerHook
      */
     protected function version_clearWSID(string $table, int $versionId, bool $flush, DataHandler $dataHandler): void
     {
+        if ($dataHandler->hasDeletedRecord($table, $versionId)) {
+            // If discarding pages and records at once, deleting the page record may have already deleted
+            // records on the page, rendering a call to delete single elements of this page bogus. The
+            // data handler tracks which records have been deleted in the same process, so ignore
+            // the record in question if its in the list.
+            return;
+        }
         if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $versionId)) {
-            $dataHandler->newlog('Attempt to reset workspace for record failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
+            $dataHandler->newlog('Attempt to reset workspace for record ' . $table . ':' . $versionId . ' failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
             return;
         }
         if (!$dataHandler->checkRecordUpdateAccess($table, $versionId)) {
