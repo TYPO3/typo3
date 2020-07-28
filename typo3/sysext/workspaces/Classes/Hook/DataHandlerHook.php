@@ -965,7 +965,7 @@ class DataHandlerHook
             return;
         }
         if (!$dataHandler->checkRecordUpdateAccess($table, $versionId)) {
-            $dataHandler->newlog('Attempt to reset workspace for record failed because you do not have edit access', SystemLogErrorClassification::USER_ERROR);
+            $dataHandler->newlog('Attempt to reset workspace for record ' . $table . ':' . $versionId . ' failed because you do not have edit access', SystemLogErrorClassification::USER_ERROR);
             return;
         }
         $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $versionId, 'uid,t3ver_state');
