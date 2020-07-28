@@ -119,7 +119,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
                 }
                 unset($value);
             }
-            $result = hash_equals(GeneralUtility::hmac(serialize($fieldChangeFunctions)), $this->parameters['fieldChangeFuncHash']);
+            $result = hash_equals(GeneralUtility::hmac(serialize($fieldChangeFunctions), 'backend-link-browser'), $this->parameters['fieldChangeFuncHash']);
         }
         return $result;
     }
@@ -135,7 +135,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         $parameters = parent::getBodyTagAttributes();
 
         $formEngineParameters['fieldChangeFunc'] = $this->parameters['fieldChangeFunc'];
-        $formEngineParameters['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($this->parameters['fieldChangeFunc']));
+        $formEngineParameters['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($this->parameters['fieldChangeFunc']), 'backend-link-browser');
 
         $parameters['data-add-on-params'] .= HttpUtility::buildQueryString(['P' => $formEngineParameters], '&');
 
