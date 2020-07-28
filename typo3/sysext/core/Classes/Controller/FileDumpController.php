@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -63,12 +64,18 @@ class FileDumpController
                     if ($file->isDeleted() || $file->isMissing()) {
                         $file = null;
                     }
+                    if (!$this->isFileValid($file)) {
+                        $file = null;
+                    }
                 } catch (\Exception $e) {
                     $file = null;
                 }
             } else {
                 $file = GeneralUtility::makeInstance(ProcessedFileRepository::class)->findByUid($parameters['p']);
                 if (!$file || $file->isDeleted()) {
+                    $file = null;
+                }
+                if (!$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }
             }
@@ -102,5 +109,11 @@ class FileDumpController
     protected function getGetOrPost(ServerRequestInterface $request, string $parameter): string
     {
         return (string)($request->getParsedBody()[$parameter] ?? $request->getQueryParams()[$parameter] ?? '');
+    }
+
+    protected function isFileValid(FileInterface $file): bool
+    {
+        return $file->getStorage()->getDriverType() !== 'Local'
+            || GeneralUtility::verifyFilenameAgainstDenyPattern(basename($file->getIdentifier()));
     }
 }

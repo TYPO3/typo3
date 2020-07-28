@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -143,6 +144,10 @@ EOF;
         } else {
             $this->file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
         }
+        if ($this->file !== null && !$this->isFileValid($this->file)) {
+            throw new Exception('File processing for local storage is denied', 1594043425);
+        }
+
         $this->frame = $this->request->getQueryParams()['frame'] ?? null;
     }
 
@@ -216,5 +221,11 @@ EOF;
         } catch (Exception $e) {
             return (new Response)->withStatus(404);
         }
+    }
+
+    protected function isFileValid(FileInterface $file): bool
+    {
+        return $file->getStorage()->getDriverType() !== 'Local'
+            || GeneralUtility::verifyFilenameAgainstDenyPattern(basename($file->getIdentifier()));
     }
 }
