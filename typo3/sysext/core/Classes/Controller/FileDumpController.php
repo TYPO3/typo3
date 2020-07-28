@@ -23,11 +23,13 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -173,6 +175,9 @@ class FileDumpController
                 if ($file->isDeleted() || $file->isMissing()) {
                     $file = null;
                 }
+                if (!$this->isFileValid($file)) {
+                    $file = null;
+                }
             } catch (\Exception $e) {
                 $file = null;
             }
@@ -180,6 +185,9 @@ class FileDumpController
             try {
                 $file = $this->resourceFactory->getFileReferenceObject($parameters['r']);
                 if ($file->isMissing()) {
+                    $file = null;
+                }
+                if (!$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }
             } catch (\Exception $e) {
@@ -193,10 +201,20 @@ class FileDumpController
                 if (!$file || $file->isDeleted()) {
                     $file = null;
                 }
+                if (!$this->isFileValid($file->getOriginalFile())) {
+                    $file = null;
+                }
             } catch (\Exception $e) {
                 $file = null;
             }
         }
         return $file;
+    }
+
+    protected function isFileValid(FileInterface $file): bool
+    {
+        return $file->getStorage()->getDriverType() !== 'Local'
+            || GeneralUtility::makeInstance(FileNameValidator::class)
+                ->isValid(basename($file->getIdentifier()));
     }
 }
