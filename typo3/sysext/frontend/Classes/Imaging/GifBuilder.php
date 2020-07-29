@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\Imaging;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\FileProcessingAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -680,13 +682,20 @@ class GifBuilder extends GraphicalFunctions
      */
     public function getResource($file, $fileArray)
     {
-        if (!in_array($fileArray['ext'], $this->imageFileExt, true)) {
-            $fileArray['ext'] = $this->gifExtension;
+        $context = GeneralUtility::makeInstance(Context::class);
+        $deferProcessing = !$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing');
+        $context->setAspect('fileProcessing', new FileProcessingAspect(false));
+        try {
+            if (!in_array($fileArray['ext'], $this->imageFileExt, true)) {
+                $fileArray['ext'] = $this->gifExtension;
+            }
+            /** @var ContentObjectRenderer $cObj */
+            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $cObj->start($this->data);
+            return $cObj->getImgResource($file, $fileArray);
+        } finally {
+            $context->setAspect('fileProcessing', new FileProcessingAspect($deferProcessing));
         }
-        /** @var ContentObjectRenderer $cObj */
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $cObj->start($this->data);
-        return $cObj->getImgResource($file, $fileArray);
     }
 
     /**

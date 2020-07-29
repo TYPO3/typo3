@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Utility;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
-use TYPO3\CMS\Backend\Controller\File\ThumbnailController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -42,6 +41,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -1142,12 +1142,8 @@ class BackendUtility
         $size = '',
         $linkInfoPopup = true
     ) {
-        // Check and parse the size parameter
-        $size = trim((string)$size);
-        $sizeParts = [64, 64];
-        if ($size) {
-            $sizeParts = explode('x', $size . 'x' . $size);
-        }
+        $size = (int)(trim((string)$size) ?: 64);
+        $targetDimension = new ImageDimension($size, $size);
         $thumbData = '';
         $fileReferences = static::resolveFileReferences($table, $field, $row);
         // FAL references
@@ -1171,23 +1167,28 @@ class BackendUtility
 
                 // Preview web image or media elements
                 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']
-                    && GeneralUtility::inList(
-                        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                        $fileReferenceObject->getExtension()
-                    )
+                    && $fileReferenceObject->getOriginalFile()->isImage()
                 ) {
                     $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
                     $cropArea = $cropVariantCollection->getCropArea();
-                    $imageUrl = self::getThumbnailUrl($fileObject->getUid(), [
-                        'width' => $sizeParts[0],
-                        'height' => $sizeParts[1] . 'c',
-                        'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
-                        '_context' => $cropArea->isEmpty() ? ProcessedFile::CONTEXT_IMAGEPREVIEW : ProcessedFile::CONTEXT_IMAGECROPSCALEMASK
-                    ]);
+                    $taskType = ProcessedFile::CONTEXT_IMAGEPREVIEW;
+                    $processingConfiguration = [
+                        'width' => $targetDimension->getWidth(),
+                        'height' => $targetDimension->getHeight(),
+                    ];
+                    if (!$cropArea->isEmpty()) {
+                        $taskType = ProcessedFile::CONTEXT_IMAGECROPSCALEMASK;
+                        $processingConfiguration = [
+                            'maxWidth' => $targetDimension->getWidth(),
+                            'maxHeight' => $targetDimension->getHeight(),
+                            'crop' => $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
+                        ];
+                    }
+                    $processedImage = $fileObject->process($taskType, $processingConfiguration);
                     $attributes = [
-                        'src' => $imageUrl,
-                        'width' => (string)(int)$sizeParts[0],
-                        'height' => (string)(int)$sizeParts[1],
+                        'src' => $processedImage->getPublicUrl(true),
+                        'width' => $processedImage->getProperty('width'),
+                        'height' => $processedImage->getProperty('height'),
                         'alt' => $fileReferenceObject->getName(),
                     ];
                     $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
@@ -1216,23 +1217,16 @@ class BackendUtility
      * @param int $fileId
      * @param array $configuration
      * @return string
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public static function getThumbnailUrl(int $fileId, array $configuration): string
     {
-        $parameters = (string)json_encode([
-            'fileId' => $fileId,
-            'configuration' => $configuration
-        ]);
-        $uriParameters = [
-            'parameters' => $parameters,
-            'hmac' => GeneralUtility::hmac(
-                $parameters,
-                ThumbnailController::class
-            ),
-        ];
-        return (string)GeneralUtility::makeInstance(UriBuilder::class)
-            ->buildUriFromRoute('thumbnails', $uriParameters);
+        $taskType = $configuration['_context'] ?? ProcessedFile::CONTEXT_IMAGEPREVIEW;
+        unset($configuration['_context']);
+
+        return GeneralUtility::makeInstance(ResourceFactory::class)
+                ->getFileObject($fileId)
+                ->process($taskType, $configuration)
+                ->getPublicUrl(true);
     }
 
     /**

@@ -106,6 +106,14 @@ class ProcessedFile extends AbstractFile
     protected $updated = false;
 
     /**
+     * If this is set, this URL is used as public URL
+     * This MUST be a fully qualified URL including host
+     *
+     * @var string
+     */
+    protected $processingUrl = '';
+
+    /**
      * Constructor for a processed file object. Should normally not be used
      * directly, use the corresponding factory methods instead.
      *
@@ -141,6 +149,7 @@ class ProcessedFile extends AbstractFile
         $this->identifier = $databaseRow['identifier'];
         $this->name = $databaseRow['name'];
         $this->properties = $databaseRow;
+        $this->processingUrl = $databaseRow['processing_url'] ?? '';
 
         if (!empty($databaseRow['storage']) && (int)$this->storage->getUid() !== (int)$databaseRow['storage']) {
             $this->storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($databaseRow['storage']);
@@ -350,6 +359,9 @@ class ProcessedFile extends AbstractFile
         if (array_key_exists('uid', $properties) && MathUtility::canBeInterpretedAsInteger($properties['uid'])) {
             $this->properties['uid'] = $properties['uid'];
         }
+        if (isset($properties['processing_url'])) {
+            $this->processingUrl = $properties['processing_url'];
+        }
 
         // @todo we should have a blacklist of properties that might not be updated
         $this->properties = array_merge($this->properties, $properties);
@@ -374,9 +386,9 @@ class ProcessedFile extends AbstractFile
         if ($this->usesOriginalFile()) {
             $properties = $this->originalFile->getProperties();
             unset($properties['uid']);
-            unset($properties['pid']);
-            unset($properties['identifier']);
-            unset($properties['name']);
+            $properties['identifier'] = '';
+            $properties['name'] = null;
+            $properties['processing_url'] = '';
 
             // Use width + height set in processed file
             $properties['width'] = $this->properties['width'];
@@ -417,7 +429,14 @@ class ProcessedFile extends AbstractFile
         // @todo check if some of these properties can/should be set in a generic update method
         $this->identifier = $this->originalFile->getIdentifier();
         $this->updated = true;
+        $this->processingUrl = '';
         $this->originalFileSha1 = $this->originalFile->getSha1();
+    }
+
+    public function updateProcessingUrl(string $url): void
+    {
+        $this->updated = true;
+        $this->processingUrl = $url;
     }
 
     /**
@@ -548,9 +567,9 @@ class ProcessedFile extends AbstractFile
      * @return Processing\TaskInterface
      * @throws \RuntimeException
      */
-    public function getTask()
+    public function getTask(): Processing\TaskInterface
     {
-        if ($this->task == null) {
+        if ($this->task === null) {
             $this->task = $this->taskTypeRegistry->getTaskForType($this->taskType, $this, $this->processingConfiguration);
         }
 
@@ -579,6 +598,9 @@ class ProcessedFile extends AbstractFile
      */
     public function getPublicUrl($relativeToCurrentScript = false)
     {
+        if ($this->processingUrl) {
+            return $this->processingUrl;
+        }
         if ($this->deleted) {
             return null;
         }

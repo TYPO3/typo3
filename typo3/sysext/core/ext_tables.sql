@@ -247,6 +247,7 @@ CREATE TABLE sys_file_processedfile (
 	original int(11) DEFAULT '0' NOT NULL,
 	identifier varchar(512) DEFAULT '' NOT NULL,
 	name tinytext,
+	processing_url text,
 	configuration blob,
 	configurationsha1 char(40) DEFAULT '' NOT NULL,
 	originalfilesha1 char(40) DEFAULT '' NOT NULL,

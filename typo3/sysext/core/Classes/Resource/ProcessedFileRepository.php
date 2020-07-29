@@ -220,13 +220,13 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileInterface $file
+     * @param \TYPO3\CMS\Core\Resource\File $file
      * @param string $taskType The task that should be executed on the file
      * @param array $configuration
      *
      * @return ProcessedFile
      */
-    public function findOneByOriginalFileAndTaskTypeAndConfiguration(FileInterface $file, $taskType, array $configuration)
+    public function findOneByOriginalFileAndTaskTypeAndConfiguration(File $file, $taskType, array $configuration)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
 
