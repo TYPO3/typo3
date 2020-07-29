@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -797,12 +798,16 @@ class FileList
                                 . '</span>';
                         // Thumbnails?
                         } elseif ($this->thumbs && ($fileObject->isImage() || $fileObject->isMediaFile())) {
-                            $imageUri = BackendUtility::getThumbnailUrl($fileObject->getUid(), [
-                                'width' => $this->thumbnailConfiguration->getWidth(),
-                                'height' => $this->thumbnailConfiguration->getHeight()
-                            ]);
-                            $theData[$field] .= '<br /><img src="' . htmlspecialchars($imageUri) . '" ' .
-                                'width="' . $this->thumbnailConfiguration->getWidth() . '" ' .
+                            $processedFile = $fileObject->process(
+                                ProcessedFile::CONTEXT_IMAGEPREVIEW,
+                                [
+                                    'width' => $this->thumbnailConfiguration->getWidth(),
+                                    'height' => $this->thumbnailConfiguration->getHeight(),
+                                ]
+                            );
+                            $theData[$field] .= '<br /><img src="' . htmlspecialchars($processedFile->getPublicUrl(true)) . '" ' .
+                                'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
+                                'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
                                 'title="' . htmlspecialchars($fileName) . '" alt="" />';
                         }
                         break;

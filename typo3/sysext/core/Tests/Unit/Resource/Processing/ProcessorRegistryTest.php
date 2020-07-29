@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProcessorRegistryTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */

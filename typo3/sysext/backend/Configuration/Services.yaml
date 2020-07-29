@@ -27,6 +27,10 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\Backend\Controller\File\ImageProcessController:
+    shared: false
+    public: true
+
   TYPO3\CMS\Backend\View\PageLayoutView:
     shared: false
     public: true

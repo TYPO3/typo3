@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\ViewHelpers;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -95,9 +94,6 @@ class ThumbnailViewHelper extends ImageViewHelper
             $cropVariant = $this->arguments['cropVariant'] ?: 'default';
             $cropArea = $cropVariantCollection->getCropArea($cropVariant);
             $processingInstructions = [];
-            if (!empty($this->arguments['context'])) {
-                $processingInstructions['_context'] = $this->arguments['context'];
-            }
             if (!$cropArea->isEmpty()) {
                 $processingInstructions['crop'] = $cropArea->makeAbsoluteBasedOnFile($image);
             }
@@ -106,7 +102,9 @@ class ThumbnailViewHelper extends ImageViewHelper
                     $processingInstructions[$argument] = $this->arguments[$argument];
                 }
             }
-            $imageUri = BackendUtility::getThumbnailUrl($image->getUid(), $processingInstructions);
+
+            $processedFile = $image->process($this->arguments['context'], $processingInstructions);
+            $imageUri = $processedFile->getPublicUrl(true);
 
             if (!$this->tag->hasAttribute('data-focus-area')) {
                 $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
@@ -115,7 +113,8 @@ class ThumbnailViewHelper extends ImageViewHelper
                 }
             }
             $this->tag->addAttribute('src', $imageUri);
-            $this->tag->addAttribute('width', $this->arguments['maxWidth'] ?? $this->arguments['width']);
+            $this->tag->addAttribute('width', $processedFile->getProperty('width'));
+            $this->tag->addAttribute('height', $processedFile->getProperty('height'));
 
             $alt = $image->getProperty('alternative');
             $title = $image->getProperty('title');
