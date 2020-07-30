@@ -147,12 +147,17 @@ class ActionTest extends AbstractActionTestCase
      */
     public function deleteLocalizedContentAndDeleteContent()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3', 'Regular Element #1'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
     }
 
     /**
@@ -221,6 +226,22 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContent();
         $this->assertAssertionDataSet('localizeContent');
 
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
+    }
+
+    /**
+     * @test
+     * See DataSet/localizeContentRecord.csv
+     * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
+     */
+    public function localizeContentWithEmptyTcaIntegrityColumns()
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeContentWithEmptyTcaIntegrityColumns();
+        $this->assertAssertionDataSet('localizeContent');
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
