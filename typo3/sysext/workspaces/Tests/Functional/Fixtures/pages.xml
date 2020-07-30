@@ -7,7 +7,6 @@
 		<t3ver_oid>2</t3ver_oid>
 		<t3ver_stage>1</t3ver_stage>
 		<t3ver_wsid>91</t3ver_wsid>
-		<t3ver_count>0</t3ver_count>
 		<deleted>0</deleted>
 	</pages>
 	<pages>
@@ -17,7 +16,6 @@
 		<t3ver_oid>2</t3ver_oid>
 		<t3ver_stage>1</t3ver_stage>
 		<t3ver_wsid>92</t3ver_wsid>
-		<t3ver_count>0</t3ver_count>
 		<deleted>0</deleted>
 	</pages>
 	<pages>
@@ -27,7 +25,6 @@
 		<t3ver_oid>4</t3ver_oid>
 		<t3ver_stage>2</t3ver_stage>
 		<t3ver_wsid>91</t3ver_wsid>
-		<t3ver_count>0</t3ver_count>
 		<deleted>0</deleted>
 	</pages>
 	<pages>
@@ -37,7 +34,6 @@
 		<t3ver_oid>6</t3ver_oid>
 		<t3ver_stage>1</t3ver_stage>
 		<t3ver_wsid>91</t3ver_wsid>
-		<t3ver_count>1</t3ver_count>
 		<deleted>0</deleted>
 	</pages>
 	<pages>
@@ -47,7 +43,6 @@
 		<t3ver_oid>6</t3ver_oid>
 		<t3ver_stage>2</t3ver_stage>
 		<t3ver_wsid>91</t3ver_wsid>
-		<t3ver_count>1</t3ver_count>
 		<deleted>0</deleted>
 	</pages>
 </dataset>

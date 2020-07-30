@@ -45,7 +45,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function emptyWorkspaceReturnsEmptyArray()
     {
-        self::markTestSkipped('This test need a review. It is green even if all fixtures are commented out');
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(90);
         self::assertEmpty($result, 'The workspace 90 contains no changes and the result was supposed to be empty');
@@ -60,7 +59,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(91, 0, -99, 2);
+        $result = $service->selectVersionsInWorkspace(91, -99, 2);
         self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             1,
@@ -79,7 +78,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(WorkspaceService::SELECT_ALL_WORKSPACES, 0, -99, 2);
+        $result = $service->selectVersionsInWorkspace(WorkspaceService::SELECT_ALL_WORKSPACES, -99, 2);
         self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             2,
@@ -96,7 +95,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(91, 0, -99, 1, 99);
+        $result = $service->selectVersionsInWorkspace(91, -99, 1, 99);
         self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             4,
@@ -114,7 +113,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new WorkspaceService();
         // testing stage 1
-        $result = $service->selectVersionsInWorkspace(91, 0, 1, 1, 99);
+        $result = $service->selectVersionsInWorkspace(91, 1, 1, 99);
         self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             2,
@@ -124,7 +123,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(102, $result['pages'][0]['uid'], 'First records is supposed to have the uid 102');
         self::assertEquals(105, $result['pages'][1]['uid'], 'First records is supposed to have the uid 105');
         // testing stage 2
-        $result = $service->selectVersionsInWorkspace(91, 0, 2, 1, 99);
+        $result = $service->selectVersionsInWorkspace(91, 2, 1, 99);
         self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             2,
@@ -133,38 +132,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
         );
         self::assertEquals(104, $result['pages'][0]['uid'], 'First records is supposed to have the uid 106');
         self::assertEquals(106, $result['pages'][1]['uid'], 'First records is supposed to have the uid 106');
-    }
-
-    /**
-     * @test
-     */
-    public function versionsCanBeFilteredToSpecificLifecycleStep()
-    {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
-        $service = new WorkspaceService();
-        // testing all "draft" records
-        $result = $service->selectVersionsInWorkspace(91, 1, -99, 1, 99);
-        self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
-        self::assertCount(
-            2,
-            $result['pages'],
-            'The result is supposed to contain three versions for this page in workspace 91'
-        );
-        // testing all "archive" records
-        $result = $service->selectVersionsInWorkspace(91, 2, -99, 1, 99);
-        self::assertCount(
-            2,
-            $result['pages'],
-            'The result is supposed to contain two versions for this page in workspace 91'
-        );
-        // testing both types records
-        $result = $service->selectVersionsInWorkspace(91, 0, -99, 1, 99);
-        self::assertCount(
-            4,
-            $result['pages'],
-            'The result is supposed to contain two versions for this page in workspace 91'
-        );
     }
 
     /**
@@ -179,7 +146,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(91, 0, -99, 2, 99);
+        $result = $service->selectVersionsInWorkspace(91, -99, 2, 99);
         self::assertCount(
             0,
             $result['pages'],
@@ -200,7 +167,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(91, 0, -99, 5, 99);
+        $result = $service->selectVersionsInWorkspace(91, -99, 5, 99);
         self::assertCount(1, $result['pages'], 'Wrong amount of page versions found within workspace 91');
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
         self::assertEquals(5, $result['pages'][0]['wspid'], 'Wrong workspace-pointer found for page 3 in workspace 91');
@@ -219,7 +186,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(91, 0, -99, 3, 99);
+        $result = $service->selectVersionsInWorkspace(91, -99, 3, 99);
         self::assertCount(1, $result, 'Wrong amount of versions found within workspace 91');
         self::assertCount(1, $result['pages'], 'Wrong amount of page versions found within workspace 91');
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');

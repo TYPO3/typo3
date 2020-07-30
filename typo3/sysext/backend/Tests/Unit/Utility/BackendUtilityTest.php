@@ -556,7 +556,7 @@ class BackendUtilityTest extends UnitTestCase
                         'versioningWS' => true
                     ]
                 ],
-                'expectedFields' => 'uid,t3ver_state,t3ver_wsid,t3ver_count'
+                'expectedFields' => 'uid,t3ver_state,t3ver_wsid'
             ],
             'selicon_field set' => [
                 'table' => 'test_table',

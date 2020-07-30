@@ -97,7 +97,14 @@ class RemoteServer
         if (!isset($parameter->language) || !MathUtility::canBeInterpretedAsInteger($parameter->language)) {
             $parameter->language = null;
         }
-        $versions = $this->workspaceService->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth, 'tables_select', $parameter->language);
+        $versions = $this->workspaceService->selectVersionsInWorkspace(
+            $this->getCurrentWorkspace(),
+            -99,
+            $pageId,
+            $parameter->depth,
+            'tables_select',
+            $parameter->language
+        );
         $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
         return $data;
     }
@@ -500,7 +507,14 @@ class RemoteServer
                 $affectedElements[] = CombinedRecord::create($element->table, $element->liveId, $element->versionId);
             }
         } elseif ($parameters->type === 'all') {
-            $versions = $this->workspaceService->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, -1, 0, 'tables_select', $this->validateLanguageParameter($parameters));
+            $versions = $this->workspaceService->selectVersionsInWorkspace(
+                $this->getCurrentWorkspace(),
+                -99,
+                -1,
+                0,
+                'tables_select',
+                $this->validateLanguageParameter($parameters)
+            );
             foreach ($versions as $table => $tableElements) {
                 foreach ($tableElements as $element) {
                     $affectedElement = CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);

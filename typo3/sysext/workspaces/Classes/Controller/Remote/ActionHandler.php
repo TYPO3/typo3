@@ -428,11 +428,10 @@ class ActionHandler
         $cmdMapArray = [];
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
-            $filter = 1,
-            $stage = -99,
+            -99,
             $pageId,
-            $recursionLevel = 0,
-            $selectionType = 'tables_modify'
+            0,
+            'tables_modify'
         );
         foreach ($workspaceItemsArray as $tableName => $items) {
             foreach ($items as $item) {
@@ -751,21 +750,19 @@ class ActionHandler
     {
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
-            $filter = 1,
-            $stage = -99,
+            -99,
             $id,
-            $recursionLevel = 0,
-            $selectionType = 'tables_modify'
+            0,
+            'tables_modify'
         );
         [$currentStage, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
-            $filter = 1,
             $currentStage['uid'],
             $id,
-            $recursionLevel = 0,
-            $selectionType = 'tables_modify'
+            0,
+            'tables_modify'
         );
         $stageFormFields = $this->getSentToStageWindow($previousStage['uid']);
         $result = array_merge($stageFormFields, [
@@ -785,21 +782,19 @@ class ActionHandler
     {
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
-            $filter = 1,
-            $stage = -99,
+            -99,
             $id,
-            $recursionLevel = 0,
-            $selectionType = 'tables_modify'
+            0,
+            'tables_modify'
         );
         [$currentStage, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
-            $filter = 1,
             $currentStage['uid'],
             $id,
-            $recursionLevel = 0,
-            $selectionType = 'tables_modify'
+            0,
+            'tables_modify'
         );
         $stageFormFields = $this->getSentToStageWindow($nextStage['uid']);
         $result = array_merge($stageFormFields, [
@@ -821,11 +816,10 @@ class ActionHandler
         // fetch the next and previous stage
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
-            $filter = 1,
-            $stage = -99,
+            -99,
             $id,
-            $recursionLevel = 0,
-            $selectionType = 'tables_modify'
+            0,
+            'tables_modify'
         );
         [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);

@@ -1434,9 +1434,7 @@ class DataHandler implements LoggerAwareInterface
                 case 't3ver_oid':
                 case 't3ver_wsid':
                 case 't3ver_state':
-                case 't3ver_count':
                 case 't3ver_stage':
-                case 't3ver_tstamp':
                     break;
                 case 'l10n_state':
                     $fieldArray[$field] = $fieldValue;
@@ -3235,7 +3233,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $data = [];
-        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
+        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         $row = BackendUtility::purgeComputedPropertiesFromRecord($row);
 
@@ -3538,7 +3536,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
-        $nonFields = ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
+        $nonFields = ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_stage', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
 
         // Merge in override array.
         $row = array_merge($row, $overrideArray);
@@ -5329,9 +5327,7 @@ class DataHandler implements LoggerAwareInterface
             't3ver_oid' => $id,
             't3ver_wsid' => $this->BE_USER->workspace,
             't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
-            't3ver_count' => 0,
             't3ver_stage' => 0,
-            't3ver_tstamp' => 0
         ];
         if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
             $overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;

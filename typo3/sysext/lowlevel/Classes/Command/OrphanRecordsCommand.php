@@ -177,7 +177,7 @@ Manual repair suggestions:
                 while ($rowSub = $result->fetch()) {
                     $allRecords[$tableName][$rowSub['uid']] = $rowSub['uid'];
                     // Add any versions of those records:
-                    $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count', null, true);
+                    $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid', null, true);
                     if (is_array($versions)) {
                         foreach ($versions as $verRec) {
                             if (!$verRec['_CURRENT_VERSION']) {
@@ -215,7 +215,7 @@ Manual repair suggestions:
 
         // Add any versions of pages
         if ($pageId > 0) {
-            $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', null, true);
+            $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid', null, true);
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
                     if (!$verRec['_CURRENT_VERSION']) {

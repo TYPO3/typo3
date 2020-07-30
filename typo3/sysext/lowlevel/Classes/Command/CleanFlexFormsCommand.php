@@ -155,7 +155,7 @@ class CleanFlexFormsCommand extends Command
                     $versions = BackendUtility::selectVersionsOfRecord(
                         $tableName,
                         $rowSub['uid'],
-                        'uid,t3ver_wsid,t3ver_count',
+                        'uid,t3ver_wsid',
                         null,
                         true
                     );
@@ -195,7 +195,7 @@ class CleanFlexFormsCommand extends Command
         }
         // Add any versions of pages
         if ($pageId > 0) {
-            $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', null, true);
+            $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid', null, true);
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
                     if (!$verRec['_CURRENT_VERSION']) {

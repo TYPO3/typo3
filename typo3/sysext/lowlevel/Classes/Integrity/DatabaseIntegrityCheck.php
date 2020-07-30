@@ -124,7 +124,7 @@ class DatabaseIntegrityCheck
             ->from('pages')
             ->orderBy('sorting');
         if ($versions) {
-            $queryBuilder->addSelect('t3ver_wsid', 't3ver_count');
+            $queryBuilder->addSelect('t3ver_wsid');
             $queryBuilder->where(
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
@@ -146,9 +146,6 @@ class DatabaseIntegrityCheck
             $this->recStats['all_valid']['pages'][$newID] = $newID;
             if ($row['deleted']) {
                 $this->recStats['deleted']['pages'][$newID] = $newID;
-            }
-            if ($versions && $row['t3ver_count'] >= 1) {
-                $this->recStats['published_versions']['pages'][$newID] = $newID;
             }
             if ($row['deleted']) {
                 $this->recStats['deleted']++;
@@ -209,9 +206,6 @@ class DatabaseIntegrityCheck
             $this->recStats['all_valid'][$table][$newID] = $newID;
             if ($row['deleted']) {
                 $this->recStats['deleted'][$table][$newID] = $newID;
-            }
-            if ($versions && $row['t3ver_count'] >= 1 && $row['t3ver_wsid'] == 0) {
-                $this->recStats['published_versions'][$table][$newID] = $newID;
             }
             // Select all versions of this record:
             if ($this->genTreeIncludeVersions && BackendUtility::isTableWorkspaceEnabled($table)) {

@@ -278,7 +278,6 @@ class WorkspaceVersionRecordsCommand extends Command
             ->select(
                 'deleted',
                 'title',
-                't3ver_count',
                 't3ver_wsid'
             )
             ->from('pages')
@@ -290,10 +289,6 @@ class WorkspaceVersionRecordsCommand extends Command
         if ($rootIsVersion) {
             $workspaceId = (int)$pageRecord['t3ver_wsid'];
             $this->foundRecords['all_versioned_records']['pages'][$rootID] = $rootID;
-            // If it has been published and is in archive now...
-            if ($pageRecord['t3ver_count'] >= 1 && $workspaceId === 0) {
-                $this->foundRecords['published_versions']['pages'][$rootID] = $rootID;
-            }
             // If it has been published and is in archive now...
             if ($workspaceId === 0) {
                 $this->foundRecords['versions_in_live']['pages'][$rootID] = $rootID;
@@ -327,18 +322,13 @@ class WorkspaceVersionRecordsCommand extends Command
                         ->execute();
                     while ($rowSub = $result->fetch()) {
                         // Add any versions of those records
-                        $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
+                        $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
                         if (is_array($versions)) {
                             foreach ($versions as $verRec) {
                                 if (!$verRec['_CURRENT_VERSION']) {
                                     // Register version
                                     $this->foundRecords['all_versioned_records'][$tableName][$verRec['uid']] = $verRec['uid'];
                                     $workspaceId = (int)$verRec['t3ver_wsid'];
-                                    if ($verRec['t3ver_count'] >= 1 && $workspaceId === 0) {
-                                        // Only register published versions in LIVE workspace
-                                        // (published versions in draft workspaces are allowed)
-                                        $this->foundRecords['published_versions'][$tableName][$verRec['uid']] = $verRec['uid'];
-                                    }
                                     if ($workspaceId === 0) {
                                         $this->foundRecords['versions_in_live'][$tableName][$verRec['uid']] = $verRec['uid'];
                                     }
@@ -379,7 +369,7 @@ class WorkspaceVersionRecordsCommand extends Command
         }
         // Add any versions of pages
         if ($rootID > 0) {
-            $versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', null, true);
+            $versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid', null, true);
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
                     if (!$verRec['_CURRENT_VERSION']) {

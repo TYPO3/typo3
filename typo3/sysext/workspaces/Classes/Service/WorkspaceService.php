@@ -167,14 +167,19 @@ class WorkspaceService implements SingletonInterface
         if ($wsid > 0) {
             // Define stage to select:
             $stage = -99;
-            if ($wsid > 0) {
-                $workspaceRec = BackendUtility::getRecord('sys_workspace', $wsid);
-                if ($workspaceRec['publish_access'] & 1) {
-                    $stage = StagesService::STAGE_PUBLISH_ID;
-                }
+            $workspaceRec = BackendUtility::getRecord('sys_workspace', $wsid);
+            if ($workspaceRec['publish_access'] & 1) {
+                $stage = StagesService::STAGE_PUBLISH_ID;
             }
             // Select all versions to swap:
-            $versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 999, 'tables_modify', $language);
+            $versions = $this->selectVersionsInWorkspace(
+                $wsid,
+                $stage,
+                $pageId ?: -1,
+                999,
+                'tables_modify',
+                $language
+            );
             // Traverse the selection to build CMD array:
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
@@ -203,7 +208,14 @@ class WorkspaceService implements SingletonInterface
             // Define stage to select:
             $stage = -99;
             // Select all versions to swap:
-            $versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 999, 'tables_modify', $language);
+            $versions = $this->selectVersionsInWorkspace(
+                $wsid,
+                $stage,
+                $pageId ?: -1,
+                999,
+                'tables_modify',
+                $language
+            );
             // Traverse the selection to build CMD array:
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
@@ -221,7 +233,6 @@ class WorkspaceService implements SingletonInterface
      * User for auto-publishing for selecting versions for publication
      *
      * @param int $wsid Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
-     * @param int $filter Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
      * @param int $stage Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10
      * @param int $pageId Page id: Live page for which to find versions in workspace!
      * @param int $recursionLevel Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
@@ -229,10 +240,9 @@ class WorkspaceService implements SingletonInterface
      * @param int $language Select specific language only
      * @return array Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
      */
-    public function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = null)
+    public function selectVersionsInWorkspace($wsid, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = null)
     {
         $wsid = (int)$wsid;
-        $filter = (int)$filter;
         $output = [];
         // Contains either nothing or a list with live-uids
         if ($pageId != -1 && $recursionLevel > 0) {
@@ -260,8 +270,8 @@ class WorkspaceService implements SingletonInterface
                 continue;
             }
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language);
-                $moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage);
+                $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $stage, $language);
+                $moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $stage);
                 $recs = array_merge($recs, $moveRecs);
                 $recs = $this->filterPermittedElements($recs, $table);
                 if (!empty($recs)) {
@@ -278,12 +288,11 @@ class WorkspaceService implements SingletonInterface
      * @param string $table
      * @param string $pageList
      * @param int $wsid
-     * @param int $filter
      * @param int $stage
      * @param int $language
      * @return array
      */
-    protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language = null)
+    protected function selectAllVersionsFromPages($table, $pageList, $wsid, $stage, $language = null)
     {
         // Include root level page as there might be some records with where root level
         // restriction is ignored (e.g. FAL records)
@@ -382,21 +391,6 @@ class WorkspaceService implements SingletonInterface
             );
         }
 
-        // lifecycle filter:
-        // 1 = select all drafts (never-published),
-        // 2 = select all published one or more times (archive/multiple)
-        if ($filter === 1) {
-            $constraints[] = $queryBuilder->expr()->eq(
-                'A.t3ver_count',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            );
-        } elseif ($filter === 2) {
-            $constraints[] = $queryBuilder->expr()->gt(
-                'A.t3ver_count',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            );
-        }
-
         if ((int)$stage !== -99) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.t3ver_stage',
@@ -428,11 +422,10 @@ class WorkspaceService implements SingletonInterface
      * @param string $table
      * @param string $pageList
      * @param int $wsid
-     * @param int $filter
      * @param int $stage
      * @return array
      */
-    protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage)
+    protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $stage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
@@ -492,21 +485,6 @@ class WorkspaceService implements SingletonInterface
             );
             $constraints[] = $queryBuilder->expr()->neq(
                 'C.t3ver_wsid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            );
-        }
-
-        // lifecycle filter:
-        // 1 = select all drafts (never-published),
-        // 2 = select all published one or more times (archive/multiple)
-        if ($filter === 1) {
-            $constraints[] = $queryBuilder->expr()->eq(
-                'C.t3ver_count',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            );
-        } elseif ($filter === 2) {
-            $constraints[] = $queryBuilder->expr()->gt(
-                'C.t3ver_count',
                 $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             );
         }

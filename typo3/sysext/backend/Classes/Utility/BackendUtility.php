@@ -2095,7 +2095,6 @@ class BackendUtility
         if (static::isTableWorkspaceEnabled($table)) {
             $fields[] = $prefix . 't3ver_state';
             $fields[] = $prefix . 't3ver_wsid';
-            $fields[] = $prefix . 't3ver_count';
         }
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['selicon_field'])) {
             $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['selicon_field'];

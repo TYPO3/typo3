@@ -421,38 +421,6 @@ class DefaultTcaSchema
                 );
             }
 
-            // workspaces t3ver_count column
-            if (!empty($tableDefinition['ctrl']['versioningWS'])
-                && (bool)$tableDefinition['ctrl']['versioningWS'] === true
-                && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_count')
-            ) {
-                $tables[$tablePosition]->addColumn(
-                    $this->quote('t3ver_count'),
-                    'integer',
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
-                );
-            }
-
-            // workspaces t3ver_tstamp column
-            if (!empty($tableDefinition['ctrl']['versioningWS'])
-                && (bool)$tableDefinition['ctrl']['versioningWS'] === true
-                && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_tstamp')
-            ) {
-                $tables[$tablePosition]->addColumn(
-                    $this->quote('t3ver_tstamp'),
-                    'integer',
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
-                );
-            }
-
             // workspaces t3ver_move_id column
             if (!empty($tableDefinition['ctrl']['versioningWS'])
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
@@ -555,8 +523,6 @@ class DefaultTcaSchema
             $prioritizedFieldNames[] = 't3ver_state';
             $prioritizedFieldNames[] = 't3ver_stage';
             $prioritizedFieldNames[] = 't3ver_move_id';
-            $prioritizedFieldNames[] = 't3ver_count';
-            $prioritizedFieldNames[] = 't3ver_tstamp';
         }
 
         return $prioritizedFieldNames;

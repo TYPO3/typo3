@@ -193,7 +193,7 @@ class DeletedRecordsCommand extends Command
                 $versions = BackendUtility::selectVersionsOfRecord(
                     $tableName,
                     $recordOnPage['uid'],
-                    'uid,t3ver_wsid,t3ver_count,' . $deletedField,
+                    'uid,t3ver_wsid,' . $deletedField,
                     null,
                     true
                 ) ?: [];
@@ -230,7 +230,7 @@ class DeletedRecordsCommand extends Command
             $versions = BackendUtility::selectVersionsOfRecord(
                 'pages',
                 $pageId,
-                'uid,t3ver_oid,t3ver_wsid,t3ver_count',
+                'uid,t3ver_oid,t3ver_wsid',
                 null,
                 true
             ) ?: [];

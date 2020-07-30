@@ -65,7 +65,6 @@ class PageTreeRepository
         't3ver_wsid',
         't3ver_state',
         't3ver_stage',
-        't3ver_tstamp',
         't3ver_move_id',
         'perms_userid',
         'perms_user',

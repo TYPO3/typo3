@@ -673,7 +673,6 @@ class DataHandlerHook
                 $swapVersion['t3ver_wsid'] = (int)$curVersion['t3ver_wsid'];
             }
         }
-        $swapVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
         $swapVersion['t3ver_stage'] = 0;
         if (!$swapIntoWS) {
             $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
@@ -708,8 +707,6 @@ class DataHandlerHook
         // Mark curVersion to contain the oid
         $curVersion['t3ver_oid'] = (int)$id;
         $curVersion['t3ver_wsid'] = $swapIntoWS ? (int)$tmp_wsid : 0;
-        $curVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
-        $curVersion['t3ver_count'] = $curVersion['t3ver_count'] + 1;
         // Increment lifecycle counter
         $curVersion['t3ver_stage'] = 0;
         if (!$swapIntoWS) {
@@ -996,7 +993,7 @@ class DataHandlerHook
         } else {
             $connection->update(
                 $table,
-                ['t3ver_tstamp' => $GLOBALS['EXEC_TIME'], $deleteField => 1],
+                [$deleteField => 1],
                 ['uid' => (int)$versionId]
             );
         }
@@ -1006,11 +1003,6 @@ class DataHandlerHook
             $dataHandler->deleteEl($table, $liveRecord['uid'], true, true);
         // purge new placeholder as it has been created just for the sake of pointing to a version
         } elseif ($liveState->equals(VersionState::NEW_PLACEHOLDER)) {
-            $connection->update(
-                $table,
-                ['t3ver_tstamp' => $GLOBALS['EXEC_TIME']],
-                ['uid' => (int)$liveRecord['uid']]
-            );
             // THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
             $dataHandler->deleteEl($table, $liveRecord['uid'], true);
         }
