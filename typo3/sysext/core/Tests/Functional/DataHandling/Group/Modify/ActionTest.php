@@ -252,6 +252,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Group\Abs
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #2'));
     }
 
     /**
