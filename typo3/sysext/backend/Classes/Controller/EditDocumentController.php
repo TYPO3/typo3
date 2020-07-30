@@ -1105,9 +1105,9 @@ class EditDocumentController
                 || $previewConfiguration['useDefaultLanguageRecord']
             )
         ) {
-            return $recordArray[$l10nPointer];
+            return (int)$recordArray[$l10nPointer];
         }
-        return $recordArray['uid'];
+        return (int)$recordArray['uid'];
     }
 
     /**
