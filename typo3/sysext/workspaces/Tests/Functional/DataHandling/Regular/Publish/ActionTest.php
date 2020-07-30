@@ -124,6 +124,9 @@ class ActionTest extends AbstractActionTestCase
      */
     public function deleteLocalizedContentAndDeleteContent()
     {
+        // this test will not rely on a translated page, because it only tests the act of publishing.
+        // The actual content of frontend response does not matter much, and it would increase the scope
+        // of the test, when a translated page is also published here.
         parent::deleteLocalizedContentAndDeleteContent();
         $this->actionService->publishRecords(
             [

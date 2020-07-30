@@ -117,12 +117,17 @@ class ActionTest extends AbstractActionTestCase
      */
     public function deleteLocalizedContentAndDeleteContent()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3', 'Regular Element #1'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
     }
 
     /**
@@ -393,13 +398,15 @@ class ActionTest extends AbstractActionTestCase
      */
     public function createLocalizedContentWithLocalizationExclude()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::createLocalizedContentWithLocalizationExclude();
 
         $this->assertAssertionDataSet('createLocalizedContentWExclude');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing', '[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
     }
 
     /**
