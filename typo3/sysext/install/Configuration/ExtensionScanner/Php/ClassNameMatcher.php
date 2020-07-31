@@ -1574,4 +1574,14 @@ return [
             'Breaking-91562-CObjectTEMPLATERemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Collection\RecordCollectionRepository' => [
+        'restFiles' => [
+            'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Collection\StaticRecordCollection' => [
+        'restFiles' => [
+            'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst'
+        ],
+    ],
 ];

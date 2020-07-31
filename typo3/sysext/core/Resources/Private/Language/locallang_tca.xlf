@@ -384,27 +384,6 @@
 			<trans-unit id="sys_filemounts" resname="sys_filemounts">
 				<source>Filemount</source>
 			</trans-unit>
-			<trans-unit id="sys_collection" resname="sys_collection">
-				<source>Record Collection</source>
-			</trans-unit>
-			<trans-unit id="sys_collection.title" resname="sys_collection.title">
-				<source>Collection-Name</source>
-			</trans-unit>
-			<trans-unit id="sys_collection.description" resname="sys_collection.description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="sys_collection.table_name" resname="sys_collection.table_name">
-				<source>Record Type of Collection</source>
-			</trans-unit>
-			<trans-unit id="sys_collection.items" resname="sys_collection.items">
-				<source>Items</source>
-			</trans-unit>
-			<trans-unit id="sys_collection.type" resname="sys_collection.type">
-				<source>Type of collection</source>
-			</trans-unit>
-			<trans-unit id="sys_collection.type.static" resname="sys_collection.type.static">
-				<source>static record composition</source>
-			</trans-unit>
 			<trans-unit id="sys_file_storage" resname="sys_file_storage">
 				<source>File Storage</source>
 			</trans-unit>

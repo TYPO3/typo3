@@ -235,7 +235,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
         $result = $workspaceService->getPagesWithVersionsInTable(91);
         $expected = [
             'sys_category' => [],
-            'sys_collection' => [],
             'sys_file_collection' => [],
             'sys_file_metadata' => [],
             'sys_file_reference' => [],

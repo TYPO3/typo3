@@ -24,8 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Abstract implementation of a RecordCollection
  *
  * RecordCollection is a collections of TCA-Records.
- * The collection is meant to be stored in TCA-table sys_collections and is manageable
- * via TCEforms.
+ * The collection is meant to be stored in TCA-table sys_file_collections and is manageable
+ * via FormEngine.
  *
  * A RecordCollection might be used to group a set of records (e.g. news, images, contentElements)
  * for output in frontend
@@ -39,14 +39,14 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @var string
      */
-    protected static $storageTableName = 'sys_collection';
+    protected static $storageItemsField = 'items';
 
     /**
-     * The table name collections are stored to
+     * The table name collections are stored to, must be defined in the subclass
      *
      * @var string
      */
-    protected static $storageItemsField = 'items';
+    protected static $storageTableName = '';
 
     /**
      * Uid of the storage
@@ -320,14 +320,14 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @param int $id Id of database record to be loaded
      * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
-     * @return \TYPO3\CMS\Core\Collection\CollectionInterface
+     * @return CollectionInterface
      */
     public static function load($id, $fillItems = false)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(static::$storageTableName);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(static::getCollectionDatabaseTable());
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $collectionRecord = $queryBuilder->select('*')
-            ->from(static::$storageTableName)
+            ->from(static::getCollectionDatabaseTable())
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
             ->execute()
             ->fetch();
@@ -340,7 +340,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @param array $collectionRecord Database record
      * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
-     * @return \TYPO3\CMS\Core\Collection\CollectionInterface
+     * @return CollectionInterface
      */
     public static function create(array $collectionRecord, $fillItems = false)
     {
@@ -361,13 +361,13 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     {
         $uid = $this->getIdentifier() == 0 ? 'NEW' . random_int(100000, 999999) : $this->getIdentifier();
         $data = [
-            trim(static::$storageTableName) => [
+            trim(static::getCollectionDatabaseTable()) => [
                 $uid => $this->getPersistableDataArray()
             ]
         ];
         // New records always must have a pid
         if ($this->getIdentifier() == 0) {
-            $data[trim(static::$storageTableName)][$uid]['pid'] = 0;
+            $data[trim(static::getCollectionDatabaseTable())][$uid]['pid'] = 0;
         }
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
@@ -434,5 +434,13 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         $this->title = $array['title'];
         $this->description = $array['description'];
         $this->itemTableName = $array['table_name'];
+    }
+
+    protected static function getCollectionDatabaseTable(): string
+    {
+        if (!empty(static::$storageTableName)) {
+            return static::$storageTableName;
+        }
+        throw new \RuntimeException('No storage table name was defined the class "' . static::class . '".', 1592207959);
     }
 }
