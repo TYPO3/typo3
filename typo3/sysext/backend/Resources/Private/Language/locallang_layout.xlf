@@ -115,7 +115,7 @@
 				<source>Show hidden content elements</source>
 			</trans-unit>
 			<trans-unit id="new_language" resname="new_language">
-				<source>Make new translation of this page</source>
+				<source>Create a new translation of this page</source>
 			</trans-unit>
 			<trans-unit id="newLabel" resname="newLabel">
 				<source>NEW</source>
