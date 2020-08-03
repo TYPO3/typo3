@@ -22,6 +22,7 @@
 		"php": "^7.2",
 		"ext-PDO": "*",
 		"ext-json": "*",
+		"ext-libxml": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
