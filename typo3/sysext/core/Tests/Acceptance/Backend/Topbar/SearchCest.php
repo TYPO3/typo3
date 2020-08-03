@@ -81,11 +81,11 @@ class SearchCest
         $I->fillField('#live-search-box', 'fileadmin');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
 
-        $I->canSee('fileadmin/ (auto-created)', self::$topBarModuleSelector);
+        $I->canSee('fileadmin', self::$topBarModuleSelector);
         $I->click('.t3js-live-search-show-all', self::$topBarModuleSelector);
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('form[name="dblistForm"]');
-        $I->canSee('fileadmin/ (auto-created)');
+        $I->canSee('fileadmin');
     }
 }

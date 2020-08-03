@@ -7,7 +7,7 @@
 ,1,1,256,0,"Test content",1,,,,,,
 "sys_file_storage",,,,,,,,,,,,
 ,"uid","pid","name","driver",,,,,,,,
-,1,0,"fileadmin/ (auto-created)","Local",,,,,,,,
+,1,0,"fileadmin","Local",,,,,,,,
 "sys_file",,,,,,,,,,,,
 ,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
 ,1,0,1,2,"/user_upload/folder_with_spaces/typo3_image2.jpg","060a2cd7f623c1c4c3edaf20f2dd561dadc30354","9de358f64a020b01f020a76ff7c59674913ba5c5","jpg","image/jpeg","typo3_image2.jpg","da9acdf1e105784a57bbffec9520969578287797",7958

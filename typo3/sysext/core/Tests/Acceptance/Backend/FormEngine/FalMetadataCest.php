@@ -89,7 +89,7 @@ class FalMetadataCest
         $I->switchToMainFrame();
         $I->click('Filelist');
         $I->switchToIFrame('nav_frame');
-        $I->waitForText('fileadmin/ (auto-created)');
+        $I->waitForText('fileadmin');
         $I->click('styleguide');
 
         $I->switchToWindow();

@@ -41,7 +41,7 @@ class FileMetaDataCest
         $I->click('Filelist');
 
         $I->switchToContentFrame();
-        $I->canSee('fileadmin/ (auto-created)');
+        $I->canSee('fileadmin');
 
         $I->fillField('tx_filelist_file_filelistlist[searchWord]', 'bus');
         $I->click('Search');

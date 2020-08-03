@@ -94,7 +94,7 @@
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>0</pid>
-					<title>fileadmin/ (auto-created)</title>
+					<title>fileadmin</title>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
@@ -335,7 +335,7 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
-				<field index="name">fileadmin/ (auto-created)</field>
+				<field index="name">fileadmin</field>
 				<field index="description" type="NULL"></field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;

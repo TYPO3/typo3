@@ -109,7 +109,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
 
                 if ($storageObjectsCount === 0) {
                     if ($this->createLocalStorage(
-                        'fileadmin/ (auto-created)',
+                        rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] ?? 'fileadmin', '/'),
                         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
                         'relative',
                         'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.',

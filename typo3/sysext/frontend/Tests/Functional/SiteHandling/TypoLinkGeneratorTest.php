@@ -134,7 +134,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     {
         $storageRepository = new StorageRepository();
         $storageId = $storageRepository->createLocalStorage(
-            'fileadmin/ (auto-created)',
+            'fileadmin',
             'fileadmin/',
             'relative',
             'Default storage created in TypoLinkTest',
