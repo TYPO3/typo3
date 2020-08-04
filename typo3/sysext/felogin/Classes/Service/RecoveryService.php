@@ -167,6 +167,7 @@ class RecoveryService implements RecoveryServiceInterface
 
         $mail = GeneralUtility::makeInstance(FluidEmail::class, $mailTemplatePaths);
         $mail->subject($this->getEmailSubject())
+            ->from($this->recoveryConfiguration->getSender())
             ->to($receiver)
             ->assignMultiple($variables)
             ->setTemplate($this->recoveryConfiguration->getMailTemplateName());
