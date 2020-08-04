@@ -272,6 +272,7 @@ class RecoveryServiceTest extends UnitTestCase
         $fluidEmailProphecy = $this->prophesize(FluidEmail::class);
         GeneralUtility::addInstance(FluidEmail::class, $fluidEmailProphecy->reveal());
         $fluidEmailProphecy->subject('translation')->willReturn($fluidEmailProphecy);
+        $fluidEmailProphecy->from($recoveryConfiguration['sender'])->willReturn($fluidEmailProphecy);
         $fluidEmailProphecy->to($receiver)->willReturn($fluidEmailProphecy);
         $fluidEmailProphecy->assignMultiple($expectedViewVariables)->willReturn($fluidEmailProphecy);
         $fluidEmailProphecy->setTemplate($recoveryConfiguration['mailTemplateName'])->willReturn($fluidEmailProphecy);
