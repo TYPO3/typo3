@@ -68,7 +68,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $phpErrorCode = $arguments['phpErrorCode'];
+        $phpErrorCode = (int)$arguments['phpErrorCode'];
         $levels = [];
         if (($phpErrorCode & E_ALL) == E_ALL) {
             $levels[] = 'E_ALL';
