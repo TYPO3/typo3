@@ -5135,8 +5135,8 @@ class DataHandler implements LoggerAwareInterface
             $pagesInBranch = [$uid];
         }
 
-        if (!$this->checkForRecordsFromDisallowedTables($pagesInBranch)) {
-            return 'Attempt to delete records from disallowed tables';
+        if ($disallowedTables = $this->checkForRecordsFromDisallowedTables($pagesInBranch)) {
+            return 'Attempt to delete records from disallowed tables (' . implode(', ', $disallowedTables) . ')';
         }
 
         foreach ($pagesInBranch as $pageInBranch) {
@@ -8013,15 +8013,16 @@ class DataHandler implements LoggerAwareInterface
      * Check if there are records from tables on the pages to be deleted which the current user is not allowed to
      *
      * @param int[] $pageIds IDs of pages which should be checked
-     * @return bool Return TRUE, if permission granted
+     * @return string[]|null Return null, if permission granted, otherwise an array with the tables that are not allowed to be deleted
      * @see canDeletePage()
      */
-    protected function checkForRecordsFromDisallowedTables(array $pageIds)
+    protected function checkForRecordsFromDisallowedTables(array $pageIds): ?array
     {
         if ($this->admin) {
-            return true;
+            return null;
         }
 
+        $disallowedTables = [];
         if (!empty($pageIds)) {
             $tableNames = $this->compileAdminTables();
             foreach ($tableNames as $table) {
@@ -8038,11 +8039,11 @@ class DataHandler implements LoggerAwareInterface
                     ->execute()
                     ->fetchColumn(0);
                 if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
-                    return false;
+                    $disallowedTables[] = $table;
                 }
             }
         }
-        return true;
+        return !empty($disallowedTables) ? $disallowedTables : null;
     }
 
     /**
