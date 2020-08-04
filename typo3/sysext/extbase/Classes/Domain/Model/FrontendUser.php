@@ -133,6 +133,15 @@ class FrontendUser extends AbstractEntity
     }
 
     /**
+     * Called again with initialize object, as fetching an entity from the DB does not use the constructor
+     */
+    public function initializeObject()
+    {
+        $this->usergroup = $this->usergroup ?? new ObjectStorage();
+        $this->image = $this->image ?? new ObjectStorage();
+    }
+
+    /**
      * Sets the username value
      *
      * @param string $username
@@ -176,7 +185,7 @@ class FrontendUser extends AbstractEntity
      * Sets the usergroups. Keep in mind that the property is called "usergroup"
      * although it can hold several usergroups.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroup
+     * @param ObjectStorage $usergroup
      */
     public function setUsergroup(ObjectStorage $usergroup)
     {
@@ -186,7 +195,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Adds a usergroup to the frontend user
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
+     * @param FrontendUserGroup $usergroup
      */
     public function addUsergroup(FrontendUserGroup $usergroup)
     {
@@ -196,7 +205,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Removes a usergroup from the frontend user
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
+     * @param FrontendUserGroup $usergroup
      */
     public function removeUsergroup(FrontendUserGroup $usergroup)
     {
@@ -207,7 +216,7 @@ class FrontendUser extends AbstractEntity
      * Returns the usergroups. Keep in mind that the property is called "usergroup"
      * although it can hold several usergroups.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage An object storage containing the usergroup
+     * @return ObjectStorage An object storage containing the usergroup
      */
     public function getUsergroup()
     {
@@ -497,7 +506,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Sets the image value
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $image
+     * @param ObjectStorage $image
      */
     public function setImage(ObjectStorage $image)
     {
@@ -507,7 +516,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Gets the image value
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage
      */
     public function getImage()
     {
