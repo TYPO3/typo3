@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -163,7 +162,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         ) {
             return false;
         }
-        if (GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === null) {
+        if (GeneralUtility::makeInstance(StorageRepository::class)->findByUid($submittedData['scheduler_fileStorageIndexing_storage']) === null) {
             return false;
         }
         if (!MathUtility::isIntegerInRange($submittedData['scheduler_fileStorageIndexing_fileCount'], 1, 9999)) {

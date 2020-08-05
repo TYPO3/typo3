@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,19 +17,24 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
+use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Repository for accessing the file mounts
+ * Repository for accessing the file storages
  */
-class StorageRepository extends AbstractRepository implements LoggerAwareInterface
+class StorageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -37,9 +44,9 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     protected $storageRowCache;
 
     /**
-     * @var string
+     * @var array|null
      */
-    protected $objectType = ResourceStorage::class;
+    protected $localDriverStorageCache;
 
     /**
      * @var string
@@ -47,38 +54,73 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     protected $table = 'sys_file_storage';
 
     /**
-     * @var string
+     * @var DriverRegistry
      */
-    protected $typeField = 'driver';
+    protected $driverRegistry;
 
     /**
-     * @var string
+     * @var EventDispatcherInterface
      */
-    protected $driverField = 'driver';
+    protected $eventDispatcher;
 
     /**
-     * @param int $uid
+     * @var ResourceStorage[]
+     */
+    protected $storageInstances;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, DriverRegistry $driverRegistry)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->driverRegistry = $driverRegistry;
+    }
+
+    /**
+     * Returns the Default Storage
+     *
+     * The Default Storage is considered to be the replacement for the fileadmin/ construct.
+     * It is automatically created with the setting fileadminDir from install tool.
+     * getDefaultStorage->getDefaultFolder() will get you fileadmin/user_upload/ in a standard
+     * TYPO3 installation.
      *
      * @return ResourceStorage|null
      */
-    public function findByUid($uid)
+    public function getDefaultStorage(): ?ResourceStorage
+    {
+        $allStorages = $this->findAll();
+        foreach ($allStorages as $storage) {
+            if ($storage->isDefault()) {
+                return $storage;
+            }
+        }
+        return null;
+    }
+
+    public function findByUid(int $uid): ?ResourceStorage
     {
         $this->initializeLocalCache();
-        if (isset($this->storageRowCache[$uid])) {
-            return $this->factory->getStorageObject($uid, $this->storageRowCache[$uid]);
+        if (isset($this->storageRowCache[$uid]) || $uid === 0) {
+            return $this->getStorageObject($uid, $this->storageRowCache[$uid] ?? []);
         }
         return null;
     }
 
     /**
-     * Only for use in ResourceFactory::getStorageObject
+     * Gets a storage object from a combined identifier
      *
-     * @internal
+     * @param string $identifier An identifier of the form [storage uid]:[object identifier]
+     * @return ResourceStorage|null
+     */
+    public function findByCombinedIdentifier(string $identifier): ?ResourceStorage
+    {
+        $parts = GeneralUtility::trimExplode(':', $identifier);
+        return count($parts) === 2 ? $this->findByUid((int)$parts[0]) : null;
+    }
+
+    /**
      * @param int $uid
-     *
      * @return array
      */
-    public function fetchRowByUid(int $uid): array
+    protected function fetchRecordDataByUid(int $uid): array
     {
         $this->initializeLocalCache();
         if (!isset($this->storageRowCache[$uid])) {
@@ -96,10 +138,6 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
         if ($this->storageRowCache === null) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table);
-
-            if ($this->getEnvironmentMode() === 'FE') {
-                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-            }
 
             $result = $queryBuilder
                 ->select('*')
@@ -153,16 +191,13 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     {
         $this->initializeLocalCache();
 
-        /** @var Driver\DriverRegistry $driverRegistry */
-        $driverRegistry = GeneralUtility::makeInstance(DriverRegistry::class);
-
         $storageObjects = [];
         foreach ($this->storageRowCache as $storageRow) {
             if ($storageRow['driver'] !== $storageType) {
                 continue;
             }
-            if ($driverRegistry->driverExists($storageRow['driver'])) {
-                $storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
+            if ($this->driverRegistry->driverExists($storageRow['driver'])) {
+                $storageObjects[] = $this->getStorageObject($storageRow['uid'], $storageRow);
             } else {
                 $this->logger->warning(
                     sprintf('Could not instantiate storage "%s" because of missing driver.', [$storageRow['name']]),
@@ -183,13 +218,10 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     {
         $this->initializeLocalCache();
 
-        /** @var Driver\DriverRegistry $driverRegistry */
-        $driverRegistry = GeneralUtility::makeInstance(DriverRegistry::class);
-
         $storageObjects = [];
         foreach ($this->storageRowCache as $storageRow) {
-            if ($driverRegistry->driverExists($storageRow['driver'])) {
-                $storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
+            if ($this->driverRegistry->driverExists($storageRow['driver'])) {
+                $storageObjects[] = $this->getStorageObject($storageRow['uid'], $storageRow);
             } else {
                 $this->logger->warning(
                     sprintf('Could not instantiate storage "%s" because of missing driver.', [$storageRow['name']]),
@@ -226,9 +258,7 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
             ]
         ];
 
-        /** @var FlexFormTools $flexObj */
-        $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-        $flexFormXml = $flexObj->flexArray2Xml($flexFormData, true);
+        $flexFormXml = GeneralUtility::makeInstance(FlexFormTools::class)->flexArray2Xml($flexFormData, true);
 
         // create the record
         $field_values = [
@@ -254,17 +284,6 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
         $this->storageRowCache = null;
 
         return (int)$dbConnection->lastInsertId($this->table);
-    }
-
-    /**
-     * Creates an object managed by this repository.
-     *
-     * @param array $databaseRow
-     * @return ResourceStorage
-     */
-    protected function createDomainObject(array $databaseRow)
-    {
-        return $this->factory->getStorageObject($databaseRow['uid'], $databaseRow);
     }
 
     /**
@@ -295,5 +314,170 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
         }
 
         return $caseSensitive;
+    }
+
+    /**
+     * Creates an instance of the storage from given UID. The $recordData can
+     * be supplied to increase performance.
+     *
+     * @param int $uid The uid of the storage to instantiate.
+     * @param array $recordData The record row from database.
+     * @param mixed|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
+     * @throws \InvalidArgumentException
+     * @return ResourceStorage
+     */
+    public function getStorageObject($uid, array $recordData = [], &$fileIdentifier = null): ResourceStorage
+    {
+        if (!is_numeric($uid)) {
+            throw new \InvalidArgumentException('The UID of storage has to be numeric. UID given: "' . $uid . '"', 1314085991);
+        }
+        $uid = (int)$uid;
+        if ($uid === 0 && $fileIdentifier !== null) {
+            $uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
+        }
+        if (empty($this->storageInstances[$uid])) {
+            $storageConfiguration = null;
+            $storageObject = null;
+            /** @var BeforeResourceStorageInitializationEvent $event */
+            $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
+            $recordData = $event->getRecord();
+            $uid = $event->getStorageUid();
+            $fileIdentifier = $event->getFileIdentifier();
+            // If the built-in storage with UID=0 is requested:
+            if ($uid === 0) {
+                $recordData = [
+                    'uid' => 0,
+                    'pid' => 0,
+                    'name' => 'Fallback Storage',
+                    'description' => 'Internal storage, mounting the main TYPO3_site directory.',
+                    'driver' => 'Local',
+                    'processingfolder' => 'typo3temp/assets/_processed_/',
+                    // legacy code
+                    'configuration' => '',
+                    'is_online' => true,
+                    'is_browsable' => true,
+                    'is_public' => true,
+                    'is_writable' => true,
+                    'is_default' => false,
+                ];
+                $storageConfiguration = [
+                    'basePath' => '/',
+                    'pathType' => 'relative'
+                ];
+            } elseif ($recordData === [] || (int)$recordData['uid'] !== $uid) {
+                $recordData = $this->fetchRecordDataByUid($uid);
+            }
+            $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
+            $storageObject = $this->eventDispatcher
+                ->dispatch(new AfterResourceStorageInitializationEvent($storageObject))
+                ->getStorage();
+            $this->storageInstances[$uid] = $storageObject;
+        }
+        return $this->storageInstances[$uid];
+    }
+
+    /**
+     * Checks whether a file resides within a real storage in local file system.
+     * If no match is found, uid 0 is returned which is a fallback storage pointing to fileadmin in public web path.
+     *
+     * The file identifier is adapted accordingly to match the new storage's base path.
+     *
+     * @param string $localPath
+     * @return int
+     */
+    protected function findBestMatchingStorageByLocalPath(&$localPath): int
+    {
+        if ($this->localDriverStorageCache === null) {
+            $this->initializeLocalStorageCache();
+        }
+
+        $bestMatchStorageUid = 0;
+        $bestMatchLength = 0;
+        foreach ($this->localDriverStorageCache as $storageUid => $basePath) {
+            $matchLength = strlen((string)PathUtility::getCommonPrefix([$basePath, $localPath]));
+            $basePathLength = strlen($basePath);
+
+            if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
+                $bestMatchStorageUid = (int)$storageUid;
+                $bestMatchLength = $matchLength;
+            }
+        }
+        if ($bestMatchStorageUid !== 0) {
+            $localPath = substr($localPath, $bestMatchLength);
+        }
+        return $bestMatchStorageUid;
+    }
+
+    /**
+     * Creates an array mapping all uids to the basePath of storages using the "local" driver.
+     */
+    protected function initializeLocalStorageCache(): void
+    {
+        $storageObjects = $this->findByStorageType('Local');
+
+        $storageCache = [];
+        foreach ($storageObjects as $localStorage) {
+            $configuration = $localStorage->getConfiguration();
+            $storageCache[$localStorage->getUid()] = $configuration['basePath'];
+        }
+        $this->localDriverStorageCache = $storageCache;
+    }
+
+    /**
+     * Creates a storage object from a storage database row.
+     *
+     * @param array $storageRecord
+     * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
+     * @return ResourceStorage
+     * @internal this method is only public for having access to ResourceFactory->createStorageObject(). In TYPO3 v12 this method can be changed to protected again.
+     */
+    public function createStorageObject(array $storageRecord, array $storageConfiguration = null): ResourceStorage
+    {
+        if (!$storageConfiguration && !empty($storageRecord['configuration'])) {
+            $storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+        }
+        $driverType = $storageRecord['driver'];
+        $driverObject = $this->getDriverObject($driverType, $storageConfiguration);
+        $storageRecord['configuration'] = $storageConfiguration;
+        return GeneralUtility::makeInstance(ResourceStorage::class, $driverObject, $storageRecord, $this->eventDispatcher);
+    }
+
+    /**
+     * Converts a flexform data string to a flat array with key value pairs
+     *
+     * @param string $flexFormData
+     * @return array Array with key => value pairs of the field data in the FlexForm
+     */
+    protected function convertFlexFormDataToConfigurationArray(string $flexFormData): array
+    {
+        if ($flexFormData) {
+            return GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($flexFormData);
+        }
+        return [];
+    }
+
+    /**
+     * Creates a driver object for a specified storage object.
+     *
+     * @param string $driverIdentificationString The driver class (or identifier) to use.
+     * @param array $driverConfiguration The configuration of the storage
+     * @return DriverInterface
+     */
+    protected function getDriverObject(string $driverIdentificationString, array $driverConfiguration): DriverInterface
+    {
+        $driverClass = $this->driverRegistry->getDriverClass($driverIdentificationString);
+        /** @var DriverInterface $driverObject */
+        $driverObject = GeneralUtility::makeInstance($driverClass, $driverConfiguration);
+        return $driverObject;
+    }
+
+    /**
+     * @param array $storageRecord
+     * @return ResourceStorage
+     * @internal
+     */
+    public function createFromRecord(array $storageRecord): ResourceStorage
+    {
+        return $this->createStorageObject($storageRecord);
     }
 }

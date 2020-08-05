@@ -88,7 +88,6 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     protected function createDomainObject(array $databaseRow)
     {
         $originalFile = $this->factory->getFileObject((int)$databaseRow['original']);
-        $originalFile->setStorage($this->factory->getStorageObject($originalFile->getProperty('storage')));
         $taskType = $databaseRow['task_type'];
         // Allow deserialization of Area class, since Area objects get serialized in configuration
         // TODO: This should be changed to json encode and decode at some point

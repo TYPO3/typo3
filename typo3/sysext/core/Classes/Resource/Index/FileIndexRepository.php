@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -62,16 +61,6 @@ class FileIndexRepository implements SingletonInterface
     ];
 
     /**
-     * Gets the Resource Factory
-     *
-     * @return ResourceFactory
-     */
-    protected function getResourceFactory()
-    {
-        return GeneralUtility::makeInstance(ResourceFactory::class);
-    }
-
-    /**
      * Returns an Instance of the Repository
      *
      * @return FileIndexRepository
@@ -84,18 +73,6 @@ class FileIndexRepository implements SingletonInterface
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Retrieves Index record for a given $combinedIdentifier
-     *
-     * @param string $combinedIdentifier
-     * @return array|bool
-     */
-    public function findOneByCombinedIdentifier($combinedIdentifier)
-    {
-        [$storageUid, $identifier] = GeneralUtility::trimExplode(':', $combinedIdentifier, false, 2);
-        return $this->findOneByStorageUidAndIdentifier($storageUid, $identifier);
     }
 
     /**
@@ -119,21 +96,6 @@ class FileIndexRepository implements SingletonInterface
             ->fetch();
 
         return is_array($row) ? $row : false;
-    }
-
-    /**
-     * Retrieves Index record for a given $storageUid and $identifier
-     *
-     * @param int $storageUid
-     * @param string $identifier
-     * @return array|bool
-     *
-     * @internal only for use from FileRepository
-     */
-    public function findOneByStorageUidAndIdentifier($storageUid, $identifier)
-    {
-        $identifierHash = $this->getResourceFactory()->getStorageObject($storageUid)->hashFileIdentifier($identifier);
-        return $this->findOneByStorageUidAndIdentifierHash($storageUid, $identifierHash);
     }
 
     /**
@@ -164,6 +126,21 @@ class FileIndexRepository implements SingletonInterface
     }
 
     /**
+     * Retrieves Index record for a given $storageUid and $identifier
+     *
+     * @param ResourceStorage $storage
+     * @param string $identifier
+     * @return array|bool
+     *
+     * @internal only for use from FileRepository
+     */
+    public function findOneByStorageAndIdentifier(ResourceStorage $storage, $identifier)
+    {
+        $identifierHash = $storage->hashFileIdentifier($identifier);
+        return $this->findOneByStorageUidAndIdentifierHash($storage->getUid(), $identifierHash);
+    }
+
+    /**
      * Retrieves Index record for a given $fileObject
      *
      * @param FileInterface $fileObject
@@ -173,9 +150,7 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findOneByFileObject(FileInterface $fileObject)
     {
-        $storageUid = $fileObject->getStorage()->getUid();
-        $identifierHash = $fileObject->getHashedIdentifier();
-        return $this->findOneByStorageUidAndIdentifierHash($storageUid, $identifierHash);
+        return $this->findOneByStorageAndIdentifier($fileObject->getStorage(), $fileObject->getIdentifier());
     }
 
     /**

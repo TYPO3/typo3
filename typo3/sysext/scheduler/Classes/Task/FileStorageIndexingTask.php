@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Resource\Index\Indexer;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -41,7 +41,7 @@ class FileStorageIndexingTask extends AbstractTask
     public function execute()
     {
         if ((int)$this->storageUid > 0) {
-            $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($this->storageUid);
+            $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid($this->storageUid);
             $currentEvaluatePermissionsValue = $storage->getEvaluatePermissions();
             $storage->setEvaluatePermissions(false);
             $indexer = $this->getIndexer($storage);

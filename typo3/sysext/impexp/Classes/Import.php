@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -219,7 +220,7 @@ class Import extends ImportExport
 
         $defaultStorageUid = null;
         // get default storage
-        $defaultStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getDefaultStorage();
+        $defaultStorage = GeneralUtility::makeInstance(StorageRepository::class)->getDefaultStorage();
         if ($defaultStorage !== null) {
             $defaultStorageUid = $defaultStorage->getUid();
         }
@@ -246,7 +247,7 @@ class Import extends ImportExport
             && (bool)$storageObject->isWritable() === (bool)$storageRecord['is_writable']
             && (bool)$storageObject->isOnline() === (bool)$storageRecord['is_online']
         ) {
-            $storageRecordConfiguration = GeneralUtility::makeInstance(ResourceFactory::class)->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+            $storageRecordConfiguration = GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
             $storageObjectConfiguration = $storageObject->getConfiguration();
             // compare the properties: pathType and basePath
             if ($storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
@@ -305,7 +306,7 @@ class Import extends ImportExport
                         // storage object will check whether the target folder exists and set the
                         // isOnline flag depending on the outcome.
                         $storageRecord['uid'] = 0;
-                        $resourceStorage = GeneralUtility::makeInstance(ResourceFactory::class)->createStorageObject($storageRecord);
+                        $resourceStorage = GeneralUtility::makeInstance(StorageRepository::class)->createStorageObject($storageRecord);
                         if (!$resourceStorage->isOnline()) {
                             $configuration = $resourceStorage->getConfiguration();
                             $messages['resourceStorageFolderMissing_' . $storageRecordUid] =
@@ -335,7 +336,7 @@ class Import extends ImportExport
         // fetch fresh storage records from database
         $storageRecords = $this->fetchStorageRecords();
 
-        $defaultStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getDefaultStorage();
+        $defaultStorage = GeneralUtility::makeInstance(StorageRepository::class)->getDefaultStorage();
 
         $sanitizedFolderMappings = [];
 
@@ -379,9 +380,9 @@ class Import extends ImportExport
             // mapping. Only in this case we could be sure, that it's a local, online and writable storage.
             if ($useStorageFromStorageRecords && isset($storageRecords[$fileRecord['storage']])) {
                 /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
-                $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
+                $storage = GeneralUtility::makeInstance(StorageRepository::class)->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
             } elseif ($this->isFallbackStorage($fileRecord['storage'])) {
-                $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject(0);
+                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(0);
             } elseif ($defaultStorage !== null) {
                 $storage = $defaultStorage;
             } else {

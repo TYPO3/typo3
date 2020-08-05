@@ -80,6 +80,7 @@ use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -230,7 +231,13 @@ class ResourceStorage implements ResourceStorageInterface
     {
         $this->storageRecord = $storageRecord;
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
-        $this->configuration = $this->getResourceFactoryInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration'] ?? '');
+        if (is_array($storageRecord['configuration'] ?? null)) {
+            $this->configuration = $storageRecord['configuration'];
+        } elseif (!empty($storageRecord['configuration'] ?? '')) {
+            $this->configuration = GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($storageRecord['configuration']);
+        } else {
+            $this->configuration = [];
+        }
         $this->capabilities =
             ($this->storageRecord['is_browsable'] ?? null ? self::CAPABILITY_BROWSABLE : 0) |
             ($this->storageRecord['is_public'] ?? null ? self::CAPABILITY_PUBLIC : 0) |
@@ -555,7 +562,7 @@ class ResourceStorage implements ResourceStorageInterface
             throw new FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
         }
         $data = $this->driver->getFolderInfoByIdentifier($folderIdentifier);
-        $folderObject = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+        $folderObject = $this->createFolderObject($data['identifier'], $data['name']);
         // Use the canonical identifier instead of the user provided one!
         $folderIdentifier = $folderObject->getIdentifier();
         if (
@@ -1260,7 +1267,7 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName, $removeOriginal);
-        $file = $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $fileIdentifier);
+        $file = $this->getFileByIdentifier($fileIdentifier);
 
         if ($replaceExisting && $file instanceof File) {
             $this->getIndexer()->updateIndexEntry($file);
@@ -1443,11 +1450,36 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getFile($identifier)
     {
-        $file = $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
+        $file = $this->getFileByIdentifier($identifier);
         if (!$this->driver->fileExists($identifier)) {
             $file->setMissing(true);
         }
         return $file;
+    }
+
+    /**
+     * Gets a file object from storage by file identifier
+     * If the file is outside of the process folder, it gets indexed and returned as file object afterwards
+     * If the file is within processing folder, the file object will be directly returned
+     *
+     * @param string $fileIdentifier
+     * @return File|ProcessedFile|null
+     */
+    public function getFileByIdentifier(string $fileIdentifier)
+    {
+        if (!$this->isWithinProcessingFolder($fileIdentifier)) {
+            $fileData = $this->getFileIndexRepository()->findOneByStorageAndIdentifier($this, $fileIdentifier);
+            if ($fileData === false) {
+                return $this->getIndexer()->createIndexEntry($fileIdentifier);
+            }
+            return $this->getResourceFactoryInstance()->getFileObject($fileData['uid'], $fileData);
+        }
+        return $this->getProcessedFileRepository()->findByStorageAndIdentifier($this, $fileIdentifier);
+    }
+
+    protected function getProcessedFileRepository(): ProcessedFileRepository
+    {
+        return GeneralUtility::makeInstance(ProcessedFileRepository::class);
     }
 
     /**
@@ -1539,7 +1571,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getFileInFolder($fileName, Folder $folder)
     {
         $identifier = $this->driver->getFileInFolder($fileName, $folder->getIdentifier());
-        return $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
+        return $this->getFileByIdentifier($identifier);
     }
 
     /**
@@ -1571,7 +1603,7 @@ class ResourceStorage implements ResourceStorageInterface
             if (isset($rows[$identifier])) {
                 $fileObject = $this->getFileFactory()->getFileObject($rows[$identifier]['uid'], $rows[$identifier]);
             } else {
-                $fileObject = $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
+                $fileObject = $this->getFileByIdentifier($identifier);
             }
             if ($fileObject instanceof FileInterface) {
                 $key = $fileObject->getName();
@@ -1658,7 +1690,7 @@ class ResourceStorage implements ResourceStorageInterface
                 if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
                     continue;
                 }
-                $potentialProcessingFolder = $this->getResourceFactoryInstance()->createFolderObject($this, $processingFolderIdentifier, $processingFolderIdentifier);
+                $potentialProcessingFolder = $this->createFolderObject($processingFolderIdentifier, $processingFolderIdentifier);
                 if ($potentialProcessingFolder->getStorage() === $this && $potentialProcessingFolder->getIdentifier() !== $this->getProcessingFolder()->getIdentifier()) {
                     $this->processingFolders[] = $potentialProcessingFolder;
                 }
@@ -1824,7 +1856,7 @@ class ResourceStorage implements ResourceStorageInterface
         $this->eventDispatcher->dispatch(
             new AfterFileCreatedEvent($newFileIdentifier, $targetFolderObject)
         );
-        return $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileIdentifier);
+        return $this->getFileByIdentifier($newFileIdentifier);
     }
 
     /**
@@ -1919,7 +1951,7 @@ class ResourceStorage implements ResourceStorageInterface
             $tempPath = $file->getForLocalProcessing();
             $newFileObjectIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
         }
-        $newFileObject = $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileObjectIdentifier);
+        $newFileObject = $this->getFileByIdentifier($newFileObjectIdentifier);
 
         $this->eventDispatcher->dispatch(
             new AfterFileCopiedEvent($file, $targetFolder, $newFileObjectIdentifier, $newFileObject)
@@ -2508,7 +2540,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getFolder($identifier, $returnInaccessibleFolderObject = false)
     {
         $data = $this->driver->getFolderInfoByIdentifier($identifier);
-        $folder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'] ?? null, $data['name'] ?? null);
+        $folder = $this->createFolderObject($data['identifier'] ?? '', $data['name'] ?? '');
 
         try {
             $this->assureFolderReadPermission($folder);
@@ -2585,7 +2617,7 @@ class ResourceStorage implements ResourceStorageInterface
             $mount = reset($this->fileMounts);
             return $mount['folder'];
         }
-        return $this->getResourceFactoryInstance()->createFolderObject($this, $this->driver->getRootLevelFolder(), '');
+        return $this->createFolderObject($this->driver->getRootLevelFolder(), '');
     }
 
     /**
@@ -2716,7 +2748,7 @@ class ResourceStorage implements ResourceStorageInterface
             try {
                 if (strpos($processingFolder, ':') !== false) {
                     [$storageUid, $processingFolderIdentifier] = explode(':', $processingFolder, 2);
-                    $storage = $this->getResourceFactoryInstance()->getStorageObject($storageUid);
+                    $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$storageUid);
                     if ($storage->hasFolder($processingFolderIdentifier)) {
                         $this->processingFolder = $storage->getFolder($processingFolderIdentifier);
                     } else {
@@ -2750,7 +2782,7 @@ class ResourceStorage implements ResourceStorageInterface
                         }
                     } else {
                         $data = $this->driver->getFolderInfoByIdentifier($processingFolder);
-                        $this->processingFolder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+                        $this->processingFolder = $this->createFolderObject($data['identifier'], $data['name']);
                     }
                 }
             } catch (InsufficientFolderWritePermissionsException|ResourcePermissionsUnavailableException $e) {
@@ -2920,5 +2952,17 @@ class ResourceStorage implements ResourceStorageInterface
         } while ($recyclerFolder === null && !$isFolderLoop);
 
         return $recyclerFolder;
+    }
+
+    /**
+     * Creates a folder to directly access (a part of) a storage.
+     *
+     * @param string $identifier The path to the folder. Might also be a simple unique string, depending on the storage driver.
+     * @param string $name The name of the folder (e.g. the folder name)
+     * @return Folder
+     */
+    protected function createFolderObject(string $identifier, string $name)
+    {
+        return GeneralUtility::makeInstance(Folder::class, $this, $identifier, $name);
     }
 }

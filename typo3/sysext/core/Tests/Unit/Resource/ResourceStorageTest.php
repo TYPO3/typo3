@@ -836,16 +836,15 @@ class ResourceStorageTest extends BaseTestCase
             'bar',
             'bar_01'
         ));
-        $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->prepareSubject(
             [],
             true,
             $mockedDriver,
-            $resourceFactory,
+            null,
             [],
-            ['getUniqueName']
+            ['getUniqueName', 'createFolderObject']
         );
-        $resourceFactory->expects(self::once())->method('createFolderObject')->willReturn(new Folder($this->subject, '', ''));
+        $this->subject->expects(self::once())->method('createFolderObject')->willReturn(new Folder($this->subject, '', ''));
         /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
         $this->subject->expects(self::any())->method('getUniqueName')->willReturn('bar_01');

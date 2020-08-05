@@ -126,7 +126,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
      */
     private function setUpFileStorage()
     {
-        $storageRepository = new StorageRepository();
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storageId = $storageRepository->createLocalStorage(
             'fileadmin',
             'fileadmin/',

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -81,7 +81,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $folderIdentifier = 'form_definitions';
-        $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject(1);
+        $storage = GeneralUtility::makeInstance(StorageRepository::class)->getStorageObject(1);
 
         if ($storage->hasFolder($folderIdentifier)) {
             $storage->getFolder($folderIdentifier)->delete(true);

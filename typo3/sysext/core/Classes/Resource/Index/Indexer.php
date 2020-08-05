@@ -213,7 +213,7 @@ class Indexer implements LoggerAwareInterface
             // Get the modification time for file-identifier from the storage
             $modificationTime = $this->storage->getFileInfoByIdentifier($fileIdentifier, ['mtime']);
             // Look if the the modification time in FS is higher than the one in database (key needed on timestamps)
-            $indexRecord = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($this->storage->getUid(), $fileIdentifier);
+            $indexRecord = $this->getFileIndexRepository()->findOneByStorageAndIdentifier($this->storage, $fileIdentifier);
 
             if ($indexRecord !== false) {
                 $this->identifiedFileUids[] = $indexRecord['uid'];

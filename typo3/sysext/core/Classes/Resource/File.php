@@ -195,7 +195,7 @@ class File extends AbstractFile
             $this->getType();
         }
         if (array_key_exists('storage', $properties) && in_array('storage', $this->updatedProperties)) {
-            $this->storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($properties['storage']);
+            $this->storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$properties['storage']);
         }
     }
 

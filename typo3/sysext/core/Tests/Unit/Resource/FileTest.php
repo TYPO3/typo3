@@ -21,8 +21,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\MetaDataAspect;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -166,12 +166,12 @@ class FileTest extends UnitTestCase
             ->setConstructorArgs([$fileProperties, $this->storageMock])
             ->getMock();
         $mockedNewStorage = $this->createMock(ResourceStorage::class);
-        $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        $mockedResourceFactory
+        $mockedStorageRepository = $this->createMock(StorageRepository::class);
+        $mockedStorageRepository
             ->expects(self::once())
-            ->method('getStorageObject')
+            ->method('findByUid')
             ->willReturn($mockedNewStorage);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $mockedResourceFactory);
+        GeneralUtility::addInstance(StorageRepository::class, $mockedStorageRepository);
 
         $subject->updateProperties(['storage' => 'different']);
         self::assertSame($mockedNewStorage, $subject->getStorage());

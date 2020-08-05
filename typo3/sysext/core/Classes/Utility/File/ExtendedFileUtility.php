@@ -1090,9 +1090,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 'size' => $uploadedFileData['size'][$i]
             ];
             try {
-                /** @var File $fileObject */
                 $fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);
-                $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
                 if ($this->existingFilesConflictMode->equals(DuplicationBehavior::REPLACE)) {
                     $this->getIndexer($fileObject->getStorage())->updateIndexEntry($fileObject);
                 }

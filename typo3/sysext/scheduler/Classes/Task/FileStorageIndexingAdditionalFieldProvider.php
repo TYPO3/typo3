@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -95,7 +94,7 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
         if (!MathUtility::canBeInterpretedAsInteger($value)) {
             return false;
         }
-        if (GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) !== null) {
+        if (GeneralUtility::makeInstance(StorageRepository::class)->findByUid($submittedData['scheduler_fileStorageIndexing_storage']) !== null) {
             return true;
         }
         return false;

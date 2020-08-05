@@ -15,19 +15,15 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
-use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
-use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
-use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
-use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,11 +35,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class ResourceFactory implements SingletonInterface
 {
-    /**
-     * @var ResourceStorage[]
-     */
-    protected $storageInstances = [];
-
     /**
      * @var Collection\AbstractFileCollection[]
      */
@@ -60,40 +51,13 @@ class ResourceFactory implements SingletonInterface
     protected $fileReferenceInstances = [];
 
     /**
-     * A list of the base paths of "local" driver storages. Used to make the detection of base paths easier.
-     *
-     * @var array
+     * @var StorageRepository
      */
-    protected $localDriverStorageCache;
+    protected $storageRepository;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(StorageRepository $storageRepository)
     {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Creates a driver object for a specified storage object.
-     *
-     * @param string $driverIdentificationString The driver class (or identifier) to use.
-     * @param array $driverConfiguration The configuration of the storage
-     * @return Driver\DriverInterface
-     * @throws \InvalidArgumentException
-     */
-    public function getDriverObject($driverIdentificationString, array $driverConfiguration)
-    {
-        /** @var Driver\DriverRegistry $driverRegistry */
-        $driverRegistry = GeneralUtility::makeInstance(DriverRegistry::class);
-        $driverClass = $driverRegistry->getDriverClass($driverIdentificationString);
-        $driverObject = GeneralUtility::makeInstance($driverClass, $driverConfiguration);
-        return $driverObject;
+        $this->storageRepository = $storageRepository;
     }
 
     /**
@@ -105,20 +69,13 @@ class ResourceFactory implements SingletonInterface
      * TYPO3 installation.
      *
      * @return ResourceStorage|null
+     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
      */
     public function getDefaultStorage()
     {
-        /** @var StorageRepository $storageRepository */
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-
-        $allStorages = $storageRepository->findAll();
-        foreach ($allStorages as $storage) {
-            if ($storage->isDefault()) {
-                return $storage;
-            }
-        }
-        return null;
+        return $this->storageRepository->getDefaultStorage();
     }
+
     /**
      * Creates an instance of the storage from given UID. The $recordData can
      * be supplied to increase performance.
@@ -129,114 +86,22 @@ class ResourceFactory implements SingletonInterface
      *
      * @throws \InvalidArgumentException
      * @return ResourceStorage
+     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
      */
     public function getStorageObject($uid, array $recordData = [], &$fileIdentifier = null)
     {
-        if (!is_numeric($uid)) {
-            throw new \InvalidArgumentException('The UID of storage has to be numeric. UID given: "' . $uid . '"', 1314085991);
-        }
-        $uid = (int)$uid;
-        if ($uid === 0 && $fileIdentifier !== null) {
-            $uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
-        }
-        if (empty($this->storageInstances[$uid])) {
-            $storageConfiguration = null;
-            /** @var BeforeResourceStorageInitializationEvent $event */
-            $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
-            $recordData = $event->getRecord();
-            $uid = $event->getStorageUid();
-            $fileIdentifier = $event->getFileIdentifier();
-            // If the built-in storage with UID=0 is requested:
-            if ($uid === 0) {
-                $recordData = [
-                    'uid' => 0,
-                    'pid' => 0,
-                    'name' => 'Fallback Storage',
-                    'description' => 'Internal storage, mounting the main TYPO3_site directory.',
-                    'driver' => 'Local',
-                    'processingfolder' => 'typo3temp/assets/_processed_/',
-                    // legacy code
-                    'configuration' => '',
-                    'is_online' => true,
-                    'is_browsable' => true,
-                    'is_public' => true,
-                    'is_writable' => true,
-                    'is_default' => false,
-                ];
-                $storageConfiguration = [
-                    'basePath' => '/',
-                    'pathType' => 'relative'
-                ];
-            } elseif ($recordData === [] || (int)$recordData['uid'] !== $uid) {
-                /** @var StorageRepository $storageRepository */
-                $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                $recordData = $storageRepository->fetchRowByUid($uid);
-            }
-            $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
-            $storageObject = $this->eventDispatcher
-                ->dispatch(new AfterResourceStorageInitializationEvent($storageObject))
-                ->getStorage();
-            $this->storageInstances[$uid] = $storageObject;
-        }
-        return $this->storageInstances[$uid];
+        return $this->storageRepository->getStorageObject($uid, $recordData, $fileIdentifier);
     }
 
     /**
-     * Checks whether a file resides within a real storage in local file system.
-     * If no match is found, uid 0 is returned which is a fallback storage pointing to fileadmin in public web path.
+     * Converts a flexform data string to a flat array with key value pairs.
      *
-     * The file identifier is adapted accordingly to match the new storage's base path.
-     *
-     * @param string $localPath
-     *
-     * @return int
-     */
-    protected function findBestMatchingStorageByLocalPath(&$localPath)
-    {
-        if ($this->localDriverStorageCache === null) {
-            $this->initializeLocalStorageCache();
-        }
-
-        $bestMatchStorageUid = 0;
-        $bestMatchLength = 0;
-        foreach ($this->localDriverStorageCache as $storageUid => $basePath) {
-            $matchLength = strlen(PathUtility::getCommonPrefix([$basePath, $localPath]));
-            $basePathLength = strlen($basePath);
-
-            if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
-                $bestMatchStorageUid = (int)$storageUid;
-                $bestMatchLength = $matchLength;
-            }
-        }
-        if ($bestMatchStorageUid !== 0) {
-            $localPath = substr($localPath, $bestMatchLength);
-        }
-        return $bestMatchStorageUid;
-    }
-
-    /**
-     * Creates an array mapping all uids to the basePath of storages using the "local" driver.
-     */
-    protected function initializeLocalStorageCache()
-    {
-        /** @var StorageRepository $storageRepository */
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        /** @var ResourceStorage[] $storageObjects */
-        $storageObjects = $storageRepository->findByStorageType('Local');
-
-        $storageCache = [];
-        foreach ($storageObjects as $localStorage) {
-            $configuration = $localStorage->getConfiguration();
-            $storageCache[$localStorage->getUid()] = $configuration['basePath'];
-        }
-        $this->localDriverStorageCache = $storageCache;
-    }
-
-    /**
-     * Converts a flexform data string to a flat array with key value pairs
+     * It is recommended to not use this functionality directly, and instead implement this code yourself, as this
+     * code has nothing to do with a Public API for Resources.
      *
      * @param string $flexFormData
      * @return array Array with key => value pairs of the field data in the FlexForm
+     * @internal
      */
     public function convertFlexFormDataToConfigurationArray($flexFormData)
     {
@@ -291,7 +156,7 @@ class ResourceFactory implements SingletonInterface
      * Creates a collection object.
      *
      * @param array $collectionData The database row of the sys_file_collection record.
-     * @return Collection\AbstractFileCollection
+     * @return Collection\AbstractFileCollection|CollectionInterface
      */
     public function createCollectionObject(array $collectionData)
     {
@@ -308,17 +173,13 @@ class ResourceFactory implements SingletonInterface
      * Creates a storage object from a storage database row.
      *
      * @param array $storageRecord
-     * @param array $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
+     * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
      * @return ResourceStorage
+     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
      */
     public function createStorageObject(array $storageRecord, array $storageConfiguration = null)
     {
-        if (!$storageConfiguration) {
-            $storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
-        }
-        $driverType = $storageRecord['driver'];
-        $driverObject = $this->getDriverObject($driverType, $storageConfiguration);
-        return GeneralUtility::makeInstance(ResourceStorage::class, $driverObject, $storageRecord, $this->eventDispatcher);
+        return $this->storageRepository->createStorageObject($storageRecord, $storageConfiguration);
     }
 
     /**
@@ -328,6 +189,7 @@ class ResourceFactory implements SingletonInterface
      * @param string $identifier The path to the folder. Might also be a simple unique string, depending on the storage driver.
      * @param string $name The name of the folder (e.g. the folder name)
      * @return Folder
+     * @internal it is recommended to access the ResourceStorage object directly and access ->getFolder($identifier) this method is kept for backwards compatibility
      */
     public function createFolderObject(ResourceStorage $storage, $identifier, $name)
     {
@@ -385,10 +247,8 @@ class ResourceFactory implements SingletonInterface
             $storageUid = 0;
             $fileIdentifier = $parts[0];
         }
-
-        // please note that getStorageObject() might modify $fileIdentifier when
-        // auto-detecting the best-matching storage to use
-        return $this->getFileObjectByStorageAndIdentifier($storageUid, $fileIdentifier);
+        return $this->storageRepository->getStorageObject($storageUid, [], $fileIdentifier)
+            ->getFileByIdentifier($fileIdentifier);
     }
 
     /**
@@ -396,25 +256,17 @@ class ResourceFactory implements SingletonInterface
      * If the file is outside of the process folder, it gets indexed and returned as file object afterwards
      * If the file is within processing folder, the file object will be directly returned
      *
-     * @param int $storageUid
+     * @param ResourceStorage|int $storage
      * @param string $fileIdentifier
      * @return File|ProcessedFile|null
+     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
      */
-    public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier)
+    public function getFileObjectByStorageAndIdentifier($storage, &$fileIdentifier)
     {
-        $storage = $this->getStorageObject($storageUid, [], $fileIdentifier);
-        if (!$storage->isWithinProcessingFolder($fileIdentifier)) {
-            $fileData = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($storage->getUid(), $fileIdentifier);
-            if ($fileData === false) {
-                $fileObject = $this->getIndexer($storage)->createIndexEntry($fileIdentifier);
-            } else {
-                $fileObject = $this->getFileObject($fileData['uid'], $fileData);
-            }
-        } else {
-            $fileObject = $this->getProcessedFileRepository()->findByStorageAndIdentifier($storage, $fileIdentifier);
+        if (!($storage instanceof ResourceStorage)) {
+            $storage = $this->storageRepository->getStorageObject($storage, [], $fileIdentifier);
         }
-
-        return $fileObject;
+        return $storage->getFileByIdentifier($fileIdentifier);
     }
 
     /**
@@ -504,7 +356,7 @@ class ResourceFactory implements SingletonInterface
                 $folderIdentifier = PathUtility::stripPathSitePrefix($parts[0]);
             }
         }
-        return $this->getStorageObject($storageUid, [], $folderIdentifier)->getFolder($folderIdentifier);
+        return $this->storageRepository->getStorageObject($storageUid, [], $folderIdentifier)->getFolder($folderIdentifier);
     }
 
     /**
@@ -512,12 +364,13 @@ class ResourceFactory implements SingletonInterface
      *
      * @param string $identifier An identifier of the form [storage uid]:[object identifier]
      * @return ResourceStorage
+     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
      */
     public function getStorageObjectFromCombinedIdentifier($identifier)
     {
         $parts = GeneralUtility::trimExplode(':', $identifier);
         $storageUid = count($parts) === 2 ? $parts[0] : null;
-        return $this->getStorageObject($storageUid);
+        return $this->storageRepository->findByUid($storageUid);
     }
 
     /**
@@ -531,7 +384,7 @@ class ResourceFactory implements SingletonInterface
     public function getObjectFromCombinedIdentifier($identifier)
     {
         [$storageId, $objectIdentifier] = GeneralUtility::trimExplode(':', $identifier);
-        $storage = $this->getStorageObject($storageId);
+        $storage = $this->storageRepository->findByUid($storageId);
         if ($storage->hasFile($objectIdentifier)) {
             return $storage->getFile($objectIdentifier);
         }
@@ -552,7 +405,7 @@ class ResourceFactory implements SingletonInterface
     public function createFileObject(array $fileData, ResourceStorage $storage = null)
     {
         if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
-            $storageObject = $this->getStorageObject((int)$fileData['storage']);
+            $storageObject = $this->storageRepository->findByUid((int)$fileData['storage']);
         } elseif ($storage !== null) {
             $storageObject = $storage;
             $fileData['storage'] = $storage->getUid();
@@ -652,26 +505,5 @@ class ResourceFactory implements SingletonInterface
     protected function getFileIndexRepository()
     {
         return FileIndexRepository::getInstance();
-    }
-
-    /**
-     * Returns an instance of the ProcessedFileRepository
-     *
-     * @return ProcessedFileRepository
-     */
-    protected function getProcessedFileRepository()
-    {
-        return GeneralUtility::makeInstance(ProcessedFileRepository::class);
-    }
-
-    /**
-     * Returns an instance of the Indexer
-     *
-     * @param ResourceStorage $storage
-     * @return Index\Indexer
-     */
-    protected function getIndexer(ResourceStorage $storage)
-    {
-        return GeneralUtility::makeInstance(Indexer::class, $storage);
     }
 }

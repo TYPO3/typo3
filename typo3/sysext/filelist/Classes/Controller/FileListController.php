@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -173,14 +174,12 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         try {
             if ($combinedIdentifier) {
                 $this->getBackendUser()->evaluateUserSpecificFileFilterSettings();
-                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-                $storage = $resourceFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByCombinedIdentifier($combinedIdentifier);
                 $identifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
                 if (!$storage->hasFolder($identifier)) {
                     $identifier = $storage->getFolderIdentifierFromFileIdentifier($identifier);
                 }
-
-                $this->folderObject = $resourceFactory->getFolderObjectFromCombinedIdentifier($storage->getUid() . ':' . $identifier);
+                $this->folderObject = $storage->getFolder($identifier);
                 // Disallow access to fallback storage 0
                 if ($storage->getUid() === 0) {
                     throw new InsufficientFolderAccessPermissionsException(

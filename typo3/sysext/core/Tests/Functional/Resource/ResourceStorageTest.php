@@ -47,7 +47,7 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $subject->setEvaluatePermissions(false);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_processed_');
@@ -93,7 +93,7 @@ class ResourceStorageTest extends FunctionalTestCase
         clearstatcache();
         $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
 
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $subject->setEvaluatePermissions(true);
 
         // read_only = true -> no write access for user, so checking for second argument true should assert false
@@ -160,7 +160,7 @@ class ResourceStorageTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
 
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $processingFolder = $subject->getProcessingFolder();
 
         self::assertInstanceOf(Folder::class, $processingFolder);
@@ -175,7 +175,7 @@ class ResourceStorageTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
 
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $folder = new Folder($subject, '/foo/' . $folderIdentifier . '/', $folderIdentifier);
 
         $role = $subject->getRole($folder);
@@ -190,7 +190,7 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
@@ -209,7 +209,7 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325689164);
@@ -223,7 +223,7 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/_recycler_');
@@ -244,7 +244,7 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
-        $subject = (new StorageRepository())->findByUid(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
 
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
@@ -394,7 +394,7 @@ class ResourceStorageTest extends FunctionalTestCase
             $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
             $this->importDataSet(__DIR__ . '/Fixtures/FileSearch.xml');
             $this->setUpBackendUserFromFixture(1);
-            $subject = (new StorageRepository())->findByUid(1);
+            $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
             $subject->setFileAndFolderNameFilters($filters);
 
             GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/bar/bla');

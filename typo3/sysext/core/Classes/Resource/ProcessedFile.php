@@ -143,7 +143,7 @@ class ProcessedFile extends AbstractFile
         $this->properties = $databaseRow;
 
         if (!empty($databaseRow['storage']) && (int)$this->storage->getUid() !== (int)$databaseRow['storage']) {
-            $this->storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($databaseRow['storage']);
+            $this->storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid($databaseRow['storage']);
         }
     }
 

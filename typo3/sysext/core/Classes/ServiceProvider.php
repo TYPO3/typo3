@@ -265,13 +265,16 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getResourceFactory(ContainerInterface $container): Resource\ResourceFactory
     {
         return self::new($container, Resource\ResourceFactory::class, [
-            $container->get(EventDispatcherInterface::class)
+            $container->get(Resource\StorageRepository::class)
         ]);
     }
 
     public static function getStorageRepository(ContainerInterface $container): Resource\StorageRepository
     {
-        return self::new($container, Resource\StorageRepository::class);
+        return self::new($container, Resource\StorageRepository::class, [
+            $container->get(EventDispatcherInterface::class),
+            $container->get(Resource\Driver\DriverRegistry::class),
+        ]);
     }
 
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService

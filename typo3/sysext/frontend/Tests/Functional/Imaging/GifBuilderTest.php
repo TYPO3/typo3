@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -42,7 +43,7 @@ class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj1.jpg'
         );
 
-        $storageRepository = (new StorageRepository())->findByUid(1);
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
         $file = $storageRepository->getFile('kasper-skarhoj1.jpg');
 
         self::assertFalse($file->isMissing());

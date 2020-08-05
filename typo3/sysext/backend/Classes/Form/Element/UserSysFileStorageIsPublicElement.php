@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -61,7 +61,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             try {
-                $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject((int)$row['uid']);
+                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$row['uid']);
                 $storageRecord = $storage->getStorageRecord();
                 $isPublic = $storage->isPublic() && $storageRecord['is_public'];
 

@@ -4493,4 +4493,11 @@ return [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ResourceFactory->getDriverObject' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-92289-DecoupleLogicOfResourceFactoryIntoStorageRepository.rst'
+        ],
+    ],
 ];
