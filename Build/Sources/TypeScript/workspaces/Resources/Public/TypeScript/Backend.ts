@@ -1030,6 +1030,7 @@ class Backend extends Workspaces {
           selection: affectedRecords,
         }),
       ).then((): void => {
+        this.markedRecordsForMassAction = [];
         this.getWorkspaceInfos();
         Wizard.dismiss();
         Backend.refreshPageTree();
