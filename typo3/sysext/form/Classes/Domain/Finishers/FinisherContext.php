@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
@@ -81,8 +80,7 @@ class FinisherContext
      */
     public function initializeObject()
     {
-        $this->finisherVariableProvider = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(FinisherVariableProvider::class);
+        $this->finisherVariableProvider = GeneralUtility::makeInstance(FinisherVariableProvider::class);
     }
 
     /**
