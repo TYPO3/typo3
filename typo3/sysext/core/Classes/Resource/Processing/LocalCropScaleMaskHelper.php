@@ -16,11 +16,11 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
@@ -62,6 +62,10 @@ class LocalCropScaleMaskHelper
      */
     public function processWithLocalFile(TaskInterface $task, string $originalFileName): ?array
     {
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
+            return null;
+        }
+
         $result = null;
         $targetFile = $task->getTargetFile();
 
@@ -75,53 +79,16 @@ class LocalCropScaleMaskHelper
         }
 
         $options = $this->getConfigurationForImageCropScaleMask($targetFile, $gifBuilder);
-
-        $croppedImage = null;
-        if (!empty($configuration['crop'])) {
-
-            // check if it is a json object
-            $cropData = json_decode($configuration['crop']);
-            if ($cropData) {
-                $crop = implode(',', [(int)$cropData->x, (int)$cropData->y, (int)$cropData->width, (int)$cropData->height]);
-            } else {
-                $crop = $configuration['crop'];
-            }
-
-            [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $crop, 4);
-
-            $backupPrefix = $gifBuilder->filenamePrefix;
-            $gifBuilder->filenamePrefix = 'crop_';
-
-            $jpegQuality = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'], 10, 100, 85);
-
-            // the result info is an array with 0=width,1=height,2=extension,3=filename
-            $result = $gifBuilder->imageMagickConvert(
-                $originalFileName,
-                $configuration['fileExtension'],
-                '',
-                '',
-                sprintf('-crop %dx%d+%d+%d +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $jpegQuality),
-                '',
-                ['noScale' => true],
-                true
-            );
-            $gifBuilder->filenamePrefix = $backupPrefix;
-
-            if ($result !== null) {
-                $originalFileName = $croppedImage = $result[3];
-            }
-        }
-
         // Normal situation (no masking)
-        if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
+        if (empty($configuration['maskImages'])) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $gifBuilder->imageMagickConvert(
                 $originalFileName,
-                $configuration['fileExtension'],
-                $configuration['width'],
-                $configuration['height'],
-                $configuration['additionalParameters'],
-                $configuration['frame'],
+                $configuration['fileExtension'] ?? null,
+                $configuration['width'] ?? null,
+                $configuration['height'] ?? null,
+                $configuration['additionalParameters'] ?? null,
+                $configuration['frame'] ?? null,
                 $options
             );
         } else {
@@ -138,16 +105,16 @@ class LocalCropScaleMaskHelper
                 $tempFileInfo = $gifBuilder->imageMagickConvert(
                     $originalFileName,
                     $temporaryExtension,
-                    $configuration['width'],
-                    $configuration['height'],
-                    $configuration['additionalParameters'],
-                    $configuration['frame'],
+                    $configuration['width'] ?? null,
+                    $configuration['height'] ?? null,
+                    $configuration['additionalParameters'] ?? null,
+                    $configuration['frame'] ?? null,
                     $options
                 );
                 if (is_array($tempFileInfo)) {
-                    $maskBottomImage = $configuration['maskImages']['maskBottomImage'];
+                    $maskBottomImage = $configuration['maskImages']['maskBottomImage'] ?? null;
                     if ($maskBottomImage instanceof FileInterface) {
-                        $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'];
+                        $maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'] ?? null;
                     } else {
                         $maskBottomImageMask = null;
                     }
@@ -189,7 +156,7 @@ class LocalCropScaleMaskHelper
 
         // check if the processing really generated a new file (scaled and/or cropped)
         if ($result !== null) {
-            if ($result[3] !== $originalFileName || $originalFileName === $croppedImage) {
+            if ($result[3] !== $originalFileName) {
                 $result = [
                     'width' => $result[0],
                     'height' => $result[1],
@@ -199,11 +166,6 @@ class LocalCropScaleMaskHelper
                 // No file was generated
                 $result = null;
             }
-        }
-
-        // Cleanup temp file if it isn't used as result
-        if ($croppedImage && ($result === null || $croppedImage !== $result['filePath'])) {
-            GeneralUtility::unlink_tempfile($croppedImage);
         }
 
         return $result;
@@ -219,21 +181,37 @@ class LocalCropScaleMaskHelper
     {
         $configuration = $processedFile->getProcessingConfiguration();
 
-        if ($configuration['useSample']) {
+        if ($configuration['useSample'] ?? null) {
             $gifBuilder->scalecmd = '-sample';
         }
         $options = [];
-        if ($configuration['maxWidth']) {
+        if ($configuration['maxWidth'] ?? null) {
             $options['maxW'] = $configuration['maxWidth'];
         }
-        if ($configuration['maxHeight']) {
+        if ($configuration['maxHeight'] ?? null) {
             $options['maxH'] = $configuration['maxHeight'];
         }
-        if ($configuration['minWidth']) {
+        if ($configuration['minWidth'] ?? null) {
             $options['minW'] = $configuration['minWidth'];
         }
-        if ($configuration['minHeight']) {
+        if ($configuration['minHeight'] ?? null) {
             $options['minH'] = $configuration['minHeight'];
+        }
+        if ($configuration['crop'] ?? null) {
+            $options['crop'] = $configuration['crop'];
+            // This normalisation is required to preserve backwards compatibility
+            // In the future the whole processing configuration should be a plain array or json serializable object for straightforward serialisation
+            // The crop configuration currently can be a json string, string with comma separated values or an Area object
+            if (is_string($configuration['crop'])) {
+                // check if it is a json object
+                $cropData = json_decode($configuration['crop']);
+                if ($cropData) {
+                    $options['crop'] = new Area($cropData->x, $cropData->y, $cropData->width, $cropData->height);
+                } else {
+                    [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $configuration['crop'], 4);
+                    $options['crop'] = new Area($offsetLeft, $offsetTop, $newWidth, $newHeight);
+                }
+            }
         }
 
         $options['noScale'] = $configuration['noScale'];
