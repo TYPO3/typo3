@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Workspaces\ColumnDataProviderInterface;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 
@@ -36,15 +35,7 @@ class AdditionalColumnService implements SingletonInterface
      */
     public static function getInstance()
     {
-        return self::getObjectManager()->get(AdditionalColumnService::class);
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    public static function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return GeneralUtility::makeInstance(AdditionalColumnService::class);
     }
 
     /**

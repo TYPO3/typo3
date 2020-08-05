@@ -332,8 +332,7 @@ class DataStructureIdentifierHook
             $e->getMessage()
         );
 
-        GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(FlashMessageService::class)
+        GeneralUtility::makeInstance(FlashMessageService::class)
             ->getMessageQueueByIdentifier('core.template.flashMessages')
             ->enqueue(
                 GeneralUtility::makeInstance(

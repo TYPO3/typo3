@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
 use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
@@ -673,14 +672,6 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function getAdditionalColumnService()
     {
-        return $this->getObjectManager()->get(AdditionalColumnService::class);
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return GeneralUtility::makeInstance(AdditionalColumnService::class);
     }
 }
