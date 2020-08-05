@@ -7054,8 +7054,11 @@ class DataHandler implements LoggerAwareInterface
             if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
                 $row = $lookForLiveVersion;
             }
-            // Fetch move placeholder, since it might point to a new page in the current workspace
-            if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortColumn)) {
+            // Fetch move placeholder, since it might point to a new page in the current workspace.
+            // Only do that if we're not inserting a record after itself, otherwise we'd update the
+            // move placeholder that we're currently trying to move around with data of itself.
+            $movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortColumn);
+            if ($movePlaceholder && ((int)$movePlaceholder['uid'] !== (int)$uid)) {
                 $row = $movePlaceholder;
             }
             // If the record should be inserted after itself, keep the current sorting information:

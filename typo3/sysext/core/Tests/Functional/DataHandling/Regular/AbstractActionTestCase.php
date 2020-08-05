@@ -292,11 +292,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * See DataSet/changeContentRecordSorting.csv
+     * See DataSet/changeContentSorting.csv
      */
     public function changeContentSorting()
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+    }
+
+    /**
+     * See DataSet/changeContentSortingAfterSelf.csv
+     */
+    public function changeContentSortingAfterSelf()
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdFirst);
     }
 
     /**
@@ -408,11 +416,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * See DataSet/changePageRecordSorting.csv
+     * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
+    }
+
+    /**
+     * See DataSet/changePageSorting.csv
+     */
+    public function changePageSortingAfterSelf()
+    {
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageId);
     }
 
     /**
