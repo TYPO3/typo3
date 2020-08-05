@@ -395,12 +395,26 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentRecordSorting.csv
+     * See DataSet/changeContentSorting.csv
      */
     public function changeContentSorting()
     {
         parent::changeContentSorting();
         $this->assertAssertionDataSet('changeContentSorting');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+    }
+
+    /**
+     * @test
+     * See DataSet/changeContentSortingAfterSelf.csv
+     */
+    public function changeContentSortingAfterSelf()
+    {
+        parent::changeContentSortingAfterSelf();
+        $this->assertAssertionDataSet('changeContentSortingAfterSelf');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
@@ -640,12 +654,28 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changePageRecordSorting.csv
+     * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()
     {
         parent::changePageSorting();
         $this->assertAssertionDataSet('changePageSorting');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+    }
+
+    /**
+     * @test
+     * See DataSet/changePageSortingAfterSelf.csv
+     */
+    public function changePageSortingAfterSelf()
+    {
+        parent::changePageSortingAfterSelf();
+        $this->assertAssertionDataSet('changePageSortingAfterSelf');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()

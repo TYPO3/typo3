@@ -252,6 +252,21 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/changeContentRecordSortingAfterSelf.csv
+     */
+    public function changeContentSortingAfterSelf()
+    {
+        parent::changeContentSortingAfterSelf();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertAssertionDataSet('changeContentSortingAfterSelf');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+    }
+
+    /**
+     * @test
      * See DataSet/moveContentRecordToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
@@ -412,13 +427,30 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changePageRecordSorting.csv
+     * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()
     {
         parent::changePageSorting();
         $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
         $this->assertAssertionDataSet('changePageSorting');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+    }
+
+    /**
+     * @test
+     * See DataSet/changePageSortingAfterSelf.csv
+     */
+    public function changePageSortingAfterSelf()
+    {
+        parent::changePageSortingAfterSelf();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('changePageSortingAfterSelf');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
