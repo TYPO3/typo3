@@ -148,7 +148,13 @@ class WorkspacesMenu {
         // when in web module reload, otherwise send the user to the web module
       } else if (top.currentModuleLoaded.startsWith('web_')) {
         WorkspacesMenu.refreshPageTree();
-        ModuleMenu.App.reloadFrames();
+
+        if (top.currentModuleLoaded === 'web_WorkspacesWorkspaces') {
+          // Reload the workspace module and override the workspace id
+          ModuleMenu.App.showModule(top.currentModuleLoaded, 'workspace=' + workspaceId);
+        } else {
+          ModuleMenu.App.reloadFrames();
+        }
       } else if (TYPO3.configuration.pageModule) {
         ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
       }
