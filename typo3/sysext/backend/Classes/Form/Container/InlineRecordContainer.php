@@ -212,6 +212,7 @@ class InlineRecordContainer extends AbstractContainer
                 'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
                 'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
                 'data-table-unique-original-value' => $originalUniqueValue,
+                'data-placeholder-record' => $data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ? '1' : '0'
             ];
 
             $html = '
