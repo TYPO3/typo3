@@ -57,20 +57,14 @@
 			<trans-unit id="paste.modal.title.paste" resname="paste.modal.title.paste">
 				<source>Paste record</source>
 			</trans-unit>
-			<trans-unit id="paste.modal.pastecopy" resname="paste.modal.pastecopy">
-				<source>Do you want to copy the record to this position?</source>
-			</trans-unit>
 			<trans-unit id="paste.modal.paste" resname="paste.modal.paste">
-				<source>Do you want to move the record to this position?</source>
+				<source>Do you want to paste the record to this position?</source>
 			</trans-unit>
 			<trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="paste.modal.button.pastecopy" resname="paste.modal.button.pastecopy">
-				<source>Copy</source>
-			</trans-unit>
 			<trans-unit id="paste.modal.button.paste" resname="paste.modal.button.paste">
-				<source>Move</source>
+				<source>Paste</source>
 			</trans-unit>
 			<trans-unit id="editColumn" resname="editColumn">
 				<source>Edit this column</source>

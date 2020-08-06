@@ -90,53 +90,30 @@ class Paste {
     const $element = $(element);
     const url = $element.data('url') || null;
     const title = (TYPO3.lang['paste.modal.title.paste'] || 'Paste record') + ': "' + $element.data('title') + '"';
+    const content = TYPO3.lang['paste.modal.paste'] || 'Do you want to paste the record to this position?';
     const severity = (typeof top.TYPO3.Severity[$element.data('severity')] !== 'undefined') ?
       top.TYPO3.Severity[$element.data('severity')] :
       top.TYPO3.Severity.info;
 
-    let content: string = '';
     let buttons: Array<Button> = [];
-    if ($element.hasClass('t3js-paste-copy')) {
-      content = TYPO3.lang['paste.modal.pastecopy'] || 'Do you want to copy the record to this position?';
-      buttons = [
-        {
-          text: TYPO3.lang['paste.modal.button.cancel'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-          },
+    buttons = [
+      {
+        text: TYPO3.lang['paste.modal.button.cancel'] || 'Cancel',
+        active: true,
+        btnClass: 'btn-default',
+        trigger: (): void => {
+          Modal.currentModal.trigger('modal-dismiss');
         },
-        {
-          text: TYPO3.lang['paste.modal.button.pastecopy'] || 'Copy',
-          btnClass: 'btn-' + Severity.getCssClass(severity),
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-            me.execute($element);
-          },
+      },
+      {
+        text: TYPO3.lang['paste.modal.button.paste'] || 'Paste',
+        btnClass: 'btn-' + Severity.getCssClass(severity),
+        trigger: (): void => {
+          Modal.currentModal.trigger('modal-dismiss');
+          me.execute($element);
         },
-      ];
-    } else {
-      content = TYPO3.lang['paste.modal.paste'] || 'Do you want to move the record to this position?';
-      buttons = [
-        {
-          text: TYPO3.lang['paste.modal.button.cancel'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-          },
-        },
-        {
-          text: TYPO3.lang['paste.modal.button.paste'] || 'Move',
-          btnClass: 'btn-' + Severity.getCssClass(severity),
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-            me.execute($element);
-          },
-        },
-      ];
-    }
+      },
+    ];
     if (url !== null) {
       const separator = url.contains('?') ? '&' : '?';
       const params = $.param({data: $element.data()});
