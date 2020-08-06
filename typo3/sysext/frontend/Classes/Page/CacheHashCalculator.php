@@ -159,7 +159,7 @@ class CacheHashCalculator implements SingletonInterface
      */
     protected function isAdminPanelParameter($key)
     {
-        return $key === 'ADMCMD_noBeUser' || $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime' || $key === 'ADMCMD_prev';
+        return $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime' || $key === 'ADMCMD_prev';
     }
 
     /**

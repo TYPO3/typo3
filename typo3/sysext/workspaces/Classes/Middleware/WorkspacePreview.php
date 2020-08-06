@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -59,7 +60,7 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Initializes a possible preview user (by checking for GET/cookie of name "ADMCMD_prev")
      *
-     * The GET parameter "ADMCMD_noBeUser" can be used to preview a live workspace from the backend even if the
+     * The GET parameter "ADMCMD_prev=LIVE" can be used to preview a live workspace from the backend even if the
      * backend user is in a different workspace.
      *
      * Additionally, if a workspace is previewed, an additional message text is shown.
@@ -89,7 +90,7 @@ class WorkspacePreview implements MiddlewareInterface
 
         // If the keyword is ignore, then the preview is not managed as "Preview User" but handled
         // via the regular backend user or even no user if the GET parameter ADMCMD_noBeUser is set
-        if (!empty($keyword) && $keyword !== 'IGNORE') {
+        if (!empty($keyword) && $keyword !== 'IGNORE' && $keyword !== 'LIVE') {
             $routeResult = $request->getAttribute('routing', null);
             // A keyword was found in a query parameter or in a cookie
             // If the keyword is valid, activate a BE User and override any existing BE Users
@@ -108,22 +109,24 @@ class WorkspacePreview implements MiddlewareInterface
             }
         }
 
-        // If "ADMCMD_noBeUser" is set, then ensure that there is no workspace preview and no BE User logged in.
+        // If keyword is set to "LIVE", then ensure that there is no workspace preview, but keep the BE User logged in.
         // This option is solely used to ensure that a be user can preview the live version of a page in the
         // workspace preview module.
-        if ($request->getQueryParams()['ADMCMD_noBeUser'] ?? null) {
-            $GLOBALS['BE_USER'] = null;
+        if ($keyword === 'LIVE' && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
+            // We need to set the workspace to live here
+            $GLOBALS['BE_USER']->setTemporaryWorkspace(0);
             // Register the backend user as aspect
-            $this->setBackendUserAspect($context, null);
-            // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
+            $this->setBackendUserAspect($context, $GLOBALS['BE_USER']);
+            // Caching is disabled, because otherwise generated URLs could include the keyword parameter
             $request = $request->withAttribute('noCache', true);
             $addInformationAboutDisabledCache = true;
+            $setCookieOnCurrentRequest = false;
         }
 
         $response = $handler->handle($request);
 
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $addInformationAboutDisabledCache) {
-            $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
+            $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_prev=LIVE was given', true);
         }
 
         // Add an info box to the frontend content

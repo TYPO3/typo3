@@ -153,8 +153,7 @@ class PreviewController
             }
             $parameters = $queryParameters;
             if (!WorkspaceService::isNewPage($this->pageId)) {
-                $parameters['ADMCMD_noBeUser'] = 1;
-                $parameters['ADMCMD_prev'] = 'IGNORE';
+                $parameters['ADMCMD_prev'] = 'LIVE';
                 $liveUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
             }
 
