@@ -2374,6 +2374,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function calculateLinkVars(array $queryParams)
     {
         $this->linkVars = '';
+        $adminCommand = $queryParams['ADMCMD_prev'] ?? '';
+        if (($adminCommand === 'LIVE' || $adminCommand === 'IGNORE') && $this->isBackendUserLoggedIn()) {
+            $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_prev', ',');
+        }
         if (empty($this->config['config']['linkVars'])) {
             return;
         }
