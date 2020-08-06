@@ -483,7 +483,7 @@ class InlineControlContainer {
           me.deleteRecord(objectIdPrefix + itemUid, true);
         }
 
-        for (let item of response.compilerInput.localize) {
+        for (let item of Object.values(response.compilerInput.localize)) {
           if (typeof item.remove !== 'undefined') {
             const removableRecordContainer = InlineControlContainer.getInlineRecordContainer(objectIdPrefix + item.remove);
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);
@@ -718,7 +718,7 @@ class InlineControlContainer {
     }
 
     const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
-    const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
+    const records = Array.from(recordListContainer.querySelectorAll('[data-placeholder-record="0"]')).map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
     (<HTMLInputElement>formField).classList.add('has-change');
