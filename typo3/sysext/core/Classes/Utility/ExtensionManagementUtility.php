@@ -905,7 +905,10 @@ class ExtensionManagementUtility
         $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
         if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
             // remove default icon if an icon identifier is available
-            if (!empty($moduleConfiguration['iconIdentifier']) && $moduleConfiguration['icon'] === 'EXT:extbase/Resources/Public/Icons/Extension.png') {
+            if (!empty($moduleConfiguration['iconIdentifier'])
+                && !empty($moduleConfiguration['icon'])
+                && $moduleConfiguration['icon'] === 'EXT:extbase/Resources/Public/Icons/Extension.png'
+            ) {
                 unset($moduleConfiguration['icon']);
             }
             if (!empty($moduleConfiguration['icon'])) {
