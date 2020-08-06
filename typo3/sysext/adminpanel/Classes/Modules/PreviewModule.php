@@ -199,7 +199,8 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
                 );
             }
             if (!is_array($typoScriptFrontendController->fe_user->user)) {
-                $typoScriptFrontendController->fe_user->user = ['uid' => 1337];
+                // This can be removed once #90989 is fixed
+                $typoScriptFrontendController->fe_user->user = ['uid' => PHP_INT_MAX];
             }
             $typoScriptFrontendController->fe_user->user[$typoScriptFrontendController->fe_user->usergroup_column] = $simulateUserGroup;
             $context->setAspect(
