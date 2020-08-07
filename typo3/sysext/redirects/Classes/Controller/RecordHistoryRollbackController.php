@@ -93,7 +93,7 @@ class RecordHistoryRollbackController
         foreach (GeneralUtility::makeInstance(RecordHistory::class)->findEventsForCorrelation((string)$correlationId) as $recordHistoryEntry) {
             $element = $recordHistoryEntry['tablename'] . ':' . $recordHistoryEntry['recuid'];
             $tempRecordHistory = GeneralUtility::makeInstance(RecordHistory::class, $element);
-            $tempRecordHistory->setLastHistoryEntryNumber($recordHistoryEntry['uid']);
+            $tempRecordHistory->setLastHistoryEntryNumber((int)$recordHistoryEntry['uid']);
             $recordHistoryRollback->performRollback('ALL', $tempRecordHistory->getDiff($tempRecordHistory->getChangeLog()));
         }
     }
