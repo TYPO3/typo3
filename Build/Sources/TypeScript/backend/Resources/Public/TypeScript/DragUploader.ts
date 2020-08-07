@@ -167,10 +167,10 @@ class DragUploaderPlugin {
       '</p>' +
       '</div>' +
       '</div>',
-    ).click(() => {
+    ).on('click', () => {
       this.fileInput.click();
     });
-    $('<span />').addClass('dropzone-close').click(this.hideDropzone).appendTo(this.$dropzone);
+    $('<span />').addClass('dropzone-close').on('click', this.hideDropzone).appendTo(this.$dropzone);
 
     // no filelist then create own progress table
     if (this.$fileList.length === 0) {
@@ -304,7 +304,7 @@ class DragUploaderPlugin {
    * @param {Object} button
    */
   public bindUploadButton(button: JQuery): void {
-    button.click((event: Event) => {
+    button.on('click', (event: Event) => {
       event.preventDefault();
       this.fileInput.click();
       this.showDropzone();

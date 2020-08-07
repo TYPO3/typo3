@@ -313,7 +313,7 @@ class LoginRefresh {
       $('<button />', {type: 'button', class: 'btn btn-primary', 'data-action': 'refreshSession'})
         .text(TYPO3.lang['mess.refresh_login_button'])
         .on('click', () => {
-          this.$loginForm.find('form').submit();
+          this.$loginForm.find('form').trigger('submit');
         }),
     );
     this.registerDefaultModalEvents(this.$loginForm).on('submit', this.submitForm);

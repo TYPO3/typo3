@@ -230,7 +230,7 @@ class PageActions {
     Array.from(document.querySelectorAll(IdentifierEnum.newButton)).forEach((element: HTMLElement): void => {
       element.classList.remove('disabled');
     });
-    $(IdentifierEnum.newButton).click((e: JQueryEventObject): void => {
+    $(IdentifierEnum.newButton).on('click', (e: JQueryEventObject): void => {
       e.preventDefault();
 
       const $me = $(e.currentTarget);

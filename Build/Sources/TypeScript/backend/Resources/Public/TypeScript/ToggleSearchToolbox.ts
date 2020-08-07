@@ -45,7 +45,7 @@ class ToggleSearchToolbox {
       searchField.clearable({
         onClear: (input: HTMLInputElement): void => {
           if (searchResultShown) {
-            input.closest('form').submit();
+            input.closest('form').trigger('submit');
           }
         },
       });

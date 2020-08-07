@@ -61,12 +61,12 @@ class LocalConfiguration extends AbstractInteractableModule {
         // Focus search field on ctrl-f
         if (String.fromCharCode(e.which).toLowerCase() === 'f') {
           e.preventDefault();
-          $searchInput.focus();
+          $searchInput.trigger('focus');
         }
       } else if (e.keyCode === 27) {
         // Clear search on ESC key
         e.preventDefault();
-        $searchInput.val('').focus();
+        $searchInput.val('').trigger('focus');
       }
     });
 

@@ -167,7 +167,7 @@ define(['jquery',
 
       //toggle toolbar submenu
       $toolbar.find('[data-tree-show-submenu]').each(function() {
-        $(this).click(function() {
+        $(this).on('click', function() {
           var $this = $(this);
           var name = $this.attr('data-tree-show-submenu');
           var $submenu = $toolbar.find('[data-tree-submenu=' + name + ']');
@@ -186,7 +186,7 @@ define(['jquery',
               }
             });
           }
-          $submenu.find('input').focus();
+          $submenu.find('input').trigger('focus');
         });
       });
 

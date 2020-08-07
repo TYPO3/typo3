@@ -21,7 +21,7 @@ import $ from 'jquery';
 class FieldSelectBox {
   constructor() {
     $(() => {
-      $('.fieldSelectBox .checkAll').change((event: JQueryEventObject): void => {
+      $('.fieldSelectBox .checkAll').on('change', (event: JQueryEventObject): void => {
         const checked = $(event.currentTarget).prop('checked');
         const $checkboxes = $('.fieldSelectBox tbody').find(':checkbox');
         $checkboxes.each((index: number, elem: Element): void => {

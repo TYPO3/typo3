@@ -28,7 +28,7 @@ class ImportExport {
           .on('confirm.button.ok', (): void => {
             $('#t3js-submit-field')
               .attr('name', $button.attr('name'))
-              .closest('form').submit();
+              .closest('form').trigger('submit');
             Modal.currentModal.trigger('modal-dismiss');
           })
           .on('confirm.button.cancel', (): void => {

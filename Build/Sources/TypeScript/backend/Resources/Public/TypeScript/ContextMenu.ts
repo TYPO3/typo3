@@ -183,7 +183,7 @@ class ContextMenu {
       const elements = this.drawMenu(items, level);
       $obj.html('<div class="list-group">' + elements + '</div>');
 
-      $('a.list-group-item', $obj).click((event: JQueryEventObject): void => {
+      $('a.list-group-item', $obj).on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
         const $me = $(event.currentTarget);
 

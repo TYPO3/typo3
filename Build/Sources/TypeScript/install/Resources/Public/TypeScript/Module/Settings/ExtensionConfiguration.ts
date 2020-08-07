@@ -40,12 +40,12 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         // Focus search field on ctrl-f
         if (String.fromCharCode(e.which).toLowerCase() === 'f') {
           e.preventDefault();
-          $searchInput.focus();
+          $searchInput.trigger('focus');
         }
       } else if (e.keyCode === 27) {
         // Clear search on ESC key
         e.preventDefault();
-        $searchInput.val('').focus();
+        $searchInput.val('').trigger('focus');
       }
     });
 
@@ -175,7 +175,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
 
       const offsetGroup = $('<div>', {'class': 'form-multigroup-wrap'}).append(elementX, elementY);
       $parent.append(offsetGroup);
-      $parent.find('.t3js-emconf-offsetfield').keyup((evt: JQueryEventObject): void => {
+      $parent.find('.t3js-emconf-offsetfield').on('keyup', (evt: JQueryEventObject): void => {
         const $target = $parent.find($(evt.currentTarget).data('target'));
         $target.val($parent.find($target.data('offsetfield-x')).val() + ',' + $parent.find($target.data('offsetfield-y')).val());
       });
@@ -211,7 +211,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         ),
       );
       $parent.append(wrapGroup);
-      $parent.find('.t3js-emconf-wrapfield').keyup((evt: JQueryEventObject): void => {
+      $parent.find('.t3js-emconf-wrapfield').on('keyup', (evt: JQueryEventObject): void => {
         const $target = $parent.find($(evt.currentTarget).data('target'));
         $target.val($parent.find($target.data('wrapfield-start')).val() + '|' + $parent.find($target.data('wrapfield-end')).val());
       });

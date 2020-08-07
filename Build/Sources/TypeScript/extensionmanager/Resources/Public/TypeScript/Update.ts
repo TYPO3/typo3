@@ -38,7 +38,7 @@ class ExtensionManagerUpdate {
       const updateURL = $me.attr('action');
 
       $me.attr('action', '#');
-      $me.submit((): boolean => {
+      $me.on('submit', (): boolean => {
         // Force update on click.
         this.updateFromTer(updateURL, true);
 

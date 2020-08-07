@@ -42,7 +42,7 @@ class DashboardModal {
           currentModal.on('button.clicked', (e: JQueryEventObject): void => {
             if (e.target.getAttribute('name') === 'save') {
               const formElement = currentModal.find('form');
-              formElement.submit();
+              formElement.trigger('submit');
             } else {
               currentModal.trigger('modal-dismiss');
             }

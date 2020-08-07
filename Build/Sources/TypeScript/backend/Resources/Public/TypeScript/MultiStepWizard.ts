@@ -247,7 +247,7 @@ class MultiStepWizard {
    */
   public blurCancelStep(): JQuery {
     let $button = this.setup.$carousel.closest('.modal').find('button[name="cancel"]');
-    $button.blur();
+    $button.trigger('blur');
     return $button;
   }
 

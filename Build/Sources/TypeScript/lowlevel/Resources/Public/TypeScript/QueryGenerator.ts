@@ -72,7 +72,7 @@ class QueryGenerator {
    * Submit the form
    */
   private doSubmit(): void {
-    this.form.submit();
+    this.form.trigger('submit');
   }
 
   /**

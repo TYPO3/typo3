@@ -173,7 +173,7 @@ class ImageManipulation {
 
   constructor() {
     // silence is golden
-    $(window).resize((): void => {
+    $(window).on('resize', (): void => {
       if (this.cropper) {
         this.cropper.cropper('destroy');
       }
@@ -197,7 +197,7 @@ class ImageManipulation {
       this.trigger = $(e.currentTarget);
       this.show();
     };
-    $('.t3js-image-manipulation-trigger').off('click').click(triggerHandler);
+    $('.t3js-image-manipulation-trigger').off('click').on('click', triggerHandler);
   }
 
   /**

@@ -63,7 +63,7 @@ class Filelist {
   private static submitClipboardFormWithCommand(cmd: string): void {
     const $form = $('form[name="dblistForm"]');
     $form.find('input[name="cmd"]').val(cmd);
-    $form.submit();
+    $form.trigger('submit');
   }
 
   constructor() {
@@ -71,7 +71,7 @@ class Filelist {
     $((): void => {
       Filelist.registerTreeUpdateEvents();
       // file index events
-      $('[data-filelist-show-item-identifier][data-filelist-show-item-type]').click((evt: JQueryEventObject): void => {
+      $('[data-filelist-show-item-identifier][data-filelist-show-item-type]').on('click', (evt: JQueryEventObject): void => {
         const $element = $(evt.currentTarget);
         evt.preventDefault();
         Filelist.openInfoPopup(
@@ -80,15 +80,15 @@ class Filelist {
         );
       });
       // file search events
-      $('a.btn.filelist-file-info').click((event: JQueryEventObject): void => {
+      $('a.btn.filelist-file-info').on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
         Filelist.openInfoPopup('_FILE', $(event.currentTarget).attr('data-identifier'));
       });
-      $('a.filelist-file-references').click((event: JQueryEventObject): void => {
+      $('a.filelist-file-references').on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
         Filelist.openInfoPopup('_FILE', $(event.currentTarget).attr('data-identifier'));
       });
-      $('a.btn.filelist-file-copy').click((event: JQueryEventObject): void => {
+      $('a.btn.filelist-file-copy').on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
         const $element = $(event.currentTarget);
         const url = $element.attr('href');
@@ -104,7 +104,7 @@ class Filelist {
           Filelist.submitClipboardFormWithCommand(originalEvent.detail.payload);
         }
       });
-      $('[data-filelist-clipboard-cmd]:not([data-filelist-clipboard-cmd=""])').click((evt: JQueryEventObject): void => {
+      $('[data-filelist-clipboard-cmd]:not([data-filelist-clipboard-cmd=""])').on('click', (evt: JQueryEventObject): void => {
         const cmd = $(evt.currentTarget).data('filelistClipboardCmd');
         Filelist.submitClipboardFormWithCommand(cmd);
       });

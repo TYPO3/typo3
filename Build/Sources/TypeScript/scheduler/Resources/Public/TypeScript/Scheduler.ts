@@ -149,25 +149,25 @@ class Scheduler {
       this.checkOrUncheckAllCheckboxes($(evt.currentTarget));
     });
 
-    $('#task_class').change((evt: JQueryEventObject): void => {
+    $('#task_class').on('change', (evt: JQueryEventObject): void => {
       this.actOnChangedTaskClass($(evt.currentTarget));
     });
 
-    $('#task_type').change(this.actOnChangedTaskType);
+    $('#task_type').on('change', this.actOnChangedTaskType);
 
-    $('#task_tableGarbageCollection_allTables').change((evt: JQueryEventObject): void => {
+    $('#task_tableGarbageCollection_allTables').on('change', (evt: JQueryEventObject): void => {
       this.actOnChangeSchedulerTableGarbageCollectionAllTables($(evt.currentTarget));
     });
 
-    $('#task_tableGarbageCollection_table').change((evt: JQueryEventObject): void => {
+    $('#task_tableGarbageCollection_table').on('change', (evt: JQueryEventObject): void => {
       this.actOnChangeSchedulerTableGarbageCollectionTable($(evt.currentTarget));
     });
 
-    $('[data-update-task-frequency]').change((evt: JQueryEventObject): void => {
+    $('[data-update-task-frequency]').on('change', (evt: JQueryEventObject): void => {
       const $target = $(evt.currentTarget);
       const $taskFrequency = $('#task_frequency');
       $taskFrequency.val($target.val());
-      $target.val($target.attr('value')).blur();
+      $target.val($target.attr('value')).trigger('blur');
     });
 
     const taskGroupTable = document.querySelector('table.taskGroup-table');

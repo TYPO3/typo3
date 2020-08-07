@@ -41,7 +41,7 @@ class Router {
     $(document).on('keydown', '#t3-install-form-password', (e: JQueryEventObject): void => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        $('.t3js-login-login').click();
+        $('.t3js-login-login').trigger('click');
       }
     });
 

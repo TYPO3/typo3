@@ -349,7 +349,7 @@ define(
        */
       resize: function() {
         var _this = this;
-        $(window).resize(function() {
+        $(window).on('resize', function() {
           if ($('#typo3-pagetree').is(':visible')) {
             _this.updateWrapperHeight();
           }

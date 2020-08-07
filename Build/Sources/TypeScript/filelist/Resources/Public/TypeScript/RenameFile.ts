@@ -79,12 +79,12 @@ class RenameFile {
           modal.on('button.clicked', (event: any): void => {
             if (event.target.name !== 'cancel') {
               conflictModeField.val(event.target.name);
-              form.submit();
+              form.trigger('submit');
             }
             Modal.dismiss();
           });
         } else {
-          form.submit();
+          form.trigger('submit');
         }
       },
       url: ajaxUrl,

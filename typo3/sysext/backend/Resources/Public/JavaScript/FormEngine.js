@@ -468,7 +468,7 @@ define(['jquery',
     });
     $maxlengthElements.addClass('t3js-charcounter-initialized');
     $(':password').on('focus', function() {
-      $(this).attr({'type':'text', 'data-active-password':'true'}).select();
+      $(this).attr({'type':'text', 'data-active-password':'true'}).trigger('select');
     }).on('blur', function() {
       $(this).attr('type', 'password').removeAttr('data-active-password');
     });
@@ -537,7 +537,7 @@ define(['jquery',
     if ($checkbox.prop('checked')) {
       $item.find('.t3js-formengine-placeholder-placeholder').hide();
       $item.find('.t3js-formengine-placeholder-formfield').show();
-      $item.find('.t3js-formengine-placeholder-formfield').find(':input').focus();
+      $item.find('.t3js-formengine-placeholder-formfield').find(':input').trigger('focus');
     } else {
       $item.find('.t3js-formengine-placeholder-placeholder').show();
       $item.find('.t3js-formengine-placeholder-formfield').hide();

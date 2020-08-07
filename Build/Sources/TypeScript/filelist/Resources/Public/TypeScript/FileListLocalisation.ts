@@ -20,7 +20,7 @@ import $ from 'jquery';
 class FileListLocalisation {
   constructor() {
     $((): void => {
-      $('a.filelist-translationToggler').click((event: JQueryEventObject): void => {
+      $('a.filelist-translationToggler').on('click', (event: JQueryEventObject): void => {
         const id = $(event.currentTarget).attr('data-fileid');
         $('div[data-fileid="' + id + '"]').toggle();
       });

@@ -317,11 +317,11 @@ define(['jquery',
 
           if (settings['prototypeName']) {
             $(getDomElementIdentifier('newFormPrototypeName'), modal).val(settings['prototypeName']);
-            $(getDomElementIdentifier('newFormPrototypeName'), modal).change();
+            $(getDomElementIdentifier('newFormPrototypeName'), modal).trigger('change');
 
             if (settings['templatePathOnPrev']) {
               $(getDomElementIdentifier('newFormTemplate'), modal).find('option[value="' + settings['templatePathOnPrev'] + '"]').prop('selected', true);
-              $(getDomElementIdentifier('newFormTemplate'), modal).change();
+              $(getDomElementIdentifier('newFormTemplate'), modal).trigger('change');
             }
           }
 
