@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(e,s){"use strict";Object.defineProperty(s,"__esModule",{value:!0});s.AjaxResponse=class{constructor(e){this.response=e}async resolve(){return this.response.headers.has("Content-Type")&&this.response.headers.get("Content-Type").includes("application/json")?await this.response.json():await this.response.text()}raw(){return this.response}}}));
+define(["require","exports"],(function(e,s){"use strict";Object.defineProperty(s,"__esModule",{value:!0}),s.AjaxResponse=void 0;s.AjaxResponse=class{constructor(e){this.response=e}async resolve(){return this.response.headers.has("Content-Type")&&this.response.headers.get("Content-Type").includes("application/json")?await this.response.json():await this.response.text()}raw(){return this.response}}}));

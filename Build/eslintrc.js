@@ -12,7 +12,6 @@ module.exports = {
     "@typescript-eslint"
   ],
   "rules": {
-    "@typescript-eslint/class-name-casing": "error",
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/member-ordering": ["error", {
@@ -29,6 +28,12 @@ module.exports = {
         "private-instance-method"
       ]
     }],
+    "@typescript-eslint/naming-convention": ["error",
+      {
+        selector: "class",
+        format: ["PascalCase"]
+      }
+    ],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-require-imports": "off",
     "@typescript-eslint/no-unused-vars": "off",
