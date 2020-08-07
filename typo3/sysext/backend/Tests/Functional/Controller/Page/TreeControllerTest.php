@@ -160,7 +160,26 @@ class TreeControllerTest extends FunctionalTestCase
                             [
                                 'uid' => 1520,
                                 'title' => 'Forecasts',
-                                '_children' => [],
+                                '_children' => [
+                                    [
+                                        'uid' => 1521,
+                                        'title' => 'Current Year',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                    [
+                                        'uid' => 1522,
+                                        'title' => 'Next Year',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                    [
+                                        'uid' => 1523,
+                                        'title' => 'Five Years',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
                             ],
                             [
                                 'uid' => 1530,
@@ -208,67 +227,6 @@ class TreeControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function getSubtreeForAccessiblePage()
-    {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
-        $keepProperties = array_flip(['uid', 'title', '_children']);
-        $actual = $this->sortTreeArray($actual);
-        $actual = $this->normalizeTreeArray($actual, $keepProperties);
-
-        $expected = [
-            [
-                'uid' => 1200,
-                'title' => 'EN: Features',
-                '_children' => [
-                    [
-                        'uid' => 1210,
-                        'title' => 'EN: Frontend Editing',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1230,
-                        'title' => 'EN: Managing content',
-                        '_children' => [
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function getSubtreeForNonAccessiblePage()
-    {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 1510);
-        $keepProperties = array_flip(['uid', 'title', '_children']);
-        $actual = $this->sortTreeArray($actual);
-        $actual = $this->normalizeTreeArray($actual, $keepProperties);
-
-        $expected = [];
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function getSubtreeForPageOutsideMountPoint()
-    {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 7000);
-        $keepProperties = array_flip(['uid', 'title', '_children']);
-        $actual = $this->sortTreeArray($actual);
-        $actual = $this->normalizeTreeArray($actual, $keepProperties);
-
-        $expected = [];
         self::assertEquals($expected, $actual);
     }
 
@@ -313,7 +271,14 @@ class TreeControllerTest extends FunctionalTestCase
                             [
                                 'uid' => 1240,
                                 'title' => 'EN: Managing data',
-                                '_children' => [],
+                                '_children' => [
+                                    [
+                                        'uid' => 124010,
+                                        'title' => 'EN: Managing complex data',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
                             ],
                             [
                                 'uid' => 1210,
@@ -348,7 +313,26 @@ class TreeControllerTest extends FunctionalTestCase
                             [
                                 'uid' => 1520,
                                 'title' => 'Forecasts',
-                                '_children' => [],
+                                '_children' => [
+                                    [
+                                        'uid' => 1521,
+                                        'title' => 'Current Year',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                    [
+                                        'uid' => 1522,
+                                        'title' => 'Next Year',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                    [
+                                        'uid' => 1523,
+                                        'title' => 'Five Years',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
                             ],
                             [
                                 'uid' => 1530,
@@ -367,7 +351,13 @@ class TreeControllerTest extends FunctionalTestCase
                                 // from pid 1510 (missing permissions) to pid 1700 (visible now)
                                 'uid' => 1511,
                                 'title' => 'Products',
-                                '_children' => [],
+                                '_children' => [
+                                    [
+                                        'uid' => 151110,
+                                        'title' => 'Product 1',
+                                        '_children' => [],
+                                    ]
+                                ],
                             ],
                         ],
                     ],
@@ -399,39 +389,6 @@ class TreeControllerTest extends FunctionalTestCase
                         'uid' => 811000,
                         'title' => 'France',
                         '_children' => [],
-                    ],
-                ],
-            ],
-        ];
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function getSubtreeForAccessiblePageInWorkspace()
-    {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
-        $keepProperties = array_flip(['uid', 'title', '_children']);
-        $actual = $this->sortTreeArray($actual);
-        $actual = $this->normalizeTreeArray($actual, $keepProperties);
-
-        $expected = [
-            [
-                'uid' => 1200,
-                'title' => 'EN: Features',
-                '_children' => [
-                    [
-                        'uid' => 1210,
-                        'title' => 'EN: Frontend Editing',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1230,
-                        'title' => 'EN: Managing content',
-                        '_children' => [
-                        ],
                     ],
                 ],
             ],
