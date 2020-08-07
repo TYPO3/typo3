@@ -66,6 +66,13 @@ define(['jquery',
        * @type {jQuery}
        */
       this.template = null;
+
+      /**
+       * Nodes stored encoded before tree gets filtered
+       *
+       * @type {string}
+       */
+      this.originalNodes = '';
     };
 
     /**
@@ -175,9 +182,7 @@ define(['jquery',
           if (input) {
             input.clearable({
               onClear: function (input) {
-                _this.tree.resetFilter();
-                _this.tree.prepareDataForVisibleNodes();
-                _this.tree.update();
+                $(input).trigger('input');
               }
             });
           }
@@ -199,10 +204,8 @@ define(['jquery',
         }
       });
 
-      $toolbar.find(this.settings.searchInput).on('keypress', function(e) {
-        if(e.keyCode === 13 || e.which === 13) {
-          _this.search.call(_this, this);
-        }
+      $toolbar.find(this.settings.searchInput).on('input', function() {
+        _this.search.call(_this, this);
       });
 
       $toolbar.find('[data-toggle="tooltip"]').tooltip();
@@ -229,11 +232,29 @@ define(['jquery',
     TreeToolbar.prototype.search = function(input) {
       var _this = this;
       var name = $(input).val().trim();
+
       if (name !== '') {
-        _this.tree.filterTree(name);
+        if (this.originalNodes.length === 0) {
+          this.originalNodes = JSON.stringify(this.tree.nodes);
+        }
+
+        this.tree.nodes[0].expanded = false;
+        this.tree.nodes.forEach(function (node) {
+          var regex = new RegExp(name, 'i');
+          if (node.identifier.toString() === name || regex.test(node.name) || regex.test(node.alias || '')) {
+            _this.showParents(node);
+            node.expanded = true;
+            node.hidden = false;
+          } else if (node.depth !== 0) {
+            node.hidden = true;
+            node.expanded = false;
+          }
+        });
       } else {
-        _this.tree.resetFilter();
+        this.tree.nodes = JSON.parse(this.originalNodes);
+        this.originalNodes = '';
       }
+
       this.tree.prepareDataForVisibleNodes();
       this.tree.update();
     };
