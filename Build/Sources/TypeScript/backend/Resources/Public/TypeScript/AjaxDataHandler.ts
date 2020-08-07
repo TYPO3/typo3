@@ -11,12 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from './Enum/Severity';
 import MessageInterface from './AjaxDataHandler/MessageInterface';
 import ResponseInterface from './AjaxDataHandler/ResponseInterface';
 import $ from 'jquery';
+import BroadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Icons = require('./Icons');
 import Modal = require('./Modal');
 import Notification = require('./Notification');
@@ -31,7 +33,6 @@ enum Identifiers {
 interface AfterProcessEventDict {
   component: string;
   action: string;
-  trigger?: Node;
   table: string;
   uid: number;
 }
@@ -85,8 +86,18 @@ class AjaxDataHandler {
       }
 
       if (eventDict) {
-        const event = new CustomEvent(`datahandler:process:${eventDict.action}`,{
-          detail: {...eventDict, hasErrors: result.hasErrors}
+        const payload = {...eventDict, hasErrors: result.hasErrors};
+        const message = new BroadcastMessage(
+          'datahandler',
+          eventDict.action,
+          payload
+        );
+        BroadcastService.post(message);
+
+        const event = new CustomEvent(`typo3:datahandler:${eventDict.action}`,{
+          detail: {
+            payload: payload
+          }
         });
         document.dispatchEvent(event);
       }
@@ -224,7 +235,7 @@ class AjaxDataHandler {
     const uid = $rowElements.data('uid');
 
     // make the AJAX call to toggle the visibility
-    const eventData = {component: 'datahandler', trigger: $anchorElement.get(0), action: 'delete', table, uid};
+    const eventData = {component: 'datahandler', action: 'delete', table, uid};
     this.process(params, eventData).then((result: ResponseInterface): void => {
       // revert to the old class
       Icons.getIcon('actions-edit-delete', Icons.sizes.small).then((icon: string): void => {
