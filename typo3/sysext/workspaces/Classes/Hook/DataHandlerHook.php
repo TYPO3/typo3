@@ -326,7 +326,15 @@ class DataHandlerHook
                 $this->resetStageOfElements((int)$id);
             } elseif ($table === WorkspaceService::TABLE_WORKSPACE) {
                 $this->flushWorkspaceElements((int)$id);
+                $this->emitUpdateTopbarSignal();
             }
+        }
+    }
+
+    public function processDatamap_afterAllOperations(DataHandler $dataHandler): void
+    {
+        if (isset($dataHandler->datamap[WorkspaceService::TABLE_WORKSPACE])) {
+            $this->emitUpdateTopbarSignal();
         }
     }
 
@@ -1441,6 +1449,11 @@ class DataHandlerHook
             $dataHandler->cmdmap,
             $dataHandler->BE_USER->workspace
         );
+    }
+
+    protected function emitUpdateTopbarSignal(): void
+    {
+        BackendUtility::setUpdateSignal('updateTopbar');
     }
 
     /**
