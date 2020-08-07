@@ -54,7 +54,7 @@ class Recordlist {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
     $(document).on('click', this.identifier.localize, this.disableButton);
-    new RegularEvent('datahandler:process:delete', this.deleteRow).bindTo(document);
+    new RegularEvent('typo3:datahandler:delete', this.deleteRow).bindTo(document);
   }
 
   public toggleClick = (e: JQueryEventObject): void => {
@@ -170,21 +170,22 @@ class Recordlist {
   }
 
   private deleteRow = (e: CustomEvent): void => {
-    if (e.detail.hasErrors) {
+    const payload = e.detail.payload;
+    if (payload.hasErrors) {
       return;
     }
 
-    if (e.detail.component === 'datahandler') {
+    if (payload.component === 'datahandler') {
       // In this case the delete action was triggered by AjaxDataHandler itself, which currently has its own handling.
       // Visual handling is about to get decoupled from data handling itself, thus the logic is duplicated for now.
       return;
     }
 
-    const $tableElement = $(`table[data-table="${e.detail.table}"]`);
-    const $rowElement = $tableElement.find(`tr[data-uid="${e.detail.uid}"]`);
+    const $tableElement = $(`table[data-table="${payload.table}"]`);
+    const $rowElement = $tableElement.find(`tr[data-uid="${payload.uid}"]`);
     const $panel = $tableElement.closest('.panel');
     const $panelHeading = $panel.find('.panel-heading');
-    const $translatedRowElements = $tableElement.find(`[data-l10nparent="${e.detail.uid}"]`);
+    const $translatedRowElements = $tableElement.find(`[data-l10nparent="${payload.uid}"]`);
 
     const $rowElements = $().add($rowElement).add($translatedRowElements);
     $rowElements.fadeTo('slow', 0.4, (): void => {
@@ -200,7 +201,7 @@ class Recordlist {
       $panelHeading.find('.t3js-table-total-items').text(count - 1);
     }
 
-    if (e.detail.table === 'pages') {
+    if (payload.table === 'pages') {
       Viewport.NavigationContainer.PageTree.refreshTree();
     }
   }

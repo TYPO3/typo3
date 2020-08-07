@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,r){"use strict";return new class{constructor(){this.registerEventListeners()}registerEventListeners(){new r("datahandler:process:delete",e=>{document.location.reload()}).bindTo(document)}}}));
+define(["require","exports","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,n){"use strict";return new class{constructor(){this.registerEventListeners()}registerEventListeners(){new n("typo3:datahandler:delete",()=>{document.location.reload()}).bindTo(document)}}}));
