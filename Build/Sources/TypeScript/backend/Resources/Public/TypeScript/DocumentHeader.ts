@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
 import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 

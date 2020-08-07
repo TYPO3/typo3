@@ -16,7 +16,7 @@
  * this JS code does the paste logic for the Layout module (Web => Page)
  * based on jQuery UI
  */
-import * as $ from 'jquery';
+import $ from 'jquery';
 import ResponseInterface from '../AjaxDataHandler/ResponseInterface';
 import DataHandler = require('../AjaxDataHandler');
 import Modal = require('../Modal');

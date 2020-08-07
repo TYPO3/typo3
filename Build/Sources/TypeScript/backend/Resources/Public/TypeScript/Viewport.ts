@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $  from 'jquery';
+import $ from 'jquery';
 import ContentContainer = require('./Viewport/ContentContainer');
 import ConsumerScope = require('./Event/ConsumerScope');
 import Loader = require('./Viewport/Loader');

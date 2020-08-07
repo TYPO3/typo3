@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import {PopoverOptions} from 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 /**
  * Module: TYPO3/CMS/Backend/Popover

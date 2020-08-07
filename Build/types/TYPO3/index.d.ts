@@ -128,13 +128,12 @@ interface Window {
  * Needed type declarations for provided libs
  */
 declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
-  import * as imagesloaded from 'imagesloaded';
+  import imagesloaded from 'imagesloaded';
   export = imagesloaded;
 }
 
 declare module 'muuri';
 declare module 'cm/lib/codemirror';
-declare module 'moment';
 declare module 'Sortable';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';

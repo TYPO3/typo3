@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 /**
  * Module: TYPO3/CMS/Filelist/FileListLocalisation

@@ -16,7 +16,7 @@ import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from './Enum/Severity';
 import MessageInterface from './AjaxDataHandler/MessageInterface';
 import ResponseInterface from './AjaxDataHandler/ResponseInterface';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Icons = require('./Icons');
 import Modal = require('./Modal');
 import Notification = require('./Notification');

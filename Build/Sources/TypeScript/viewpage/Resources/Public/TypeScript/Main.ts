@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'jquery-ui/resizable';
 import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 

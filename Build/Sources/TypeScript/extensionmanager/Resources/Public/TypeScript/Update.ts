@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
-import * as NProgress from 'nprogress';
+import $ from 'jquery';
+import NProgress from 'nprogress';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';

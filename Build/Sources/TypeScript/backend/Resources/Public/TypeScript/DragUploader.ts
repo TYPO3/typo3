@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
+import moment from 'moment';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from './Enum/Severity';
 import {MessageUtility} from './Utility/MessageUtility';
-import moment = require('moment');
 import NProgress = require('nprogress');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Modal = require('./Modal');
@@ -359,7 +359,7 @@ class DragUploaderPlugin {
         ),
         $('<td />').html(
           this.askForOverride[i].original.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].original.size)) + ')' +
-          '<br>' + moment.unix(this.askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm'),
+          '<br>' + moment(this.askForOverride[i].original.mtime).format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').html(
           this.askForOverride[i].uploaded.name + ' (' + (DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)) + ')' +

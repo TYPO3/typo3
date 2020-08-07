@@ -12,7 +12,7 @@
  */
 
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 interface RTESettings {

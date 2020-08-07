@@ -16,7 +16,7 @@
  * this JS code does the drag+drop logic for the Layout module (Web => Page)
  * based on jQuery UI
  */
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'jquery-ui/droppable';
 import DataHandler = require('../AjaxDataHandler');
 import Icons = require('../Icons');

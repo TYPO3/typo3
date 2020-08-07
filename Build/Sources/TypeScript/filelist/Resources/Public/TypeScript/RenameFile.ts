@@ -12,7 +12,7 @@
  */
 
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 /**

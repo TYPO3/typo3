@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
-import * as NProgress from 'nprogress';
+import $ from 'jquery';
+import NProgress from 'nprogress';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import Severity = require('TYPO3/CMS/Backend/Severity');

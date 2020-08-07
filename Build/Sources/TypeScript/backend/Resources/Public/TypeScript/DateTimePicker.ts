@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
-import moment = require('moment');
+import $ from 'jquery';
+import moment from 'moment';
 import PersistentStorage = require('./Storage/Persistent');
 
 /**
@@ -66,7 +66,7 @@ class DateTimePicker {
         if (userLocale === 'ch') {
           userLocale = 'zh-cn';
         }
-        const setLocale = userLocale ? moment.locale(userLocale) : false;
+        const setLocale = userLocale ? moment.locale(userLocale) : '';
 
         // initialize the datepicker on each selected element
         $dateTimeFields.each((index: number, element: HTMLElement): void => {

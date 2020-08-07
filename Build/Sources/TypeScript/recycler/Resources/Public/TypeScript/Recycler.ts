@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
-import * as NProgress from 'nprogress';
+import $ from 'jquery';
+import NProgress from 'nprogress';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 import Modal = require('TYPO3/CMS/Backend/Modal');

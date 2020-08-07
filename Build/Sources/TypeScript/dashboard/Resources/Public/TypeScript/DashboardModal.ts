@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');

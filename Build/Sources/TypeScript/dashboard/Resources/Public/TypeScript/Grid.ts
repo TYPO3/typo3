@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as Muuri from 'muuri';
+import Muuri from 'muuri';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');

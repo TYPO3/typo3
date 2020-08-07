@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 import ImmediateAction = require('TYPO3/CMS/Backend/ActionButton/ImmediateAction');
 import Notification = require('TYPO3/CMS/Backend/Notification');

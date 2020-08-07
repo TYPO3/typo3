@@ -14,7 +14,7 @@
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 export default class Workspaces {

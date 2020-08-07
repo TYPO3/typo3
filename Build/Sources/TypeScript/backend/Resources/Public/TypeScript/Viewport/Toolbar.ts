@@ -12,7 +12,7 @@
 */
 
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 class Toolbar {
   public registerEvent(callback: (eventHandler: JQueryEventObject) => any): void {

@@ -12,7 +12,7 @@
  */
 
 import {AbstractSortableSelectItems} from './AbstractSortableSelectItems';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import SelectBoxFilter = require('./Extra/SelectBoxFilter');
 

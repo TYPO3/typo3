@@ -13,7 +13,7 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Utility = require('TYPO3/CMS/Backend/Utility');
 import Workspaces from './Workspaces';

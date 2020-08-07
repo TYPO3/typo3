@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import BrowserSession = require('./Storage/BrowserSession');
 import Client = require('./Storage/Client');
 
