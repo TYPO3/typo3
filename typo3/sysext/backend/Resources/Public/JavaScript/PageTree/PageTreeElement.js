@@ -71,14 +71,11 @@ define(['jquery',
         });
 
         var dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;
-        var filterUrl = top.TYPO3.settings.ajaxUrls.page_tree_filter;
-
         var configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
 
         $.ajax({url: configurationUrl}).done(function(configuration) {
           tree.initialize($element.find('#typo3-pagetree-tree'), $.extend(configuration, {
             dataUrl: dataUrl,
-            filterUrl: filterUrl,
             showIcons: true
           }));
 

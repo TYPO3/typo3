@@ -1154,7 +1154,7 @@ Do you want to refresh it now?</source>
 				<source>Filter tree</source>
 			</trans-unit>
 			<trans-unit id="tree.searchTermInfo" resname="tree.searchTermInfo">
-				<source>Enter search term and hit enter</source>
+				<source>Enter search term</source>
 			</trans-unit>
 			<trans-unit id="warning.install_password" resname="warning.install_password">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
