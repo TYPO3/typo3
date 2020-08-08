@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./ElementBrowser"],(function(e,t,r,n){"use strict";return new class{constructor(){r(()=>{r("[data-close]").on("click",e=>{e.preventDefault();const t=r(e.currentTarget).parents("span").data();n.insertElement(t.table,t.uid,"db",t.title,"","",t.icon,"",1===parseInt(r(e.currentTarget).data("close"),10))})});const e=document.getElementById("db_list-searchbox-toolbar");e.style.display="block",e.style.position="relative"}}}));
+var __importDefault=this&&this.__importDefault||function(t){return t&&t.__esModule?t:{default:t}};define(["require","exports","jquery","./ElementBrowser"],(function(t,e,r,a){"use strict";r=__importDefault(r);return new class{constructor(){r.default(()=>{r.default("[data-close]").on("click",t=>{t.preventDefault();const e=r.default(t.currentTarget).parents("span").data();a.insertElement(e.table,e.uid,"db",e.title,"","",e.icon,"",1===parseInt(r.default(t.currentTarget).data("close"),10))})});const t=document.getElementById("db_list-searchbox-toolbar");t.style.display="block",t.style.position="relative"}}}));

@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractAction} from './ActionButton/AbstractAction';
 import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';

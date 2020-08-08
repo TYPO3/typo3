@@ -21,7 +21,7 @@
  * which can contain one ore more sections
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Sortable = require('Sortable');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');

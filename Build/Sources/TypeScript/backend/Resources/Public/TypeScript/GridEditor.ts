@@ -13,7 +13,7 @@
 
 import {SeverityEnum} from './Enum/Severity';
 import 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('./Modal');
 
 /**

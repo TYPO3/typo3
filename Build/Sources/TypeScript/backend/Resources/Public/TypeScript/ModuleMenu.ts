@@ -14,7 +14,7 @@
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {NavigationComponentInterface} from './Viewport/NavigationComponentInterface';
 import {ScaffoldIdentifierEnum} from './Enum/Viewport/ScaffoldIdentifier';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import PersistentStorage = require('./Storage/Persistent');
 import Viewport = require('./Viewport');
 import ClientRequest = require('./Event/ClientRequest');

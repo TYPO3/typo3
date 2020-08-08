@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 /**
  * Handles the "Edit popup" field control that renders a new FormEngine instance

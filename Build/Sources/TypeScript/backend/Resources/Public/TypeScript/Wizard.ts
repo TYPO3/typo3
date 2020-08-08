@@ -12,7 +12,7 @@
  */
 
 import {SeverityEnum} from './Enum/Severity';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Modal = require('./Modal');
 import Severity = require('./Severity');
 import Icons = require('./Icons');

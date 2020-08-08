@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./LinkBrowser"],(function(e,t,r,n){"use strict";return new class{constructor(){r(()=>{r("#ltelephoneform").on("submit",e=>{e.preventDefault();let t=r(e.currentTarget).find('[name="ltelephone"]').val();"tel:"!==t&&(t.startsWith("tel:")&&(t=t.substr(4)),n.finalizeFunction("tel:"+t))})})}}}));
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","jquery","./LinkBrowser"],(function(e,t,r,u){"use strict";r=__importDefault(r);return new class{constructor(){r.default(()=>{r.default("#ltelephoneform").on("submit",e=>{e.preventDefault();let t=r.default(e.currentTarget).find('[name="ltelephone"]').val();"tel:"!==t&&(t.startsWith("tel:")&&(t=t.substr(4)),u.finalizeFunction("tel:"+t))})})}}}));

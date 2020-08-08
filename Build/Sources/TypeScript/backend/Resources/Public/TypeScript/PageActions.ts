@@ -12,7 +12,7 @@
  */
 
 import {KeyTypesEnum} from './Enum/KeyTypes';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import PersistentStorage = require('./Storage/Persistent');
 import NewContentElement = require('./Wizard/NewContentElement');
 

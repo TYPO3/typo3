@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import Client = require('TYPO3/CMS/Backend/Storage/Client');
 

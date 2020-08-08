@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {AbstractAction} from './ActionButton/AbstractAction';
 import {SeverityEnum} from './Enum/Severity';
 import Severity = require('./Severity');

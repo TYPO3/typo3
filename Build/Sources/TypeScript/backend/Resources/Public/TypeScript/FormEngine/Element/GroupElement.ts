@@ -12,7 +12,7 @@
  */
 
 import {AbstractSortableSelectItems} from './AbstractSortableSelectItems';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import FormEngineSuggest = require('../../FormEngineSuggest');
 
 class GroupElement extends AbstractSortableSelectItems {

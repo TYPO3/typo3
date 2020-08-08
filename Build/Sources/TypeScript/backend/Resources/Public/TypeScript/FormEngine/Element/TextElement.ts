@@ -13,7 +13,7 @@
 
 import {Resizable} from './Modifier/Resizable';
 import {Tabbable} from './Modifier/Tabbable';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 class TextElement {
   private element: HTMLTextAreaElement = null;

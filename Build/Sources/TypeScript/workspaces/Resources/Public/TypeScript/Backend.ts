@@ -12,7 +12,7 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'nprogress';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import 'TYPO3/CMS/Backend/Input/Clearable';

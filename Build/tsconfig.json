@@ -8,9 +8,11 @@
             "es2018",
             "es2019"
         ],
+        "esModuleInterop": true,
         "incremental": true,
         "tsBuildInfoFile": "./.cache/tsconfig.tsbuildinfo",
         "module": "amd",
+        "moduleResolution": "node",
         "sourceMap": false,
         "removeComments": false,
         "alwaysStrict": true,

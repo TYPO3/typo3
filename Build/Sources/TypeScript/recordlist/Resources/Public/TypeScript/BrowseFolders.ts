@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import ElementBrowser = require('./ElementBrowser');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Severity = require('TYPO3/CMS/Backend/Severity');

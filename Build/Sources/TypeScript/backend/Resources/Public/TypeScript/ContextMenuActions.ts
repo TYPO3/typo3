@@ -13,7 +13,7 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from './Enum/Severity';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import AjaxDataHandler = require('./AjaxDataHandler');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import InfoWindow = require('./InfoWindow');

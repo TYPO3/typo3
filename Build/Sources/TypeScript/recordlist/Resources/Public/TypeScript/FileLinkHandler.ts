@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
 // Yes we really need this import, because Tree... is used in inline markup...
 import Tree = require('TYPO3/CMS/Backend/LegacyTree');

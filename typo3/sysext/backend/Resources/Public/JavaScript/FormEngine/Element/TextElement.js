@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./Modifier/Resizable","./Modifier/Tabbable","jquery"],(function(e,t,i,l,n){"use strict";return class{constructor(e){this.element=null,n(()=>{this.element=document.getElementById(e),i.Resizable.enable(this.element),l.Tabbable.enable(this.element)})}}}));
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","./Modifier/Resizable","./Modifier/Tabbable","jquery"],(function(e,t,i,l,n){"use strict";n=__importDefault(n);return class{constructor(e){this.element=null,n.default(()=>{this.element=document.getElementById(e),i.Resizable.enable(this.element),l.Tabbable.enable(this.element)})}}}));

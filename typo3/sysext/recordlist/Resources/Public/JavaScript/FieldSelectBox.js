@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery"],(function(e,c,r){"use strict";return new class{constructor(){r(()=>{r(".fieldSelectBox .checkAll").change(e=>{const c=r(e.currentTarget).prop("checked");r(".fieldSelectBox tbody").find(":checkbox").each((e,t)=>{r(t).prop("disabled")||r(t).prop("checked",c)})})})}}}));
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","jquery"],(function(e,t,r){"use strict";r=__importDefault(r);return new class{constructor(){r.default(()=>{r.default(".fieldSelectBox .checkAll").change(e=>{const t=r.default(e.currentTarget).prop("checked");r.default(".fieldSelectBox tbody").find(":checkbox").each((e,c)=>{r.default(c).prop("disabled")||r.default(c).prop("checked",t)})})})}}}));

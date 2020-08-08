@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import Icons = require('TYPO3/CMS/Backend/Icons');
 import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');

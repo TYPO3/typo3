@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 /**
  * The main tooltip object

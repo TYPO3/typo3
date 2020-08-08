@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';

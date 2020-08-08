@@ -13,7 +13,7 @@
 
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {AbstractContainer} from './AbstractContainer';
-import * as $  from 'jquery';
+import $ from 'jquery';
 import ClientRequest = require('../Event/ClientRequest');
 import InteractionRequest = require('../Event/InteractionRequest');
 import Loader = require('./Loader');

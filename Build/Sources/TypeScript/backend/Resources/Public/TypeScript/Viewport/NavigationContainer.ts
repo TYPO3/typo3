@@ -15,7 +15,7 @@ import {NavigationComponentInterface} from './NavigationComponentInterface';
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {TopbarIdentifiersEnum} from '../Enum/Viewport/TopbarIdentifiers';
 import {AbstractContainer} from './AbstractContainer';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import PageTree = require('./PageTree');
 import Icons = require('./../Icons');
 import TriggerRequest = require('../Event/TriggerRequest');

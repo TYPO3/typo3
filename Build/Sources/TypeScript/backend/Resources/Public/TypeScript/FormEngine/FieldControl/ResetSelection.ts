@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 /**
  * This module is used for the field control "Reset selection" used for selectSingleBox

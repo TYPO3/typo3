@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 

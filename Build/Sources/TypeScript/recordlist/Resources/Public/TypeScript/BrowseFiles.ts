@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import ElementBrowser = require('./ElementBrowser');
 import NProgress = require('nprogress');

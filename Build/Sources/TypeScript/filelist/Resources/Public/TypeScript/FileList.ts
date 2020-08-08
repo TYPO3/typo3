@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';

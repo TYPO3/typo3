@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import '../../Renderable/Clearable';
