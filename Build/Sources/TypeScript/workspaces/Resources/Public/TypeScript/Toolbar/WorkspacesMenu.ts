@@ -94,6 +94,13 @@ class WorkspacesMenu {
       this.initializeEvents();
       WorkspacesMenu.updateBackendContext();
     });
+
+    new RegularEvent('typo3:datahandler:delete', (e: CustomEvent): void => {
+      const payload = e.detail.payload;
+      if (payload.table === 'sys_workspace' && payload.action === 'delete' && payload.hasErrors === false) {
+        Viewport.Topbar.refresh();
+      }
+    }).bindTo(document);
   }
 
   /**
@@ -134,13 +141,6 @@ class WorkspacesMenu {
       evt.preventDefault();
       this.switchWorkspace(parseInt((<HTMLAnchorElement>evt.currentTarget).dataset.workspaceid, 10));
     });
-
-    new RegularEvent('typo3:datahandler:delete', (e: CustomEvent): void => {
-      const payload = e.detail.payload;
-      if (payload.table === 'sys_workspace' && payload.action === 'delete' && payload.hasErrors === false) {
-        Viewport.Topbar.refresh();
-      }
-    }).bindTo(document);
   }
 
   private switchWorkspace(workspaceId: number): void {
