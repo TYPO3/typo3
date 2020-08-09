@@ -60,6 +60,15 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
+     * See DataSet/changeHotelSortingWithOfferNotWorkspaceAware.csv
+     */
+    public function changeHotelSortingWithOfferNotWorkspaceAware()
+    {
+        $GLOBALS['TCA']['tx_irretutorial_1nff_offer']['ctrl']['versioningWS'] = false;
+        $this->actionService->moveRecord(self::TABLE_Hotel, self::VALUE_HotelIdFirst, -self::VALUE_HotelIdSecond);
+    }
+
+    /**
      * @see DataSet/createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord.csv
      */
     public function createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent()

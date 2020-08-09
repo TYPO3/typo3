@@ -255,6 +255,29 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 
     /**
      * @test
+     * See DataSet/changeHotelSortingWithOfferNotWorkspaceAware.csv
+     */
+    public function changeHotelSortingWithOfferNotWorkspaceAware()
+    {
+        parent::changeHotelSortingWithOfferNotWorkspaceAware();
+        $this->assertAssertionDataSet('changeHotelSortingWithOfferNotWorkspaceAware');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Hotel . ':' . self::VALUE_HotelIdFirst)->setRecordField(self::FIELD_HotelOffer)
+            ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #1.1'));
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Hotel . ':' . self::VALUE_HotelIdFirst)->setRecordField(self::FIELD_HotelOffer)
+            ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #1.2'));
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Hotel . ':' . self::VALUE_HotelIdSecond)->setRecordField(self::FIELD_HotelOffer)
+            ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #2.1'));
+    }
+
+    /**
+     * @test
      * @see DataSet/createParentContentRecordWithHotelAndOfferChildRecords.csv
      */
     public function createParentContentWithHotelAndOfferChildren()
