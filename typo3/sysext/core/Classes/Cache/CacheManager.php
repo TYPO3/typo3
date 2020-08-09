@@ -96,13 +96,19 @@ class CacheManager implements SingletonInterface
         $newConfiguration = [];
         $migratedConfiguration = [];
         foreach ($cacheConfigurations as $identifier => $configuration) {
+            if (empty($identifier)) {
+                throw new \InvalidArgumentException('A cache identifier was not set.', 1596980032);
+            }
             if (!is_array($configuration)) {
                 throw new \InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1231259656);
             }
             // Fallback layer, will be removed in TYPO3 v11.0.
             if (strpos($identifier, 'cache_') === 0) {
-                trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
                 $identifier = substr($identifier, 6);
+                if (empty($identifier)) {
+                    throw new \InvalidArgumentException('A cache identifier was not set.', 1596980033);
+                }
+                trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
                 $migratedConfiguration[$identifier] = $configuration;
             } else {
                 $newConfiguration[$identifier] = $configuration;
