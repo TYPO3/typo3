@@ -1367,7 +1367,7 @@ class PageRenderer implements SingletonInterface
             'jquery-ui' => $corePath . 'jquery-ui',
             'nprogress' => $corePath . 'nprogress',
             'moment' => $corePath . 'moment',
-            'cropper' => $corePath . 'cropper.min',
+            'cropperjs' => $corePath . 'cropper.min',
             'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
             'bootstrap' => $corePath . 'bootstrap/bootstrap',
             'twbs/bootstrap-datetimepicker' => $corePath . 'bootstrap-datetimepicker',

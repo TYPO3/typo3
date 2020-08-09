@@ -1539,12 +1539,10 @@ create-error-class@^3.0.0:
   dependencies:
     capture-stack-trace "^1.0.0"
 
-cropper@^2.3.4:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/cropper/-/cropper-2.3.4.tgz#2a3a8516e72069152366fe9ec939edd8cf2e0580"
-  integrity sha1-KjqFFucgaRUjZv6eyTnt2M8uBYA=
-  dependencies:
-    jquery ">= 1.9.1"
+cropperjs@^1.5.7:
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.7.tgz#b65019725bae1c6285e881fb661b2141fa57025b"
+  integrity sha512-sGj+G/ofKh+f6A4BtXLJwtcKJgMUsXYVUubfTo9grERiDGXncttefmue/fyQFvn8wfdyoD1KhDRYLfjkJFl0yw==
 
 cross-spawn@^3.0.0:
   version "3.0.1"
@@ -4682,7 +4680,7 @@ jpegtran-bin@^4.0.0:
   version "1.11.4"
   resolved "https://codeload.github.com/jquery/jquery-ui/tar.gz/d6713024e16de90ea71dc0544ba34e1df01b4d8a"
 
-"jquery@>= 1.9.1", jquery@>=1.7, "jquery@^1.8.3 || ^2.0 || ^3.0":
+jquery@>=1.7, "jquery@^1.8.3 || ^2.0 || ^3.0":
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==

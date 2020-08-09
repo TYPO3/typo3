@@ -512,7 +512,7 @@ module.exports = function (grunt) {
           'require.js': 'requirejs/require.js',
           'moment.js': 'moment/min/moment-with-locales.min.js',
           'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
-          'cropper.min.js': 'cropper/dist/cropper.min.js',
+          'cropper.min.js': 'cropperjs/dist/cropper.min.js',
           'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
           'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
           'autosize.js': 'autosize/dist/autosize.min.js',

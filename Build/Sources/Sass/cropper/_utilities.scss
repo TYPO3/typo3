@@ -3,10 +3,6 @@
 
 // Visual
 // -----------------------------------------------------------------------------
-.cropper-bg {
-    background-image: url("../img/bg.png");
-}
-
 .cropper-invisible {
     @include opacity(0);
 }
