@@ -3774,6 +3774,10 @@ class DataHandler implements LoggerAwareInterface
                             $newId = $this->copyRecord($v['table'], $v['id'], $realDestPid);
                         }
                     }
+                } elseif ($this->BE_USER->workspace > 0 && !BackendUtility::isTableWorkspaceEnabled($v['table'])) {
+                    // We are in workspace context creating a new parent version and have a child table
+                    // that is not workspace aware. We don't do anything with this child.
+                    continue;
                 } else {
                     // If a record has been copied already during this request,
                     // prevent superfluous duplication and use the existing copy
