@@ -18,6 +18,7 @@ return [
         ],
     ],
 
+
     'columns' => [
         'sys_language_uid' => [
             'exclude' => 1,
@@ -95,12 +96,15 @@ return [
             ],
         ],
 
+
     ],
+
 
     'types' => [
         '0' => [
             'showitem' => 'rte_1',
         ],
     ],
+
 
 ];

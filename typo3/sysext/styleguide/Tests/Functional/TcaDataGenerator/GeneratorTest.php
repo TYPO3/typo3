@@ -14,9 +14,7 @@ namespace TYPO3\CMS\Styleguide\Tests\Functional\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -49,17 +47,6 @@ class GeneratorTest extends FunctionalTestCase
      */
     public function generatorCreatesBasicRecord()
     {
-        Environment::initialize(
-            new ApplicationContext('Production'),
-            Environment::isCli(),
-            Environment::isComposerMode(),
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
         // styleguide generator uses DataHandler for some parts. DataHandler needs an
         // initialized BE user with admin right and the live workspace.
         Bootstrap::initializeBackendUser();

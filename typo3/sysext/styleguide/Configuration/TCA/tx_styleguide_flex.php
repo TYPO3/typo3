@@ -20,7 +20,9 @@ return [
         ],
     ],
 
+
     'columns' => [
+
 
         'hidden' => [
             'exclude' => 1,
@@ -512,6 +514,8 @@ return [
             ]
         ],
 
+
+
         'flex_4' => [
             'exclude' => 1,
             'label' => 'flex_4',
@@ -806,7 +810,9 @@ return [
             ],
         ],
 
+
     ],
+
 
     'types' => [
         '0' => [
@@ -828,5 +834,6 @@ return [
             ',
         ],
     ],
+
 
 ];

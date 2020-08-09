@@ -38,4 +38,5 @@ class KauderwelschCommand extends Command
         $output->writeln(GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum());
         return 0;
     }
+
 }

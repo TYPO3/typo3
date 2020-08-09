@@ -17,7 +17,9 @@ return [
         'translationSource' => 'l10n_source',
     ],
 
+
     'columns' => [
+
 
         'input_1' => [
             'label' => 'input_1',
@@ -80,10 +82,12 @@ return [
 
     ],
 
+
     'types' => [
         '1' => [
             'showitem' => 'input_1',
         ],
     ],
+
 
 ];

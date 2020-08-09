@@ -79,7 +79,7 @@ class StyleguideController extends ActionController
         $moduleName = $this->request->getPluginName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'M', $modulePrefix];
+            $getVars = array('id', 'M', $modulePrefix);
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
@@ -236,25 +236,24 @@ class StyleguideController extends ActionController
     {
         $module = GeneralUtility::makeInstance(ModuleTemplate::class);
 
-        $menuItems = [
-            0 => [
+        $menuItems = array(
+            0 => array(
                 'label' => 'First label',
                 'content' => 'First content'
-            ],
-            1 => [
+            ),
+            1 => array(
                 'label' => 'Second label',
                 'content' => 'Second content'
-            ],
-            2 => [
+            ),
+            2 => array(
                 'label' => 'Third label',
                 'content' => 'Third content'
-            ]
-        ];
+            )
+        );
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
     }
 
     public function modalAction()
-    {
-    }
+    {}
 }

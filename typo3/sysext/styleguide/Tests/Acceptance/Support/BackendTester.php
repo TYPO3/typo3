@@ -1,7 +1,8 @@
 <?php
-namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Styleguide\Tests\Acceptance\Support;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -14,19 +15,14 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Styleguide\Tests\Acceptance\Support\_generated\BackendTesterActions;
+use TYPO3\TestingFramework\Core\Acceptance\Step\FrameSteps;
+
 /**
- * A user function used in select_33
- */
-class TypeSelect33ItemsProcFunc
+ * Default backend admin or editor actor in the backend
+*/
+class BackendTester extends \Codeception\Actor
 {
-    /**
-     * Add two items to existing ones
-     *
-     * @param $params
-     */
-    public function itemsProcFunc(&$params)
-    {
-        $params['items'][] = array('item 1 from itemProcFunc()', 'val1');
-        $params['items'][] = array('item 2 from itemProcFunc()', 'val2');
-    }
+    use BackendTesterActions;
+    use FrameSteps;
 }

@@ -18,7 +18,9 @@ return [
         ],
     ],
 
+
     'columns' => [
+
 
         'sys_language_uid' => [
             'label'  => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
@@ -77,6 +79,7 @@ return [
             ]
         ],
 
+
         'parentid' => [
             'config' => [
                 'type' => 'passthrough',
@@ -95,12 +98,15 @@ return [
             ],
         ],
 
+
     ],
+
 
     'types' => [
         '0' => [
             'showitem' => 'input_1',
         ],
     ],
+
 
 ];

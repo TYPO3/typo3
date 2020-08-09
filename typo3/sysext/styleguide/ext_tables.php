@@ -1,18 +1,4 @@
 <?php
-
-/*
- *  This file is part of the TYPO3 CMS project.
- *
- *  It is free software; you can redistribute it and/or modify it under
- *  the terms of the GNU General Public License, either version 2
- *  of the License, or any later version.
- *
- *  For the full copyright and license information, please read the
- *  LICENSE.txt file that was distributed with this source code.
- *
- *  The TYPO3 project - inspiring people to share!
- */
-
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
@@ -45,7 +31,7 @@ if (TYPO3_MODE === 'BE') {
     $iconRegistry->registerIcon(
         'provider-svg',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_svg_icon.svg']
+        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_svg_icon.svg',]
     );
     // Register example Bitmap for icon submodule
     $iconRegistry->registerIcon(
@@ -65,7 +51,7 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
         [
             'name' => 'spinner',
-            'spinning' => true
+            'spinning' => TRUE
         ]
     );
 
@@ -163,4 +149,5 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_type');
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_valuesdefault');
+
 }

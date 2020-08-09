@@ -29,7 +29,7 @@ class User1Element extends AbstractFormElement
     {
         $result = $this->initializeResultArray();
         $parameters = $this->data['parameterArray'];
-        $html = [];
+        $html = array();
         $html[] = '<div style="border: 1px dashed ' . $parameters['fieldConf']['config']['parameters']['color'] . '" >';
         $html[] = '<h2>Own form field using a parameter</h2>';
         $html[] = '<input'
