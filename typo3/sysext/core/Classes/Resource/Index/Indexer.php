@@ -290,7 +290,7 @@ class Indexer implements LoggerAwareInterface
 
         // since the core desperately needs image sizes in metadata table do this manually
         // prevent doing this for remote storages, remote storages must provide the data with extractors
-        if ($fileObject->getType() === File::FILETYPE_IMAGE && $this->storage->getDriverType() === 'Local') {
+        if ($fileObject->isImage() && $this->storage->getDriverType() === 'Local') {
             $rawFileLocation = $fileObject->getForLocalProcessing(false);
             $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $rawFileLocation);
             $metaData = [
