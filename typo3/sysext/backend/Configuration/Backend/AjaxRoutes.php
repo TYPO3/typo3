@@ -95,6 +95,12 @@ return [
         'target' => Controller\Page\TreeController::class . '::fetchDataAction'
     ],
 
+    // Get data for page tree
+    'page_tree_filter' => [
+        'path' => '/page/tree/filterData',
+        'target' => Controller\Page\TreeController::class . '::filterDataAction'
+    ],
+
     // Get page tree configuration
     'page_tree_configuration' => [
         'path' => '/page/tree/fetchConfiguration',

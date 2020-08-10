@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2bd51fe622979a67af22d13e7c4cd61",
+    "content-hash": "f0d1aa9f122cd98475bb04e611870b1c",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -6374,7 +6374,6 @@
             "keywords": [
                 "tokenizer"
             ],
-            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
@@ -8340,16 +8339,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.3.3",
+            "version": "6.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "3a057fcd15060880c9b00c23a85a9afdff5dc080"
+                "reference": "a91870c3d093ad3b80eabf558425f51c6b22bc58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/3a057fcd15060880c9b00c23a85a9afdff5dc080",
-                "reference": "3a057fcd15060880c9b00c23a85a9afdff5dc080",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a91870c3d093ad3b80eabf558425f51c6b22bc58",
+                "reference": "a91870c3d093ad3b80eabf558425f51c6b22bc58",
                 "shasum": ""
             },
             "require": {
@@ -8397,7 +8396,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2020-08-01T16:29:46+00:00"
+            "time": "2020-08-11T16:30:38+00:00"
         }
     ],
     "aliases": [],
