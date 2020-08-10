@@ -173,7 +173,22 @@ class FormResultCompiler
 
         return $this->JSbottom();
     }
-
+    protected function determineDateFormat()
+    {
+        // ISO 8601:2000 Datetime format is Year-Month-Day.
+        // Not all the countries are the UK/US date format.
+        // First letter of $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']  = 'Y' or 'y'
+        // Date format will be ISO format
+        if (strtoupper(substr( $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], 0, 1 )) === 'Y') {
+            //Some country use date format 'Year-Month-Day'
+            $dateFormat = 'iso';
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']) {
+            $dateFormat = 'us';
+        } else {
+            $dateFormat = 'eu';
+        }
+        return $dateFormat;
+    }
     /**
      * JavaScript bottom code
      *
@@ -195,7 +210,7 @@ class FormResultCompiler
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'][] = 'function(FormEngine) {
 			FormEngine.initialize(
 				' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ',
-				' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . '
+				' . GeneralUtility::quoteJSvalue($this->determineDateFormat()) . '
 			);
 		}';
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngineReview'] = null;
@@ -218,7 +233,16 @@ class FormResultCompiler
 
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
+        switch ($this->determineDateFormat()) {
+            case 'iso':
+                $dateFormat = ['YYYY-MM-DD', 'YYYY-MM-DD HH:mm'];
+                break;
+            case 'us':
+                $dateFormat = ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'];
+                break;
+            default:
+                $dateFormat = ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY'];
+        }
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
