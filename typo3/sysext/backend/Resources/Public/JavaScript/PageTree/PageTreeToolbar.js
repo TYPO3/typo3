@@ -18,11 +18,12 @@ define(['jquery',
     'TYPO3/CMS/Backend/Icons',
     'd3',
     'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop',
+    'TYPO3/CMS/Core/Event/DebounceEvent',
     'TYPO3/CMS/Backend/Tooltip',
     'TYPO3/CMS/Backend/SvgTree',
     'TYPO3/CMS/Backend/Input/Clearable'
   ],
-  function($, Icons, d3, PageTreeDragDrop) {
+  function($, Icons, d3, PageTreeDragDrop, DebounceEvent) {
     'use strict';
 
     /**
@@ -35,7 +36,8 @@ define(['jquery',
       this.settings = {
         toolbarSelector: 'tree-toolbar',
         searchInput: '.search-input',
-        target: '.svg-toolbar'
+        target: '.svg-toolbar',
+        filterTimeout: 450
       };
 
       /**
@@ -66,13 +68,6 @@ define(['jquery',
        * @type {jQuery}
        */
       this.template = null;
-
-      /**
-       * Nodes stored encoded before tree gets filtered
-       *
-       * @type {string}
-       */
-      this.originalNodes = '';
     };
 
     /**
@@ -181,8 +176,10 @@ define(['jquery',
           let input = $submenu.find('input').get(0);
           if (input) {
             input.clearable({
-              onClear: function (input) {
-                $(input).trigger('input');
+              onClear: function () {
+                _this.tree.resetFilter();
+                _this.tree.prepareDataForVisibleNodes();
+                _this.tree.update();
               }
             });
           }
@@ -204,9 +201,9 @@ define(['jquery',
         }
       });
 
-      $toolbar.find(this.settings.searchInput).on('input', function() {
-        _this.search.call(_this, this);
-      });
+      new DebounceEvent('input', function (e) {
+        this.search(e.target);
+      }.bind(this), this.settings.filterTimeout).bindTo(document.querySelector(this.settings.searchInput));
 
       $toolbar.find('[data-toggle="tooltip"]').tooltip();
 
@@ -221,7 +218,8 @@ define(['jquery',
      * Refresh tree
      */
     TreeToolbar.prototype.refreshTree = function() {
-      this.tree.refreshTree();
+      const searchInput = document.querySelector(this.settings.target + ' ' + this.settings.searchInput);
+      this.tree.refreshOrFilterTree();
     };
 
     /**
@@ -230,31 +228,8 @@ define(['jquery',
      * @param {HTMLElement} input
      */
     TreeToolbar.prototype.search = function(input) {
-      var _this = this;
-      var name = $(input).val().trim();
-
-      if (name !== '') {
-        if (this.originalNodes.length === 0) {
-          this.originalNodes = JSON.stringify(this.tree.nodes);
-        }
-
-        this.tree.nodes[0].expanded = false;
-        this.tree.nodes.forEach(function (node) {
-          var regex = new RegExp(name, 'i');
-          if (node.identifier.toString() === name || regex.test(node.name) || regex.test(node.alias || '')) {
-            _this.showParents(node);
-            node.expanded = true;
-            node.hidden = false;
-          } else if (node.depth !== 0) {
-            node.hidden = true;
-            node.expanded = false;
-          }
-        });
-      } else {
-        this.tree.nodes = JSON.parse(this.originalNodes);
-        this.originalNodes = '';
-      }
-
+      this.tree.searchQuery =  $(input).val().trim();
+      this.tree.refreshOrFilterTree();
       this.tree.prepareDataForVisibleNodes();
       this.tree.update();
     };

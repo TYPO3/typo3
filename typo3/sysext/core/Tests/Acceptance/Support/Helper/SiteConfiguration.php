@@ -17,16 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
+use Codeception\Actor;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
-use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
+use TYPO3\CMS\Styleguide\Tests\Acceptance\Support\AcceptanceTester;
+use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractSiteConfiguration;
 
 /**
  * @see AbstractPageTree
  */
-class PageTree extends AbstractPageTree
+class SiteConfiguration extends AbstractSiteConfiguration
 {
     /**
-     * Inject our core AcceptanceTester actor into PageTree
+     * Inject our core AcceptanceTester actor into SiteConfiguration
      *
      * @param BackendTester $I
      */
