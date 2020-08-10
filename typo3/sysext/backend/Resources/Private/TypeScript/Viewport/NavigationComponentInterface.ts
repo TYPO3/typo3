@@ -18,7 +18,7 @@ interface SetTemporaryMountPoint {
 
 export interface NavigationComponentInterface {
   initialize: Function;
-  refreshTree: Function;
+  refreshOrFilterTree: Function;
   setTemporaryMountPoint: SetTemporaryMountPoint;
   unsetTemporaryMountPoint: Function;
   selectNode: Function;

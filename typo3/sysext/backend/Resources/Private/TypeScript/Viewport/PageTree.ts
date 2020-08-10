@@ -22,7 +22,7 @@ class PageTree {
 
   public refreshTree(): void {
     if (this.instance !== null) {
-      this.instance.refreshTree();
+      this.instance.refreshOrFilterTree();
     }
   }
 
