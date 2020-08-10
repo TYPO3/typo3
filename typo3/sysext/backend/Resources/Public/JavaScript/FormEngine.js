@@ -1344,7 +1344,7 @@ define(['jquery',
    * Sets some options and registers the DOMready handler to initialize further things
    *
    * @param {String} browserUrl
-   * @param {Number} mode
+   * @param {String} mode
    */
   FormEngine.initialize = function(browserUrl, mode) {
     DocumentSaveActions.getInstance().addPreSubmitCallback(function() {
@@ -1355,7 +1355,7 @@ define(['jquery',
     });
 
     FormEngine.browserUrl = browserUrl;
-    FormEngine.Validation.setUsMode(mode);
+    FormEngine.Validation.setDateFormat(mode);
 
     $(function() {
       FormEngine.initializeEvents();
