@@ -589,8 +589,7 @@ class ExtensionManagementUtility
                 'useSortable' => true,
                 'headerThumbnail' => [
                     'field' => 'uid_local',
-                    'width' => '45',
-                    'height' => '45c',
+                    'height' => '45m',
                 ],
 
                 'enabledControls' => [
