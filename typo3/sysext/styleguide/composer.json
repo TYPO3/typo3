@@ -43,8 +43,8 @@
     "typo3/cms-frontend": "10.*.*@dev",
     "typo3/cms-install": "10.*.*@dev",
     "typo3/cms-about": "10.*.*@dev",
-    "typo3/testing-framework": "^5.0.0",
-    "codeception/codeception": "^2.4"
+    "typo3/testing-framework": "^6.3.3",
+    "codeception/codeception": "^3.0"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
