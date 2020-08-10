@@ -28,7 +28,7 @@ define([
   /**
    * The main FormEngineValidation object
    *
-   * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, USmode: number, passwordDummy: string}}
+   * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, dateFormat: string, passwordDummy: string}}
    * @exports TYPO3/CMS/Backend/FormEngineValidation
    */
   var FormEngineValidation = {
@@ -41,7 +41,7 @@ define([
     lastYear: 0,
     lastDate: 0,
     lastTime: 0,
-    USmode: 0,
+    dateFormat: 'eu',
     passwordDummy: '********'
   };
 
@@ -66,7 +66,7 @@ define([
     FormEngineValidation.lastYear = FormEngineValidation.getYear(today);
     FormEngineValidation.lastDate = FormEngineValidation.getDate(today);
     FormEngineValidation.lastTime = 0;
-    FormEngineValidation.USmode = 0;
+    FormEngineValidation.dateFormat = 'eu';
     FormEngineValidation.validate();
   };
 
@@ -92,10 +92,10 @@ define([
 
   /**
    *
-   * @param {Number} mode
+   * @param {String} mode
    */
-  FormEngineValidation.setUsMode = function(mode) {
-    FormEngineValidation.USmode = mode;
+  FormEngineValidation.setDateFormat = function(mode) {
+    FormEngineValidation.dateFormat = mode;
   };
 
   /**
@@ -151,10 +151,15 @@ define([
         // poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
         if (value.toString().indexOf('-') > 0) {
           var date = moment.utc(value);
-          if (FormEngineValidation.USmode) {
-            theString = date.format('MM-DD-YYYY');
-          } else {
-            theString = date.format('DD-MM-YYYY');
+          switch (FormEngineValidation.dateFormat) {
+            case 'iso':
+              theString = date.format('YYYY-MM-DD');
+              break;
+            case 'us':
+              theString = date.format('MM-DD-YYYY');
+              break;
+            default:
+              theString = date.format('DD-MM-YYYY');
           }
         } else {
           parsedInt = value * 1;
@@ -162,10 +167,15 @@ define([
             return '';
           }
           theTime = new Date(parsedInt * 1000);
-          if (FormEngineValidation.USmode) {
-            theString = (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate() + '-' + this.getYear(theTime);
-          } else {
-            theString = theTime.getUTCDate() + '-' + (theTime.getUTCMonth() + 1) + '-' + this.getYear(theTime);
+          switch (FormEngineValidation.dateFormat) {
+            case 'iso':
+              theString = this.getYear(theTime) + '-' + (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate();
+              break;
+            case 'us':
+              theString = (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate() + '-' + this.getYear(theTime);
+              break;
+            default:
+              theString = theTime.getUTCDate() + '-' + (theTime.getUTCMonth() + 1) + '-' + this.getYear(theTime);
           }
         }
         break;
@@ -674,11 +684,24 @@ define([
       default:
         var index = value.indexOf(' ');
         if (index !== -1) {
-          var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
-          FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0, index), value.substr(0, 1), 'time');
+          if (FormEngineValidation.dateFormat === 'iso') {
+            var dateVal = FormEngineValidation.parseDate(value.substr(0, index), value.substr(0, 1));
+            // set refDate so that evalFunc_input on time will work with correct DST information
+            FormEngineValidation.refDate = new Date(dateVal * 1000);
+            FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(index,value.length), value.substr(0, 1), 'time');
+          } else {
+            var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
+            // set refDate so that evalFunc_input on time will work with correct DST information
+            FormEngineValidation.refDate = new Date(dateVal * 1000);
+            FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0,index), value.substr(0, 1), 'time');
+          }
         } else {
           // only date, no time
-          FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
+          if (FormEngineValidation.dateFormat === 'iso') {
+            FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(value.length-1, value.length));
+          } else {
+            FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
+          }
         }
     }
     FormEngineValidation.lastTime += add * 24 * 60 * 60;
@@ -716,18 +739,21 @@ define([
         if (values.valPol[index]) {
           add = FormEngineValidation.pol(values.valPol[index], FormEngineValidation.parseInt(values.values[index]));
         }
-        if (values.values[1] && values.values[1].length > 2) {
+        var isoMode = FormEngineValidation.dateFormat === 'iso' ? 3 : 1;
+        var isoModeYear = FormEngineValidation.dateFormat === 'iso' ? 1 : 3;
+
+        if (values.values[isoMode] && values.values[isoMode].length > 2) {
           if (values.valPol[2]) {
             add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
           }
-          var temp = values.values[1];
+          var temp = values.values[isoMode];
           values = FormEngineValidation.splitSingle(temp);
         }
 
-        var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
-        var usMode = FormEngineValidation.USmode ? 1 : 2;
+        var year = (values.values[isoModeYear]) ? FormEngineValidation.parseInt(values.values[isoModeYear]) : FormEngineValidation.getYear(today);
+        var usMode = FormEngineValidation.dateFormat === 'us' ? 1 : 2;
         var month = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCMonth() + 1;
-        usMode = FormEngineValidation.USmode ? 2 : 1;
+        usMode = FormEngineValidation.dateFormat === 'iso' ? 3 : 1;
         var day = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCDate();
 
 
@@ -836,7 +862,11 @@ define([
         if (values.valPol[2]) {
           add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
         }
-        var year = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
+        if (FormEngineValidation.ISOmode) {
+          var year = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
+        } else {
+          var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
+        }
         FormEngineValidation.lastYear = year;
     }
     FormEngineValidation.lastYear += add;
