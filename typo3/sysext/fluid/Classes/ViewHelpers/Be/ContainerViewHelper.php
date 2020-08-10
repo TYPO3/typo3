@@ -83,7 +83,8 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         $addJsInlineLabels = $this->arguments['addJsInlineLabels'];
         $includeRequireJsModules = $this->arguments['includeRequireJsModules'];
 
-        $pageRenderer = $this->getPageRenderer();
+        $moduleTemplate = $this->getModuleTemplate();
+        $pageRenderer = $moduleTemplate->getPageRenderer();
 
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
@@ -111,7 +112,6 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         }
         // Render the content and return it
         $output = $this->renderChildren();
-        $moduleTemplate = $this->getModuleTemplate();
         if ($this->arguments['enableDocHeader'] ?? false) {
             $moduleTemplate->getDocHeaderComponent()->enable();
         } else {
