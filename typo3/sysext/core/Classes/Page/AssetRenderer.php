@@ -117,6 +117,7 @@ class AssetRenderer
         if (strpos($file, '://') !== false || strpos($file, '//') === 0) {
             return $file;
         }
-        return PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($file));
+        $file = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($file));
+        return GeneralUtility::createVersionNumberedFilename($file);
     }
 }
