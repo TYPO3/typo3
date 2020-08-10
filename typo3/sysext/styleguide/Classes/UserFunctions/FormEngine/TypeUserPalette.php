@@ -26,7 +26,7 @@ class TypeUserPalette
      */
     public function render(array $parameters, $parentObject)
     {
-        $html = [];
+        $html = array();
         $html[] = '
 			<div class="t3-form-field-item">
 				<input name="data[sys_file_storage][{uid}][is_public]" value="0" type="hidden">

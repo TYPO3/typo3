@@ -17,7 +17,9 @@ return [
         'translationSource' => 'l10n_source',
     ],
 
+
     'columns' => [
+
 
         'select_parent' => [
             'label' => 'select parent',
@@ -94,10 +96,12 @@ return [
 
     ],
 
+
     'types' => [
         '1' => [
             'showitem' => 'select_parent, select_child',
         ],
     ],
+
 
 ];

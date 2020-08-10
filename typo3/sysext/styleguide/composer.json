@@ -1,87 +1,67 @@
 {
-	"name": "typo3/cms-styleguide",
-	"authors": [
-		{
-			"name": "TYPO3 CMS Core Team",
-			"role": "Developer",
-			"homepage": "https://forge.typo3.org/projects/typo3cms-core"
-		}, {
-			"name": "Felix Kopp",
-			"email": "felix-source@phorax.com",
-			"role": "Developer",
-			"homepage": "http://phorax.com"
-		}
-	],
-	"type": "typo3-cms-extension",
-	"description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
-	"homepage": "https://github.com/TYPO3/styleguide",
-	"license": "GPL-2.0-or-later",
-	"keywords": [
-		"typo3", "typo3 backend", "style guide"
-	],
-	"support": {
-		"issues": "https://github.com/TYPO3/styleguide/issues"
-	},
-	"autoload": {
-		"psr-4": {
-			"TYPO3\\CMS\\Styleguide\\": "Classes/"
-		}
-	},
+  "name": "typo3/cms-styleguide",
+  "authors": [
+    {
+      "name": "TYPO3 CMS Core Team",
+      "role": "Developer",
+      "homepage": "https://forge.typo3.org/projects/typo3cms-core"
+    },
+    {
+      "name": "Felix Kopp",
+      "email": "felix-source@phorax.com",
+      "role": "Developer",
+      "homepage": "http://phorax.com"
+    }
+  ],
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
+  "homepage": "https://github.com/TYPO3/styleguide",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "typo3",
+    "typo3 backend",
+    "style guide"
+  ],
+  "support": {
+    "issues": "https://github.com/TYPO3/styleguide/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "TYPO3\\CMS\\Styleguide\\": "Classes/"
+    }
+  },
 
-	"config": {
-		"vendor-dir": ".build/vendor",
-		"bin-dir": ".build/bin"
-	},
-	"require-dev": {
-		"typo3/cms-core": "10.*.*@dev",
-		"typo3/cms-frontend": "10.*.*@dev",
-		"typo3/cms-install": "10.*.*@dev",
-		"typo3/cms-about": "10.*.*@dev",
-		"typo3/testing-framework": "^6.3",
-		"codeception/codeception": "^4.1",
-		"codeception/module-webdriver": "^1.0",
-		"codeception/module-db": "^1.0",
-		"friendsofphp/php-cs-fixer": "^2.14",
-		"overtrue/phplint": "^1.1",
-		"helhum/typo3-console": "^6.3",
-		"codeception/module-asserts": "^1.2"
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
-		}
-	},
-
-	"scripts": {
-		"test:php:lint": [
-			"phplint"
-		],
-		"test:php:unit": [
-			"phpunit -c Build/phpunit.xml --verbose --testsuite \"Unit Tests\""
-		],
-		"test:php:functional": [
-			"phpunit -c Build/phpunit.xml --verbose --testsuite \"Functional Tests\""
-		],
-		"test:php:acceptance": [
-			"codecept run acceptance --steps --xml reports.xml --html reports.html"
-		],
-		"test": [
-			"@test:php:lint", "@test:php:unit", "@test:php:functional"
-		],
-		"cgl": [
-			"php-cs-fixer --diff -v fix"
-		],
-		"post-autoload-dump": [
-			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
-		]
-	},
-	"extra": {
-		"typo3/cms": {
-			"app-dir": ".build",
-			"web-dir": ".build/web",
-			"extension-key": "styleguide"
-		}
-	}
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "require-dev": {
+    "typo3/cms-core": "10.*.*@dev",
+    "typo3/cms-frontend": "10.*.*@dev",
+    "typo3/cms-install": "10.*.*@dev",
+    "typo3/cms-about": "10.*.*@dev",
+    "typo3/testing-framework": "^6.3.3",
+    "codeception/codeception": "^4.1",
+    "codeception/module-webdriver": "^1.1",
+    "codeception/module-asserts": "^1.2"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload-dev": {
+    "psr-4": {
+      "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ]
+  },
+  "extra": {
+    "typo3/cms": {
+      "app-dir": ".Build",
+      "web-dir": ".Build/Web",
+      "extension-key": "styleguide"
+    }
+  }
 }

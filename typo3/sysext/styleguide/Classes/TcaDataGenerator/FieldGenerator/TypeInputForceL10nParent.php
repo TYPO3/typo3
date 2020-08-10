@@ -22,6 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 class TypeInputForceL10nParent extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
+
     public function match(array $data): bool
     {
         return $data['fieldName'] === 'l10n_parent';

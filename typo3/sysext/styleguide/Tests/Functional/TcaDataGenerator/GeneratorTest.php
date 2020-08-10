@@ -49,6 +49,9 @@ class GeneratorTest extends FunctionalTestCase
      */
     public function generatorCreatesBasicRecord()
     {
+        // This call is a hack. Path stuff should be solved by typo3/testing-framework
+        // correctly at this point already so single extension functional tests do not
+        // need to deal with this anymore.
         Environment::initialize(
             new ApplicationContext('Production'),
             Environment::isCli(),
@@ -60,6 +63,7 @@ class GeneratorTest extends FunctionalTestCase
             Environment::getBackendPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
+
         // styleguide generator uses DataHandler for some parts. DataHandler needs an
         // initialized BE user with admin right and the live workspace.
         Bootstrap::initializeBackendUser();

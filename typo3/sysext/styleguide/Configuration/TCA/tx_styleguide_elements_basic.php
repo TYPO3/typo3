@@ -20,6 +20,7 @@ return [
         ],
     ],
 
+
     'columns' => [
         'hidden' => [
             'exclude' => 1,
@@ -369,10 +370,10 @@ return [
                 'eval' => 'trim',
                 'valuePicker' => [
                     'items' => [
-                        [ 'spring', 'Spring'],
-                        [ 'summer', 'Summer'],
-                        [ 'autumn', 'Autumn'],
-                        [ 'winter', 'Winter'],
+                        [ 'spring', 'Spring', ],
+                        [ 'summer', 'Summer', ],
+                        [ 'autumn', 'Autumn', ],
+                        [ 'winter', 'Winter', ],
                     ],
                 ],
             ],
@@ -397,10 +398,10 @@ return [
                 'valuePicker' => [
                     'mode' => 'append',
                     'items' => [
-                        [ 'spring', 'Spring'],
-                        [ 'summer', 'Summer'],
-                        [ 'autumn', 'Autumn'],
-                        [ 'winter', 'Winter'],
+                        [ 'spring', 'Spring', ],
+                        [ 'summer', 'Summer', ],
+                        [ 'autumn', 'Autumn', ],
+                        [ 'winter', 'Winter', ],
                     ],
                 ],
             ],
@@ -415,10 +416,10 @@ return [
                 'valuePicker' => [
                     'mode' => 'prepend',
                     'items' => [
-                        [ 'spring', 'Spring'],
-                        [ 'summer', 'Summer'],
-                        [ 'autumn', 'Autumn'],
-                        [ 'winter', 'Winter'],
+                        [ 'spring', 'Spring', ],
+                        [ 'summer', 'Summer', ],
+                        [ 'autumn', 'Autumn', ],
+                        [ 'winter', 'Winter', ],
                     ],
                 ],
             ],
@@ -432,9 +433,9 @@ return [
                 'size' => 10,
                 'valuePicker' => [
                     'items' => [
-                        [ 'blue', '#0000FF'],
-                        [ 'red', '#FF0000'],
-                        [ 'typo3 orange', '#FF8700'],
+                        [ 'blue', '#0000FF', ],
+                        [ 'red', '#FF0000', ],
+                        [ 'typo3 orange', '#FF8700', ],
                     ],
                 ],
             ],
@@ -491,6 +492,7 @@ return [
                 'readOnly' => true,
             ],
         ],
+
 
         'inputdatetime_1' => [
             'exclude' => 1,
@@ -592,6 +594,7 @@ return [
                 'readOnly' => true,
             ],
         ],
+
 
         'text_1' => [
             'l10n_mode' => 'prefixLangTitle description',
@@ -780,6 +783,7 @@ return [
                 'rows' => '5',
             ],
         ],
+
 
         'checkbox_1' => [
             'exclude' => 1,
@@ -1156,6 +1160,7 @@ return [
             ]
         ],
 
+
         'radio_1' => [
             'exclude' => 1,
             'label' => 'radio_1 three options, one without label description',
@@ -1250,6 +1255,7 @@ return [
             ],
         ],
 
+
         'none_1' => [
             'exclude' => 1,
             'label' => 'none_1 pass_content=1 description',
@@ -1292,6 +1298,7 @@ return [
             ],
         ],
 
+
         'passthrough_1' => [
             'exclude' => 1,
             'label' => 'passthrough_1 field should NOT be shown',
@@ -1308,6 +1315,7 @@ return [
             ],
         ],
 
+
         'user_1' => [
             'exclude' => 1,
             'label' => 'user_1 parameter=color=green',
@@ -1319,6 +1327,7 @@ return [
                 ],
             ],
         ],
+
 
         'flex_1' => [
             'exclude' => 1,
@@ -1582,7 +1591,9 @@ return [
             ],
         ],
 
+
     ],
+
 
     'types' => [
         '0' => [
@@ -1618,5 +1629,6 @@ return [
             ',
         ],
     ],
+
 
 ];

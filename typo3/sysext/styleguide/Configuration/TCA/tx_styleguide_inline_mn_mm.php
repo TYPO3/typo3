@@ -19,7 +19,9 @@ return [
         'origUid' => 't3_origuid',
     ],
 
+
     'columns' => [
+
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -80,14 +82,15 @@ return [
             ]
         ],
 
+
         'parentid' => [
             'label' => 'parentid',
             'config' => [
-                'type' => 'select',
+                "type" => "select",
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_inline_mn',
-                'foreign_table_where' => "AND {#tx_styleguide_inline_mn}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mn}.{#sys_language_uid}='###REC_FIELD_sys_language_uid###'",
-                'maxitems' => 1,
+                "foreign_table_where" => "AND {#tx_styleguide_inline_mn}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mn}.{#sys_language_uid}='###REC_FIELD_sys_language_uid###'",
+                "maxitems" => 1,
                 'localizeReferences' => 1,
             ]
         ],
@@ -97,7 +100,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_inline_mn_child',
-                'foreign_table_where' => "AND {#tx_styleguide_inline_mn_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mn_child}.{#sys_language_uid}='###REC_FIELD_sys_language_uid###'",
+                "foreign_table_where" => "AND {#tx_styleguide_inline_mn_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mn_child}.{#sys_language_uid}='###REC_FIELD_sys_language_uid###'",
                 'maxitems' => 1,
                 'localizeReferences' => 1,
             ]
@@ -120,6 +123,7 @@ return [
         ],
     ],
 
+
     'types' => [
         '0' => [
             'showitem' => '
@@ -127,5 +131,6 @@ return [
                 --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
+
 
 ];

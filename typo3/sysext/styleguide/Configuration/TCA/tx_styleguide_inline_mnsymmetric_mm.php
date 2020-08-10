@@ -19,7 +19,9 @@ return [
         'origUid' => 't3_origuid',
     ],
 
+
     'columns' => [
+
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -80,6 +82,7 @@ return [
             ]
         ],
 
+
         'hotelid' => [
             'label' => 'hotelid',
             'config' => [
@@ -112,6 +115,7 @@ return [
         ],
     ],
 
+
     'types' => [
         '0' => [
             'showitem' => '
@@ -119,5 +123,6 @@ return [
                 --div--;Visibility, sys_language_uid, l18n_parent, l10n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
+
 
 ];

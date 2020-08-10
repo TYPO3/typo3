@@ -20,7 +20,9 @@ return [
         'origUid' => 't3_origuid',
     ],
 
+
     'columns' => [
+
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -81,6 +83,7 @@ return [
             ]
         ],
 
+
         'input_1' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
@@ -91,16 +94,16 @@ return [
                 'eval' => 'required',
             ]
         ],
-        'parents' => [
-            'exclude' => 1,
-            'label' => 'parents',
-            'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_inline_mn_mm',
-                'foreign_field' => 'childid',
-                'foreign_sortby' => 'childsort',
-                'foreign_label' => 'parentid',
-                'maxitems' => 10,
+        "parents" => [
+            "exclude" => 1,
+            "label" => "parents",
+            "config" => [
+                "type" => "inline",
+                "foreign_table" => "tx_styleguide_inline_mn_mm",
+                "foreign_field" => "childid",
+                "foreign_sortby" => "childsort",
+                "foreign_label" => "parentid",
+                "maxitems" => 10,
                 'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
@@ -110,7 +113,9 @@ return [
             ],
         ],
 
+
     ],
+
 
     'types' => [
         '0' => [
@@ -120,5 +125,6 @@ return [
             '
         ]
     ],
+
 
 ];

@@ -15,8 +15,7 @@ namespace TYPO3\CMS\Styleguide\Tests\Acceptance\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
-
-use TYPO3\CMS\Styleguide\Tests\Acceptance\Support\AcceptanceTester;
+use TYPO3\CMS\Styleguide\Tests\Acceptance\Support\BackendTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
@@ -32,17 +31,17 @@ class ModuleCest
     public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
 
     /**
-     * @param AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function _before(AcceptanceTester $I)
+    public function _before(BackendTester $I)
     {
         $I->useExistingSession('admin');
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function styleguideInTopbarHelpCanBeCalled(AcceptanceTester $I)
+    public function styleguideInTopbarHelpCanBeCalled(BackendTester $I)
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);
@@ -53,9 +52,9 @@ class ModuleCest
 
     /**
      * @depends styleguideInTopbarHelpCanBeCalled
-     * @param AcceptanceTester $I
+     * @param BackendTester $I
      */
-    public function creatingAndDeletingDemoDataWorks(AcceptanceTester $I)
+    public function creatingDemoDataWorks(BackendTester $I)
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);
@@ -66,8 +65,21 @@ class ModuleCest
         $I->waitForText('TCA test records');
         $I->click('Create styleguide page tree with data');
         $I->waitForText('A page tree with styleguide TCA test records was created.', 300);
+    }
 
-        // delete again
+    /**
+     * @depends creatingDemoDataWorks
+     * @param BackendTester $I
+     */
+    public function deletingDemoDataWorks(BackendTester $I)
+    {
+        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
+        $I->canSee('Styleguide', self::$topBarModuleSelector);
+        $I->click('Styleguide', self::$topBarModuleSelector);
+        $I->switchToContentFrame();
+        $I->see('TYPO3 CMS Backend Styleguide', 'h1');
+        $I->click('TCA / Records');
+        $I->waitForText('TCA test records');
         $I->click('Delete styleguide page tree and all styleguide data records');
         $I->waitForText('The styleguide page tree and all styleguide records were deleted.', 300);
     }
