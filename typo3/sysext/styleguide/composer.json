@@ -25,9 +25,6 @@
   "support": {
     "issues": "https://github.com/TYPO3/styleguide/issues"
   },
-  "replace": {
-    "styleguide": "*"
-  },
   "autoload": {
     "psr-4": {
       "TYPO3\\CMS\\Styleguide\\": "Classes/"
