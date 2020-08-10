@@ -41,7 +41,9 @@
     "typo3/cms-install": "10.*.*@dev",
     "typo3/cms-about": "10.*.*@dev",
     "typo3/testing-framework": "^6.3.3",
-    "codeception/codeception": "^3.0"
+    "codeception/codeception": "^4.1",
+    "codeception/module-webdriver": "^1.1",
+    "codeception/module-asserts": "^1.2"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
