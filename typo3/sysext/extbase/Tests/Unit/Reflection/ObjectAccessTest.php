@@ -447,6 +447,29 @@ class ObjectAccessTest extends UnitTestCase
     /**
      * @test
      */
+    public function isPropertyGettableWorksOnObjectsMixingRegularPropertiesAndArrayAccess()
+    {
+        /** @var \ArrayAccess $object */
+        $object = new class() extends \ArrayObject {
+            private $regularProperty = 'foo';
+
+            public function getRegularProperty(): string
+            {
+                return $this->regularProperty;
+            }
+        };
+
+        $object['key'] = 'v';
+        self::assertTrue(ObjectAccess::isPropertyGettable($object, 'regularProperty'));
+        self::assertTrue(ObjectAccess::isPropertyGettable($object, 'key'));
+
+        self::assertSame('foo', ObjectAccess::getProperty($object, 'regularProperty'));
+        self::assertSame('v', ObjectAccess::getProperty($object, 'key'));
+    }
+
+    /**
+     * @test
+     */
     public function isPropertyGettableWorksOnStdClass()
     {
         $stdClassObject = new \stdClass();

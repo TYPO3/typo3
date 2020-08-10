@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Reflection;
 
+use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -66,7 +67,11 @@ class ObjectAccess
                 1237301367
             );
         }
-        return self::getPropertyInternal($subject, $propertyName);
+        try {
+            return self::getPropertyInternal($subject, $propertyName);
+        } catch (NoSuchIndexException $ignoredException) {
+            return null;
+        }
     }
 
     /**
@@ -110,7 +115,11 @@ class ObjectAccess
         }
 
         if (is_array($subject)) {
-            return self::getArrayIndexValue($subject, self::convertToArrayPropertyPath($propertyPath));
+            try {
+                return self::getArrayIndexValue($subject, self::convertToArrayPropertyPath($propertyPath));
+            } catch (NoSuchIndexException $ignoredException) {
+                return null;
+            }
         }
 
         return null;
@@ -307,11 +316,7 @@ class ObjectAccess
      */
     public static function isPropertyGettable($object, $propertyName): bool
     {
-        if (($object instanceof \ArrayAccess) && !$object->offsetExists($propertyName)) {
-            return false;
-        }
-
-        if (is_array($object) || $object instanceof \ArrayAccess) {
+        if (is_array($object) || ($object instanceof \ArrayAccess && $object->offsetExists($propertyName))) {
             $propertyName = self::wrap($propertyName);
         }
 
@@ -344,6 +349,7 @@ class ObjectAccess
     {
         if (static::$propertyAccessor === null) {
             static::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->enableExceptionOnInvalidIndex()
                 ->getPropertyAccessor();
         }
 
