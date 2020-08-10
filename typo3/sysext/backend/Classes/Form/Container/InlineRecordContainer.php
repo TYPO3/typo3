@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -371,13 +372,14 @@ class InlineRecordContainer extends AbstractContainer
                 } elseif ($fileObject) {
                     $imageSetup = $inlineConfig['appearance']['headerThumbnail'];
                     unset($imageSetup['field']);
-                    if (!empty($rec['crop'])) {
-                        $imageSetup['crop'] = $rec['crop'];
+                    $cropVariantCollection = CropVariantCollection::create($rec['crop'] ?? '');
+                    if (!$cropVariantCollection->getCropArea()->isEmpty()) {
+                        $imageSetup['crop'] = $cropVariantCollection->getCropArea()->makeAbsoluteBasedOnFile($fileObject);
                     }
-                    $imageSetup = array_merge(['width' => '45', 'height' => '45c'], $imageSetup);
+                    $imageSetup = array_merge(['maxWidth' => '145', 'maxHeight' => '45'], $imageSetup);
 
                     if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $fileObject->isImage()) {
-                        $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup);
+                        $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {
                             $imageUrl = $processedImage->getPublicUrl(true);
