@@ -246,6 +246,9 @@ class ModuleTemplate
         $this->iconFactory = $iconFactory;
         $this->flashMessageService = $flashMessageService;
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
+        $this->setupPage();
+        $this->loadJavaScripts();
+        $this->loadStylesheets();
     }
 
     /**
@@ -363,11 +366,8 @@ class ModuleTemplate
      */
     public function renderContent()
     {
-        $this->setupPage();
-        $this->pageRenderer->setTitle($this->title);
-        $this->loadJavaScripts();
         $this->setJavaScriptCodeArray();
-        $this->loadStylesheets();
+        $this->pageRenderer->setTitle($this->title);
 
         $this->view->assign('docHeader', $this->docHeaderComponent->docHeaderContent());
         if ($this->moduleId) {
