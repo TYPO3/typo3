@@ -1321,9 +1321,6 @@ return [
         'defaultTypoScript_setup' => '',
         'defaultTypoScript_setup.' => [], // Lines of TS to include after a static template with the uid = the index in the array (Setup)
         'additionalAbsRefPrefixDirectories' => '',
-        'IPmaskMountGroups' => [ // This allows you to specify an array of IPmaskLists/fe_group-uids. If the REMOTE_ADDR of the user matches an IPmaskList,
-            // array('IPmaskList_1','fe_group uid'), array('IPmaskList_2','fe_group uid')
-        ],
         'enable_mount_pids' => true,
         'hidePagesIfNotTranslatedByDefault' => false,
         'eID_include' => [], // Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for \TYPO3\CMS\Frontend\Http\RequestHandlerRequestHandler to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
