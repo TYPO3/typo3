@@ -156,9 +156,17 @@ class PageRepository implements LoggerAwareInterface
     protected function init($show_hidden)
     {
         $this->where_groupAccess = '';
+        // As PageRepository may be used multiple times during the frontend request, and may
+        // actually be used before the usergroups have been resolved, self::getMultipleGroupsWhereClause()
+        // and the hook in ->enableFields() need to be reconsidered when the usergroup state changes.
+        // When something changes in the context, a second runtime cache entry is built.
+        // However, the PageRepository is generally in use for generating e.g. hundreds of links, so they would all use
+        // the same cache identifier.
+        $userAspect = $this->context->getAspect('frontend.user');
+        $frontendUserIdentifier = 'user_' . (int)$userAspect->get('id') . '_groups_' . md5(implode(',', $userAspect->getGroupIds()));
 
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($show_hidden ? 'ShowHidden' : '') . '_' . (int)$this->versioningWorkspaceId;
+        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($show_hidden ? 'ShowHidden' : '') . '_' . (int)$this->versioningWorkspaceId . '_' . $frontendUserIdentifier;
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             $this->where_hid_del = $cacheEntry;
