@@ -17,25 +17,35 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
 
-use Psr\Log\NullLogger;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
-use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class CanonicalGeneratorTest extends AbstractTestCase
+class CanonicalGeneratorTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
+    private const TYPO3_CONF_VARS = [
+        'SYS' => [
+            'encryptionKey' => self::ENCRYPTION_KEY,
+        ],
+        'FE' => [
+            'cacheHash' => [
+                'requireCacheHashPresenceParameters' => []
+            ],
+        ]
+    ];
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
+    ];
+
     /**
      * @var string[]
      */
@@ -43,61 +53,107 @@ class CanonicalGeneratorTest extends AbstractTestCase
         'core', 'frontend', 'seo'
     ];
 
+    /**
+     * Used for dynamic TypoScript injection with InternalRequest object.
+     *
+     * @var string[]
+     */
+    protected $pathsToLinkInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+    ];
+
+    /**
+     * @var InternalRequestContext
+     */
+    private $internalRequestContext;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-canonical.xml');
+
+        // these settings are forwarded to the frontend sub-request as well
+        $this->internalRequestContext = (new InternalRequestContext())
+            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
+
         $this->writeSiteConfiguration(
             'website-local',
-            $this->buildSiteConfiguration(1, 'http://localhost/')
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'http://localhost/'),
+            ]
         );
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['REQUEST_URI'] = '/';
-        GeneralUtility::flushInternalRuntimeCaches();
+
+        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-canonical.xml');
+        $this->setUpFrontendRootPage(1);
     }
 
-    protected function initTypoScriptFrontendController(int $uid): TypoScriptFrontendController
+    protected function tearDown(): void
     {
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('website-local');
-        $typoScriptFrontendController = new TypoScriptFrontendController(
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $site->getDefaultLanguage(),
-            new PageArguments($uid, '0', []),
-            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
-        );
-        $request = ServerRequestFactory::fromGlobals();
-        $typoScriptFrontendController->cObj = new ContentObjectRenderer();
-        $typoScriptFrontendController->cObj->setLogger(new NullLogger());
-        $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        $typoScriptFrontendController->getPageAndRootlineWithDomain(1, $request);
-        return $typoScriptFrontendController;
+        unset($this->internalRequestContext);
+        parent::tearDown();
     }
 
     public function generateDataProvider(): array
     {
         return [
-            'uid: 1 with canonical_link' => [1, '<link rel="canonical" href="http://localhost/"/>' . chr(10)],
-            'uid: 2 with canonical_link' => [2, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10)],
-            'uid: 3 with canonical_link AND content_from_pid = 2' => [3, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10)],
-            'uid: 4 without canonical_link AND content_from_pid = 2' => [4, '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10)],
-            'uid: 5 without canonical_link AND without content_from_pid set' => [5, '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . chr(10)],
-            'uid: 6 without canonical_link AND content_from_pid = 7 (but target page is deleted)' => [6, '<link rel="canonical" href="http://localhost/dummy-1-2-6"/>' . chr(10)],
-            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [8, '<link rel="canonical" href="http://localhost/dummy-1-2-8"/>' . chr(10)],
-            'uid: 10 no index' => [10, ''],
+            'uid: 1 with canonical_link' => [
+                'http://localhost/',
+                '<link rel="canonical" href="http://localhost/"/>' . chr(10),
+            ],
+            'uid: 2 with canonical_link' => [
+                'http://localhost/dummy-1-2',
+                '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10),
+            ],
+            'uid: 3 with canonical_link AND content_from_pid = 2' => [
+                'http://localhost/dummy-1-3',
+                '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10),
+            ],
+            'uid: 4 without canonical_link AND content_from_pid = 2' => [
+                'http://localhost/dummy-1-4',
+                '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10),
+            ],
+            'uid: 5 without canonical_link AND without content_from_pid set' => [
+                'http://localhost/dummy-1-2-5',
+                '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . chr(10),
+            ],
+            'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden)' => [
+                'http://localhost/dummy-1-2-8',
+                '<link rel="canonical" href="http://localhost/dummy-1-2-8"/>' . chr(10),
+            ],
+            'uid: 10 no index' => [
+                'http://localhost/dummy-1-2-10',
+                ''
+            ],
         ];
     }
 
     /**
+     * @param string $targetUri
+     * @param string $expectedCanonicalUrl
+     *
      * @test
      * @dataProvider generateDataProvider
-     * @param int $uid
-     * @param string $expectedCanonicalUrl
      */
-    public function generate(int $uid, string $expectedCanonicalUrl): void
+    public function generate(string $targetUri, string $expectedCanonicalUrl): void
     {
-        $typoScriptFrontendController = $this->initTypoScriptFrontendController($uid);
-        self::assertSame($expectedCanonicalUrl, (new CanonicalGenerator($typoScriptFrontendController))->generate());
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest($targetUri))
+                ->withInstructions([$this->buildPageTypoScript()]),
+            $this->internalRequestContext,
+            true
+        );
+
+        self::assertStringContainsString($expectedCanonicalUrl, (string)$response->getBody());
+    }
+
+    private function buildPageTypoScript(): TypoScriptInstruction
+    {
+        return (new TypoScriptInstruction(TemplateService::class))
+            ->withTypoScript([
+                'page' => 'PAGE',
+                'page.' => [
+                    'typeNum' => 0,
+                ],
+            ]);
     }
 }
