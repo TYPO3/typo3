@@ -48,7 +48,14 @@ class LocalPreviewHelper
         $configuration = array_replace(static::$defaultConfiguration, $configuration);
         $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
         $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
-        return $configuration;
+
+        return array_filter(
+            $configuration,
+            function ($value, $name) {
+                return !empty($value) && in_array($name, ['width', 'height'], true);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
     }
 
     /**

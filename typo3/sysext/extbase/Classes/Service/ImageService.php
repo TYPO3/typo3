@@ -126,7 +126,7 @@ class ImageService implements SingletonInterface
      * @param string $src
      * @param FileInterface|\TYPO3\CMS\Extbase\Domain\Model\FileReference|null $image
      * @param bool $treatIdAsReference
-     * @return FileInterface
+     * @return FileInterface|File|FileReference
      * @throws \UnexpectedValueException
      * @internal
      */
