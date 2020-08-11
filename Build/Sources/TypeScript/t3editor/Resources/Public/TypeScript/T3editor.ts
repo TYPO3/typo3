@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as CodeMirror from 'cm/lib/codemirror';
+import CodeMirror from 'cm/lib/codemirror';
 import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
