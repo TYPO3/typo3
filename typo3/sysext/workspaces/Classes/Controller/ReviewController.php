@@ -179,7 +179,7 @@ class ReviewController extends ActionController
         $this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', (int)$backendUser->workspace === 0);
         $this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, $activeWorkspace));
         $this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', $activeWorkspace);
-        $workspaceIsAccessible = !($backendUser->workspace === 0 && !$backendUser->isAdmin());
+        $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID;
         $this->view->assignMultiple([
             'showGrid' => $workspaceIsAccessible,
             'showLegend' => $workspaceIsAccessible,
@@ -265,7 +265,9 @@ class ReviewController extends ActionController
     {
         $tabs = [];
 
-        if ($activeWorkspace !== WorkspaceService::SELECT_ALL_WORKSPACES) {
+        if ($activeWorkspace !== WorkspaceService::SELECT_ALL_WORKSPACES
+            && $activeWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID
+        ) {
             $tabs[] = [
                 'title' => $workspaceList[$activeWorkspace],
                 'itemId' => 'workspace-' . $activeWorkspace,
@@ -284,7 +286,9 @@ class ReviewController extends ActionController
         }
 
         foreach ($workspaceList as $workspaceId => $workspaceTitle) {
-            if ($workspaceId === $activeWorkspace) {
+            if ($workspaceId === $activeWorkspace
+                || $workspaceId === WorkspaceService::LIVE_WORKSPACE_ID
+            ) {
                 continue;
             }
             $tabs[] = [
