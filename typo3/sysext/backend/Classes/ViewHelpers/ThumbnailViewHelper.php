@@ -33,7 +33,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  * ::
  *
- *    <be:thumbnail image="{file.resource}" maxWidth="{thumbnail.width}" maxHeight="{thumbnail.height}" />
+ *    <be:thumbnail image="{file.resource}" width="{thumbnail.width}" height="{thumbnail.height}" />
  *
  * Output::
  *

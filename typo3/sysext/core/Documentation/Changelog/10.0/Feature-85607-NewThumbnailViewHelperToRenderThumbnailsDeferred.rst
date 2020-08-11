@@ -15,7 +15,7 @@ The :php:`\TYPO3\CMS\Backend\ViewHelpers\ThumbnailViewHelper` extends the :php:`
 
 .. code-block:: HTML
 
-    <be:thumbnail image="{file.resource}" maxWidth="{thumbnail.width}" maxHeight="{thumbnail.height}" />
+    <be:thumbnail image="{file.resource}" width="{thumbnail.width}" height="{thumbnail.height}" />
 
 
 Impact
