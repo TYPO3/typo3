@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import * as Chart from 'TYPO3/CMS/Dashboard/Contrib/chartjs';
+import Chart from 'TYPO3/CMS/Dashboard/Contrib/chartjs';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class ChartInitializer {
