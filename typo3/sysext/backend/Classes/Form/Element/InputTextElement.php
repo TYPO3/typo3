@@ -99,6 +99,7 @@ class InputTextElement extends AbstractFormElement
                 'data-formengine-input-name' => $parameterArray['itemFormElName'],
                 'type' => 'text',
                 'value' => $itemValue,
+                'placeholder' => trim($config['placeholder']) ?? '',
             ];
 
             $html = [];
@@ -296,7 +297,7 @@ class InputTextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         } elseif ($this->hasNullCheckboxWithPlaceholder()) {
             $checked = $itemValue !== null ? ' checked="checked"' : '';
-            $placeholder = $shortenedPlaceholder = $config['placeholder'] ?? '';
+            $placeholder = $shortenedPlaceholder = trim($config['placeholder']) ?? '';
             $disabled = '';
             $fallbackValue = 0;
             if (strlen($placeholder) > 0) {
