@@ -25,7 +25,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Command for listing all extensions known to the system.
@@ -34,6 +33,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionListCommand extends Command
 {
+    /**
+     * @var PackageManager
+     */
+    private $packageManager;
+
+    public function __construct(PackageManager $packageManager)
+    {
+        $this->packageManager = $packageManager;
+        parent::__construct();
+    }
+
     /**
      * Defines the allowed options for this command
      */
@@ -63,18 +73,17 @@ class ExtensionListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
 
         $onlyShowInactiveExtensions = $input->getOption('inactive');
         $showAlsoInactiveExtensions = $input->getOption('all');
         if ($onlyShowInactiveExtensions) {
-            $packages = $packageManager->getAvailablePackages();
+            $packages = $this->packageManager->getAvailablePackages();
             $io->title('All inactive/currently uninstalled extensions');
         } elseif ($showAlsoInactiveExtensions) {
-            $packages = $packageManager->getAvailablePackages();
+            $packages = $this->packageManager->getAvailablePackages();
             $io->title('All installed (= active) and available (= inactive/currently uninstalled) extensions');
         } else {
-            $packages = $packageManager->getActivePackages();
+            $packages = $this->packageManager->getActivePackages();
             $io->title('All installed (= active) extensions');
         }
 
@@ -89,7 +98,7 @@ class ExtensionListCommand extends Command
 
         $formatter = $this->getHelper('formatter');
         foreach ($packages as $package) {
-            $isActivePackage = $packageManager->isPackageActive($package->getPackageKey());
+            $isActivePackage = $this->packageManager->isPackageActive($package->getPackageKey());
             // Do not show the package if it is active but we only want to see inactive packages
             if ($onlyShowInactiveExtensions && $isActivePackage) {
                 continue;

@@ -34,7 +34,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MissingFilesCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
 
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -162,7 +171,7 @@ If you want to get more detailed information, use the --verbose option.')
     {
         $missingReferences = [];
         // Select all files in the reference table
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $result = $queryBuilder
@@ -195,7 +204,7 @@ If you want to get more detailed information, use the --verbose option.')
     {
         $missingReferences = [];
         // Select all files in the reference table
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $result = $queryBuilder

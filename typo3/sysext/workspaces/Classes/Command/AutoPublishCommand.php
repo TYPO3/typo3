@@ -33,6 +33,22 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class AutoPublishCommand extends Command
 {
+    /**
+     * @var WorkspaceService
+     */
+    private $workspaceService;
+
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    public function __construct(WorkspaceService $workspaceService, ConnectionPool $connectionPool)
+    {
+        $this->workspaceService = $workspaceService;
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
 
     /**
      * Configuring the command options
@@ -57,15 +73,13 @@ class AutoPublishCommand extends Command
         Bootstrap::initializeBackendAuthentication();
         $io = new SymfonyStyle($input, $output);
 
-        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-
         // Select all workspaces that needs to be published / unpublished
         $statement = $this->getAffectedWorkspacesToPublish();
 
         $affectedWorkspaces = 0;
         while ($workspaceRecord = $statement->fetch()) {
             // First, clear start/end time so it doesn't get selected once again
-            GeneralUtility::makeInstance(ConnectionPool::class)
+            $this->connectionPool
                 ->getConnectionForTable('sys_workspace')
                 ->update(
                     'sys_workspace',
@@ -74,7 +88,7 @@ class AutoPublishCommand extends Command
                 );
 
             // Get CMD array
-            $cmd = $workspaceService->getCmdArrayForPublishWS(
+            $cmd = $this->workspaceService->getCmdArrayForPublishWS(
                 $workspaceRecord['uid'],
                 (int)$workspaceRecord['swap_modes'] === 1
             );
@@ -100,7 +114,7 @@ class AutoPublishCommand extends Command
      */
     protected function getAffectedWorkspacesToPublish()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_workspace');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

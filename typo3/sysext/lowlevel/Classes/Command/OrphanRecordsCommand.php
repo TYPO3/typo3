@@ -33,7 +33,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OrphanRecordsCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
 
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -95,7 +104,7 @@ Manual repair suggestions:
                 $idList = $allRecords[$tableName];
             }
             // Select all records that are NOT connected
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable($tableName);
 
             $result = $queryBuilder
@@ -158,7 +167,7 @@ Manual repair suggestions:
         foreach (array_keys($GLOBALS['TCA']) as $tableName) {
             if ($tableName !== 'pages') {
                 // Select all records belonging to page:
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                $queryBuilder = $this->connectionPool
                     ->getQueryBuilderForTable($tableName);
 
                 $queryBuilder->getRestrictions()->removeAll();
@@ -191,7 +200,7 @@ Manual repair suggestions:
         // Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
         if ($depth > 0) {
             $depth--;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable('pages');
 
             $queryBuilder->getRestrictions()->removeAll();

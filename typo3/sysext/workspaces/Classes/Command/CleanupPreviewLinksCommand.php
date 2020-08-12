@@ -22,13 +22,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Removes unused records from sys_preview
  */
 class CleanupPreviewLinksCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
 
     /**
      * Configuring the command options
@@ -51,7 +60,7 @@ class CleanupPreviewLinksCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_preview');
         /** @var int $affectedRows */
         $affectedRows = $queryBuilder
             ->delete('sys_preview')

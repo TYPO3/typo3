@@ -22,13 +22,29 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 
 class CheckIntegrityCommand extends Command
 {
     private const REGISTRY_NAMESPACE = 'tx_redirects';
     private const REGISTRY_KEY = 'conflicting_redirects';
+
+    /**
+     * @var Registry
+     */
+    private $registry;
+
+    /**
+     * @var IntegrityService
+     */
+    private $integrityService;
+
+    public function __construct(Registry $registry, IntegrityService $integrityService)
+    {
+        $this->registry = $registry;
+        $this->integrityService = $integrityService;
+        parent::__construct();
+    }
 
     protected function configure(): void
     {
@@ -50,12 +66,10 @@ class CheckIntegrityCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $registry->remove(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY);
+        $this->registry->remove(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY);
 
-        $integrityService = GeneralUtility::makeInstance(IntegrityService::class);
         $list = [];
-        foreach ($integrityService->findConflictingRedirects($input->getArgument('site')) as $conflict) {
+        foreach ($this->integrityService->findConflictingRedirects($input->getArgument('site')) as $conflict) {
             $list[] = $conflict;
             $output->writeln(sprintf(
                 'Redirect (Host: %s, Path: %s) conflicts with %s',
@@ -64,7 +78,7 @@ class CheckIntegrityCommand extends Command
                 $conflict['uri']
             ));
         }
-        $registry->set(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY, $list);
+        $this->registry->set(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY, $list);
         return 0;
     }
 }

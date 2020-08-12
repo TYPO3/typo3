@@ -34,7 +34,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LostFilesCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
 
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -200,7 +209,7 @@ If you want to get more detailed information, use the --verbose option.')
 
         $files = GeneralUtility::removePrefixPathFromList($files, Environment::getPublicPath() . '/');
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         // Traverse files and for each, look up if its found in the reference index.

@@ -31,6 +31,17 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 class SiteShowCommand extends Command
 {
     /**
+     * @var SiteFinder
+     */
+    protected $siteFinder;
+
+    public function __construct(SiteFinder $siteFinder)
+    {
+        $this->siteFinder = $siteFinder;
+        parent::__construct();
+    }
+
+    /**
      * Defines the allowed options for this command
      */
     protected function configure()
@@ -51,8 +62,7 @@ class SiteShowCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $siteFinder = new SiteFinder();
-        $site = $siteFinder->getSiteByIdentifier($input->getArgument('identifier'));
+        $site = $this->siteFinder->getSiteByIdentifier($input->getArgument('identifier'));
         $io->title('Site configuration for ' . $input->getArgument('identifier'));
         $io->block(Yaml::dump($site->getConfiguration(), 4));
         return 0;

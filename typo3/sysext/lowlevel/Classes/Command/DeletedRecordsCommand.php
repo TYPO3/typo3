@@ -35,6 +35,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class DeletedRecordsCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
 
     /**
      * Configure the command by defining the name, options and arguments
@@ -135,7 +145,7 @@ class DeletedRecordsCommand extends Command
     protected function findAllFlaggedRecordsInPage(int $pageId, int $depth, array $deletedRecords = []): array
     {
         /** @var QueryBuilder $queryBuilderForPages */
-        $queryBuilderForPages = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilderForPages = $this->connectionPool
             ->getQueryBuilderForTable('pages');
         $queryBuilderForPages->getRestrictions()->removeAll();
 
@@ -168,7 +178,7 @@ class DeletedRecordsCommand extends Command
         // Traverse tables of records that belongs to page
         foreach ($databaseTables as $tableName => $deletedField) {
             // Select all records belonging to page
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable($tableName);
 
             $queryBuilder->getRestrictions()->removeAll();

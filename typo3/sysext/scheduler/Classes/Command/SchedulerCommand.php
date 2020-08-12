@@ -21,7 +21,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -63,6 +62,12 @@ class SchedulerCommand extends Command
      * @var bool
      */
     protected $forceExecution;
+
+    public function __construct(Scheduler $scheduler)
+    {
+        $this->scheduler = $scheduler;
+        parent::__construct();
+    }
 
     /**
      * Configure the command by defining the name, options and arguments
@@ -106,8 +111,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
         // Make sure the _cli_ user is loaded
         Bootstrap::initializeBackendAuthentication();
-
-        $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
 
         $overwrittenTaskList = $input->getOption('task');
         if ($overwrittenTaskList !== []) {

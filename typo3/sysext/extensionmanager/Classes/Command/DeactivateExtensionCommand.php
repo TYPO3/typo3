@@ -30,11 +30,6 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 class DeactivateExtensionCommand extends Command
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var InstallUtility
      */
     private $installUtility;

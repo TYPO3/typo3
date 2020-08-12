@@ -35,6 +35,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class CleanFlexFormsCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
 
     /**
      * Configure the command by defining the name, options and arguments
@@ -134,7 +144,7 @@ class CleanFlexFormsCommand extends Command
         foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
             if ($tableName !== 'pages') {
                 // Select all records belonging to page:
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                $queryBuilder = $this->connectionPool
                     ->getQueryBuilderForTable($tableName);
 
                 $queryBuilder->getRestrictions()
@@ -174,7 +184,7 @@ class CleanFlexFormsCommand extends Command
         // Find subpages
         if ($depth > 0) {
             $depth--;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable('pages');
 
             $queryBuilder->getRestrictions()
@@ -221,7 +231,7 @@ class CleanFlexFormsCommand extends Command
         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
         foreach ($GLOBALS['TCA'][$tableName]['columns'] as $columnName => $columnConfiguration) {
             if ($columnConfiguration['config']['type'] === 'flex') {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                $queryBuilder = $this->connectionPool
                     ->getQueryBuilderForTable($tableName);
                 $queryBuilder->getRestrictions()->removeAll();
 

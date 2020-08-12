@@ -36,6 +36,22 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class FilesWithMultipleReferencesCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    /**
+     * @var BasicFileUtility
+     */
+    private $basicFileUtility;
+
+    public function __construct(ConnectionPool $connectionPool, BasicFileUtility $basicFileUtility)
+    {
+        $this->connectionPool = $connectionPool;
+        $this->basicFileUtility = $basicFileUtility;
+        parent::__construct();
+    }
 
     /**
      * Configure the command by defining the name, options and arguments
@@ -157,7 +173,7 @@ If you want to get more detailed information, use the --verbose option.')
         $multipleReferencesList = [];
 
         // Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $result = $queryBuilder
@@ -203,7 +219,6 @@ If you want to get more detailed information, use the --verbose option.')
      */
     protected function copyMultipleReferencedFiles(array $multipleReferencesToFiles, bool $dryRun, SymfonyStyle $io)
     {
-        $fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
         $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
 
         foreach ($multipleReferencesToFiles as $fileName => $usages) {
@@ -218,7 +233,7 @@ If you want to get more detailed information, use the --verbose option.')
                         $io->writeln('Keeping "' . $fileName . '" for record "' . $recReference . '"');
                     } else {
                         // Create unique name for file
-                        $newName = $fileFunc->getUniqueName(PathUtility::basename($fileName), PathUtility::dirname($absoluteFileName));
+                        $newName = $this->basicFileUtility->getUniqueName(PathUtility::basename($fileName), PathUtility::dirname($absoluteFileName));
                         $io->writeln('Copying "' . $fileName . '" to "' . PathUtility::stripPathSitePrefix($newName) . '" for record "' . $recReference . '"');
                         if (!$dryRun) {
                             GeneralUtility::upload_copy_move($absoluteFileName, $newName);

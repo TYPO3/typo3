@@ -41,7 +41,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MissingRelationsCommand extends Command
 {
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
 
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -226,7 +235,7 @@ If you want to get more detailed information, use the --verbose option.')
         $offlineVersionRecordsInSoftReferenceRelations = [];
 
         // Select DB relations from reference table
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $rowIterator = $queryBuilder
             ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer', 'deleted')
             ->from('sys_refindex')
@@ -242,7 +251,7 @@ If you want to get more detailed information, use the --verbose option.')
             $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
             // Get referenced record:
             if (!isset($existingRecords[$idx])) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                $queryBuilder = $this->connectionPool
                     ->getQueryBuilderForTable($rec['ref_table']);
                 $queryBuilder->getRestrictions()->removeAll();
 

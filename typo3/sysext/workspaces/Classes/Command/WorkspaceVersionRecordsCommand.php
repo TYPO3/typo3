@@ -36,12 +36,22 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class WorkspaceVersionRecordsCommand extends Command
 {
-
     /**
      * List of all workspaces
      * @var array
      */
     protected $allWorkspaces = [0 => 'Live Workspace'];
+
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+        parent::__construct();
+    }
 
     /**
      * Array with all records found when traversing the database
@@ -271,7 +281,7 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected function traversePageTreeForVersionedRecords(int $rootID, int $depth, bool $isInsideVersionedPage = false, bool $rootIsVersion = false)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
 
         $pageRecord = $queryBuilder
@@ -305,7 +315,7 @@ class WorkspaceVersionRecordsCommand extends Command
             foreach ($tableNames as $tableName) {
                 if ($tableName !== 'pages') {
                     // Select all records belonging to page:
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    $queryBuilder = $this->connectionPool
                         ->getQueryBuilderForTable($tableName);
 
                     $queryBuilder->getRestrictions()->removeAll();
@@ -345,7 +355,7 @@ class WorkspaceVersionRecordsCommand extends Command
         // Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
         if ($depth > 0) {
             $depth--;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable('pages');
 
             $queryBuilder->getRestrictions()->removeAll();
@@ -390,7 +400,7 @@ class WorkspaceVersionRecordsCommand extends Command
         $unusedPlaceholders = [];
         $tableNames = $this->getAllVersionableTables();
         foreach ($tableNames as $table) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable($table);
 
             $queryBuilder->getRestrictions()
@@ -437,7 +447,7 @@ class WorkspaceVersionRecordsCommand extends Command
         $invalidMovePlaceholders = [];
         $tableNames = $this->getAllVersionableTables();
         foreach ($tableNames as $table) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable($table);
 
             $queryBuilder->getRestrictions()
@@ -493,7 +503,7 @@ class WorkspaceVersionRecordsCommand extends Command
         $records = [];
         $tableNames = $this->getAllVersionableTables();
         foreach ($tableNames as $table) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable($table);
 
             $queryBuilder->getRestrictions()
@@ -590,7 +600,7 @@ class WorkspaceVersionRecordsCommand extends Command
                     $io->writeln('Flushing record "' . $table . ':' . $uid . '"');
                 }
                 if (!$dryRun) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    $queryBuilder = $this->connectionPool
                         ->getQueryBuilderForTable($table);
 
                     $queryBuilder
@@ -652,7 +662,7 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected function loadAllWorkspaceRecords(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_workspace');
 
         $queryBuilder->getRestrictions()

@@ -37,6 +37,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResetPasswordCommand extends Command
 {
     /**
+     * @var Context
+     */
+    private $context;
+
+    /**
+     * @var PasswordReset
+     */
+    private $passwordReset;
+
+    public function __construct(Context $context, PasswordReset $passwordReset)
+    {
+        $this->context = $context;
+        $this->passwordReset = $passwordReset;
+        parent::__construct();
+    }
+
+    /**
      * Configure the command by defining the name, options and arguments
      */
     protected function configure()
@@ -71,15 +88,13 @@ class ResetPasswordCommand extends Command
             $io->error('The given backend URL "' . $backendUrl . '" is not a valid URL.');
             return 1;
         }
-        $reset = GeneralUtility::makeInstance(PasswordReset::class);
-        if (!$reset->isEnabled()) {
+        if (!$this->passwordReset->isEnabled()) {
             $io->error('Password reset functionality is disabled');
             return 1;
         }
-        $context = GeneralUtility::makeInstance(Context::class);
         $request = $this->createFakeWebRequest($backendUrl);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $reset->initiateReset($request, $context, $email);
+        $this->passwordReset->initiateReset($request, $this->context, $email);
         $io->success('Sent out an email to "' . $email . '" requesting to set a new password.');
         return 0;
     }
