@@ -21,6 +21,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -41,7 +42,21 @@ class LanguagePackCommand extends Command
             ->addArgument(
                 'locales',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-                'Provide iso codes separated by space to update only selected language packs. Example `bin/typo3 language:update de ja`.'
+                'Provide iso codes separated by space to update only selected language packs. Example `bin/typo3 language:update de ja`.',
+                []
+            )
+            ->addOption(
+                'no-progress',
+                null,
+                InputOption::VALUE_NONE,
+                'Disable progress bar.'
+            )
+            ->addOption(
+                'skip-extension',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Skip extension. Useful for e.g. for not public extensions, which don\'t have language packs.',
+                []
             );
     }
 
@@ -57,35 +72,51 @@ class LanguagePackCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
-
-        try {
-            $isos = $input->getArgument('locales');
-        } catch (\Exception $e) {
-            $isos = [];
-        }
+        $noProgress = $input->getOption('no-progress') || $output->isVerbose();
+        $isos = $input->getArgument('locales');
+        $skipExtensions = $input->getOption('skip-extension');
         if (empty($isos)) {
             $isos = $languagePackService->getActiveLanguages();
         }
 
-        if ($output->isVerbose()) {
-            $output->writeln(sprintf(
-                '<info>Updating language packs of all activated extensions for locale(s) "%s"</info>',
-                implode('", "', $isos)
-            ));
-        }
+        $output->writeln(sprintf(
+            '<info>Updating language packs of all activated extensions for locale(s) "%s"</info>',
+            implode('", "', $isos)
+        ));
 
         $extensions = $languagePackService->getExtensionLanguagePackDetails();
 
-        if (!$output->isVerbose()) {
+        if ($noProgress) {
             $progressBarOutput = new NullOutput();
         } else {
             $progressBarOutput = $output;
         }
         $progressBar = new ProgressBar($progressBarOutput, count($isos) * count($extensions));
         $languagePackService->updateMirrorBaseUrl();
+        $hasErrors = false;
         foreach ($isos as $iso) {
             foreach ($extensions as $extension) {
-                $languagePackService->languagePackDownload($extension['key'], $iso);
+                if (in_array($extension['key'], $skipExtensions, true)) {
+                    continue;
+                }
+                if ($noProgress) {
+                    $output->writeln(sprintf('<info>Fetching pack for language "%s" for extension "%s"</info>', $iso, $extension['key']), $output::VERBOSITY_VERY_VERBOSE);
+                }
+                $result = $languagePackService->languagePackDownload($extension['key'], $iso);
+                if ($noProgress) {
+                    switch ($result) {
+                        case 'failed':
+                            $output->writeln(sprintf('<error>Fetching pack for language "%s" for extension "%s" failed</error>', $iso, $extension['key']));
+                            $hasErrors = true;
+                            break;
+                        case 'update':
+                            $output->writeln(sprintf('<info>Updated pack for language "%s" for extension "%s"</info>', $iso, $extension['key']));
+                            break;
+                        case 'new':
+                            $output->writeln(sprintf('<info>Fetching new pack for language "%s" for extension "%s"</info>', $iso, $extension['key']));
+                            break;
+                    }
+                }
                 $progressBar->advance();
             }
         }
@@ -95,6 +126,6 @@ class LanguagePackCommand extends Command
         // Flush language cache
         GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
 
-        return 0;
+        return $hasErrors ? 1 : 0;
     }
 }
