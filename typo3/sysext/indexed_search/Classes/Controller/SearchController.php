@@ -1548,7 +1548,10 @@ class SearchController extends ActionController
         if (!is_array($this->settings['results.'])) {
             $this->settings['results.'] = [];
         }
-        $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['results']);
+        $fullTypoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
+        $this->settings['detectDomainRecords'] = $fullTypoScriptArray['detectDomainRecords'] ?? 0;
+        $this->settings['detectDomainRecords.'] = $fullTypoScriptArray['detectDomainRecords.'] ?? [];
+        $typoScriptArray = $fullTypoScriptArray['results.'];
 
         $this->settings['results.']['summaryCropAfter'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['summaryCropAfter'], $typoScriptArray['summaryCropAfter.']),
@@ -1629,7 +1632,7 @@ class SearchController extends ActionController
             $scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
             $firstDomain = reset($this->domainRecords[$pageUid]);
             $uri = $scheme . $firstDomain . $uri;
-            $target = $this->settings['detectDomainRecords.']['target'];
+            $target = $this->settings['detectDomainRecords.']['target'] ?? '';
         }
 
         return ['uri' => $uri, 'target' => $target];
