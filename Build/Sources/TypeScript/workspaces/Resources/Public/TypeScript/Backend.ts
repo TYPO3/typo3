@@ -629,7 +629,9 @@ class Backend extends Workspaces {
         this.elements.$tableBody.append(
           $('<tr />').append(
             $('<th />'),
-            $('<th />', {colspan: 6}).text(this.latestPath),
+            $('<th />', {colspan: 6}).html(
+              '<span title="' + item.path_Workspace + '">' + item.path_Workspace_crop + '</span>'
+            ),
           ),
         );
       }
@@ -665,10 +667,14 @@ class Backend extends Workspaces {
           }).html(
             item.icon_Workspace + '&nbsp;'
             + '<a href="#" data-action="changes">'
-            + '<span class="workspace-state-' + item.state_Workspace + '">' + item.label_Workspace + '</span>'
+            + '<span class="workspace-state-' + item.state_Workspace + '" title="' + item.label_Workspace + '">' + item.label_Workspace_crop + '</span>'
             + '</a>',
           ),
-          $('<td />', {class: 't3js-title-live'}).html(item.icon_Live + '&nbsp;' + item.label_Live),
+          $('<td />', {class: 't3js-title-live'}).html(
+            item.icon_Live
+            + '&nbsp;'
+            + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
+          ),
           $('<td />').text(item.label_Stage),
           $('<td />').empty().append($integrityIcon),
           $('<td />').html(item.language.icon),
