@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -132,9 +133,10 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function generateDataArray(array $versions, $filterTxt)
     {
-        $workspaceAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspace);
+        $backendUser = $this->getBackendUser();
+        $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
         $swapStage = $workspaceAccess['publish_access'] & 1 ? StagesService::STAGE_PUBLISH_ID : 0;
-        $swapAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspaceSwapAccess();
+        $swapAccess = $backendUser->workspacePublishAccess($backendUser->workspace) && $backendUser->workspaceSwapAccess();
         $this->initializeWorkspacesCachingFramework();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // check for dataArray in cache
@@ -149,7 +151,7 @@ class GridDataService implements LoggerAwareInterface
             ];
             foreach ($versions as $table => $records) {
                 $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
-                $isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
+                $isRecordTypeAllowedToModify = $backendUser->check('tables_modify', $table);
 
                 foreach ($records as $record) {
                     $origRecord = BackendUtility::getRecord($table, $record['t3ver_oid']);
@@ -166,13 +168,18 @@ class GridDataService implements LoggerAwareInterface
                     $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
                     $pageId = $table === 'pages' ? $record['uid'] : $record['pid'];
                     $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $record['uid'], $origRecord, $versionRecord);
+                    $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
+                    $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
+                    [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
                     $versionArray = [];
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];
                     $versionArray['uid'] = $record['uid'];
                     $versionArray = array_merge($versionArray, $defaultGridColumns);
-                    $versionArray['label_Workspace'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $versionRecord));
-                    $versionArray['label_Live'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $origRecord));
+                    $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
+                    $versionArray['label_Workspace_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($workspaceRecordLabel, $backendUser->uc['titleLen']));
+                    $versionArray['label_Live'] = htmlspecialchars($liveRecordLabel);
+                    $versionArray['label_Live_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($liveRecordLabel, $backendUser->uc['titleLen']));
                     $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
                     $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
                     $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
@@ -181,8 +188,8 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
                     $versionArray['value_prevStage'] = (int)$tempStage['uid'];
                     $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
-                    // no htmlspecialchars necessary as this is only used in JS via text function
-                    $versionArray['path_Workspace'] = BackendUtility::getRecordPath($record['wspid'], '', 999);
+                    $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
+                    $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
                     $versionArray['workspace_Title'] = htmlspecialchars(WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
                     $versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
                     $versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
@@ -316,7 +323,14 @@ class GridDataService implements LoggerAwareInterface
     protected function setDataArrayIntoCache(array $versions, $filterTxt)
     {
         $hash = $this->calculateHash($versions, $filterTxt);
-        $this->workspacesCache->set($hash, $this->dataArray, [(string)$this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid']]);
+        $this->workspacesCache->set(
+            $hash,
+            $this->dataArray,
+            [
+                (string)$this->currentWorkspace,
+                'user_' . $this->getBackendUser()->user['uid']
+            ]
+        );
     }
 
     /**
@@ -347,9 +361,10 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function calculateHash(array $versions, $filterTxt)
     {
+        $backendUser = $this->getBackendUser();
         $hashArray = [
-            $GLOBALS['BE_USER']->workspace,
-            $GLOBALS['BE_USER']->user['uid'],
+            $backendUser->workspace,
+            $backendUser->user['uid'],
             $versions,
             $filterTxt,
             $this->sort,
@@ -491,8 +506,9 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function isFilterTextInVisibleColumns($filterText, array $versionArray)
     {
-        if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
-            $visibleColumns = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
+        $backendUser = $this->getBackendUser();
+        if (is_array($backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'])) {
+            $visibleColumns = $backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'];
         } else {
             $visibleColumns = [
                 'workspace_Formated_Tstamp' => ['hidden' => 0],
@@ -656,5 +672,13 @@ class GridDataService implements LoggerAwareInterface
     protected function getAdditionalColumnService()
     {
         return GeneralUtility::makeInstance(AdditionalColumnService::class);
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
