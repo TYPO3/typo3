@@ -47,12 +47,16 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></th>
-                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></th>
+                    <th>
+                        <f:render section="listHeaderSorting" arguments="{field: 'source_host', label: 'source_host', demand: demand}"/>
+                    </th>
+                    <th>
+                        <f:render section="listHeaderSorting" arguments="{field: 'source_path', label: 'source_path', demand: demand}"/>
+                    </th>
                     <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination"/></th>
                     <f:if condition="{showHitCounter}">
-                        <th># <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hits"/></th>
-                        <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_last"/></th>
+                        <th><f:render section="listHeaderSorting" arguments="{field: 'hitcount', label: 'hits', demand: demand}"/></th>
+                        <th><f:render section="listHeaderSorting" arguments="{field: 'lasthiton', label: 'hit_last', demand: demand}"/></th>
                     </f:if>
                     <th></th>
                 </tr>
@@ -148,13 +152,26 @@
     <f:render partial="Pagination" arguments="{_all}" />
 </f:section>
 
+<f:section name="listHeaderSorting">
+    <f:if condition="{demand.orderField} === {field}">
+        <f:then>
+            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:{label}"/></a>
+            <core:icon identifier="status-status-sorting-{demand.orderDirection}"/>
+        </f:then>
+        <f:else>
+            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:{label}"/></a>
+        </f:else>
+    </f:if>
+</f:section>
+
 <f:section name="filter">
     <form action="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}"
         method="post"
         enctype="multipart/form-data"
         name="demand"
         class="form-inline form-inline-spaced">
-
+        <input type="hidden" name="orderField" value="{demand.orderField}">
+        <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
         <div class="form-group">
             <label for="demand-source-host"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
             <select id="demand-source-host" class="form-control input-sm" name="demand[source_host]" data-on-change="submit">
@@ -182,7 +199,8 @@
             </select>
         </div>
         <div class="form-group">
-            <input type="submit" value="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.sendButton')}" class="btn btn-default btn-sm" />
+            <input type="submit" value="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.sendButton')}" class="btn btn-success btn-sm" />
+            <a href="{f:be.uri(route:'site_redirects')}" class="btn btn-default btn-sm"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.resetButton"/></a>
         </div>
     </form>
 </f:section>

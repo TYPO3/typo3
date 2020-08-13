@@ -52,7 +52,10 @@
 				<source>Status Code</source>
 			</trans-unit>
 			<trans-unit id="filter.sendButton" resname="filter.sendButton">
-				<source>Send</source>
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="filter.resetButton" resname="filter.resetButton">
+				<source>Reset</source>
 			</trans-unit>
 
 			<trans-unit id="record_disabled" resname="record_disabled">
@@ -77,7 +80,7 @@
 				<source>Status Code</source>
 			</trans-unit>
 			<trans-unit id="hits" resname="hits">
-				<source>Hits</source>
+				<source># Hits</source>
 			</trans-unit>
 			<trans-unit id="hit_text" resname="hit_text">
 				<source>%s hit</source>

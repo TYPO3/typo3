@@ -77,9 +77,16 @@ class RedirectRepository
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->select('*')
-            ->from('sys_redirect')
-            ->orderBy('source_host')
-            ->addOrderBy('source_path');
+            ->from('sys_redirect');
+
+        $queryBuilder->orderBy(
+            $this->demand->getOrderField(),
+            $this->demand->getOrderDirection()
+        );
+
+        if ($this->demand->hasSecondaryOrdering()) {
+            $queryBuilder->addOrderBy($this->demand->getSecondaryOrderField());
+        }
 
         $constraints = [];
         if ($this->demand->hasSourceHost()) {
