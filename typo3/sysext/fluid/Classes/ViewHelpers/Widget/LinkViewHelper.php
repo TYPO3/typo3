@@ -60,6 +60,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
         $this->registerArgument('format', 'string', 'The requested format, e.g. ".html', false, '');
         $this->registerArgument('ajax', 'bool', 'TRUE if the URI should be to an AJAX widget, FALSE otherwise.', false, false);
+        $this->registerArgument('absolute', 'bool', 'TRUE if the URI should be absolute, FALSE otherwise', false, false);
     }
 
     /**
@@ -127,6 +128,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             ->setAddQueryString(true)
             ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash'])
             ->setFormat($this->arguments['format'])
+            ->setCreateAbsoluteUri($this->arguments['absolute'])
         ;
 
         $addQueryStringMethod = $this->arguments['addQueryStringMethod'] ?? null;
