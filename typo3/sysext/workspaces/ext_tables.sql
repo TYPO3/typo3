@@ -28,7 +28,6 @@ CREATE TABLE sys_workspace (
 	publish_time int(11) DEFAULT '0' NOT NULL,
 	freeze tinyint(3) DEFAULT '0' NOT NULL,
 	live_edit tinyint(3) DEFAULT '0' NOT NULL,
-	swap_modes tinyint(3) DEFAULT '0' NOT NULL,
 	publish_access tinyint(3) DEFAULT '0' NOT NULL,
 	previewlink_lifetime int(11) DEFAULT '0' NOT NULL,
 	custom_stages int(11) DEFAULT '0' NOT NULL,

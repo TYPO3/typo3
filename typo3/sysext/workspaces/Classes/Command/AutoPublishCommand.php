@@ -88,12 +88,7 @@ class AutoPublishCommand extends Command
                 );
 
             // Get CMD array
-            $cmd = $this->workspaceService->getCmdArrayForPublishWS(
-                $workspaceRecord['uid'],
-                (int)$workspaceRecord['swap_modes'] === 1
-            );
-            // $workspaceRecord['swap_modes'] == 1 means that auto-publishing will swap versions,
-            // not just publish and empty the workspace.
+            $cmd = $this->workspaceService->getCmdArrayForPublishWS($workspaceRecord['uid']);
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], $cmd);
             $tce->process_cmdmap();
@@ -120,7 +115,7 @@ class AutoPublishCommand extends Command
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         return $queryBuilder
-            ->select('uid', 'swap_modes', 'publish_time')
+            ->select('uid', 'publish_time')
             ->from('sys_workspace')
             ->where(
                 $queryBuilder->expr()->eq(

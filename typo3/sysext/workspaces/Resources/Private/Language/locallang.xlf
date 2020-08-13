@@ -88,17 +88,17 @@
 			<trans-unit id="tooltip.publishAll" resname="tooltip.publishAll">
 				<source>Really publish entire workspace?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.swapAll" resname="tooltip.swapAll">
-				<source>Really swap entire workspace?</source>
-			</trans-unit>
 			<trans-unit id="tooltip.discardAll" resname="tooltip.discardAll">
 				<source>Do you really want to discard changes from the whole workspace?</source>
 			</trans-unit>
+			<trans-unit id="window.publish.title" resname="window.publish.title">
+				<source>Publish version</source>
+			</trans-unit>
+			<trans-unit id="window.publish.message" resname="window.publish.message">
+				<source>Do you really want to publish this version?</source>
+			</trans-unit>
 			<trans-unit id="tooltip.publishSelected" resname="tooltip.publishSelected">
 				<source>Really publish selected elements?</source>
-			</trans-unit>
-			<trans-unit id="tooltip.swapSelected" resname="tooltip.swapSelected">
-				<source>Really swap selected elements?</source>
 			</trans-unit>
 			<trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected">
 				<source>Really discard changes of the selected elements?</source>
@@ -156,9 +156,6 @@
 			<trans-unit id="column.liveTitle" resname="column.liveTitle">
 				<source>Live title</source>
 			</trans-unit>
-			<trans-unit id="column.wsSwapColumn" resname="column.wsSwapColumn">
-				<source>Swap workspace</source>
-			</trans-unit>
 			<trans-unit id="column.integrity" resname="column.integrity">
 				<source>Integrity</source>
 			</trans-unit>
@@ -180,9 +177,6 @@
 			<trans-unit id="tooltip.discardVersion" resname="tooltip.discardVersion">
 				<source>Discard workspace version of record.</source>
 			</trans-unit>
-			<trans-unit id="tooltip.swap" resname="tooltip.swap">
-				<source>Swap live and workspace versions of record</source>
-			</trans-unit>
 			<trans-unit id="tooltip.expand" resname="tooltip.expand">
 				<source>Expand element and show relations</source>
 			</trans-unit>
@@ -200,12 +194,6 @@
 			</trans-unit>
 			<trans-unit id="window.discardAll.message" resname="window.discardAll.message">
 				<source>Do you really want to discard all versions from page?</source>
-			</trans-unit>
-			<trans-unit id="window.swap.title" resname="window.swap.title">
-				<source>Swap version</source>
-			</trans-unit>
-			<trans-unit id="window.swap.message" resname="window.swap.message">
-				<source>Do you really want to swap this version?</source>
 			</trans-unit>
 			<trans-unit id="window.massAction.title" resname="window.massAction.title">
 				<source>Prepare to start mass action</source>
@@ -298,9 +286,6 @@
 			</trans-unit>
 			<trans-unit id="label_doaction_publish" resname="label_doaction_publish">
 				<source>Publish</source>
-			</trans-unit>
-			<trans-unit id="label_doaction_swap" resname="label_doaction_swap">
-				<source>Swap</source>
 			</trans-unit>
 			<trans-unit id="label_doaction_discard" resname="label_doaction_discard">
 				<source>Discard</source>

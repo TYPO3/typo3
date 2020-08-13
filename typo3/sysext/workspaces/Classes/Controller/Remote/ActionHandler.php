@@ -76,20 +76,19 @@ class ActionHandler
     }
 
     /**
-     * Swaps a single record.
+     * Publishes a single record.
      *
      * @param string $table
      * @param int $t3ver_oid
      * @param int $orig_uid
      * @todo What about reporting errors back to the interface? /olly/
      */
-    public function swapSingleRecord($table, $t3ver_oid, $orig_uid)
+    public function publishSingleRecord($table, $t3ver_oid, $orig_uid)
     {
         $cmd = [];
         $cmd[$table][$t3ver_oid]['version'] = [
-            'action' => 'swap',
-            'swapWith' => $orig_uid,
-            'swapIntoWS' => 1
+            'action' => 'publish',
+            'swapWith' => $orig_uid
         ];
         $this->processTcaCmd($cmd);
     }
@@ -123,7 +122,7 @@ class ActionHandler
     }
 
     /**
-     * Executes an action (publish, discard, swap) to a selection set.
+     * Executes an action (publish, discard) to a selection set.
      *
      * @param \stdClass $parameter
      * @return array
@@ -138,9 +137,8 @@ class ActionHandler
         }
 
         $commands = [];
-        $swapIntoWorkspace = ($parameter->action === 'swap');
-        if ($parameter->action === 'publish' || $swapIntoWorkspace) {
-            $commands = $this->getPublishSwapCommands($parameter->selection, $swapIntoWorkspace);
+        if ($parameter->action === 'publish') {
+            $commands = $this->getPublishCommands($parameter->selection);
         } elseif ($parameter->action === 'discard') {
             $commands = $this->getFlushCommands($parameter->selection);
         }
@@ -151,20 +149,18 @@ class ActionHandler
     }
 
     /**
-     * Get publish swap commands
+     * Get publish commands
      *
      * @param array|\stdClass[] $selection
-     * @param bool $swapIntoWorkspace
      * @return array
      */
-    protected function getPublishSwapCommands(array $selection, $swapIntoWorkspace)
+    protected function getPublishCommands(array $selection)
     {
         $commands = [];
         foreach ($selection as $record) {
             $commands[$record->table][$record->liveId]['version'] = [
-                'action' => 'swap',
+                'action' => 'publish',
                 'swapWith' => $record->versionId,
-                'swapIntoWS' => (bool)$swapIntoWorkspace,
             ];
         }
         return $commands;
@@ -455,7 +451,7 @@ class ActionHandler
             foreach ($items as $item) {
                 // Publishing uses live id in command map
                 if ($stageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
-                    $cmdMapArray[$tableName][$item->t3ver_oid]['version']['action'] = 'swap';
+                    $cmdMapArray[$tableName][$item->t3ver_oid]['version']['action'] = 'publish';
                     $cmdMapArray[$tableName][$item->t3ver_oid]['version']['swapWith'] = $item->uid;
                     $cmdMapArray[$tableName][$item->t3ver_oid]['version']['comment'] = $comment;
                     $cmdMapArray[$tableName][$item->t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
@@ -528,7 +524,7 @@ class ActionHandler
 
         $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
         if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
-            $cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
+            $cmdArray[$table][$t3ver_oid]['version']['action'] = 'publish';
             $cmdArray[$table][$t3ver_oid]['version']['swapWith'] = $uid;
             $cmdArray[$table][$t3ver_oid]['version']['comment'] = $comments;
             $cmdArray[$table][$t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
@@ -617,7 +613,7 @@ class ActionHandler
             }
 
             if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
-                $cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'swap';
+                $cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'publish';
                 $cmdArray[$element->table][$element->t3ver_oid]['version']['swapWith'] = $element->uid;
                 $cmdArray[$element->table][$element->t3ver_oid]['version']['comment'] = $comments;
                 $cmdArray[$element->table][$element->t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;

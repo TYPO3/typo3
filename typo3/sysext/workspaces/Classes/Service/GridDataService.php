@@ -136,7 +136,7 @@ class GridDataService implements LoggerAwareInterface
         $backendUser = $this->getBackendUser();
         $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
         $swapStage = $workspaceAccess['publish_access'] & 1 ? StagesService::STAGE_PUBLISH_ID : 0;
-        $swapAccess = $backendUser->workspacePublishAccess($backendUser->workspace) && $backendUser->workspaceSwapAccess();
+        $swapAccess = $backendUser->workspacePublishAccess($backendUser->workspace);
         $this->initializeWorkspacesCachingFramework();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // check for dataArray in cache
@@ -207,11 +207,11 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
                     if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
-                        $versionArray['allowedAction_swap'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
+                        $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
                     } elseif ($swapAccess && $swapStage == 0) {
-                        $versionArray['allowedAction_swap'] = $isRecordTypeAllowedToModify;
+                        $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify;
                     } else {
-                        $versionArray['allowedAction_swap'] = false;
+                        $versionArray['allowedAction_publish'] = false;
                     }
                     $versionArray['allowedAction_delete'] = $isRecordTypeAllowedToModify;
                     // preview and editing of a deleted page won't work ;)

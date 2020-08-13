@@ -96,18 +96,6 @@
 			<trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit">
 				<source>Allow "live" editing of records from tables without versioning</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.swap_modes" resname="sys_workspace.swap_modes">
-				<source>Swap modes</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.swap_modes.0" resname="sys_workspace.swap_modes.0">
-				<source>Enable Swap-Into-Workspace</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.swap_modes.1" resname="sys_workspace.swap_modes.1">
-				<source>Swap-Into-Workspace on Auto-publish</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.swap_modes.2" resname="sys_workspace.swap_modes.2">
-				<source>Disable Swap-Into-Workspace</source>
-			</trans-unit>
 			<trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access">
 				<source>Publish access</source>
 			</trans-unit>

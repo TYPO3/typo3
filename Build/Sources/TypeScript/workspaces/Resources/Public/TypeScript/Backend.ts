@@ -224,7 +224,7 @@ class Backend extends Workspaces {
   }
 
   private registerEvents(): void {
-    $(document).on('click', '[data-action="swap"]', (e: JQueryEventObject): void => {
+    $(document).on('click', '[data-action="publish"]', (e: JQueryEventObject): void => {
       const row = <HTMLTableRowElement>e.target.closest('tr');
       this.checkIntegrity(
         {
@@ -244,15 +244,15 @@ class Backend extends Workspaces {
 
         Wizard.setForceSelection(false);
         Wizard.addSlide(
-          'swap-confirm',
-          'Swap',
-          TYPO3.lang['window.swap.message'],
+          'publish-confirm',
+          'Publish',
+          TYPO3.lang['window.publish.message'],
           SeverityEnum.info,
         );
         Wizard.addFinalProcessingSlide((): void => {
-          // We passed this slide, swap the record now
+          // We passed this slide, publish the record now
           this.sendRemoteRequest(
-            this.generateRemoteActionsPayload('swapSingleRecord', [
+            this.generateRemoteActionsPayload('publishSingleRecord', [
               row.dataset.table,
               row.dataset.t3ver_oid,
               row.dataset.uid,
@@ -584,10 +584,10 @@ class Backend extends Workspaces {
           title: TYPO3.lang['tooltip.showChanges'],
         }).append(this.getPreRenderedIcon('actions-document-info')),
         this.getAction(
-          item.allowedAction_swap && item.Workspaces_CollectionParent === '',
-          'swap',
+          item.allowedAction_publish && item.Workspaces_CollectionParent === '',
+          'publish',
           'actions-version-swap-version')
-          .attr('title', TYPO3.lang['tooltip.swap']),
+          .attr('title', TYPO3.lang['tooltip.publish']),
         this.getAction(
           item.allowedAction_view,
           'preview',
@@ -1083,15 +1083,10 @@ class Backend extends Workspaces {
    */
   private renderMassActionWizard(selectedAction: string): void {
     let massAction: string;
-    let doSwap = false;
 
     switch (selectedAction) {
       case 'publish':
         massAction = 'publishWorkspace';
-        break;
-      case 'swap':
-        massAction = 'publishWorkspace';
-        doSwap = true;
         break;
       case 'discard':
         massAction = 'flushWorkspace';
@@ -1131,8 +1126,7 @@ class Backend extends Workspaces {
           init: true,
           total: 0,
           processed: 0,
-          language: this.settings.language,
-          swap: doSwap,
+          language: this.settings.language
         }),
       ).then(sendRequestsUntilAllProcessed);
     }).done((): void => {

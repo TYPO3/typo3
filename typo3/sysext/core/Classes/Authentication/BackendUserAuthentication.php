@@ -1213,25 +1213,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Workspace swap-mode access?
-     *
-     * @return bool Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
-     * @internal this method will be moved to EXT:workspaces
-     */
-    public function workspaceSwapAccess()
-    {
-        // Always possible in live workspace
-        if ($this->workspace === 0) {
-            return true;
-        }
-        // In custom workspaces, only possible if swap_modes flag is not "2" (explicitly disabling swapping)
-        if ((int)$this->workspaceRec['swap_modes'] !== 2) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Returns full parsed user TSconfig array, merged with TSconfig from groups.
      *
      * Example:

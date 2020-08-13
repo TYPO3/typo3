@@ -94,7 +94,7 @@ class TreelistCacheUpdateHooks
     }
 
     /**
-     * Waits for DataHandler commands and looks for deleted pages or swapped pages, if found
+     * Waits for DataHandler commands and looks for deleted pages or published pages, if found
      * further changes take place to determine whether the cache needs to be updated
      *
      * @param string $command The TCE command
@@ -106,7 +106,7 @@ class TreelistCacheUpdateHooks
     public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $dataHandler)
     {
         $action = (is_array($commandValue) && isset($commandValue['action'])) ? (string)$commandValue['action'] : '';
-        if ($table === 'pages' && ($command === 'delete' || ($command === 'version' && $action === 'swap'))) {
+        if ($table === 'pages' && ($command === 'delete' || ($command === 'version' && $action === 'publish'))) {
             $affectedRecord = BackendUtility::getRecord($table, $recordId, '*', '', false);
             $affectedPageUid = $affectedRecord['uid'];
             $affectedPagePid = $affectedRecord['pid'];
@@ -116,7 +116,7 @@ class TreelistCacheUpdateHooks
             if ($command === 'delete') {
                 $updatedFields['deleted'] = 1;
             } else {
-                // page was published to live (swapped)
+                // page was published to live
                 $updatedFields['t3ver_wsid'] = 0;
             }
             $clearCacheActions = $this->determineClearCacheActions(

@@ -51,7 +51,6 @@ class WorkspaceVisibleFieldsTest extends FunctionalTestCase
         'custom_stages',
         'freeze',
         'live_edit',
-        'swap_modes',
         'publish_access',
     ];
 

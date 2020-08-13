@@ -105,11 +105,11 @@ class DataHandlerHook
                 $dataHandler->versionizeRecord($table, $id, $value['label']);
                 break;
             case 'swap':
+            case 'publish':
                 $this->version_swap(
                     $table,
                     $id,
                     $value['swapWith'],
-                    (bool)$value['swapIntoWS'],
                     $dataHandler,
                     $comment,
                     $notificationAlternativeRecipients
@@ -227,7 +227,7 @@ class DataHandlerHook
                 // In Live workspace, delete any. In other workspaces there must be match.
                 if ($dataHandler->BE_USER->workspace == 0 || (int)$record['t3ver_wsid'] == $dataHandler->BE_USER->workspace) {
                     $liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
-                    // Processing can be skipped if a delete placeholder shall be swapped/published
+                    // Processing can be skipped if a delete placeholder shall be published
                     // during the current request. Thus it will be deleted later on...
                     $liveRecordVersionState = VersionState::cast($liveRec['t3ver_state']);
                     if ($recordVersionState->equals(VersionState::DELETE_PLACEHOLDER) && !empty($liveRec['uid'])
@@ -564,21 +564,19 @@ class DataHandlerHook
      *****************************/
 
     /**
-     * Swapping versions of a record
+     * Publishing / Swapping (= switching) versions of a record
      * Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
      *
      * @param string $table Table name
      * @param int $id UID of the online record to swap
      * @param int $swapWith UID of the archived version to swap with!
-     * @param bool $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
      * @param DataHandler $dataHandler DataHandler object
      * @param string $comment Notification comment
      * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
      */
-    protected function version_swap($table, $id, $swapWith, bool $swapIntoWS, DataHandler $dataHandler, string $comment, $notificationAlternativeRecipients = [])
+    protected function version_swap($table, $id, $swapWith, DataHandler $dataHandler, string $comment, $notificationAlternativeRecipients = [])
     {
-        // Check prerequisites before start swapping
-
+        // Check prerequisites before start publishing
         // Skip records that have been deleted during the current execution
         if ($dataHandler->hasDeletedRecord($table, $id)) {
             return;
@@ -626,28 +624,24 @@ class DataHandlerHook
             $dataHandler->newlog('You cannot publish a record you do not have edit and show permissions for', SystemLogErrorClassification::USER_ERROR);
             return;
         }
-        if ($swapIntoWS && !$dataHandler->BE_USER->workspaceSwapAccess()) {
-            $dataHandler->newlog('Workspace #' . $swapVersion['t3ver_wsid'] . ' does not support swapping.', SystemLogErrorClassification::USER_ERROR);
-            return;
-        }
         // Check if the swapWith record really IS a version of the original!
         if (!(((int)$swapVersion['t3ver_oid'] > 0 && (int)$curVersion['t3ver_oid'] === 0) && (int)$swapVersion['t3ver_oid'] === (int)$id)) {
-            $dataHandler->newlog('In swap version, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', SystemLogErrorClassification::SYSTEM_ERROR);
+            $dataHandler->newlog('In offline record, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', SystemLogErrorClassification::SYSTEM_ERROR);
             return;
         }
         // Lock file name:
-        $lockFileName = Environment::getVarPath() . '/lock/workspaces_swap' . $table . '_' . $id . '.json';
+        $lockFileName = Environment::getVarPath() . '/lock/workspaces_publish' . $table . '_' . $id . '.json';
         if (@is_file($lockFileName)) {
             $lockFileContents = file_get_contents($lockFileName);
             $lockFileContents = json_decode($lockFileContents ?: '', true);
             // Only skip if the lock file is newer than the last 1h (a publishing process should not be running longer than 60mins)
             if (isset($lockFileContents['tstamp']) && $lockFileContents['tstamp'] > ($GLOBALS['EXEC_TIME']-3600)) {
-                $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', SystemLogErrorClassification::SYSTEM_ERROR);
+                $dataHandler->newlog('A publishing lock file was present. Either another publish process is already running or a previous publish process failed. Ask your administrator to handle the situation.', SystemLogErrorClassification::SYSTEM_ERROR);
                 return;
             }
         }
 
-        // Now start to swap records by first creating the lock file
+        // Now start to publishing records by first creating the lock file
 
         // Write lock-file:
         GeneralUtility::writeFileToTypo3tempDir($lockFileName, json_encode([
@@ -676,7 +670,6 @@ class DataHandlerHook
         $t3ver_state = [];
         $t3ver_state['swapVersion'] = $swapVersion['t3ver_state'];
         // Modify offline version to become online:
-        $tmp_wsid = $swapVersion['t3ver_wsid'];
         // Set pid for ONLINE
         $swapVersion['pid'] = (int)$curVersion['pid'];
         // We clear this because t3ver_oid only make sense for offline versions
@@ -688,17 +681,8 @@ class DataHandlerHook
         // current workspace ID so the record is not deselected
         // in the interface by BackendUtility::versioningPlaceholderClause()
         $swapVersion['t3ver_wsid'] = 0;
-        if ($swapIntoWS) {
-            if ($t3ver_state['swapVersion'] > 0) {
-                $swapVersion['t3ver_wsid'] = $dataHandler->BE_USER->workspace;
-            } else {
-                $swapVersion['t3ver_wsid'] = (int)$curVersion['t3ver_wsid'];
-            }
-        }
         $swapVersion['t3ver_stage'] = 0;
-        if (!$swapIntoWS) {
-            $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
-        }
+        $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
         // Moving element.
         if (BackendUtility::isTableWorkspaceEnabled($table)) {
             //  && $t3ver_state['swapVersion']==4   // Maybe we don't need this?
@@ -728,12 +712,10 @@ class DataHandlerHook
         unset($curVersion['uid']);
         // Mark curVersion to contain the oid
         $curVersion['t3ver_oid'] = (int)$id;
-        $curVersion['t3ver_wsid'] = $swapIntoWS ? (int)$tmp_wsid : 0;
+        $curVersion['t3ver_wsid'] = 0;
         // Increment lifecycle counter
         $curVersion['t3ver_stage'] = 0;
-        if (!$swapIntoWS) {
-            $curVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
-        }
+        $curVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
         // Registering and swapping MM relations in current and swap records:
         $dataHandler->version_remapMMForVersionSwap($table, $id, $swapWith);
         // Generating proper history data to prepare logging
@@ -800,29 +782,17 @@ class DataHandlerHook
             // If a moving operation took place...:
             if ($movePlhID) {
                 // Remove, if normal publishing:
-                if (!$swapIntoWS) {
-                    // For delete + completely delete!
-                    $dataHandler->deleteEl($table, $movePlhID, true, true);
-                } else {
-                    // Otherwise update the movePlaceholder:
-                    GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getConnectionForTable($table)
-                        ->update(
-                            $table,
-                            $movePlh,
-                            ['uid' => (int)$movePlhID]
-                        );
-                    $dataHandler->addRemapStackRefIndex($table, $movePlhID);
-                }
+                // For delete + completely delete!
+                $dataHandler->deleteEl($table, $movePlhID, true, true);
             }
             // Checking for delete:
             // Delete only if new/deleted placeholders are there.
-            if (!$swapIntoWS && ((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER || (int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER)) {
+            if (((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER || (int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER)) {
                 // Force delete
                 $dataHandler->deleteEl($table, $id, true);
             }
             if ($dataHandler->enableLogging) {
-                $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, ($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
+                $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
             }
 
             // Update reference index of the live record:
@@ -863,20 +833,18 @@ class DataHandlerHook
 
             // Clear cache:
             $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
-            // If not swapped, delete the record from the database
-            if (!$swapIntoWS) {
-                if ($table === 'pages') {
-                    // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
-                    // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
-                    // page which at the same time belong to our current version page, and would delete them.
-                    // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
-                    $dataHandler->deleteEl($table, $swapWith, true, true, false);
-                } else {
-                    $dataHandler->deleteEl($table, $swapWith, true, true);
-                }
+            // If published, delete the record from the database
+            if ($table === 'pages') {
+                // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
+                // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
+                // page which at the same time belong to our current version page, and would delete them.
+                // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
+                $dataHandler->deleteEl($table, $swapWith, true, true, false);
+            } else {
+                $dataHandler->deleteEl($table, $swapWith, true, true);
             }
 
-            //Update reference index for live workspace too:
+            // Update reference index for live workspace too:
             /** @var \TYPO3\CMS\Core\Database\ReferenceIndex $refIndexObj */
             $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
             $refIndexObj->setWorkspaceId(0);

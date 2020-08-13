@@ -253,7 +253,7 @@ class CommandMap
         foreach ($this->commandMap as $table => $liveIdCollection) {
             foreach ($liveIdCollection as $liveId => $commandCollection) {
                 foreach ($commandCollection as $command => $properties) {
-                    if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'swap') {
+                    if ($command === 'version' && isset($properties['action']) && in_array($properties['action'], ['publish', 'swap'], true)) {
                         if (isset($properties['swapWith']) && MathUtility::canBeInterpretedAsInteger($properties['swapWith'])) {
                             call_user_func_array([$this, $callbackMethod], array_merge($arguments, [$table, $liveId, $properties]));
                         }
@@ -634,9 +634,6 @@ class CommandMap
         $elementProperties = $element->getDataValue('properties');
         if (isset($elementProperties['action'])) {
             $commonSwapProperties['action'] = $elementProperties['action'];
-        }
-        if (isset($elementProperties['swapIntoWS'])) {
-            $commonSwapProperties['swapIntoWS'] = $elementProperties['swapIntoWS'];
         }
         if (isset($elementProperties['comment'])) {
             $commonSwapProperties['comment'] = $elementProperties['comment'];

@@ -62,9 +62,6 @@ class MassActionHandler
             $publishAccess = $backendUser->workspacePublishAccess($currentWorkspace);
             if ($publishAccess && !($backendUser->workspaceRec['publish_access'] & 1)) {
                 $actions[] = ['action' => 'publish', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_publish')];
-                if ($backendUser->workspaceSwapAccess()) {
-                    $actions[] = ['action' => 'swap', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_swap')];
-                }
             }
             if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {
                 $actions[] = ['action' => 'discard', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_discard')];
@@ -94,7 +91,7 @@ class MassActionHandler
         try {
             if ($parameters->init) {
                 $language = $this->validateLanguageParameter($parameters);
-                $cnt = $this->initPublishData($this->getCurrentWorkspace(), $parameters->swap, $language);
+                $cnt = $this->initPublishData($this->getCurrentWorkspace(), $language);
                 $result['total'] = $cnt;
             } else {
                 $result['processed'] = $this->processData();
@@ -138,14 +135,13 @@ class MassActionHandler
      * Initializes the command map to be used for publishing.
      *
      * @param int $workspace
-     * @param bool $swap
      * @param int $language
      * @return int
      */
-    protected function initPublishData($workspace, $swap, $language = null)
+    protected function initPublishData($workspace, $language = null)
     {
         // workspace might be -98 a.k.a "All Workspaces but that's save here
-        $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, $swap, 0, $language);
+        $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, false, 0, $language);
         $recordCount = 0;
         foreach ($publishData as $table => $recs) {
             $recordCount += count($recs);

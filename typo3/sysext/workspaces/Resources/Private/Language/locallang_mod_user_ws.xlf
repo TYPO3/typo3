@@ -411,9 +411,6 @@
 			<trans-unit id="label_doaction_publish" resname="label_doaction_publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_swap" resname="label_doaction_swap">
-				<source>Swap</source>
-			</trans-unit>
 			<trans-unit id="label_doaction_release" resname="label_doaction_release">
 				<source>Remove this version</source>
 			</trans-unit>

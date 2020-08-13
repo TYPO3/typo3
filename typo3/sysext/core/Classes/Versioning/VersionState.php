@@ -50,7 +50,7 @@ final class VersionState extends Enumeration
      * Deleting elements is done by actually creating a
      * new version of the element and setting t3ver_state=2
      * that indicates the live element must be deleted upon
-     * swapping the versions.
+     * publishing the versions.
      */
     const DELETE_PLACEHOLDER = 2;
 

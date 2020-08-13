@@ -115,19 +115,6 @@ return [
                 ],
             ]
         ],
-        'swap_modes' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.swap_modes',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'default' => 2,
-                'items' => [
-                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.swap_modes.0', 0],
-                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.swap_modes.1', 1],
-                    ['LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.swap_modes.2', 2],
-                ]
-            ]
-        ],
         'publish_access' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_access',
             'config' => [
@@ -321,7 +308,7 @@ return [
             --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.mountpoints,
                 db_mountpoints,file_mountpoints,
             --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.publish_access,
-                previewlink_lifetime,live_edit,swap_modes,publish_access,publish_time,
+                previewlink_lifetime,live_edit,publish_access,publish_time,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,

@@ -140,15 +140,15 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Building DataHandler CMD-array for swapping all versions in a workspace.
+     * Building DataHandler CMD-array for publishing all versions in a workspace.
      *
      * @param int $wsid Real workspace ID, cannot be ONLINE (zero).
-     * @param bool $doSwap If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
+     * @param bool $_ Unused, previously used to choose between swapping and publishing
      * @param int $pageId The page id
-     * @param int $language Select specific language only
+     * @param int|null $language Select specific language only
      * @return array Command array for DataHandler
      */
-    public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0, $language = null)
+    public function getCmdArrayForPublishWS($wsid, $_ = false, $pageId = 0, $language = null)
     {
         $wsid = (int)$wsid;
         $cmd = [];
@@ -159,7 +159,7 @@ class WorkspaceService implements SingletonInterface
             if ($workspaceRec['publish_access'] & 1) {
                 $stage = StagesService::STAGE_PUBLISH_ID;
             }
-            // Select all versions to swap:
+            // Select all versions to publishing
             $versions = $this->selectVersionsInWorkspace(
                 $wsid,
                 $stage,
@@ -172,7 +172,7 @@ class WorkspaceService implements SingletonInterface
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
                     // Build the cmd Array:
-                    $cmd[$table][$rec['t3ver_oid']]['version'] = ['action' => 'swap', 'swapWith' => $rec['uid'], 'swapIntoWS' => $doSwap ? 1 : 0];
+                    $cmd[$table][$rec['t3ver_oid']]['version'] = ['action' => 'swap', 'swapWith' => $rec['uid']];
                 }
             }
         }
@@ -195,7 +195,7 @@ class WorkspaceService implements SingletonInterface
         if ($wsid > 0) {
             // Define stage to select:
             $stage = -99;
-            // Select all versions to swap:
+            // Select all versions to publish
             $versions = $this->selectVersionsInWorkspace(
                 $wsid,
                 $stage,
@@ -384,7 +384,7 @@ class WorkspaceService implements SingletonInterface
         // Select all records from this table in the database from the workspace
         // This joins the online version with the offline version as tables A and B
         // Order by UID, mostly to have a sorting in the backend overview module which
-        // doesn't "jump around" when swapping.
+        // doesn't "jump around" when publishing.
         $rows = $queryBuilder->select(...$fields)
             ->from($table, 'A')
             ->from($table, 'B')
