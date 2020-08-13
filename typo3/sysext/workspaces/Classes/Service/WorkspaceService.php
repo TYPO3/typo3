@@ -45,7 +45,6 @@ class WorkspaceService implements SingletonInterface
     protected $pagesWithVersionsInTable = [];
 
     const TABLE_WORKSPACE = 'sys_workspace';
-    const SELECT_ALL_WORKSPACES = -98;
     const LIVE_WORKSPACE_ID = 0;
 
     /**
@@ -87,18 +86,7 @@ class WorkspaceService implements SingletonInterface
      */
     public function getCurrentWorkspace()
     {
-        $workspaceId = $GLOBALS['BE_USER']->workspace;
-        $activeId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
-
-        // Avoid invalid workspace settings
-        if ($activeId !== null && $activeId !== self::SELECT_ALL_WORKSPACES) {
-            $availableWorkspaces = $this->getAvailableWorkspaces();
-            if (isset($availableWorkspaces[$activeId])) {
-                $workspaceId = $activeId;
-            }
-        }
-
-        return $workspaceId;
+        return $GLOBALS['BE_USER']->workspace;
     }
 
     /**
@@ -367,18 +355,10 @@ class WorkspaceService implements SingletonInterface
             );
         }
 
-        // For "real" workspace numbers, select by that.
-        // If = -98, select all that are NOT online (zero).
-        // Anything else below -1 will not select on the wsid and therefore select all!
-        if ($wsid > self::SELECT_ALL_WORKSPACES) {
+        if ($wsid >= 0) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.t3ver_wsid',
                 $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
-            );
-        } elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
-            $constraints[] = $queryBuilder->expr()->neq(
-                'A.t3ver_wsid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             );
         }
 
@@ -476,7 +456,7 @@ class WorkspaceService implements SingletonInterface
             $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid'))
         ];
 
-        if ($wsid > self::SELECT_ALL_WORKSPACES) {
+        if ($wsid >= 0) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'A.t3ver_wsid',
                 $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
@@ -484,15 +464,6 @@ class WorkspaceService implements SingletonInterface
             $constraints[] = $queryBuilder->expr()->eq(
                 'C.t3ver_wsid',
                 $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
-            );
-        } elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
-            $constraints[] = $queryBuilder->expr()->neq(
-                'A.t3ver_wsid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            );
-            $constraints[] = $queryBuilder->expr()->neq(
-                'C.t3ver_wsid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             );
         }
 

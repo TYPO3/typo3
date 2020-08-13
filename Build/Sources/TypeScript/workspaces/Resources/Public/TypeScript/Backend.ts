@@ -278,11 +278,6 @@ class Backend extends Workspaces {
           + '&returnUrl=' + encodeURIComponent(document.location.href)
           + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
 
-        // Append workspace of record in all-workspaces view
-        if (TYPO3.settings.Workspaces.allView) {
-          newUrl += '&workspace=' + row.dataset.t3ver_wsid;
-        }
-
         window.location.href = newUrl;
       }).on('click', '[data-action="version"]', (e: JQueryEventObject): void => {
         const row = <HTMLTableRowElement>e.currentTarget.closest('tr');

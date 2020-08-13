@@ -58,8 +58,7 @@ class MassActionHandler
         $currentWorkspace = $this->getCurrentWorkspace();
         $backendUser = $this->getBackendUser();
         $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
-        // in case we're working within "All Workspaces" we can't provide Mass Actions
-        if ($currentWorkspace != WorkspaceService::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
+        if ($massActionsEnabled) {
             $publishAccess = $backendUser->workspacePublishAccess($currentWorkspace);
             if ($publishAccess && !($backendUser->workspaceRec['publish_access'] & 1)) {
                 $actions[] = ['action' => 'publish', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_publish')];

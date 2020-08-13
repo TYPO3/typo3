@@ -214,13 +214,6 @@ class EditDocumentController
     protected $returnEditConf;
 
     /**
-     * Workspace used for the editing action.
-     *
-     * @var string|null
-     */
-    protected $workspace;
-
-    /**
      * parse_url() of current requested URI, contains ['path'] and ['query'] parts.
      *
      * @var array
@@ -457,7 +450,6 @@ class EditDocumentController
         $this->closeDoc = (int)($parsedBody['closeDoc'] ?? $queryParams['closeDoc'] ?? self::DOCUMENT_CLOSE_MODE_DEFAULT);
         $this->doSave = (bool)($parsedBody['doSave'] ?? $queryParams['doSave'] ?? false);
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
-        $this->workspace = $parsedBody['workspace'] ?? $queryParams['workspace'] ?? null;
         $this->uc = $parsedBody['uc'] ?? $queryParams['uc'] ?? null;
 
         // Set overrideVals as default values if defVals does not exist.
@@ -489,11 +481,6 @@ class EditDocumentController
             if ($response = $this->closeDocument($this->closeDoc, $request)) {
                 return $response;
             }
-        }
-
-        // Sets a temporary workspace, this request is based on
-        if ($this->workspace !== null) {
-            $this->getBackendUser()->setTemporaryWorkspace($this->workspace);
         }
 
         $event = new BeforeFormEnginePageInitializedEvent($this, $request);
@@ -2374,7 +2361,7 @@ class EditDocumentController
     {
         // @todo: Refactor in TYPO3 v10: This GeneralUtility method fiddles with _GP()
         $this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray(
-            'edit,defVals,overrideVals,columnsOnly,noView,workspace',
+            'edit,defVals,overrideVals,columnsOnly,noView',
             $this->R_URL_getvars
         );
         $this->storeUrl = HttpUtility::buildQueryString($this->storeArray, '&');
