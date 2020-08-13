@@ -155,6 +155,7 @@ class ReviewController extends ActionController
             }
         }
         $wsList = GeneralUtility::makeInstance(WorkspaceService::class)->getAvailableWorkspaces();
+        $customWorkspaceExists = $this->customWorkspaceExists($wsList);
         $activeWorkspace = $backendUser->workspace;
         $performWorkspaceSwitch = false;
         if ((string)GeneralUtility::_GP('workspace') !== '') {
@@ -171,6 +172,8 @@ class ReviewController extends ActionController
         $this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', $activeWorkspace);
         $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID;
         $this->view->assignMultiple([
+            'isAdmin' => $backendUser->isAdmin(),
+            'customWorkspaceExists' => $customWorkspaceExists,
             'showGrid' => $workspaceIsAccessible,
             'showLegend' => $workspaceIsAccessible,
             'pageUid' => (int)GeneralUtility::_GP('id'),
@@ -316,6 +319,22 @@ class ReviewController extends ActionController
             $language = $backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['language'];
         }
         return $language;
+    }
+
+    /**
+     * Returns true if at least one custom workspace next to live workspace exists.
+     *
+     * @param array $workspaceList
+     * @return bool
+     */
+    protected function customWorkspaceExists(array $workspaceList): bool
+    {
+        foreach (array_keys($workspaceList) as $workspaceId) {
+            if ($workspaceId > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
