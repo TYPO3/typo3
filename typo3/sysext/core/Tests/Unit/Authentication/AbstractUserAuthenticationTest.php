@@ -76,7 +76,7 @@ class AbstractUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpHeadersReturnsNormalNoCacheHeadersForNonIe()
+    public function getHttpHeadersReturnsNoCacheHeaders()
     {
         $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.2; rv:22.0) Gecko/20130405 Firefox/23.0';
         $_SERVER['HTTPS'] = 'on';
@@ -84,17 +84,5 @@ class AbstractUserAuthenticationTest extends UnitTestCase
         $subject->_set('loginType', 'BE');
         $result = $subject->_call('getHttpHeaders');
         self::assertEquals($result['Pragma'], 'no-cache');
-    }
-
-    /**
-     * @test
-     */
-    public function getHttpHeadersReturnsSpecialNoCacheHeadersForIe()
-    {
-        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US)';
-        $_SERVER['HTTPS'] = 'on';
-        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class, [], '', false);
-        $result = $subject->_call('getHttpHeaders');
-        self::assertEquals($result['Pragma'], 'private');
     }
 }

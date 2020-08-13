@@ -415,25 +415,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function getHttpHeaders(): array
     {
-        $headers = [
+        return [
             'Expires' => 0,
-            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT'
+            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache'
         ];
-        $cacheControlHeader = 'no-cache, must-revalidate';
-        $pragmaHeader = 'no-cache';
-        // Prevent error message in IE when using a https connection
-        // see https://forge.typo3.org/issues/24125
-        if (strpos(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'), 'MSIE') !== false
-            && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-            // Some IEs can not handle no-cache
-            // see http://support.microsoft.com/kb/323308/en-us
-            $cacheControlHeader = 'must-revalidate';
-            // IE needs "Pragma: private" if SSL connection
-            $pragmaHeader = 'private';
-        }
-        $headers['Cache-Control'] = $cacheControlHeader;
-        $headers['Pragma'] = $pragmaHeader;
-        return $headers;
     }
 
     /**
