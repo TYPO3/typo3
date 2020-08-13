@@ -1118,7 +1118,6 @@ class DataHandlerHook
     {
         $workspacesCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('workspaces_cache');
         $workspacesCache->flushByTag($workspaceId);
-        $workspacesCache->flushByTag(WorkspaceService::SELECT_ALL_WORKSPACES);
     }
 
     /*******************************

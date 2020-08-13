@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,9 +85,6 @@ class ActionHandler
      */
     public function swapSingleRecord($table, $t3ver_oid, $orig_uid)
     {
-        $versionRecord = BackendUtility::getRecord($table, $orig_uid);
-        $currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
-
         $cmd = [];
         $cmd[$table][$t3ver_oid]['version'] = [
             'action' => 'swap',
@@ -96,8 +92,6 @@ class ActionHandler
             'swapIntoWS' => 1
         ];
         $this->processTcaCmd($cmd);
-
-        $this->setTemporaryWorkspace($currentWorkspace);
     }
 
     /**
@@ -109,16 +103,11 @@ class ActionHandler
      */
     public function deleteSingleRecord($table, $uid)
     {
-        $versionRecord = BackendUtility::getRecord($table, $uid);
-        $currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
-
         $cmd = [];
         $cmd[$table][$uid]['version'] = [
             'action' => 'clearWSID'
         ];
         $this->processTcaCmd($cmd);
-
-        $this->setTemporaryWorkspace($currentWorkspace);
     }
 
     /**
@@ -249,8 +238,6 @@ class ActionHandler
     public function sendToNextStageWindow($uid, $table, $t3ver_oid)
     {
         $elementRecord = BackendUtility::getRecord($table, $uid);
-        $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
-
         if (is_array($elementRecord)) {
             $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
             $nextStageRecord = $workspaceRecord->getNextStage($elementRecord['t3ver_stage']);
@@ -269,8 +256,6 @@ class ActionHandler
         } else {
             $result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264776);
         }
-
-        $this->setTemporaryWorkspace($currentWorkspace);
         return $result;
     }
 
@@ -284,8 +269,6 @@ class ActionHandler
     public function sendToPrevStageWindow($uid, $table)
     {
         $elementRecord = BackendUtility::getRecord($table, $uid);
-        $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
-
         if (is_array($elementRecord)) {
             $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
             $stageRecord = $workspaceRecord->getStage($elementRecord['t3ver_stage']);
@@ -310,8 +293,6 @@ class ActionHandler
         } else {
             $result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264765);
         }
-
-        $this->setTemporaryWorkspace($currentWorkspace);
         return $result;
     }
 
@@ -545,9 +526,6 @@ class ActionHandler
         $uid = $parameters->affects->uid;
         $t3ver_oid = $parameters->affects->t3ver_oid;
 
-        $elementRecord = BackendUtility::getRecord($table, $uid);
-        $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
-
         $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
         if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
             $cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
@@ -565,7 +543,6 @@ class ActionHandler
             'success' => true
         ];
 
-        $this->setTemporaryWorkspace($currentWorkspace);
         return $result;
     }
 
@@ -591,9 +568,6 @@ class ActionHandler
         $table = $parameters->affects->table;
         $uid = $parameters->affects->uid;
 
-        $elementRecord = BackendUtility::getRecord($table, $uid);
-        $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
-
         $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
         $cmdArray[$table][$uid]['version']['action'] = 'setStage';
         $cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
@@ -604,7 +578,6 @@ class ActionHandler
             'success' => true
         ];
 
-        $this->setTemporaryWorkspace($currentWorkspace);
         return $result;
     }
 
@@ -841,28 +814,6 @@ class ActionHandler
         ]);
         $renderedView = $view->render();
         return $renderedView;
-    }
-
-    /**
-     * @param int $workspaceId
-     * @return int Id of the original workspace
-     * @throws Exception
-     */
-    protected function setTemporaryWorkspace($workspaceId)
-    {
-        $workspaceId = (int)$workspaceId;
-        $currentWorkspace = (int)$this->getBackendUser()->workspace;
-
-        if ($currentWorkspace !== $workspaceId) {
-            if (!$this->getBackendUser()->setTemporaryWorkspace($workspaceId)) {
-                throw new Exception(
-                    'Cannot set temporary workspace to "' . $workspaceId . '"',
-                    1371484524
-                );
-            }
-        }
-
-        return $currentWorkspace;
     }
 
     /**

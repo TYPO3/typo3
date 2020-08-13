@@ -171,8 +171,6 @@ class ReviewController extends ActionController
                     $backendUser->setWorkspace($activeWorkspace);
                     $performWorkspaceSwitch = true;
                     BackendUtility::setUpdateSignal('updatePageTree');
-                } elseif ($switchWs == WorkspaceService::SELECT_ALL_WORKSPACES) {
-                    $this->redirect('fullIndex');
                 }
             }
         }
@@ -201,36 +199,6 @@ class ReviewController extends ActionController
                 ->setIcon($iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);
         }
-        $backendUser->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
-    }
-
-    /**
-     * Renders the review module user dependent.
-     * The module will show all records of all workspaces.
-     */
-    public function fullIndexAction()
-    {
-        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $wsList = $wsService->getAvailableWorkspaces();
-
-        $activeWorkspace = $this->getBackendUser()->workspace;
-        if (!$this->getBackendUser()->isAdmin()) {
-            $wsCur = [$activeWorkspace => true];
-            $wsList = array_intersect_key($wsList, $wsCur);
-        }
-
-        $this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, WorkspaceService::SELECT_ALL_WORKSPACES));
-        $this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', WorkspaceService::SELECT_ALL_WORKSPACES);
-        $this->view->assignMultiple([
-            'pageUid' => (int)GeneralUtility::_GP('id'),
-            'showGrid' => true,
-            'showLegend' => true,
-            'workspaceList' => $this->prepareWorkspaceTabs($wsList, $activeWorkspace),
-            'activeWorkspaceUid' => WorkspaceService::SELECT_ALL_WORKSPACES
-        ]);
-        $this->getBackendUser()->setAndSaveSessionData('tx_workspace_activeWorkspace', WorkspaceService::SELECT_ALL_WORKSPACES);
-        // set flag for javascript
-        $this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
     }
 
     /**
@@ -247,7 +215,7 @@ class ReviewController extends ActionController
         $this->view->assignMultiple([
             'pageUid' => (int)GeneralUtility::_GP('id'),
             'showGrid' => true,
-            'workspaceList' => $this->prepareWorkspaceTabs($wsList, (int)$activeWorkspace, false),
+            'workspaceList' => $this->prepareWorkspaceTabs($wsList, (int)$activeWorkspace),
             'activeWorkspaceUid' => $activeWorkspace,
         ]);
         $this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
@@ -258,30 +226,18 @@ class ReviewController extends ActionController
      *
      * @param array $workspaceList
      * @param int $activeWorkspace
-     * @param bool $showAllWorkspaceTab
      * @return array
      */
-    protected function prepareWorkspaceTabs(array $workspaceList, int $activeWorkspace, bool $showAllWorkspaceTab = true)
+    protected function prepareWorkspaceTabs(array $workspaceList, int $activeWorkspace)
     {
         $tabs = [];
 
-        if ($activeWorkspace !== WorkspaceService::SELECT_ALL_WORKSPACES
-            && $activeWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID
-        ) {
+        if ($activeWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {
             $tabs[] = [
                 'title' => $workspaceList[$activeWorkspace],
                 'itemId' => 'workspace-' . $activeWorkspace,
                 'workspaceId' => $activeWorkspace,
                 'triggerUrl' => $this->getModuleUri($activeWorkspace),
-            ];
-        }
-
-        if ($showAllWorkspaceTab) {
-            $tabs[] = [
-                'title' => 'All workspaces',
-                'itemId' => 'workspace-' . WorkspaceService::SELECT_ALL_WORKSPACES,
-                'workspaceId' => WorkspaceService::SELECT_ALL_WORKSPACES,
-                'triggerUrl' => $this->getModuleUri(WorkspaceService::SELECT_ALL_WORKSPACES),
             ];
         }
 
@@ -314,12 +270,6 @@ class ReviewController extends ActionController
             'id' => $this->pageId,
             'workspace' => $workspaceId,
         ];
-        // The "all workspaces" tab is handled in fullIndexAction
-        // which is required as additional GET parameter in the URI then
-        if ($workspaceId === WorkspaceService::SELECT_ALL_WORKSPACES) {
-            $this->uriBuilder->reset()->uriFor('fullIndex');
-            $parameters = array_merge($parameters, $this->uriBuilder->getArguments());
-        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
     }

@@ -73,23 +73,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function versionsFromAllWorkspaceCanBeFound()
-    {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
-        $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(WorkspaceService::SELECT_ALL_WORKSPACES, -99, 2);
-        self::assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
-        self::assertCount(
-            2,
-            $result['pages'],
-            'The result is supposed to contain one version for this page in workspace 91'
-        );
-    }
-
-    /**
-     * @test
-     */
     public function versionsCanBeFoundRecursive()
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');

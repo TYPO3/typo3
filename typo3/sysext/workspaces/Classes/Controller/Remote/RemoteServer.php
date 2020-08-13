@@ -116,11 +116,7 @@ class RemoteServer
      */
     public function getStageActions()
     {
-        $currentWorkspace = $this->getCurrentWorkspace();
-        $stages = [];
-        if ($currentWorkspace != WorkspaceService::SELECT_ALL_WORKSPACES) {
-            $stages = $this->stagesService->getStagesForWSUser();
-        }
+        $stages = $this->stagesService->getStagesForWSUser();
         $data = [
             'total' => count($stages),
             'data' => $stages
