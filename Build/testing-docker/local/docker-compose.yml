@@ -851,6 +851,24 @@ services:
           && ./node_modules/grunt/bin/grunt stylelint;
       "
 
+  lint_html:
+    image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+    - ${CORE_ROOT}:${CORE_ROOT}
+    - ${HOST_HOME}:${HOST_HOME}
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}/Build
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        yarn install \
+          && ./node_modules/grunt/bin/grunt lintspaces;
+      "
+
   lint_typescript:
     image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
     user: ${HOST_UID}
