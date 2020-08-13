@@ -97,9 +97,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
 
         $src = $src === '' ? null : PathUtility::getAbsoluteWebPath($src);
 
-        $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
-        $noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
-
         $content = [];
         if ($src) {
             $content[] = '<!--[if IE]>';
@@ -108,7 +105,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
             $content[] = '<!--[if !IE]>-->';
             $content[] = '  <object data="' . htmlspecialchars($src) . '" type="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
             $content[] = '<!--<![endif]-->';
-            $content[] = $noscript;
             $content[] = '</object>';
         }
         $content = implode(LF, $content);
