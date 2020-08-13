@@ -88,6 +88,7 @@ Options:
             - lint: PHP linting
             - lintScss: SCSS linting
             - lintTypescript: TS linting
+            - lintHtml: HTML linting
             - unit (default): PHP unit tests
             - unitDeprecated: deprecated PHP unit tests
             - unitJavascript: JavaScript unit tests
@@ -487,6 +488,12 @@ case ${TEST_SUITE} in
     lintTypescript)
         setUpDockerComposeDotEnv
         docker-compose run lint_typescript
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    lintHtml)
+        setUpDockerComposeDotEnv
+        docker-compose run lint_html
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
