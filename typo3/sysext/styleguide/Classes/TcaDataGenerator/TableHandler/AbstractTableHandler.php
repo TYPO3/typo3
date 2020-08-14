@@ -43,8 +43,7 @@ class AbstractTableHandler
 
     /**
      * @param string $tableName
-     * @param $recordFinder
-     * @param $fieldValues
+     * @param array $fieldValues
      */
     protected function generateTranslatedRecords(string $tableName, $fieldValues)
     {

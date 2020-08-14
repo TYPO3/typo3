@@ -22,7 +22,7 @@ class TypeUserPalette
 {
     /**
      * @param array $parameters
-     * @param $parentObject
+     * @param object $parentObject
      * @return string
      */
     public function render(array $parameters, $parentObject)

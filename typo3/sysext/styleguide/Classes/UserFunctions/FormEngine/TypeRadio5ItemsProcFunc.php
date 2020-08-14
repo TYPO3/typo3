@@ -23,7 +23,7 @@ class TypeRadio5ItemsProcFunc
     /**
      * Add two items to existing ones
      *
-     * @param $params
+     * @param array $params
      */
     public function itemsProcFunc(&$params)
     {

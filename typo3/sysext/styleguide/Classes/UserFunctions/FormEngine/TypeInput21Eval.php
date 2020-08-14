@@ -35,9 +35,9 @@ class TypeInput21Eval
     /**
      * Adds text "PHPfoo-evaluate" at end on saving
      *
-     * @param $value
-     * @param $is_in
-     * @param $set
+     * @param string $value
+     * @param string $is_in
+     * @param bool $set
      * @return string
      */
     public function evaluateFieldValue($value, $is_in, &$set)

@@ -36,10 +36,9 @@ class InlineMnGroup extends AbstractTableHandler implements TableHandlerInterfac
      * Create 1 main row, 4 child child rows, add 2 child child rows in mn
      *
      * @param string $tableName
-     * @return string
      * @throws \TYPO3\CMS\Styleguide\TcaDataGenerator\Exception
      */
-    public function handle(string $tableName)
+    public function handle(string $tableName): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
