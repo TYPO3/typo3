@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
@@ -118,7 +119,7 @@ class FieldGeneratorResolver
      */
     public function resolve(array $data): FieldGeneratorInterface
     {
-        $generator = NULL;
+        $generator = null;
         foreach ($this->fieldValueGenerators as $fieldValueGenerator) {
             $generator = GeneralUtility::makeInstance($fieldValueGenerator);
             if (!$generator instanceof FieldGeneratorInterface) {
@@ -129,9 +130,8 @@ class FieldGeneratorResolver
             }
             if ($generator->match($data)) {
                 break;
-            } else {
-                $generator = null;
             }
+            $generator = null;
         }
         if (is_null($generator)) {
             throw new GeneratorNotFoundException(
@@ -141,5 +141,4 @@ class FieldGeneratorResolver
         }
         return $generator;
     }
-
 }

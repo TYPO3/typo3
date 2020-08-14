@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline 1:n 1:n child',
@@ -19,7 +20,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -114,9 +114,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -127,6 +125,5 @@ return [
             ',
         ],
     ],
-
 
 ];

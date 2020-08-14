@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Styleguide\Tests\Functional\TcaDataGenerator;
 
 /*
@@ -39,7 +40,7 @@ class GeneratorTest extends FunctionalTestCase
      */
     public function dummy()
     {
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**
@@ -79,7 +80,7 @@ class GeneratorTest extends FunctionalTestCase
             ->from('tx_styleguide_elements_basic')
             ->execute()
             ->fetchColumn(0);
-        $this->assertEquals(0, $count);
+        self::assertEquals(0, $count);
 
         $generator = new Generator();
         $generator->create();
@@ -91,6 +92,6 @@ class GeneratorTest extends FunctionalTestCase
             ->from('tx_styleguide_elements_basic')
             ->execute()
             ->fetchColumn(0);
-        $this->assertGreaterThan(0, $count);
+        self::assertGreaterThan(0, $count);
     }
 }

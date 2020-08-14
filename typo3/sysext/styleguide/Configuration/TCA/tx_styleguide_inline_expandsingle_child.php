@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline expand single child',
@@ -100,15 +101,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'input_1',
         ],
     ],
-
 
 ];

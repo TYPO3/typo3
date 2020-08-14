@@ -34,6 +34,10 @@ script:
     Build/Scripts/runTests.sh -s lint -p $TRAVIS_PHP_VERSION
 
   - >
+    echo "Running CGL check";
+    Build/Scripts/runTests.sh -s cgl -n -p $TRAVIS_PHP_VERSION
+
+  - >
     echo "Running functional tests with mariadb";
     Build/Scripts/runTests.sh -s functional -d mariadb -p $TRAVIS_PHP_VERSION
 

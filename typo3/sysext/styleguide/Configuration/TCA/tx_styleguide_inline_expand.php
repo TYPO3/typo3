@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline expand',
@@ -19,7 +20,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -103,9 +103,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -114,6 +112,5 @@ return [
             ',
         ],
     ],
-
 
 ];

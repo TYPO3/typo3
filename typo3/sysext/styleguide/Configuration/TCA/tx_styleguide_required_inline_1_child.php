@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - required child inline_1',
@@ -18,9 +19,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -80,7 +79,6 @@ return [
             ],
         ],
 
-
         'parentid' => [
             'config' => [
                 'type' => 'passthrough',
@@ -98,15 +96,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'input_1',
         ],
     ],
-
 
 ];

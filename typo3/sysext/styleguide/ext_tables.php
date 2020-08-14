@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
@@ -31,7 +32,7 @@ if (TYPO3_MODE === 'BE') {
     $iconRegistry->registerIcon(
         'provider-svg',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_svg_icon.svg',]
+        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_svg_icon.svg']
     );
     // Register example Bitmap for icon submodule
     $iconRegistry->registerIcon(
@@ -51,7 +52,7 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
         [
             'name' => 'spinner',
-            'spinning' => TRUE
+            'spinning' => true
         ]
     );
 
@@ -149,5 +150,4 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_type');
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_valuesdefault');
-
 }

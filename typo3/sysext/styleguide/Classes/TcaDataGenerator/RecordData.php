@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
@@ -55,5 +56,4 @@ class RecordData
         }
         return $fieldValues;
     }
-
 }

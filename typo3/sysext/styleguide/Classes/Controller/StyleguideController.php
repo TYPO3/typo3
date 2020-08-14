@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\Controller;
 
@@ -79,7 +80,7 @@ class StyleguideController extends ActionController
         $moduleName = $this->request->getPluginName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = array('id', 'M', $modulePrefix);
+            $getVars = ['id', 'M', $modulePrefix];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
@@ -236,24 +237,25 @@ class StyleguideController extends ActionController
     {
         $module = GeneralUtility::makeInstance(ModuleTemplate::class);
 
-        $menuItems = array(
-            0 => array(
+        $menuItems = [
+            0 => [
                 'label' => 'First label',
                 'content' => 'First content'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'label' => 'Second label',
                 'content' => 'Second content'
-            ),
-            2 => array(
+            ],
+            2 => [
                 'label' => 'Third label',
                 'content' => 'Third content'
-            )
-        );
+            ]
+        ];
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
     }
 
     public function modalAction()
-    {}
+    {
+    }
 }

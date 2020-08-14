@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - select',
@@ -19,7 +20,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -319,7 +319,6 @@ return [
             ],
         ],
 
-
         'select_checkbox_1' => [
             'exclude' => 1,
             'label' => 'select_checkbox_1 description',
@@ -377,7 +376,6 @@ return [
                 ],
             ],
         ],
-
 
         'select_multiplesidebyside_1' => [
             'exclude' => 1,
@@ -650,7 +648,6 @@ return [
             ],
         ],
 
-
         'select_requestUpdate_1' => [
             'exclude' => 1,
             'label' => 'select_requestUpdate_1',
@@ -668,7 +665,6 @@ return [
                 ],
             ],
         ],
-
 
         'flex_1' => [
             'exclude' => 1,
@@ -950,9 +946,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -980,6 +974,5 @@ return [
             ',
         ],
     ],
-
 
 ];

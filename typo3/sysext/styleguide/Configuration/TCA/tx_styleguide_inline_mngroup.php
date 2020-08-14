@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline mn group',
@@ -19,7 +20,6 @@ return [
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -111,9 +111,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -123,6 +121,5 @@ return [
             ',
         ],
     ],
-
 
 ];

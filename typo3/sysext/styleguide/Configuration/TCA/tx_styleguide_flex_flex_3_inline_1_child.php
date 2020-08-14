@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - flex child flex_3 inline_1',
@@ -17,7 +18,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -78,7 +78,6 @@ return [
             ],
         ],
 
-
         'parentid' => [
             'config' => [
                 'type' => 'passthrough',
@@ -97,15 +96,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'input_1',
         ],
     ],
-
 
 ];

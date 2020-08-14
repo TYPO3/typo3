@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\Form\Element;
 
 /**
@@ -29,7 +30,7 @@ class User1Element extends AbstractFormElement
     {
         $result = $this->initializeResultArray();
         $parameters = $this->data['parameterArray'];
-        $html = array();
+        $html = [];
         $html[] = '<div style="border: 1px dashed ' . $parameters['fieldConf']['config']['parameters']['color'] . '" >';
         $html[] = '<h2>Own form field using a parameter</h2>';
         $html[] = '<input'

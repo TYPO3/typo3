@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
@@ -15,9 +16,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate data for type=select fields

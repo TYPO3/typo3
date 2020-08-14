@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline foreign_record_defaults',
@@ -19,7 +20,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -112,15 +112,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'inline_1',
         ],
     ],
-
 
 ];

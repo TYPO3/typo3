@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline mn group mm',
@@ -19,9 +20,7 @@ return [
         'origUid' => 't3_origuid',
     ],
 
-
     'columns' => [
-
 
         'sys_language_uid' => [
             'exclude' => 1,
@@ -82,7 +81,6 @@ return [
             ]
         ],
 
-
         'parentid' => [
             'label' => 'parentid',
             'config' => [
@@ -137,7 +135,6 @@ return [
         ],
     ],
 
-
     'types' => [
         '0' => [
             'showitem' => '
@@ -145,6 +142,5 @@ return [
                 --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
-
 
 ];

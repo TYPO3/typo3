@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - rte child inline_1',
@@ -17,7 +18,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -96,15 +96,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'rte_1',
         ],
     ],
-
 
 ];

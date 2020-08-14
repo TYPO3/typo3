@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\ViewHelpers;
 
@@ -70,7 +71,7 @@ class CodeViewHelper extends AbstractViewHelper
         }
         $markup[] = '<div class="example code">';
         $markup[] = '<pre>';
-        $markup[] = '<code class="language-'. htmlspecialchars($this->arguments['language']) . '">';
+        $markup[] = '<code class="language-' . htmlspecialchars($this->arguments['language']) . '">';
         $markup[] = htmlspecialchars($content);
         $markup[] = '</code>';
         $markup[] = '</pre>';
