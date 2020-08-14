@@ -45,6 +45,10 @@ script:
     Build/Scripts/runTests.sh -s cgl -n -p $PHP_VERSION;
 
   - >
+    echo "Running phpstan";
+    Build/Scripts/runTests.sh -s phpstan -p $PHP_VERSION;
+
+  - >
     echo "Running functional tests with mariadb";
     Build/Scripts/runTests.sh -s functional -d mariadb -p $PHP_VERSION;
 
