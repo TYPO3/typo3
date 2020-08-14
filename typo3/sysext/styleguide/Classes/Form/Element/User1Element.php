@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 class User1Element extends AbstractFormElement
 {
     /**
-     * @return array As defined in initializeResultArray() of AbstractNode
+     * @return array<string> As defined in initializeResultArray() of AbstractNode
      */
     public function render()
     {

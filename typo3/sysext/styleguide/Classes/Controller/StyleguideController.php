@@ -58,7 +58,7 @@ class StyleguideController extends ActionController
      *
      * @param ViewInterface $view
      */
-    protected function initializeView(ViewInterface $view)
+    protected function initializeView(ViewInterface $view): void
     {
         parent::initializeView($view);
 
@@ -91,49 +91,49 @@ class StyleguideController extends ActionController
     /**
      * Buttons
      */
-    public function buttonsAction()
+    public function buttonsAction(): void
     {
     }
 
     /**
      * Index
      */
-    public function indexAction()
+    public function indexAction(): void
     {
     }
 
     /**
      * Typography
      */
-    public function typographyAction()
+    public function typographyAction(): void
     {
     }
 
     /**
      * Trees
      */
-    public function treesAction()
+    public function treesAction(): void
     {
     }
 
     /**
      * Tables
      */
-    public function tablesAction()
+    public function tablesAction(): void
     {
     }
 
     /**
      * TCA
      */
-    public function tcaAction()
+    public function tcaAction(): void
     {
     }
 
     /**
      * TCA create default data action
      */
-    public function tcaCreateAction()
+    public function tcaCreateAction(): void
     {
         /** @var Generator $generator */
         $generator = GeneralUtility::makeInstance(Generator::class);
@@ -150,7 +150,7 @@ class StyleguideController extends ActionController
     /**
      * TCA delete default data action
      */
-    public function tcaDeleteAction()
+    public function tcaDeleteAction(): void
     {
         /** @var Generator $generator */
         $generator = GeneralUtility::makeInstance(Generator::class);
@@ -167,14 +167,14 @@ class StyleguideController extends ActionController
     /**
      * Debug
      */
-    public function debugAction()
+    public function debugAction(): void
     {
     }
 
     /**
      * Icons
      */
-    public function iconsAction()
+    public function iconsAction(): void
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
@@ -195,14 +195,14 @@ class StyleguideController extends ActionController
     /**
      * Infobox
      */
-    public function infoboxAction()
+    public function infoboxAction(): void
     {
     }
 
     /**
      * FlashMessages
      */
-    public function flashMessagesAction()
+    public function flashMessagesAction(): void
     {
         $loremIpsum = $this->objectManager->get(KauderwelschService::class)->getLoremIpsum();
         $this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, true);
@@ -215,14 +215,14 @@ class StyleguideController extends ActionController
     /**
      * Helpers
      */
-    public function helpersAction()
+    public function helpersAction(): void
     {
     }
 
     /**
      * Avatar
      */
-    public function avatarAction()
+    public function avatarAction(): void
     {
         $this->view->assign(
             'backendUser',
@@ -233,7 +233,7 @@ class StyleguideController extends ActionController
     /**
      * Tabs
      */
-    public function tabAction()
+    public function tabAction(): void
     {
         $module = GeneralUtility::makeInstance(ModuleTemplate::class);
 
@@ -255,7 +255,7 @@ class StyleguideController extends ActionController
         $this->view->assign('tabs', $tabs);
     }
 
-    public function modalAction()
+    public function modalAction(): void
     {
     }
 }

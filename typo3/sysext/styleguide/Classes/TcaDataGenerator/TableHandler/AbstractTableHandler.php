@@ -45,7 +45,7 @@ class AbstractTableHandler
      * @param string $tableName
      * @param array $fieldValues
      */
-    protected function generateTranslatedRecords(string $tableName, $fieldValues)
+    protected function generateTranslatedRecords(string $tableName, $fieldValues): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoLanguages = $recordFinder->findUidsOfDemoLanguages();

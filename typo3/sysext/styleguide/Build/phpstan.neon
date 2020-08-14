@@ -1,5 +1,5 @@
 parameters:
-  level: 2
+  level: 6
 
   paths:
     - %currentWorkingDirectory%/Classes
@@ -8,3 +8,5 @@ parameters:
   excludes_analyse:
     - %currentWorkingDirectory%/Tests/Acceptance/Support/BackendTester.php
     - %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
+
+  checkMissingIterableValueType: false
