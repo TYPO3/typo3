@@ -909,7 +909,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function mayMakeShortcut()
     {
-        return $this->getTSConfig()['options.']['enableBookmarks'] ?? false
+        return ($this->getTSConfig()['options.']['enableBookmarks'] ?? false)
             && !($this->getTSConfig()['options.']['mayNotCreateEditBookmarks'] ?? false);
     }
 
