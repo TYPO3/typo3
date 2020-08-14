@@ -1,8 +1,13 @@
 language: php
 
-php:
-  - 7.2
-  - 7.3
+jobs:
+  include:
+    - name: PHP 7.2
+      env: PHP_VERSION=7.2
+    - name: PHP 7.3
+      env: PHP_VERSION=7.3
+    - name: PHP 7.4
+      env: PHP_VERSION=7.4
 
 sudo: true
 
@@ -18,45 +23,43 @@ notifications:
     on_failure: change
 
 before_script:
-  - Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
+  - >
+    echo "Running composer install";
+    Build/Scripts/runTests.sh -s composerInstall -p $PHP_VERSION;
 
 script:
   - >
-    echo "Running composer validate"
-    Build/Scripts/runTests.sh -s composerValidate -p $TRAVIS_PHP_VERSION
+    echo "Running composer validate";
+    Build/Scripts/runTests.sh -s composerValidate -p $PHP_VERSION;
 
   - >
     echo "Running unit tests";
-    Build/Scripts/runTests.sh -s unit -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s unit -p $PHP_VERSION;
 
   - >
     echo "Running php lint";
-    Build/Scripts/runTests.sh -s lint -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s lint -p $PHP_VERSION;
 
   - >
     echo "Running CGL check";
-    Build/Scripts/runTests.sh -s cgl -n -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s cgl -n -p $PHP_VERSION;
 
   - >
     echo "Running functional tests with mariadb";
-    Build/Scripts/runTests.sh -s functional -d mariadb -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s functional -d mariadb -p $PHP_VERSION;
 
   - >
-    if [ ${TRAVIS_PHP_VERSION} = "7.2" ]; then
-      echo "Running functional tests with mssql";
-      Build/Scripts/runTests.sh -s functional -d mssql -p $TRAVIS_PHP_VERSION;
-    else
-      echo "Running functional tests with mssql not supported with PHP 7.3 yet";
-    fi
+    echo "Running functional tests with mssql";
+    Build/Scripts/runTests.sh -s functional -d mssql -p $PHP_VERSION;
 
   - >
     echo "Running functional tests with postgres";
-    Build/Scripts/runTests.sh -s functional -d postgres -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s functional -d postgres -p $PHP_VERSION;
 
   - >
     echo "Running functional tests with sqlite";
-    Build/Scripts/runTests.sh -s functional -d sqlite -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s functional -d sqlite -p $PHP_VERSION;
 
   - >
     echo "Running acceptance tests";
-    Build/Scripts/runTests.sh -s acceptance -p $TRAVIS_PHP_VERSION
+    Build/Scripts/runTests.sh -s acceptance -p $PHP_VERSION;
