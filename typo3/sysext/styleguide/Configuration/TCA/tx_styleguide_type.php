@@ -61,6 +61,7 @@ return [
                 ],
                 'foreign_table' => 'tx_styleguide_type',
                 'foreign_table_where' => 'AND {#tx_styleguide_type}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_type}.{#sys_language_uid} IN (-1,0)',
+                'default' => 0
             ]
         ],
         'l10n_source' => [
