@@ -51,6 +51,7 @@ Options:
             - composerValidate: "composer validate"
             - functional: functional tests
             - lint: PHP linting
+            - phpstan: phpstan analyze
             - unit (default): PHP unit tests
 
     -d <mariadb|mssql|postgres|sqlite>
@@ -277,6 +278,12 @@ case ${TEST_SUITE} in
     lint)
         setUpDockerComposeDotEnv
         docker-compose run lint
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    phpstan)
+        setUpDockerComposeDotEnv
+        docker-compose run phpstan
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
