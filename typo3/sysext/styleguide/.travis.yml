@@ -1,4 +1,6 @@
-language: php
+os: linux
+dist: focal
+language: minimal
 
 jobs:
   include:
@@ -8,8 +10,6 @@ jobs:
       env: PHP_VERSION=7.3
     - name: PHP 7.4
       env: PHP_VERSION=7.4
-
-sudo: true
 
 cache:
   directories:
