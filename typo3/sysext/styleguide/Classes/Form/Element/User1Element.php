@@ -40,7 +40,7 @@ class User1Element extends AbstractFormElement
             . ' onchange="' . htmlspecialchars(implode('', $parameters['fieldChangeFunc'])) . '"' . $parameters['onFocus']
             . ' />';
         $html[] = '</div>';
-        $result['html'] = implode(LF, $html);
+        $result['html'] = implode(chr(10), $html);
         return $result;
     }
 }

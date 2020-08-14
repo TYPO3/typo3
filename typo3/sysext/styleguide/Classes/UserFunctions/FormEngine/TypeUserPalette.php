@@ -33,6 +33,6 @@ class TypeUserPalette
 				<input name="data[sys_file_storage][{uid}][is_public]" value="0" type="hidden">
 				<input class="checkbox" value="1" name="data[sys_file_storage][{uid}][is_public]_0" type="checkbox" %s>
 			</div>';
-        return implode(LF, $html);
+        return implode(chr(10), $html);
     }
 }
