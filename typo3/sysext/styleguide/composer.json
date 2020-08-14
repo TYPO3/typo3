@@ -7,10 +7,9 @@
       "homepage": "https://forge.typo3.org/projects/typo3cms-core"
     },
     {
-      "name": "Felix Kopp",
-      "email": "felix-source@phorax.com",
-      "role": "Developer",
-      "homepage": "http://phorax.com"
+      "name": "The TYPO3 Community",
+      "role": "Contributor",
+      "homepage": "https://typo3.org/community/"
     }
   ],
   "type": "typo3-cms-extension",
@@ -30,7 +29,6 @@
       "TYPO3\\CMS\\Styleguide\\": "Classes/"
     }
   },
-
   "config": {
     "vendor-dir": ".Build/vendor",
     "bin-dir": ".Build/bin"
