@@ -171,7 +171,7 @@ class DataHandlerHook
             if (empty($emails)) {
                 continue;
             }
-            $workspaceRec = BackendUtility::getRecord('sys_workspace', $groupedNotificationInformation['shared'][0]);
+            $workspaceRec = $groupedNotificationInformation['shared'][0];
             if (!is_array($workspaceRec)) {
                 continue;
             }
