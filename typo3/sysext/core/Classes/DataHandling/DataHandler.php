@@ -1382,7 +1382,7 @@ class DataHandler implements LoggerAwareInterface
             $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
             BackendUtility::workspaceOL($table, $originalLanguageRecord);
             $originalLanguage_diffStorage = json_decode(
-                (string)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] ?? '',
+                (string)($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] ?? ''),
                 true
             );
         }
@@ -2449,9 +2449,9 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT))
             );
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
-        if ($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '' === 'exclude'
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '' !== ''
-            && $GLOBALS['TCA'][$table]['columns'][$field]['languageField'] ?? '' !== '') {
+        if (($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '') === 'exclude'
+            && ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '') !== ''
+            && ($GLOBALS['TCA'][$table]['columns'][$field]['languageField'] ?? '') !== '') {
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->orX(
@@ -5310,7 +5310,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Record must be online record, otherwise we would create a version of a version
-        if ($row['t3ver_oid'] ?? 0 > 0) {
+        if (($row['t3ver_oid'] ?? 0) > 0) {
             $this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (record has an online ID)!', SystemLogErrorClassification::USER_ERROR);
             return null;
         }
