@@ -47,8 +47,12 @@ script:
     Build/Scripts/runTests.sh -s functional -d mariadb -p $PHP_VERSION
 
   - >
-    echo "Running functional tests with mssql";
-    Build/Scripts/runTests.sh -s functional -d mssql -p $PHP_VERSION
+    if [ ${PHP_VERSION} = "7.2" ] || [ ${PHP_VERSION} = "7.3" ]; then
+      echo "Running functional tests with mssql";
+      Build/Scripts/runTests.sh -s functional -d mssql -p $PHP_VERSION;
+    else
+      echo "Running functional tests with mssql not supported with PHP 7.4 yet";
+    fi
 
   - >
     echo "Running functional tests with postgres";
