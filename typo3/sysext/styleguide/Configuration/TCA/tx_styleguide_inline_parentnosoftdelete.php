@@ -32,6 +32,7 @@ return [
                     ['all Languages', -1],
                     ['default', 0],
                 ],
+                'default' => 0,
             ],
         ],
         'l10n_parent' => [

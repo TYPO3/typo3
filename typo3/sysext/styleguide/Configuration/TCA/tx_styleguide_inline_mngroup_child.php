@@ -35,6 +35,7 @@ return [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
                 ],
+                'default' => 0,
             ],
         ],
         'l10n_parent' => [
