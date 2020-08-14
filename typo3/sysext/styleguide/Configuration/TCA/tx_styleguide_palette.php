@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - palette',
@@ -20,9 +21,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'hidden' => [
             'exclude' => 1,
@@ -190,9 +189,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -209,7 +206,6 @@ return [
             ',
         ],
     ],
-
 
     'palettes' => [
         'palette_1' => [
@@ -236,6 +232,5 @@ return [
             'showitem' => 'palette_7_1',
         ],
     ],
-
 
 ];

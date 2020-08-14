@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - type',
@@ -20,7 +21,6 @@ return [
         ],
         'type' => 'type',
     ],
-
 
     'columns' => [
 
@@ -99,7 +99,6 @@ return [
             ],
         ],
 
-
         'text_1' => [
             'exclude' => 1,
             'label' => 'text_1',
@@ -108,9 +107,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -128,6 +125,5 @@ return [
             ],
         ],
     ],
-
 
 ];

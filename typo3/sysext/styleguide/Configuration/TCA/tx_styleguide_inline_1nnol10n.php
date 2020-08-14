@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline 1:n foreign field without l10n in child',
@@ -19,7 +20,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -105,9 +105,7 @@ return [
             'maxitems' => 1,
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -119,6 +117,5 @@ return [
             ',
         ],
     ],
-
 
 ];

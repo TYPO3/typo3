@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - select foreign single_12',
@@ -18,7 +19,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -79,7 +79,6 @@ return [
             ],
         ],
 
-
         'fal_1' => [
             'label' => 'fal_1 selicon_field',
             'exclude' => 1,
@@ -92,16 +91,12 @@ return [
             ),
         ],
 
-
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 'fal_1',
         ],
     ],
-
 
 ];

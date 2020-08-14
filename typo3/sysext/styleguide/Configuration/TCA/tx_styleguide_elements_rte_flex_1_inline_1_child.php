@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - rte child flex_1 inline_1',
@@ -17,7 +18,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -102,6 +102,5 @@ return [
             'showitem' => 'rte_1',
         ],
     ],
-
 
 ];

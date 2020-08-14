@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - rte',
@@ -20,9 +21,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'hidden' => [
             'exclude' => 1,
@@ -127,7 +126,6 @@ return [
             ],
         ],
 
-
         'rte_inline_1' => [
             'exclude' => 1,
             'label' => 'rte_inline_1',
@@ -138,7 +136,6 @@ return [
                 'foreign_table_field' => 'parenttable',
             ],
         ],
-
 
         'rte_flex_1' => [
             'exclude' => 1,
@@ -237,7 +234,6 @@ return [
             ],
         ],
 
-
         'input_palette_1' => [
             'exclude' => 1,
             'label' => 'input_palette_1',
@@ -245,7 +241,6 @@ return [
                 'type' => 'input',
             ],
         ],
-
 
         'rte_palette_1' => [
             'exclude' => 1,
@@ -256,9 +251,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -275,12 +268,10 @@ return [
         ],
     ],
 
-
     'palettes' => [
         'rte_1' => [
             'showitem' => 'input_palette_1,--linebreak--,rte_palette_1',
         ],
     ],
-
 
 ];

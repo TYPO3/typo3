@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
@@ -18,7 +19,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 /**
  * Interface for field value generators
  */
-interface FieldGeneratorInterface {
+interface FieldGeneratorInterface
+{
 
     /**
      * Return true if this FieldGenerator matches

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - t3editor child flex_1 inline_1',
@@ -17,7 +18,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -78,7 +78,6 @@ return [
             ],
         ],
 
-
         'parentid' => [
             'config' => [
                 'type' => 'passthrough',
@@ -99,15 +98,12 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
             'showitem' => 't3editor_1',
         ],
     ],
-
 
 ];

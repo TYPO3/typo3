@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
@@ -26,7 +27,7 @@ class TypeRadio5ItemsProcFunc
      */
     public function itemsProcFunc(&$params)
     {
-        $params['items'][] = array('item 1 from itemProcFunc()', 3, null);
-        $params['items'][] = array('item 2 from itemProcFunc()', 4, null);
+        $params['items'][] = ['item 1 from itemProcFunc()', 3, null];
+        $params['items'][] = ['item 2 from itemProcFunc()', 4, null];
     }
 }

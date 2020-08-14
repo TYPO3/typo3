@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline fal',
@@ -19,7 +20,6 @@ return [
             'disabled' => 'hidden',
         ],
     ],
-
 
     'columns' => [
         'hidden' => [
@@ -140,7 +140,6 @@ return [
             ),
         ],
 
-
         'inline_flex_1' => [
             'exclude' => 1,
             'label' => 'flex_1',
@@ -258,7 +257,6 @@ return [
         ],
     ],
 
-
     'types' => [
         '0' => [
             'showitem' => '
@@ -271,6 +269,5 @@ return [
             ',
         ],
     ],
-
 
 ];

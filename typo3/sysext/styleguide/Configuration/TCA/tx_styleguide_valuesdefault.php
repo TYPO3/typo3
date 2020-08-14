@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - default values new records',
@@ -20,9 +21,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'hidden' => [
             'exclude' => 1,
@@ -119,7 +118,6 @@ return [
             ],
         ],
 
-
         'text_1' => [
             'exclude' => 1,
             'label' => 'text_12 default="text_12"',
@@ -128,7 +126,6 @@ return [
                 'default' => 'text_12',
             ],
         ],
-
 
         'checkbox_1' => [
             'exclude' => 1,
@@ -164,7 +161,6 @@ return [
             ],
         ],
 
-
         'radio_1' => [
             'exclude' => 1,
             'label' => 'radio_1 default=2, three options, second pre-selected',
@@ -179,9 +175,7 @@ return [
             ],
         ],
 
-
          // @todo add default value examples for type=none
-
 
         'select_1' => [
             'exclude' => 1,
@@ -215,7 +209,6 @@ return [
 
     ],
 
-
     'types' => [
         '0' => [
             'showitem' => '
@@ -229,6 +222,5 @@ return [
             ',
         ],
     ],
-
 
 ];

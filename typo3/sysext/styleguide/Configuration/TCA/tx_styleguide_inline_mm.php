@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine - inline MM',
@@ -19,7 +20,6 @@ return [
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],
-
 
     'columns' => [
         'sys_language_uid' => [
@@ -81,7 +81,6 @@ return [
             ]
         ],
 
-
         'title' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
@@ -109,9 +108,7 @@ return [
             ]
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -121,6 +118,5 @@ return [
             '
         ]
     ],
-
 
 ];

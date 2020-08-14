@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\Command;
 
@@ -38,5 +39,4 @@ class KauderwelschCommand extends Command
         $output->writeln(GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum());
         return 0;
     }
-
 }

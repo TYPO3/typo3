@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - t3editor',
@@ -20,9 +21,7 @@ return [
         ],
     ],
 
-
     'columns' => [
-
 
         'hidden' => [
             'exclude' => 1,
@@ -226,9 +225,7 @@ return [
             ],
         ],
 
-
     ],
-
 
     'types' => [
         '0' => [
@@ -243,6 +240,5 @@ return [
             ',
         ],
     ],
-
 
 ];

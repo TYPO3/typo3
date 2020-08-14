@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title'    => 'Form engine - inline use combination box mm',
@@ -17,9 +18,7 @@ return [
         'translationSource' => 'l10n_source',
     ],
 
-
     'columns' => [
-
 
         'select_parent' => [
             'label' => 'select parent',
@@ -96,12 +95,10 @@ return [
 
     ],
 
-
     'types' => [
         '1' => [
             'showitem' => 'select_parent, select_child',
         ],
     ],
-
 
 ];
