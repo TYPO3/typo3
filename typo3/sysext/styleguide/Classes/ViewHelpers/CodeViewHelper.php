@@ -47,7 +47,7 @@ class CodeViewHelper extends AbstractViewHelper
     public function render()
     {
         $content = $this->renderChildren();
-        $_lines = explode(LF, $content);
+        $_lines = explode(chr(10), $content);
         $lines = [];
         foreach ($_lines as $line) {
             $line = preg_replace('/(\s)/', ' ', $line);
@@ -60,7 +60,7 @@ class CodeViewHelper extends AbstractViewHelper
         foreach ($lines as $line) {
             $tmp = substr($line, $indentSize);
             $spaces = strlen($tmp) - strlen(ltrim($tmp));
-            $content .= str_repeat('  ', $spaces) . ltrim($tmp) . LF;
+            $content .= str_repeat('  ', $spaces) . ltrim($tmp) . chr(10);
         }
 
         $markup = [];

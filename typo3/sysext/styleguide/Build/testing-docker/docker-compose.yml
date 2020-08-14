@@ -68,6 +68,7 @@ services:
           sleep 1;
         done;
         echo Database is up;
+        php -v | grep '^PHP';
         mkdir -p Web/typo3temp/var/tests/ \
           && vendor/codeception/codeception/codecept run Backend -d -c Web/typo3conf/ext/styleguide/Tests/codeception.yml ${TEST_FILE}
       "
@@ -85,6 +86,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
+        php -v | grep '^PHP';
         php -n -c /etc/php/cli-no-xdebug/php.ini \
           .Build/bin/php-cs-fixer fix \
             -v \
@@ -107,6 +109,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
+        php -v | grep '^PHP';
         composer install;
       "
 
@@ -124,6 +127,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
+        php -v | grep '^PHP';
         composer validate;
       "
 
@@ -153,7 +157,7 @@ services:
           sleep 1;
         done;
         echo Database is up;
-        php -v | grep '^PHP'
+        php -v | grep '^PHP';
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           php -n -c /etc/php/cli-no-xdebug/php.ini \
             vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
@@ -194,7 +198,7 @@ services:
         done;
         sleep 5;
         echo Database is up;
-        php -v | grep '^PHP'
+        php -v | grep '^PHP';
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           php -n -c /etc/php/cli-no-xdebug/php.ini \
             vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE};
@@ -232,7 +236,7 @@ services:
           sleep 1;
         done;
         echo Database is up;
-        php -v | grep '^PHP'
+        php -v | grep '^PHP';
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           php -n -c /etc/php/cli-no-xdebug/php.ini \
             vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-postgres ${TEST_FILE};
@@ -263,7 +267,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        php -v | grep '^PHP'
+        php -v | grep '^PHP';
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           php -n -c /etc/php/cli-no-xdebug/php.ini \
             vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE};
@@ -291,6 +295,25 @@ services:
         find . -name \\*.php ! -path "./.Build/\\*" -print0 | xargs -0 -n1 -P4 php -n -c /etc/php/cli-no-xdebug/php.ini -l >/dev/null
       "
 
+  phpstan:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${ROOT_DIR}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP';
+        php -n -c /etc/php/cli-no-xdebug/php.ini \
+          .Build/bin/phpstan analyze -c Build/phpstan.neon
+      "
+
   unit:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
@@ -305,7 +328,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        php -v | grep '^PHP'
+        php -v | grep '^PHP';
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           php -n -c /etc/php/cli-no-xdebug/php.ini \
             bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};

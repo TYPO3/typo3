@@ -57,7 +57,7 @@ class Generator
      * @throws Exception
      * @throws GeneratorNotFoundException
      */
-    public function create()
+    public function create(): void
     {
         // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
@@ -147,7 +147,7 @@ class Generator
      * Delete all pages and their records that belong to the
      * tx_styleguide demo pages
      */
-    public function delete()
+    public function delete(): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
@@ -209,7 +209,7 @@ class Generator
     /**
      * Add rows for third party tables like be_users or FAL
      */
-    protected function populateRowsOfThirdPartyTables()
+    protected function populateRowsOfThirdPartyTables(): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 

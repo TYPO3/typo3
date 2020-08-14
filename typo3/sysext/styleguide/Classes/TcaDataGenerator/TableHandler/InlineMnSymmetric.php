@@ -36,9 +36,8 @@ class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInte
      * Create 4 rows, add row 2 and 3 as branch to row 1
      *
      * @param string $tableName
-     * @return string
      */
-    public function handle(string $tableName)
+    public function handle(string $tableName): void
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 

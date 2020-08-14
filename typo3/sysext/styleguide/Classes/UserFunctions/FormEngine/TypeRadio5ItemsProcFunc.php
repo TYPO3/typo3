@@ -23,9 +23,9 @@ class TypeRadio5ItemsProcFunc
     /**
      * Add two items to existing ones
      *
-     * @param $params
+     * @param array $params
      */
-    public function itemsProcFunc(&$params)
+    public function itemsProcFunc(&$params): void
     {
         $params['items'][] = ['item 1 from itemProcFunc()', 3, null];
         $params['items'][] = ['item 2 from itemProcFunc()', 4, null];

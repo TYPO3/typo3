@@ -35,9 +35,8 @@ class StaticData extends AbstractTableHandler implements TableHandlerInterface
      * Adds rows
      *
      * @param string $tableName
-     * @return string
      */
-    public function handle(string $tableName)
+    public function handle(string $tableName): void
     {
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);

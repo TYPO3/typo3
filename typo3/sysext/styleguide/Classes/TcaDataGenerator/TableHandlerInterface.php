@@ -35,5 +35,5 @@ interface TableHandlerInterface
      *
      * @param string $tableName
      */
-    public function handle(string $tableName);
+    public function handle(string $tableName): void;
 }

@@ -42,9 +42,8 @@ class General extends AbstractTableHandler implements TableHandlerInterface
      * Adds rows
      *
      * @param string $tableName
-     * @return string
      */
-    public function handle(string $tableName)
+    public function handle(string $tableName): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $recordData = GeneralUtility::makeInstance(RecordData::class);

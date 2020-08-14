@@ -38,7 +38,7 @@ class GeneratorTest extends FunctionalTestCase
      *
      * @test
      */
-    public function dummy()
+    public function dummy(): void
     {
         self::assertTrue(true);
     }
@@ -48,7 +48,7 @@ class GeneratorTest extends FunctionalTestCase
      * @group not-mssql
      * @todo Generator does not work using mssql DMBS yet ... fix this
      */
-    public function generatorCreatesBasicRecord()
+    public function generatorCreatesBasicRecord(): void
     {
         // This call is a hack. Path stuff should be solved by typo3/testing-framework
         // correctly at this point already so single extension functional tests do not
