@@ -7,9 +7,4 @@ parameters:
 
   excludes_analyse:
     - %currentWorkingDirectory%/Tests/Acceptance/Support/BackendTester.php
-
-  ignoreErrors:
-    -
-      message: "#^Class TYPO3\\\\CMS\\\\Styleguide\\\\Tests\\\\Acceptance\\\\Support\\\\_generated\\\\BackendTesterActions not found\\.$#"
-      count: 1
-      path: %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
+    - %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
