@@ -192,6 +192,7 @@ services:
         while ! nc -z mssql2019latest 1433; do
           sleep 1;
         done;
+        sleep 5;
         echo Database is up;
         php -v | grep '^PHP'
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
