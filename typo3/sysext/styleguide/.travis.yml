@@ -6,6 +6,8 @@ jobs:
       env: PHP_VERSION=7.2
     - name: PHP 7.3
       env: PHP_VERSION=7.3
+    - name: PHP 7.4
+      env: PHP_VERSION=7.4
 
 sudo: true
 
@@ -45,12 +47,8 @@ script:
     Build/Scripts/runTests.sh -s functional -d mariadb -p $PHP_VERSION
 
   - >
-    if [ ${PHP_VERSION} = "7.2" ]; then
-      echo "Running functional tests with mssql";
-      Build/Scripts/runTests.sh -s functional -d mssql -p $PHP_VERSION;
-    else
-      echo "Running functional tests with mssql not supported with PHP 7.3 yet";
-    fi
+    echo "Running functional tests with mssql";
+    Build/Scripts/runTests.sh -s functional -d mssql -p $PHP_VERSION
 
   - >
     echo "Running functional tests with postgres";

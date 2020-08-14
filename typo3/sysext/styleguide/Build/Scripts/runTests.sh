@@ -61,10 +61,11 @@ Options:
             - postgres: use postgres
             - sqlite: use sqlite
 
-    -p <7.2|7.3>
+    -p <7.2|7.3|7.4>
         Specifies the PHP minor version to be used
             - 7.2 (default): use PHP 7.2
             - 7.3: use PHP 7.3
+            - 7.4: use PHP 7.4
 
     -e "<phpunit or codeception options>"
         Only with -s acceptance|functional|unit
@@ -103,8 +104,8 @@ Examples:
     # Run unit tests using PHP 7.2
     ./Build/Scripts/runTests.sh
 
-    # Run unit tests using PHP 7.3
-    ./Build/Scripts/runTests.sh -p 7.3
+    # Run unit tests using PHP 7.4
+    ./Build/Scripts/runTests.sh -p 7.4
 EOF
 
 # Test if docker-compose exists, else exit out with error
@@ -254,7 +255,7 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)
-                docker-compose run functional_mssql2017cu9
+                docker-compose run functional_mssql2019latest
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
