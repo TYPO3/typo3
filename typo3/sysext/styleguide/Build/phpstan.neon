@@ -1,0 +1,6 @@
+parameters:
+  level: 1
+
+  paths:
+    - %rootDir%/../../../Web/typo3conf/ext/styleguide/Classes
+    - %rootDir%/../../../Web/typo3conf/ext/styleguide/Tests
