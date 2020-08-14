@@ -35,16 +35,15 @@ With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add th
 composer require typo3/cms-styleguide
 ```
 
-Composer will automatically find, download and extract the appropriate version into extension manager. Activate Styleguide extension from TYPO3 backend in Extension Manager.
-
-Hint: If [helhum/typo3-console](https://github.com/helhum/typo3_console/) has been installed locally. Activate Styleguide extension on shell:
+Composer will automatically find, download and extract the appropriate version into extension manager.
+After that, activate Styleguide extension from TYPO3 backend in Extension Manager, or via cli:
 
 ```
-./typo3cms extension:install styleguide
+bin/typo3 extension:activate styleguide
 ```
 
 ## TYPO3 Extension Repository
-Head to TYPO3 backend > Extension Manager > Get Extensions. Search for and install extension key „styleguide“. Activate Styleguide extension within TYPO3 backend in Extension Manager.
+The extension is currently not uploaded to the TER. Please consider switching to a composer based setup.
 
 # Legal
 Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
