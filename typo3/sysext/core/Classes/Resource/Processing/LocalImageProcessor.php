@@ -29,11 +29,10 @@ class LocalImageProcessor implements ProcessorInterface
      * @param TaskInterface $task
      * @return bool
      */
-    public function canProcessTask(TaskInterface $task)
+    public function canProcessTask(TaskInterface $task): bool
     {
-        $canProcessTask = $task->getType() === 'Image';
-        $canProcessTask = $canProcessTask & in_array($task->getName(), ['Preview', 'CropScaleMask']);
-        return $canProcessTask;
+        return $task->getType() === 'Image'
+            && in_array($task->getName(), ['Preview', 'CropScaleMask'], true);
     }
 
     /**
@@ -44,9 +43,6 @@ class LocalImageProcessor implements ProcessorInterface
      */
     public function processTask(TaskInterface $task)
     {
-        if (!$this->canProcessTask($task)) {
-            throw new \InvalidArgumentException('Cannot process task of type "' . $task->getType() . '.' . $task->getName() . '"', 1350570621);
-        }
         if ($this->checkForExistingTargetFile($task)) {
             return;
         }
@@ -64,13 +60,6 @@ class LocalImageProcessor implements ProcessorInterface
                     ['width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']), 'checksum' => $task->getConfigurationChecksum()]
                 );
                 $task->getTargetFile()->updateWithLocalFile($result['filePath']);
-            } elseif (!empty($result['width']) && !empty($result['height']) && empty($result['filePath'])) {
-                // New dimensions + no new file (for instance svg)
-                $task->setExecuted(true);
-                $task->getTargetFile()->setUsesOriginalFile();
-                $task->getTargetFile()->updateProperties(
-                    ['width' => $result['width'], 'height' => $result['height'], 'size' => $task->getSourceFile()->getSize(), 'checksum' => $task->getConfigurationChecksum()]
-                );
             } else {
                 // Seems we have no valid processing result
                 $task->setExecuted(false);

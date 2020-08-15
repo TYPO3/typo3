@@ -96,6 +96,26 @@ class Area
         return new self(0.0, 0.0, 1.0, 1.0);
     }
 
+    public function getWidth(): float
+    {
+        return $this->width;
+    }
+
+    public function getHeight(): float
+    {
+        return $this->height;
+    }
+
+    public function getOffsetLeft(): float
+    {
+        return $this->x;
+    }
+
+    public function getOffsetTop(): float
+    {
+        return $this->y;
+    }
+
     /**
      * @return array
      * @internal

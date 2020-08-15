@@ -275,6 +275,12 @@ return [
                 ]
             ],
             'processors' => [
+                'SvgImageProcessor' => [
+                    'className' => \TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor::class,
+                    'before' => [
+                        'LocalImageProcessor',
+                    ],
+                ],
                 'LocalImageProcessor' => [
                     'className' => \TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor::class,
                 ],

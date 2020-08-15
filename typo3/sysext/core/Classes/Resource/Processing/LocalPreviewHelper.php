@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Helper for creating local image previews using TYPO3s image processing classes.
@@ -123,45 +122,33 @@ class LocalPreviewHelper
         }
 
         $originalFileName = $file->getForLocalProcessing(false);
-        if ($file->getExtension() === 'svg') {
-            $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
-            $info = $gifBuilder->getImageDimensions($originalFileName);
-            $newInfo = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], []);
-            $result = [
-                'width' => $newInfo[0],
-                'height' => $newInfo[1],
-                'filePath' => '' // no file = use original
-            ];
-        } else {
-            // Create the temporary file
-            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
-                $arguments = CommandUtility::escapeShellArguments([
-                    'width' => $configuration['width'],
-                    'height' => $configuration['height'],
-                ]);
-                $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
-                    . ' ' . ImageMagickFile::fromFilePath($originalFileName, 0)
-                    . ' ' . CommandUtility::escapeShellArgument($targetFilePath);
+        // Create the temporary file
+        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
+            $arguments = CommandUtility::escapeShellArguments([
+                'width' => $configuration['width'],
+                'height' => $configuration['height'],
+            ]);
+            $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
+                . ' ' . ImageMagickFile::fromFilePath($originalFileName, 0)
+                . ' ' . CommandUtility::escapeShellArgument($targetFilePath);
 
-                $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
-                CommandUtility::exec($cmd);
+            $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
+            CommandUtility::exec($cmd);
 
-                if (!file_exists($targetFilePath)) {
-                    // Create an error gif
-                    $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-                    $graphicalFunctions->getTemporaryImageWithText(
-                        $targetFilePath,
-                        'No thumb',
-                        'generated!',
-                        $file->getName()
-                    );
-                }
+            if (!file_exists($targetFilePath)) {
+                // Create an error gif
+                $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+                $graphicalFunctions->getTemporaryImageWithText(
+                    $targetFilePath,
+                    'No thumb',
+                    'generated!',
+                    $file->getName()
+                );
             }
-            $result = [
-                'filePath' => $targetFilePath,
-            ];
         }
 
-        return $result;
+        return [
+            'filePath' => $targetFilePath,
+        ];
     }
 }
