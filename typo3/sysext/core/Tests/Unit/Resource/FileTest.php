@@ -273,4 +273,30 @@ class FileTest extends UnitTestCase
         self::assertTrue($fixture->hasProperty('testproperty'));
         self::assertSame('testvalue', $fixture->getProperty('testproperty'));
     }
+
+    /**
+     * @test
+     */
+    public function getPropertiesContainsUidOfSysFileMetadata(): void
+    {
+        $fileData = [
+            'uid' => 1357,
+            'name' => 'dummy.svg'
+        ];
+        $metaData = [
+            'uid' => 2468,
+            'file' => 1357,
+            'title' => 'Dummy SVG'
+        ];
+        $file = new File($fileData, $this->storageMock, $metaData);
+
+        self::assertSame(
+            1357,
+            $file->getProperties()['uid']
+        );
+        self::assertSame(
+            2468,
+            $file->getProperties()['metadata_uid']
+        );
+    }
 }
