@@ -157,21 +157,13 @@ class ReviewController extends ActionController
         $wsList = GeneralUtility::makeInstance(WorkspaceService::class)->getAvailableWorkspaces();
         $activeWorkspace = $backendUser->workspace;
         $performWorkspaceSwitch = false;
-        // Only admins see multiple tabs, we decided to use it this
-        // way for usability reasons. Regular users might be confused
-        // by switching workspaces with the tabs in a module.
-        if (!$backendUser->isAdmin()) {
-            $wsCur = [$activeWorkspace => true];
-            $wsList = array_intersect_key($wsList, $wsCur);
-        } else {
-            if ((string)GeneralUtility::_GP('workspace') !== '') {
-                $switchWs = (int)GeneralUtility::_GP('workspace');
-                if (array_key_exists($switchWs, $wsList) && $activeWorkspace != $switchWs) {
-                    $activeWorkspace = $switchWs;
-                    $backendUser->setWorkspace($activeWorkspace);
-                    $performWorkspaceSwitch = true;
-                    BackendUtility::setUpdateSignal('updatePageTree');
-                }
+        if ((string)GeneralUtility::_GP('workspace') !== '') {
+            $switchWs = (int)GeneralUtility::_GP('workspace');
+            if (array_key_exists($switchWs, $wsList) && $activeWorkspace != $switchWs) {
+                $activeWorkspace = $switchWs;
+                $backendUser->setWorkspace($activeWorkspace);
+                $performWorkspaceSwitch = true;
+                BackendUtility::setUpdateSignal('updatePageTree');
             }
         }
         $this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', (int)$backendUser->workspace === 0);
