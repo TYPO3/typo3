@@ -81,7 +81,7 @@ class ProcessorRegistry implements SingletonInterface
 
         if ($processor === null) {
             throw new \RuntimeException(
-                'No matching image processor found.',
+                sprintf('No matching file processor found for task type "%s" and name "%s".', $task->getType(), $task->getName()),
                 1560876294
             );
         }

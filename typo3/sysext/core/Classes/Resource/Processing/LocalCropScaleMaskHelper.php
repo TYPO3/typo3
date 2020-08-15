@@ -103,28 +103,16 @@ class LocalCropScaleMaskHelper
 
         // Normal situation (no masking)
         if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
-
-            // SVG without having a fileExtension (e.g. png) forced to convert to another format, leave this unchanged
-            if ($croppedImage === null && $sourceFile->getExtension() === 'svg' && ($task->getConfiguration()['fileExtension'] ?? 'svg') === 'svg') {
-                $newDimensions = $this->getNewSvgDimensions($sourceFile, $configuration, $options, $gifBuilder);
-                $result = [
-                    0 => $newDimensions['width'],
-                    1 => $newDimensions['height'],
-                    3 => '' // no file = use original
-                ];
-            } else {
-                // all other images
-                // the result info is an array with 0=width,1=height,2=extension,3=filename
-                $result = $gifBuilder->imageMagickConvert(
-                    $originalFileName,
-                    $configuration['fileExtension'],
-                    $configuration['width'],
-                    $configuration['height'],
-                    $configuration['additionalParameters'],
-                    $configuration['frame'],
-                    $options
-                );
-            }
+            // the result info is an array with 0=width,1=height,2=extension,3=filename
+            $result = $gifBuilder->imageMagickConvert(
+                $originalFileName,
+                $configuration['fileExtension'],
+                $configuration['width'],
+                $configuration['height'],
+                $configuration['additionalParameters'],
+                $configuration['frame'],
+                $options
+            );
         } else {
             $targetFileName = $this->getFilenameForImageCropScaleMask($task);
             $temporaryFileName = Environment::getPublicPath() . '/typo3temp/' . $targetFileName;
@@ -208,44 +196,6 @@ class LocalCropScaleMaskHelper
         }
 
         return $result;
-    }
-
-    /**
-     * Calculate new dimensions for SVG image
-     * No cropping, if cropped info present image is scaled down
-     *
-     * @param Resource\FileInterface $file
-     * @param array $configuration
-     * @param array $options
-     * @param GifBuilder $gifBuilder
-     * @return array width,height
-     */
-    protected function getNewSvgDimensions($file, array $configuration, array $options, GifBuilder $gifBuilder)
-    {
-        $info = [$file->getProperty('width'), $file->getProperty('height')];
-        $data = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], $options);
-
-        // Turn cropScaling into scaling
-        if ($data['crs']) {
-            if (!$data['origW']) {
-                $data['origW'] = $data[0];
-            }
-            if (!$data['origH']) {
-                $data['origH'] = $data[1];
-            }
-            if ($data[0] > $data['origW']) {
-                $data[1] = (int)(($data['origW'] * $data[1]) / $data[0]);
-                $data[0] = $data['origW'];
-            } else {
-                $data[0] = (int)(($data['origH'] * $data[0]) / $data[1]);
-                $data[1] = $data['origH'];
-            }
-        }
-
-        return [
-            'width' => $data[0],
-            'height' => $data[1]
-        ];
     }
 
     /**
