@@ -2245,6 +2245,13 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+document-register-element@^1.14.5:
+  version "1.14.5"
+  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.14.5.tgz#489d913a6c9e797a187633fc9768328fa0682fad"
+  integrity sha512-baSvC95X5oaVaZ7e2y9pw7Jww16VrkcNqGacb1HYwG1oHV7gc3X+je1HMj6sytjGgrmPSMHIyR+oNF+7/qwsNA==
+  dependencies:
+    lightercollective "^0.3.0"
+
 doiuse@^2.4.1:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/doiuse/-/doiuse-2.6.0.tgz#1892d10b61a9a356addbf2b614933e81f8bb3834"
@@ -5109,6 +5116,11 @@ libnpx@^10.2.2:
     which "^1.3.0"
     y18n "^4.0.0"
     yargs "^11.0.0"
+
+lightercollective@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.3.0.tgz#1f07638642ec645d70bdb69ab2777676f35a28f0"
+  integrity sha512-RFOLSUVvwdK3xA0P8o6G7QGXLIyy1L2qv5caEI7zXN5ciaEjbAriRF182kbsoJ1S1TgvpyGcN485fMky6qxOPw==
 
 lintspaces@^0.6.4:
   version "0.6.4"

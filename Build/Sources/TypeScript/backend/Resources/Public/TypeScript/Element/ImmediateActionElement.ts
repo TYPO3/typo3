@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import 'TYPO3/CMS/Core/Contrib/document-register-element-polyfill';
 import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
 import viewportObject = require('TYPO3/CMS/Backend/Viewport');
 

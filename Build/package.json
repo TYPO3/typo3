@@ -82,6 +82,7 @@
     "cropper": "^2.3.4",
     "d3": "^4.10.0",
     "devbridge-autocomplete": "^1.4.1",
+    "document-register-element": "^1.14.5",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "font-awesome": "^4.7.0",
     "imagesloaded": "^4.1.1",
