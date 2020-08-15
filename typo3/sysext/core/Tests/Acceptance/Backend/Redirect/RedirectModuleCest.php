@@ -76,7 +76,7 @@ class RedirectModuleCest
         $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
 
         $I->amGoingTo('test edit on edit button');
-        $I->click('table.table-striped > tbody > tr > td:nth-child(6) > div > a:nth-child(1)');
+        $I->click('table.table-striped > tbody > tr > td:nth-child(6) > div > a:nth-child(2)');
         $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
     }
 
