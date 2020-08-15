@@ -94,7 +94,13 @@ class File extends AbstractFile
      */
     public function getProperties(): array
     {
-        return array_merge(parent::getProperties(), array_diff_key($this->getMetaData()->get(), parent::getProperties()));
+        return array_merge(
+            parent::getProperties(),
+            array_diff_key($this->getMetaData()->get(), parent::getProperties()),
+            [
+                'metadata_uid' => $this->getMetaData()->get()['uid']
+            ]
+        );
     }
 
     /**
