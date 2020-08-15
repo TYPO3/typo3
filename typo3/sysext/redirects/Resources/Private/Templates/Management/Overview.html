@@ -108,16 +108,14 @@
                         </f:if>
                         <td>
                             <div class="btn-group">
-                                <f:if condition="{redirect.is_regexp}">
+                                <f:if condition="{redirect.is_regexp} || {redirect.source_host} === '*'">
                                     <f:then>
                                         <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
                                     </f:then>
                                     <f:else>
-                                        <f:if condition="{redirect.source_host} != '*'">
-                                            <f:link.external class="btn btn-default" uri="{redirect.source_host}{redirect.source_path}" target="_blank" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:view_redirect')}">
-                                                <core:icon identifier="actions-view-page" />
-                                            </f:link.external>
-                                        </f:if>
+                                        <f:link.external class="btn btn-default" uri="{redirect.source_host}{redirect.source_path}" target="_blank" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:view_redirect')}">
+                                            <core:icon identifier="actions-view-page" />
+                                        </f:link.external>
                                     </f:else>
                                 </f:if>
                                 <be:link.editRecord class="btn btn-default" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
