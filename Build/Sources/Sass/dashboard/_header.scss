@@ -47,24 +47,3 @@
 .dashboard-button-tab-add {
     margin: 5px;
 }
-
-.dashboard-configuration {
-    padding: 10px 0;
-}
-
-.dashboard-configuration-button {
-    margin-left: 10px;
-    color: $gray-600;
-    text-decoration: none;
-
-    &:focus,
-    &:hover {
-        color: #ff8700;
-        text-decoration: none;
-    }
-
-    &:active {
-        color: $text-color;
-        text-decoration: none;
-    }
-}
