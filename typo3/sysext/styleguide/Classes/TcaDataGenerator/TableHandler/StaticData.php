@@ -38,7 +38,6 @@ class StaticData extends AbstractTableHandler implements TableHandlerInterface
      */
     public function handle(string $tableName): void
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
         // tx_styleguide_staticdata is used in other TCA demo fields. We need some default

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
@@ -47,19 +48,26 @@ class General extends AbstractTableHandler implements TableHandlerInterface
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $recordData = GeneralUtility::makeInstance(RecordData::class);
+        $context = GeneralUtility::makeInstance(Context::class);
 
         // First insert an empty row and get the uid of this row since
         // some fields need this uid for relations later.
         $fieldValues = [
             'pid' => $recordFinder->findPidOfMainTableRecord($tableName),
+            'tstamp' => $context->getAspect('date')->get('timestamp'),
+            'crdate' => $context->getAspect('date')->get('timestamp'),
+            'cruser_id' => $context->getAspect('backend.user')->get('id'),
         ];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
         $fieldValues['uid'] = $connection->lastInsertId($tableName);
         $fieldValues = $recordData->generate($tableName, $fieldValues);
+        // Do not update primary identifier uid anymore, db's choke on that for good reason
+        $updateValues = $fieldValues;
+        unset($updateValues['uid']);
         $connection->update(
             $tableName,
-            $fieldValues,
+            $updateValues,
             [ 'uid' => $fieldValues['uid'] ]
         );
 
