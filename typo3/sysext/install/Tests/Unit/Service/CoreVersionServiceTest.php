@@ -39,7 +39,7 @@ class CoreVersionServiceTest extends UnitTestCase
     {
         $response = new JsonResponse($responseData);
         $requestFactory = $this->prophesize(RequestFactory::class);
-        $requestFactory->request('https://get.typo3.org/v1/api/' . $url, Argument::cetera())->willReturn($response);
+        $requestFactory->request('https://get.typo3.org/api/v1/' . $url, Argument::cetera())->willReturn($response);
         GeneralUtility::addInstance(RequestFactory::class, $requestFactory->reveal());
     }
 
