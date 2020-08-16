@@ -45,6 +45,17 @@ bin/typo3 extension:activate styleguide
 ## TYPO3 Extension Repository
 The extension is currently not uploaded to the TER. Please consider switching to a composer based setup.
 
+# Usage
+Once loaded, the extension will hook into the '?' menu in the toolbar of your TYPO3 backend. See
+above screenshot. It will show a happy little menu with tons of functionality. Have fun to explore!
+
+Menu section 'TCA / Records' allows to create a set of demo data. Clicking 'Create ...' over there, your
+system will be busy with some record crunching for a while. Give it some time until a 'Data created' message
+shows up. Going to the Web -> List modules afterwards, a new page tree 'styleguide TCA demo' has been created
+with lots of sub pages. 'elements basic' is a good start, just open the 'English' default language record
+to be impressed by all the capabilities of just the 'simple' TCA types. If you want to use something like
+that in own extension, have a look at the Configuration/TCA folder for details.
+
 # Legal
 Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
 Therefore every imperfect style also is a todo. The solution could be included in the TYPO3 CMS core at any stage.
