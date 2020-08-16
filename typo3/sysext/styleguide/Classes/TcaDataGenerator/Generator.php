@@ -59,6 +59,16 @@ class Generator
      */
     public function create(): void
     {
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+
+        // Create should not be called if demo data exists already
+        if (count($recordFinder->findUidsOfStyleguideEntryPages())) {
+            throw new Exception(
+                'Can not create a second styleguide demo record tree',
+                1597577827
+            );
+        }
+
         // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
         $data = [
@@ -77,7 +87,6 @@ class Generator
         // Add rows of third party tables like be_users, fal and sys_language records
         $this->populateRowsOfThirdPartyTables();
 
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $sysLanguageStyleguideDemoUids = $recordFinder->findUidsOfDemoLanguages();
 
         // Add a page for each main table below entry page

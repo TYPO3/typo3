@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Styleguide\Controller;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Backend module for Styleguide
@@ -128,6 +130,9 @@ class StyleguideController extends ActionController
      */
     public function tcaAction(): void
     {
+        $finder = GeneralUtility::makeInstance(RecordFinder::class);
+        $demoExists = count($finder->findUidsOfStyleguideEntryPages());
+        $this->view->assign('demoExists', $demoExists);
     }
 
     /**
@@ -135,14 +140,23 @@ class StyleguideController extends ActionController
      */
     public function tcaCreateAction(): void
     {
-        /** @var Generator $generator */
-        $generator = GeneralUtility::makeInstance(Generator::class);
-        $generator->create();
-        // Tell something was done here
-        $this->addFlashMessage(
-            LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkBody', 'styleguide'),
-            LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide')
-        );
+        $finder = GeneralUtility::makeInstance(RecordFinder::class);
+        if (count($finder->findUidsOfStyleguideEntryPages())) {
+            // Tell something was done here
+            $this->addFlashMessage(
+                LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedBody', 'styleguide'),
+                LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedTitle', 'styleguide'),
+                AbstractMessage::ERROR
+            );
+        } else {
+            $generator = GeneralUtility::makeInstance(Generator::class);
+            $generator->create();
+            // Tell something was done here
+            $this->addFlashMessage(
+                LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkBody', 'styleguide'),
+                LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide')
+            );
+        }
         // And redirect to display action
         $this->forward('tca');
     }

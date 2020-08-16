@@ -66,6 +66,12 @@
 			<trans-unit id="tcaCreateActionOkBody" xml:space="preserve">
 				<source>A page tree with styleguide TCA test records was created.</source>
 			</trans-unit>
+			<trans-unit id="tcaCreateActionFailedTitle" xml:space="preserve">
+				<source>No data created</source>
+			</trans-unit>
+			<trans-unit id="tcaCreateActionFailedBody" xml:space="preserve">
+				<source>A styleguide demo tree exists already. Please delete that first.</source>
+			</trans-unit>
 			<trans-unit id="tcaDeleteActionOkTitle" xml:space="preserve">
 				<source>Data deleted</source>
 			</trans-unit>
