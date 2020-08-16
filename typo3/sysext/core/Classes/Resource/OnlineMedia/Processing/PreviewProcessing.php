@@ -15,216 +15,36 @@
 
 namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
 
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Core\Imaging\ImageMagickFile;
-use TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
-use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
+use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
+use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Preview of Online Media item Processing
- *
- * @internal this is a Event Listener, and not part of TYPO3 Core API.
  */
-final class PreviewProcessing
+final class PreviewProcessing implements ProcessorInterface
 {
-    /**
-     * @param ProcessedFile $processedFile
-     * @return bool
-     */
-    private function needsReprocessing($processedFile)
+    public function canProcessTask(TaskInterface $task): bool
     {
-        return $processedFile->isNew()
-            || (!$processedFile->usesOriginalFile() && !$processedFile->exists())
-            || $processedFile->isOutdated();
+        return $task->getType() === 'Image'
+            && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
+            && ($helperRegistry = OnlineMediaHelperRegistry::getInstance())->hasOnlineMediaHelper(($sourceFile = $task->getSourceFile())->getExtension())
+            && ($previewImageFile = $helperRegistry->getOnlineMediaHelper($sourceFile)->getPreviewImage($sourceFile))
+            && !empty($previewImageFile)
+            && file_exists($previewImageFile);
     }
 
-    /**
-     * Create static image preview for Online Media item when possible
-     *
-     * @param BeforeFileProcessingEvent $event
-     */
-    public function processFile(BeforeFileProcessingEvent $event): void
+    public function processTask(TaskInterface $task): void
     {
-        /** @var File $file */
-        $file = $event->getFile();
-        $processedFile = $event->getProcessedFile();
-        $taskType = $event->getTaskType();
-        if ($taskType !== ProcessedFile::CONTEXT_IMAGEPREVIEW && $taskType !== ProcessedFile::CONTEXT_IMAGECROPSCALEMASK) {
-            return;
-        }
-        // Check if processing is needed
-        if (!$this->needsReprocessing($processedFile)) {
-            return;
-        }
-        // Check if there is an OnlineMediaHelper registered for this file type
-        $helper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
-        if ($helper === false) {
-            return;
-        }
-        // Check if helper provides a preview image
-        $temporaryFileName = $helper->getPreviewImage($file);
-        if (empty($temporaryFileName) || !file_exists($temporaryFileName)) {
-            return;
-        }
-        $temporaryFileNameForResizedThumb = uniqid(Environment::getVarPath() . '/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
-        $configuration = $processedFile->getProcessingConfiguration();
-        switch ($taskType) {
-            case ProcessedFile::CONTEXT_IMAGEPREVIEW:
-                $this->resizeImage($temporaryFileName, $temporaryFileNameForResizedThumb, $configuration);
-                break;
-
-            case ProcessedFile::CONTEXT_IMAGECROPSCALEMASK:
-                $this->cropScaleImage($temporaryFileName, $temporaryFileNameForResizedThumb, $configuration);
-                break;
-        }
-        GeneralUtility::unlink_tempfile($temporaryFileName);
-        if (is_file($temporaryFileNameForResizedThumb)) {
-            $processedFile->setName($this->getTargetFileName($processedFile));
-            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $temporaryFileNameForResizedThumb);
-            $processedFile->updateProperties(
-                [
-                    'width' => $imageInfo->getWidth(),
-                    'height' => $imageInfo->getHeight(),
-                    'size' => filesize($temporaryFileNameForResizedThumb),
-                    'checksum' => $processedFile->getTask()->getConfigurationChecksum()
-                ]
+        $file = $task->getSourceFile();
+        GeneralUtility::makeInstance(LocalImageProcessor::class)
+            ->processTaskWithLocalFile(
+                $task,
+                OnlineMediaHelperRegistry::getInstance()
+                    ->getOnlineMediaHelper($file)
+                    ->getPreviewImage($file)
             );
-            $processedFile->updateWithLocalFile($temporaryFileNameForResizedThumb);
-            GeneralUtility::unlink_tempfile($temporaryFileNameForResizedThumb);
-
-            /** @var ProcessedFileRepository $processedFileRepository */
-            $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-            $processedFileRepository->add($processedFile);
-        }
-    }
-
-    /**
-     * @param ProcessedFile $processedFile
-     * @param string $prefix
-     * @return string
-     */
-    private function getTargetFileName(ProcessedFile $processedFile, $prefix = 'preview_')
-    {
-        return $prefix . $processedFile->getTask()->getConfigurationChecksum() . '_' . $processedFile->getOriginalFile()->getNameWithoutExtension() . '.jpg';
-    }
-
-    /**
-     * @param string $originalFileName
-     * @param string $temporaryFileName
-     * @param array $configuration
-     */
-    private function resizeImage($originalFileName, $temporaryFileName, $configuration)
-    {
-        // Create the temporary file
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
-            return;
-        }
-
-        if (file_exists($originalFileName)) {
-            $arguments = CommandUtility::escapeShellArguments([
-                'width' => $configuration['width'],
-                'height' => $configuration['height'],
-            ]);
-            $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
-                . ' ' . ImageMagickFile::fromFilePath($originalFileName, 0)
-                . ' ' . CommandUtility::escapeShellArgument($temporaryFileName);
-
-            $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
-            CommandUtility::exec($cmd);
-        }
-
-        if (!file_exists($temporaryFileName)) {
-            // Create an error image
-            $graphicalFunctions = $this->getGraphicalFunctionsObject();
-            $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', PathUtility::basename($originalFileName));
-        }
-    }
-
-    /**
-     * cropScaleImage
-     *
-     * @param string $originalFileName
-     * @param string $temporaryFileName
-     * @param array $configuration
-     */
-    private function cropScaleImage($originalFileName, $temporaryFileName, $configuration)
-    {
-        if (file_exists($originalFileName)) {
-            $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
-
-            $options = $this->getConfigurationForImageCropScaleMask($configuration, $gifBuilder);
-            $info = $gifBuilder->getImageDimensions($originalFileName);
-            $data = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], $options);
-
-            $info[0] = $data[0];
-            $info[1] = $data[1];
-            $frame = '';
-            $params = $gifBuilder->cmds['jpg'];
-
-            // Cropscaling:
-            if ($data['crs']) {
-                if (!$data['origW']) {
-                    $data['origW'] = $data[0];
-                }
-                if (!$data['origH']) {
-                    $data['origH'] = $data[1];
-                }
-                $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
-                $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-                $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
-            }
-            $command = $gifBuilder->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
-            $gifBuilder->imageMagickExec($originalFileName, $temporaryFileName, $command, $frame);
-        }
-        if (!file_exists($temporaryFileName)) {
-            // Create an error image
-            $graphicalFunctions = $this->getGraphicalFunctionsObject();
-            $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', PathUtility::basename($originalFileName));
-        }
-    }
-
-    /**
-     * Get configuration for ImageCropScaleMask processing
-     *
-     * @param array $configuration
-     * @param GifBuilder $gifBuilder
-     * @return array
-     */
-    private function getConfigurationForImageCropScaleMask(array $configuration, GifBuilder $gifBuilder)
-    {
-        if (!empty($configuration['useSample'])) {
-            $gifBuilder->scalecmd = '-sample';
-        }
-        $options = [];
-        if (!empty($configuration['maxWidth'])) {
-            $options['maxW'] = $configuration['maxWidth'];
-        }
-        if (!empty($configuration['maxHeight'])) {
-            $options['maxH'] = $configuration['maxHeight'];
-        }
-        if (!empty($configuration['minWidth'])) {
-            $options['minW'] = $configuration['minWidth'];
-        }
-        if (!empty($configuration['minHeight'])) {
-            $options['minH'] = $configuration['minHeight'];
-        }
-
-        $options['noScale'] = $configuration['noScale'];
-
-        return $options;
-    }
-
-    private function getGraphicalFunctionsObject(): GraphicalFunctions
-    {
-        return GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
 }

@@ -49,11 +49,22 @@ class LocalCropScaleMaskHelper
      */
     public function process(TaskInterface $task)
     {
+        return $this->processWithLocalFile($task, $task->getSourceFile()->getForLocalProcessing(false));
+    }
+
+    /**
+     * Does the heavy lifting prescribed in processTask()
+     * except that the processing can be performed on any given local image
+     *
+     * @param TaskInterface $task
+     * @param string $originalFileName
+     * @return array|null
+     */
+    public function processWithLocalFile(TaskInterface $task, string $originalFileName): ?array
+    {
         $result = null;
         $targetFile = $task->getTargetFile();
-        $sourceFile = $task->getSourceFile();
 
-        $originalFileName = $sourceFile->getForLocalProcessing(false);
         $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
 
         $configuration = $targetFile->getProcessingConfiguration();

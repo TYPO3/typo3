@@ -97,6 +97,7 @@ class LocalPreviewHelperTest extends UnitTestCase
             ->getMock();
         $expectedResult = ['width' => 20, 'height' => 20, 'filePath' => 'test/file'];
         $localPreviewHelper->expects(self::once())->method('generatePreviewFromFile')->willReturn($expectedResult);
+        $localPreviewHelper->expects(self::once())->method('getTemporaryFilePath')->willReturn('foo_file');
 
         self::assertEquals($expectedResult, $localPreviewHelper->process($task));
     }
