@@ -32,7 +32,7 @@ This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as 
 With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add this Styleguide by running the following command on shell within project root (where the root composer.json file resides):
 
 ```
-composer require typo3/cms-styleguide
+composer require --dev typo3/cms-styleguide
 ```
 
 Composer will automatically find, download and extract the appropriate version into extension manager.
