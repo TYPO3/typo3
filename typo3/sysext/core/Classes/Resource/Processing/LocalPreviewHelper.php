@@ -93,6 +93,19 @@ class LocalPreviewHelper
     }
 
     /**
+     * Does the heavy lifting prescribed in processTask()
+     * except that the processing can be performed on any given local image
+     *
+     * @param TaskInterface $task
+     * @param string $localFile
+     * @return array|null
+     */
+    public function processWithLocalFile(TaskInterface $task, string $localFile): ?array
+    {
+        return $this->generatePreviewFromLocalFile($localFile, $task->getConfiguration(), $this->getTemporaryFilePath($task));
+    }
+
+    /**
      * Returns the path to a temporary file for processing
      *
      * @param TaskInterface $task
@@ -111,7 +124,7 @@ class LocalPreviewHelper
      * @param string $targetFilePath Output file path
      * @return array
      */
-    protected function generatePreviewFromFile(File $file, array $configuration, $targetFilePath)
+    protected function generatePreviewFromFile(File $file, array $configuration, string $targetFilePath)
     {
         // Check file extension
         if ($file->getType() !== File::FILETYPE_IMAGE && !$file->isImage()) {
@@ -128,7 +141,19 @@ class LocalPreviewHelper
             ];
         }
 
-        $originalFileName = $file->getForLocalProcessing(false);
+        return $this->generatePreviewFromLocalFile($file->getForLocalProcessing(false), $configuration, $targetFilePath);
+    }
+
+    /**
+     * Generates a preview for a local file
+     *
+     * @param string $originalFileName Optional input file path
+     * @param array $configuration Processing configuration
+     * @param string $targetFilePath Output file path
+     * @return array
+     */
+    protected function generatePreviewFromLocalFile(string $originalFileName, array $configuration, string $targetFilePath)
+    {
         // Create the temporary file
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
             $arguments = CommandUtility::escapeShellArguments([
@@ -149,7 +174,7 @@ class LocalPreviewHelper
                     $targetFilePath,
                     'No thumb',
                     'generated!',
-                    $file->getName()
+                    ''
                 );
             }
         }

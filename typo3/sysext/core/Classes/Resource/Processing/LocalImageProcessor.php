@@ -41,14 +41,30 @@ class LocalImageProcessor implements ProcessorInterface
      * @param TaskInterface $task
      * @throws \InvalidArgumentException
      */
-    public function processTask(TaskInterface $task)
+    public function processTask(TaskInterface $task): void
     {
         if ($this->checkForExistingTargetFile($task)) {
             return;
         }
+        $this->processTaskWithLocalFile($task, null);
+    }
+
+    /**
+     * Processes an image described in a task, but optionally uses a given local image
+     *
+     * @param TaskInterface $task
+     * @param string|null $localFile
+     * @throws \InvalidArgumentException
+     */
+    public function processTaskWithLocalFile(TaskInterface $task, ?string $localFile): void
+    {
         $helper = $this->getHelperByTaskName($task->getName());
         try {
-            $result = $helper->process($task);
+            if ($localFile === null) {
+                $result = $helper->process($task);
+            } else {
+                $result = $helper->processWithLocalFile($task, $localFile);
+            }
             if ($result === null) {
                 $task->setExecuted(true);
                 $task->getTargetFile()->setUsesOriginalFile();

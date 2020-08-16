@@ -36,6 +36,17 @@ class OnlineMediaHelperRegistry implements SingletonInterface
     }
 
     /**
+     * Checks if there is a helper for this file extension
+     *
+     * @param string $fileExtension
+     * @return bool
+     */
+    public function hasOnlineMediaHelper(string $fileExtension): bool
+    {
+        return isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['onlineMediaHelpers'][$fileExtension]);
+    }
+
+    /**
      * Get helper class for given File
      *
      * @param File $file
