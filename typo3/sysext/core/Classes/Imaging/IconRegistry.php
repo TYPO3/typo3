@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -411,8 +412,6 @@ class IconRegistry implements SingletonInterface
         'extensions-scheduler-run-task-cron' => 'actions-clock',
         'status-warning-lock' => 'warning-lock',
         'status-warning-in-use' => 'warning-in-use',
-        'status-status-reference-hard' => 'status-reference-hard',
-        'status-status-reference-soft' => 'status-reference-soft',
         'status-status-edit-read-only' => 'status-edit-read-only',
         't3-form-icon-advanced-password' => 'form-advanced-password',
         't3-form-icon-checkbox' => 'form-checkbox',
@@ -461,6 +460,12 @@ class IconRegistry implements SingletonInterface
      */
     public function __construct()
     {
+        if (ExtensionManagementUtility::isLoaded('impexp')) {
+            // ext:impexp is no required extension, the target items are located there.
+            // Register its deprecations only if impexp is loaded
+            $this->deprecatedIcons['status-status-reference-hard'] = 'status-reference-hard';
+            $this->deprecatedIcons['status-status-reference-soft'] = 'status-reference-soft';
+        }
         $this->initialize();
     }
 
