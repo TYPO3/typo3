@@ -96,15 +96,6 @@ return [
                 'default' => 1,
             ],
         ],
-        'palette_1_2' => [
-            'exclude' => 1,
-            'label' => 'palette_1_2',
-            'config' => [
-                'default' => true,
-                'type' => 'user',
-                'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUserPalette->render',
-            ],
-        ],
         'palette_1_3' => [
             'exclude' => 1,
             'label' => 'palette_1_3',
@@ -212,7 +203,7 @@ return [
     'palettes' => [
         'palette_1' => [
             'label' => 'palette_1',
-            'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
+            'showitem' => 'palette_1_1, palette_1_3',
         ],
         'palette_2' => [
             'showitem' => 'palette_2_1',

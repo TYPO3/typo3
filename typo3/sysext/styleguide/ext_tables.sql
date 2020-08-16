@@ -562,7 +562,6 @@ CREATE TABLE tx_styleguide_inline_usecombinationbox_child (
 
 CREATE TABLE tx_styleguide_palette (
 	palette_1_1 int(11) DEFAULT '0' NOT NULL,
-	palette_1_2 text,
 	palette_1_3 int(11) DEFAULT '0' NOT NULL,
 	palette_2_1 text,
 	palette_3_1 text,
