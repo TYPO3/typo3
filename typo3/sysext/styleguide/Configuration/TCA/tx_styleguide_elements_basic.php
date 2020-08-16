@@ -1520,6 +1520,28 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </check_1>
+                                            <check_2>
+                                                <TCEforms>
+                                                    <label>check_2 invertStateDisplay</label>
+                                                    <config>
+                                                        <type>check</type>
+                                                        <items>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0">Foo</numIndex>
+                                                                <invertStateDisplay>1</invertStateDisplay>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">Bar</numIndex>
+                                                                <invertStateDisplay>1</invertStateDisplay>
+                                                            </numIndex>
+                                                            <numIndex index="2">
+                                                                <numIndex index="0">FooBar</numIndex>
+                                                                <invertStateDisplay>1</invertStateDisplay>
+                                                            </numIndex>
+                                                        </items>
+                                                    </config>
+                                                </TCEforms>
+                                            </check_2>
                                         </el>
                                     </ROOT>
                                 </sCheck>
