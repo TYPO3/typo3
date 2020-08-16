@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44f430feb41c47dfb37d4e426a945c54",
+    "content-hash": "d725fbc7d541a6bd3464f18ae583774c",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2601,20 +2601,6 @@
                 "polyfill",
                 "portable"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-27T09:26:54+00:00"
         },
         {
@@ -2672,20 +2658,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -2749,20 +2721,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-09T19:04:49+00:00"
         },
         {
@@ -2822,20 +2780,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-09T19:04:49+00:00"
         },
         {
@@ -2890,20 +2834,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -2962,20 +2892,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -8210,8 +8126,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -8292,28 +8208,29 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "10.0.3",
+            "version": "11.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "d78e580d6831f8c11ea55605e2327fdff4f47181"
+                "reference": "e2d149a079ec2af64105684062dc2fb282cbe0ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/d78e580d6831f8c11ea55605e2327fdff4f47181",
-                "reference": "d78e580d6831f8c11ea55605e2327fdff4f47181",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/e2d149a079ec2af64105684062dc2fb282cbe0ae",
+                "reference": "e2d149a079ec2af64105684062dc2fb282cbe0ae",
                 "shasum": ""
             },
-            "replace": {
-                "styleguide": "*"
-            },
             "require-dev": {
-                "codeception/codeception": "^2.4",
-                "typo3/cms-about": "10.*.*@dev",
-                "typo3/cms-core": "10.*.*@dev",
-                "typo3/cms-frontend": "10.*.*@dev",
-                "typo3/cms-install": "10.*.*@dev",
-                "typo3/testing-framework": "^5.0.0"
+                "codeception/codeception": "^4.1",
+                "codeception/module-asserts": "^1.2",
+                "codeception/module-webdriver": "^1.1",
+                "phpstan/phpstan": "^0.12.37",
+                "typo3/cms-about": "11.*.*@dev",
+                "typo3/cms-core": "11.*.*@dev",
+                "typo3/cms-frontend": "11.*.*@dev",
+                "typo3/cms-install": "11.*.*@dev",
+                "typo3/coding-standards": "^0.2.0",
+                "typo3/testing-framework": "^6.4.1"
             },
             "type": "typo3-cms-extension",
             "extra": {
@@ -8339,10 +8256,9 @@
                     "role": "Developer"
                 },
                 {
-                    "name": "Felix Kopp",
-                    "email": "felix-source@phorax.com",
-                    "homepage": "http://phorax.com",
-                    "role": "Developer"
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 }
             ],
             "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
@@ -8352,7 +8268,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2019-09-04T14:04:43+00:00"
+            "time": "2020-08-16T17:36:13+00:00"
         },
         {
             "name": "typo3/testing-framework",
