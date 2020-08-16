@@ -85,6 +85,7 @@ class Generator
         // Have the first main table inside entry page
         $neighborPage = $newIdOfEntryPage;
         foreach ($mainTables as $mainTable) {
+            // Add default language page
             $newIdOfPage = StringUtility::getUniqueId('NEW');
             $data['pages'][$newIdOfPage] = [
                 'title' => str_replace('_', ' ', substr($mainTable, strlen('tx_styleguide_'))),
@@ -93,6 +94,7 @@ class Generator
                 'pid' => $neighborPage,
             ];
 
+            // Add page translations for all styleguide languages
             if (!empty($sysLanguageStyleguideDemoUids)) {
                 foreach ($sysLanguageStyleguideDemoUids as $languageUid) {
                     $newIdOfLocalizedPage = StringUtility::getUniqueId('NEW');
