@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "809f29b0d3f0ace41947d6672aa0c37e",
+    "content-hash": "e2bd51fe622979a67af22d13e7c4cd61",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -6374,6 +6374,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
@@ -8275,28 +8276,29 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "10.0.3",
+            "version": "10.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "d78e580d6831f8c11ea55605e2327fdff4f47181"
+                "reference": "0a0c30d0ab20e183132b6aa444bc20ed4cc630c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/d78e580d6831f8c11ea55605e2327fdff4f47181",
-                "reference": "d78e580d6831f8c11ea55605e2327fdff4f47181",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/0a0c30d0ab20e183132b6aa444bc20ed4cc630c7",
+                "reference": "0a0c30d0ab20e183132b6aa444bc20ed4cc630c7",
                 "shasum": ""
             },
-            "replace": {
-                "styleguide": "*"
-            },
             "require-dev": {
-                "codeception/codeception": "^2.4",
+                "codeception/codeception": "^4.1",
+                "codeception/module-asserts": "^1.2",
+                "codeception/module-webdriver": "^1.1",
+                "phpstan/phpstan": "^0.12.37",
                 "typo3/cms-about": "10.*.*@dev",
                 "typo3/cms-core": "10.*.*@dev",
                 "typo3/cms-frontend": "10.*.*@dev",
                 "typo3/cms-install": "10.*.*@dev",
-                "typo3/testing-framework": "^5.0.0"
+                "typo3/coding-standards": "^0.2.0",
+                "typo3/testing-framework": "^6.3.3"
             },
             "type": "typo3-cms-extension",
             "extra": {
@@ -8322,10 +8324,9 @@
                     "role": "Developer"
                 },
                 {
-                    "name": "Felix Kopp",
-                    "email": "felix-source@phorax.com",
-                    "homepage": "http://phorax.com",
-                    "role": "Developer"
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 }
             ],
             "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
@@ -8335,7 +8336,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2019-09-04T14:04:43+00:00"
+            "time": "2020-08-16T16:23:16+00:00"
         },
         {
             "name": "typo3/testing-framework",
