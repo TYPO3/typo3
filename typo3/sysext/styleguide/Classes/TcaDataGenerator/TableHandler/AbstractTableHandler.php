@@ -55,7 +55,7 @@ class AbstractTableHandler
         foreach ($demoLanguages as $demoLanguageIndex => $demoLanguageUid) {
             switch ($demoLanguageIndex) {
                 case 0:
-                    // danish: 'copy mode / free mode', l10n_parent = 0, l10n_source = default lang record
+                    // danish: 'copy / free mode', l10n_parent = 0, l10n_source = default lang record
                     $this->copyRecordToLanguage($tableName, $fieldValues['uid'], $demoLanguageUid);
                     break;
                 case 1:
@@ -82,6 +82,8 @@ class AbstractTableHandler
     }
 
     /**
+     * Create a 'translate / connected mode' localization
+     *
      * @param string $tableName
      * @param int $uid
      * @param int $languageId
@@ -103,6 +105,8 @@ class AbstractTableHandler
     }
 
     /**
+     * Create a 'copy / free mode' localization
+     *
      * @param string $tableName
      * @param int $uid
      * @param int $languageId

@@ -74,7 +74,7 @@ class Generator
             ],
         ];
 
-        // Add rows of third party tables like be_users and fal records
+        // Add rows of third party tables like be_users, fal and sys_language records
         $this->populateRowsOfThirdPartyTables();
 
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
@@ -263,21 +263,21 @@ class Generator
             $fields = [
                 'pid' => 0,
                 'tx_styleguide_isdemorecord' => 1,
-                'title' => 'styleguide demo language 1',
+                'title' => 'styleguide demo language danish',
                 'language_isocode' => 'da',
                 'flag' => 'dk',
             ];
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_language');
             $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language 2';
+            $fields['title'] = 'styleguide demo language german';
             $fields['language_isocode'] = 'de';
             $fields['flag'] = 'de';
             $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language 3';
+            $fields['title'] = 'styleguide demo language french';
             $fields['language_isocode'] = 'fr';
             $fields['flag'] = 'fr';
             $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language 4';
+            $fields['title'] = 'styleguide demo language spanish';
             $fields['language_isocode'] = 'es';
             $fields['flag'] = 'es';
             $connection->insert('sys_language', $fields);
