@@ -119,6 +119,7 @@ class DateTimePicker {
     const format = this.format;
     const type = $element.data('dateType');
     const options = {
+      calendarWeeks: true,
       format: '',
       locale: '',
       sideBySide: true,
