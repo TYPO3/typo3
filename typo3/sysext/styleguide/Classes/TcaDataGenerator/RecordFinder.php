@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -211,11 +212,10 @@ class RecordFinder
     /**
      * Find the object representation of the demo images in fileadmin/styleguide
      *
-     * @return \TYPO3\CMS\Core\Resource\File[]
+     * @return File[]
      */
     public function findDemoFileObjects(): array
     {
-        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storage = $storageRepository->findByUid(1);
         $folder = $storage->getRootLevelFolder();
@@ -230,7 +230,6 @@ class RecordFinder
      */
     public function findDemoFolderObject(): Folder
     {
-        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storage = $storageRepository->findByUid(1);
         $folder = $storage->getRootLevelFolder();
