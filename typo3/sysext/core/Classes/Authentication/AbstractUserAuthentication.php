@@ -372,8 +372,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
         // the user with the session. $this->user[uid] may be used to write log...
         $this->checkAuthentication();
-        // Setting cookies
-        if (!$this->dontSetCookie) {
+        // Set cookie if generally enabled or if the current session is a non-session cookie (FE permalogin)
+        if (!$this->dontSetCookie || $this->isRefreshTimeBasedCookie()) {
             $this->setSessionCookie();
         }
         // Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
