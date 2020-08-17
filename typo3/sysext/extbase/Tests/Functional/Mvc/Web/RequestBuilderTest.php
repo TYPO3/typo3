@@ -715,6 +715,45 @@ class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('show', $request->getControllerActionName());
     }
 
+    /**
+     * @test
+     */
+    public function silentlyIgnoreInvalidParameterAndUseDefaultAction()
+    {
+        $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => 'not_an_array']);
+
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest
+            ->withParsedBody(['tx_blog_example_blog' => ['action' => 'show']])
+            ->withAttribute('routing', $pageArguments)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $extensionName = 'blog_example';
+        $pluginName = 'blog';
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
+            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
+                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
+                'alias' => 'BlogController',
+                'actions' => [
+                    'list', 'show'
+                ]
+            ]
+        ];
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $request = $requestBuilder->build($mainRequest);
+
+        self::assertInstanceOf(RequestInterface::class, $request);
+        self::assertSame('list', $request->getControllerActionName());
+    }
+
     protected function prepareServerRequest(string $url, $method = 'GET'): ServerRequestInterface
     {
         $request = (new ServerRequest($url, $method))

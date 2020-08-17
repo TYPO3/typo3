@@ -170,8 +170,10 @@ class RequestBuilder implements SingletonInterface
         } else {
             $parameters = $mainRequest->getQueryParams()[$pluginNamespace] ?? [];
         }
+        $parameters = is_array($parameters) ? $parameters : [];
         if ($mainRequest->getMethod() === 'POST') {
             $postParameters = $mainRequest->getParsedBody()[$pluginNamespace] ?? [];
+            $postParameters = is_array($postParameters) ? $postParameters : [];
             ArrayUtility::mergeRecursiveWithOverrule($parameters, $postParameters);
         }
 
