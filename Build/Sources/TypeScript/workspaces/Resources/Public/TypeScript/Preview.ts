@@ -23,11 +23,8 @@ enum Identifiers {
   topbar = '#typo3-topbar',
   workspacePanel = '.workspace-panel',
   liveView = '#live-view',
-  workspaceTabs = '.t3js-workspace-tabs [data-toggle="tab"]',
-  workspaceActions = '.t3js-workspace-actions',
   stageSlider = '#workspace-stage-slider',
   workspaceView = '#workspace-view',
-  workspaceList = '#workspace-list',
   sendToStageAction = '[data-action="send-to-stage"]',
   discardAction = '[data-action="discard"]',
   stageButtonsContainer = '.t3js-stage-buttons',
@@ -69,11 +66,8 @@ class Preview extends Workspaces {
   private getElements(): void {
     this.elements.$liveView = $(Identifiers.liveView);
     this.elements.$workspacePanel = $(Identifiers.workspacePanel);
-    this.elements.$workspaceTabs = $(Identifiers.workspaceTabs);
-    this.elements.$workspaceActions = $(Identifiers.workspaceActions);
     this.elements.$stageSlider = $(Identifiers.stageSlider);
     this.elements.$workspaceView = $(Identifiers.workspaceView);
-    this.elements.$workspaceList = $(Identifiers.workspaceList);
     this.elements.$stageButtonsContainer = $(Identifiers.stageButtonsContainer);
     this.elements.$previewModeContainer = $(Identifiers.previewModeContainer);
     this.elements.$activePreviewMode = $(Identifiers.activePreviewMode);
@@ -92,9 +86,6 @@ class Preview extends Workspaces {
       .on('click', Identifiers.sendToStageAction, this.renderSendPageToStageWindow)
     ;
 
-    this.elements.$workspaceTabs.on('show.bs.tab', (e: JQueryEventObject): void => {
-      this.elements.$workspaceActions.toggle((<HTMLElement>e.currentTarget).dataset.actions);
-    });
     new ThrottleEvent('input', this.updateSlidePosition, 25).bindTo(document.querySelector(Identifiers.stageSlider));
     this.elements.$previewModeContainer.find('[data-preview-mode]').on('click', this.changePreviewMode);
   }
@@ -132,7 +123,6 @@ class Preview extends Workspaces {
     if (this.elements.$activePreviewMode.data('activePreviewMode') === 'slider') {
       this.elements.$liveView.height(absoluteHeightOfLiveView - outerHeightDifference);
     }
-    this.elements.$workspaceList.height(availableSpace);
   }
 
   /**
@@ -168,9 +158,8 @@ class Preview extends Workspaces {
         ]).then(async (response: AjaxResponse): Promise<void> => {
           $modal.modal('hide');
           this.renderStageButtons((await response.resolve())[1].result);
-          // Reloading live view and and workspace list view IFRAME
+          // Reloading live view IFRAME
           this.elements.$workspaceView.attr('src', this.elements.$workspaceView.attr('src'));
-          this.elements.$workspaceList.attr('src', this.elements.$workspaceList.attr('src'));
         });
       }
     });

@@ -197,26 +197,6 @@ class ReviewController extends ActionController
     }
 
     /**
-     * Renders the review module for a single page. This is used within the
-     * workspace-preview frame.
-     */
-    public function singleIndexAction()
-    {
-        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $wsList = $wsService->getAvailableWorkspaces();
-        $activeWorkspace = $this->getBackendUser()->workspace;
-        $wsCur = [$activeWorkspace => true];
-        $wsList = array_intersect_key($wsList, $wsCur);
-        $this->view->assignMultiple([
-            'pageUid' => (int)GeneralUtility::_GP('id'),
-            'showGrid' => true,
-            'workspaceList' => $this->prepareWorkspaceTabs($wsList, (int)$activeWorkspace),
-            'activeWorkspaceUid' => $activeWorkspace,
-        ]);
-        $this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
-    }
-
-    /**
      * Prepares available workspace tabs.
      *
      * @param array $workspaceList

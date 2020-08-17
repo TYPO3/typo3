@@ -165,13 +165,6 @@ class PreviewController
             throw new UnableToLinkToPageException('The page ' . $this->pageId . ' had no proper connection to a site, no link could be built.', 1559794913);
         }
 
-        // Build the "list view" link to the review controller
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $wsSettingsUrl = $uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', [
-            'tx_workspaces_web_workspacesworkspaces' => ['action' => 'singleIndex'],
-            'id' => $this->pageId
-        ], UriBuilder::ABSOLUTE_URL);
-
         // Evaluate available preview modes
         $splitPreviewModes = GeneralUtility::trimExplode(
             ',',
@@ -190,7 +183,6 @@ class PreviewController
             'logoLink' => Typo3Information::URL_COMMUNITY,
             'liveUrl' => $liveUrl ?? false,
             'wsUrl' => $wsUrl,
-            'wsSettingsUrl' => $wsSettingsUrl,
             'activeWorkspace' => $availableWorkspaces[$activeWorkspace],
             'splitPreviewModes' => $splitPreviewModes,
             'firstPreviewMode' => current($splitPreviewModes),

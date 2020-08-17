@@ -7,13 +7,7 @@
             </a>
             <span class="typo3-topbar-site-name">{activeWorkspace}</span>
         </div>
-        <div class="typo3-topbar-tabs t3js-workspace-tabs">
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#visual" aria-controls="visual" role="tab" data-toggle="tab" data-actions="true"><f:translate key="preview.visualPreview" extensionName="workspaces" /></a></li>
-                <li role="presentation"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" data-actions="false"><f:translate key="preview.listView" extensionName="workspaces" /></a></li>
-            </ul>
-        </div>
-        <div class="typo3-topbar-workspace-actions t3js-workspace-actions">
+        <div class="typo3-topbar-workspace-actions">
             <f:if condition="{liveUrl}">
                 <div class="workspace-action">
                     <div class="slider-wrapper">
@@ -58,9 +52,6 @@
                 </f:if>
                 <iframe src="{wsUrl}" id="workspace-view"></iframe>
             </div>
-        </div>
-        <div role="tabpanel" class="tab-pane workspaces" id="list">
-            <iframe src="{wsSettingsUrl}" id="workspace-list"></iframe>
         </div>
     </div>
 </div>

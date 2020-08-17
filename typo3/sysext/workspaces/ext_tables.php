@@ -10,7 +10,7 @@ defined('TYPO3_MODE') or die();
     'before:info',
     [
         // An array holding the controller-action-combinations that are accessible
-        \TYPO3\CMS\Workspaces\Controller\ReviewController::class => 'index,singleIndex'
+        \TYPO3\CMS\Workspaces\Controller\ReviewController::class => 'index'
     ],
     [
         'access' => 'user,group',
