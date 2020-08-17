@@ -89,12 +89,12 @@ class AjaxDataHandler {
         const payload = {...eventDict, hasErrors: result.hasErrors};
         const message = new BroadcastMessage(
           'datahandler',
-          eventDict.action,
+          'process',
           payload
         );
         BroadcastService.post(message);
 
-        const event = new CustomEvent(`typo3:datahandler:${eventDict.action}`,{
+        const event = new CustomEvent('typo3:datahandler:process',{
           detail: {
             payload: payload
           }

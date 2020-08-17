@@ -19,8 +19,11 @@ class InformationModule {
   }
 
   private registerEventListeners(): void {
-    new RegularEvent('typo3:datahandler:delete', (): void => {
-      document.location.reload();
+    new RegularEvent('typo3:datahandler:process', (e: CustomEvent): void => {
+      const payload = e.detail.payload;
+      if (payload.action === 'delete' && !payload.hasErrors) {
+        document.location.reload();
+      }
     }).bindTo(document);
   }
 }
