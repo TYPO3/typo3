@@ -121,46 +121,54 @@ class Maintenance implements MiddlewareInterface
 
         $action = $actionName . 'Action';
 
-        $session = $this->initializeSession();
+        // not session related actions
+        if ($actionName === 'init') {
+            $controller = $this->container->get(LayoutController::class);
+            return $controller->initAction($request);
+        }
+        if ($actionName === 'checkEnableInstallToolFile') {
+            return new JsonResponse([
+                'success' => $this->checkEnableInstallToolFile(),
+            ]);
+        }
+        if ($actionName === 'showEnableInstallToolFile') {
+            $controller = $this->container->get(LoginController::class);
+            return $controller->showEnableInstallToolFileAction($request);
+        }
+        if ($actionName === 'showLogin') {
+            if (!$this->checkEnableInstallToolFile()) {
+                throw new \RuntimeException('Not authorized', 1505564888);
+            }
+            $controller = $this->container->get(LoginController::class);
+            return $controller->showLoginAction($request);
+        }
+
+        // session related actions
+        $session = new SessionService();
         if ($actionName === 'preAccessCheck') {
             $response = new JsonResponse([
                 'installToolLocked' => !$this->checkEnableInstallToolFile(),
                 'isAuthorized' => $session->isAuthorized()
             ]);
-        } elseif ($actionName === 'init') {
-            $controller = $this->container->get(LayoutController::class);
-            $response = $controller->initAction($request);
-        } elseif ($actionName === 'checkEnableInstallToolFile') {
-            $response = new JsonResponse([
-                'success' => $this->checkEnableInstallToolFile(),
-            ]);
-        } elseif ($actionName === 'showEnableInstallToolFile') {
-            $controller = $this->container->get(LoginController::class);
-            $response = $controller->showEnableInstallToolFileAction($request);
         } elseif ($actionName === 'checkLogin') {
             if (!$this->checkEnableInstallToolFile() && !$session->isAuthorizedBackendUserSession()) {
                 throw new \RuntimeException('Not authorized', 1505563556);
             }
-            if ($session->isExpired() || !$session->isAuthorized()) {
+            if ($session->isAuthorized()) {
+                $session->refreshSession();
+                $response = new JsonResponse([
+                    'success' => true,
+                ]);
+            } else {
                 // Session expired, log out user, start new session
                 $session->resetSession();
                 $session->startSession();
                 $response = new JsonResponse([
                     'success' => false,
                 ]);
-            } else {
-                $session->refreshSession();
-                $response = new JsonResponse([
-                    'success' => true,
-                ]);
             }
-        } elseif ($actionName === 'showLogin') {
-            if (!$this->checkEnableInstallToolFile()) {
-                throw new \RuntimeException('Not authorized', 1505564888);
-            }
-            $controller = $this->container->get(LoginController::class);
-            $response = $controller->showLoginAction($request);
         } elseif ($actionName === 'login') {
+            $session->initializeSession();
             if (!$this->checkEnableInstallToolFile()) {
                 throw new \RuntimeException('Not authorized', 1505567462);
             }
@@ -210,6 +218,7 @@ class Maintenance implements MiddlewareInterface
             if ($enforceReferrerResponse instanceof ResponseInterface) {
                 return $enforceReferrerResponse;
             }
+            $session->initializeSession();
             if (
                 !$this->checkSessionToken($request, $session)
                 || !$this->checkSessionLifetime($session)
@@ -267,22 +276,6 @@ class Maintenance implements MiddlewareInterface
     protected function checkEnableInstallToolFile()
     {
         return EnableFileService::checkInstallToolEnableFile();
-    }
-
-    /**
-     * Initialize session object.
-     * Subclass will throw exception if session can not be created or if
-     * preconditions like a valid encryption key are not set.
-     *
-     * @return SessionService
-     */
-    protected function initializeSession()
-    {
-        $session = new SessionService();
-        if (!$session->hasSession()) {
-            $session->startSession();
-        }
-        return $session;
     }
 
     /**

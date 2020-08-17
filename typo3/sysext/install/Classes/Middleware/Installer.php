@@ -83,9 +83,7 @@ class Installer implements MiddlewareInterface
             $this->throwIfInstallerIsNotAvailable();
             // With main folder layout available, sessions can be handled
             $session = new SessionService();
-            if (!$session->hasSession()) {
-                $session->startSession();
-            }
+            $session->startSession();
             if ($session->isExpired()) {
                 $session->refreshSession();
             }

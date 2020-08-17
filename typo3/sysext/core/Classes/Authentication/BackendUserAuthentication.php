@@ -2665,9 +2665,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             if ($this->isSystemMaintainer()) {
                 // If user is system maintainer, destroy its possibly valid install tool session.
                 $session = new SessionService();
-                if ($session->hasSession()) {
-                    $session->destroySession();
-                }
+                $session->destroySession();
             }
         }
         parent::logoff();
