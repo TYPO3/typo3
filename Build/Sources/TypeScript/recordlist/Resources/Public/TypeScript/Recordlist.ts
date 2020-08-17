@@ -32,6 +32,12 @@ interface RecordlistIdentifier {
   localize: string;
   icons: IconIdentifier;
 }
+interface DataHandlerEventPayload {
+  action: string;
+  component: string;
+  table: string;
+  uid: number;
+}
 
 /**
  * Module: TYPO3/CMS/Recordlist/Recordlist
@@ -54,7 +60,7 @@ class Recordlist {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
     $(document).on('click', this.identifier.localize, this.disableButton);
-    new RegularEvent('typo3:datahandler:delete', this.deleteRow).bindTo(document);
+    new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
   }
 
   public toggleClick = (e: JQueryEventObject): void => {
@@ -169,7 +175,7 @@ class Recordlist {
     $me.prop('disable', true).addClass('disabled');
   }
 
-  private deleteRow = (e: CustomEvent): void => {
+  private handleDataHandlerResult(e: CustomEvent): void {
     const payload = e.detail.payload;
     if (payload.hasErrors) {
       return;
@@ -181,6 +187,12 @@ class Recordlist {
       return;
     }
 
+    if (payload.action === 'delete') {
+      this.deleteRow(payload);
+    }
+  };
+
+  private deleteRow = (payload: DataHandlerEventPayload): void => {
     const $tableElement = $(`table[data-table="${payload.table}"]`);
     const $rowElement = $tableElement.find(`tr[data-uid="${payload.uid}"]`);
     const $panel = $tableElement.closest('.panel');

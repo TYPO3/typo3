@@ -95,7 +95,7 @@ class WorkspacesMenu {
       WorkspacesMenu.updateBackendContext();
     });
 
-    new RegularEvent('typo3:datahandler:delete', (e: CustomEvent): void => {
+    new RegularEvent('typo3:datahandler:process', (e: CustomEvent): void => {
       const payload = e.detail.payload;
       if (payload.table === 'sys_workspace' && payload.action === 'delete' && payload.hasErrors === false) {
         Viewport.Topbar.refresh();
