@@ -27,6 +27,7 @@ use TYPO3\CMS\Install\Service\Session\FileSessionHandler;
 
 /**
  * Secure session handling for the install tool.
+ *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class SessionService implements SingletonInterface
@@ -90,6 +91,13 @@ class SessionService implements SingletonInterface
             $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
             throw new Exception($sessionCreationError, 1294587486);
         }
+    }
+
+    public function initializeSession()
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            return;
+        }
         session_start();
         if (!$this->hasSameSiteCookieSupport()) {
             $this->resendCookieHeader();
@@ -103,6 +111,11 @@ class SessionService implements SingletonInterface
      */
     public function startSession()
     {
+        $this->initializeSession();
+        // check if session is already active
+        if ($_SESSION['active'] ?? false) {
+            return session_id();
+        }
         $_SESSION['active'] = true;
         // Be sure to use our own session id, so create a new one
         return $this->renewSession();
@@ -113,7 +126,21 @@ class SessionService implements SingletonInterface
      */
     public function destroySession()
     {
-        session_destroy();
+        if ($this->hasSessionCookie()) {
+            $this->initializeSession();
+            $_SESSION = [];
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+            session_destroy();
+        }
     }
 
     /**
@@ -121,6 +148,7 @@ class SessionService implements SingletonInterface
      */
     public function resetSession()
     {
+        $this->initializeSession();
         $_SESSION = [];
         $_SESSION['active'] = false;
     }
@@ -132,7 +160,8 @@ class SessionService implements SingletonInterface
      */
     private function renewSession()
     {
-        session_regenerate_id();
+        // we do not have parallel ajax requests so we can safely remove the old session data
+        session_regenerate_id(true);
         if (!$this->hasSameSiteCookieSupport()) {
             $this->resendCookieHeader([$this->cookieName]);
         }
@@ -140,13 +169,13 @@ class SessionService implements SingletonInterface
     }
 
     /**
-     * Checks whether we already have an active session.
+     * Checks whether whether is session cookie is set
      *
-     * @return bool TRUE if there is an active session, FALSE otherwise
+     * @return bool
      */
-    public function hasSession()
+    public function hasSessionCookie(): bool
     {
-        return $_SESSION['active'] === true;
+        return isset($_COOKIE[$this->cookieName]);
     }
 
     /**
@@ -187,14 +216,14 @@ class SessionService implements SingletonInterface
      */
     public function isAuthorized()
     {
-        if (!$_SESSION['authorized']) {
+        if (!$this->hasSessionCookie()) {
             return false;
         }
-        if ($_SESSION['expires'] < time()) {
-            // This session has already expired
+        $this->initializeSession();
+        if (empty($_SESSION['authorized'])) {
             return false;
         }
-        return true;
+        return !$this->isExpired();
     }
 
     /**
@@ -204,14 +233,14 @@ class SessionService implements SingletonInterface
      */
     public function isAuthorizedBackendUserSession()
     {
-        if (!$_SESSION['authorized'] || !$_SESSION['isBackendSession']) {
+        if (!$this->hasSessionCookie()) {
             return false;
         }
-        if ($_SESSION['expires'] < time()) {
-            // This session has already expired
+        $this->initializeSession();
+        if (empty($_SESSION['authorized']) || empty($_SESSION['isBackendSession'])) {
             return false;
         }
-        return true;
+        return !$this->isExpired();
     }
 
     /**
@@ -223,15 +252,16 @@ class SessionService implements SingletonInterface
      */
     public function isExpired()
     {
-        if (!$_SESSION['authorized']) {
+        if (!$this->hasSessionCookie()) {
             // Session never existed, means it is not "expired"
             return false;
         }
-        if ($_SESSION['expires'] < time()) {
-            // This session was authorized before, but has expired
-            return true;
+        $this->initializeSession();
+        if (empty($_SESSION['authorized'])) {
+            // Session never authorized, means it is not "expired"
+            return false;
         }
-        return false;
+        return $_SESSION['expires'] <= time();
     }
 
     /**
@@ -296,6 +326,10 @@ class SessionService implements SingletonInterface
      */
     protected function getIniValueBoolean($configOption)
     {
-        return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, [FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE]);
+        return filter_var(
+            ini_get($configOption),
+            FILTER_VALIDATE_BOOLEAN,
+            [FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE]
+        );
     }
 }
