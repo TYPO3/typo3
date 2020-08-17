@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
@@ -719,5 +720,43 @@ class RequestBuilderTest extends FunctionalTestCase
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
+    }
+
+    /**
+     * @test
+     */
+    public function silentlyIgnoreInvalidParameter(): void
+    {
+        $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => 'not_an_array']);
+
+        $serverRequest = new ServerRequest(new Uri('https://example.com/'));
+        $serverRequest =  $serverRequest->withAttribute('routing', $pageArguments);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
+
+        $extensionName = 'blog_example';
+        $pluginName = 'blog';
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
+            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
+                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
+                'alias' => 'BlogController',
+                'actions' => [
+                    'list', 'show'
+                ]
+            ]
+        ];
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $request = $requestBuilder->build();
+
+        self::assertInstanceOf(RequestInterface::class, $request);
+        self::assertSame('list', $request->getControllerActionName());
     }
 }

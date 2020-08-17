@@ -191,12 +191,13 @@ class RequestBuilder implements SingletonInterface
         if ($typo3Request instanceof ServerRequestInterface) {
             $queryArguments = $typo3Request->getAttribute('routing');
             if ($queryArguments instanceof PageArguments) {
-                $getParameters = $queryArguments->get($pluginNamespace) ?? [];
+                $parameters = $queryArguments->get($pluginNamespace) ?? [];
             } else {
-                $getParameters = $typo3Request->getQueryParams()[$pluginNamespace] ?? [];
+                $parameters = $typo3Request->getQueryParams()[$pluginNamespace] ?? [];
             }
             $bodyParameters = $typo3Request->getParsedBody()[$pluginNamespace] ?? [];
-            $parameters = $getParameters;
+            $parameters = is_array($parameters) ? $parameters : [];
+            $bodyParameters = is_array($bodyParameters) ? $bodyParameters : [];
             ArrayUtility::mergeRecursiveWithOverrule($parameters, $bodyParameters);
         } else {
             $parameters = GeneralUtility::_GPmerged($pluginNamespace);
