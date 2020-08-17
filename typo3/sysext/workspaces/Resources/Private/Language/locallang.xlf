@@ -275,12 +275,6 @@
 			<trans-unit id="info.newpage.detail" resname="info.newpage.detail">
 				<source>The previewed page has been created in a workspace and has no live counterpart.</source>
 			</trans-unit>
-			<trans-unit id="preview.visualPreview" resname="preview.visualPreview">
-				<source>Visual preview</source>
-			</trans-unit>
-			<trans-unit id="preview.listView" resname="preview.listView">
-				<source>List view</source>
-			</trans-unit>
 			<trans-unit id="preview.livePreview" resname="preview.livePreview">
 				<source>Live</source>
 			</trans-unit>
