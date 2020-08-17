@@ -170,6 +170,16 @@
 
 # Proper MIME types for all files
 <IfModule mod_mime.c>
+	# Security configuration
+	RemoveType .html .htm
+	<FilesMatch ".+\.html?$">
+		AddType text/html .html .htm
+	</FilesMatch>
+
+	RemoveType .svg .svgz
+	<FilesMatch ".+\.svgz?$">
+		AddType image/svg+xml .svg .svgz
+	</FilesMatch>
 
 	# Data interchange
 	AddType application/atom+xml                        atom
@@ -192,7 +202,6 @@
 	AddType audio/mp4                                   f4a f4b m4a
 	AddType audio/ogg                                   oga ogg opus
 	AddType image/bmp                                   bmp
-	AddType image/svg+xml                               svg svgz
 	AddType image/webp                                  webp
 	AddType video/mp4                                   f4v f4p m4v mp4
 	AddType video/ogg                                   ogv
