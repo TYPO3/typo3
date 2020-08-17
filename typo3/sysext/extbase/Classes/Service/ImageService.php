@@ -90,6 +90,11 @@ class ImageService implements SingletonInterface
     public function getImageUri(FileInterface $image, bool $absolute = false): string
     {
         $imageUrl = $image->getPublicUrl();
+        if ($imageUrl === null) {
+            // Image is missing probably, return an empty string instead of parsing
+            return '';
+        }
+
         $parsedUrl = parse_url($imageUrl);
         // no prefix in case of an already fully qualified URL
         if (isset($parsedUrl['host'])) {
@@ -179,6 +184,10 @@ class ImageService implements SingletonInterface
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
+        $publicUrl = $processedImage->getPublicUrl();
+        if ($publicUrl === null) {
+            return;
+        }
         $imageInfoValues = $this->getCompatibilityImageResourceValues($processedImage);
         if (
             $this->environmentService->isEnvironmentInFrontendMode()
@@ -190,10 +199,10 @@ class ImageService implements SingletonInterface
             $imageInfoValues['originalFile'] = $processedImage->getOriginalFile();
             $imageInfoValues['processedFile'] = $processedImage;
             $GLOBALS['TSFE']->lastImageInfo = $imageInfoValues;
-            $GLOBALS['TSFE']->imagesOnPage[] = $processedImage->getPublicUrl();
+            $GLOBALS['TSFE']->imagesOnPage[] = $publicUrl;
         }
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
-            $processedImage->getPublicUrl(),
+            $publicUrl,
             $imageInfoValues
         );
     }
