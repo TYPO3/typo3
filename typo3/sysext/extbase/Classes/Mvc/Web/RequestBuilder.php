@@ -168,7 +168,8 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
                 $getParameters = $typo3Request->getQueryParams()[$pluginNamespace] ?? [];
             }
             $bodyParameters = $typo3Request->getParsedBody()[$pluginNamespace] ?? [];
-            $parameters = $getParameters;
+            $bodyParameters = is_array($bodyParameters) ? $bodyParameters : [];
+            $parameters = is_array($getParameters) ? $getParameters : [];
             ArrayUtility::mergeRecursiveWithOverrule($parameters, $bodyParameters);
         } else {
             $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($pluginNamespace);
