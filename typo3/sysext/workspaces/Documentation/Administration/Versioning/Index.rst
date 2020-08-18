@@ -14,8 +14,7 @@ offer a process for such content, going from creation, editing to
 review and publishing.
 
 Versioning is available in the core API by default, but to gain access
-to management tools you must install the system extensions "version"
-and "workspaces".
+to management tools you must install the system extension "workspaces".
 
 
 .. _technical-details:
