@@ -180,7 +180,7 @@ class PageTreeRepository
             if (empty($parentPageIds)) {
                 break;
             }
-            $pageRecords = $this->getChildPages($parentPageIds);
+            $pageRecords = $this->getChildPageRecords($parentPageIds);
 
             $groupedAndSortedPagesByPid = $this->groupAndSortPages($pageRecords, $groupedAndSortedPagesByPid);
 
@@ -188,39 +188,6 @@ class PageTreeRepository
         }
         $this->addChildrenToPage($pageTree, $groupedAndSortedPagesByPid);
         return $pageTree;
-    }
-
-    /**
-     * Get the child pages from the given parent pages
-     *
-     * @param array $parentPageIds
-     * @return array
-     */
-    protected function getChildPages(array $parentPageIds): array
-    {
-        $pageRecords = $this->getChildPageRecords($parentPageIds);
-
-        foreach ($pageRecords as &$pageRecord) {
-            $pageRecord['uid'] = (int)$pageRecord['uid'];
-
-            if ($this->currentWorkspace > 0) {
-                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
-                    $liveRecord = BackendUtility::getRecord('pages', $pageRecord['t3ver_move_id']);
-                    $pageRecord['uid'] = (int)$pageRecord['t3ver_move_id'];
-                    $pageRecord['title'] = $liveRecord['title'];
-                }
-
-                if ((int)$pageRecord['t3ver_oid'] > 0) {
-                    $liveRecord = BackendUtility::getRecord('pages', $pageRecord['t3ver_oid']);
-
-                    $pageRecord['uid'] = (int)$pageRecord['t3ver_oid'];
-                    $pageRecord['pid'] = (int)$liveRecord['pid'];
-                }
-            }
-        }
-        unset($pageRecord);
-
-        return $pageRecords;
     }
 
     /**
@@ -259,7 +226,20 @@ class PageTreeRepository
 
         // This is necessary to resolve all IDs in a workspace
         if ($this->currentWorkspace !== 0 && !empty($pageRecords)) {
-            $livePageIds = array_column($pageRecords, 'uid');
+            $livePagePids = [];
+            $livePageIds = [];
+            $movePlaceholderData = [];
+            foreach ($pageRecords as $pageRecord) {
+                $livePageIds[] = (int)$pageRecord['uid'];
+                $livePagePids[(int)$pageRecord['uid']] = (int)$pageRecord['pid'];
+                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
+                    $movePlaceholderData[$pageRecord['t3ver_move_id']] = [
+                        'pid' => (int)$pageRecord['pid'],
+                        'sorting' => (int)$pageRecord['sorting']
+                    ];
+                }
+            }
+
             // Resolve placeholders of workspace versions
             $resolver = GeneralUtility::makeInstance(
                 PlainDataResolver::class,
@@ -282,7 +262,31 @@ class PageTreeRepository
                     )
                     ->execute()
                     ->fetchAll();
+
+                foreach ($pageRecords as &$pageRecord) {
+                    if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
+                        $liveRecord = BackendUtility::getRecord('pages', $pageRecord['t3ver_move_id']);
+                        $pageRecord['uid'] = (int)$liveRecord['uid'];
+                        $pageRecord['t3ver_oid'] = (int)$pageRecord['t3ver_move_id'];
+                        $pageRecord['title'] = $liveRecord['title'];
+                    } elseif ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER && !empty($movePlaceholderData[$pageRecord['t3ver_oid']])) {
+                        $pageRecord['uid'] = $pageRecord['t3ver_oid'];
+                        $pageRecord['sorting'] = (int)$movePlaceholderData[$pageRecord['t3ver_oid']]['sorting'];
+                        $pageRecord['t3ver_state'] = VersionState::MOVE_PLACEHOLDER;
+                        $pageRecord['pid'] = (int)$movePlaceholderData[$pageRecord['t3ver_oid']]['pid'];
+                    } elseif ((int)$pageRecord['t3ver_oid'] > 0) {
+                        $liveRecord = BackendUtility::getRecord('pages', $pageRecord['t3ver_oid']);
+                        $pageRecord['sorting'] = (int)$liveRecord['sorting'];
+                        $pageRecord['uid'] = (int)$liveRecord['uid'];
+                        $pageRecord['pid'] = (int)$liveRecord['pid'];
+                    }
+                }
+            } else {
+                $pageRecords = [];
             }
+        }
+        foreach ($pageRecords as &$pageRecord) {
+            $pageRecord['uid'] = (int)$pageRecord['uid'];
         }
 
         return $pageRecords;
@@ -291,7 +295,6 @@ class PageTreeRepository
     public function hasChildren(int $pid): bool
     {
         $pageRecords = $this->getChildPageRecords([$pid]);
-
         return !empty($pageRecords);
     }
 
@@ -478,10 +481,6 @@ class PageTreeRepository
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        if ($this->currentWorkspace === 0) {
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class));
-        }
-
         if (!empty($this->additionalQueryRestrictions)) {
             foreach ($this->additionalQueryRestrictions as $additionalQueryRestriction) {
                 $queryBuilder->getRestrictions()->add($additionalQueryRestriction);
@@ -490,12 +489,24 @@ class PageTreeRepository
 
         $expressionBuilder = $queryBuilder->expr();
 
+        if ($this->currentWorkspace === 0) {
+            // Only include ws_id=0
+            $workspaceIdExpression = $expressionBuilder->eq('t3ver_wsid', 0);
+        } else {
+            // Include live records PLUS records from the given workspace
+            $workspaceIdExpression = $expressionBuilder->in(
+                't3ver_wsid',
+                [0, $this->currentWorkspace]
+            );
+        }
+
         $queryBuilder = $queryBuilder
             ->select(...$this->fields)
             ->from('pages')
             ->where(
                 // Only show records in default language
                 $expressionBuilder->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $workspaceIdExpression,
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
 
@@ -520,20 +531,80 @@ class PageTreeRepository
         $searchParts->add($searchWhereAlias);
 
         $queryBuilder->andWhere($searchParts);
-        $pageRecords = $queryBuilder->execute()
+        $pageRecords = $queryBuilder
+            ->execute()
             ->fetchAll();
 
-        $pages = [];
-        foreach ($pageRecords as $page) {
-            $pages[$page['uid']] = $page;
-        }
-
-        if ($this->currentWorkspace !== 0) {
-            foreach (array_unique(array_column($pages, 't3ver_oid')) as $t3verOid) {
-                if ($t3verOid !== 0) {
-                    unset($pages[$t3verOid]);
+        $livePagePids = [];
+        if ($this->currentWorkspace !== 0 && !empty($pageRecords)) {
+            $livePageIds = [];
+            foreach ($pageRecords as $pageRecord) {
+                $livePageIds[] = (int)$pageRecord['uid'];
+                $livePagePids[(int)$pageRecord['uid']] = (int)$pageRecord['pid'];
+                if ((int)$pageRecord['t3ver_oid'] > 0) {
+                    $livePagePids[(int)$pageRecord['t3ver_oid']] = (int)$pageRecord['pid'];
+                }
+                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
+                    $movePlaceholderData[$pageRecord['t3ver_move_id']] = [
+                        'pid' => (int)$pageRecord['pid'],
+                        'sorting' => (int)$pageRecord['sorting']
+                    ];
                 }
             }
+            // Resolve placeholders of workspace versions
+            $resolver = GeneralUtility::makeInstance(
+                PlainDataResolver::class,
+                'pages',
+                $livePageIds
+            );
+            $resolver->setWorkspaceId($this->currentWorkspace);
+            $resolver->setKeepDeletePlaceholder(false);
+            $resolver->setKeepMovePlaceholder(false);
+            $resolver->setKeepLiveIds(false);
+            $recordIds = $resolver->get();
+
+            $pageRecords = [];
+            if (!empty($recordIds)) {
+                $queryBuilder->getRestrictions()->removeAll();
+                $queryBuilder
+                    ->select(...$this->fields)
+                    ->from('pages')
+                    ->where(
+                        $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
+                    );
+                $queryBuilder->andWhere($searchParts);
+                $pageRecords = $queryBuilder
+                    ->execute()
+                    ->fetchAll();
+            }
+        }
+
+        $pages = [];
+        foreach ($pageRecords as $pageRecord) {
+            // In case this is a record from a workspace
+            // The uid+pid of the live-version record is fetched
+            // This is done in order to avoid fetching records again (e.g. via BackendUtility::workspaceOL()
+            if ((int)$pageRecord['t3ver_oid'] > 0) {
+                // This probably should also remove the live version
+                if ((int)$pageRecord['t3ver_state'] === VersionState::DELETE_PLACEHOLDER) {
+                    continue;
+                }
+                // When a move pointer is found, the pid+sorting of the MOVE_PLACEHOLDER should be used (this is the
+                // workspace record holding this information), also the t3ver_state is set to the MOVE_PLACEHOLDER
+                // because the record is then added
+                if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER && !empty($movePlaceholderData[$pageRecord['t3ver_oid']])) {
+                    $parentPageId = (int)$movePlaceholderData[$pageRecord['t3ver_oid']]['pid'];
+                    $pageRecord['sorting'] = (int)$movePlaceholderData[$pageRecord['t3ver_oid']]['sorting'];
+                    $pageRecord['t3ver_state'] = VersionState::MOVE_PLACEHOLDER;
+                } else {
+                    // Just a record in a workspace (not moved etc)
+                    $parentPageId = (int)$livePagePids[$pageRecord['t3ver_oid']];
+                }
+                // this is necessary so the links to the modules are still pointing to the live IDs
+                $pageRecord['uid'] = (int)$pageRecord['t3ver_oid'];
+                $pageRecord['pid'] = $parentPageId;
+            }
+            $pages[(int)$pageRecord['uid']] = $pageRecord;
         }
         unset($pageRecords);
 
@@ -615,6 +686,7 @@ class PageTreeRepository
             if ($mountPoint !== 0) {
                 if (!array_key_exists($mountPoint, $pages)) {
                     $pages[$mountPoint] = BackendUtility::getRecord('pages', $mountPoint);
+                    $pages[$mountPoint]['uid'] = (int)$pages[$mountPoint]['uid'];
                 }
                 $pages[$mountPoint]['pid'] = 0;
             }

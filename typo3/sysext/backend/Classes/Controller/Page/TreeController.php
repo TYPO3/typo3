@@ -502,17 +502,18 @@ class TreeController
                     'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3'
                 ];
             } else {
-                $entryPointRecord = BackendUtility::getRecord('pages', $entryPointId, '*', $permClause);
+                $entryPointRecord = BackendUtility::getRecordWSOL('pages', $entryPointId, '*', $permClause);
 
                 if ($entryPointRecord !== null && !$this->getBackendUser()->isInWebMount($entryPointId)) {
                     $entryPointRecord = null;
                 }
             }
             if ($entryPointRecord) {
+                $entryPointRecord['uid'] = (int)$entryPointRecord['uid'];
                 if ($query === '') {
                     $entryPointRecord = $repository->getTreeLevels($entryPointRecord, $this->levelsToFetch);
                 } else {
-                    $entryPointRecord = $repository->getTree($entryPointRecord['uid'], null, $entryPointIds, true);
+                    $entryPointRecord = $repository->getTree((int)$entryPointRecord['uid'], null, $entryPointIds, true);
                 }
             }
 
