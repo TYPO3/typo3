@@ -35,9 +35,11 @@ class SiteModuleCest
     }
 
     /**
+     * WARNING: Disabled (protected) for now due to side-effects in acceptance tests
+     *
      * @param BackendTester $I
      */
-    public function editExistingRecord(BackendTester $I)
+    protected function editExistingRecord(BackendTester $I)
     {
         $I->click('Sites');
         $I->switchToContentFrame();
