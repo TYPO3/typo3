@@ -120,17 +120,45 @@ return [
             ),
         ],
         'inline_2' => [
-            'label' => 'inline_2 media fal',
+            'exclude' => 1,
+            'label' => 'inline_2 read only fal images',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'inline_2',
+                [
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ],
+                    'overrideChildTca' => [
+                        'columns' => [
+                            'crop' => [
+                                'description' => 'field description',
+                            ],
+                        ],
+                        'types' => [
+                            \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
+                                'showitem' => '
+                                --palette--;;imageoverlayPalette,
+                                --palette--;;filePalette'
+                            ],
+                        ],
+                    ],
+                    'readOnly' => true,
+                ],
+                $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+            ),
+        ],
+        'inline_3' => [
+            'label' => 'inline_3 media fal',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'inline_3',
                 [],
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
             ),
         ],
-        'inline_3' => [
-            'label' => 'inline_3 media fal with allowLanguageSynchronization',
+        'inline_4' => [
+            'label' => 'inline_4 media fal with allowLanguageSynchronization',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-                'inline_3',
+                'inline_4',
                 [
                     'behaviour' => [
                         'allowLanguageSynchronization' => true,
@@ -261,9 +289,9 @@ return [
         '0' => [
             'showitem' => '
                 --div--;typical fal,
-                    inline_1,
+                    inline_1, inline_2,
                 --div--;media,
-                    inline_2, inline_3,
+                    inline_3, inline_4,
                 --div--;in flex,
                     inline_flex_1,
             ',
