@@ -128,6 +128,7 @@ define([
             .attr('dy', 15);
 
           _this.dropZoneDelete
+            .attr('data-open', 'false')
             .attr('transform', self.getDropZoneCloseTransform(node));
         }
 
@@ -225,15 +226,16 @@ define([
       self.dragEnd = function(node) {
         _this.setDragEnd();
 
-        if (!self.startDrag || tree.settings.isDragAnDrop !== true || node.depth === 0) {
-          return false;
-        }
-
         if (_this.dropZoneDelete) {
           _this.dropZoneDelete
             .transition(300)
             .attr('transform', self.getDropZoneCloseTransform(node))
             .remove();
+          _this.dropZoneDelete = null;
+        }
+
+        if (!self.startDrag || tree.settings.isDragAnDrop !== true || node.depth === 0) {
+          return false;
         }
 
         var $svg = $(this).closest('svg');
