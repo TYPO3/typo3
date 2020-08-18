@@ -213,6 +213,45 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function getAllEntryPointPageTreesWithSearch()
+    {
+        $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->sortTreeArray($actual);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+
+        $expected = [
+            [
+                'uid' => 1000,
+                'title' => 'ACME Inc',
+                '_children' => [
+                    [
+                        'uid' => 1400,
+                        'title' => 'EN: ACME in your Region',
+                        '_children' => [
+                            [
+                                'uid' => 1410,
+                                'title' => 'EN: Groups',
+                                '_children' => [
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'uid' => 8110,
+                'title' => 'Europe',
+                '_children' => [
+                ],
+            ],
+        ];
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function getSubtreeForAccessiblePage()
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
@@ -292,7 +331,7 @@ class TreeControllerTest extends FunctionalTestCase
                         'title' => 'EN: Goodbye',
                         '_children' => [
                             [
-                                'uid' => 10007,
+                                'uid' => 10015,
                                 'title' => 'EN: Really Goodbye',
                                 '_children' => [
                                 ],
@@ -307,7 +346,7 @@ class TreeControllerTest extends FunctionalTestCase
                     ],
                     [
                         'uid' => 1200,
-                        'title' => 'EN: Features',
+                        'title' => 'EN: Features modified',
                         '_children' => [
                             [
                                 'uid' => 1240,
@@ -315,26 +354,8 @@ class TreeControllerTest extends FunctionalTestCase
                                 '_children' => [],
                             ],
                             [
-                                'uid' => 1210,
-                                'title' => 'EN: Frontend Editing',
-                                '_children' => [
-                                ],
-                            ],
-                            [
                                 'uid' => 1230,
                                 'title' => 'EN: Managing content',
-                                '_children' => [
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'uid' => 1400,
-                        'title' => 'EN: ACME in your Region',
-                        '_children' => [
-                            [
-                                'uid' => 1410,
-                                'title' => 'EN: Groups',
                                 '_children' => [
                                 ],
                             ],
@@ -361,6 +382,13 @@ class TreeControllerTest extends FunctionalTestCase
                         'uid' => 1700,
                         'title' => 'Announcements & News',
                         '_children' => [
+                            [
+                                // page moved in workspace 1
+                                // from pid 8110 to pid 1700 (visible now)
+                                'uid' => 811000,
+                                'title' => 'France',
+                                '_children' => [],
+                            ],
                             [
                                 // page with sub-pages moved in workspace 1
                                 // from pid 1510 (missing permissions) to pid 1700 (visible now)
@@ -394,11 +422,96 @@ class TreeControllerTest extends FunctionalTestCase
                 'uid' => 8110,
                 'title' => 'Europe',
                 '_children' => [
+                ],
+            ],
+        ];
+        self::assertEquals($expected, $actual);
+    }
+
+    public function getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider(): array
+    {
+        return [
+            'search for "ACME in your Region" (live value, but deleted in workspace)' => [
+                'ACME in your Region',
+                [],
+            ],
+            'search for non-existing value' => [
+                sha1(random_bytes(10)),
+                [],
+            ],
+            'search for "groups" (live value, but changed in workspace)' => [
+                'Groups',
+                [],
+            ],
+            'search for "teams" (workspace value)' => [
+                'Teams',
+                [
                     [
-                        'uid' => 811000,
-                        'title' => 'France',
-                        '_children' => [],
+                        'uid' => 1400,
+                        'title' => 'EN: ACME in your Region',
+                        '_children' => [
+                            [
+                                'uid' => 1410,
+                                'title' => 'EN: Teams modified',
+                                '_children' => [],
+                            ],
+                        ],
                     ],
+                ],
+            ],
+            // page with sub-pages moved in workspace 1
+            // from pid 1510 (missing permissions) to pid 1700 (visible now)
+            'search for "products" (moved from pid 1510 to pid 1700 in workspace)' => [
+                'Product',
+                [
+                    [
+                        'uid' => 1700,
+                        'title' => 'Announcements & News',
+                        '_children' => [
+                            [
+                                'uid' => 1511,
+                                'title' => 'Products',
+                                '_children' => [
+                                    [
+                                        'uid' => 151110,
+                                        'title' => 'Product 1',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $search
+     * @param array $expectedChildren
+     *
+     * @test
+     * @dataProvider getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider
+     */
+    public function getAllEntryPointPageTreesInWorkspaceWithSearch(string $search, array $expectedChildren)
+    {
+        $this->setWorkspace(1);
+        // the record was changed from live "Groups" to "Teams modified" in a workspace
+        $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, $search);
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->sortTreeArray($actual);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+
+        $expected = [
+            [
+                'uid' => 1000,
+                'title' => 'ACME Inc',
+                '_children' => $expectedChildren,
+            ],
+            [
+                'uid' => 8110,
+                'title' => 'Europe',
+                '_children' => [
                 ],
             ],
         ];
@@ -410,6 +523,7 @@ class TreeControllerTest extends FunctionalTestCase
      */
     public function getSubtreeForAccessiblePageInWorkspace()
     {
+        $this->setWorkspace(1);
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -418,12 +532,17 @@ class TreeControllerTest extends FunctionalTestCase
         $expected = [
             [
                 'uid' => 1200,
-                'title' => 'EN: Features',
+                'title' => 'EN: Features modified',
                 '_children' => [
                     [
-                        'uid' => 1210,
-                        'title' => 'EN: Frontend Editing',
+                        'uid' => 1240,
+                        'title' => 'EN: Managing data',
                         '_children' => [
+                            [
+                                'uid' => 124010,
+                                'title' => 'EN: Managing complex data',
+                                '_children' => []
+                            ]
                         ],
                     ],
                     [
