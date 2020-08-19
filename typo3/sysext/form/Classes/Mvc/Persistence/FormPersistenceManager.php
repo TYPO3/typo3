@@ -378,7 +378,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Retrieves yaml files from extension folders for further processing.
      * At this time it's not determined yet, whether these files contain form data.
      *
-     * @return File[]
+     * @return array<string, string>
      * @internal
      */
     public function retrieveYamlFilesFromExtensionFolders(): array
