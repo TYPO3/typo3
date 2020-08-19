@@ -129,6 +129,7 @@ $tca = [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'default' => '0.5',
                 'items' => [
                     ['0.0', '0.0'],
                     ['0.1', '0.1'],
