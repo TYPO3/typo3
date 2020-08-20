@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -2694,13 +2695,18 @@ class PageRenderer implements SingletonInterface
     protected function createInlineCssTagFromFile(string $file, array $properties): string
     {
         $cssInline = file_get_contents($file);
-
+        $cssInlineFix = $this->getPathFixer()->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
         return '<style type="text/css"'
             . ' media="' . htmlspecialchars($properties['media']) . '"'
             . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
             . '>' . LF
             . '/*<![CDATA[*/' . LF . '<!-- ' . LF
-            . $cssInline
+            . $cssInlineFix
             . '-->' . LF . '/*]]>*/' . LF . '</style>' . LF;
+    }
+
+    protected function getPathFixer(): RelativeCssPathFixer
+    {
+        return GeneralUtility::makeInstance(RelativeCssPathFixer::class);
     }
 }
