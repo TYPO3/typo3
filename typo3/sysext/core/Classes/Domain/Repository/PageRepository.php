@@ -579,9 +579,9 @@ class PageRepository implements LoggerAwareInterface
      * @param string $table Table name
      * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
      * @param int $sys_language_content Pointer to the sys_language uid for content on the site.
-     * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is FALSE)
+     * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is NULL)
      * @throws \UnexpectedValueException
-     * @return mixed Returns the input record, possibly overlaid with a translation.  But if $OLmode is "hideNonTranslated" then it will return FALSE if no translation is found.
+     * @return mixed Returns the input record, possibly overlaid with a translation.  But if $OLmode is "hideNonTranslated" then it will return NULL if no translation is found.
      */
     public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '')
     {
