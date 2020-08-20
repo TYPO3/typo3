@@ -17,7 +17,17 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -25,6 +35,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 use TYPO3\CMS\Recycler\Domain\Model\Tables;
+use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
@@ -38,6 +49,22 @@ class RecyclerAjaxController
      * @var array
      */
     protected $conf = [];
+
+    /**
+     * @var FrontendInterface
+     */
+    protected $runtimeCache;
+
+    /**
+     * @var DataHandler
+     */
+    protected $tce;
+
+    public function __construct()
+    {
+        $this->runtimeCache = $this->getMemoryCache();
+        $this->tce = GeneralUtility::makeInstance(DataHandler::class);
+    }
 
     /**
      * The main dispatcher function. Collect data and prepare HTML output.
@@ -64,7 +91,6 @@ class RecyclerAjaxController
         $this->conf['recursive'] = (bool)($parsedBody['recursive'] ?? $queryParams['recursive'] ?? false);
 
         $extPath = ExtensionManagementUtility::extPath('recycler');
-        /* @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setPartialRootPaths(['default' => $extPath . 'Resources/Private/Partials']);
 
@@ -74,7 +100,6 @@ class RecyclerAjaxController
             case 'getTables':
                 $this->setDataInSession(['depthSelection' => $this->conf['depth']]);
 
-                /* @var Tables $model */
                 $model = GeneralUtility::makeInstance(Tables::class);
                 $content = $model->getTables($this->conf['startUid'], $this->conf['depth']);
                 break;
@@ -85,7 +110,6 @@ class RecyclerAjaxController
                     'resultLimit' => $this->conf['limit'],
                 ]);
 
-                /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $model->loadData($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['start'] . ',' . $this->conf['limit'], $this->conf['filterTxt']);
                 $deletedRowsArray = $model->getDeletedRows();
@@ -93,9 +117,7 @@ class RecyclerAjaxController
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filterTxt']);
 
-                /* @var DeletedRecordsController $controller */
-                $controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
-                $recordsArray = $controller->transform($deletedRowsArray);
+                $recordsArray = $this->transform($deletedRowsArray);
 
                 $allowDelete = $this->getBackendUser()->isAdmin()
                     ?: (bool)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
@@ -117,7 +139,6 @@ class RecyclerAjaxController
                     break;
                 }
 
-                /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $affectedRecords = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
                 $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
@@ -135,7 +156,6 @@ class RecyclerAjaxController
                     break;
                 }
 
-                /* @var DeletedRecords $model */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $success = $model->deleteData($this->conf['records'] ?? null);
                 $affectedRecords = count($this->conf['records']);
@@ -150,11 +170,128 @@ class RecyclerAjaxController
     }
 
     /**
+     * Transforms the rows for the deleted records
+     */
+    protected function transform(array $deletedRowsArray): array
+    {
+        $jsonArray = [
+            'rows' => []
+        ];
+
+        if (is_array($deletedRowsArray)) {
+            $lang = $this->getLanguageService();
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+            foreach ($deletedRowsArray as $table => $rows) {
+                foreach ($rows as $row) {
+                    $pageTitle = $this->getPageTitle((int)$row['pid']);
+                    $backendUserName = $this->getBackendUserInformation((int)$row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']]);
+                    $userIdWhoDeleted = $this->getUserWhoDeleted($table, (int)$row['uid']);
+
+                    $jsonArray['rows'][] = [
+                        'uid' => $row['uid'],
+                        'pid' => $row['pid'],
+                        'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+                        'pageTitle' => $pageTitle,
+                        'table' => $table,
+                        'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
+                        'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
+                        'owner' => htmlspecialchars($backendUserName),
+                        'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
+                        'tableTitle' => $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+                        'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
+                        'path' => RecyclerUtility::getRecordPath($row['pid']),
+                        'delete_user_uid' => $userIdWhoDeleted,
+                        'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
+                        'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false
+                    ];
+                }
+            }
+        }
+        return $jsonArray;
+    }
+
+    /**
+     * Gets the page title of the given page id
+     */
+    protected function getPageTitle(int $pageId): string
+    {
+        $cacheId = 'recycler-pagetitle-' . $pageId;
+        $pageTitle = $this->runtimeCache->get($cacheId);
+        if ($pageTitle === false) {
+            if ($pageId === 0) {
+                $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+            } else {
+                $recordInfo = $this->tce->recordInfo('pages', $pageId, 'title');
+                $pageTitle = $recordInfo['title'];
+            }
+            $this->runtimeCache->set($cacheId, $pageTitle);
+        }
+        return $pageTitle;
+    }
+
+    /**
+     * Gets the username of a given backend user
+     */
+    protected function getBackendUserInformation(int $userId): string
+    {
+        if ($userId === 0) {
+            return '';
+        }
+        $cacheId = 'recycler-user-' . $userId;
+        $username = $this->runtimeCache->get($cacheId);
+        if ($username === false) {
+            $backendUser = BackendUtility::getRecord('be_users', $userId, 'username', '', false);
+            if ($backendUser === null) {
+                $username = sprintf(
+                    '[%s]',
+                    LocalizationUtility::translate('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:record.deleted')
+                );
+            } else {
+                $username = $backendUser['username'];
+            }
+            $this->runtimeCache->set($cacheId, $username);
+        }
+        return $username;
+    }
+
+    /**
+     * Get the user uid of the user who deleted the record
+     */
+    protected function getUserWhoDeleted(string $table, int $uid): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+        $queryBuilder->select('userid')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'usertype',
+                    $queryBuilder->createNamedParameter('BE', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'recuid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'actiontype',
+                    $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_DELETE, \PDO::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1);
+
+        return (int)$queryBuilder->execute()->fetchColumn(0);
+    }
+
+    /**
      * Sets data in the session of the current backend user.
      *
      * @param array $data The data to be stored in the session
      */
-    protected function setDataInSession(array $data)
+    protected function setDataInSession(array $data): void
     {
         $beUser = $this->getBackendUser();
         $recyclerUC = $beUser->uc['tx_recycler'] ?? [];
@@ -164,20 +301,22 @@ class RecyclerAjaxController
         }
     }
 
-    /**
-     * Returns the BackendUser
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getMemoryCache(): FrontendInterface
+    {
+        return $this->getCacheManager()->getCache('runtime');
+    }
+
+    protected function getCacheManager(): CacheManager
+    {
+        return GeneralUtility::makeInstance(CacheManager::class);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
