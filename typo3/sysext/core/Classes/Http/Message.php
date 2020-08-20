@@ -468,18 +468,14 @@ class Message implements MessageInterface
             return false;
         }
 
-        $length = strlen($value);
-        for ($i = 0; $i < $length; $i += 1) {
-            $ascii = ord($value[$i]);
+        foreach (unpack('C*', $value) as $ascii) {
 
             // Non-visible, non-whitespace characters
             // 9 === horizontal tab
-            // 10 === line feed
-            // 13 === carriage return
             // 32-126, 128-254 === visible
             // 127 === DEL
             // 255 === null byte
-            if (($ascii < 32 && !in_array($ascii, [9, 10, 13], true)) || $ascii === 127 || $ascii > 254) {
+            if (($ascii < 32 && $ascii !== 9) || $ascii === 127 || $ascii > 254) {
                 return false;
             }
         }
