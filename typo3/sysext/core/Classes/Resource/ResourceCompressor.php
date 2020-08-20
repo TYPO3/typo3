@@ -288,7 +288,7 @@ class ResourceCompressor
                 }
                 // only fix paths if files aren't already in typo3temp (already processed)
                 if ($type === 'css' && !GeneralUtility::isFirstPartOfStr($filename, $this->targetDirectory)) {
-                    $contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
+                    $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
                 }
                 $concatenated .= LF . $contents;
             }
@@ -355,7 +355,7 @@ class ResourceCompressor
         if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
             $contents = $this->compressCssString(file_get_contents($filenameAbsolute));
             if (strpos($filename, $this->targetDirectory) === false) {
-                $contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
+                $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
             }
             $this->writeFileAndCompressed($targetFile, $contents);
         }
@@ -494,57 +494,14 @@ class ResourceCompressor
     }
 
     /**
-     * Fixes the relative paths inside of url() references in CSS files
-     *
-     * @param string $contents Data to process
-     * @param string $oldDir Directory of the original file, relative to TYPO3_mainDir
-     * @return string Processed data
+     * @param string $contents
+     * @param string $filename
+     * @return string
      */
-    protected function cssFixRelativeUrlPaths($contents, $oldDir)
+    protected function cssFixRelativeUrlPaths(string $contents, string $filename): string
     {
-        $newDir = '../../../' . $oldDir;
-        // Replace "url()" paths
-        if (stripos($contents, 'url') !== false) {
-            $regex = '/url(\\(\\s*["\']?(?!\\/)([^"\']+)["\']?\\s*\\))/iU';
-            $contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '(\'|\')');
-        }
-        // Replace "@import" paths
-        if (stripos($contents, '@import') !== false) {
-            $regex = '/@import\\s*(["\']?(?!\\/)([^"\']+)["\']?)/i';
-            $contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '"|"');
-        }
-        return $contents;
-    }
-
-    /**
-     * Finds and replaces all URLs by using a given regex
-     *
-     * @param string $contents Data to process
-     * @param string $regex Regex used to find URLs in content
-     * @param string $newDir Path to prepend to the original file
-     * @param string $wrap Wrap around replaced values
-     * @return string Processed data
-     */
-    protected function findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, $wrap = '|')
-    {
-        $matches = [];
-        $replacements = [];
-        $wrap = explode('|', $wrap);
-        preg_match_all($regex, $contents, $matches);
-        foreach ($matches[2] as $matchCount => $match) {
-            // remove '," or white-spaces around
-            $match = trim($match, '\'" ');
-            // we must not rewrite paths containing ":" or "url(", e.g. data URIs (see RFC 2397)
-            if (strpos($match, ':') === false && !preg_match('/url\\s*\\(/i', $match)) {
-                $newPath = GeneralUtility::resolveBackPath($newDir . $match);
-                $replacements[$matches[1][$matchCount]] = $wrap[0] . $newPath . $wrap[1];
-            }
-        }
-        // replace URL paths in content
-        if (!empty($replacements)) {
-            $contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
-        }
-        return $contents;
+        $newDir = '../../../' . PathUtility::dirname($filename) . '/';
+        return $this->getPathFixer()->fixRelativeUrlPaths($contents, $newDir);
     }
 
     /**
@@ -720,5 +677,10 @@ class ResourceCompressor
             return '';
         }
         return 'text/javascript';
+    }
+
+    protected function getPathFixer(): RelativeCssPathFixer
+    {
+        return GeneralUtility::makeInstance(RelativeCssPathFixer::class);
     }
 }
