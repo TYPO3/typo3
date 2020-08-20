@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -163,7 +163,6 @@ class DeletedRecords
         if (!empty($this->limit)) {
             // count the number of deleted records for this pid
             $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $depth, $filter);
-            $queryBuilder->getRestrictions()->removeAll();
 
             $deletedCount = (int)$queryBuilder
                 ->count('*')
@@ -264,9 +263,8 @@ class DeletedRecords
     {
         $pidList = $this->getTreeList($pid, $depth);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         // create the filter WHERE-clause
         $filterConstraint = null;
@@ -437,7 +435,8 @@ class DeletedRecords
     protected function getDeletedParentPages($uid, &$pages = [])
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
         $record = $queryBuilder
             ->select('uid', 'pid')
             ->from('pages')
@@ -533,7 +532,8 @@ class DeletedRecords
         }
         if ($depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            $queryBuilder->getRestrictions()->removeAll()
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
