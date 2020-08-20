@@ -1584,4 +1584,9 @@ return [
             'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\View\PageTreeView' => [
+        'restFiles' => [
+            'Breaking-92060-DroppedClassTYPO3CMSBackendViewPageTreeView.rst'
+        ],
+    ],
 ];
