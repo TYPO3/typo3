@@ -211,6 +211,9 @@ services:
   GuzzleHttp\ClientInterface:
     alias: GuzzleHttp\Client
     public: true
+  Symfony\Contracts\EventDispatcher\EventDispatcherInterface:
+    alias: TYPO3\CMS\Core\Adapter\SymfonyEventDispatcher
+    public: true
 
   # External dependencies
   GuzzleHttp\Client:

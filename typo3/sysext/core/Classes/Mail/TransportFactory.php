@@ -24,7 +24,9 @@ use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,8 +37,24 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const SPOOL_MEMORY = 'memory';
-    const SPOOL_FILE = 'file';
+    public const SPOOL_MEMORY = 'memory';
+    public const SPOOL_FILE = 'file';
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
+     * @var LogManagerInterface
+     */
+    protected $logManager;
+
+    public function __construct(EventDispatcherInterface $dispatcher, LogManagerInterface $logManager)
+    {
+        $this->dispatcher = $dispatcher;
+        $this->logManager = $logManager;
+    }
 
     /**
      * Gets a transport from settings.
@@ -56,7 +74,9 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
         }
 
         $transport = null;
-        $transportType = isset($mailSettings['transport_spool_type']) && !empty($mailSettings['transport_spool_type']) ? 'spool' : $mailSettings['transport'];
+        $transportType = isset($mailSettings['transport_spool_type'])
+            && !empty($mailSettings['transport_spool_type'])
+            ? 'spool' : $mailSettings['transport'];
 
         switch ($transportType) {
             case 'spool':
@@ -64,7 +84,10 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 break;
             case 'smtp':
                 // Get settings to be used when constructing the transport object
-                if (isset($mailSettings['transport_smtp_server']) && strpos($mailSettings['transport_smtp_server'], ':') > 0) {
+                if (
+                    isset($mailSettings['transport_smtp_server'])
+                    && strpos($mailSettings['transport_smtp_server'], ':') > 0
+                ) {
                     $parts = GeneralUtility::trimExplode(':', $mailSettings['transport_smtp_server'], true);
                     $host = $parts[0];
                     $port = $parts[1] ?? null;
@@ -83,7 +106,13 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 }
                 $useEncryption = (bool)($mailSettings['transport_smtp_encrypt'] ?? false) ?: null;
                 // Create transport
-                $transport = new EsmtpTransport($host, $port, $useEncryption);
+                $transport = new EsmtpTransport(
+                    $host,
+                    $port,
+                    $useEncryption,
+                    $this->dispatcher,
+                    $this->logManager->getLogger(EsmtpTransport::class)
+                );
                 // Need authentication?
                 $username = (string)($mailSettings['transport_smtp_username'] ?? '');
                 if ($username !== '') {
@@ -101,7 +130,11 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                     $this->logger->warning('Mailer transport "sendmail" was chosen without a specific command, using "' . $sendmailCommand . '"');
                 }
                 // Create transport
-                $transport = new SendmailTransport($sendmailCommand);
+                $transport = new SendmailTransport(
+                    $sendmailCommand,
+                    $this->dispatcher,
+                    $this->logManager->getLogger(SendmailTransport::class)
+                );
                 break;
             case 'mbox':
                 $mboxFile = $mailSettings['transport_mbox_file'];
@@ -111,14 +144,22 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 // Create our transport
                 $transport = GeneralUtility::makeInstance(MboxTransport::class, $mboxFile);
                 break;
-                // Used for testing purposes
+            // Used for testing purposes
             case 'null':
             case NullTransport::class:
-                $transport = new NullTransport();
+                $transport = new NullTransport(
+                    $this->dispatcher,
+                    $this->logManager->getLogger(NullTransport::class)
+                );
                 break;
-                // Used by Symfony's Transport Factory
+            // Used by Symfony's Transport Factory
             case !empty($mailSettings['dsn']):
-                $transport = Transport::fromDsn($mailSettings['dsn']);
+                $transport = Transport::fromDsn(
+                    $mailSettings['dsn'],
+                    $this->dispatcher,
+                    null,
+                    $this->logManager->getLogger(Transport::class)
+                );
                 break;
             default:
                 // Custom mail transport
