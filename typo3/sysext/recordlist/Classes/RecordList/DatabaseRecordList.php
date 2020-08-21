@@ -590,10 +590,7 @@ class DatabaseRecordList
         }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
-        $this->getTranslateTools();
-
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
     }
 
     /**
@@ -3953,7 +3950,7 @@ class DatabaseRecordList
             $this->pageOverlays[$row[$languageField]] = $row;
         }
 
-        $this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);
+        $this->languageIconTitles = $this->translateTools->getSystemLanguages($this->id);
     }
 
     /**
@@ -3979,19 +3976,6 @@ class DatabaseRecordList
         }
         $out .= $title;
         return $out;
-    }
-
-    /**
-     * Gets an instance of TranslationConfigurationProvider
-     *
-     * @return TranslationConfigurationProvider
-     */
-    protected function getTranslateTools()
-    {
-        if (!isset($this->translateTools)) {
-            $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-        }
-        return $this->translateTools;
     }
 
     /**
