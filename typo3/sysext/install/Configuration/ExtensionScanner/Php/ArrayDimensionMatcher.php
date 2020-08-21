@@ -445,4 +445,14 @@ return [
             'Breaking-92128-DatabaseRecordListDropHookToModifySearchFields.rst'
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'recordlist/Modules/Recordlist/index.php\'][\'drawHeaderHook\']' => [
+        'restFiles' => [
+            'Deprecation-92062-MigrateRecordListControllerHooksToAnPSR-14Event.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'recordlist/Modules/Recordlist/index.php\'][\'drawFooterHook\']' => [
+        'restFiles' => [
+            'Deprecation-92062-MigrateRecordListControllerHooksToAnPSR-14Event.rst',
+        ],
+    ],
 ];

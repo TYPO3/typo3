@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
@@ -174,16 +176,22 @@ class RecordListController
     protected $siteLanguages = [];
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(IconFactory $iconFactory, ModuleTemplate $moduleTemplate, EventDispatcherInterface $eventDispatcher)
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $moduleTemplate;
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->iconFactory = $iconFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -383,14 +391,9 @@ class RecordListController
         $this->body = $this->moduleTemplate->header($title);
 
         // Additional header content
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook'] ?? [] as $hook) {
-            $params = [
-                'request' => $request,
-            ];
-            $null = null;
-            $this->body .= GeneralUtility::callUserFunction($hook, $params, $null);
-        }
-
+        /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
+        $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
+        $this->body .= $additionalRecordListEvent->getAdditionalContentAbove();
         $this->moduleTemplate->setTitle($title);
 
         $output = '';
@@ -483,13 +486,7 @@ class RecordListController
             $this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
         }
         // Additional footer content
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook'] ?? [] as $hook) {
-            $params = [
-                'request' => $request,
-            ];
-            $null = null;
-            $this->body .= GeneralUtility::callUserFunction($hook, $params, $null);
-        }
+        $this->body .= $additionalRecordListEvent->getAdditionalContentBelow();
         // Setting up the buttons for docheader
         $dblist->getDocHeaderButtons($this->moduleTemplate);
         // search box toolbar
