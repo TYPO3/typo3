@@ -138,10 +138,8 @@ class EditDocumentController
      * Main DataHandler datamap array
      *
      * @var array
-     * @todo: Will be set protected later, still used by ConditionMatcher
-     * @internal Will be removed / protected in TYPO3 v10.x without further notice
      */
-    public $data;
+    protected $data;
 
     /**
      * Main DataHandler cmdmap array
@@ -291,10 +289,8 @@ class EditDocumentController
      * Array of the elements to create edit forms for.
      *
      * @var array
-     * @todo: Will be set protected later, still used by ConditionMatcher
-     * @internal Will be removed / protected in TYPO3 v10.x without further notice
      */
-    public $elementsData;
+    protected $elementsData;
 
     /**
      * Pointer to the first element in $elementsData
@@ -388,8 +384,6 @@ class EditDocumentController
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->setUiBlock(true);
-        // @todo Used by TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching
-        $GLOBALS['SOBE'] = $this;
         $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
     }
 
