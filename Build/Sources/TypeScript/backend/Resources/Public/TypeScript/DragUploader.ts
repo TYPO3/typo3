@@ -98,7 +98,7 @@ class DragUploaderPlugin {
   private browserCapabilities: { fileReader: boolean; DnD: boolean; Progress: boolean };
   private readonly dropZoneInsertBefore: boolean;
   private queueLength: number;
-  private defaultAction: string;
+  private readonly defaultAction: Action;
 
   constructor(element: HTMLElement) {
     this.$body = $('body');
@@ -272,7 +272,7 @@ class DragUploaderPlugin {
           this.askForOverride.push({
             original: data,
             uploaded: file,
-            action: this.irreObjectUid ? Action.USE_EXISTING : Action.SKIP,
+            action: this.irreObjectUid ? Action.USE_EXISTING : this.defaultAction,
           });
           NProgress.inc(this.percentagePerFile);
         } else {
