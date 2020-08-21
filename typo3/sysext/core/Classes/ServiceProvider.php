@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core;
 use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 
@@ -36,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
+            Adapter\SymfonyEventDispatcher::class => [ static::class, 'getSymfonyEventDispatcher' ],
             Cache\CacheManager::class => [ static::class, 'getCacheManager' ],
             Charset\CharsetConverter::class => [ static::class, 'getCharsetConverter' ],
             Configuration\SiteConfiguration::class => [ static::class, 'getSiteConfiguration' ],
@@ -79,6 +81,13 @@ class ServiceProvider extends AbstractServiceProvider
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
         ] + parent::getExtensions();
+    }
+
+    public static function getSymfonyEventDispatcher(ContainerInterface $container): SymfonyEventDispatcherInterface
+    {
+        return self::new($container, Adapter\SymfonyEventDispatcher::class, [
+            $container->get(EventDispatcherInterface::class)
+        ]);
     }
 
     public static function getCacheManager(ContainerInterface $container): Cache\CacheManager
@@ -203,7 +212,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getMailTransportFactory(ContainerInterface $container): Mail\TransportFactory
     {
-        return self::new($container, Mail\TransportFactory::class);
+        return self::new($container, Mail\TransportFactory::class, [
+            $container->get(Adapter\SymfonyEventDispatcher::class),
+            $container->get(Log\LogManager::class)
+        ]);
     }
 
     public static function getFlashMessageService(ContainerInterface $container): Messaging\FlashMessageService
