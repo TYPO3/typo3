@@ -237,11 +237,6 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated and will be removed in TYPO3 v10.0.
-        // @todo: PageLayoutView / $dblist used by PageInformationController still relies on this being set at the moment,
-        // @todo: otherwise the "pages_levels" / "depth" information gets lost rendering the Pagetree Overview.
-        $GLOBALS['SOBE'] = $this;
-
         $this->init();
 
         // Checking for first level external objects
