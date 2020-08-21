@@ -15,7 +15,7 @@ import $ from 'jquery';
 import 'tablesort';
 import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
 import Modal = require('TYPO3/CMS/Backend/Modal');
-import MessageUtility = require('TYPO3/CMS/Backend/Utility/MessageUtility');
+import { MessageUtility } from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -205,7 +205,7 @@ class Scheduler {
   }
 
   private listenOnElementBrowser = (e: MessageEvent): void => {
-    if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
+    if (!MessageUtility.verifyOrigin(e.origin)) {
       throw 'Denied message sent by ' + e.origin;
     }
 
