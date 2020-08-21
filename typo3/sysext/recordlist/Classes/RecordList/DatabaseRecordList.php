@@ -379,9 +379,9 @@ class DatabaseRecordList
     /**
      * Set to the total number of items for a table when selecting.
      *
-     * @var string
+     * @var int
      */
-    public $totalItems = '';
+    public $totalItems;
 
     /**
      * TSconfig which overwrites TCA-Settings
@@ -765,8 +765,6 @@ class DatabaseRecordList
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
         // Init
-        $addWhere = '';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
         $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
@@ -801,14 +799,6 @@ class DatabaseRecordList
             // Do not show the "Localize to:" field when only translated records should be shown
             if (!$this->showOnlyTranslatedRecords) {
                 $this->fieldArray[] = '_LOCALIZATION_b';
-            }
-            // Only restrict to the default language if no search request is in place
-            // And if only translations should be shown
-            if ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
-                $addWhere = '(' . (string)$queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->lte($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0),
-                    $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0)
-                ) . ')';
             }
         }
         // Cleaning up:
@@ -881,23 +871,10 @@ class DatabaseRecordList
         }
         // Making sure that the fields in the field-list ARE in the field-list from TCA!
         $selectFields = array_intersect($selectFields, $fieldListFields);
+
         // Implode it into a list of fields for the SQL-statement.
         $selFieldList = implode(',', $selectFields);
         $this->selFieldList = $selFieldList;
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof RecordListGetTableHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListGetTableHookInterface::class, 1195114460);
-            }
-            $hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
-        }
-
-        if ($table == 'pages' && $this->showOnlyTranslatedRecords) {
-            $addWhere .= ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['languageField'] . ' IN(' . implode(',', array_keys($this->languagesAllowedForUser)) . ')';
-        }
-
-        $additionalConstraints = empty($addWhere) ? [] : [QueryHelper::stripLogicalOperatorPrefix($addWhere)];
-        $selFieldList = GeneralUtility::trimExplode(',', $selFieldList, true);
 
         // Create the SQL query for selecting the elements in the listing:
         // do not do paging when outputting as CSV
@@ -908,16 +885,18 @@ class DatabaseRecordList
             // Get the two previous rows for sorting if displaying page > 1
             $this->firstElementNumber -= 2;
             $this->iLimit += 2;
-            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $this->iLimit);
             $this->firstElementNumber += 2;
             $this->iLimit -= 2;
         } else {
-            $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $this->iLimit);
         }
 
         // Finding the total amount of records on the page
-        $this->setTotalItems($table, $id, $additionalConstraints);
-
+        $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
+        $this->totalItems = (int)$queryBuilderTotalItems->count('*')
+            ->execute()
+            ->fetchColumn();
         // Init:
         $queryResult = $queryBuilder->execute();
         $dbCount = 0;
@@ -2924,16 +2903,8 @@ class DatabaseRecordList
                     : $this->itemsLimitSingleTable;
             } else {
                 // if there are no records in table continue current foreach
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($tableName);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUserAuthentication()->workspace));
-                $queryBuilder = $this->addPageIdConstraint($tableName, $queryBuilder);
-                $firstRow = $queryBuilder->select('uid')
-                    ->from($tableName)
-                    ->setMaxResults(1)
+                $queryBuilder = $this->getQueryBuilder($tableName, $this->id, [], ['uid'], false, 0, 1);
+                $firstRow = $queryBuilder
                     ->execute()
                     ->fetch();
                 if (!is_array($firstRow)) {
@@ -3094,13 +3065,19 @@ class DatabaseRecordList
      * @param int $pageId Page id Only used to build the search constraints, getPageIdConstraint() used for restrictions
      * @param string[] $additionalConstraints Additional part for where clause
      * @param string[] $fields Field list to select, * for all
+     * @param bool $addSorting
+     * @param int $firstResult
+     * @param int $maxResult
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
     public function getQueryBuilder(
         string $table,
         int $pageId,
-        array $additionalConstraints = [],
-        array $fields = ['*']
+        array $additionalConstraints,
+        array $fields,
+        bool $addSorting,
+        int $firstResult,
+        int $maxResult
     ): QueryBuilder {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
@@ -3111,53 +3088,58 @@ class DatabaseRecordList
         $queryBuilder
             ->select(...$fields)
             ->from($table);
-
         if (!empty($additionalConstraints)) {
             $queryBuilder->andWhere(...$additionalConstraints);
         }
-
-        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, $fields, $additionalConstraints, $queryBuilder);
-
-        return $queryBuilder;
-    }
-
-    /**
-     * Return the modified QueryBuilder object ($queryBuilder) which will be
-     * used to select the records from a table $table with pid = $this->pidList
-     *
-     * @param string $table Table name
-     * @param int $pageId Page id Only used to build the search constraints, $this->pidList is used for restrictions
-     * @param string[] $fieldList List of fields to select from the table
-     * @param string[] $additionalConstraints Additional part for where clause
-     * @param QueryBuilder $queryBuilder
-     * @param bool $addSorting
-     * @return QueryBuilder
-     */
-    protected function prepareQueryBuilder(
-        string $table,
-        int $pageId,
-        array $fieldList = ['*'],
-        array $additionalConstraints = [],
-        QueryBuilder $queryBuilder,
-        bool $addSorting = true
-    ): QueryBuilder {
-        $parameters = [
-            'table' => $table,
-            'fields' => $fieldList,
-            'groupBy' => null,
-            'orderBy' => null,
-            'firstResult' => $this->firstElementNumber ?: null,
-            'maxResults' => $this->iLimit ?: null
-        ];
-
-        if ($this->iLimit > 0) {
-            $queryBuilder->setMaxResults($this->iLimit);
+        // Legacy hook
+        $addWhere = '';
+        $selFieldList = implode(',', $fields);
+        if ($selFieldList === '*') {
+            $selFieldList = '';
         }
-
-        if ($this->firstElementNumber > 0) {
-            $queryBuilder->setFirstResult($this->firstElementNumber);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof RecordListGetTableHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListGetTableHookInterface::class, 1195114460);
+            }
+            $hookObject->getDBlistQuery($table, $pageId, $addWhere, $selFieldList, $this);
         }
-
+        if (!empty($addWhere)) {
+            $queryBuilder->andWhere([QueryHelper::stripLogicalOperatorPrefix($addWhere)]);
+        }
+        $fields = GeneralUtility::trimExplode(',', $selFieldList, true);
+        if ($fields === []) {
+            $fields = ['*'];
+        }
+        // Additional constraints from getTable
+        if ($GLOBALS['TCA'][$table]['ctrl']['languageField']
+            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+            // Only restrict to the default language if no search request is in place
+            // And if only translations should be shown
+            if ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->lte($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0),
+                        $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0)
+                    )
+                );
+            }
+        }
+        if ($table === 'pages' && $this->showOnlyTranslatedRecords) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                    array_keys($this->languagesAllowedForUser)
+                )
+            );
+        }
+        // Former prepareQueryBuilder
+        if ($maxResult > 0) {
+            $queryBuilder->setMaxResults($maxResult);
+        }
+        if ($firstResult > 0) {
+            $queryBuilder->setFirstResult($firstResult);
+        }
         if ($addSorting) {
             if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
                 $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
@@ -3171,8 +3153,8 @@ class DatabaseRecordList
         }
 
         // Build the query constraints
-        $queryBuilder = $this->addPageIdConstraint($table, $queryBuilder);
-        $searchWhere = $this->makeSearchString($table, $pageId);
+        $queryBuilder = $this->addPageIdConstraint($table, $queryBuilder, $this->searchLevels);
+        $searchWhere = $this->makeSearchString($table, $pageId, $queryBuilder);
         if (!empty($searchWhere)) {
             $queryBuilder->andWhere($searchWhere);
         }
@@ -3206,6 +3188,14 @@ class DatabaseRecordList
             );
         }
 
+        $parameters = [
+            'table' => $table,
+            'fields' => $fields,
+            'groupBy' => null,
+            'orderBy' => null,
+            'firstResult' => $firstResult,
+            'maxResults' => $maxResult
+        ];
         $hookName = DatabaseRecordList::class;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['modifyQuery'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
@@ -3215,47 +3205,12 @@ class DatabaseRecordList
                     $table,
                     $pageId,
                     $additionalConstraints,
-                    $fieldList,
+                    $fields,
                     $queryBuilder
                 );
             }
         }
-
         return $queryBuilder;
-    }
-
-    /**
-     * Executed a query to set $this->totalItems to the number of total
-     * items, eg. for pagination
-     *
-     * @param string $table Table name
-     * @param int $pageId Only used to build the search constraints, $this->pidList is used for restrictions
-     * @param array $constraints Additional constraints for where clause
-     */
-    public function setTotalItems(string $table, int $pageId, array $constraints)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table);
-
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUserAuthentication()->workspace));
-        $queryBuilder
-            ->from($table);
-
-        if (!empty($constraints)) {
-            $queryBuilder->andWhere(...$constraints);
-        }
-
-        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder, false);
-        // Reset limit and offset for full count query
-        $queryBuilder->setFirstResult(0);
-        $queryBuilder->setMaxResults(1);
-
-        $this->totalItems = (int)$queryBuilder->count('*')
-            ->execute()
-            ->fetchColumn();
     }
 
     /**
@@ -3263,22 +3218,40 @@ class DatabaseRecordList
      * fields in input table.
      *
      * @param string $table Table, in which the fields are being searched.
-     * @param int $currentPid Page id for the possible search limit. -1 only if called from an old XCLASS.
+     * @param int $currentPid Page id for the possible search limit
+     * @param QueryBuilder $queryBuilder
      * @return string Returns part of WHERE-clause for searching, if applicable.
      */
-    public function makeSearchString($table, $currentPid = -1)
+    public function makeSearchString($table, int $currentPid, QueryBuilder $queryBuilder)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $expressionBuilder = $queryBuilder->expr();
         $constraints = [];
-        $currentPid = (int)$currentPid;
         $tablePidField = $table === 'pages' ? 'uid' : 'pid';
         // Make query only if table is valid and a search string is actually defined
         if (empty($this->searchString)) {
             return '';
         }
 
-        $searchableFields = $this->getSearchFields($table);
+        $searchableFields = [];
+        $fieldListWasSet = false;
+        // Get fields from ctrl section of TCA first
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['searchFields'])) {
+            $searchableFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['searchFields'], true);
+            $fieldListWasSet = true;
+        }
+        // Call hook to add or change the list
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'])) {
+            $hookParameters = [
+                'tableHasSearchConfiguration' => $fieldListWasSet,
+                'tableName' => $table,
+                'searchFields' => &$searchableFields,
+                'searchString' => $this->searchString
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
+                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+            }
+        }
+
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
             foreach ($searchableFields as $fieldName) {
@@ -3369,36 +3342,6 @@ class DatabaseRecordList
         }
 
         return $expressionBuilder->orX(...$constraints);
-    }
-
-    /**
-     * Fetches a list of fields to use in the Backend search for the given table.
-     *
-     * @param string $tableName
-     * @return string[]
-     */
-    protected function getSearchFields($tableName)
-    {
-        $fieldArray = [];
-        $fieldListWasSet = false;
-        // Get fields from ctrl section of TCA first
-        if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
-            $fieldArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], true);
-            $fieldListWasSet = true;
-        }
-        // Call hook to add or change the list
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'])) {
-            $hookParameters = [
-                'tableHasSearchConfiguration' => $fieldListWasSet,
-                'tableName' => $tableName,
-                'searchFields' => &$fieldArray,
-                'searchString' => $this->searchString
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-            }
-        }
-        return $fieldArray;
     }
 
     /**
@@ -3759,13 +3702,11 @@ class DatabaseRecordList
      *
      * @param string $tableName
      * @param QueryBuilder $queryBuilder
+     * @param int $searchLevels
      * @return QueryBuilder Modified QueryBuilder object
      */
-    protected function addPageIdConstraint(string $tableName, QueryBuilder $queryBuilder): QueryBuilder
+    protected function addPageIdConstraint(string $tableName, QueryBuilder $queryBuilder, int $searchLevels): QueryBuilder
     {
-        // Set search levels:
-        $searchLevels = $this->searchLevels;
-
         // Set search levels to 999 instead of -1 as the following methods
         // do not support -1 as valid value for infinite search.
         if ($searchLevels === -1) {
