@@ -1028,7 +1028,7 @@ class DatabaseRecordList
                 $this->totalRowCount = count($accRows);
                 // CSV initiated
                 if ($this->csvOutput) {
-                    $this->initCSV();
+                    $this->addHeaderRowToCSV();
                 }
                 // Render items:
                 $this->CBnames = [];
@@ -2581,13 +2581,6 @@ class DatabaseRecordList
      * CSV related functions
      *
      ************************************/
-    /**
-     * Initializes internal csvLines array with the header of field names
-     */
-    protected function initCSV()
-    {
-        $this->addHeaderRowToCSV();
-    }
 
     /**
      * Add header line with field names as CSV line
