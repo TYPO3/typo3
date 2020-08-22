@@ -757,6 +757,15 @@ class DatabaseRecordList
      */
     public function getTable($table, $id, $rowList = '')
     {
+        // Finding the total amount of records on the page
+        $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
+        $this->totalItems = (int)$queryBuilderTotalItems->count('*')
+            ->execute()
+            ->fetchColumn();
+        if ($this->totalItems === 0) {
+            return '';
+        }
+
         $rowListArray = GeneralUtility::trimExplode(',', $rowList, true);
         // if no columns have been specified, show description (if configured)
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
@@ -892,11 +901,6 @@ class DatabaseRecordList
             $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $this->iLimit);
         }
 
-        // Finding the total amount of records on the page
-        $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
-        $this->totalItems = (int)$queryBuilderTotalItems->count('*')
-            ->execute()
-            ->fetchColumn();
         // Init:
         $queryResult = $queryBuilder->execute();
         $dbCount = 0;
@@ -2874,14 +2878,6 @@ class DatabaseRecordList
                     ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']
                     : $this->itemsLimitSingleTable;
             } else {
-                // if there are no records in table continue current foreach
-                $queryBuilder = $this->getQueryBuilder($tableName, $this->id, [], ['uid'], false, 0, 1);
-                $firstRow = $queryBuilder
-                    ->execute()
-                    ->fetch();
-                if (!is_array($firstRow)) {
-                    continue;
-                }
                 $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'])
                     ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']
                     : $this->itemsLimitPerTable;
