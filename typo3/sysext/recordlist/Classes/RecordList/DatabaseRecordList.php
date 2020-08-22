@@ -2914,8 +2914,6 @@ class DatabaseRecordList
      */
     public function getSearchBox($formFields = true)
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         // Setting form-elements, if applicable:
         $formElements = ['', ''];
@@ -2990,7 +2988,7 @@ class DatabaseRecordList
                                         <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
         ) . '">
-                                            ' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
+                                            ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
             ) . ' ' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')
             ) . '
