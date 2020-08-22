@@ -1301,7 +1301,7 @@ class DatabaseRecordList
             } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
             } elseif ($fCol === '_REF_') {
-                $theData[$fCol] = $this->createReferenceHtml($table, $row['uid']);
+                $theData[$fCol] = $this->generateReferenceToolTip($table, $row['uid']);
             } elseif ($fCol === '_CONTROL_') {
                 $theData[$fCol] = $this->makeControl($table, $row);
             } elseif ($fCol === '_CLIPBOARD_') {
@@ -2239,34 +2239,6 @@ class DatabaseRecordList
             $cells = $hookObject->makeClip($table, $row, $cells, $this);
         }
         return '<div class="btn-group" role="group">' . implode('', $cells) . '</div>';
-    }
-
-    /**
-     * Creates the HTML for a reference count for the record with the UID $uid
-     * in the table $tableName.
-     *
-     * @param string $tableName
-     * @param int $uid
-     * @return string HTML of reference a link, will be empty if there are no
-     */
-    protected function createReferenceHtml($tableName, $uid)
-    {
-        $referenceCount = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_refindex')
-            ->count(
-                '*',
-                'sys_refindex',
-                [
-                    'ref_table' => $tableName,
-                    'ref_uid' => (int)$uid,
-                    'deleted' => 0,
-                ]
-            );
-
-        return $this->generateReferenceToolTip(
-            $referenceCount,
-            GeneralUtility::quoteJSvalue($tableName) . ', ' . GeneralUtility::quoteJSvalue($uid)
-        );
     }
 
     /**
@@ -3915,26 +3887,22 @@ class DatabaseRecordList
     /**
      * Generates HTML code for a Reference tooltip out of
      * sys_refindex records you hand over
-     *
-     * @param int $references number of records from sys_refindex table
-     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
-     * @return string
      */
-    protected function generateReferenceToolTip($references, $launchViewParameter = '')
+    protected function generateReferenceToolTip(string $table, int $uid): string
     {
-        if (!$references) {
+        $numberOfReferences = $this->getReferenceCount($table, $uid);
+        if (!$numberOfReferences) {
             $htmlCode = '-';
         } else {
             $htmlCode = '<a href="#"';
-            if ($launchViewParameter !== '') {
-                $htmlCode .= ' ' . $this->createShowItemTagAttributes($launchViewParameter);
-            }
+            $htmlCode .= ' ' . $this->createShowItemTagAttributes($table . ',' . $uid);
+
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
                     'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
-                ) . ' (' . $references . ')'
+                ) . ' (' . $numberOfReferences . ')'
             ) . '">';
-            $htmlCode .= $references;
+            $htmlCode .= $numberOfReferences;
             $htmlCode .= '</a>';
         }
         return $htmlCode;
