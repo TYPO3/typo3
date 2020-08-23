@@ -193,13 +193,6 @@ class DatabaseRecordList
     protected $moduleData =  [];
 
     /**
-     * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
-     *
-     * @var array
-     */
-    public $addElement_tdParams = [];
-
-    /**
      * Page id
      *
      * @var int
@@ -3785,7 +3778,7 @@ class DatabaseRecordList
                         $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
                     }
                     $out .= '
-						<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+						<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
                 }
                 $lastKey = $vKey;
                 $c = 1;
@@ -3808,7 +3801,7 @@ class DatabaseRecordList
                 $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
             }
             $out .= '
-				<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+				<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
         }
         // End row
         $out .= '
