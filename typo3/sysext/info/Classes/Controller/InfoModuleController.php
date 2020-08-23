@@ -237,6 +237,11 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        // @deprecated and will be removed in TYPO3 v10.0.
+        // @todo: Removing this breaks bookmarks handling of info sub modules since
+        // @todo: ModuleTemplate->makeShortcutUrl() still fetches values from $GLOBALS['SOBE']->MOD_SETTINGS
+        $GLOBALS['SOBE'] = $this;
+
         $this->init();
 
         // Checking for first level external objects
