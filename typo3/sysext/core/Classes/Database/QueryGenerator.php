@@ -245,6 +245,11 @@ class QueryGenerator
     protected $fieldName;
 
     /**
+     * @var array Settings, usually from the controller, previously known as MOD_SETTINGS
+     */
+    protected $settings = [];
+
+    /**
      * Make a list of fields for current table
      *
      * @return string Separated list of fields
@@ -279,14 +284,16 @@ class QueryGenerator
      * @param string $name The name
      * @param string $table The table name
      * @param string $fieldList The field list
+     * @param array $settings Module settings like checkboxes in the interface
      */
-    public function init($name, $table, $fieldList = '')
+    public function init($name, $table, $fieldList = '', array $settings = [])
     {
         // Analysing the fields in the table.
         if (is_array($GLOBALS['TCA'][$table])) {
             $this->name = $name;
             $this->table = $table;
             $this->fieldList = $fieldList ?: $this->makeFieldList();
+            $this->settings = $settings;
             $fieldArr = GeneralUtility::trimExplode(',', $this->fieldList, true);
             foreach ($fieldArr as $fieldName) {
                 $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName];
@@ -865,7 +872,6 @@ class QueryGenerator
             $counter = 0;
             $tablePrefix = '';
             $backendUserAuthentication = $this->getBackendUserAuthentication();
-            $module = $this->getModule();
             $outArray = [];
             $labelFieldSelect = [];
             foreach ($from_table_Arr as $from_table) {
@@ -902,7 +908,7 @@ class QueryGenerator
 
                     if (!$this->tableArray[$from_table]) {
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
-                        if ($module->MOD_SETTINGS['show_deleted']) {
+                        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
                             $queryBuilder->getRestrictions()->removeAll();
                         } else {
                             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -967,7 +973,7 @@ class QueryGenerator
                             $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($val[$altLabelField]);
                         }
                     }
-                    if ($module->MOD_SETTINGS['options_sortlabel'] && is_array($outArray)) {
+                    if (isset($this->settings['options_sortlabel']) && $this->settings['options_sortlabel'] && is_array($outArray)) {
                         natcasesort($outArray);
                     }
                 }
@@ -1486,13 +1492,12 @@ class QueryGenerator
                 $out[] = '</div>';
             }
             if (in_array('order', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableOrderBy']) {
-                $module = $this->getModule();
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
                 $orderBy[] = $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
                 $orderBy[] = '<div class="checkbox">';
                 $orderBy[] = '	<label for="checkQueryOrderDesc">';
-                $orderBy[] =        BackendUtility::getFuncCheck($module->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . ' Descending';
+                $orderBy[] =        BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . ' Descending';
                 $orderBy[] = '	</label>';
                 $orderBy[] = '</div>';
 
@@ -1500,7 +1505,7 @@ class QueryGenerator
                     $orderBy[] = $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '');
                     $orderBy[] = '<div class="checkbox">';
                     $orderBy[] = '	<label for="checkQueryOrder2Desc">';
-                    $orderBy[] =        BackendUtility::getFuncCheck($module->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . ' Descending';
+                    $orderBy[] =        BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . ' Descending';
                     $orderBy[] = '	</label>';
                     $orderBy[] = '</div>';
                 }
@@ -1620,7 +1625,7 @@ class QueryGenerator
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        if ($this->getModule()->MOD_SETTINGS['show_deleted']) {
+        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
             $queryBuilder->getRestrictions()->removeAll();
         } else {
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -1727,14 +1732,6 @@ class QueryGenerator
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return object
-     */
-    protected function getModule()
-    {
-        return $GLOBALS['SOBE'];
     }
 
     /**

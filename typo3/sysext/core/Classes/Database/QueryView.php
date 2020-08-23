@@ -246,7 +246,7 @@ class QueryView
             if ($saveArr['queryTable']) {
                 /** @var \TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator */
                 $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
-                $queryGenerator->init('queryConfig', $saveArr['queryTable']);
+                $queryGenerator->init('queryConfig', $saveArr['queryTable'], '', $this->settings);
                 $queryGenerator->makeSelectorTable($saveArr);
                 $queryGenerator->enablePrefix = 1;
                 $queryString = $queryGenerator->getQuery($queryGenerator->queryConfig);
@@ -422,7 +422,7 @@ class QueryView
         }
         // Query Maker:
         $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
-        $queryGenerator->init('queryConfig', $this->settings['queryTable']);
+        $queryGenerator->init('queryConfig', $this->settings['queryTable'], '', $this->settings);
         if ($this->formName) {
             $queryGenerator->setFormName($this->formName);
         }
