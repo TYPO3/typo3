@@ -412,13 +412,6 @@ class DatabaseRecordList
     public $firstElementNumber = 0;
 
     /**
-     * Counting the elements no matter what...
-     *
-     * @var int
-     */
-    public $eCounter = 0;
-
-    /**
      * Search string
      *
      * @var string
@@ -1009,7 +1002,6 @@ class DatabaseRecordList
                 // Render items:
                 $this->CBnames = [];
                 $this->duplicateStack = [];
-                $this->eCounter = $this->firstElementNumber;
                 $cc = 0;
                 foreach ($accRows as $row) {
                     // Render item row if counter < limit
@@ -1069,8 +1061,6 @@ class DatabaseRecordList
                             }
                         }
                     }
-                    // Counter of total rows incremented:
-                    $this->eCounter++;
                 }
                 // Record navigation is added to the beginning and end of the table if in single
                 // table mode
