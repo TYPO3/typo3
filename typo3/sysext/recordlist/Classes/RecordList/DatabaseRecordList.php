@@ -476,11 +476,6 @@ class DatabaseRecordList
     public $selFieldList;
 
     /**
-     * @var mixed[]
-     */
-    public $pageinfo;
-
-    /**
      * Injected by RecordList
      *
      * @var string[]
