@@ -19,9 +19,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
-use TYPO3\CMS\Core\Database\QueryView;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -522,27 +522,34 @@ class WorkspaceService implements SingletonInterface
     {
         // Reusing existing functionality with the drawback that
         // mount points are not covered yet
-        $perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
-        $searchObj = GeneralUtility::makeInstance(QueryView::class);
+        $permsClause = QueryHelper::stripLogicalOperatorPrefix(
+            $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)
+        );
         if ($pageId > 0) {
-            $pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
+            $pageList = array_merge(
+                [ (int)$pageId ],
+                $this->getPageChildrenRecursive((int)$pageId, (int)$recursionLevel, 0, $permsClause)
+            );
         } else {
             $mountPoints = $GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
             if (!is_array($mountPoints) || empty($mountPoints)) {
                 $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
                 $mountPoints = array_unique($mountPoints);
             }
-            $newList = [];
+            $pageList = [];
             foreach ($mountPoints as $mountPoint) {
-                $newList[] = $searchObj->getTreeList($mountPoint, $recursionLevel, 0, $perms_clause);
+                $pageList = array_merge(
+                    $pageList
+                    [ (int)$mountPoint ],
+                    $this->getPageChildrenRecursive((int)$mountPoint, (int)$recursionLevel, 0, $permsClause)
+                );
             }
-            $pageList = implode(',', $newList);
         }
-        unset($searchObj);
+        $pageList = array_unique($pageList);
 
-        if (BackendUtility::isTableWorkspaceEnabled('pages') && $pageList) {
+        if (BackendUtility::isTableWorkspaceEnabled('pages') && !empty($pageList)) {
             // Remove the "subbranch" if a page was moved away
-            $pageIds = GeneralUtility::intExplode(',', $pageList, true);
+            $pageIds = $pageList;
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()
                 ->removeAll()
@@ -617,10 +624,46 @@ class WorkspaceService implements SingletonInterface
                     $newList[] = $pageId;
                 }
             }
-            $pageList = implode(',', $newList);
+            $pageList = $newList;
         }
 
-        return $pageList;
+        return implode(',', $pageList);
+    }
+
+    /**
+     * Recursively fetch all children of a given page
+     *
+     * @param int $pid uid of the page
+     * @param int $depth
+     * @param int $begin
+     * @param string $permsClause
+     * @return int[] List of child row $uid's
+     */
+    protected function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
+    {
+        $children = [];
+        if ($pid && $depth > 0) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $statement = $queryBuilder->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', 0),
+                    $permsClause
+                )
+                ->execute();
+            while ($row = $statement->fetch()) {
+                if ($begin <= 0) {
+                    $children[] = (int)$row['uid'];
+                }
+                if ($depth > 1) {
+                    $theSubList = $this->getPageChildrenRecursive((int)$row['uid'], $depth - 1, $begin - 1, $permsClause);
+                    $children = array_merge($children, $theSubList);
+                }
+            }
+        }
+        return $children;
     }
 
     /**

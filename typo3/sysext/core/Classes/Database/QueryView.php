@@ -19,6 +19,7 @@ use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -40,6 +41,12 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class QueryView
 {
+    use PublicMethodDeprecationTrait;
+
+    protected $deprecatedPublicMethods = [
+        'getTreeList' => 'Using QueryView->getTreeList() is deprecated and will not be possible anymore in TYPO3 v12.0.',
+    ];
+
     /**
      * @var string
      */
@@ -878,7 +885,7 @@ class QueryView
      *
      * @return string
      */
-    public function getTreeList($id, $depth, $begin = 0, $permsClause = null)
+    protected function getTreeList($id, $depth, $begin = 0, $permsClause = null)
     {
         $depth = (int)$depth;
         $begin = (int)$begin;

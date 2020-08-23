@@ -4451,4 +4451,18 @@ return [
             'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Database\QueryGenerator->getTreeList' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-92080-DeprecatedGetTreeListCallsToQueryGeneratorAndQueryView.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\QueryView->getTreeList' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-92080-DeprecatedGetTreeListCallsToQueryGeneratorAndQueryView.rst'
+        ],
+    ],
 ];

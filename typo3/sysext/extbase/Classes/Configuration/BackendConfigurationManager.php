@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -247,35 +247,71 @@ class BackendConfigurationManager extends AbstractConfigurationManager
     }
 
     /**
-     * Returns an array of storagePIDs that are below a certain storage pid.
+     * Returns an array of storagePIDs that are below a list of storage pids.
      *
-     * @param array|int[] $storagePids Storage PIDs to start at; multiple PIDs possible as comma-separated list
+     * @param int[] $storagePids Storage PIDs to start at; multiple PIDs possible as comma-separated list
      * @param int $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
-     * @return array|int[] storage PIDs
+     * @return int[] Uid list including the start $storagePids
      */
-    protected function getRecursiveStoragePids(array $storagePids, $recursionDepth = 0): array
+    protected function getRecursiveStoragePids(array $storagePids, int $recursionDepth = 0): array
     {
-        array_map('intval', $storagePids);
-
         if ($recursionDepth <= 0) {
             return $storagePids;
         }
-
+        $permsClause = QueryHelper::stripLogicalOperatorPrefix(
+            $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+        );
         $recursiveStoragePids = [];
-        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
         foreach ($storagePids as $startPid) {
-            $pids = $queryGenerator->getTreeList($startPid, $recursionDepth, 0, $permsClause);
-            foreach (GeneralUtility::intExplode(',', $pids, true) as $pid) {
-                $recursiveStoragePids[] = $pid;
-            }
+            $startPid = abs($startPid);
+            $recursiveStoragePids = array_merge(
+                $recursiveStoragePids,
+                [ $startPid ],
+                $this->getPageChildrenRecursive($startPid, $recursionDepth, 0, $permsClause)
+            );
         }
-
         return array_unique($recursiveStoragePids);
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * Recursively fetch all children of a given page
+     *
+     * @param int $pid uid of the page
+     * @param int $depth
+     * @param int $begin
+     * @param string $permsClause
+     * @return int[] List of child row $uid's
+     */
+    protected function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
+    {
+        $children = [];
+        if ($pid && $depth > 0) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $statement = $queryBuilder->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', 0),
+                    $permsClause
+                )
+                ->orderBy('uid')
+                ->execute();
+            while ($row = $statement->fetch()) {
+                if ($begin <= 0) {
+                    $children[] = (int)$row['uid'];
+                }
+                if ($depth > 1) {
+                    $theSubList = $this->getPageChildrenRecursive((int)$row['uid'], $depth - 1, $begin - 1, $permsClause);
+                    $children = array_merge($children, $theSubList);
+                }
+            }
+        }
+        return $children;
+    }
+
+    /**
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser(): BackendUserAuthentication
     {

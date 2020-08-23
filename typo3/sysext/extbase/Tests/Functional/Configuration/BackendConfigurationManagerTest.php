@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager;
@@ -88,6 +89,20 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
 
         $expectedResult = AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
         $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
+        self::assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function getRecursiveStoragePidsReturnsListOfPages()
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerRecursivePids.csv');
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $GLOBALS['BE_USER']->user = ['admin' => true];
+        $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, null, [], '', false);
+        $expectedResult = [1, 2, 4, 5, 3, 6, 7];
+        $actualResult = $backendConfigurationManager->_call('getRecursiveStoragePids', [1, -6], 4);
         self::assertEquals($expectedResult, $actualResult);
     }
 }

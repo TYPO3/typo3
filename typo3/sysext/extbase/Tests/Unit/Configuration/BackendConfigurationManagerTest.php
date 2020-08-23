@@ -15,11 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -246,68 +242,6 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $controllerConfiguration;
         $expectedResult = $controllerConfiguration;
         $actualResult = $this->backendConfigurationManager->_call('getControllerConfiguration', 'SomeExtensionName', 'SomePluginName');
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function storagePidsAreExtendedIfRecursiveSearchIsConfigured()
-    {
-        $storagePids = [1, 2, 3];
-        $recursive = 99;
-
-        /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
-        $beUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
-        $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
-        $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
-
-        $abstractConfigurationManager = $this->getAccessibleMock(
-            BackendConfigurationManager::class,
-            ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
-            [],
-            '',
-            false
-        );
-        $queryGenerator = $this->createMock(QueryGenerator::class);
-        $queryGenerator->expects(self::any())
-            ->method('getTreeList')
-            ->will(self::onConsecutiveCalls('4', '', '5,6'));
-        GeneralUtility::addInstance(QueryGenerator::class, $queryGenerator);
-
-        $expectedResult = [4, 5, 6];
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function storagePidsAreExtendedIfRecursiveSearchIsConfiguredAndWithPidIncludedForNegativePid()
-    {
-        $storagePids = [1, 2, -3];
-        $recursive = 99;
-
-        /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
-        $beUserAuthentication = $this->prophesize(BackendUserAuthentication::class);
-        $beUserAuthentication->getPagePermsClause(1)->willReturn('1=1');
-        $GLOBALS['BE_USER'] = $beUserAuthentication->reveal();
-
-        $abstractConfigurationManager = $this->getAccessibleMock(
-            BackendConfigurationManager::class,
-            ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration', 'getQueryGenerator'],
-            [],
-            '',
-            false
-        );
-        $queryGenerator = $this->createMock(QueryGenerator::class);
-        $queryGenerator->expects(self::any())
-            ->method('getTreeList')
-            ->will(self::onConsecutiveCalls('4', '', '3,5,6'));
-        GeneralUtility::addInstance(QueryGenerator::class, $queryGenerator);
-
-        $expectedResult = [4, 3, 5, 6];
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         self::assertEquals($expectedResult, $actualResult);
     }
 
