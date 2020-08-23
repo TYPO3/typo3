@@ -226,13 +226,6 @@ class DatabaseRecordList
     public $itemsLimitSingleTable = 100;
 
     /**
-     * Array of collapsed / uncollapsed tables in multi table view
-     *
-     * @var int[][]
-     */
-    public $tablesCollapsed = [];
-
-    /**
      * @var array[] Module configuration
      */
     public $modTSconfig;
@@ -764,7 +757,11 @@ class DatabaseRecordList
         $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
         $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
                      && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-        $tableCollapsed = (bool)$this->tablesCollapsed[$table];
+        // Get configuration of collapsed tables from user uc
+        $tablesCollapsed = is_array($backendUser->uc['moduleData']['list'])
+            ? $backendUser->uc['moduleData']['list']
+            : [];
+        $tableCollapsed = (bool)($tablesCollapsed[$table] ?? false);
         // prepare space icon
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         // Cleaning rowlist for duplicates and place the $titleCol as the first column always!
@@ -2792,10 +2789,6 @@ class DatabaseRecordList
         }
         $this->perms_clause = (string)$permsClause;
 
-        // Get configuration of collapsed tables from user uc and merge with sanitized GP vars
-        $this->tablesCollapsed = is_array($backendUser->uc['moduleData']['list'])
-            ? $backendUser->uc['moduleData']['list']
-            : [];
         $this->initializeLanguages();
     }
 
