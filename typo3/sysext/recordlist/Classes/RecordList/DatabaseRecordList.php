@@ -294,13 +294,6 @@ class DatabaseRecordList
     public $displayFields;
 
     /**
-     * If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
-     *
-     * @var string
-     */
-    public $oddColumnsCssClass = '';
-
-    /**
      * Not used in this class - but maybe extension classes...
      * Max length of strings
      *
@@ -3752,9 +3745,6 @@ class DatabaseRecordList
             if (isset($data[$vKey])) {
                 if ($lastKey) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey];
-                    if ($this->oddColumnsCssClass && $ccount % 2 == 0) {
-                        $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
-                    }
                     $out .= '
 						<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
                 }
@@ -3775,9 +3765,6 @@ class DatabaseRecordList
         }
         if ($lastKey) {
             $cssClass = $this->addElement_tdCssClass[$lastKey];
-            if ($this->oddColumnsCssClass) {
-                $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
-            }
             $out .= '
 				<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
         }
