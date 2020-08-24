@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageProvider extends RecordProvider
 {
+
     /**
      * @var string
      */
@@ -288,6 +289,11 @@ class PageProvider extends RecordProvider
     protected function canBeCreated(): bool
     {
         if (!$this->backendUser->checkLanguageAccess(0)) {
+            return false;
+        }
+        if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
+            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']], [0, -1])
+        ) {
             return false;
         }
         return $this->hasPagePermission(Permission::PAGE_NEW);
