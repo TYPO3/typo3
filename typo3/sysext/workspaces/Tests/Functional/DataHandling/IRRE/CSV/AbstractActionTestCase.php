@@ -198,4 +198,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
             ]
         );
     }
+
+    /**
+     * See DataSet/moveParentContentRecordToDifferentPageAndDiscard.csv
+     */
+    public function moveParentContentToDifferentPageAndDiscard()
+    {
+        $newRecordIds = $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdLast]);
+    }
+
+    /**
+     * See DataSet/moveParentContentRecordToDifferentPageAndDiscardWithoutSoftDelete.csv
+     */
+    public function moveParentContentToDifferentPageAndDiscardWithoutSoftDelete()
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Content]['ctrl']['delete']);
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['delete']);
+        unset($GLOBALS['TCA'][self::TABLE_Offer]['ctrl']['delete']);
+        unset($GLOBALS['TCA'][self::TABLE_Price]['ctrl']['delete']);
+        $newRecordIds = $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdLast]);
+    }
 }

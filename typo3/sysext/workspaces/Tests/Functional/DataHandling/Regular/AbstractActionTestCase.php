@@ -354,4 +354,23 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         // Switch back to draft workspace
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
+
+    /**
+     * Move page and discard change afterwards.
+     */
+    public function moveContentToDifferentPageAndDiscard()
+    {
+        $newRecordIds = $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdSecond]);
+    }
+
+    /**
+     * Move page and discard change afterwards.
+     */
+    public function moveContentToDifferentPageAndDiscardWithoutSoftDelete()
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Content]['ctrl']['delete']);
+        $newRecordIds = $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdSecond]);
+    }
 }

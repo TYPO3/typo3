@@ -358,6 +358,34 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/moveContentRecordToDifferentPageAndDiscard.csv
+     */
+    public function moveContentToDifferentPageAndDiscard()
+    {
+        parent::moveContentToDifferentPageAndDiscard();
+        $this->assertAssertionDataSet('moveContentToDifferentPageAndDiscard');
+
+        $responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+    }
+
+    /**
+     * @test
+     * See DataSet/moveContentRecordToDifferentPageAndDiscardWithoutSoftDelete.csv
+     */
+    public function moveContentToDifferentPageAndDiscardWithoutSoftDelete()
+    {
+        parent::moveContentToDifferentPageAndDiscardWithoutSoftDelete();
+        $this->assertAssertionDataSet('moveContentToDifferentPageAndDiscardWithoutSoftDelete');
+
+        $responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+    }
+
+    /**
+     * @test
      * See DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()

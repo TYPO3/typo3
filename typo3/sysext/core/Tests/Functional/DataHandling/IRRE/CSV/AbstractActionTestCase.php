@@ -37,6 +37,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     const TABLE_Content = 'tt_content';
     const TABLE_Hotel = 'tx_irretutorial_1ncsv_hotel';
     const TABLE_Offer = 'tx_irretutorial_1ncsv_offer';
+    const TABLE_Price = 'tx_irretutorial_1ncsv_price';
 
     const FIELD_PageHotel = 'tx_irretutorial_1ncsv_hotels';
     const FIELD_ContentHotel = 'tx_irretutorial_1ncsv_hotels';

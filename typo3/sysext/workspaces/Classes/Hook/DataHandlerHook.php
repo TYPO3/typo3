@@ -19,6 +19,8 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -253,11 +255,15 @@ class DataHandlerHook
                     } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
                         // Delete those in WS 0 + if their live records state was not "Placeholder".
                         $dataHandler->deleteEl($table, $id);
-                        // Delete move-placeholder if current version record is a move-to-pointer
                         if ($recordVersionState->equals(VersionState::MOVE_POINTER)) {
+                            // Delete move-placeholder if current version record is a move-to-pointer.
+                            // deleteEl() can't be used here: The deleteEl() for the MOVE_POINTER record above
+                            // already triggered a delete cascade for children (inline, ...). If we'd
+                            // now call deleteEl() again, we'd trigger adding delete placeholder records for children.
+                            // Thus, it's safe here to just set the MOVE_PLACEHOLDER to deleted (or drop row) straight ahead.
                             $movePlaceholder = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid', $record['t3ver_wsid']);
                             if (!empty($movePlaceholder)) {
-                                $dataHandler->deleteEl($table, $movePlaceholder['uid']);
+                                $this->softOrHardDeleteSingleRecord($table, (int)$movePlaceholder['uid']);
                             }
                         }
                     } else {
@@ -991,28 +997,27 @@ class DataHandlerHook
         $versionState = VersionState::cast($versionRecord['t3ver_state']);
         $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
 
-        // purge delete placeholder since it would not contain any modified information
         if ($flush || $versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+            // Purge delete placeholder since it would not contain any modified information
             $dataHandler->deleteEl($table, $versionRecord['uid'], true, true);
-        // let DataHandler decide how to delete the record that does not have a deleted field
         } elseif ($deleteField === null) {
+            // let DataHandler decide how to delete the record that does not have a deleted field
             $dataHandler->deleteEl($table, $versionRecord['uid'], true);
-        // update record directly in order to avoid delete cascades on this version
         } else {
-            $connection->update(
-                $table,
-                [$deleteField => 1],
-                ['uid' => (int)$versionId]
-            );
+            // update record directly in order to avoid delete cascades on this version
+            $this->softOrHardDeleteSingleRecord($table, (int)$versionId);
         }
 
-        // purge move placeholder as it has been created just for the sake of pointing to a version
-        if ($liveState->equals(VersionState::MOVE_PLACEHOLDER)) {
-            $dataHandler->deleteEl($table, $liveRecord['uid'], true, true);
-        // purge new placeholder as it has been created just for the sake of pointing to a version
+        if ($versionState->equals(VersionState::MOVE_POINTER)) {
+            // purge move placeholder as it has been created just for the sake of pointing to a version
+            $movePlaceHolderRecord = BackendUtility::getMovePlaceholder($table, $liveRecord['uid'], 'uid');
+            if (is_array($movePlaceHolderRecord)) {
+                $dataHandler->deleteEl($table, (int)$movePlaceHolderRecord['uid'], true, $flush);
+            }
         } elseif ($liveState->equals(VersionState::NEW_PLACEHOLDER)) {
+            // purge new placeholder as it has been created just for the sake of pointing to a version
             // THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
-            $dataHandler->deleteEl($table, $liveRecord['uid'], true);
+            $dataHandler->deleteEl($table, $liveRecord['uid'], true, $flush);
         }
     }
 
@@ -1049,7 +1054,8 @@ class DataHandlerHook
     }
 
     /**
-     * Flushes elements of a particular workspace to avoid orphan records.
+     * Flushes (remove, no soft delete!) elements of a particular workspace to avoid orphan records.
+     * This is used if an admin deletes a sys_workspace record.
      *
      * @param int $workspaceId The workspace to be flushed
      */
@@ -1085,9 +1091,22 @@ class DataHandlerHook
             }
         }
         if (!empty($command)) {
-            $dataHandler = $this->getDataHandler();
-            $dataHandler->start([], $command);
+            // Execute the command array via DataHandler to flush all records from this workspace.
+            // Switch to target workspace temporarily, otherwise clearWSID() and friends do not
+            // operate on correct workspace if fetching additional records.
+            $backendUser = $GLOBALS['BE_USER'];
+            $savedWorkspace = $backendUser->workspace;
+            $backendUser->workspace = $workspaceId;
+            $context = GeneralUtility::makeInstance(Context::class);
+            $savedWorkspaceContext = $context->getAspect('workspace');
+            $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
+
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->start([], $command, $backendUser);
             $dataHandler->process_cmdmap();
+
+            $backendUser->workspace = $savedWorkspace;
+            $context->setAspect('workspace', $savedWorkspaceContext);
         }
     }
 
@@ -1099,14 +1118,6 @@ class DataHandlerHook
     protected function getTcaTables(): array
     {
         return array_keys($GLOBALS['TCA']);
-    }
-
-    /**
-     * @return DataHandler
-     */
-    protected function getDataHandler(): DataHandler
-    {
-        return GeneralUtility::makeInstance(DataHandler::class);
     }
 
     /**
@@ -1473,6 +1484,32 @@ class DataHandlerHook
             }
         }
         return $listArr;
+    }
+
+    /**
+     * Straight db based record deletion: sets deleted = 1 for soft-delete
+     * enabled tables, or removes row from table. Used for move placeholder
+     * records sometimes.
+     */
+    protected function softOrHardDeleteSingleRecord(string $table, int $uid): void
+    {
+        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
+        if ($deleteField) {
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($table)
+                ->update(
+                    $table,
+                    [$deleteField => 1],
+                    ['uid' => $uid]
+                );
+        } else {
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($table)
+                ->delete(
+                    $table,
+                    ['uid' => $uid]
+                );
+        }
     }
 
     /**
