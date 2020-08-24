@@ -1758,8 +1758,7 @@ class DatabaseRecordList
             'secondary' => []
         ];
         // Enables to hide the move elements for localized records - doesn't make much sense to perform these options for them
-        // For page translations these icons should never be shown
-        $isL10nOverlay = $table === 'pages' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        $isL10nOverlay = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         if ($table === 'pages') {
             // If the listed table is 'pages' we have to request the permission settings for each page.
             $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
@@ -1855,7 +1854,7 @@ class DatabaseRecordList
             // or if default values can depend on previous record):
             if (($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) && $permsEdit) {
                 if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
-                    if ($table === 'pages' && $isL10nOverlay) {
+                    if ($isL10nOverlay) {
                         $this->addActionToCellGroup($cells, $this->spaceIcon, 'new');
                     } elseif ($this->showNewRecLink($table)) {
                         $params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
@@ -2078,8 +2077,7 @@ class DatabaseRecordList
         $cells = [];
         $cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
         // Enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
-        // For page translations these icons should never be shown
-        $isL10nOverlay = $table === 'pages' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        $isL10nOverlay = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         // Return blank, if disabled:
         // Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
         // For the "Normal" pad:
