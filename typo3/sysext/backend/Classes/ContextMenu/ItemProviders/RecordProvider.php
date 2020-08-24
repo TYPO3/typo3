@@ -219,8 +219,10 @@ class RecordProvider extends AbstractProvider
                 $canRender = $this->canBeViewed();
                 break;
             case 'edit':
-            case 'new':
                 $canRender = $this->canBeEdited();
+                break;
+            case 'new':
+                $canRender = $this->canBeNew();
                 break;
             case 'newWizard':
                 $canRender = $this->canOpenNewCEWizard();
@@ -523,6 +525,16 @@ class RecordProvider extends AbstractProvider
     }
 
     /**
+     * Whether a record can be created
+     *
+     * @return bool
+     */
+    protected function canBeNew(): bool
+    {
+        return $this->canBeEdited() && !$this->isRecordATranslation();
+    }
+
+    /**
      * Checks if disableDelete flag is set in TSConfig for the current table
      *
      * @return bool
@@ -575,7 +587,7 @@ class RecordProvider extends AbstractProvider
     {
         return $this->table === 'tt_content'
             && (bool)(BackendUtility::getPagesTSconfig($this->record['pid'])['mod.']['web_layout.']['disableNewContentElementWizard'] ?? true)
-            && $this->canBeEdited();
+            && $this->canBeEdited() && !$this->isRecordATranslation();
     }
 
     /**
