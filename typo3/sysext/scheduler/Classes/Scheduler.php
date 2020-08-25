@@ -16,14 +16,11 @@
 namespace TYPO3\CMS\Scheduler;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,9 +29,9 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  */
-class Scheduler implements SingletonInterface, LoggerAwareInterface
+class Scheduler implements SingletonInterface
 {
-    use LoggerAwareTrait;
+    protected LoggerInterface $logger;
 
     /**
      * @var array $extConf Settings from the extension manager
@@ -44,8 +41,9 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
     /**
      * Constructor, makes sure all derived client classes are included
      */
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
         // Get configuration from the extension manager
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('scheduler');
         if (empty($this->extConf['maxLifetime'])) {
@@ -479,11 +477,6 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      */
     public function log($message, $status = 0, $code = '')
     {
-        // this method could be called from the constructor (via "cleanExecutionArrays") and no logger is instantiated
-        // by then, that's why check if the logger is available
-        if (!($this->logger instanceof LoggerInterface)) {
-            $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
-        }
         $messageTemplate = '[scheduler]: {code} - {original_message}';
         // @todo Replace these magic numbers with constants or enums.
         switch ((int)$status) {
