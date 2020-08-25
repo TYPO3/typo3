@@ -316,13 +316,18 @@ class SetupModuleController
             }
             // Persist data if something has changed:
             if (!empty($storeRec) && $this->saveData) {
-                // Make instance of TCE for storing the changes.
+                // Set user to admin to circumvent DataHandler restrictions.
+                // Not using isAdmin() to fetch the original value, just in case it has been boolean casted.
+                $savedUserAdminState = $backendUser->user['admin'];
+                $backendUser->user['admin'] = true;
+                // Make dedicated instance of TCE for storing the changes.
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                $dataHandler->start($storeRec, []);
-                $dataHandler->admin = true;
+                $dataHandler->start($storeRec, [], $backendUser);
                 // This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
                 $dataHandler->bypassWorkspaceRestrictions = true;
                 $dataHandler->process_datamap();
+                // reset the user record admin flag to previous value, just in case it gets used any further.
+                $backendUser->user['admin'] = $savedUserAdminState;
                 if ($this->passwordIsUpdated === self::PASSWORD_NOT_UPDATED || count($storeRec['be_users'][$beUserId]) > 1) {
                     $this->setupIsUpdated = true;
                 }
