@@ -124,7 +124,6 @@ class ElementInformationController
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $GLOBALS['SOBE'] = $this;
     }
 
     /**
@@ -182,13 +181,11 @@ class ElementInformationController
             } else {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
                 if ($this->row) {
-                    // Find the correct "pid" when a versionized record is given, otherwise "pid = -1" always fails
                     if (!empty($this->row['t3ver_oid'])) {
-                        $t3OrigRow = BackendUtility::getRecord($this->table, (int)$this->row['t3ver_oid']);
-                        $this->pageInfo = BackendUtility::readPageAccess((int)$t3OrigRow['pid'], $this->permsClause);
-                    } else {
-                        $this->pageInfo = BackendUtility::readPageAccess($this->row['pid'], $this->permsClause);
+                        // Make $this->uid the uid of the versioned record, while $this->row['uid'] is live record uid
+                        $this->uid = (int)$this->row['_ORIG_uid'];
                     }
+                    $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause);
                     $this->access = is_array($this->pageInfo);
                 }
             }
@@ -549,8 +546,8 @@ class ElementInformationController
         $references = [];
         switch ($this->type) {
             case 'db': {
-                $references['refLines'] = $this->makeRef($this->table, $this->row['uid'], $request);
-                $references['refFromLines'] = $this->makeRefFrom($this->table, $this->row['uid'], $request);
+                $references['refLines'] = $this->makeRef($this->table, $this->uid, $request);
+                $references['refFromLines'] = $this->makeRefFrom($this->table, $this->uid, $request);
                 break;
             }
 
