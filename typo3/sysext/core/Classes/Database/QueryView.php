@@ -19,7 +19,6 @@ use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -41,12 +40,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class QueryView
 {
-    use PublicMethodDeprecationTrait;
-
-    protected $deprecatedPublicMethods = [
-        'getTreeList' => 'Using QueryView->getTreeList() is deprecated and will not be possible anymore in TYPO3 v12.0.',
-    ];
-
     /**
      * @var string
      */
@@ -110,6 +103,7 @@ class QueryView
      */
     public function __construct(array $settings = null, $menuItems = null, $moduleName = null)
     {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v11.', E_USER_DEPRECATED);
         $this->backendUserAuthentication = $GLOBALS['BE_USER'];
         $this->languageService = $GLOBALS['LANG'];
         $this->languageService->includeLLFile('EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf');
@@ -885,7 +879,7 @@ class QueryView
      *
      * @return string
      */
-    protected function getTreeList($id, $depth, $begin = 0, $permsClause = null)
+    public function getTreeList($id, $depth, $begin = 0, $permsClause = null)
     {
         $depth = (int)$depth;
         $begin = (int)$begin;

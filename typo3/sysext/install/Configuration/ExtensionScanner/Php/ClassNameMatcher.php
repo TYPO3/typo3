@@ -1589,4 +1589,14 @@ return [
             'Breaking-92060-DroppedClassTYPO3CMSBackendViewPageTreeView.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Database\QueryGenerator' => [
+        'restFiles' => [
+            'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\QueryView' => [
+        'restFiles' => [
+            'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst'
+        ],
+    ],
 ];
