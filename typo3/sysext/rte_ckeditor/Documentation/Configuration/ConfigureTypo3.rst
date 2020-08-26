@@ -34,6 +34,10 @@ Page TSconfig can be used to change:
       RTE.config.tt_content.bodytext.preset = myCustomPreset
       RTE.config.tx_news_domain_model_news.bodytext.preset = minimal
 
+#. Override for one field defined in flexform (:ts:`RTE.config.[tableName].[flexForm\.field\.name].preset`)::
+
+      RTE.config.tt_content.settings\.notifications\.emailText.preset = myCustomPreset
+
 #. Override for one field, if type matches (:ts:`RTE.config.[tableName].[fieldName].types.[type].preset`)::
 
       RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
