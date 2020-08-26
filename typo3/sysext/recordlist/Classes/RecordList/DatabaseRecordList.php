@@ -178,13 +178,6 @@ class DatabaseRecordList
     public $sortField;
 
     /**
-     * default Max items shown per table in "multi-table mode", may be overridden by tables.php
-     *
-     * @var int
-     */
-    public $itemsLimitPerTable = 20;
-
-    /**
      * Module data
      *
      * @internal
@@ -217,13 +210,6 @@ class DatabaseRecordList
      * @var TranslationConfigurationProvider
      */
     public $translateTools;
-
-    /**
-     * default Max items shown per table in "single-table mode", may be overridden by tables.php
-     *
-     * @var int
-     */
-    public $itemsLimitSingleTable = 100;
 
     /**
      * @var array[] Module configuration
@@ -699,6 +685,36 @@ class DatabaseRecordList
         if ($this->totalItems === 0) {
             return '';
         }
+        // set the limits
+        // Use default value and overwrite with page ts config and tca config depending on the current view
+        // Force limit in range 5, 10000
+
+        // default 100
+        $itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)(
+            $GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems'] ??
+            $this->modTSconfig['properties']['itemsLimitSingleTable'] ??
+            100
+        ), 5, 10000);
+
+        // default 20
+        $itemsLimitPerTable = MathUtility::forceIntegerInRange((int)(
+            $GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ??
+            $this->modTSconfig['properties']['itemsLimitPerTable'] ??
+            20
+        ), 5, 10000);
+
+        // Set limit depending on the view (single table vs. default)
+        $this->iLimit = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
+
+        // Set limit from search
+        if ($this->showLimit) {
+            $this->iLimit = $this->showLimit;
+        }
+
+        // csv export - set no limit at all
+        if ($this->csvOutput) {
+            $this->iLimit = 0;
+        }
 
         $rowListArray = GeneralUtility::trimExplode(',', $rowList, true);
         // if no columns have been specified, show description (if configured)
@@ -823,11 +839,6 @@ class DatabaseRecordList
         $selFieldList = implode(',', $selectFields);
         $this->selFieldList = $selFieldList;
 
-        // Create the SQL query for selecting the elements in the listing:
-        // do not do paging when outputting as CSV
-        if ($this->csvOutput) {
-            $this->iLimit = 0;
-        }
         if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
             // Get the two previous rows for sorting if displaying page > 1
             $this->firstElementNumber -= 2;
@@ -1020,9 +1031,9 @@ class DatabaseRecordList
                     $rowOutput = $this->renderListNavigation('top') . $rowOutput . $this->renderListNavigation('bottom');
                 } else {
                     // Show that there are more records than shown
-                    if ($this->totalItems > $this->itemsLimitPerTable) {
-                        $countOnFirstPage = $this->totalItems > $this->itemsLimitSingleTable ? $this->itemsLimitSingleTable : $this->totalItems;
-                        $hasMore = $this->totalItems > $this->itemsLimitSingleTable;
+                    if ($this->totalItems > $itemsLimitPerTable) {
+                        $countOnFirstPage = $this->totalItems > $itemsLimitSingleTable ? $itemsLimitSingleTable : $this->totalItems;
+                        $hasMore = $this->totalItems > $itemsLimitSingleTable;
                         $colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
                         $rowOutput .= '<tr><td colspan="' . $colspan . '">
 								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
@@ -2705,21 +2716,6 @@ class DatabaseRecordList
         $this->duplicateField = GeneralUtility::_GP('duplicateField');
         // Init dynamic vars:
         $this->HTMLcode = '';
-        // Limits
-        if (isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
-            $this->itemsLimitPerTable = MathUtility::forceIntegerInRange(
-                (int)$this->modTSconfig['properties']['itemsLimitPerTable'],
-                1,
-                10000
-            );
-        }
-        if (isset($this->modTSconfig['properties']['itemsLimitSingleTable'])) {
-            $this->itemsLimitSingleTable = MathUtility::forceIntegerInRange(
-                (int)$this->modTSconfig['properties']['itemsLimitSingleTable'],
-                1,
-                10000
-            );
-        }
 
         // If there is a current link to a record, set the current link uid and get the table name from the link handler configuration
         $currentLinkValue = isset($this->overrideUrlParameters['P']['currentValue']) ? trim($this->overrideUrlParameters['P']['currentValue']) : '';
@@ -2807,19 +2803,6 @@ class DatabaseRecordList
             ->orderByDependencies($tableNames);
 
         foreach ($orderedTableNames as $tableName => $_) {
-            // check if we are in single- or multi-table mode
-            if ($this->table) {
-                $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'])
-                    ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']
-                    : $this->itemsLimitSingleTable;
-            } else {
-                $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'])
-                    ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']
-                    : $this->itemsLimitPerTable;
-            }
-            if ($this->showLimit) {
-                $this->iLimit = $this->showLimit;
-            }
             // Setting fields to select:
             if ($this->allFields) {
                 $fields = $this->makeFieldList($tableName);
