@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class for fetching the history entries of a record (and if it is a page, its subelements
+ * Class for fetching the history entries of a record (and if it is a page, its sub elements
  * as well)
  */
 class RecordHistory
@@ -335,6 +335,7 @@ class RecordHistory
      */
     public function findEventsForRecord(string $table, int $uid, int $limit = 0, int $minimumUid = null): array
     {
+        $backendUser = $this->getBackendUser();
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->select('*')
@@ -343,7 +344,18 @@ class RecordHistory
                 $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
                 $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             );
-
+        if ($backendUser->workspace === 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('workspace', 0)
+            );
+        } else {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('workspace', 0),
+                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, \PDO::PARAM_INT))
+                )
+            );
+        }
         if ($limit) {
             $queryBuilder->setMaxResults($limit);
         }

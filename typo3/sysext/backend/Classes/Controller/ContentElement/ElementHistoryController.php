@@ -81,7 +81,7 @@ class ElementHistoryController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
+     * Injects the request object for the current request or sub request
      * As this controller goes only through the main() method, it is rather simple for now
      *
      * @param ServerRequestInterface $request the current request
@@ -89,6 +89,7 @@ class ElementHistoryController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $backendUser = $this->getBackendUser();
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -101,6 +102,7 @@ class ElementHistoryController
         $rollbackFields = $parsedBody['rollbackFields'] ?? $queryParams['rollbackFields'] ?? null;
         $element = $parsedBody['element'] ?? $queryParams['element'] ?? null;
         $moduleSettings = $this->processSettings($request);
+        $this->view->assign('isUserInWorkspace', $backendUser->workspace > 0);
 
         $this->showDiff = (bool)$moduleSettings['showDiff'];
 
@@ -143,7 +145,7 @@ class ElementHistoryController
             // Get link to page history if the element history is shown
             if ($elementTable !== 'pages') {
                 $parentPage = BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
-                if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))) {
+                if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW))) {
                     $button = $buttonBar->makeLinkButton()
                         ->setHref($this->buildUrl([
                             'element' => 'pages:' . $parentPage['pid'],
@@ -296,6 +298,9 @@ class ElementHistoryController
             if (!empty($entry['originaluserid'])) {
                 $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'];
             }
+
+            // Is a change in a workspace?
+            $singleLine['isChangedInWorkspace'] = (int)$entry['workspace'] > 0;
 
             // Diff link
             $singleLine['diffUrl'] = $this->buildUrl(['historyEntry' => $entry['uid']]);
@@ -453,22 +458,12 @@ class ElementHistoryController
         return $view;
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * Gets the current backend user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -10,6 +10,9 @@
             <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:time')}</th>
             <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:age')}</th>
             <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:user')}</th>
+            <f:if condition="{isUserInWorkspace}">
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:workspace')}</th>
+            </f:if>
             <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:tableUid')}</th>
             <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differences')}</th>
         </tr>
@@ -18,17 +21,19 @@
         <f:for each="{history}" as="historyRow">
             <tr>
                 <td>
-                    <f:if condition="{editLock}">
-                        <f:then>
-                            <button class="btn btn-default disabled" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:editLockIsActive')}">
-                                <core:icon identifier="actions-document-history-open" />
-                            </button>
-                        </f:then>
-                        <f:else>
-                            <a class="btn btn-default" href="{historyRow.diffUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
-                                <core:icon identifier="actions-document-history-open" />
-                            </a>
-                        </f:else>
+                    <f:if condition="{isUserInWorkspace} !== true || {historyRow.isChangedInWorkspace}">
+                        <f:if condition="{editLock}">
+                            <f:then>
+                                <button class="btn btn-default disabled" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:editLockIsActive')}">
+                                    <core:icon identifier="actions-document-history-open" />
+                                </button>
+                            </f:then>
+                            <f:else>
+                                <a class="btn btn-default" href="{historyRow.diffUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
+                                    <core:icon identifier="actions-document-history-open" />
+                                </a>
+                            </f:else>
+                        </f:if>
                     </f:if>
                 </td>
                 <td class="text-nowrap">{historyRow.time}</td>
@@ -45,6 +50,13 @@
                     </f:if>
                     <f:if condition="{historyRow.originalBackendUserName}"> ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {historyRow.originalBackendUserName})</f:if>
                 </td>
+                <f:if condition="{isUserInWorkspace}">
+                    <td>
+                        <f:if condition="{historyRow.isChangedInWorkspace}">
+                            <core:icon identifier="status-status-checked" />
+                        </f:if>
+                    </td>
+                </f:if>
                 <td>
                     <a href="{elementUrl}" title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title -> f:format.raw()}</a>
                 </td>

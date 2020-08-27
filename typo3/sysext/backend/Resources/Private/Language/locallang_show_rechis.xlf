@@ -15,6 +15,9 @@
 			<trans-unit id="user" resname="user">
 				<source>User</source>
 			</trans-unit>
+			<trans-unit id="workspace" resname="workspace">
+				<source>Workspace</source>
+			</trans-unit>
 			<trans-unit id="tableUid" resname="tableUid">
 				<source>Table:uid (Title)</source>
 			</trans-unit>
