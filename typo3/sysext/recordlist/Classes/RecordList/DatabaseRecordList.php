@@ -363,13 +363,6 @@ class DatabaseRecordList
     public $tableTSconfigOverTCA = [];
 
     /**
-     * Loaded with page record with version overlay if any.
-     *
-     * @var string[]
-     */
-    public $pageRecord = [];
-
-    /**
      * Fields to display for the current table
      *
      * @var string[]
@@ -2788,7 +2781,6 @@ class DatabaseRecordList
     public function generateList()
     {
         // Set page record in header
-        $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
         $hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
 
         $backendUser = $this->getBackendUserAuthentication();
@@ -3643,10 +3635,11 @@ class DatabaseRecordList
         // When querying translated pages, the PID of the translated pages should be the same as the
         // the PID of the current page
         if ($tableName === 'pages' && $this->showOnlyTranslatedRecords) {
+            $pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($this->pageRecord['pid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageRecord['pid'], \PDO::PARAM_INT)
                 )
             );
         } elseif ($searchLevels === 0) {
