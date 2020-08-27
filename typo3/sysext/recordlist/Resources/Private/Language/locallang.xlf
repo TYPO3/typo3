@@ -21,6 +21,9 @@
 			<trans-unit id="create_folder.submit" resname="create_folder.submit">
 				<source>Create folder</source>
 			</trans-unit>
+			<trans-unit id="row.deletePlaceholder.title" resname="row.deletePlaceholder.title">
+				<source>The live pendant of this record will be deleted when this workspace record is published.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
