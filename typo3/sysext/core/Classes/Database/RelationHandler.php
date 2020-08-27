@@ -1215,10 +1215,6 @@ class RelationHandler
                             // Alternative Title-Fields
                             $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label_alt'];
                         }
-                        if ($GLOBALS['TCA'][$table]['ctrl']['thumbnail']) {
-                            // Thumbnail
-                            $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
-                        }
                     }
                     $queryBuilder = $connection->createQueryBuilder();
                     $queryBuilder->getRestrictions()->removeAll();

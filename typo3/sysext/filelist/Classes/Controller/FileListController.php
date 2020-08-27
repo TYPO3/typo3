@@ -331,10 +331,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
             $this->MOD_SETTINGS['clipBoard'] = false;
         }
-        // If user never opened the list module, set the value for displayThumbs
-        if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
-            $this->MOD_SETTINGS['displayThumbs'] = $backendUser->uc['thumbnailsByDefault'];
-        }
         if (!isset($this->MOD_SETTINGS['sort'])) {
             // Set default sorting
             $this->MOD_SETTINGS['sort'] = 'file';

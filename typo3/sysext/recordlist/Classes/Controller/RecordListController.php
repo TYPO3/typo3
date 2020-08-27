@@ -273,7 +273,6 @@ class RecordListController
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $dblist->setModuleData($this->MOD_SETTINGS ?? []);
         $dblist->calcPerms = $calcPerms;
-        $dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
         $dblist->returnUrl = $this->returnUrl;
         $dblist->allFields = $this->MOD_SETTINGS['bigControlPanel'] || $this->table ? 1 : 0;
         $dblist->showClipboard = 1;

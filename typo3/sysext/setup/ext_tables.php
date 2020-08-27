@@ -77,11 +77,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:startModule',
             'csh' => 'startModule'
         ],
-        'thumbnailsByDefault' => [
-            'type' => 'check',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:showThumbs',
-            'csh' => 'showThumbs'
-        ],
         'titleLen' => [
             'type' => 'number',
             'class' => 'form-control-adapt',
@@ -140,5 +135,5 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
     'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:passwordHeader,passwordCurrent,password,password2,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,startModule,
-            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,resizeTextareas_Flexible,resizeTextareas_MaxHeight,titleLen,thumbnailsByDefault,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,recursiveDelete,resetConfiguration'
+            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,resizeTextareas_Flexible,resizeTextareas_MaxHeight,titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,recursiveDelete,resetConfiguration'
 ];

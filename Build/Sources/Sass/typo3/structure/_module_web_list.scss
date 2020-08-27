@@ -2,41 +2,6 @@
 // Web > List
 //
 
-table.typo3-dblist {
-    tr {
-        td.col-icon {
-            vertical-align: middle;
-            width: 20px;
-
-            a img.collapseIcon {
-                margin: 1px 0 0 2px;
-            }
-        }
-
-        td.col-title {
-            overflow: hidden;
-            vertical-align: middle;
-            width: 350px;
-        }
-
-        td.col-title.localization {
-            padding-left: 18px;
-        }
-
-        td.col-control {
-            width: 250px;
-        }
-
-        td.col-control-space {
-            width: 4px;
-        }
-
-        td.col-clipboard {
-            width: 74px;
-        }
-    }
-}
-
 table.typo3-dblist-overview {
     margin-top: 10px;
     margin-left: 1px;

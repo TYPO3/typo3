@@ -228,9 +228,6 @@
 			<trans-unit id="personal_data" resname="personal_data">
 				<source>Personal data</source>
 			</trans-unit>
-			<trans-unit id="showThumbs" resname="showThumbs">
-				<source>Show Thumbnails by default</source>
-			</trans-unit>
 			<trans-unit id="startModule" resname="startModule">
 				<source>Start up in the following module</source>
 			</trans-unit>

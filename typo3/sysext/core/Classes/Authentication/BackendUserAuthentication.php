@@ -288,7 +288,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // serialized content that is used to store interface pane and menu positions. Set by the logout.php-script
         'moduleData' => [],
         // user-data for the modules
-        'thumbnailsByDefault' => 1,
         'emailMeAtLogin' => 0,
         'titleLen' => 50,
         'edit_RTE' => '1',

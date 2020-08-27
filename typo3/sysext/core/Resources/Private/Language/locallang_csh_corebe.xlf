@@ -672,9 +672,7 @@ When the numeric clipboard pads are enabled you will be able to place multiple i
 				<source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
 			</trans-unit>
 			<trans-unit id="_filelist_options.seeAlso" resname="_filelist_options.seeAlso" xml:space="preserve">
-				<source>xMOD_csh_corebe:list_options,
-_MOD_user_setup:option_showThumbs,
-xMOD_csh_corebe:filelist_clipboard</source>
+				<source>xMOD_csh_corebe:list_options, xMOD_csh_corebe:filelist_clipboard</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_filelist_options.image" resname="_filelist_options.image">

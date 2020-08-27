@@ -48,19 +48,6 @@ The solution clearly is to set the configuration option mentioned above to a val
 				<source>Let you select the module that is called when you login in the Backend
 The default module is "About Modules".</source>
 			</trans-unit>
-			<trans-unit id="option_showThumbs.alttitle" resname="option_showThumbs.alttitle">
-				<source>Show Thumbnails by default</source>
-			</trans-unit>
-			<trans-unit id="option_showThumbs.description" resname="option_showThumbs.description">
-				<source>In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</source>
-			</trans-unit>
-			<trans-unit id="_option_showThumbs.image" resname="_option_showThumbs.image">
-				<source>EXT:setup/Resources/Public/Images/cshimages/setup5.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="option_showThumbs.image_descr" resname="option_showThumbs.image_descr">
-				<source>When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</source>
-			</trans-unit>
 			<trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle">
 				<source>Show help text when applicable</source>
 			</trans-unit>

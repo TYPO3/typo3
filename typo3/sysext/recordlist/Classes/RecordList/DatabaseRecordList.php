@@ -245,13 +245,6 @@ class DatabaseRecordList
     public $addElement_tdCssClass = [];
 
     /**
-     * Thumbnails on records containing files (pictures)
-     *
-     * @var bool
-     */
-    public $thumbs = false;
-
-    /**
      * Used for tracking next/prev uids
      *
      * @var int[][]
@@ -690,7 +683,6 @@ class DatabaseRecordList
                     ->setGetVariables([
                         'id',
                         'route',
-                        'imagemode',
                         'pointer',
                         'table',
                         'search_field',
@@ -1224,7 +1216,6 @@ class DatabaseRecordList
         $theIcon = $this->clickMenuEnabled ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
         // Preparing and getting the data-array
         $theData = [];
-        $localizationMarkerClass = '';
         foreach ($this->fieldArray as $fCol) {
             if ($fCol == $titleCol) {
                 $recTitle = BackendUtility::getRecordTitle($table, $row, false, true);
@@ -1236,38 +1227,6 @@ class DatabaseRecordList
                         . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 $theData[$fCol] = $theData['__label'] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
-                // Render thumbnails, if:
-                // - a thumbnail column exists
-                // - there is content in it
-                // - the thumbnail column is visible for the current type
-                $type = 0;
-                if (isset($GLOBALS['TCA'][$table]['ctrl']['type'])) {
-                    $typeColumn = $GLOBALS['TCA'][$table]['ctrl']['type'];
-                    $type = $row[$typeColumn];
-                }
-                // If current type doesn't exist, set it to 0 (or to 1 for historical reasons,
-                // if 0 doesn't exist)
-                if (!isset($GLOBALS['TCA'][$table]['types'][$type])) {
-                    $type = isset($GLOBALS['TCA'][$table]['types'][0]) ? 0 : 1;
-                }
-
-                $visibleColumns = $this->getVisibleColumns($GLOBALS['TCA'][$table], $type);
-
-                if ($this->thumbs &&
-                    trim($row[$thumbsCol]) &&
-                    preg_match('/(^|(.*(;|,)?))' . $thumbsCol . '(((;|,).*)|$)/', $visibleColumns) === 1
-                ) {
-                    $thumbCode = '<br />' . BackendUtility::thumbCode($row, $table, $thumbsCol);
-                    $theData[$fCol] .= $thumbCode;
-                    $theData['__label'] .= $thumbCode;
-                }
-                if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
-                    && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] != 0
-                    && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0
-                ) {
-                    // It's a translated record with a language parent
-                    $localizationMarkerClass = ' localization';
-                }
             } elseif ($fCol === 'pid') {
                 $theData[$fCol] = $row[$fCol];
             } elseif ($fCol === '_PATH_') {
@@ -1313,7 +1272,7 @@ class DatabaseRecordList
             $this->addToCSV($row);
         }
         // Add classes to table cells
-        $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $localizationMarkerClass;
+        $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive';
         $this->addElement_tdCssClass['__label'] = $this->addElement_tdCssClass[$titleCol];
         $this->addElement_tdCssClass['_CONTROL_'] = 'col-control';
         if ($this->moduleData['clipBoard']) {
@@ -3394,7 +3353,7 @@ class DatabaseRecordList
 
     /**
      * Creates the URL to this script, including all relevant GPvars
-     * Fixed GPvars are id, table, imagemode, returnUrl, search_field, search_levels and showLimit
+     * Fixed GPvars are id, table, returnUrl, search_field, search_levels and showLimit
      * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
      *
      * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
@@ -3414,9 +3373,6 @@ class DatabaseRecordList
             $urlParameters['table'] = $this->table;
         } else {
             $urlParameters['table'] = $table;
-        }
-        if ($this->thumbs) {
-            $urlParameters['imagemode'] = $this->thumbs;
         }
         if ($this->returnUrl) {
             $urlParameters['returnUrl'] = $this->returnUrl;

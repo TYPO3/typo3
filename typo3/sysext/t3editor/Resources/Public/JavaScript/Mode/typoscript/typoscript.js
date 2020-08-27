@@ -842,7 +842,6 @@
         'textPos': kw('textPos'),
         'thickness': kw('thickness'),
         'this': B,
-        'thumbnailsByDefault': kw('thumbnailsByDefault'),
         'tile': kw('tile'),
         'time_stdWrap': kw('time_stdWrap'),
         'tipafriendLib': kw('tipafriendLib'),

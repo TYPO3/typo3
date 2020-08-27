@@ -199,7 +199,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         /** @var ElementBrowserRecordList $dbList */
         $dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
         $dbList->setOverrideUrlParameters($this->getUrlParameters([]));
-        $dbList->thumbs = false;
         $dbList->setIsEditable(false);
         $dbList->calcPerms = $backendUser->calcPerms($pageInfo);
         $dbList->noControlPanels = true;
