@@ -37,6 +37,14 @@ table.typo3-dblist {
     }
 }
 
+div.recordlist {
+    table tr {
+        td.deletePlaceholder {
+            text-decoration: line-through;
+        }
+    }
+}
+
 table.typo3-dblist-overview {
     margin-top: 10px;
     margin-left: 1px;

@@ -1244,6 +1244,7 @@ class DatabaseRecordList
         if (!is_array($row)) {
             return '';
         }
+        $languageService = $this->getLanguageService();
         $rowOutput = '';
         $id_orig = null;
         // If in search mode, make sure the preview will show the correct page
@@ -1288,10 +1289,11 @@ class DatabaseRecordList
         $iconImg = '<span ' . $toolTip . ' ' . $additionalStyle . '>'
             . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
             . '</span>';
-        $theIcon = $this->clickMenuEnabled ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
+        $theIcon = ($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
         // Preparing and getting the data-array
         $theData = [];
         $localizationMarkerClass = '';
+        $deletePlaceholderClass = '';
         foreach ($this->fieldArray as $fCol) {
             if ($fCol == $titleCol) {
                 $recTitle = BackendUtility::getRecordTitle($table, $row, false, true);
@@ -1302,7 +1304,17 @@ class DatabaseRecordList
                     $warning = '<span data-toggle="tooltip" data-placement="right" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
                         . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
                 }
-                $theData[$fCol] = $theData['__label'] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
+                if ($this->isRecordDeletePlaceholder($row)) {
+                    // Delete placeholder records do not link to formEngine edit and are rendered strike-through
+                    $deletePlaceholderClass = ' deletePlaceholder';
+                    $theData[$fCol] = $theData['__label'] =
+                        $warning
+                        . '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:row.deletePlaceholder.title')) . '">'
+                        . htmlspecialchars($recTitle)
+                        . '</span>';
+                } else {
+                    $theData[$fCol] = $theData['__label'] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
+                }
                 // Render thumbnails, if:
                 // - a thumbnail column exists
                 // - there is content in it
@@ -1380,7 +1392,7 @@ class DatabaseRecordList
             $this->addToCSV($row);
         }
         // Add classes to table cells
-        $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $localizationMarkerClass;
+        $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $localizationMarkerClass . $deletePlaceholderClass;
         $this->addElement_tdCssClass['__label'] = $this->addElement_tdCssClass[$titleCol];
         $this->addElement_tdCssClass['_CONTROL_'] = 'col-control';
         if ($this->moduleData['clipBoard']) {
@@ -1820,10 +1832,12 @@ class DatabaseRecordList
         if (ExtensionManagementUtility::isLoaded('workspaces') && isset($row['_ORIG_uid'])) {
             $rowUid = $row['_ORIG_uid'];
         }
+        $isDeletePlaceHolder = $this->isRecordDeletePlaceholder($row);
         $cells = [
             'primary' => [],
             'secondary' => []
         ];
+
         // Enables to hide the move elements for localized records - doesn't make much sense to perform these options for them
         $isL10nOverlay = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         if ($table === 'pages') {
@@ -1840,24 +1854,29 @@ class DatabaseRecordList
                         && $localCalcPerms & Permission::CONTENT_EDIT
                         && $backendUser->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
-        // "Show" link (only pages and tt_content elements)
 
+        // "Show" link (only pages and tt_content elements)
         if ($table === 'pages' || $table === 'tt_content') {
-            $onClick = $this->getOnClickForRow($table, $row);
-            $viewAction = '<a class="btn btn-default" href="#" onclick="'
-                            . htmlspecialchars(
-                                $onClick
-                            ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
-            if ($table === 'pages') {
-                $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
+            if (!$isDeletePlaceHolder) {
+                $onClick = $this->getOnClickForRow($table, $row);
+                $viewAction = '<a class="btn btn-default" href="#" onclick="'
+                    . htmlspecialchars(
+                        $onClick
+                    ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
+                if ($table === 'pages') {
+                    $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
+                } else {
+                    $viewAction .= $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render();
+                }
+                $viewAction .= '</a>';
+                $this->addActionToCellGroup($cells, $viewAction, 'view');
             } else {
-                $viewAction .= $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render();
+                $this->addActionToCellGroup($cells, $this->spaceIcon, 'view');
             }
-            $viewAction .= '</a>';
-            $this->addActionToCellGroup($cells, $viewAction, 'view');
         }
+
         // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
-        if ($permsEdit && $this->isEditable($table)) {
+        if ($permsEdit && !$isDeletePlaceHolder && $this->isEditable($table)) {
             $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
@@ -1872,13 +1891,19 @@ class DatabaseRecordList
             $editAction = $this->spaceIcon;
         }
         $this->addActionToCellGroup($cells, $editAction, 'edit');
-        // "Info": (All records)
-        $viewBigAction = '<a class="btn btn-default" href="#" ' . $this->createShowItemTagAttributes($table . ',' . (int)$row['uid']) . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('showInfo')) . '">'
-            . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
-        $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
+
+        // "Info"
+        if (!$isDeletePlaceHolder) {
+            $viewBigAction = '<a class="btn btn-default" href="#" ' . $this->createShowItemTagAttributes($table . ',' . (int)$row['uid']) . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('showInfo')) . '">'
+                . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
+            $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
+        } else {
+            $this->addActionToCellGroup($cells, $this->spaceIcon, 'viewBig');
+        }
+
         // "Move" wizard link for pages/tt_content elements:
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages') && $this->isEditable($table)) {
-            if ($isL10nOverlay) {
+            if ($isL10nOverlay || $isDeletePlaceHolder) {
                 $moveAction = $this->spaceIcon;
             } else {
                 $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
@@ -1892,22 +1917,28 @@ class DatabaseRecordList
             }
             $this->addActionToCellGroup($cells, $moveAction, 'move');
         }
+
         // If the table is NOT a read-only table, then show these links:
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
             if ((bool)\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
-                $moduleUrl = $this->uriBuilder->buildUriFromRoute('record_history', [
-                    'element' => $table . ':' . $row['uid'],
-                    'returnUrl' => $this->listURL(),
-                ]) . '#latest';
-                $historyAction = '<a class="btn btn-default" href="' . htmlspecialchars($moduleUrl) . '" title="'
-                    . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
-                    . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
-                $this->addActionToCellGroup($cells, $historyAction, 'history');
+                if (!$isDeletePlaceHolder) {
+                    $moduleUrl = $this->uriBuilder->buildUriFromRoute('record_history', [
+                            'element' => $table . ':' . $row['uid'],
+                            'returnUrl' => $this->listURL(),
+                        ]) . '#latest';
+                    $historyAction = '<a class="btn btn-default" href="' . htmlspecialchars($moduleUrl) . '" title="'
+                        . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
+                        . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
+                    $this->addActionToCellGroup($cells, $historyAction, 'history');
+                } else {
+                    $this->addActionToCellGroup($cells, $this->spaceIcon, 'history');
+                }
             }
+
             // "Edit Perms" link:
             if ($table === 'pages' && $backendUser->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
-                if ($isL10nOverlay) {
+                if ($isL10nOverlay || $isDeletePlaceHolder) {
                     $permsAction = $this->spaceIcon;
                 } else {
                     $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit' . $this->makeReturnUrl();
@@ -1917,11 +1948,12 @@ class DatabaseRecordList
                 }
                 $this->addActionToCellGroup($cells, $permsAction, 'perms');
             }
+
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
             // or if default values can depend on previous record):
             if (($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) && $permsEdit) {
                 if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
-                    if ($isL10nOverlay) {
+                    if ($isL10nOverlay || $isDeletePlaceHolder) {
                         $this->addActionToCellGroup($cells, $this->spaceIcon, 'new');
                     } elseif ($this->showNewRecLink($table)) {
                         $params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
@@ -1937,9 +1969,10 @@ class DatabaseRecordList
                     }
                 }
             }
+
             // "Up/Down" links
             if ($permsEdit && $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField && !$this->searchLevels) {
-                if (!$isL10nOverlay && isset($this->currentTable['prev'][$row['uid']])) {
+                if (!$isL10nOverlay && !$isDeletePlaceHolder && isset($this->currentTable['prev'][$row['uid']])) {
                     // Up
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
                     $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
@@ -1950,7 +1983,7 @@ class DatabaseRecordList
                 }
                 $this->addActionToCellGroup($cells, $moveUpAction, 'moveUp');
 
-                if (!$isL10nOverlay && $this->currentTable['next'][$row['uid']]) {
+                if (!$isL10nOverlay && !$isDeletePlaceHolder && $this->currentTable['next'][$row['uid']]) {
                     // Down
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
                     $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
@@ -1961,15 +1994,13 @@ class DatabaseRecordList
                 }
                 $this->addActionToCellGroup($cells, $moveDownAction, 'moveDown');
             }
+
             // "Hide/Unhide" links:
             $hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
-
-            if (
-                !empty($GLOBALS['TCA'][$table]['columns'][$hiddenField])
-                && (empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude'])
-                    || $backendUser->check('non_exclude_fields', $table . ':' . $hiddenField))
+            if (!empty($GLOBALS['TCA'][$table]['columns'][$hiddenField])
+                && (empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude']) || $backendUser->check('non_exclude_fields', $table . ':' . $hiddenField))
             ) {
-                if (!$permsEdit || $this->isRecordCurrentBackendUser($table, $row)) {
+                if (!$permsEdit || $isDeletePlaceHolder || $this->isRecordCurrentBackendUser($table, $row)) {
                     $hideAction = $this->spaceIcon;
                 } else {
                     $hideTitle = htmlspecialchars($this->getLanguageService()->getLL('hide' . ($table === 'pages' ? 'Page' : '')));
@@ -1992,60 +2023,59 @@ class DatabaseRecordList
                 }
                 $this->addActionToCellGroup($cells, $hideAction, 'hide');
             }
+
             // "Delete" link:
             $disableDelete = (bool)\trim($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? '0');
-            if ($permsEdit && !$disableDelete && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)) {
-                // Check if the record version is in "deleted" state, because that will switch the action to "restore"
-                if ($backendUser->workspace > 0 && isset($row['t3ver_state']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                    $actionName = 'restore';
-                    $refCountMsg = '';
-                } else {
-                    $actionName = 'delete';
-                    $refCountMsg = BackendUtility::referenceCount(
-                        $table,
-                        $row['uid'],
-                        ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
-                        $this->getReferenceCount($table, $row['uid'])
-                    ) . BackendUtility::translationCount(
-                        $table,
-                        $row['uid'],
-                        ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
-                    );
-                }
-
-                if ($this->isRecordCurrentBackendUser($table, $row)) {
-                    $deleteAction = $this->spaceIcon;
-                } else {
-                    $title = BackendUtility::getRecordTitle($table, $row);
-                    $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" [' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
-
-                    $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-                    $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();
-                    $linkTitle = htmlspecialchars($this->getLanguageService()->getLL($actionName));
-                    $l10nParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
-                    $deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
-                                    . ' data-button-ok-text="' . htmlspecialchars($linkTitle) . '"'
-                                    . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars($row[$l10nParentField]) : '') . '"'
-                                    . ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($title) . '"'
-                                    . ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
-                                    . '>' . $icon . '</a>';
-                }
+            if ($permsEdit
+                && !$disableDelete
+                && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)
+                && !$this->isRecordCurrentBackendUser($table, $row)
+                && !$isDeletePlaceHolder
+            ) {
+                $actionName = 'delete';
+                $refCountMsg = BackendUtility::referenceCount(
+                    $table,
+                    $row['uid'],
+                    ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
+                    $this->getReferenceCount($table, $row['uid'])
+                ) . BackendUtility::translationCount(
+                    $table,
+                    $row['uid'],
+                    ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+                );
+                $title = BackendUtility::getRecordTitle($table, $row);
+                $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" [' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
+                $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
+                $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();
+                $linkTitle = htmlspecialchars($this->getLanguageService()->getLL($actionName));
+                $l10nParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
+                $deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
+                                . ' data-button-ok-text="' . htmlspecialchars($linkTitle) . '"'
+                                . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars($row[$l10nParentField]) : '') . '"'
+                                . ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($title) . '"'
+                                . ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
+                                . '>' . $icon . '</a>';
             } else {
                 $deleteAction = $this->spaceIcon;
             }
             $this->addActionToCellGroup($cells, $deleteAction, 'delete');
+
             // "Levels" links: Moving pages into new levels...
             if ($permsEdit && $table === 'pages' && !$this->searchLevels) {
                 // Up (Paste as the page right after the current parent page)
                 if ($this->calcPerms & Permission::PAGE_NEW) {
-                    $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
-                    $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
-                    $moveLeftAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
-                        . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
-                    $this->addActionToCellGroup($cells, $isL10nOverlay ? $this->spaceIcon : $moveLeftAction, 'moveLeft');
+                    if (!$isDeletePlaceHolder && !$isL10nOverlay) {
+                        $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
+                        $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                        $moveLeftAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
+                            . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
+                        $this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
+                    } else {
+                        $this->addActionToCellGroup($cells, $this->spaceIcon, 'moveLeft');
+                    }
                 }
                 // Down (Paste as subpage to the page right above)
-                if (!$isL10nOverlay && $this->currentTable['prevUid'][$row['uid']]) {
+                if (!$isL10nOverlay && !$isDeletePlaceHolder && $this->currentTable['prevUid'][$row['uid']]) {
                     $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
                     if ($localCalcPerms & Permission::PAGE_NEW) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
@@ -2061,6 +2091,7 @@ class DatabaseRecordList
                 $this->addActionToCellGroup($cells, $moveRightAction, 'moveRight');
             }
         }
+
         /*
          * hook: recStatInfoHooks: Allows to insert HTML before record icons on various places
          */
@@ -2073,6 +2104,7 @@ class DatabaseRecordList
             }
             $this->addActionToCellGroup($cells, $stat, 'stat');
         }
+
         /*
          * hook:  makeControl: Allows to change control icons of records in list-module
          * usage: This hook method gets passed the current $cells array as third parameter.
@@ -2105,6 +2137,7 @@ class DatabaseRecordList
                 $this->addActionToCellGroup($cells, $value, $key);
             }
         }
+
         $output = '<!-- CONTROL PANEL: ' . $table . ':' . $row['uid'] . ' -->';
         foreach ($cells as $classification => $actions) {
             $visibilityClass = ($classification !== 'primary' && !$this->moduleData['bigControlPanel'] ? 'collapsed' : 'expanded');
@@ -2121,6 +2154,7 @@ class DatabaseRecordList
                 $output .= ' <div class="btn-group" role="group">' . implode('', $actions) . '</div>';
             }
         }
+
         return $output;
     }
 
@@ -2135,23 +2169,21 @@ class DatabaseRecordList
     public function makeClip($table, $row)
     {
         // Return blank, if disabled:
-        if (!$this->moduleData['clipBoard']) {
-            return '';
-        }
-        if (!$this->isEditable($table)) {
+        if (!$this->moduleData['clipBoard'] || !$this->isEditable($table) || $this->isRecordDeletePlaceholder($row)) {
             return '';
         }
         $cells = [];
         $cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
         // Enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
         $isL10nOverlay = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        $isRecordDeletePlaceholder = $this->isRecordDeletePlaceholder($row);
         // Return blank, if disabled:
         // Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
         // For the "Normal" pad:
         if ($this->clipObj->current === 'normal') {
             // Show copy/cut icons:
             $isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
-            if ($isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)) {
+            if ($isL10nOverlay || !$this->overlayEditLockPermissions($table, $row) || $isRecordDeletePlaceholder) {
                 $cells['copy'] = $this->spaceIcon;
                 $cells['cut'] = $this->spaceIcon;
             } else {
@@ -2238,7 +2270,7 @@ class DatabaseRecordList
         }
         // Now, looking for selected elements from the current table:
         $elFromTable = $this->clipObj->elFromTable($table);
-        if (!empty($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+        if (!empty($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$isRecordDeletePlaceholder) {
             // IF elements are found, they can be individually ordered and are not locked by editlock, then add a "paste after" icon:
             $cells['pasteAfter'] = $isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)
                 ? $this->spaceIcon
@@ -2252,7 +2284,7 @@ class DatabaseRecordList
         }
         // Now, looking for elements in general:
         $elFromTable = $this->clipObj->elFromTable('');
-        if ($table === 'pages' && !$isL10nOverlay && !empty($elFromTable)) {
+        if ($table === 'pages' && !$isL10nOverlay && !empty($elFromTable) && !$isRecordDeletePlaceholder) {
             $cells['pasteInto'] = '<a class="btn btn-default t3js-modal-trigger"'
                 . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid'])) . '"'
                 . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
@@ -2310,6 +2342,7 @@ class DatabaseRecordList
             foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
                 if (isset($this->systemLanguagesOnPage[$lUid_OnPage])
                     && $this->isEditable($table)
+                    && !$this->isRecordDeletePlaceholder($row)
                     && !isset($translations['translations'][$lUid_OnPage])
                     && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)
                 ) {
@@ -2698,6 +2731,16 @@ class DatabaseRecordList
     protected function isRecordCurrentBackendUser($table, $row)
     {
         return $table === 'be_users' && (int)$row['uid'] === $this->getBackendUserAuthentication()->user['uid'];
+    }
+
+    /**
+     * Check if user is in workspace and given record is a delete placeholder
+     */
+    protected function isRecordDeletePlaceholder(array $row): bool
+    {
+        return $this->getBackendUserAuthentication()->workspace > 0
+            && isset($row['t3ver_state'])
+            && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
     }
 
     /**
