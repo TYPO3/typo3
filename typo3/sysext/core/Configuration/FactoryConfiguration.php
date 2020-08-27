@@ -27,6 +27,7 @@ return [
             'unifiedPageTranslationHandling' => true,
             'rearrangedRedirectMiddlewares' => true,
             'felogin.extbase' => true,
+            'yamlImportsFollowDeclarationOrder' => true
         ],
     ],
 ];

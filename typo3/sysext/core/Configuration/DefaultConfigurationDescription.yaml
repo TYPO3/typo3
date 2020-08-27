@@ -228,6 +228,9 @@ SYS:
               felogin.extbase:
                 type: bool
                 description: 'If activated, and if extension "felogin" is loaded, extbase based code will be used instead of pibase version'
+              yamlImportsFollowDeclarationOrder:
+                type: bool
+                description: 'If on, the YAML imports are imported in the order they are defined in the importing YAML configuration.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

@@ -80,6 +80,7 @@ return [
             'security.backend.enforceReferrer' => true,
             'rearrangedRedirectMiddlewares' => false,
             'felogin.extbase' => false,
+            'yamlImportsFollowDeclarationOrder' => false
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
