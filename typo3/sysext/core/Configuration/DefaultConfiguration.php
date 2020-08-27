@@ -74,7 +74,8 @@ return [
             'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
-            'security.backend.enforceReferrer' => true
+            'security.backend.enforceReferrer' => true,
+            'yamlImportsFollowDeclarationOrder' => false
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

@@ -101,6 +101,62 @@ betterthanbefore: 2
     }
 
     /**
+     * Method checking for mulitple imports that they have been loaded in the right order
+     * @test
+     */
+    public function loadWithMultipleImports()
+    {
+        $fileName = 'Berta.yml';
+        $fileContents = '
+imports:
+    - { resource: Secondfile.yml }
+    - { resource: Thirdfile.yml }
+
+options:
+    - option1
+    - option2
+betterthanbefore: 1
+';
+
+        $importFileName = 'Secondfile.yml';
+        $importFileContents = '
+options:
+    - optionBefore
+betterthanbefore: 2
+';
+
+        $importFileName2 = 'Thirdfile.yml';
+        $importFileContents2 = '
+options:
+    - optionAfterBefore
+';
+
+        $expected = [
+            'options' => [
+                'optionBefore',
+                'optionAfterBefore',
+                'option1',
+                'option2'
+            ],
+            'betterthanbefore' => 1
+        ];
+
+        // Make sure, feature toggle is activated
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['yamlImportsFollowDeclarationOrder'] = true;
+
+        // Accessible mock to $subject since getFileContents calls GeneralUtility methods
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects(self::at(0))->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
+        $subject->expects(self::at(1))->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $subject->expects(self::at(2))->method('getStreamlinedFileName')->with($importFileName2, $fileName)->willReturn($importFileName2);
+        $subject->expects(self::at(3))->method('getFileContents')->with($importFileName2)->willReturn($importFileContents2);
+        $subject->expects(self::at(4))->method('getStreamlinedFileName')->with($importFileName, $fileName)->willReturn($importFileName);
+        $subject->expects(self::at(5))->method('getFileContents')->with($importFileName)->willReturn($importFileContents);
+        $output = $subject->load($fileName);
+        self::assertSame($expected, $output);
+    }
+
+    /**
      * Method checking for imports that they have been processed properly
      * @test
      */

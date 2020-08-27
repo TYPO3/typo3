@@ -24,6 +24,7 @@ return [
         'sitename' => 'New TYPO3 site',
         'features' => [
             'unifiedPageTranslationHandling' => true,
+            'yamlImportsFollowDeclarationOrder' => true
         ],
     ],
 ];
