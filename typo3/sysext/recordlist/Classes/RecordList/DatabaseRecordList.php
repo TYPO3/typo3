@@ -370,13 +370,6 @@ class DatabaseRecordList
     public $setFields = [];
 
     /**
-     * Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
-     *
-     * @var int
-     */
-    public $counter = 0;
-
-    /**
      * Pointer for browsing list
      *
      * @var int
@@ -1199,8 +1192,6 @@ class DatabaseRecordList
 
         $tagAttributes['class'][] = 't3js-entity';
 
-        // Incr. counter.
-        $this->counter++;
         // The icon with link
         $toolTip = BackendUtility::getRecordToolTip($row, $table);
         $additionalStyle = $indent ? ' style="margin-left: ' . $indent . 'px;"' : '';
@@ -2724,7 +2715,6 @@ class DatabaseRecordList
         $this->displayFields = GeneralUtility::_GP('displayFields');
         $this->duplicateField = GeneralUtility::_GP('duplicateField');
         // Init dynamic vars:
-        $this->counter = 0;
         $this->HTMLcode = '';
         // Limits
         if (isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
