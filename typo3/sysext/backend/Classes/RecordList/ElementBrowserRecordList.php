@@ -53,7 +53,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
         if (!$code) {
             $code = '<i>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</i>';
         } else {
-            $code = BackendUtility::getRecordTitlePrep($code, $this->fixedL);
+            $code = BackendUtility::getRecordTitlePrep($code);
         }
         $title = BackendUtility::getRecordTitle($table, $row, false, true);
         $ficon = $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();

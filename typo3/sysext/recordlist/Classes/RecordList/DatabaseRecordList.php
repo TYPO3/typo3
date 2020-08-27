@@ -287,14 +287,6 @@ class DatabaseRecordList
     public $displayFields;
 
     /**
-     * Not used in this class - but maybe extension classes...
-     * Max length of strings
-     *
-     * @var int
-     */
-    public $fixedL = 30;
-
-    /**
      * Page select permissions
      *
      * @var string
@@ -531,9 +523,6 @@ class DatabaseRecordList
      */
     public function __construct()
     {
-        if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
-            $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
-        }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
