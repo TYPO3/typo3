@@ -697,6 +697,7 @@ class FormEditorController extends AbstractBackendController
             $recipientName = $finisherConfiguration['options']['recipientName'] ?? '';
             $carbonCopyAddress = $finisherConfiguration['options']['carbonCopyAddress'] ?? '';
             $blindCarbonCopyAddress = $finisherConfiguration['options']['blindCarbonCopyAddress'] ?? '';
+            $replyToAddress = $finisherConfiguration['options']['replyToAddress'] ?? '';
 
             if (!empty($recipientAddress)) {
                 $finisherConfiguration['options']['recipients'][$recipientAddress] = $recipientName;
@@ -710,11 +711,16 @@ class FormEditorController extends AbstractBackendController
                 $finisherConfiguration['options']['blindCarbonCopyRecipients'][$blindCarbonCopyAddress] = '';
             }
 
+            if (!empty($replyToAddress)) {
+                $finisherConfiguration['options']['replyToRecipients'][$replyToAddress] = '';
+            }
+
             unset(
                 $finisherConfiguration['options']['recipientAddress'],
                 $finisherConfiguration['options']['recipientName'],
                 $finisherConfiguration['options']['carbonCopyAddress'],
-                $finisherConfiguration['options']['blindCarbonCopyAddress']
+                $finisherConfiguration['options']['blindCarbonCopyAddress'],
+                $finisherConfiguration['options']['replyToAddress']
             );
             $formDefinition['finishers'][$i] = $finisherConfiguration;
         }
