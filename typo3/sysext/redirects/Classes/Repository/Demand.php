@@ -201,16 +201,16 @@ class Demand
     {
         $parameters = [];
         if ($this->hasSourcePath()) {
-            $parameters['source_path'] = $this->sourcePath;
+            $parameters['source_path'] = $this->getSourcePath();
         }
         if ($this->hasSourceHost()) {
-            $parameters['source_host'] = $this->sourceHost;
+            $parameters['source_host'] = $this->getSourceHost();
         }
         if ($this->hasTarget()) {
-            $parameters['target'] = $this->target;
+            $parameters['target'] = $this->getTarget();
         }
         if ($this->hasStatusCode()) {
-            $parameters['target_statuscode'] = $this->target;
+            $parameters['target_statuscode'] = $this->getStatusCode();
         }
         return $parameters;
     }
