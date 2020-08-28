@@ -320,20 +320,6 @@ class DatabaseRecordList
     public $searchLevels = 0;
 
     /**
-     * "LIMIT " in SQL...
-     *
-     * @var int
-     */
-    public $iLimit = 0;
-
-    /**
-     * Set to the total number of items for a table when selecting.
-     *
-     * @var int
-     */
-    public $totalItems;
-
-    /**
      * TSconfig which overwrites TCA-Settings
      *
      * @var mixed[][]
@@ -679,10 +665,10 @@ class DatabaseRecordList
     {
         // Finding the total amount of records on the page
         $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
-        $this->totalItems = (int)$queryBuilderTotalItems->count('*')
+        $totalItems = (int)$queryBuilderTotalItems->count('*')
             ->execute()
             ->fetchColumn();
-        if ($this->totalItems === 0) {
+        if ($totalItems === 0) {
             return '';
         }
         // set the limits
@@ -704,16 +690,16 @@ class DatabaseRecordList
         ), 5, 10000);
 
         // Set limit depending on the view (single table vs. default)
-        $this->iLimit = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
+        $iLimit = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
 
         // Set limit from search
         if ($this->showLimit) {
-            $this->iLimit = $this->showLimit;
+            $iLimit = $this->showLimit;
         }
 
         // csv export - set no limit at all
         if ($this->csvOutput) {
-            $this->iLimit = 0;
+            $iLimit = 0;
         }
 
         $rowListArray = GeneralUtility::trimExplode(',', $rowList, true);
@@ -839,15 +825,15 @@ class DatabaseRecordList
         $selFieldList = implode(',', $selectFields);
         $this->selFieldList = $selFieldList;
 
-        if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
+        if ($this->firstElementNumber > 2 && $iLimit > 0) {
             // Get the two previous rows for sorting if displaying page > 1
             $this->firstElementNumber -= 2;
-            $this->iLimit += 2;
-            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $this->iLimit);
+            $iLimit += 2;
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $iLimit);
             $this->firstElementNumber += 2;
-            $this->iLimit -= 2;
+            $iLimit -= 2;
         } else {
-            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $this->iLimit);
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $iLimit);
         }
 
         // Init:
@@ -858,21 +844,21 @@ class DatabaseRecordList
         $listOnlyInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
         // If the count query returned any number of records, we perform the real query,
         // selecting records.
-        if ($this->totalItems) {
+        if ($totalItems) {
             // Fetch records only if not in single table mode
             if ($listOnlyInSingleTableMode) {
-                $dbCount = $this->totalItems;
+                $dbCount = $totalItems;
             } else {
                 // Set the showLimit to the number of records when outputting as CSV
                 if ($this->csvOutput) {
-                    $this->showLimit = $this->totalItems;
-                    $this->iLimit = $this->totalItems;
-                    $dbCount = $this->totalItems;
+                    $this->showLimit = $totalItems;
+                    $iLimit = $totalItems;
+                    $dbCount = $totalItems;
                 } else {
-                    if ($this->firstElementNumber + $this->showLimit <= $this->totalItems) {
+                    if ($this->firstElementNumber + $this->showLimit <= $totalItems) {
                         $dbCount = $this->showLimit + 2;
                     } else {
-                        $dbCount = $this->totalItems - $this->firstElementNumber + 2;
+                        $dbCount = $totalItems - $this->firstElementNumber + 2;
                     }
                 }
             }
@@ -898,12 +884,12 @@ class DatabaseRecordList
             $theData = [];
             if ($this->disableSingleTableView) {
                 $theData[$titleCol] = '<span class="c-table">' . BackendUtility::wrapInHelp($table, '', $tableTitle)
-                    . '</span> (<span class="t3js-table-total-items">' . $this->totalItems . '</span>)';
+                    . '</span> (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
             } else {
                 $icon = $this->table
                     ? '<span title="' . htmlspecialchars($lang->getLL('contractView')) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
                     : '<span title="' . htmlspecialchars($lang->getLL('expandView')) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
-                $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $this->totalItems . '</span>) ' . $icon);
+                $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
             }
             if ($listOnlyInSingleTableMode) {
                 $tableHeader .= BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
@@ -929,7 +915,7 @@ class DatabaseRecordList
                 $prevUid = 0;
                 $prevPrevUid = 0;
                 // Get first two rows and initialize prevPrevUid and prevUid if on page > 1
-                if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
+                if ($this->firstElementNumber > 2 && $iLimit > 0) {
                     $row = $queryResult->fetch();
                     $prevPrevUid = -((int)$row['uid']);
                     $row = $queryResult->fetch();
@@ -968,7 +954,7 @@ class DatabaseRecordList
                 $cc = 0;
                 foreach ($accRows as $row) {
                     // Render item row if counter < limit
-                    if ($cc < $this->iLimit) {
+                    if ($cc < $iLimit) {
                         $cc++;
                         $this->translations = false;
                         $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, $thumbsCol);
@@ -1028,12 +1014,12 @@ class DatabaseRecordList
                 // Record navigation is added to the beginning and end of the table if in single
                 // table mode
                 if ($this->table) {
-                    $rowOutput = $this->renderListNavigation('top') . $rowOutput . $this->renderListNavigation('bottom');
+                    $rowOutput = $this->renderListNavigation('top', $totalItems, $iLimit) . $rowOutput . $this->renderListNavigation('bottom', $totalItems, $iLimit);
                 } else {
                     // Show that there are more records than shown
-                    if ($this->totalItems > $itemsLimitPerTable) {
-                        $countOnFirstPage = $this->totalItems > $itemsLimitSingleTable ? $itemsLimitSingleTable : $this->totalItems;
-                        $hasMore = $this->totalItems > $itemsLimitSingleTable;
+                    if ($totalItems > $itemsLimitPerTable) {
+                        $countOnFirstPage = $totalItems > $itemsLimitSingleTable ? $itemsLimitSingleTable : $totalItems;
+                        $hasMore = $totalItems > $itemsLimitSingleTable;
                         $colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
                         $rowOutput .= '<tr><td colspan="' . $colspan . '">
 								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
@@ -1182,7 +1168,7 @@ class DatabaseRecordList
         if ($cc == 1 && $indent == 0) {
             $tagAttributes['class'][] = 'firstcol';
         }
-        if ($cc == $this->totalRowCount || $cc == $this->iLimit) {
+        if ($cc == $this->totalRowCount) {
             $tagAttributes['class'][] = 'lastcol';
         }
         // Overriding with versions background color if any:
@@ -1574,22 +1560,25 @@ class DatabaseRecordList
      * Get pointer for first element on the page
      *
      * @param int $page Page number starting with 1
+     * @param int $iLimit
      * @return int Pointer to first element on the page (starting with 0)
      */
-    protected function getPointerForPage($page)
+    protected function getPointerForPage($page, int $iLimit)
     {
-        return ($page - 1) * $this->iLimit;
+        return ($page - 1) * $iLimit;
     }
 
     /**
      * Creates a page browser for tables with many records
      *
      * @param string $renderPart Distinguish between 'top' and 'bottom' part of the navigation (above or below the records)
+     * @param int $totalItems
+     * @param int $iLimit
      * @return string Navigation HTML
      */
-    protected function renderListNavigation($renderPart = 'top')
+    protected function renderListNavigation($renderPart, int $totalItems, int $iLimit)
     {
-        $totalPages = ceil($this->totalItems / $this->iLimit);
+        $totalPages = ceil($totalItems / $iLimit);
         // Show page selector if not all records fit into one page
         if ($totalPages <= 1) {
             return '';
@@ -1598,14 +1587,14 @@ class DatabaseRecordList
         $listURL = $this->listURL('', $this->table, 'firstElementNumber');
         // 1 = first page
         // 0 = first element
-        $currentPage = floor($this->firstElementNumber / $this->iLimit) + 1;
+        $currentPage = floor($this->firstElementNumber / $iLimit) + 1;
         // Compile first, previous, next, last and refresh buttons
         if ($currentPage > 1) {
             $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first'));
             $labelPrevious = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:previous'));
-            $first = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1) . '" title="' . $labelFirst . '">'
+            $first = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1, $iLimit) . '" title="' . $labelFirst . '">'
                 . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</a></li>';
-            $previous = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1) . '" title="' . $labelPrevious . '">'
+            $previous = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1, $iLimit) . '" title="' . $labelPrevious . '">'
                 . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</a></li>';
         } else {
             $first = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</span></li>';
@@ -1614,9 +1603,9 @@ class DatabaseRecordList
         if ($currentPage < $totalPages) {
             $labelNext = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:next'));
             $labelLast = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:last'));
-            $next = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1) . '" title="' . $labelNext . '">'
+            $next = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1, $iLimit) . '" title="' . $labelNext . '">'
                 . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</a></li>';
-            $last = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages) . '" title="' . $labelLast . '">'
+            $last = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages, $iLimit) . '" title="' . $labelLast . '">'
                 . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</a></li>';
         } else {
             $next = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</span></li>';
@@ -1639,7 +1628,7 @@ class DatabaseRecordList
 		if (page < 1) {
 			page = 1;
 		}
-		return (page - 1) * ' . $this->iLimit . ';
+		return (page - 1) * ' . $iLimit . ';
 	}
 /*]]>*/
 </script>
@@ -1656,10 +1645,10 @@ class DatabaseRecordList
             $totalPages
         );
         $pageIndicator = '<li><span>' . $pageIndicatorText . '</span></li>';
-        if ($this->totalItems > $this->firstElementNumber + $this->iLimit) {
-            $lastElementNumber = $this->firstElementNumber + $this->iLimit;
+        if ($totalItems > $this->firstElementNumber + $iLimit) {
+            $lastElementNumber = $this->firstElementNumber + $iLimit;
         } else {
-            $lastElementNumber = $this->totalItems;
+            $lastElementNumber = $totalItems;
         }
         $rangeIndicator = '<li><span>' . sprintf(
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'),
