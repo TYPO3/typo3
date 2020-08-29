@@ -111,7 +111,7 @@ class RecyclerModuleController
             return $result;
         }
 
-        $this->registerDocheaderButtons();
+        $this->registerDocheaderButtons($request->getQueryParams()['route']);
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -149,15 +149,19 @@ class RecyclerModuleController
     /**
      * Registers the Icons into the docheader
      *
+     * @param string $route
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocheaderButtons(string $route)
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('web_recycler')
-            ->setGetVariables(['id', 'route']);
+            ->setModuleName('web_RecyclerRecycler')
+            ->setArguments([
+                'route' => $route,
+                'id' => (int)$this->id
+            ]);
         $buttonBar->addButton($shortcutButton);
 
         $reloadButton = $buttonBar->makeLinkButton()

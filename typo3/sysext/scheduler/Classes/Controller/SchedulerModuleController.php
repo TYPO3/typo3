@@ -1296,6 +1296,8 @@ class SchedulerModuleController
      */
     protected function getButtons(ServerRequestInterface $request): void
     {
+        $queryParams = $request->getQueryParams();
+
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
         $helpButton = $buttonBar->makeHelpButton()
@@ -1356,7 +1358,7 @@ class SchedulerModuleController
         // Delete
         if ($this->getCurrentAction()->equals(Action::EDIT)) {
             $deleteButton = $buttonBar->makeLinkButton()
-                ->setHref($this->moduleUri . '&CMD=' . Action::DELETE . '&tx_scheduler[uid]=' . $request->getQueryParams()['tx_scheduler']['uid'])
+                ->setHref($this->moduleUri . '&CMD=' . Action::DELETE . '&tx_scheduler[uid]=' . $queryParams['tx_scheduler']['uid'])
                 ->setClasses('t3js-modal-trigger')
                 ->setDataAttributes([
                     'severity' => 'warning',
@@ -1370,10 +1372,20 @@ class SchedulerModuleController
         }
 
         // Shortcut
+        $shortcutArguments = [
+            'route' => $queryParams['route'],
+            'CMD' => (string)Action::cast($queryParams['CMD'] ?? null),
+            'SET' => [
+                'function' => $this->MOD_SETTINGS['function'],
+            ]
+        ];
+        if (isset($queryParams['tx_scheduler']['uid'])) {
+            $shortcutArguments['tx_scheduler']['uid'] = $queryParams['tx_scheduler']['uid'];
+        }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('system_txschedulerM1')
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setSetVariables(['function']);
+            ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortcutButton);
     }
 

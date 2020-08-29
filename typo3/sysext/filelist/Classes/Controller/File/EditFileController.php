@@ -320,12 +320,6 @@ class EditFileController
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
-
-        // Make shortcut:
-        $shortButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('file_edit')
-            ->setGetVariables(['target']);
-        $buttonBar->addButton($shortButton);
     }
 
     /**

@@ -174,7 +174,6 @@ class PageLayoutController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $GLOBALS['SOBE'] = $this;
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->pageRenderer = $this->moduleTemplate->getPageRenderer();
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
@@ -303,7 +302,7 @@ class PageLayoutController
 
     /**
      * This creates the dropdown menu with the different actions this module is able to provide.
-     * For now they are Columns, Quick Edit and Languages.
+     * For now they are Columns and Languages.
      *
      * @param array $actions array with the available actions
      */
@@ -784,12 +783,15 @@ class PageLayoutController
         // Shortcut
         $shortcutButton = $this->buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
-            ->setGetVariables([
-                'id',
-                'route',
-                'edit_record',
-            ])
-            ->setSetVariables(array_keys($this->MOD_MENU));
+            ->setArguments([
+                'route' => $request->getQueryParams()['route'],
+                'id' => (int)$this->id,
+                'SET' => [
+                    'tt_content_showHidden' => (bool)$this->MOD_SETTINGS['tt_content_showHidden'],
+                    'function' => (int)$this->MOD_SETTINGS['function'],
+                    'language' => (int)$this->current_sys_language,
+                ]
+            ]);
         $this->buttonBar->addButton($shortcutButton);
 
         // Cache

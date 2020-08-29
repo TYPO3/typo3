@@ -191,7 +191,10 @@ class ReviewController
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('web_WorkspacesWorkspaces')
-            ->setGetVariables(['id', 'route']);
+            ->setArguments([
+                'route' => (string)GeneralUtility::_GP('route'),
+                'id' => (int)$this->pageId,
+            ]);
         $buttonBar->addButton($shortcutButton);
 
         $this->moduleTemplate->setContent($this->view->render());

@@ -73,7 +73,7 @@ class ReportController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? '';
-        $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
+        $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'] ?? '';
         $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
 
         if ($action !== 'index' && !$isRedirect && !$extension
@@ -110,7 +110,18 @@ class ReportController
         }
 
         $this->generateMenu($request);
-        $this->generateButtons();
+
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('system_reports')
+            ->setDisplayName($this->shortcutName)
+            ->setArguments([
+                'route' => $request->getQueryParams()['route'],
+                'action' => $action,
+                'extension' => $extension,
+                'report' => $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'] ?? '',
+            ]);
+        $buttonBar->addButton($shortcutButton);
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -222,20 +233,6 @@ class ReportController
             }
         }
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    /**
-     * Gets all buttons for the docHeader
-     */
-    protected function generateButtons()
-    {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('system_reports')
-            ->setGetVariables(['action', 'extension', 'report'])
-            ->setDisplayName($this->shortcutName);
-        $buttonBar->addButton($shortcutButton);
     }
 
     /**

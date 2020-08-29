@@ -393,7 +393,7 @@ class SetupModuleController
         // End of wrapper div
         $this->content .= '</div>';
         // Setting up the buttons and markers for docheader
-        $this->getButtons();
+        $this->getButtons($request->getQueryParams()['route']);
         // Build the <body> for the module
         // Renders the module page
         $this->moduleTemplate->setContent($this->content);
@@ -412,7 +412,7 @@ class SetupModuleController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons()
+    protected function getButtons(string $route)
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
@@ -430,7 +430,10 @@ class SetupModuleController
 
         $buttonBar->addButton($saveButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName);
+            ->setModuleName($this->moduleName)
+            ->setArguments([
+                'route' => $route,
+            ]);
         $buttonBar->addButton($shortcutButton);
     }
 

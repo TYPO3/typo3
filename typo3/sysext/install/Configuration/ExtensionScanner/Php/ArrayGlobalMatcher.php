@@ -43,4 +43,9 @@ return [
             'Breaking-88660-GLOBALST3_VARRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'SOBE\']' => [
+        'restFiles' => [
+            'Breaking-92132-LastRemainsOfGlobalsSOBERemoved.rst',
+        ],
+    ],
 ];

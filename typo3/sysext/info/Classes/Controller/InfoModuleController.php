@@ -189,8 +189,10 @@ class InfoModuleController
 
     /**
      * Initialize module header etc and call extObjContent function
+     *
+     * @param ServerRequestInterface $request the current request
      */
-    protected function main()
+    protected function main(ServerRequestInterface $request)
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
@@ -219,7 +221,7 @@ class InfoModuleController
             $this->view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
             $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for doc header
-            $this->getButtons();
+            $this->getButtons($request);
             $this->generateMenu();
             $this->content .= $this->view->render();
         } else {
@@ -237,17 +239,12 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        // @deprecated and will be removed in TYPO3 v10.0.
-        // @todo: Removing this breaks bookmarks handling of info sub modules since
-        // @todo: ModuleTemplate->makeShortcutUrl() still fetches values from $GLOBALS['SOBE']->MOD_SETTINGS
-        $GLOBALS['SOBE'] = $this;
-
         $this->init();
 
         // Checking for first level external objects
         $this->checkExtObj();
 
-        $this->main();
+        $this->main($request);
 
         $this->moduleTemplate->setContent($this->content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -255,8 +252,10 @@ class InfoModuleController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
+     *
+     * @param ServerRequestInterface $request the current request
      */
-    protected function getButtons()
+    protected function getButtons(ServerRequestInterface $request)
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -271,20 +270,25 @@ class InfoModuleController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+
         // Shortcut
+        $queryParams = $request->getQueryParams();
+        $shortcutArguments = [
+            'route' => $queryParams['route'],
+            'id' => $queryParams['id'] ?? 0,
+        ];
+        foreach (array_keys($this->MOD_MENU) as $key) {
+            if (!empty($this->MOD_SETTINGS[$key])) {
+                if (!is_array($shortcutArguments['SET'])) {
+                    $shortcutArguments['SET'] = [];
+                }
+                $shortcutArguments['SET'][$key] = $this->MOD_SETTINGS[$key];
+            }
+        }
         $shortCutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setGetVariables([
-                'route',
-                'id',
-                'edit_record',
-                'pointer',
-                'search_field',
-                'search_levels',
-                'showLimit'
-            ])
-            ->setSetVariables(array_keys($this->MOD_MENU));
+            ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // CSH

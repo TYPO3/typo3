@@ -170,14 +170,17 @@ class HelpController
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName('help_cshmanual')
-                ->setGetVariables(['table', 'field', 'route']);
-            $buttonBar->addButton($shortcutButton);
-        }
-
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('help_cshmanual')
+            ->setArguments([
+                'route' => $request->getQueryParams()['route'],
+                'action' => $action,
+                'table' => $request->getQueryParams()['table'] ?? '',
+                'field' => $request->getQueryParams()['field'] ?? ''
+            ]);
+        $buttonBar->addButton($shortcutButton);
+
         if ($action !== 'index') {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $backButton = $buttonBar->makeLinkButton()

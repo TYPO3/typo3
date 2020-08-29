@@ -28,13 +28,16 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * A ViewHelper for adding a shortcut button to the doc header area.
  * It must be a child of :ref:`<be:moduleLayout> <typo3-backend-modulelayout>`.
  *
+ * The 'arguments' argument should contain key/value pairs of all arguments
+ * relevant for the specific view.
+ *
  * Examples
  * --------
  *
  * Default::
  *
  *    <be:moduleLayout>
- *        <be:moduleLayout.button.shortcutButton displayName="Shortcut label" />
+ *        <be:moduleLayout.button.shortcutButton displayName="Shortcut label" arguments="{route: '{route}'"/>
  *    </be:moduleLayout>
  */
 class ShortcutButtonViewHelper extends AbstractButtonViewHelper
@@ -48,25 +51,33 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('displayName', 'string', 'Name for the shortcut');
+        $this->registerArgument('arguments', 'array', 'List of relevant GET variables as key/values list to store', false, []);
+        // @deprecated since v11, will be removed in v12. Use 'arguments' instead. Deprecation logged by ModuleTemplate->makeShortcutIcon()
         $this->registerArgument('getVars', 'array', 'List of additional GET variables to store. The current id, module and all module arguments will always be stored', false, []);
     }
 
     protected static function createButton(ButtonBar $buttonBar, array $arguments, RenderingContextInterface $renderingContext): ButtonInterface
     {
         $currentRequest = $renderingContext->getControllerContext()->getRequest();
-        $extensionName = $currentRequest->getControllerExtensionName();
         $moduleName = $currentRequest->getPluginName();
-        $argumentPrefix = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ExtensionService::class)
-            ->getPluginNamespace($extensionName, $moduleName);
-
-        $getVars = $arguments['getVars'];
-        $getVars[] = $argumentPrefix;
+        $displayName = $arguments['displayName'];
 
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setDisplayName($arguments['displayName'])
-            ->setGetVariables($getVars)
+            ->setDisplayName($displayName)
             ->setModuleName($moduleName);
+
+        if (!empty($arguments['arguments'])) {
+            $shortcutButton->setArguments($arguments['arguments']);
+        } else {
+            // @deprecated since v11, will be removed in v12. Use 'variables' instead. Deprecation logged by ModuleTemplate->makeShortcutIcon()
+            $extensionName = $currentRequest->getControllerExtensionName();
+            $argumentPrefix = GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(ExtensionService::class)
+                ->getPluginNamespace($extensionName, $moduleName);
+            $getVars = $arguments['getVars'];
+            $getVars[] = $argumentPrefix;
+            $shortcutButton->setGetVariables($getVars);
+        }
 
         return $shortcutButton;
     }

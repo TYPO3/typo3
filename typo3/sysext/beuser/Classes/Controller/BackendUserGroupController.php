@@ -19,6 +19,7 @@ use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 
@@ -68,6 +69,9 @@ class BackendUserGroupController extends ActionController
                 'paginator' => $paginator,
                 'pagination' => $pagination,
                 'totalAmountOfBackendUserGroups' => $backendUsers->count(),
+                'route' => GeneralUtility::_GP('route'),
+                'action' => $this->request->getControllerActionName(),
+                'controller' => $this->request->getControllerName(),
                 'compareGroupUidList' => array_map(static function ($value) { // uid as key and force value to 1
                     return 1;
                 }, array_flip($compareGroupUidList)),
@@ -92,6 +96,9 @@ class BackendUserGroupController extends ActionController
 
         $this->view->assignMultiple([
             'shortcutLabel' => 'compareBackendUsersGroups',
+            'route' => GeneralUtility::_GP('route'),
+            'action' => $this->request->getControllerActionName(),
+            'controller' => $this->request->getControllerName(),
             'compareGroupList' => $compareData,
         ]);
     }

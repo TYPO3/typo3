@@ -312,7 +312,10 @@ class ConfigurationController
             ->setDisplayName($languageService->sL(
                 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:' . $selectedTreeDetails['label']
             ))
-            ->setSetVariables(['tree']);
+            ->setArguments([
+                'route' => $request->getQueryParams()['route'],
+                'tree' => $selectedTreeKey,
+            ]);
         $moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
 
         // Main drop down in doc header

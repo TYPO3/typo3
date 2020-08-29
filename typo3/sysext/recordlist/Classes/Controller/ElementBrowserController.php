@@ -49,7 +49,6 @@ class ElementBrowserController
      */
     public function __construct()
     {
-        $GLOBALS['SOBE'] = $this;
         $this->init();
     }
 
@@ -59,7 +58,6 @@ class ElementBrowserController
     protected function init()
     {
         $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
-
         $this->mode = GeneralUtility::_GP('mode');
     }
 

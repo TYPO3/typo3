@@ -522,9 +522,11 @@ class ModuleTemplate
      * @return string HTML content
      * @todo Make this thing return a button object
      * @internal
+     * @deprecated since v11, will be removed in v12
      */
     public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '', $displayName = '', $classes = 'btn btn-default btn-sm')
     {
+        trigger_error('Method makeShortcutIcon() is deprecated and will be removed in v12. Please use ShortcutButton->setArguments() instead.', E_USER_DEPRECATED);
         $gvList = 'route,id,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
         $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
@@ -578,6 +580,7 @@ class ModuleTemplate
      *
      * @return string GET-parameters for the shortcut-url only(!). String starts with '&'
      * @internal
+     * @deprecated since v11, will be removed in v12. Deprecation logged by parent method makeShortcutIcon()
      */
     public function makeShortcutUrl($gvList, $setList)
     {

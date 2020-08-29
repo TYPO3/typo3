@@ -191,15 +191,12 @@ class ManagementController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
-        $mayMakeShortcut = $this->getBackendUserAuthentication()->mayMakeShortcut();
-        if ($mayMakeShortcut) {
-            $getVars = ['id', 'route'];
-
-            $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName('site_redirects')
-                ->setGetVariables($getVars);
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('site_redirects')
+            ->setArguments([
+                'route' => $this->request->getQueryParams()['route'],
+            ]);
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**

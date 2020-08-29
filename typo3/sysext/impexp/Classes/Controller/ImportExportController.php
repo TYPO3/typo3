@@ -166,13 +166,6 @@ abstract class ImportExportController
     protected function getButtons(): void
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setGetVariables(['tx_impexp'])
-                ->setDisplayName($this->shortcutName)
-                ->setModuleName($this->moduleName);
-            $buttonBar->addButton($shortcutButton);
-        }
         // back button
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()

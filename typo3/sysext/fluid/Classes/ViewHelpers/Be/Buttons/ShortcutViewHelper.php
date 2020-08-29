@@ -46,6 +46,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * .. note:
  *
  *    Normally you won't need to set getVars & setVars parameters in Extbase modules.
+ *
+ * @deprecated since v11, will be removed in v12. Deprecation logged by ModuleTemplate->makeShortcutIcon()
  */
 class ShortcutViewHelper extends AbstractBackendViewHelper
 {

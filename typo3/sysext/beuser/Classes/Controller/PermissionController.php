@@ -143,14 +143,7 @@ class PermissionController extends ActionController
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $currentRequest = $this->request;
         $moduleName = $currentRequest->getPluginName();
-        $getVars = $this->request->getArguments();
         $lang = $this->getLanguageService();
-
-        $extensionName = $currentRequest->getControllerExtensionName();
-        if (empty($getVars)) {
-            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'route', $modulePrefix];
-        }
 
         if ($currentRequest->getControllerActionName() === 'edit') {
             // CLOSE button:
@@ -180,10 +173,12 @@ class PermissionController extends ActionController
             $buttonBar->addButton($saveButton);
         }
 
-        // SHORTCUT bottom:
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
-            ->setGetVariables($getVars);
+            ->setArguments([
+                'route' => GeneralUtility::_GP('route'),
+                'id' => (int)$this->id,
+            ]);
         $buttonBar->addButton($shortcutButton);
     }
 

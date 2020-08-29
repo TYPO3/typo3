@@ -87,10 +87,7 @@ class SortSubPagesController
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('pages_sort')
-            ->setGetVariables(['id']);
-        $buttonBar->addButton($cshButton)->addButton($viewButton)->addButton($shortcutButton);
+        $buttonBar->addButton($cshButton)->addButton($viewButton);
 
         // Main view setup
         $view = GeneralUtility::makeInstance(StandaloneView::class);

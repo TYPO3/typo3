@@ -4451,4 +4451,46 @@ return [
             'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->makeShortcutIcon' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->makeShortcutUrl' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->getSetVariables' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->getGetVariables' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setGetVariables' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setSetVariables' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-92132-DeprecatedShortcutPHPAPI.rst'
+        ],
+    ],
 ];

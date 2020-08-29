@@ -22,7 +22,10 @@
     </be:moduleLayout.menu>
 
     <f:render section="Buttons" />
-    <be:moduleLayout.button.shortcutButton displayName="{f:translate(id: shortcutLabel)}" />
+    <be:moduleLayout.button.shortcutButton
+        displayName="{f:translate(id: shortcutLabel)}"
+        arguments="{route: '{route}', tx_beuser_system_beusertxbeuser: '{action: \'{action}\', controller: \'{controller}\'}' }"
+    />
 
     <div id="beuser-main-content">
         <f:render section="Content" />

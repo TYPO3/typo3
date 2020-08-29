@@ -488,7 +488,7 @@ class RecordListController
         // Additional footer content
         $this->body .= $additionalRecordListEvent->getAdditionalContentBelow();
         // Setting up the buttons for docheader
-        $dblist->getDocHeaderButtons($this->moduleTemplate);
+        $dblist->getDocHeaderButtons($this->moduleTemplate, $request);
         // search box toolbar
         $content = '';
         if (!$this->modTSconfig['properties']['disableSearchBox'] && ($tableOutput || !empty($dblist->searchString))) {

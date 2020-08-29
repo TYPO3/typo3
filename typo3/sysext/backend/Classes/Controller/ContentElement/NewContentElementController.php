@@ -115,7 +115,6 @@ class NewContentElementController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $GLOBALS['SOBE'] = $this;
         $this->view = $this->getFluidTemplateObject();
         $this->menuItemView = $this->getFluidTemplateObject('MenuItem.html');
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

@@ -124,6 +124,9 @@ class BackendUserController extends ActionController
     {
         $view->assignMultiple([
             'shortcutLabel' => 'backendUsers',
+            'route' => GeneralUtility::_GP('route'),
+            'action' => $this->request->getControllerActionName(),
+            'controller' => $this->request->getControllerName(),
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);

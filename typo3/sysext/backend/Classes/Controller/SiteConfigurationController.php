@@ -109,10 +109,12 @@ class SiteConfigurationController
     /**
      * List pages that have 'is_siteroot' flag set - those that have the globe icon in page tree.
      * Link to Add / Edit / Delete for each.
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function overviewAction(): void
+    protected function overviewAction(ServerRequestInterface $request): void
     {
-        $this->configureOverViewDocHeader();
+        $this->configureOverViewDocHeader($request->getQueryParams()['route']);
         $allSites = $this->siteFinder->getAllSites();
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
@@ -607,8 +609,10 @@ class SiteConfigurationController
 
     /**
      * Create document header buttons of "overview" action
+     *
+     * @param string $route
      */
-    protected function configureOverViewDocHeader(): void
+    protected function configureOverViewDocHeader(string $route): void
     {
         $iconFactory = $this->moduleTemplate->getIconFactory();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -617,13 +621,12 @@ class SiteConfigurationController
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $getVars = ['id', 'route'];
-            $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName('site_configuration')
-                ->setGetVariables($getVars);
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('site_configuration')
+            ->setArguments([
+                'route' => $route
+            ]);
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**

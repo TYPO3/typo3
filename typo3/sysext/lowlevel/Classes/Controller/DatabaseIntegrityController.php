@@ -142,7 +142,14 @@ class DatabaseIntegrityController
         $shortCutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setSetVariables(['function', 'search', 'search_query_makeQuery']);
+            ->setArguments([
+                'route' => $request->getQueryParams()['route'],
+                'SET' => [
+                    'function' => $this->MOD_SETTINGS['function'] ?? '',
+                    'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
+                    'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
+                ]
+            ]);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
         $this->getModuleMenu();

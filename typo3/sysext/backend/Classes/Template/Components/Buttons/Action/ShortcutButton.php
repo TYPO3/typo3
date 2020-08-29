@@ -15,13 +15,17 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\Action;
 
+use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * ShortcutButton
@@ -33,6 +37,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
  *
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  * $myButton = $buttonBar->makeShortcutButton()
+ *       ->setArguments([
+ *          'route' => $request->getQueryParams()['route']
+ *       ])
  *       ->setModuleName('my_info');
  * $buttonBar->addButton($myButton);
  */
@@ -41,27 +48,29 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     /**
      * @var string
      */
-    protected $moduleName;
+    protected $moduleName = '';
 
     /**
      * @var string
      */
-    protected $displayName;
+    protected $displayName = '';
+
+    /**
+     * @var array List of parameter/value pairs relevant for this shortcut
+     */
+    protected $arguments = [];
 
     /**
      * @var array
+     * @deprecated since v11, will be removed in v12
      */
     protected $setVariables = [];
 
     /**
      * @var array
+     * @deprecated since v11, will be removed in v12
      */
     protected $getVariables = [];
-
-    /**
-     * @var ControllerContext
-     */
-    protected $controllerContext;
 
     /**
      * Gets the name of the module.
@@ -108,12 +117,24 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     }
 
     /**
+     * @param array $arguments
+     * @return $this
+     */
+    public function setArguments(array $arguments): self
+    {
+        $this->arguments = $arguments;
+        return $this;
+    }
+
+    /**
      * Gets the SET variables.
      *
      * @return array
+     * @deprecated since v11, will be removed in v12
      */
     public function getSetVariables()
     {
+        trigger_error('Method getSetVariables() is deprecated and will be removed in v12. Please use ShortcutButton->setArguments() instead.', E_USER_DEPRECATED);
         return $this->setVariables;
     }
 
@@ -122,6 +143,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      *
      * @param array $setVariables
      * @return ShortcutButton
+     * @deprecated since v11, will be removed in v12. Deprecation logged by ModuleTemplate->makeShortcutIcon()
      */
     public function setSetVariables(array $setVariables)
     {
@@ -133,9 +155,11 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      * Gets the GET variables.
      *
      * @return array
+     * @deprecated since v11, will be removed in v12
      */
     public function getGetVariables()
     {
+        trigger_error('Method getGetVariables() is deprecated and will be removed in v12. Please use ShortcutButton->setArguments() instead.', E_USER_DEPRECATED);
         return $this->getVariables;
     }
 
@@ -144,6 +168,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      *
      * @param array $getVariables
      * @return ShortcutButton
+     * @deprecated since v11, will be removed in v12. Deprecation logged by ModuleTemplate->makeShortcutIcon()
      */
     public function setGetVariables(array $getVariables)
     {
@@ -183,18 +208,12 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     /**
      * Determines whether the button shall be rendered.
-     * Depends on the backend user permission to create
-     * shortcuts and the defined module name.
      *
      * @return bool
      */
     public function isValid()
     {
-        $this->preProcess();
-
-        return
-            !empty($this->moduleName)
-        ;
+        return !empty($this->moduleName);
     }
 
     /**
@@ -215,52 +234,69 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     public function render()
     {
         if ($this->getBackendUser()->mayMakeShortcut()) {
-            /** @var ModuleTemplate $moduleTemplate */
-            $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-            $shortcutMarkup = $moduleTemplate->makeShortcutIcon(
-                implode(',', $this->getVariables),
-                implode(',', $this->setVariables),
-                $this->moduleName,
-                '',
-                $this->displayName
-            );
+            if (!empty($this->arguments)) {
+                $shortcutMarkup = $this->createShortcutMarkup();
+            } else {
+                // @deprecated since v11, the else branch will be removed in v12. Deprecation thrown by makeShortcutIcon() below
+                if (empty($this->getVariables)) {
+                    $this->getVariables = ['id', 'route'];
+                }
+                $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+                $shortcutMarkup = $moduleTemplate->makeShortcutIcon(
+                    implode(',', $this->getVariables),
+                    implode(',', $this->setVariables),
+                    $this->moduleName,
+                    '',
+                    $this->displayName
+                );
+            }
         } else {
             $shortcutMarkup = '';
         }
-
         return $shortcutMarkup;
     }
 
-    /**
-     * Pre-processes class member values.
-     */
-    protected function preProcess()
+    protected function createShortcutMarkup(): string
     {
-        $emptyGetVariables = (count($this->getVariables) === 0);
+        $moduleName = $this->moduleName;
+        $storeUrl = HttpUtility::buildQueryString($this->arguments, '&');
 
-        // Set default GET parameters
-        if ($emptyGetVariables) {
-            $this->getVariables = ['id', 'route'];
-        }
+        // Find out if this shortcut exists already. Note this is a hack based on the fact
+        // that sys_be_shortcuts stores the entire request string and not just needed params as array.
+        $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
+        $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
+        $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
+        $shortcutExist = $shortcutRepository->shortcutExists($shortcutUrl);
 
-        // Automatically determine module name in Extbase context
-        if ($this->controllerContext !== null) {
-            $currentRequest = $this->controllerContext->getRequest();
-            $extensionName = $currentRequest->getControllerExtensionName();
-            $this->moduleName = $currentRequest->getPluginName();
-            // Extend default GET parameters
-            if ($emptyGetVariables) {
-                $modulePrefix = strtolower('tx_' . $extensionName . '_' . $this->moduleName);
-                $this->getVariables[] = $modulePrefix;
-            }
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        if ($shortcutExist) {
+            $shortcutMarkup = '<a class="active btn btn-default btn-sm" title="">'
+                . $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render()
+                . '</a>';
+        } else {
+            $languageService = $this->getLanguageService();
+            $confirmationText = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
+            $onClick = 'top.TYPO3.ShortcutMenu.createShortcut('
+                . GeneralUtility::quoteJSvalue(rawurlencode($moduleName))
+                . ', ' . GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl))
+                . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
+                . ', \'\''
+                . ', this'
+                . ', ' . GeneralUtility::quoteJSvalue($this->displayName) . ');return false;';
+            $shortcutMarkup = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="'
+                . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">'
+                . $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
         }
+        return $shortcutMarkup;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

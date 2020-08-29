@@ -374,7 +374,10 @@ class TypoScriptTemplateModuleController
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('web_ts')
-            ->setGetVariables(['id', 'route']);
+            ->setArguments([
+                'route' => $this->request->getQueryParams()['route'],
+                'id' => (int)$this->id
+            ]);
         $buttonBar->addButton($shortcutButton);
     }
 

@@ -87,19 +87,19 @@ class ViewModuleController
     }
 
     /**
-     * Registers the docheader
-     *
+     * Register the doc header
+
      * @param int $pageId
      * @param int $languageId
      * @param string $targetUrl
+     * @param string $route
      */
-    protected function registerDocHeader(int $pageId, int $languageId, string $targetUrl)
+    protected function registerDocHeader(int $pageId, int $languageId, string $targetUrl, string $route)
     {
         $languages = $this->getPreviewLanguages($pageId);
         if (count($languages) > 1) {
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             foreach ($languages as $value => $label) {
                 $href = (string)$uriBuilder->buildUriFromRoute(
@@ -135,15 +135,13 @@ class ViewModuleController
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         // Shortcut
-        $mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
-        if ($mayMakeShortcut) {
-            $getVars = ['id', 'route'];
-
-            $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName('web_ViewpageView')
-                ->setGetVariables($getVars);
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('web_ViewpageView')
+            ->setArguments([
+                'route' => $route,
+                'id' => $pageId,
+            ]);
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
@@ -192,7 +190,7 @@ class ViewModuleController
             return $this->renderFlashMessage($flashMessage);
         }
 
-        $this->registerDocHeader($pageId, $languageId, $targetUrl);
+        $this->registerDocHeader($pageId, $languageId, $targetUrl, $request->getQueryParams()['route']);
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icons = [];

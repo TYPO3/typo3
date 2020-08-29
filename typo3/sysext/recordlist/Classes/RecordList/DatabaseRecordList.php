@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\RecordList;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -499,8 +500,9 @@ class DatabaseRecordList
      * operations.
      *
      * @param ModuleTemplate $moduleTemplate
+     * @param ServerRequestInterface $request
      */
-    public function getDocHeaderButtons(ModuleTemplate $moduleTemplate)
+    public function getDocHeaderButtons(ModuleTemplate $moduleTemplate, ServerRequestInterface $request)
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $modulePageTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
@@ -623,24 +625,35 @@ class DatabaseRecordList
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
                 ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
             // Shortcut
-            if ($backendUser->mayMakeShortcut()) {
-                $shortCutButton = $buttonBar->makeShortcutButton()
-                    ->setModuleName('web_list')
-                    ->setGetVariables([
-                        'id',
-                        'route',
-                        'pointer',
-                        'table',
-                        'search_field',
-                        'search_levels',
-                        'showLimit',
-                        'sortField',
-                        'sortRev'
-                    ])
-                    ->setSetVariables(array_keys($this->MOD_MENU));
-                $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            $shortCutButton = $buttonBar->makeShortcutButton()->setModuleName('web_list');
+            $queryParams = $request->getQueryParams();
+            $arguments = [
+                'route' => $queryParams['route'],
+                'id' => $this->id
+            ];
+            $potentialArguments = [
+                'pointer',
+                'table',
+                'search_field',
+                'search_levels',
+                'showLimit',
+                'sortField',
+                'sortRev'
+            ];
+            foreach ($potentialArguments as $argument) {
+                if (!empty($queryParams[$argument])) {
+                    $arguments[$argument] = $queryParams[$argument];
+                }
             }
+            $moduleSettings = $this->moduleData;
+            foreach ($moduleSettings as $moduleSettingKey => $moduleSettingValue) {
+                $arguments['GET'][$moduleSettingKey] = $moduleSettingValue;
+            }
+            $shortCutButton->setArguments($arguments);
+            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
             // Back
             if ($this->returnUrl) {
                 $backButton = $buttonBar->makeLinkButton()

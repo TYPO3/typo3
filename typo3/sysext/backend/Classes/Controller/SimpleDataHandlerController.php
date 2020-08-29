@@ -107,7 +107,6 @@ class SimpleDataHandlerController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $GLOBALS['SOBE'] = $this;
         $this->init($request);
 
         $this->initializeClipboard();
@@ -129,7 +128,6 @@ class SimpleDataHandlerController
      */
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $GLOBALS['SOBE'] = $this;
         $this->init($request);
 
         // do the regular / main logic

@@ -1298,7 +1298,7 @@ class EditDocumentController
         }
 
         $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-        $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+        $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
         $this->registerCshButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 4);
     }
 
@@ -1794,21 +1794,31 @@ class EditDocumentController
      * @param ButtonBar $buttonBar
      * @param string $position
      * @param int $group
+     * @param ServerRequestInterface $request
      */
-    protected function registerShortcutButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group)
+    protected function registerShortcutButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request)
     {
         if ($this->returnUrl !== $this->getCloseUrl()) {
+            $queryParams = $request->getQueryParams();
+            $potentialArguments = [
+                'returnUrl',
+                'edit',
+                'defVals',
+                'overrideVals',
+                'columnsOnly',
+                'returnNewPageId',
+                'noView'
+            ];
+            $arguments = [
+                'route' => $queryParams['route'],
+            ];
+            foreach ($potentialArguments as $argument) {
+                if (!empty($queryParams[$argument])) {
+                    $arguments[$argument] = $queryParams[$argument];
+                }
+            }
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
-            $shortCutButton->setModuleName('xMOD_alt_doc.php')
-                ->setGetVariables([
-                    'returnUrl',
-                    'edit',
-                    'defVals',
-                    'overrideVals',
-                    'columnsOnly',
-                    'returnNewPageId',
-                    'noView']);
-
+            $shortCutButton->setModuleName('xMOD_alt_doc.php')->setArguments($arguments);
             $buttonBar->addButton($shortCutButton, $position, $group);
         }
     }
