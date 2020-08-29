@@ -3093,23 +3093,9 @@ class DatabaseRecordList
         }
 
         $searchableFields = [];
-        $fieldListWasSet = false;
         // Get fields from ctrl section of TCA first
         if (isset($GLOBALS['TCA'][$table]['ctrl']['searchFields'])) {
             $searchableFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['searchFields'], true);
-            $fieldListWasSet = true;
-        }
-        // Call hook to add or change the list
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'])) {
-            $hookParameters = [
-                'tableHasSearchConfiguration' => $fieldListWasSet,
-                'tableName' => $table,
-                'searchFields' => &$searchableFields,
-                'searchString' => $this->searchString
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-            }
         }
 
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {

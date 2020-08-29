@@ -440,4 +440,9 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'mod_list\'][\'getSearchFieldList\']' => [
+        'restFiles' => [
+            'Breaking-92128-DatabaseRecordListDropHookToModifySearchFields.rst'
+        ],
+    ],
 ];
