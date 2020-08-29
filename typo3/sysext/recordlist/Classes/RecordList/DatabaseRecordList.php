@@ -2265,9 +2265,6 @@ class DatabaseRecordList
         // Add pseudo "control" fields
         $fields[] = '_PATH_';
         $fields[] = '_REF_';
-        $fields[] = '_LOCALIZATION_';
-        $fields[] = '_CONTROL_';
-        $fields[] = '_CLIPBOARD_';
         // Create a checkbox for each field:
         $checkboxes = [];
         $checkAllChecked = true;
@@ -2794,11 +2791,9 @@ class DatabaseRecordList
         foreach ($orderedTableNames as $tableName => $_) {
             // Setting fields to select:
             if ($this->allFields) {
-                $fields = $this->makeFieldList($tableName);
-                $fields[] = 'tstamp';
-                $fields[] = 'crdate';
+                $fields = $this->makeFieldList($tableName, false, true);
                 $fields[] = '_PATH_';
-                $fields[] = '_CONTROL_';
+                $fields[] = '_REF_';
                 if (is_array($this->setFields[$tableName])) {
                     $fields = array_intersect($fields, $this->setFields[$tableName]);
                 } else {
@@ -2807,7 +2802,6 @@ class DatabaseRecordList
             } else {
                 $fields = [];
             }
-
             // Finally, render the list:
             $this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
         }
