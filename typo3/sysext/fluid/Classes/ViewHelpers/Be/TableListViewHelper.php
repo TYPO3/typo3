@@ -154,8 +154,6 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $dblist->noControlPanels = !$enableControlPanels;
         $dblist->sortField = $sortField;
         $dblist->sortRev = $sortDescending;
-        $dblist->generateList();
-
-        return $dblist->HTMLcode;
+        return $dblist->generateList();
     }
 }

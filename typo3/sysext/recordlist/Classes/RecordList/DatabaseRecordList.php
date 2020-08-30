@@ -217,13 +217,6 @@ class DatabaseRecordList
     public $modTSconfig;
 
     /**
-     * String with accumulated HTML content
-     *
-     * @var string
-     */
-    public $HTMLcode = '';
-
-    /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
      *
      * @var array
@@ -2700,8 +2693,6 @@ class DatabaseRecordList
         $this->sortRev = GeneralUtility::_GP('sortRev');
         $this->displayFields = GeneralUtility::_GP('displayFields');
         $this->duplicateField = GeneralUtility::_GP('duplicateField');
-        // Init dynamic vars:
-        $this->HTMLcode = '';
 
         // If there is a current link to a record, set the current link uid and get the table name from the link handler configuration
         $currentLinkValue = isset($this->overrideUrlParameters['P']['currentValue']) ? trim($this->overrideUrlParameters['P']['currentValue']) : '';
@@ -2735,12 +2726,13 @@ class DatabaseRecordList
     }
 
     /**
-     * Traverses the table(s) to be listed and renders the output code for each:
-     * The HTML is accumulated in $this->HTMLcode
-     * Finishes off with a stopper-gif
+     * Traverses the table(s) to be listed and renders the output code for each.
+     *
+     * @return string Rendered HTML
      */
-    public function generateList()
+    public function generateList(): string
     {
+        $output = '';
         // Set page record in header
         $hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
 
@@ -2803,8 +2795,9 @@ class DatabaseRecordList
                 $fields = [];
             }
             // Finally, render the list:
-            $this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
+            $output .= $this->getTable($tableName, $this->id, implode(',', $fields));
         }
+        return $output;
     }
 
     /**

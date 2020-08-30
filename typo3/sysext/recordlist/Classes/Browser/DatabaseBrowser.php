@@ -204,6 +204,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $dbList->noControlPanels = true;
         $dbList->clickMenuEnabled = false;
         $dbList->tableList = implode(',', $tablesArr);
+        $dbList->allFields = true;
 
         // a string like "data[pages][79][storage_pid]"
         [$fieldPointerString] = explode('|', $this->bparams);
@@ -225,12 +226,12 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         );
 
         $dbList->setDispFields();
-        $dbList->generateList();
+        $tableList = $dbList->generateList();
 
         $out .= $dbList->getSearchBox();
 
         // Add the HTML for the record list to output variable:
-        $out .= $dbList->HTMLcode;
+        $out .= $tableList;
 
         // Add support for fieldselectbox in singleTableMode
         if ($dbList->table) {

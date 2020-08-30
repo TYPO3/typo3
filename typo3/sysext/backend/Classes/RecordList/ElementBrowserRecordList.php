@@ -114,15 +114,4 @@ class ElementBrowserRecordList extends DatabaseRecordList
             }
         }
     }
-
-    /**
-     * Local version that sets allFields to TRUE to support userFieldSelect
-     *
-     * @see fieldSelectBox
-     */
-    public function generateList()
-    {
-        $this->allFields = true;
-        parent::generateList();
-    }
 }

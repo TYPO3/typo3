@@ -320,6 +320,7 @@ class RecordListController
         // It is set, if the clickmenu-layer is active AND the extended view is not enabled.
         $dblist->dontShowClipControlPanels = ($dblist->clipObj->current === 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers']);
         // If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
+        $tableOutput = '';
         if ($access || ($this->id === 0 && $this->search_levels !== 0 && $this->search_field !== '')) {
             // Deleting records...:
             // Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
@@ -344,7 +345,7 @@ class RecordListController
             $dblist->start($this->id, $this->table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
             $dblist->setDispFields();
             // Render the list of tables:
-            $dblist->generateList();
+            $tableOutput = $dblist->generateList();
             $listUrl = $dblist->listURL();
 
             // Add JavaScript functions to the page:
@@ -407,8 +408,8 @@ class RecordListController
             $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
         }
 
-        if (!empty($dblist->HTMLcode)) {
-            $output .= $dblist->HTMLcode;
+        if (!empty($tableOutput)) {
+            $output .= $tableOutput;
         } else {
             if (isset($this->table, $GLOBALS['TCA'][$this->table]['ctrl']['title'])) {
                 if (strpos($GLOBALS['TCA'][$this->table]['ctrl']['title'], 'LLL:') === 0) {
@@ -437,7 +438,7 @@ class RecordListController
         $this->body .= $output;
         $this->body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
         // If a listing was produced, create the page footer with search form etc:
-        if ($dblist->HTMLcode) {
+        if ($tableOutput) {
             // Making field select box (when extended view for a single table is enabled):
             if ($dblist->table) {
                 $this->body .= $dblist->fieldSelectBox($dblist->table);
@@ -478,7 +479,7 @@ class RecordListController
 					</div>';
         }
         // Printing clipboard if enabled
-        if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard && ($dblist->HTMLcode || $dblist->clipObj->hasElements())) {
+        if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard && ($tableOutput || $dblist->clipObj->hasElements())) {
             $this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
         }
         // Additional footer content
@@ -493,7 +494,7 @@ class RecordListController
         $dblist->getDocHeaderButtons($this->moduleTemplate);
         // search box toolbar
         $content = '';
-        if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
+        if (!$this->modTSconfig['properties']['disableSearchBox'] && ($tableOutput || !empty($dblist->searchString))) {
             $content .= $dblist->getSearchBox();
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
 
