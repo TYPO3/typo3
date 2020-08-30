@@ -137,13 +137,6 @@ class DatabaseRecordList
     public $pageRow = [];
 
     /**
-     * Contains page translation languages
-     *
-     * @var array
-     */
-    public $pageOverlays = [];
-
-    /**
      * Contains sys language icons and titles
      *
      * @var array
@@ -386,21 +379,6 @@ class DatabaseRecordList
     protected $referenceCount = [];
 
     /**
-     * Translations of the current record
-     *
-     * @var string[]
-     */
-    public $translations;
-
-    /**
-     * select fields for the query which fetches the translations of the current
-     * record
-     *
-     * @var string
-     */
-    public $selFieldList;
-
-    /**
      * Injected by RecordList
      *
      * @var string[]
@@ -464,16 +442,21 @@ class DatabaseRecordList
     protected $showOnlyTranslatedRecords = false;
 
     /**
-     * All languages that are included in the site configuration
-     * for the current page. New records can only be created in those
-     * languages.
+     * This array contains all possible language uids, which could be translations of a record (excluding pages) in the default language
      *
-     * @var array
+     * It mainly depends on the current pageUid.
+     * Translations are possible, depending on
+     * - the site config
+     * - already translated page records
+     *
+     * @var int[]
      */
-    protected $systemLanguagesOnPage;
+    protected $possibleTranslations = [];
 
     /**
      * All languages that are allowed by the user
+     *
+     * This is used for the translation handling of pages only.
      *
      * @var array
      */
@@ -815,7 +798,6 @@ class DatabaseRecordList
 
         // Implode it into a list of fields for the SQL-statement.
         $selFieldList = implode(',', $selectFields);
-        $this->selFieldList = $selFieldList;
 
         if ($this->firstElementNumber > 2 && $iLimit > 0) {
             // Get the two previous rows for sorting if displaying page > 1
@@ -948,24 +930,31 @@ class DatabaseRecordList
                     // Render item row if counter < limit
                     if ($cc < $iLimit) {
                         $cc++;
-                        $this->translations = false;
-                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, '');
+                        // Reset translations
+                        $translations = [];
+                        // Guard clause so we can quickly return if a record is localized to "all languages"
+                        // It should only be possible to localize a record off default (uid 0)
+                        if ($l10nEnabled && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
+                            $translationsRaw = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $selFieldList);
+                            if (is_array($translationsRaw) && is_array($translationsRaw['translations'])) {
+                                $translations = $translationsRaw['translations'];
+                            }
+                        }
+                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, '', 0, $translations);
                         // If no search happened it means that the selected
                         // records are either default or All language and here we will not select translations
                         // which point to the main record:
                         if ($l10nEnabled && $this->searchString === '' && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table))) {
-                            // For each available translation, render the record:
-                            if (is_array($this->translations)) {
-                                foreach ($this->translations as $lRow) {
-                                    // $lRow isn't always what we want - if record was moved we've to work with the
-                                    // placeholder records otherwise the list is messed up a bit
-                                    if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
-                                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                            foreach ($translations as $lRow) {
+                                // $lRow isn't always what we want - if record was moved we've to work with the
+                                // placeholder records otherwise the list is messed up a bit
+                                if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
+                                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                             ->getQueryBuilderForTable($table);
-                                        $queryBuilder->getRestrictions()
+                                    $queryBuilder->getRestrictions()
                                             ->removeAll()
                                             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                                        $predicates = [
+                                    $predicates = [
                                             $queryBuilder->expr()->eq(
                                                 't3ver_move_id',
                                                 $queryBuilder->createNamedParameter((int)$lRow['uid'], \PDO::PARAM_INT)
@@ -980,24 +969,23 @@ class DatabaseRecordList
                                             ),
                                         ];
 
-                                        $tmpRow = $queryBuilder
+                                    $tmpRow = $queryBuilder
                                             ->select(...$selFieldList)
                                             ->from($table)
                                             ->andWhere(...$predicates)
                                             ->execute()
                                             ->fetch();
 
-                                        $lRow = is_array($tmpRow) ? $tmpRow : $lRow;
-                                    }
-                                    if (!$this->isRowListingConditionFulfilled($table, $lRow)) {
-                                        continue;
-                                    }
-                                    // In offline workspace, look for alternative record:
-                                    BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
-                                    if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
-                                        $currentIdList[] = $lRow['uid'];
-                                        $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, '', 18);
-                                    }
+                                    $lRow = is_array($tmpRow) ? $tmpRow : $lRow;
+                                }
+                                if (!$this->isRowListingConditionFulfilled($table, $lRow)) {
+                                    continue;
+                                }
+                                // In offline workspace, look for alternative record:
+                                BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
+                                if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+                                    $currentIdList[] = $lRow['uid'];
+                                    $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, '', 18, []);
                                 }
                             }
                         }
@@ -1124,11 +1112,12 @@ class DatabaseRecordList
      * @param string $titleCol Table field (column) where header value is found
      * @param string $thumbsCol Table field (column) where (possible) thumbnails can be found
      * @param int $indent Indent from left.
+     * @param array $translations
      * @return string Table row for the element
      * @internal
      * @see getTable()
      */
-    public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent = 0)
+    public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent, array $translations)
     {
         if (!is_array($row)) {
             return '';
@@ -1221,9 +1210,10 @@ class DatabaseRecordList
             } elseif ($fCol === '_CLIPBOARD_') {
                 $theData[$fCol] = $this->makeClip($table, $row);
             } elseif ($fCol === '_LOCALIZATION_') {
-                [$lC1, $lC2] = $this->makeLocalizationPanel($table, $row);
-                $theData[$fCol] = $lC1;
-                $theData[$fCol . 'b'] = '<div class="btn-group">' . $lC2 . '</div>';
+                // Language flag an title
+                $theData[$fCol] = $this->languageFlag($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                // Localize record
+                $theData[$fCol . 'b'] = '<div class="btn-group">' . $this->makeLocalizationPanel($table, $row, $translations) . '</div>';
             } elseif ($fCol === '_LOCALIZATION_b') {
                 // deliberately empty
             } else {
@@ -2214,65 +2204,52 @@ class DatabaseRecordList
      *
      * @param string $table The table
      * @param mixed[] $row The record for which to make the localization panel.
-     * @return string[] Array with key 0/1 with content for column 1 and 2
+     * @param array $translations
+     * @return string
      */
-    public function makeLocalizationPanel($table, $row)
+    public function makeLocalizationPanel($table, $row, array $translations): string
     {
-        $out = [
-            0 => '',
-            1 => ''
-        ];
-        // Reset translations
-        $this->translations = [];
-
-        // Language title and icon:
-        $out[0] = $this->languageFlag($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
-        // Guard clause so we can quickly return if a record is localized to "all languages"
-        // It should only be possible to localize a record off default (uid 0)
-        // Reasoning: The Parent is for ALL languages... why overlay with a localization?
-        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === -1) {
-            return $out;
+        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0) {
+            return '';
         }
-        $translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
-        if (is_array($translations)) {
-            $this->translations = $translations['translations'];
-            // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
-            $lNew = '';
-            foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
-                if (isset($this->systemLanguagesOnPage[$lUid_OnPage])
-                    && $this->isEditable($table)
-                    && !$this->isRecordDeletePlaceholder($row)
-                    && !isset($translations['translations'][$lUid_OnPage])
-                    && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)
-                ) {
-                    $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute(
-                        'record_edit',
-                        [
+        $out = '';
+        // All records excluding pages
+        $possibleTranslations = $this->possibleTranslations;
+        if ($table === 'pages') {
+            // Calculate possible translations for pages
+            $possibleTranslations = array_map(static function ($siteLanguage) { return $siteLanguage->getLanguageId(); }, $this->languagesAllowedForUser);
+            $possibleTranslations = array_filter($possibleTranslations, static function ($languageUid) { return $languageUid > 0;});
+        }
+
+        // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
+        foreach ($possibleTranslations as $lUid_OnPage) {
+            if ($this->isEditable($table)
+                && !$this->isRecordDeletePlaceholder($row)
+                && !isset($translations[$lUid_OnPage])
+                && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)
+            ) {
+                $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute(
+                    'record_edit',
+                    [
                             'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
                             'returnUrl' => $this->listURL()
                         ]
-                    );
-                    $href = BackendUtility::getLinkToDataHandlerAction(
-                        '&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
-                        $redirectUrl
-                    );
-                    $language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
-                    if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
-                        $lC = $this->iconFactory->getIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render();
-                    } else {
-                        $lC = $this->languageIconTitles[$lUid_OnPage]['title'];
-                    }
-                    $lC = '<a href="' . htmlspecialchars($href) . '" title="'
+                );
+                $href = BackendUtility::getLinkToDataHandlerAction(
+                    '&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
+                    $redirectUrl
+                );
+                $language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
+                if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
+                    $lC = $this->iconFactory->getIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render();
+                } else {
+                    $lC = $this->languageIconTitles[$lUid_OnPage]['title'];
+                }
+                $lC = '<a href="' . htmlspecialchars($href) . '" title="'
                         . htmlspecialchars($language['title']) . '" class="btn btn-default t3js-action-localize">'
                         . $lC . '</a> ';
-                    $lNew .= $lC;
-                }
+                $out .= $lC;
             }
-            if ($lNew) {
-                $out[1] .= $lNew;
-            }
-        } elseif ($row['l18n_parent']) {
-            $out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;' . $out[0];
         }
         return $out;
     }
@@ -2664,8 +2641,6 @@ class DatabaseRecordList
         // Setting internal variables:
         // sets the parent id
         $this->id = (int)$id;
-        // Store languages that are included in the site configuration for the current page.
-        $this->systemLanguagesOnPage = $this->translateTools->getSystemLanguages($this->id);
         if ($GLOBALS['TCA'][$table]) {
             // Setting single table mode, if table exists:
             $this->table = $table;
@@ -2709,7 +2684,8 @@ class DatabaseRecordList
         }
         $this->perms_clause = (string)$permsClause;
 
-        $this->initializeLanguages();
+        $this->possibleTranslations = $this->getPossibleTranslations($this->id);
+        $this->languageIconTitles = $this->translateTools->getSystemLanguages($this->id);
     }
 
     /**
@@ -3589,10 +3565,21 @@ class DatabaseRecordList
     }
 
     /**
-     * Initializes page languages and icons
+     * Fetches all possible translations for the given page
+     *
+     * This depends on the site config and the current translations of the page record
+     * It is used to set the possible translations for all records excluding pages
+     *
+     * @param int $pageUid
+     * @return int[]
      */
-    public function initializeLanguages()
+    protected function getPossibleTranslations(int $pageUid): array
     {
+        // Store languages that are included in the site configuration for the current page.
+        $availableSystemLanguageUids = array_keys($this->translateTools->getSystemLanguages($pageUid));
+        if ($availableSystemLanguageUids === []) {
+            return [];
+        }
         // Look up page overlays:
         $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
@@ -3607,7 +3594,8 @@ class DatabaseRecordList
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq($localizationParentField, $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq($localizationParentField, $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->in($languageField, $queryBuilder->createNamedParameter($availableSystemLanguageUids, Connection::PARAM_INT_ARRAY)),
                     $queryBuilder->expr()->gt(
                         $languageField,
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -3615,13 +3603,11 @@ class DatabaseRecordList
                 )
             )
             ->execute();
-
-        $this->pageOverlays = [];
+        $allowedTranslationsOnPage = [];
         while ($row = $result->fetch()) {
-            $this->pageOverlays[$row[$languageField]] = $row;
+            $allowedTranslationsOnPage[] = (int)$row[$languageField];
         }
-
-        $this->languageIconTitles = $this->translateTools->getSystemLanguages($this->id);
+        return $allowedTranslationsOnPage;
     }
 
     /**

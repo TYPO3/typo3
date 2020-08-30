@@ -294,6 +294,7 @@ class RecordListController
         $dblist->pageRow = $this->pageinfo;
         $dblist->MOD_MENU = ['bigControlPanel' => '', 'clipBoard' => ''];
         $dblist->modTSconfig = $this->modTSconfig;
+        $dblist->setLanguagesAllowedForUser($this->siteLanguages);
         $clickTitleMode = trim($this->modTSconfig['properties']['clickTitleMode']);
         $dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
         if (isset($this->modTSconfig['properties']['tableDisplayOrder.'])) {
@@ -406,7 +407,6 @@ class RecordListController
             $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
             $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
             $pageTranslationsDatabaseRecordList->hideTranslations = '';
-            $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
             $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
             $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
         }
