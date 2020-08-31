@@ -1,4 +1,11 @@
 #
+# Table structure for table 'be_users'
+#
+CREATE TABLE be_users (
+  workspace_perms tinyint(3) DEFAULT '0' NOT NULL
+);
+
+#
 # Table structure for table 'sys_preview'
 #
 CREATE TABLE sys_preview (
