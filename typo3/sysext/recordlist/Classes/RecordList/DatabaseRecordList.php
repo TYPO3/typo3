@@ -39,8 +39,6 @@ use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
@@ -323,7 +321,7 @@ class DatabaseRecordList
     /**
      * Fields to display for the current table
      *
-     * @var string[]
+     * @var string[][]
      */
     public $setFields = [];
 
@@ -670,11 +668,10 @@ class DatabaseRecordList
      *
      * @param string $table Table name
      * @param int $id Page id
-     * @param string $rowList List of fields to show in the listing. Pseudo fields will be added including the record header.
      * @throws \UnexpectedValueException
      * @return string HTML table with the listing for the record.
      */
-    public function getTable($table, $id, $rowList = '')
+    public function getTable($table, $id)
     {
         // Finding the total amount of records on the page
         $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
@@ -715,18 +712,29 @@ class DatabaseRecordList
             $iLimit = 0;
         }
 
-        $rowListArray = GeneralUtility::trimExplode(',', $rowList, true);
+        // Init
+        $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
+        $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
+            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+
+        // Setting fields selected in fieldselectBox (saved in uc)
+        $rowListArray = [];
+        if ($this->allFields) {
+            $rowListArray = $this->makeFieldList($table, false, true);
+            if ($this->csvOutput === false) {
+                $rowListArray[] = '_PATH_';
+                $rowListArray[] = '_REF_';
+            }
+            if (is_array($this->setFields[$table])) {
+                $rowListArray = array_intersect($rowListArray, $this->setFields[$table]);
+            }
+        }
         // if no columns have been specified, show description (if configured)
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
             $rowListArray[] = $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'];
         }
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
-        // Init
-        $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
-        $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
-        $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
-                     && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         // Get configuration of collapsed tables from user uc
         $tablesCollapsed = is_array($backendUser->uc['moduleData']['list'])
             ? $backendUser->uc['moduleData']['list']
@@ -734,51 +742,42 @@ class DatabaseRecordList
         $tableCollapsed = (bool)($tablesCollapsed[$table] ?? false);
         // prepare space icon
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-        // Cleaning rowlist for duplicates and place the $titleCol as the first column always!
+        // Place the $titleCol as the first column always!
         $this->fieldArray = [];
-        // title Column
         // Add title column
         $this->fieldArray[] = $titleCol;
-        // Control-Panel
-        if (!GeneralUtility::inList($rowList, '_CONTROL_')) {
-            $this->fieldArray[] = '_CONTROL_';
-        }
-        // Clipboard
-        if ($this->showClipboard) {
-            $this->fieldArray[] = '_CLIPBOARD_';
-        }
-        // Ref
-        if (!$this->dontShowClipControlPanels) {
-            $this->fieldArray[] = '_REF_';
-        }
-        // Path
-        if ($this->searchLevels) {
-            $this->fieldArray[] = '_PATH_';
-        }
-        // Localization
-        if ($l10nEnabled) {
-            $this->fieldArray[] = '_LOCALIZATION_';
-            // Do not show the "Localize to:" field when only translated records should be shown
-            if (!$this->showOnlyTranslatedRecords) {
-                $this->fieldArray[] = '_LOCALIZATION_b';
+        if ($this->csvOutput === false) {
+            // Control-Panel
+            if ($this->noControlPanels === false) {
+                $this->fieldArray[] = '_CONTROL_';
+            }
+            // Clipboard
+            if ($this->showClipboard && $this->noControlPanels === false) {
+                $this->fieldArray[] = '_CLIPBOARD_';
+            }
+            // Ref
+            if (!in_array('_REF_', $rowListArray, true) && !$this->dontShowClipControlPanels) {
+                $this->fieldArray[] = '_REF_';
+            }
+            // Path
+            if (!in_array('_PATH_', $rowListArray, true) && $this->searchLevels) {
+                $this->fieldArray[] = '_PATH_';
+            }
+            // Localization
+            if ($l10nEnabled) {
+                $this->fieldArray[] = '_LOCALIZATION_';
+                // Do not show the "Localize to:" field when only translated records should be shown
+                if (!$this->showOnlyTranslatedRecords) {
+                    $this->fieldArray[] = '_LOCALIZATION_b';
+                }
             }
         }
         // Cleaning up:
         $this->fieldArray = array_unique(array_merge($this->fieldArray, $rowListArray));
-        if ($this->noControlPanels) {
-            $tempArray = array_flip($this->fieldArray);
-            unset($tempArray['_CONTROL_']);
-            unset($tempArray['_CLIPBOARD_']);
-            $this->fieldArray = array_keys($tempArray);
-        }
         // Creating the list of fields to include in the SQL query:
         $selectFields = $this->fieldArray;
         $selectFields[] = 'uid';
         $selectFields[] = 'pid';
-        // adding column for thumbnails
-        if ($thumbsCol) {
-            $selectFields[] = $thumbsCol;
-        }
         if ($table === 'pages') {
             $selectFields[] = 'module';
             $selectFields[] = 'extendToSubpages';
@@ -813,24 +812,7 @@ class DatabaseRecordList
         }
         // Unique list!
         $selectFields = array_unique($selectFields);
-        $fieldListFields = $this->makeFieldList($table, 1);
-        if (empty($fieldListFields) && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-            $message = sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:missingTcaColumnsMessage'), $table, $table);
-            $messageTitle = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:missingTcaColumnsMessageTitle');
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $message,
-                $messageTitle,
-                FlashMessage::WARNING,
-                true
-            );
-            /** @var FlashMessageService $flashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        }
+        $fieldListFields = $this->makeFieldList($table, true);
         // Making sure that the fields in the field-list ARE in the field-list from TCA!
         $selectFields = array_intersect($selectFields, $fieldListFields);
 
@@ -970,7 +952,7 @@ class DatabaseRecordList
                     if ($cc < $iLimit) {
                         $cc++;
                         $this->translations = false;
-                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, $thumbsCol);
+                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, '');
                         // If no search happened it means that the selected
                         // records are either default or All language and here we will not select translations
                         // which point to the main record:
@@ -1017,7 +999,7 @@ class DatabaseRecordList
                                     BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
                                     if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                                         $currentIdList[] = $lRow['uid'];
-                                        $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, $thumbsCol, 18);
+                                        $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, '', 18);
                                     }
                                 }
                             }
@@ -1027,7 +1009,7 @@ class DatabaseRecordList
                 // Record navigation is added to the beginning and end of the table if in single
                 // table mode
                 if ($this->table) {
-                    $rowOutput = $this->renderListNavigation('top', $totalItems, $iLimit) . $rowOutput . $this->renderListNavigation('bottom', $totalItems, $iLimit);
+                    $rowOutput = $this->renderListNavigation('top', $totalItems, $iLimit, (string)$table) . $rowOutput . $this->renderListNavigation('bottom', $totalItems, $iLimit, (string)$table);
                 } else {
                     // Show that there are more records than shown
                     if ($totalItems > $itemsLimitPerTable) {
@@ -1264,7 +1246,7 @@ class DatabaseRecordList
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
                 }
             }
-            $this->addToCSV($row);
+            $this->setCsvRow($row);
         }
         // Add classes to table cells
         $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $deletePlaceholderClass;
@@ -1597,9 +1579,10 @@ class DatabaseRecordList
      * @param string $renderPart Distinguish between 'top' and 'bottom' part of the navigation (above or below the records)
      * @param int $totalItems
      * @param int $iLimit
+     * @param string $table
      * @return string Navigation HTML
      */
-    protected function renderListNavigation($renderPart, int $totalItems, int $iLimit)
+    protected function renderListNavigation($renderPart, int $totalItems, int $iLimit, string $table)
     {
         $totalPages = ceil($totalItems / $iLimit);
         // Show page selector if not all records fit into one page
@@ -1679,7 +1662,7 @@ class DatabaseRecordList
             $lastElementNumber
         ) . '</span></li>';
 
-        $titleColumn = $this->fieldArray[0];
+        $titleColumn = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $data = [
             $titleColumn => $content . '
 				<nav class="pagination-wrap">
@@ -2292,19 +2275,13 @@ class DatabaseRecordList
      * Creates a checkbox list for selecting fields to display from a table:
      *
      * @param string $table Table name
-     * @param bool $formFields If TRUE, form-fields will be wrapped around the table.
      * @return string HTML table with the selector check box (name: displayFields['.$table.'][])
      */
-    public function fieldSelectBox($table, $formFields = true)
+    public function fieldSelectBox($table)
     {
         $lang = $this->getLanguageService();
-        // Init:
-        $formElements = ['', ''];
-        if ($formFields) {
-            $formElements = ['<form action="' . htmlspecialchars($this->listURL()) . '" method="post" name="fieldSelectBox">', '</form>'];
-        }
         // Load already selected fields, if any:
-        $setFields = is_array($this->setFields[$table]) ? $this->setFields[$table] : [];
+        $setFields = (array)($this->setFields[$table]?? []);
         // Request fields from table:
         $fields = $this->makeFieldList($table, false, true);
         // Add pseudo "control" fields
@@ -2321,7 +2298,7 @@ class DatabaseRecordList
                 continue;
             }
             // Determine, if checkbox should be checked
-            if (in_array($fieldName, $setFields, true) || $fieldName === $this->fieldArray[0]) {
+            if (in_array($fieldName, $setFields, true) || $fieldName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
                 $checked = ' checked="checked"';
             } else {
                 $checkAllChecked = false;
@@ -2347,11 +2324,13 @@ class DatabaseRecordList
 
             $checkboxes[] = '<tr><td class="col-checkbox"><input type="checkbox" id="check-' . $fieldName . '" name="displayFields['
                 . $table . '][]" value="' . $fieldName . '" ' . $checked
-                . ($fieldName === $this->fieldArray[0] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
+                . ($fieldName === $GLOBALS['TCA'][$table]['ctrl']['label'] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
                 . '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($lang->sL($fieldLabel)) . ' <span class="text-muted text-monospace">[' . htmlspecialchars($fieldName) . ']</span></label></td></tr>';
         }
         // Table with the field selector::
-        $content = $formElements[0] . '
+        return '
+            <div class="fieldSelectBox">
+            <form action="' . htmlspecialchars($this->listURL()) . '" method="post" name="fieldSelectBox">
 			<input type="hidden" name="displayFields[' . $table . '][]" value="">
 			<div class="table-fit table-scrollable">
 				<table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
@@ -2370,8 +2349,7 @@ class DatabaseRecordList
 			</div>
 			<input type="submit" name="search" class="btn btn-default" value="'
             . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.setFields')) . '"/>
-			' . $formElements[1];
-        return '<div class="fieldSelectBox">' . $content . '</div>';
+            </form></div>';
     }
 
     /*********************************
@@ -2427,7 +2405,7 @@ class DatabaseRecordList
      */
     public function clipNumPane()
     {
-        return in_array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current !== 'normal';
+        return $this->showClipboard && $this->noControlPanels === false && $this->csvOutput === false && $this->clipObj->current !== 'normal';
     }
 
     /**
@@ -2513,43 +2491,7 @@ class DatabaseRecordList
                 GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
             }
         }
-        // Add header row, control fields will be reduced inside addToCSV()
-        $this->addToCSV($fieldArray);
-    }
-
-    /**
-     * Adds selected columns of one table row as CSV line.
-     *
-     * @param mixed[] $row Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
-     */
-    protected function addToCSV(array $row = [])
-    {
-        $rowReducedByControlFields = self::removeControlFieldsFromFieldRow($row);
-        // Get a field array without control fields but in the expected order
-        $fieldArray = array_intersect_key(array_flip($this->fieldArray), $rowReducedByControlFields);
-        // Overwrite fieldArray to keep the order with an array of needed fields
-        $rowReducedToSelectedColumns = array_replace($fieldArray, array_intersect_key($rowReducedByControlFields, $fieldArray));
-        $this->setCsvRow($rowReducedToSelectedColumns);
-    }
-
-    /**
-     * Remove control fields from row for CSV export
-     *
-     * @param mixed[] $row fieldNames => fieldValues
-     * @return mixed[] Input array reduces by control fields
-     */
-    protected static function removeControlFieldsFromFieldRow(array $row = [])
-    {
-        // Possible control fields in a list row
-        $controlFields = [
-            '_PATH_',
-            '_REF_',
-            '_CONTROL_',
-            '_CLIPBOARD_',
-            '_LOCALIZATION_',
-            '_LOCALIZATION_b'
-        ];
-        return array_diff_key($row, array_flip($controlFields));
+        $this->setCsvRow($fieldArray);
     }
 
     /**
@@ -2559,15 +2501,14 @@ class DatabaseRecordList
      */
     public function setCsvRow($csvRow)
     {
+        $csvRow = array_intersect_key($csvRow, array_flip($this->fieldArray));
         $csvDelimiter = $this->modTSconfig['properties']['csvDelimiter'] ?? ',';
         $csvQuote = $this->modTSconfig['properties']['csvQuote'] ?? '"';
-
         $this->csvLines[] = CsvUtility::csvValues($csvRow, $csvDelimiter, $csvQuote);
     }
 
     /**
      * Compiles the internal csvLines array to a csv-string and outputs it to the browser.
-     * This function exits!
      *
      * @param string $prefix Filename prefix:
      */
@@ -2821,21 +2762,7 @@ class DatabaseRecordList
             ->orderByDependencies($tableNames);
 
         foreach ($orderedTableNames as $tableName => $_) {
-            // Setting fields to select:
-            if ($this->allFields) {
-                $fields = $this->makeFieldList($tableName, false, true);
-                $fields[] = '_PATH_';
-                $fields[] = '_REF_';
-                if (is_array($this->setFields[$tableName])) {
-                    $fields = array_intersect($fields, $this->setFields[$tableName]);
-                } else {
-                    $fields = [];
-                }
-            } else {
-                $fields = [];
-            }
-            // Finally, render the list:
-            $output .= $this->getTable($tableName, $this->id, implode(',', $fields));
+            $output .= $this->getTable($tableName, $this->id);
         }
         return $output;
     }
@@ -3041,7 +2968,7 @@ class DatabaseRecordList
             $queryBuilder->setFirstResult($firstResult);
         }
         if ($addSorting) {
-            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
+            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, true))) {
                 $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
             } else {
                 $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
