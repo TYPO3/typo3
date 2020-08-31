@@ -967,7 +967,6 @@ class DataHandlerHook
             return;
         }
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $liveState = VersionState::cast($liveRecord['t3ver_state']);
         $versionRecord = BackendUtility::getRecord($table, $versionId);
         $versionState = VersionState::cast($versionRecord['t3ver_state']);
@@ -982,6 +981,7 @@ class DataHandlerHook
         } else {
             // update record directly in order to avoid delete cascades on this version
             $this->softOrHardDeleteSingleRecord($table, (int)$versionId);
+            $dataHandler->updateRefIndex($table, (int)$versionId);
         }
 
         if ($versionState->equals(VersionState::MOVE_POINTER)) {
