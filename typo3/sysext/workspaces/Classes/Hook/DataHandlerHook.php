@@ -1032,6 +1032,7 @@ class DataHandlerHook
                         ['uid' => (int)$versionId]
                     );
             }
+            $dataHandler->updateRefIndex($table, (int)$versionId);
         }
 
         if ($versionState->equals(VersionState::MOVE_POINTER)) {
