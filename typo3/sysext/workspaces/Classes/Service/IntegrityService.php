@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Workspaces\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 
 /**
@@ -132,10 +132,19 @@ class IntegrityService
                 // If localization parent is a "new placeholder" record:
                 if (VersionState::cast($languageParentRecord['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)) {
                     $title = BackendUtility::getRecordTitle($table, $versionRow);
+                    $languageService = $this->getLanguageService();
                     // Add warning for current versionized record:
-                    $this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(LocalizationUtility::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));
+                    $this->addIssue(
+                        $element->getLiveRecord()->getIdentifier(),
+                        self::STATUS_Warning,
+                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.dependsOnDefaultLanguageRecord'), $title)
+                    );
                     // Add info for related localization parent record:
-                    $this->addIssue($table . ':' . $languageParentRecord['uid'], self::STATUS_Info, sprintf(LocalizationUtility::translate('integrity.isDefaultLanguageRecord', 'workspaces'), $title));
+                    $this->addIssue(
+                        $table . ':' . $languageParentRecord['uid'],
+                        self::STATUS_Info,
+                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.isDefaultLanguageRecord'), $title)
+                    );
                 }
             }
         }
@@ -241,5 +250,10 @@ class IntegrityService
             'status' => $status,
             'message' => $message
         ];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

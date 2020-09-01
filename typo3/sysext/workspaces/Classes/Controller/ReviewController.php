@@ -15,18 +15,21 @@
 
 namespace TYPO3\CMS\Workspaces\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Service\AdditionalColumnService;
 use TYPO3\CMS\Workspaces\Service\AdditionalResourceService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -34,8 +37,13 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 /**
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class ReviewController extends ActionController
+class ReviewController
 {
+    /**
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
     /**
      * @var string
      */
@@ -56,36 +64,9 @@ class ReviewController extends ActionController
      */
     protected $pageId;
 
-    /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
+    public function __construct()
     {
-        parent::initializeView($view);
-        $this->registerButtons();
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-    }
-
-    /**
-     * Registers the DocHeader buttons
-     */
-    protected function registerButtons()
-    {
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $currentRequest = $this->request;
-        $moduleName = $currentRequest->getPluginName();
-        $getVars = $this->request->getArguments();
-        $extensionName = $currentRequest->getControllerExtensionName();
-        if (count($getVars) === 0) {
-            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'route', $modulePrefix];
-        }
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
-            ->setGetVariables($getVars);
-        $buttonBar->addButton($shortcutButton);
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
     }
 
     /**
@@ -94,8 +75,6 @@ class ReviewController extends ActionController
     protected function initializeAction()
     {
         $this->pageRenderer = $this->getPageRenderer();
-        // @todo Evaluate how the (int) typecast can be used with Extbase validators/filters
-        $this->pageId = (int)GeneralUtility::_GP('id');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         $icons = [
@@ -133,7 +112,7 @@ class ReviewController extends ActionController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
-        $this->pageRenderer->addInlineSetting('Workspaces', 'id', (int)GeneralUtility::_GP('id'));
+        $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
 
         $this->assignExtensionSettings();
     }
@@ -141,14 +120,30 @@ class ReviewController extends ActionController
     /**
      * Renders the review module user dependent with all workspaces.
      * The module will show all records of one workspace.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function indexAction()
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $backendUser = $this->getBackendUser();
-        $moduleTemplate = $this->view->getModuleTemplate();
+        $queryParams = $request->getQueryParams();
+        $this->pageId = (int)($queryParams['id'] ?? 0);
 
-        if (GeneralUtility::_GP('id')) {
-            $pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
+        $this->initializeAction();
+
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate('Index');
+        // This is only needed for translate VH to resolve 'label only' to default locallang.xlf files
+        $this->view->getRequest()->setControllerExtensionName('Workspaces');
+        $this->view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates/Review']);
+        $this->view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:workspaces/Resources/Private/Layouts']);
+
+        $backendUser = $this->getBackendUser();
+        $moduleTemplate = $this->moduleTemplate;
+
+        if ($this->pageId) {
+            $pageRecord = BackendUtility::getRecord('pages', $this->pageId);
             if ($pageRecord) {
                 $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
                 $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
@@ -156,11 +151,11 @@ class ReviewController extends ActionController
         }
         $wsList = GeneralUtility::makeInstance(WorkspaceService::class)->getAvailableWorkspaces();
         $customWorkspaceExists = $this->customWorkspaceExists($wsList);
-        $activeWorkspace = $backendUser->workspace;
+        $activeWorkspace = (int)$backendUser->workspace;
         $performWorkspaceSwitch = false;
-        if ((string)GeneralUtility::_GP('workspace') !== '') {
-            $switchWs = (int)GeneralUtility::_GP('workspace');
-            if (array_key_exists($switchWs, $wsList) && $activeWorkspace != $switchWs) {
+        if ((int)($queryParams['workspace'] ?? 0) > 0) {
+            $switchWs = (int)$queryParams['workspace'];
+            if (array_key_exists($switchWs, $wsList) && $activeWorkspace !== $switchWs) {
                 $activeWorkspace = $switchWs;
                 $backendUser->setWorkspace($activeWorkspace);
                 $performWorkspaceSwitch = true;
@@ -176,15 +171,15 @@ class ReviewController extends ActionController
             'customWorkspaceExists' => $customWorkspaceExists,
             'showGrid' => $workspaceIsAccessible,
             'showLegend' => $workspaceIsAccessible,
-            'pageUid' => (int)GeneralUtility::_GP('id'),
+            'pageUid' => $this->pageId,
             'performWorkspaceSwitch' => $performWorkspaceSwitch,
             'workspaceList' => $this->prepareWorkspaceTabs($wsList, $activeWorkspace),
             'activeWorkspaceUid' => $activeWorkspace,
             'activeWorkspaceTitle' => WorkspaceService::getWorkspaceTitle($activeWorkspace),
         ]);
 
-        if ($this->canCreatePreviewLink((int)GeneralUtility::_GP('id'), (int)$activeWorkspace)) {
-            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        if ($this->canCreatePreviewLink($this->pageId, $activeWorkspace)) {
             $iconFactory = $moduleTemplate->getIconFactory();
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
@@ -194,6 +189,13 @@ class ReviewController extends ActionController
                 ->setIcon($iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);
         }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('web_WorkspacesWorkspaces')
+            ->setGetVariables(['id', 'route']);
+        $buttonBar->addButton($shortcutButton);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -322,7 +324,7 @@ class ReviewController extends ActionController
      */
     protected function getAdditionalColumnService(): AdditionalColumnService
     {
-        return $this->objectManager->get(AdditionalColumnService::class);
+        return GeneralUtility::makeInstance(AdditionalColumnService::class);
     }
 
     /**
@@ -330,7 +332,7 @@ class ReviewController extends ActionController
      */
     protected function getAdditionalResourceService(): AdditionalResourceService
     {
-        return $this->objectManager->get(AdditionalResourceService::class);
+        return GeneralUtility::makeInstance(AdditionalResourceService::class);
     }
 
     /**

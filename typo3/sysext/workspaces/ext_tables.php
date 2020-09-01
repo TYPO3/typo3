@@ -3,20 +3,17 @@
 defined('TYPO3_MODE') or die();
 
 // Registers the workspaces Backend Module
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'Workspaces',
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
     'web',
-    'workspaces',
+    'WorkspacesWorkspaces',
     'before:info',
+    null,
     [
-        // An array holding the controller-action-combinations that are accessible
-        \TYPO3\CMS\Workspaces\Controller\ReviewController::class => 'index'
-    ],
-    [
+        'routeTarget' => \TYPO3\CMS\Workspaces\Controller\ReviewController::class . '::indexAction',
         'access' => 'user,group',
+        'name' => 'web_WorkspacesWorkspaces',
         'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.svg',
         'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
-        'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement'
     ]
 );
 
