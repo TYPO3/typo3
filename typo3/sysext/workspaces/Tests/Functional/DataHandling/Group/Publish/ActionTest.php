@@ -48,7 +48,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('addElementRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -67,7 +67,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('deleteElementRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -89,7 +89,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
         $this->assertAssertionDataSet('changeElementSorting');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentElement)
@@ -105,7 +105,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('changeElementRelationSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -124,7 +124,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('createContentNAddRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -148,7 +148,7 @@ class ActionTest extends AbstractActionTestCase
         ]);
         $this->assertAssertionDataSet('createContentNCreateRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -169,7 +169,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
         $this->assertAssertionDataSet('modifyElementOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -188,7 +188,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('modifyContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -209,7 +209,7 @@ class ActionTest extends AbstractActionTestCase
         ]);
         $this->assertAssertionDataSet('modifyBothSidesOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -230,7 +230,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('deleteContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -248,7 +248,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
         $this->assertAssertionDataSet('deleteElementOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -267,7 +267,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
         $this->assertAssertionDataSet('copyContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -287,7 +287,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Element, $this->recordIds['copiedElementId']);
         $this->assertAssertionDataSet('copyElementOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -310,7 +310,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertAssertionDataSet('localizeContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -332,7 +332,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Element, $this->recordIds['localizedElementId']);
         $this->assertAssertionDataSet('localizeElementOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -351,7 +351,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );

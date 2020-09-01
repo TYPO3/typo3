@@ -284,7 +284,7 @@ class TemplatesPathsTest extends FunctionalTestCase
      */
     protected function fetchFrontendResponseBody(array $requestArguments): string
     {
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://website.local/en/'))->withQueryParameters($requestArguments)
         );
 

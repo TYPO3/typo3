@@ -126,7 +126,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'location' => ['https://website.local/welcome']
         ];
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -171,7 +171,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'location' => ['https://website.local/en-en/'],
         ];
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -198,7 +198,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         $expectedStatusCode = 200;
         $expectedPageTitle = 'EN: Welcome';
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext,
             true
@@ -232,7 +232,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.other/any/invalid/slug';
-        $response = $this->executeFrontendRequest(new InternalRequest($uri));
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame(404, $response->getStatusCode());
     }
 
@@ -251,7 +251,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.local/any/invalid/slug';
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -281,7 +281,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.local/en-en/any/invalid/slug';
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -311,7 +311,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.local/en-en/?type=13';
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -371,7 +371,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -434,7 +434,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -495,7 +495,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -552,7 +552,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -587,7 +587,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [403])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -629,7 +629,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Page', [403])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -657,7 +657,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [403])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -704,7 +704,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -761,7 +761,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -783,7 +783,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -819,7 +819,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Page', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -845,7 +845,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -908,7 +908,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );

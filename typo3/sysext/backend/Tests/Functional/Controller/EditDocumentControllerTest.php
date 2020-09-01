@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -69,6 +70,8 @@ class EditDocumentControllerTest extends FunctionalTestCase
      */
     public function processedDataTakesOverDefaultValues(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
             'CType' => 'bullets'
@@ -96,6 +99,8 @@ class EditDocumentControllerTest extends FunctionalTestCase
      */
     public function processedDataDoesNotOverridePostWithDefaultValues(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
             'CType' => 'bullets'

@@ -213,7 +213,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -300,7 +300,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -407,7 +407,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -522,7 +522,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -617,7 +617,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -690,7 +690,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -989,7 +989,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -1073,7 +1073,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
@@ -1158,7 +1158,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([

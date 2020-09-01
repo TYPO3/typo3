@@ -49,7 +49,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContents();
         $this->assertAssertionDataSet('createContents');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #2'));
@@ -68,7 +68,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('createContentForLanguageAll');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Language set to all', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1'));
@@ -83,7 +83,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContent();
         $this->assertAssertionDataSet('modifyContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -100,7 +100,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyTranslatedContent();
         $this->assertAssertionDataSet('modifyTranslatedContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing Translation #3'));
@@ -115,7 +115,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContent();
         $this->assertAssertionDataSet('deleteContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
@@ -135,7 +135,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3', 'Regular Element #1'));
@@ -152,7 +152,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContent();
         $this->assertAssertionDataSet('copyContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2 (copy 1)'));
@@ -173,7 +173,7 @@ class ActionTest extends AbstractActionTestCase
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
@@ -194,7 +194,7 @@ class ActionTest extends AbstractActionTestCase
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
@@ -215,7 +215,7 @@ class ActionTest extends AbstractActionTestCase
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', 'Regular Element #2 (copy 1)'));
@@ -237,7 +237,7 @@ class ActionTest extends AbstractActionTestCase
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageIdSecond]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
@@ -252,7 +252,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPasteContent();
         $this->assertAssertionDataSet('copyPasteContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -269,7 +269,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContent();
         $this->assertAssertionDataSet('localizeContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
@@ -285,7 +285,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContentWithEmptyTcaIntegrityColumns();
         $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
@@ -302,7 +302,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContentWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizeContentWSynchronization');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
@@ -319,7 +319,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContentWithLanguageSynchronizationHavingNullValue();
         $this->assertAssertionDataSet('localizeContentWSynchronizationHNull');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
@@ -338,7 +338,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
@@ -357,7 +357,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguageWSynchronizationDefault');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', 'Testing #1'));
@@ -376,7 +376,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguageWSynchronizationSource');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', 'Testing #1'));
@@ -394,7 +394,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('createLocalizedContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Localized Testing'));
@@ -412,7 +412,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('createLocalizedContentWSynchronization');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing'));
@@ -430,7 +430,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('createLocalizedContentWExclude');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing', '[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
@@ -445,7 +445,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSorting();
         $this->assertAssertionDataSet('changeContentSorting');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
@@ -460,7 +460,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSortingAfterSelf();
         $this->assertAssertionDataSet('changeContentSortingAfterSelf');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
@@ -475,11 +475,11 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPage();
         $this->assertAssertionDataSet('moveContentToDifferentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
@@ -494,11 +494,11 @@ class ActionTest extends AbstractActionTestCase
         parent::movePasteContentToDifferentPage();
         $this->assertAssertionDataSet('movePasteContentToDifferentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -513,7 +513,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
@@ -532,7 +532,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createPage();
         $this->assertAssertionDataSet('createPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
@@ -546,7 +546,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createPageAndSubPageAndSubPageContent();
         $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['newSubPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newSubPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
@@ -594,14 +594,14 @@ class ActionTest extends AbstractActionTestCase
         $this->assertAssertionDataSet('createPageNContentWDefaults');
 
         // first, assert that page cannot be opened without using backend user (since it's hidden)
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())
                 ->withPageId($this->recordIds['newPageId'])
         );
         self::assertSame(404, $response->getStatusCode());
 
         // then, assert if preview is possible using a backend user
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())
                 ->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())
@@ -624,7 +624,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyPage();
         $this->assertAssertionDataSet('modifyPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
@@ -639,7 +639,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         self::assertEquals(404, $response->getStatusCode());
     }
 
@@ -652,7 +652,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
@@ -673,7 +673,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPageFreeMode();
         $this->assertAssertionDataSet('copyPageFreeMode');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
@@ -688,7 +688,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizePage();
         $this->assertAssertionDataSet('localizePage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
@@ -704,7 +704,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPage();
         $this->assertAssertionDataSet('localizeNCopyPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['newPageId'])->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId'])->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
@@ -719,7 +719,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizePageWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizePageWSynchronization');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
@@ -735,7 +735,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPage();
         $this->assertAssertionDataSet('localizeNCopyPageWSynchronization');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
@@ -769,7 +769,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changePageSorting();
         $this->assertAssertionDataSet('changePageSorting');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
@@ -786,7 +786,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changePageSortingAfterSelf();
         $this->assertAssertionDataSet('changePageSortingAfterSelf');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
@@ -803,7 +803,7 @@ class ActionTest extends AbstractActionTestCase
         parent::movePageToDifferentPage();
         $this->assertAssertionDataSet('movePageToDifferentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
@@ -838,7 +838,7 @@ class ActionTest extends AbstractActionTestCase
         parent::movePageToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));

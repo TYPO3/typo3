@@ -47,7 +47,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContent();
         $this->assertAssertionDataSet('modifyContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -67,7 +67,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContent();
         $this->assertAssertionDataSet('deleteContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -86,7 +86,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContent();
         $this->assertAssertionDataSet('copyContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -106,7 +106,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContent();
         $this->assertAssertionDataSet('localizeContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -127,7 +127,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSorting();
         $this->assertAssertionDataSet('changeContentSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -150,7 +150,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPage();
         $this->assertAssertionDataSet('moveContentToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -161,7 +161,7 @@ class ActionTest extends AbstractActionTestCase
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Kasper', 'T3BOARD')->setStrict(true));
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -181,7 +181,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -208,7 +208,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentWithFileReference();
         $this->assertAssertionDataSet('createContentWFileReference');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -228,7 +228,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContentWithFileReference();
         $this->assertAssertionDataSet('modifyContentWFileReference');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -248,7 +248,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContentAndAddFileReference();
         $this->assertAssertionDataSet('modifyContentNAddFileReference');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -266,7 +266,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContentAndDeleteFileReference();
         $this->assertAssertionDataSet('modifyContentNDeleteFileReference');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -287,7 +287,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContentAndDeleteAllFileReference();
         $this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );

@@ -76,7 +76,7 @@ class MetaTagTest extends AbstractTestCase
         $this->setUpFrontendRootPage(1, ['typo3/sysext/seo/Tests/Functional/Fixtures/page' . $pageId . '.typoscript']);
 
         // First hit to create a cached version
-        $uncachedResponse = $this->executeFrontendRequest(
+        $uncachedResponse = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => $pageId,
             ])

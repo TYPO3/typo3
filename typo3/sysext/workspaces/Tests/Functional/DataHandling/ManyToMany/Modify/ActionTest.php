@@ -47,7 +47,7 @@ class ActionTest extends AbstractActionTestCase
         parent::addCategoryRelation();
         $this->assertAssertionDataSet('addCategoryRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -68,7 +68,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteCategoryRelation();
         $this->assertAssertionDataSet('deleteCategoryRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -92,7 +92,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeCategoryRelationSorting();
         $this->assertAssertionDataSet('changeCategoryRelationSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -113,7 +113,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndAddRelation();
         $this->assertAssertionDataSet('createContentNAddRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -136,7 +136,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createCategoryAndAddRelation();
         $this->assertAssertionDataSet('createCategoryNAddRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -156,7 +156,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndCreateRelation();
         $this->assertAssertionDataSet('createContentNCreateRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -203,7 +203,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyCategoryOfRelation();
         $this->assertAssertionDataSet('modifyCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -221,7 +221,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContentOfRelation();
         $this->assertAssertionDataSet('modifyContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -241,7 +241,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyBothsOfRelation();
         $this->assertAssertionDataSet('modifyBothsOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -264,7 +264,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContentOfRelation();
         $this->assertAssertionDataSet('deleteContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -284,7 +284,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteCategoryOfRelation();
         $this->assertAssertionDataSet('deleteCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -302,7 +302,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContentOfRelation();
         $this->assertAssertionDataSet('copyContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -323,7 +323,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyCategoryOfRelation();
         $this->assertAssertionDataSet('copyCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -341,7 +341,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContentOfRelation();
         $this->assertAssertionDataSet('localizeContentOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -364,7 +364,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeCategoryOfRelation();
         $this->assertAssertionDataSet('localizeCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -382,7 +382,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentOfRelationToDifferentPage();
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -403,7 +403,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );

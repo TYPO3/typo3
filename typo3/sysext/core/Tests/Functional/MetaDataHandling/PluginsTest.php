@@ -61,7 +61,7 @@ class PluginsTest extends AbstractTestCase
     public function ensurePageSetupIsOk(int $pageId, bool $expectPluginOutput): void
     {
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => $pageId,
             ])
@@ -102,7 +102,7 @@ class PluginsTest extends AbstractTestCase
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
 
         // First hit to create a cached version
-        $uncachedResponse = $this->executeFrontendRequest(
+        $uncachedResponse = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => $pageId,
             ])
@@ -114,7 +114,7 @@ class PluginsTest extends AbstractTestCase
         }
 
         // Second hit to check the cached version
-        $cachedResponse = $this->executeFrontendRequest(
+        $cachedResponse = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => $pageId,
             ])

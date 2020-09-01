@@ -35,6 +35,8 @@ class PageRendererTest extends FunctionalTestCase
      */
     public function pageRendererRendersInsertsMainContentStringsInOutput()
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = new PageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
@@ -141,6 +143,8 @@ class PageRendererTest extends FunctionalTestCase
      */
     public function pageRendererRendersFooterValues()
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = new PageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
@@ -219,6 +223,8 @@ class PageRendererTest extends FunctionalTestCase
      */
     public function pageRendererRendersNomoduleJavascript()
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = new PageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');

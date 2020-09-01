@@ -47,7 +47,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createParentContent();
         $this->assertAssertionDataSet('createParentContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -64,7 +64,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyParentContent();
         $this->assertAssertionDataSet('modifyParentContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -84,7 +84,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteParentContent();
         $this->assertAssertionDataSet('deleteParentContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -101,7 +101,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyParentContent();
         $this->assertAssertionDataSet('copyParentContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -119,7 +119,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyParentContentToDifferentPage();
         $this->assertAssertionDataSet('copyParentContentToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -139,7 +139,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeParentContentWithAllChildren();
         $this->assertAssertionDataSet('localizeParentContentWAllChildren');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -157,7 +157,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeParentContentSorting();
         $this->assertAssertionDataSet('changeParentContentSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -178,7 +178,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveParentContentToDifferentPage();
         $this->assertAssertionDataSet('moveParentContentToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -207,7 +207,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveParentContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -234,7 +234,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyPage();
         $this->assertAssertionDataSet('modifyPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -254,7 +254,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -269,7 +269,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -286,7 +286,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPageWithHotelBeforeParentContent();
         $this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -308,7 +308,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeHotelSortingWithOfferNotWorkspaceAware();
         $this->assertAssertionDataSet('changeHotelSortingWithOfferNotWorkspaceAware');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -334,7 +334,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createParentContentWithHotelAndOfferChildren();
         $this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -354,7 +354,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
         $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildren');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -382,7 +382,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createAndLocalizeParentContentWithHotelAndOfferChildren();
         $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -408,7 +408,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration();
         $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenWOSortBy');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -431,7 +431,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyOnlyHotelChild();
         $this->assertAssertionDataSet('modifyOnlyHotelChild');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -449,7 +449,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyParentAndChangeHotelChildrenSorting();
         $this->assertAssertionDataSet('modifyParentNChangeHotelChildrenSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -467,7 +467,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyParentWithHotelChild();
         $this->assertAssertionDataSet('modifyParentNHotelChild');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -485,7 +485,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyParentAndAddHotelChild();
         $this->assertAssertionDataSet('modifyParentNAddHotelChild');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -503,7 +503,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyParentAndDeleteHotelChild();
         $this->assertAssertionDataSet('modifyParentNDeleteHotelChild');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -524,7 +524,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyAndDiscardAndModifyParentWithHotelChild();
         $this->assertAssertionDataSet('modifyNDiscardNModifyParentWHotelChild');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );

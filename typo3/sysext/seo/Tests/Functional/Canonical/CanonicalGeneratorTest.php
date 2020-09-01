@@ -136,7 +136,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
      */
     public function generate(string $targetUri, string $expectedCanonicalUrl): void
     {
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest($targetUri))
                 ->withInstructions([$this->buildPageTypoScript()]),
             $this->internalRequestContext,

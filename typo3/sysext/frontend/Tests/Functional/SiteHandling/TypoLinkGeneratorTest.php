@@ -511,7 +511,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             $request = $this->applyInstructions($request, ...$instructions);
         }
 
-        return $this->executeFrontendRequest($request, $this->internalRequestContext);
+        return $this->executeFrontendSubRequest($request, $this->internalRequestContext);
     }
 
     /**

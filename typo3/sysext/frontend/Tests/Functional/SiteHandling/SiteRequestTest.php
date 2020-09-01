@@ -133,7 +133,7 @@ class SiteRequestTest extends AbstractTestCase
         $expectedStatusCode = 307;
         $expectedHeaders = ['location' => ['https://website.local/en-en/']];
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -160,7 +160,7 @@ class SiteRequestTest extends AbstractTestCase
         $expectedStatusCode = 200;
         $expectedPageTitle = 'EN: Welcome';
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext,
             true
@@ -236,7 +236,7 @@ class SiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -310,7 +310,7 @@ class SiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -371,7 +371,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -428,7 +428,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -463,7 +463,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [403])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -505,7 +505,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Page', [403])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -533,7 +533,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [403])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -580,7 +580,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -640,7 +640,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -676,7 +676,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Page', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -702,7 +702,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [404])
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
@@ -767,7 +767,7 @@ class SiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );

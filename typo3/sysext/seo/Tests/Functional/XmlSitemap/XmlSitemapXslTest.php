@@ -66,7 +66,7 @@ class XmlSitemapXslTest extends AbstractTestCase
             $config['sitemap'] = $sitemap;
         }
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters($config)
         );
 

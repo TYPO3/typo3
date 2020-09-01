@@ -426,7 +426,7 @@ class MountPointTest extends AbstractTestCase
      */
     public function hierarchicalMenuIsGenerated(string $accessedUrl, array $expectation)
     {
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest($accessedUrl))
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([
@@ -495,7 +495,7 @@ class MountPointTest extends AbstractTestCase
                 'title' => 'ACME Root',
             ]
         );
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest($uri)),
             $this->internalRequestContext
         );
@@ -560,7 +560,7 @@ class MountPointTest extends AbstractTestCase
                 'title' => 'ACME Root',
             ]
         );
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest($uri)),
             $this->internalRequestContext
         );

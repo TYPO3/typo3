@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -37,6 +39,9 @@ class GifBuilderTest extends FunctionalTestCase
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         copy(
             Environment::getFrameworkBasePath() . '/frontend/Tests/Functional/Fixtures/Images/kasper-skarhoj1.jpg',

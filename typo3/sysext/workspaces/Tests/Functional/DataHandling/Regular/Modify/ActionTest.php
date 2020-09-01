@@ -47,7 +47,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContents();
         $this->assertAssertionDataSet('createContents');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -64,7 +64,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndCopyContent();
         $this->assertAssertionDataSet('createContentAndCopyContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -81,7 +81,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndLocalize();
         $this->assertAssertionDataSet('createContentAndLocalize');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -98,7 +98,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContent();
         $this->assertAssertionDataSet('modifyContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -115,7 +115,7 @@ class ActionTest extends AbstractActionTestCase
         parent::hideContent();
         $this->assertAssertionDataSet('hideContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -133,7 +133,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPage();
         $this->assertAssertionDataSet('hideContentAndMoveToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -142,7 +142,7 @@ class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
         self::assertThat($responseSectionsSource, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -159,7 +159,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContent();
         $this->assertAssertionDataSet('deleteContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -180,7 +180,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -199,7 +199,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContent();
         $this->assertAssertionDataSet('copyContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -222,7 +222,7 @@ class ActionTest extends AbstractActionTestCase
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -246,7 +246,7 @@ class ActionTest extends AbstractActionTestCase
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageIdSecond]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -265,7 +265,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContent();
         $this->assertAssertionDataSet('localizeContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -282,7 +282,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContentWithEmptyTcaIntegrityColumns();
         $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -301,7 +301,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContentWithHideAtCopy();
         $this->assertAssertionDataSet('localizeContentWHideAtCopy');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -322,7 +322,7 @@ class ActionTest extends AbstractActionTestCase
 
         $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -339,7 +339,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSorting();
         $this->assertAssertionDataSet('changeContentSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -356,7 +356,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSortingAfterSelf();
         $this->assertAssertionDataSet('changeContentSortingAfterSelf');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -374,7 +374,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSortingAndDeleteMovedRecord();
         $this->assertAssertionDataSet('changeContentSortingNDeleteMovedRecord');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -391,7 +391,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSortingAndDeleteLiveRecord();
         $this->assertAssertionDataSet('changeContentSortingNDeleteLiveRecord');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -410,14 +410,14 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPage();
         $this->assertAssertionDataSet('moveContentToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -434,7 +434,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -451,7 +451,7 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPageAndHide();
         $this->assertAssertionDataSet('moveContentToDifferentPageAndHide');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -472,7 +472,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createPage();
         $this->assertAssertionDataSet('createPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -489,7 +489,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createPageAndSubPageAndSubPageContent();
         $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newSubPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -507,14 +507,14 @@ class ActionTest extends AbstractActionTestCase
         $this->assertAssertionDataSet('createPageNContentWDefaults');
 
         // first, assert that page cannot be opened without using backend user (since it's hidden)
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())
                 ->withPageId($this->recordIds['newPageId'])
         );
         self::assertSame(404, $response->getStatusCode());
 
         // then, assert if preview is possible using a backend user
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())
                 ->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())
@@ -537,7 +537,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyPage();
         $this->assertAssertionDataSet('modifyPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -554,7 +554,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -569,7 +569,7 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContentAndPage();
         $this->assertAssertionDataSet('deleteContentAndPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -586,7 +586,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizePageAndContentsAndDeletePageLocalization();
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['localizedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -610,7 +610,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -627,7 +627,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyPageFreeMode();
         $this->assertAssertionDataSet('copyPageFreeMode');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -646,7 +646,7 @@ class ActionTest extends AbstractActionTestCase
         parent::localizePage();
         $this->assertAssertionDataSet('localizePage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -681,7 +681,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changePageSorting();
         $this->assertAssertionDataSet('changePageSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -700,7 +700,7 @@ class ActionTest extends AbstractActionTestCase
         parent::changePageSortingAfterSelf();
         $this->assertAssertionDataSet('changePageSortingAfterSelf');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -719,7 +719,7 @@ class ActionTest extends AbstractActionTestCase
         parent::movePageToDifferentPage();
         $this->assertAssertionDataSet('movePageToDifferentPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -783,7 +783,7 @@ class ActionTest extends AbstractActionTestCase
         parent::movePageToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -792,7 +792,7 @@ class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
         self::assertThat($responseSectionsPage, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdWebsite),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -812,7 +812,7 @@ class ActionTest extends AbstractActionTestCase
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
         $this->assertAssertionDataSet('movePageToDifferentPageNCreatePageAfterMovedPage');
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdWebsite),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -834,9 +834,9 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndCopyDraftPage();
         $this->assertAssertionDataSet('createContentAndCopyDraftPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -854,11 +854,11 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndCopyLivePage();
         $this->assertAssertionDataSet('createContentAndCopyLivePage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -875,9 +875,9 @@ class ActionTest extends AbstractActionTestCase
         parent::createPageAndCopyDraftParentPage();
         $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -895,11 +895,11 @@ class ActionTest extends AbstractActionTestCase
         parent::createPageAndCopyLiveParentPage();
         $this->assertAssertionDataSet('createPageAndCopyLiveParentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -917,9 +917,9 @@ class ActionTest extends AbstractActionTestCase
         parent::createNestedPagesAndCopyDraftParentPage();
         $this->assertAssertionDataSet('createNestedPagesAndCopyDraftParentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -937,11 +937,11 @@ class ActionTest extends AbstractActionTestCase
         parent::createNestedPagesAndCopyLiveParentPage();
         $this->assertAssertionDataSet('createNestedPagesAndCopyLiveParentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -959,9 +959,9 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContentAndCopyDraftPage();
         $this->assertAssertionDataSet('deleteContentAndCopyDraftPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -979,11 +979,11 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContentAndCopyLivePage();
         $this->assertAssertionDataSet('deleteContentAndCopyLivePage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsLive, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -1001,9 +1001,9 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSortingAndCopyDraftPage();
         $this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -1021,11 +1021,11 @@ class ActionTest extends AbstractActionTestCase
         parent::changeContentSortingAndCopyLivePage();
         $this->assertAssertionDataSet('changeContentSortingAndCopyLivePage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsLive, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -1043,9 +1043,9 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentAndCopyDraftPage();
         $this->assertAssertionDataSet('moveContentAndCopyDraftPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
@@ -1065,13 +1065,13 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentAndCopyLivePage();
         $this->assertAssertionDataSet('moveContentAndCopyLivePage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsLive, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
         self::assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );

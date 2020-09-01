@@ -173,7 +173,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/en/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
@@ -335,7 +335,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/dk/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
@@ -677,7 +677,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/de/?id=' . static::VALUE_PageId)
         );
 
@@ -856,7 +856,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/pl/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());

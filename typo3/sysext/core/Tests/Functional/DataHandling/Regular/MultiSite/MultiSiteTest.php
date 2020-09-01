@@ -67,7 +67,7 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdSecondSite, self::VALUE_PageIdWebsite);
         $this->assertAssertionDataSet('moveRootPageToDifferentPageTree');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageIdSecondSite));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdSecondSite));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Second Root Page'));

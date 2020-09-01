@@ -49,7 +49,7 @@ class BackendUserAuthenticatorTest extends FunctionalTestCase
      */
     public function nonAuthenticatedRequestDoesNotSendHeaders(): void
     {
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(1),
             (new InternalRequestContext())
         );
@@ -63,7 +63,7 @@ class BackendUserAuthenticatorTest extends FunctionalTestCase
      */
     public function authenticatedRequestIncludesInvalidCacheHeaders(): void
     {
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(1),
             (new InternalRequestContext())
                 ->withBackendUserId(1)

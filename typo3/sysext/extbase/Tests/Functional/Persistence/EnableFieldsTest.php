@@ -63,7 +63,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
      */
     public function protectedRecordsNotFoundIfNoUserLoggedIn()
     {
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(1));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
@@ -74,7 +74,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
      */
     public function onlyReturnProtectedRecordsForTheFirstUserGroup()
     {
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
@@ -85,7 +85,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
      */
     public function onlyReturnProtectedRecordsForTheSecondUserGroup()
     {
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
@@ -97,13 +97,13 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned()
     {
         // first request to fill the query cache
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
 
         // second request with other frontenduser
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));

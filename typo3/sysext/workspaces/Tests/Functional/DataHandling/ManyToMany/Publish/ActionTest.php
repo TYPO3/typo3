@@ -47,7 +47,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('addCategoryRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -66,7 +66,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('deleteCategoryRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -88,7 +88,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('changeCategoryRelationSorting');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -107,7 +107,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('createContentNAddRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -128,7 +128,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
         $this->assertAssertionDataSet('createCategoryNAddRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
@@ -149,7 +149,7 @@ class ActionTest extends AbstractActionTestCase
         ]);
         $this->assertAssertionDataSet('createContentNCreateRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -207,7 +207,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
         $this->assertAssertionDataSet('modifyCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -223,7 +223,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('modifyContentOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -244,7 +244,7 @@ class ActionTest extends AbstractActionTestCase
         ]);
         $this->assertAssertionDataSet('modifyBothsOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -265,7 +265,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('deleteContentOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -283,7 +283,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
         $this->assertAssertionDataSet('deleteCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -299,7 +299,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('copyContentOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
@@ -318,7 +318,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
         $this->assertAssertionDataSet('copyCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -334,7 +334,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertAssertionDataSet('localizeContentOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
@@ -356,7 +356,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['localizedCategoryId']);
         $this->assertAssertionDataSet('localizeCategoryOfRelation');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
@@ -372,7 +372,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
@@ -394,7 +394,7 @@ class ActionTest extends AbstractActionTestCase
         ]);
         $this->assertAssertionDataSet('copyPage');
 
-        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));

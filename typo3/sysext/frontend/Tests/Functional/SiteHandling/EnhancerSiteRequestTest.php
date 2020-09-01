@@ -576,7 +576,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $expectation['requestQueryParams'] = $allParameters;
         $expectation['_GET'] = $allParameters;
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
             $this->internalRequestContext,
             true
@@ -647,7 +647,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $expectation['requestQueryParams'] = $allParameters;
         $expectation['_GET'] = $allParameters;
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
             $this->internalRequestContext,
             true
@@ -1106,7 +1106,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             ]]
         ]);
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
             $this->internalRequestContext,
             true
@@ -1156,7 +1156,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $expectation['requestQueryParams'] = $allParameters;
         $expectation['_GET'] = $allParameters;
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
             $this->internalRequestContext,
             true

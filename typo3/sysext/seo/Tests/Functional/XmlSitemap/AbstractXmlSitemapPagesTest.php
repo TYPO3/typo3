@@ -64,7 +64,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
 
     protected function getResponse(string $uri = 'http://localhost/'): InternalResponse
     {
-        return $this->executeFrontendRequest(
+        return $this->executeFrontendSubRequest(
             (new InternalRequest($uri))->withQueryParameters([
                 'id' => 1,
                 'type' => 1533906435,

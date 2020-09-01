@@ -130,7 +130,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/en/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
@@ -270,7 +270,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/dk/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
@@ -496,7 +496,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/de/?id=' . static::VALUE_PageId)
         );
 
@@ -619,7 +619,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 $this->buildErrorHandlingConfiguration('Fluid', [404])
             ]
         );
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/pl/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());

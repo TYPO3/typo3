@@ -94,7 +94,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(new InternalRequest($url), $this->internalRequestContext);
+        $response = $this->executeFrontendSubRequest(new InternalRequest($url), $this->internalRequestContext);
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
 
         foreach ($scopes as $scopePath => $expectedScopeValue) {
@@ -113,7 +113,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']
         );
 
-        $response = $this->executeFrontendRequest(new InternalRequest($url), $this->internalRequestContext);
+        $response = $this->executeFrontendSubRequest(new InternalRequest($url), $this->internalRequestContext);
         self::assertSame(404, $response->getStatusCode());
     }
 
@@ -131,7 +131,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest($url))
                 ->withInstructions([
                     $this->createHierarchicalMenuProcessorInstruction([

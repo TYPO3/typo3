@@ -193,7 +193,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
      */
     public function checkIfCorrectTitleTagIsRendered($pageConfig, $expectations): void
     {
-        $response = $this->executeFrontendRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withQueryParameters([
                 'id' => (int)$pageConfig['pageId'],
                 'noPageTitle' => (int)$pageConfig['noPageTitle'],
