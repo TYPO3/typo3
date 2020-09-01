@@ -105,8 +105,8 @@ class ImageManipulationElement extends AbstractFormElement
         'localizationStateSelector' => [
             'renderType' => 'localizationStateSelector',
         ],
-        'otherLanguageContent' => [
-            'renderType' => 'otherLanguageContent',
+        'otherLanguageThumbnails' => [
+            'renderType' => 'otherLanguageThumbnails',
             'after' => [
                 'localizationStateSelector'
             ],
@@ -114,7 +114,7 @@ class ImageManipulationElement extends AbstractFormElement
         'defaultLanguageDifferences' => [
             'renderType' => 'defaultLanguageDifferences',
             'after' => [
-                'otherLanguageContent',
+                'otherLanguageThumbnails',
             ],
         ],
     ];

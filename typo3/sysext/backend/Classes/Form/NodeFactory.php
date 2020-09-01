@@ -109,6 +109,7 @@ class NodeFactory
         'defaultLanguageDifferences' => FieldWizard\DefaultLanguageDifferences::class,
         'localizationStateSelector' => FieldWizard\LocalizationStateSelector::class,
         'otherLanguageContent' => FieldWizard\OtherLanguageContent::class,
+        'otherLanguageThumbnails' => FieldWizard\OtherLanguageThumbnails::class,
         'recordsOverview' => FieldWizard\RecordsOverview::class,
         'selectIcons' => FieldWizard\SelectIcons::class,
         'tableList' => FieldWizard\TableList::class,
