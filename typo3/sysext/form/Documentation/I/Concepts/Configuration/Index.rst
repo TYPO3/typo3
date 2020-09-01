@@ -166,19 +166,17 @@ package::
    defined('TYPO3_MODE') or die();
 
    call_user_func(function () {
-       if (TYPO3_MODE === 'BE') {
-           \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
-               trim('
-                   module.tx_form {
-                       settings {
-                           yamlConfigurations {
-                               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
-                           }
-                       }
-                   }
-               ')
-           );
-       }
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+            trim('
+                module.tx_form {
+                    settings {
+                        yamlConfigurations {
+                            100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
+                        }
+                    }
+                }
+            ')
+        );
    });
 
 
