@@ -538,6 +538,12 @@ class EditDocumentController
         if (isset($beUser->uc['neverHideAtCopy']) && $beUser->uc['neverHideAtCopy']) {
             $tce->neverHideAtCopy = 1;
         }
+
+        // Set default values fetched previously from GET / POST vars
+        if (is_array($this->defVals) && $this->defVals !== [] && is_array($tce->defaultValues)) {
+            $tce->defaultValues = array_merge_recursive($this->defVals, $tce->defaultValues);
+        }
+
         // Load DataHandler with data
         $tce->start($this->data, $this->cmd);
         if (is_array($this->mirror)) {
