@@ -415,13 +415,21 @@ class DataHandlerHook
         }
 
         if (empty($workspaceAccessBlocked)) {
-            // If the move operation is done on a versioned record, which is
-            // NOT new/deleted placeholder, then also create a move placeholder
-            if ($workspaceVersion['uid'] && !$recIsNewVersion && BackendUtility::isTableWorkspaceEnabled($table)) {
-                $this->moveRecord_wsPlaceholders($table, (int)$uid, (int)$destPid, (int)$resolvedPid, (int)$workspaceVersion['uid'], $dataHandler);
-            } else {
-                // moving not needed, just behave like in live workspace
+            $versionedRecordUid = (int)$workspaceVersion['uid'];
+            // moving not needed, just behave like in live workspace
+            if (!$versionedRecordUid || !$tableSupportsVersioning) {
                 $recordWasMoved = false;
+            } elseif ($recIsNewVersion) {
+                // A newly created record is marked to be moved, so TYPO3 Core is taking care of moving
+                // the new placeholder.
+                $recordWasMoved = false;
+                // However, TYPO3 Core should move the versioned record as well, which is done directly in Core,
+                // before the placeholder is moved.
+                $dataHandler->moveRecord_raw($table, $versionedRecordUid, (int)$destPid);
+            } else {
+                // If the move operation is done on a versioned record, which is
+                // NOT new/deleted placeholder, then also create a move placeholder
+                $this->moveRecord_wsPlaceholders($table, (int)$uid, (int)$destPid, (int)$resolvedPid, $versionedRecordUid, $dataHandler);
             }
         } else {
             $dataHandler->newlog('Move attempt failed due to workspace restrictions: ' . implode(' // ', $workspaceAccessBlocked), SystemLogErrorClassification::USER_ERROR);

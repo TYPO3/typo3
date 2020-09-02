@@ -354,6 +354,29 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
+     * This test creates a page on pid=88 (unlike other tests) and moves the new draft page on that exact level,
+     * in order to only modify the "sorting" and not the "pid" setting.
+     * See DataSet/createPageAndChangePageSorting.csv
+     */
+    public function createPageAndChangePageSorting()
+    {
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, 88, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
+        $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
+    }
+
+    /**
+     * This change creates a page on pid=89 and moves the page one level up (= we check the pid value of both placeholder + versioned record).
+     * See DataSet/createPageAndMoveCreatedPage.csv
+     */
+    public function createPageAndMoveCreatedPage()
+    {
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
+        $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
+    }
+
+    /**
      * See DataSet/modifyPageRecord.csv
      */
     public function modifyPage()

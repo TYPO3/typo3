@@ -422,6 +422,31 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/createPageAndChangePageSorting.csv
+     * This test creates a page on pid=88 (unlike other tests) and moves the new draft page on that exact level, in order to only modify the "sorting"
+     * and not the "pid" setting.
+     */
+    public function createPageAndChangePageSorting()
+    {
+        parent::createPageAndChangePageSorting();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('createPageAndChangePageSorting');
+    }
+
+    /**
+     * @test
+     * See DataSet/createPageAndMoveCreatedPage.csv
+     * This change creates a page on pid=89 and moves the page one level up (= we check the pid value of both placeholder + versioned record).
+     */
+    public function createPageAndMoveCreatedPage()
+    {
+        parent::createPageAndMoveCreatedPage();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('createPageAndMoveCreatedPage');
+    }
+
+    /**
+     * @test
      * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()

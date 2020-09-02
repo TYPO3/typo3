@@ -542,6 +542,26 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/createPageAndChangePageSorting.csv
+     */
+    public function createPageAndChangePageSorting()
+    {
+        parent::createPageAndChangePageSorting();
+        $this->assertAssertionDataSet('createPageAndChangePageSorting');
+    }
+
+    /**
+     * @test
+     * See DataSet/createPageAndMoveCreatedPage.csv
+     */
+    public function createPageAndMoveCreatedPage()
+    {
+        parent::createPageAndMoveCreatedPage();
+        $this->assertAssertionDataSet('createPageAndMoveCreatedPage');
+    }
+
+    /**
+     * @test
      * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()
