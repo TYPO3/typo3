@@ -143,7 +143,7 @@ class ExtensionConfiguration
      *
      * @param string $extension Extension name
      * @param string $path Configuration path to set - eg. "featureCategory/coolThingIsEnabled"
-     * @param null $value The value. If null, unset the path
+     * @param mixed|null $value The value. If null, unset the path
      * @internal
      */
     public function set(string $extension, string $path = '', $value = null): void
