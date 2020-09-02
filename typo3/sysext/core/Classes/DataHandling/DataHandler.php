@@ -1188,7 +1188,11 @@ class DataHandler implements LoggerAwareInterface
                             $newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
                             // Setting workspace - only so display of placeholders can filter out those from other workspaces.
                             $newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-                            $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = $this->getPlaceholderTitleForTableLabel($table);
+                            // Only set a label if it is an input field
+                            $labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
+                            if ($GLOBALS['TCA'][$table]['columns'][$labelField]['config']['type'] === 'input') {
+                                $newVersion_placeholderFieldArray[$labelField] = $this->getPlaceholderTitleForTableLabel($table);
+                            }
                             // Saving placeholder as 'original'
                             $this->insertDB($table, $id, $newVersion_placeholderFieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
                             // For the actual new offline version, set versioning values to point to placeholder
