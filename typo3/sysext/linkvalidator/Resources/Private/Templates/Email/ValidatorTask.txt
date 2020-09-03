@@ -1,0 +1,17 @@
+<f:layout name="SystemEmail" />
+<f:section name="Title"><f:translate key="tasks.email.title" extensionName="linkvalidator"/></f:section>
+<f:section name="Main"><f:translate key="tasks.email.overview" extensionName="linkvalidator"/>
+
+<f:translate key="tasks.email.overview.all" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.total, 1: linkAnalyzerResult.oldBrokenLinkCounts.total}"/>
+<f:translate key="tasks.email.overview.internal" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.db, 1: linkAnalyzerResult.oldBrokenLinkCounts.db}"/>
+<f:translate key="tasks.email.overview.external" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.external, 1: linkAnalyzerResult.oldBrokenLinkCounts.external}"/>
+<f:translate key="tasks.email.overview.file" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.file, 1: linkAnalyzerResult.oldBrokenLinkCounts.file}"/>
+
+<f:if condition="{linkAnalyzerResult.brokenLinks}">
+<f:translate key="tasks.email.listing" extensionName="linkvalidator"/>
+<f:translate key="tasks.email.listing.explanation" extensionName="linkvalidator"/>
+<f:translate key="tasks.email.listing.notes" extensionName="linkvalidator"/>
+<f:for each="{linkAnalyzerResult.brokenLinks}" as="link">
+{f:if(condition: link.record_title, then: '{link.record_title} [{link.record_uid}]', else: link.record_uid)} | {link.language_code} [{link.language}] | {f:if(condition: link.page_record.title, then: '{link.page_record.title} [{link.real_pid}]', else: link.real_pid)} | {link.record_type} | {link.target} | <f:translate key="task.email.brokenLinks.type.{link.link_type}" extensionName="linkvalidator"/>
+</f:for>
+</f:if></f:section>

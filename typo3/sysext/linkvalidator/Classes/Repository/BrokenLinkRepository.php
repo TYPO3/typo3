@@ -195,16 +195,52 @@ class BrokenLinkRepository
      * @param string[] $linkTypes Link types to validate
      * @param string[] $searchFields table => [fields1, field2, ...], ... : fields in which linkvalidator should
      *   search for broken links
+     * @param int[] $languages Allowed languages
      * @return array
      */
-    public function getAllBrokenLinksForPages(array $pageIds, array $linkTypes, array $searchFields = []): array
-    {
+    public function getAllBrokenLinksForPages(
+        array $pageIds,
+        array $linkTypes,
+        array $searchFields = [],
+        array $languages = []
+    ): array {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(self::TABLE);
         if (!$GLOBALS['BE_USER']->isAdmin()) {
             $queryBuilder->getRestrictions()
                 ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
         }
+
+        $constraints = [
+            $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->in(
+                        'record_uid',
+                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
+                ),
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->in(
+                        'record_pid',
+                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
+                )
+            ),
+            $queryBuilder->expr()->in(
+                'link_type',
+                $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
+            )
+        ];
+
+        if ($languages !== []) {
+            $constraints[] = $queryBuilder->expr()->in(
+                'language',
+                $queryBuilder->createNamedParameter($languages, Connection::PARAM_INT_ARRAY)
+            );
+        }
+
         $records = $queryBuilder
             ->select(self::TABLE . '.*')
             ->from(self::TABLE)
@@ -214,28 +250,7 @@ class BrokenLinkRepository
                 'pages',
                 $queryBuilder->expr()->eq('tx_linkvalidator_link.record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
             )
-            ->where(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_uid',
-                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    ),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_pid',
-                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    )
-                ),
-                $queryBuilder->expr()->in(
-                    'link_type',
-                    $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
-                )
-            )
+            ->where(...$constraints)
             ->orderBy('tx_linkvalidator_link.record_uid')
             ->addOrderBy('tx_linkvalidator_link.uid')
             ->execute()

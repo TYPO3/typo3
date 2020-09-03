@@ -713,6 +713,149 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $results);
     }
 
+    public function getAllBrokenLinksForPagesRespectsGivenLanguagesDataProvider()
+    {
+        yield 'All languages should be returend' =>
+        [
+            // backendUser: 1=admin
+            $this->beusers['admin'],
+            // input file for DB
+            __DIR__ . '/Fixtures/input_languages.xml',
+            //pids
+            [1, 2, 3],
+            //languages
+            [],
+            // expected result:
+            [
+                [
+                    'record_uid' => 1,
+                    'record_pid' => 1,
+                    'language' => 0,
+                    'headline' => 'link',
+                    'field' => 'bodytext',
+                    'table_name' => 'tt_content',
+                    'element_type' => 'textmedia',
+                    'link_title' => 'link',
+                    'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
+                    'link_type' => 'external'
+                ],
+                [
+                    'record_uid' => 2,
+                    'record_pid' => 1,
+                    'language' => 1,
+                    'headline' => 'link',
+                    'field' => 'bodytext',
+                    'table_name' => 'tt_content',
+                    'element_type' => 'textmedia',
+                    'link_title' => 'link',
+                    'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
+                    'link_type' => 'external'
+                ],
+                [
+                    'record_uid' => 3,
+                    'record_pid' => 1,
+                    'language' => 2,
+                    'headline' => 'link',
+                    'field' => 'bodytext',
+                    'table_name' => 'tt_content',
+                    'element_type' => 'textmedia',
+                    'link_title' => 'link',
+                    'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
+                    'link_type' => 'external'
+                ],
+            ]
+        ];
+
+        yield 'Only defined languages should be returend' =>
+        [
+            // backendUser: 1=admin
+            $this->beusers['admin'],
+            // input file for DB
+            __DIR__ . '/Fixtures/input_languages.xml',
+            //pids
+            [1, 2, 3],
+            //languages
+            [0, 2],
+            // expected result:
+            [
+                [
+                    'record_uid' => 1,
+                    'record_pid' => 1,
+                    'language' => 0,
+                    'headline' => 'link',
+                    'field' => 'bodytext',
+                    'table_name' => 'tt_content',
+                    'element_type' => 'textmedia',
+                    'link_title' => 'link',
+                    'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
+                    'link_type' => 'external'
+                ],
+                [
+                    'record_uid' => 3,
+                    'record_pid' => 1,
+                    'language' => 2,
+                    'headline' => 'link',
+                    'field' => 'bodytext',
+                    'table_name' => 'tt_content',
+                    'element_type' => 'textmedia',
+                    'link_title' => 'link',
+                    'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
+                    'link_type' => 'external'
+                ],
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getAllBrokenLinksForPagesRespectsGivenLanguagesDataProvider
+     */
+    public function getAllBrokenLinksForPagesRespectsGivenLanguages(
+        array $beuser,
+        string $inputFile,
+        array $pidList,
+        array $languages,
+        array $expectedResult
+    ): void {
+        $config = ['external' => '1'];
+        $linkTypes = ['external'];
+        $tsConfig = [
+            'searchFields.' => [
+                'tt_content' => 'bodytext'
+            ],
+            'linktypes' => 'external',
+            'checkhidden' => '0'
+        ];
+
+        $searchFields = $tsConfig['searchFields.'];
+        foreach ($searchFields as $table => $fields) {
+            $searchFields[$table] = explode(',', $fields);
+        }
+
+        $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
+        $this->importDataSet($inputFile);
+
+        $linkAnalyzer = new LinkAnalyzer(
+            $this->prophesize(EventDispatcherInterface::class)->reveal(),
+            $this->brokenLinksRepository
+        );
+        $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
+        $linkAnalyzer->getLinkStatistics($config);
+
+        $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(
+            $pidList,
+            $linkTypes,
+            $searchFields,
+            $languages
+        );
+
+        foreach ($results as &$result) {
+            unset($result['url_response'], $result['uid'], $result['last_check'], $result['needs_recheck']);
+        }
+
+        self::assertEquals($expectedResult, $results);
+    }
+
     protected function setupBackendUserAndGroup(int $uid, string $fixtureFile, string $groupFixtureFile)
     {
         if ($groupFixtureFile) {
