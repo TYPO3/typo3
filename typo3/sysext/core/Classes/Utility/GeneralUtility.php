@@ -2367,12 +2367,23 @@ class GeneralUtility
                 $retVal = substr(self::getIndpEnv('TYPO3_REQUEST_URL'), strlen(self::getIndpEnv('TYPO3_SITE_URL')));
                 break;
             case 'TYPO3_SSL':
-                $proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] ?? '');
-                if ($proxySSL === '*') {
-                    $proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
+                // How does TYPO3 determine if the connection was established via TLS/SSL/https?
+                // 1. If reverseProxySSL matches, then we now that Client -> Proxy is SSL,
+                //    and Proxy -> App Server is non-SSL. SSL Termination happens at Proxy at ALL times.
+                // 2. If reverseProxyIP matches, and HTTP_X_FORWARDED_PROTO is set, it is evaluated
+                // 3. If no other matches, see webserverUsesHttps()
+                // Note: HTTP_X_FORWARDED_PROTO is ONLY evaluated at the point, where we know
+                //       that the incoming REMOTE_ADDR is a trusted proxy!
+                $configuredProxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] ?? '');
+                $configuredProxyRegular = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '');
+                if ($configuredProxySSL === '*') {
+                    $configuredProxySSL = $configuredProxyRegular;
                 }
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $proxySSL)) {
+                if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $configuredProxySSL)) {
+                    // If the reverseProxySSL matches, we know that the connection from client to proxy is secure.
                     $retVal = true;
+                } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $configuredProxyRegular)) {
+                    $retVal = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https';
                 } else {
                     $retVal = self::webserverUsesHttps();
                 }

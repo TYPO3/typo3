@@ -281,10 +281,10 @@ final class NormalizedParamsTest extends UnitTestCase
             'true if ssl proxy IP matches REMOTE_ADDR' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
-                    'REMOTE_ADDR' => '123.123.123.123 ',
+                    'REMOTE_ADDR' => '123.123.123.123',
                 ],
                 [
-                    'reverseProxySSL' => ' 123.123.123.123',
+                    'reverseProxySSL' => '123.123.123.123',
                 ],
                 true,
             ],
@@ -317,6 +317,63 @@ final class NormalizedParamsTest extends UnitTestCase
                 [
                     'reverseProxySSL' => '*',
                     'reverseProxyIP' => '234.234.234.234',
+                ],
+                false,
+            ],
+            'true if SSL proxy IP matches REMOTE_ADDR - HTTP_X_FORWARDED_PROTO is set to http but does not matter' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_PROTO' => 'http',
+                ],
+                [
+                    'reverseProxySSL' => '123.123.123.123',
+                ],
+                true,
+            ],
+            'true if proxy IP matches REMOTE_ADDR and HTTPS is active' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTPS' => 'on',
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
+                ],
+                true,
+            ],
+            'true if proxy IP matches REMOTE_ADDR and HTTP_X_FORWARDED_PROTO is https' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_PROTO' => 'https',
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
+                ],
+                true,
+            ],
+            'false if regular proxy IP matches REMOTE_ADDR and HTTP_X_FORWARDED_PROTO is http' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_PROTO' => 'http',
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
+                ],
+                false,
+            ],
+            'false if regular proxy IP matches REMOTE_ADDR and HTTP_X_FORWARDED_PROTO is http but HTTPS=on' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_PROTO' => 'http',
+                    // Option is not evaluated
+                    'HTTPS' => 'on',
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
                 ],
                 false,
             ],
@@ -382,6 +439,30 @@ final class NormalizedParamsTest extends UnitTestCase
                 ],
                 '/proxyPrefixSSL/path/info.php',
             ],
+            'add proxy ssl prefix with forwarded proto https' => [
+                [
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_PROTO' => 'https',
+                    'SCRIPT_NAME' => '/path/info.php',
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
+                ],
+                '/proxyPrefixSSL/path/info.php',
+            ],
+            'add proxy ssl prefix with forwarded proto http will not be added' => [
+                [
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_PROTO' => 'http',
+                    'SCRIPT_NAME' => '/path/info.php',
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
+                    'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
+                ],
+                '/path/info.php',
+            ],
             'add proxy prefix' => [
                 [
                     'REMOTE_ADDR' => '123.123.123.123',
@@ -445,7 +526,7 @@ final class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTPS' => 'on',
+                    'HTTP_X_FORWARDED_PROTO' => 'https',
                     'REQUEST_URI' => 'typo3/foo/bar?id=42',
                 ],
                 [
@@ -469,7 +550,7 @@ final class NormalizedParamsTest extends UnitTestCase
             'prefix with proxy prefix with ssl if using query string and script name' => [
                 [
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTPS' => 'on',
+                    'HTTP_X_FORWARDED_PROTO' => 'https',
                     'QUERY_STRING' => 'parameter=foo/bar&id=42',
                     'SCRIPT_NAME' => '/typo3/index.php',
                 ],
