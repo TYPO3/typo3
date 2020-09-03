@@ -97,7 +97,7 @@ class PageRendererTest extends FunctionalTestCase
         $subject->addJsInlineCode(StringUtility::getUniqueId(), $jsInlineCode);
 
         $cssFile = StringUtility::getUniqueId('cssFile-');
-        $expectedCssFileString = 'wrapBefore<link rel="stylesheet" type="text/css" href="' . $cssFile . '" media="print" />wrapAfter';
+        $expectedCssFileString = 'wrapBefore<link rel="stylesheet" href="' . $cssFile . '" media="print" />wrapAfter';
         $subject->addCssFile($cssFile, 'stylesheet', 'print', '', true, false, 'wrapBeforeXwrapAfter', false, 'X');
 
         $expectedCssInlineBlockOnTopString = '/*general3*/' . LF . 'h1 {margin:20px;}' . LF . '/*general2*/' . LF . 'body {margin:20px;}';

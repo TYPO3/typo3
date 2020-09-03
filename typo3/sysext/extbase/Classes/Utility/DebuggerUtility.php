@@ -550,7 +550,7 @@ class DebuggerUtility
         $css = '';
         if (!$plainText && self::$stylesheetEchoed === false) {
             $css = '
-				<style type=\'text/css\'>
+				<style>
 					.extbase-debugger-tree{position:relative}
 					.extbase-debugger-tree input{position:absolute !important;float: none !important;top:0;left:0;height:14px;width:14px;margin:0 !important;cursor:pointer;opacity:0;z-index:2}
 					.extbase-debugger-tree input~.extbase-debug-content{display:none}

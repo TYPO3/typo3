@@ -348,7 +348,7 @@ class PageRenderer implements SingletonInterface
             '/*]]>*/' . LF . '</script>' . LF
         ];
         $this->inlineCssWrap = [
-            '<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
+            '<style>' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
             '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
         ];
 
@@ -2125,7 +2125,7 @@ class PageRenderer implements SingletonInterface
         } else {
             $href = $this->getStreamlinedFileName($file);
             $tag = '<link rel="' . htmlspecialchars($properties['rel'])
-                . '" type="text/css" href="' . htmlspecialchars($href)
+                . '" href="' . htmlspecialchars($href)
                 . '" media="' . htmlspecialchars($properties['media']) . '"'
                 . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
                 . $this->endingSlash . '>';
@@ -2700,7 +2700,7 @@ class PageRenderer implements SingletonInterface
             return '';
         }
         $cssInlineFix = $this->getPathFixer()->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
-        return '<style type="text/css"'
+        return '<style'
             . ' media="' . htmlspecialchars($properties['media']) . '"'
             . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
             . '>' . LF

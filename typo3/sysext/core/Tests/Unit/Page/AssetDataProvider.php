@@ -37,7 +37,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
@@ -55,7 +55,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
@@ -73,7 +73,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;x &quot;" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;x &quot;" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;x &quot;"></script>',
                     'js_prio' => '',
@@ -91,7 +91,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="https://typo3.org/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="https://typo3.org/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="https://typo3.org/foo.ext"></script>',
                     'js_prio' => '',
@@ -109,7 +109,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="https://typo3.org/foo.ext?foo=bar" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="https://typo3.org/foo.ext?foo=bar" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="https://typo3.org/foo.ext?foo=bar"></script>',
                     'js_prio' => '',
@@ -127,7 +127,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="https://typo3.org/foo.ext?foo=bar&amp;bar=baz" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="https://typo3.org/foo.ext?foo=bar&amp;bar=baz" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="https://typo3.org/foo.ext?foo=bar&amp;bar=baz"></script>',
                     'js_prio' => '',
@@ -151,7 +151,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >' . LF . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >' . LF . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="fileadmin/foo.ext"></script>' . LF . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
@@ -176,7 +176,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/bar.ext" rel="stylesheet" type="text/css" >' . LF . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/bar.ext" rel="stylesheet" >' . LF . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/bar.ext"></script>' . LF . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
@@ -196,7 +196,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link rel="foo" href="fileadmin/foo.ext" type="text/css" >',
+                    'css_no_prio' => '<link rel="foo" href="fileadmin/foo.ext" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script rel="foo" src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
@@ -238,7 +238,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link rel="bar" another="keep on override" href="fileadmin/foo.ext" type="text/css" >',
+                    'css_no_prio' => '<link rel="bar" another="keep on override" href="fileadmin/foo.ext" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script rel="bar" another="keep on override" src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',
@@ -259,7 +259,7 @@ class AssetDataProvider
                 ],
                 [
                     'css_no_prio' => '',
-                    'css_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >',
                     'js_no_prio' => '',
                     'js_prio' => '<script src="fileadmin/foo.ext"></script>',
                 ]
@@ -280,7 +280,7 @@ class AssetDataProvider
                     ]
                 ],
                 [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" type="text/css" >',
+                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
                     'js_no_prio' => '<script src="fileadmin/foo.ext"></script>',
                     'js_prio' => '',

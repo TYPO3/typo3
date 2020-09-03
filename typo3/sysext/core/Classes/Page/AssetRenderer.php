@@ -92,7 +92,6 @@ class AssetRenderer
         foreach ($assets as &$assetData) {
             $assetData['attributes']['href'] = $this->getAbsoluteWebPath($assetData['source']);
             $assetData['attributes']['rel'] = $assetData['attributes']['rel'] ?? 'stylesheet';
-            $assetData['attributes']['type'] = $assetData['attributes']['type'] ?? 'text/css';
         }
         return $this->render($assets, $template);
     }

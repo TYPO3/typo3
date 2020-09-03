@@ -81,7 +81,7 @@ class ResourceUtility
         $result = '';
         if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
             $stylesheet = GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel']);
-            $result = '<link rel="stylesheet" type="text/css" href="' .
+            $result = '<link rel="stylesheet" href="' .
                       htmlspecialchars($stylesheet, ENT_QUOTES | ENT_HTML5) . '" />';
         }
         return $result;
@@ -95,7 +95,7 @@ class ResourceUtility
      */
     protected static function getCssTag(string $cssFileLocation): string
     {
-        $css = '<link type="text/css" rel="stylesheet" href="' .
+        $css = '<link rel="stylesheet" href="' .
                htmlspecialchars(
                    PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($cssFileLocation)),
                    ENT_QUOTES | ENT_HTML5

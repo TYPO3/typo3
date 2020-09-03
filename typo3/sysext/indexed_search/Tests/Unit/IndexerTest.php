@@ -127,7 +127,7 @@ class IndexerTest extends UnitTestCase
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <title>Some Title</title>
-<link href='css/normalize.css' rel='stylesheet' type='text/css'/>
+<link href='css/normalize.css' rel='stylesheet'/>
 </head>
 <body>
 <div>
@@ -171,7 +171,7 @@ EOT;
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <title>Some Title</title>
-<link href='css/normalize.css' rel='stylesheet' type='text/css'/>
+<link href='css/normalize.css' rel='stylesheet'/>
 </head>
 <body>
 <div>
