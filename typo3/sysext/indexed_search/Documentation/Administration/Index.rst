@@ -21,8 +21,9 @@ Monitoring indexed content
 The Indexed Search extension adds two backend modules, one as a global
 database-wide statistics module and a page specific analysis module.
 
-In the Web > Info module you can see an overview of how many instances
-are indexed per TYPO3-page. Look at this image:
+In the Web > Indexing module (sub module Detailed statistics) you can
+see an overview of how many instances are indexed per TYPO3-page.
+Look at this image:
 
 .. figure:: ../Images/PageIndexingStatistics.png
    :alt: Page indexing statistics
