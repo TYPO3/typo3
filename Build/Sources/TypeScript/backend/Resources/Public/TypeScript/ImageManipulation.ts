@@ -17,7 +17,7 @@ import 'jquery-ui/resizable';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import ImagesLoaded = require('TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min');
+import ImagesLoaded = require('imagesloaded');
 import Icons = require('./Icons');
 import Modal = require('./Modal');
 
