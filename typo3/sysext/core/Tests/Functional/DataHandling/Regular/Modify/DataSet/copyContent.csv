@@ -8,3 +8,5 @@
 ,301,89,384,0,1,297,297,297,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,302,89,448,0,2,297,301,301,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
 ,303,89,128,0,0,0,0,298,0,0,0,0,0,"Regular Element #2 (copy 1)"
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,

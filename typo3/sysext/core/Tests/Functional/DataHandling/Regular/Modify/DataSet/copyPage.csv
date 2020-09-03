@@ -20,3 +20,8 @@
 ,306,91,32,0,0,0,0,297,0,0,0,0,0,"Regular Element #1"
 ,307,91,16,0,1,306,306,301,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,308,91,8,0,2,306,307,302,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,
+,"82d0cf88b8fd9ff00793b2fa533ddbc7","tt_content",304,"l18n_parent",0,0,0,"tt_content",303,,,,,
+,"6533fcc65c25ba66af53b6dbc7b2e716","tt_content",307,"l18n_parent",0,0,0,"tt_content",306,,,,,
+,"70d62e692670e641acf36bbae846ce00","tt_content",308,"l18n_parent",0,0,0,"tt_content",306,,,,,

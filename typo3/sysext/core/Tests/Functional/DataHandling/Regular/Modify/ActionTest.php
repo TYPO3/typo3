@@ -257,7 +257,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecord.csv
+     * See DataSet/localizeContentWithEmptyTcaIntegrityColumns.csv
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
     public function localizeContentWithEmptyTcaIntegrityColumns()
@@ -265,7 +265,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithEmptyTcaIntegrityColumns();
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()

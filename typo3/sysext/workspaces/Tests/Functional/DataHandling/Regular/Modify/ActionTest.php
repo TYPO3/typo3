@@ -217,7 +217,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecord.csv
+     * See DataSet/localizeContent.csv
      */
     public function localizeContent()
     {
@@ -233,7 +233,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecord.csv
+     * See DataSet/localizeContentWithEmptyTcaIntegrityColumns.csv
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
     public function localizeContentWithEmptyTcaIntegrityColumns()
@@ -241,7 +241,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithEmptyTcaIntegrityColumns();
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));

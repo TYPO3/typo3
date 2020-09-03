@@ -23,3 +23,5 @@
 ,11,90,64,0,0,0,0,0,0,0,0,0,"Price #1.2.2",6,"tx_irretutorial_1nff_offer",,
 ,12,90,128,0,0,0,0,0,0,0,0,0,"Price #2.1.1",7,"tx_irretutorial_1nff_offer",,
 ,13,90,256,0,0,0,0,0,0,0,0,0,"Price #1.1.1",8,"tx_irretutorial_1nff_offer",,
+"sys_refindex",,,,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,,,

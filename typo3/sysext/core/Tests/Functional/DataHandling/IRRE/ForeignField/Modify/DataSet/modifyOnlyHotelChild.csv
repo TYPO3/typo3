@@ -23,3 +23,6 @@
 ,11,89,2,0,0,0,0,0,0,0,0,0,"Price #1.2.2",6,"tx_irretutorial_1nff_offer",,
 ,12,89,1,0,0,0,0,0,0,0,0,0,"Price #2.1.1",7,"tx_irretutorial_1nff_offer",,
 ,13,89,1,0,0,0,0,0,0,0,0,0,"Price #1.1.1",8,"tx_irretutorial_1nff_offer",,
+"sys_refindex",,,,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,,,
+,"fcc697bfb91755f75e07f6ce1784b18b","tx_irretutorial_1nff_hotel",4,"offers",0,0,0,"tx_irretutorial_1nff_offer",7,,,,,,,,

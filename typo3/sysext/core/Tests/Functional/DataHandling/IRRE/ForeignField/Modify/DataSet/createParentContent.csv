@@ -3,3 +3,5 @@
 ,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1",2
 ,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",1
 ,299,89,128,0,0,0,0,0,0,0,0,0,"Testing #1",0
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,
