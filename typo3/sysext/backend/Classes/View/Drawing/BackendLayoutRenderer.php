@@ -136,6 +136,9 @@ class BackendLayoutRenderer
         $languageColumns = [];
         foreach ($context->getLanguagesToShow() as $siteLanguage) {
             $localizedLanguageId = $siteLanguage->getLanguageId();
+            if ($localizedLanguageId === -1) {
+                continue;
+            }
             if ($localizedLanguageId > 0) {
                 $localizedContext = $context->cloneForLanguage($siteLanguage);
                 if (!$localizedContext->getLocalizedPageRecord()) {
