@@ -377,11 +377,11 @@ class PageRouter implements RouterInterface
         if ($matchedRoute && $pageRouteResult && !empty($pageRouteResult->getDynamicArguments())) {
             $cacheHash = $this->generateCacheHash($pageId, $pageRouteResult);
 
+            $queryArguments = $pageRouteResult->getQueryArguments();
             if (!empty($cacheHash)) {
-                $queryArguments = $pageRouteResult->getQueryArguments();
                 $queryArguments['cHash'] = $cacheHash;
-                $uri = $uri->withQuery(http_build_query($queryArguments, '', '&', PHP_QUERY_RFC3986));
             }
+            $uri = $uri->withQuery(http_build_query($queryArguments, '', '&', PHP_QUERY_RFC3986));
         }
         if ($fragment) {
             $uri = $uri->withFragment($fragment);
