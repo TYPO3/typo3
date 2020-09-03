@@ -600,25 +600,39 @@ class NormalizedParams
      * Determine if the client called via HTTPS. Takes proxy ssl terminator
      * configurations into account.
      *
+     * How does TYPO3 determine if the connection was established via TLS/SSL/https?
+     * 1. If reverseProxySSL matches, then we now that Client -> Proxy is SSL,
+     *     and Proxy -> App Server is non-SSL. SSL Termination happens at Proxy at ALL times.
+     * 2. If reverseProxyIP matches, and HTTP_X_FORWARDED_PROTO is set, it is evaluated
+     * 3. If no other matches, see webserverUsesHttps()
+     *
+     * Note: HTTP_X_FORWARDED_PROTO is ONLY evaluated at the point, where we know
+     *       that the incoming REMOTE_ADDR is a trusted proxy!
+     *
      * @param array $serverParams Basically the $_SERVER, but from $request object
      * @param array $configuration $TYPO3_CONF_VARS['SYS'] array
      * @return bool True if request has been done via HTTPS
      */
     protected static function determineHttps(array $serverParams, array $configuration): bool
     {
-        $isHttps = false;
         $configuredProxySSL = trim($configuration['reverseProxySSL'] ?? '');
+        $configuredProxyRegular = trim($configuration['reverseProxyIP'] ?? '');
+
         if ($configuredProxySSL === '*') {
-            $configuredProxySSL = trim($configuration['reverseProxyIP'] ?? '');
+            $configuredProxySSL = $configuredProxyRegular;
         }
         $httpsParam = (string)($serverParams['HTTPS'] ?? '');
-        if (GeneralUtility::cmpIP(trim($serverParams['REMOTE_ADDR'] ?? ''), $configuredProxySSL)
-            || ($serverParams['SSL_SESSION_ID'] ?? '')
+        if (GeneralUtility::cmpIP($serverParams['REMOTE_ADDR'] ?? '', $configuredProxySSL)) {
+            $isHttps = true;
+        } elseif (isset($serverParams['HTTP_X_FORWARDED_PROTO'])
+            && GeneralUtility::cmpIP($serverParams['REMOTE_ADDR'] ?? '', $configuredProxyRegular)) {
+            // If the X-Forwarded-Proto header is set, and we can trust the RemoteAddr to be a proxy, check it
+            $isHttps = strtolower($serverParams['HTTP_X_FORWARDED_PROTO']) === 'https';
+        } else {
             // https://secure.php.net/manual/en/reserved.variables.server.php
             // "Set to a non-empty value if the script was queried through the HTTPS protocol."
-            || ($httpsParam !== '' && $httpsParam !== 'off' && $httpsParam !== '0')
-        ) {
-            $isHttps = true;
+            $isHttps = ($serverParams['SSL_SESSION_ID'] ?? '')
+                || ($httpsParam !== '' && $httpsParam !== 'off' && $httpsParam !== '0');
         }
         return $isHttps;
     }
