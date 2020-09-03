@@ -7,3 +7,5 @@
 ,300,89,1024,0,1,299,299,299,0,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
 ,301,90,128,0,1,297,297,297,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,302,90,64,0,2,297,301,301,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,

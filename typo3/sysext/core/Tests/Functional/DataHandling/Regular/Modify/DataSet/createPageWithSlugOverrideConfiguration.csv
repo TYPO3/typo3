@@ -5,3 +5,5 @@
 ,89,88,256,0,0,0,0,0,0,0,"Relations","/data-handler/relations"
 ,90,88,512,0,0,0,0,0,0,0,"Target","/data-handler/target"
 ,91,89,256,0,0,0,0,0,0,0,"Testing #1","/data-handler/relations/nav-testing-1"
+"sys_refindex",,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,

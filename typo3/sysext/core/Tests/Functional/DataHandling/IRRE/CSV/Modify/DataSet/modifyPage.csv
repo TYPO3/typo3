@@ -4,3 +4,6 @@ pages,,,,,,,,,,,,
 ,88,1,256,0,0,0,0,0,0,0,DataHandlerTest,
 ,89,88,256,0,0,0,0,0,0,0,"Testing #1",2
 ,90,88,512,0,0,0,0,0,0,0,Target,
+"sys_refindex",,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,
+,"4787480de4393ca84a67fff60accb7b7","pages",89,"tx_irretutorial_1ncsv_hotels",0,0,0,"tx_irretutorial_1ncsv_hotel",2,,,

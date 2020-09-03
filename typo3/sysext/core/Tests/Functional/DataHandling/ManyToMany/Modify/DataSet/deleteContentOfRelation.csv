@@ -14,3 +14,8 @@
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header","image","categories"
 ,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1",0,2
 ,298,89,512,1,0,0,0,0,0,0,0,0,"Regular Element #2",0,2
+"sys_refindex",,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,
+,"a39d4a457c3043438f34193027cdb8dc","sys_category",30,"items",0,0,0,"tt_content",298,,,,,,
+,"a902304805e24ea0d57feaeb08d5c898","sys_category",29,"items",0,0,0,"tt_content",297,,,,,,
+,"4cf35307d2ebd8521d82d598a9d6fb37","sys_category",29,"items",1,0,0,"tt_content",298,,,,,,

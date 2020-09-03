@@ -17,3 +17,11 @@
 ,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1",0,2
 ,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",0,2
 ,299,89,768,0,1,298,298,0,0,0,0,0,"[Translate to Dansk:] Regular Element #2",0,2
+"sys_refindex",,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,
+,"aa9d44bd50d47873e29c5a4987bda6e0","tt_content",299,"l18n_parent",0,0,0,"tt_content",298,,,,,,
+,"a902304805e24ea0d57feaeb08d5c898","sys_category",29,"items",0,0,0,"tt_content",297,,,,,,
+,"4cf35307d2ebd8521d82d598a9d6fb37","sys_category",29,"items",1,0,0,"tt_content",298,,,,,,
+,"23ca9e322abe5b6db427dbc0eb9e0e82","sys_category",29,"items",2,0,0,"tt_content",299,,,,,,
+,"a39d4a457c3043438f34193027cdb8dc","sys_category",30,"items",0,0,0,"tt_content",298,,,,,,
+,"750cd52a56d90cdd5b3391369fd5687e","sys_category",30,"items",1,0,0,"tt_content",299,,,,,,

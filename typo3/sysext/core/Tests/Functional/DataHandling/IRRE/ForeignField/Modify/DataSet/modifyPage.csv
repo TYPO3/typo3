@@ -4,3 +4,6 @@
 ,88,1,256,0,0,0,0,0,0,0,"DataHandlerTest",0
 ,89,88,256,0,0,0,0,0,0,0,"Testing #1",1
 ,90,88,512,0,0,0,0,0,0,0,"Target",0
+"sys_refindex",,,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,
+,"2dfd3b8e87b9b45f18e0b3c3a7fa2f72","pages",89,"tx_irretutorial_hotels",0,0,0,"tx_irretutorial_1nff_hotel",2,,,
