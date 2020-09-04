@@ -553,8 +553,14 @@ class DatabaseRecordList
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
             if ($localCalcPerms->editPagePermissionIsGranted() && !empty($this->id) && $this->editLockPermissions() && $backendUser->checkLanguageAccess(0)) {
                 // Edit
-                $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
-                $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
+                $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
+                    'edit' => [
+                        'pages' => [
+                            $this->pageRow['uid'] => 'edit'
+                        ]
+                    ],
+                    'returnUrl' => $this->listURL()
+                ]);
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref($editLink)
                     ->setTitle($lang->getLL('editPage'))
@@ -1371,9 +1377,8 @@ class DatabaseRecordList
                         $spriteIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
                         $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB', '', $lang->getLL('clip_selectMarked'));
                         // The "edit marked" link:
-                        $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit')
-                            . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit'
-                            . '&returnUrl=' . rawurlencode($this->listURL());
+                        $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
+                            . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit';
                         $cells['edit'] = '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
                             . ' data-uri="' . htmlspecialchars($editUri) . '"'
                             . ' title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '">'
@@ -1431,7 +1436,7 @@ class DatabaseRecordList
                                     $newContentElementWizard,
                                     [
                                         'id' => $this->id,
-                                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+                                        'returnUrl' => $this->listURL(),
                                     ]
                                 );
                                 $title = htmlspecialchars($lang->getLL('new'));
@@ -1442,16 +1447,23 @@ class DatabaseRecordList
                                     . $spriteIcon->render()
                                     . '</a>';
                             } elseif ($table === 'pages') {
-                                $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')];
+                                $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()];
                                 $href = (string)$this->uriBuilder->buildUriFromRoute('db_new', $parameters);
                                 $icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">'
                                     . $spriteIcon->render() . '</a>';
                             } else {
-                                $params = '&edit[' . $table . '][' . $this->id . ']=new';
+                                $params = [
+                                    'edit' => [
+                                        $table => [
+                                            $this->id => 'new'
+                                        ]
+                                    ]
+                                ];
                                 if ($table === 'pages') {
-                                    $params .= '&overrideVals[pages][doktype]=' . (int)$this->pageRow['doktype'];
+                                    $params['overrideVals']['pages']['doktype'] = (int)$this->pageRow['doktype'];
                                 }
-                                $newLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
+                                $params['returnUrl'] = $this->listURL();
+                                $newLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
                                 $icon = '<a class="btn btn-default" href="' . htmlspecialchars($newLink) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
                             }
                         }
@@ -1461,10 +1473,9 @@ class DatabaseRecordList
                             if ($this->clipNumPane()) {
                                 $entityIdentifiers .= ':editList';
                             }
-                            $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit')
+                            $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
                                 . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
-                                . '&columnsOnly=' . implode(',', $this->fieldArray)
-                                . '&returnUrl=' . rawurlencode($this->listURL());
+                                . '&columnsOnly=' . implode(',', $this->fieldArray);
                             $icon .= '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
                                 . ' data-uri="' . htmlspecialchars($editUri) . '"'
                                 . ' title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '">'
@@ -1521,10 +1532,9 @@ class DatabaseRecordList
                             if ($this->clipNumPane()) {
                                 $entityIdentifiers .= ':editList';
                             }
-                            $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit')
+                            $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
                                 . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
-                                . '&columnsOnly=' . $fCol
-                                . '&returnUrl=' . rawurlencode($this->listURL());
+                                . '&columnsOnly=' . $fCol;
                             $iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
                             $theData[$fCol] .= '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
                                 . ' data-uri="' . htmlspecialchars($editUri) . '"'
@@ -1742,14 +1752,21 @@ class DatabaseRecordList
 
         // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
         if ($permsEdit && !$isDeletePlaceHolder && $this->isEditable($table)) {
-            $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
+            $params = [
+                'edit' => [
+                    $table => [
+                        $row['uid'] => 'edit'
+                    ]
+                ]
+            ];
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
                 // Disallow manual adjustment of the language field for pages
-                $params .= '&overrideVals[pages][sys_language_uid]=' . (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+                $params['overrideVals']['pages']['sys_language_uid'] = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 $iconIdentifier = 'actions-page-open';
             }
-            $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
+            $params['returnUrl'] = $this->listURL();
+            $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
             $editAction = '<a class="btn btn-default" href="' . htmlspecialchars($editLink) . '"'
                 . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '</a>';
         } else {
@@ -1806,7 +1823,14 @@ class DatabaseRecordList
                 if ($isL10nOverlay || $isDeletePlaceHolder) {
                     $permsAction = $this->spaceIcon;
                 } else {
-                    $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit' . $this->makeReturnUrl();
+                    $params = [
+                        'id' => $row['uid'],
+                        'tx_beuser_system_beusertxpermission' => [
+                            'action' => 'edit'
+                        ],
+                        'returnUrl' => $this->listURL()
+                    ];
+                    $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', $params);
                     $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
                         . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
                         . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1822,13 +1846,20 @@ class DatabaseRecordList
                     if ($isL10nOverlay || $isDeletePlaceHolder) {
                         $this->addActionToCellGroup($cells, $this->spaceIcon, 'new');
                     } elseif ($this->showNewRecLink($table)) {
-                        $params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
+                        $params = [
+                            'edit' => [
+                                $table => [
+                                    (0-($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new'
+                                ]
+                            ],
+                            'returnUrl' => $this->listURL()
+                        ];
                         $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
                         if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
                             $titleLabel .= ($table === 'pages' ? 'Page' : 'Record');
                         }
-                        $newLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
+                        $newLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
                         $newAction = '<a class="btn btn-default" href="' . htmlspecialchars($newLink) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($titleLabel)) . '">'
                             . $icon->render() . '</a>';
                         $this->addActionToCellGroup($cells, $newAction, 'new');
@@ -2068,7 +2099,7 @@ class DatabaseRecordList
                         $row['uid'],
                         1,
                         $isSel === 'copy',
-                        ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                        ['returnUrl' => $this->listURL()]
                     ))
                     . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '">'
                     . $copyIcon->render() . '</a>';
@@ -2091,7 +2122,7 @@ class DatabaseRecordList
                             $row['uid'],
                             0,
                             $isSel === 'cut',
-                            ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                            ['returnUrl' => $this->listURL()]
                         ))
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
@@ -2105,7 +2136,7 @@ class DatabaseRecordList
                         $row['uid'],
                         0,
                         $isSel === 'cut',
-                        ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                        ['returnUrl' => $this->listURL()]
                     ))
                     . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                     . $cutIcon->render() . '</a>';
@@ -2446,18 +2477,6 @@ class DatabaseRecordList
         }
         return !in_array($table, $this->deniedNewTables)
             && (empty($this->allowedNewTables) || in_array($table, $this->allowedNewTables));
-    }
-
-    /**
-     * Creates the "&returnUrl" parameter for links - this is used when the script links
-     * to other scripts and passes its own URL with the link so other scripts can return to the listing again.
-     * Uses REQUEST_URI as value.
-     *
-     * @return string
-     */
-    public function makeReturnUrl()
-    {
-        return '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
     }
 
     /************************************
@@ -3264,8 +3283,15 @@ class DatabaseRecordList
                 }
                 // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
                 if ($permsEdit && $this->isEditable($table)) {
-                    $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-                    $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
+                    $params = [
+                        'edit' => [
+                            $table => [
+                                $row['uid'] => 'edit'
+                            ]
+                        ],
+                        'returnUrl' => $this->listURL()
+                    ];
+                    $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     $code = '<a href="' . htmlspecialchars($editLink) . '" title="' . htmlspecialchars($lang->getLL('edit')) . '">' . $code . '</a>';
                 }
                 break;
