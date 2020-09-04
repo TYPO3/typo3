@@ -790,10 +790,6 @@ return [
                         'content-inside-text-img-left'
                     ],
                     [
-                        'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.8',
-                        '--div--'
-                    ],
-                    [
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.9',
                         25,
                         'content-beside-text-img-right'

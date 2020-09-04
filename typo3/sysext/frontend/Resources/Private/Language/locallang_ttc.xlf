@@ -261,9 +261,6 @@
 			<trans-unit id="imageorient.I.7" resname="imageorient.I.7">
 				<source>In text, left</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.8" resname="imageorient.I.8">
-				<source>__No wrap:__</source>
-			</trans-unit>
 			<trans-unit id="imageorient.I.9" resname="imageorient.I.9">
 				<source>Beside Text, Right</source>
 			</trans-unit>
