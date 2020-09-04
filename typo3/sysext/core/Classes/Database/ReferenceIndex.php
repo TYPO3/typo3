@@ -260,6 +260,10 @@ class ReferenceIndex implements LoggerAwareInterface
                     if (!is_array($relation)) {
                         continue;
                     }
+                    // Exclude any relations TO a specific table
+                    if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
+                        continue;
+                    }
                     $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
                     // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
                     if (isset($currentRelationHashes[$relation['hash']])) {
