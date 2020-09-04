@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(E,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),function(E){E[E.ENTER=13]="ENTER",E[E.ESCAPE=27]="ESCAPE",E[E.SPACE=32]="SPACE",E[E.END=35]="END",E[E.HOME=36]="HOME",E[E.LEFT=37]="LEFT",E[E.UP=38]="UP",E[E.RIGHT=39]="RIGHT",E[E.DOWN=40]="DOWN"}(e.KeyTypesEnum||(e.KeyTypesEnum={}))}));
+define(["require","exports"],(function(e,E){"use strict";Object.defineProperty(E,"__esModule",{value:!0}),E.KeyTypesEnum=void 0,function(e){e[e.ENTER=13]="ENTER",e[e.ESCAPE=27]="ESCAPE",e[e.SPACE=32]="SPACE",e[e.END=35]="END",e[e.HOME=36]="HOME",e[e.LEFT=37]="LEFT",e[e.UP=38]="UP",e[e.RIGHT=39]="RIGHT",e[e.DOWN=40]="DOWN"}(E.KeyTypesEnum||(E.KeyTypesEnum={}))}));
