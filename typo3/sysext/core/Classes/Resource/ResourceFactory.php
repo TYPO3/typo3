@@ -141,7 +141,6 @@ class ResourceFactory implements SingletonInterface
         }
         if (empty($this->storageInstances[$uid])) {
             $storageConfiguration = null;
-            $storageObject = null;
             /** @var BeforeResourceStorageInitializationEvent $event */
             $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
             $recordData = $event->getRecord();
@@ -168,15 +167,12 @@ class ResourceFactory implements SingletonInterface
                     'basePath' => '/',
                     'pathType' => 'relative'
                 ];
-            } elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
+            } elseif ($recordData === [] || (int)$recordData['uid'] !== $uid) {
                 /** @var StorageRepository $storageRepository */
                 $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                /** @var ResourceStorage $storageObject */
-                $storageObject = $storageRepository->findByUid($uid);
+                $recordData = $storageRepository->fetchRowByUid($uid);
             }
-            if (!$storageObject instanceof ResourceStorage) {
-                $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
-            }
+            $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
             $storageObject = $this->eventDispatcher
                 ->dispatch(new AfterResourceStorageInitializationEvent($storageObject))
                 ->getStorage();
