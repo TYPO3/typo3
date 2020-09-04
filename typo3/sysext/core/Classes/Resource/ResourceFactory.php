@@ -145,7 +145,6 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         }
         if (empty($this->storageInstances[$uid])) {
             $storageConfiguration = null;
-            $storageObject = null;
             list($_, $uid, $recordData, $fileIdentifier) = $this->emitPreProcessStorageSignal($uid, $recordData, $fileIdentifier);
             // If the built-in storage with UID=0 is requested:
             if ($uid === 0) {
@@ -168,15 +167,12 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                     'basePath' => '/',
                     'pathType' => 'relative'
                 ];
-            } elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
+            } elseif ($recordData === [] || (int)$recordData['uid'] !== $uid) {
                 /** @var StorageRepository $storageRepository */
                 $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                /** @var ResourceStorage $storage */
-                $storageObject = $storageRepository->findByUid($uid);
+                $recordData = $storageRepository->fetchRowByUid($uid);
             }
-            if (!$storageObject instanceof ResourceStorage) {
-                $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
-            }
+            $storageObject = $this->createStorageObject($recordData, $storageConfiguration);
             $this->emitPostProcessStorageSignal($storageObject);
             $this->storageInstances[$uid] = $storageObject;
         }

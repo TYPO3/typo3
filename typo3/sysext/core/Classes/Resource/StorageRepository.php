@@ -69,6 +69,24 @@ class StorageRepository extends AbstractRepository implements LoggerAwareInterfa
     }
 
     /**
+     * Only for use in ResourceFactory::getStorageObject
+     *
+     * @internal
+     * @param int $uid
+     *
+     * @return array
+     */
+    public function fetchRowByUid(int $uid): array
+    {
+        $this->initializeLocalCache();
+        if (!isset($this->storageRowCache[$uid])) {
+            throw new \InvalidArgumentException(sprintf('No storage found with uid "%d".', $uid), 1599235454);
+        }
+
+        return $this->storageRowCache[$uid];
+    }
+
+    /**
      * Initializes the Storage
      */
     protected function initializeLocalCache()
