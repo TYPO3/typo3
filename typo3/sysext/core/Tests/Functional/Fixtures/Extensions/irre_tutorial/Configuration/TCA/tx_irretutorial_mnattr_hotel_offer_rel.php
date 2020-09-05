@@ -17,8 +17,6 @@ return [
         'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_hotel_offer_rel.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
-        // @see https://forge.typo3.org/issues/29278 which solves it implicitly in the Core
-        // 'shadowColumnsForNewPlaceholders' => 'hotelid,offerid',
     ],
     'columns' => [
         'sys_language_uid' => [

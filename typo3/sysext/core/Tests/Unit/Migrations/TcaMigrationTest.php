@@ -631,4 +631,40 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function ctrlShadowColumnsForMoveAndPlaceholdersIsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'shadowColumnsForNewPlaceholders' => 'aValue',
+                    'shadowColumnsForMovePlaceholders' => 'anotherValue',
+                ]
+            ],
+            'bTable' => [
+                'ctrl' => [
+                    'label' => 'labelField',
+                    'versioningWS' => true,
+                    'shadowColumnsForNewPlaceholders' => 'aValue'
+                ]
+            ]
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                ]
+            ],
+            'bTable' => [
+                'ctrl' => [
+                    'label' => 'labelField',
+                    'versioningWS' => true
+                ]
+            ],
+        ];
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }

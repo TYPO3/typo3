@@ -66,7 +66,7 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                 continue;
             }
             if ($this->workspaceId === 0) {
-                // Only include ws_id=0
+                // Only include records from live workspace
                 $workspaceIdExpression = $expressionBuilder->eq($tableAlias . '.t3ver_wsid', 0);
             } else {
                 // Include live records PLUS records from the given workspace
@@ -76,6 +76,7 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                 );
             }
             // Always filter out versioned records that have an "offline" record
+            // But include moved records AND newly created records (t3ver_oid=0)
             $constraints[] = $expressionBuilder->andX(
                 $workspaceIdExpression,
                 $expressionBuilder->orX(

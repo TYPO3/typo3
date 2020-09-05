@@ -19,7 +19,6 @@ return [
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'copyAfterDuplFields' => 'colPos,sys_language_uid',
         'useColumnsForDefaultValues' => 'colPos,sys_language_uid,CType',
-        'shadowColumnsForNewPlaceholders' => 'colPos',
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'languageField' => 'sys_language_uid',

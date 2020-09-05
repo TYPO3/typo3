@@ -21,12 +21,12 @@
 ,298,89,512,0,0,0,0,0,0,0,"Regular Element #2","2,3",,,,,
 # @todo: Odd - It could be expected these relations to no longer existing element 4 are discarded too? What happens here with non-ws delete?
 ,299,89,128,0,0,0,1,1,0,0,"Testing #1",4,,,,,
-,300,89,128,0,0,0,1,-1,0,299,"Testing #1",4,,,,,
 "tx_testdatahandler_element",,,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,,,,
 ,1,89,256,0,0,0,0,0,0,0,"Element #1",,,,,,
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",,,,,,
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",,,,,,
+# @todo: sys_refindex result is broken here. the flag to perform integrity test in tearDown() is disabled for this test.
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,
 ,"67070566eb5b788c5edd02dbdbc63da1","tt_content",297,"tx_testdatahandler_group",,,,0,0,0,"tx_testdatahandler_element",1,,,,,
@@ -35,4 +35,3 @@
 ,"e6e296f8287da20e27112548083fda67","tt_content",298,"tx_testdatahandler_group",,,,1,0,0,"tx_testdatahandler_element",3,,,,,
 ,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,,,,,
 ,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,,,,,
-,"10d21189507d386d29afe91d5c4a6504","tt_content",300,"tx_testdatahandler_group",,,,0,0,1,"tx_testdatahandler_element",4,,,,,

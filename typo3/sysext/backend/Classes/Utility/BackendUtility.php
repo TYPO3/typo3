@@ -1189,16 +1189,13 @@ class BackendUtility
             return $includeAttrib ? 'title="' . $out . '"' : $out;
         }
         switch (VersionState::cast($row['t3ver_state'])) {
-            case new VersionState(VersionState::NEW_PLACEHOLDER):
-                $parts[] = 'PLH WSID#' . $row['t3ver_wsid'];
-                break;
             case new VersionState(VersionState::DELETE_PLACEHOLDER):
                 $parts[] = 'Deleted element!';
                 break;
             case new VersionState(VersionState::MOVE_POINTER):
                 $parts[] = 'NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
                 break;
-            case new VersionState(VersionState::NEW_PLACEHOLDER_VERSION):
+            case new VersionState(VersionState::NEW_PLACEHOLDER):
                 $parts[] = 'New element!';
                 break;
         }
@@ -1300,16 +1297,13 @@ class BackendUtility
             $out .= 'id=' . $row['uid'];
             if (static::isTableWorkspaceEnabled($table)) {
                 switch (VersionState::cast($row['t3ver_state'])) {
-                    case new VersionState(VersionState::NEW_PLACEHOLDER):
-                        $out .= ' - PLH WSID#' . $row['t3ver_wsid'];
-                        break;
                     case new VersionState(VersionState::DELETE_PLACEHOLDER):
                         $out .= ' - Deleted element!';
                         break;
                     case new VersionState(VersionState::MOVE_POINTER):
                         $out .= ' - NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
                         break;
-                    case new VersionState(VersionState::NEW_PLACEHOLDER_VERSION):
+                    case new VersionState(VersionState::NEW_PLACEHOLDER):
                         $out .= ' - New element!';
                         break;
                 }
@@ -3505,8 +3499,10 @@ class BackendUtility
                 $wsAlt['_ORIG_pid'] = $row['pid'];
             }
             // Swap UID
-            $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-            $wsAlt['uid'] = $row['uid'];
+            if (!$versionState->equals(VersionState::NEW_PLACEHOLDER)) {
+                $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+                $wsAlt['uid'] = $row['uid'];
+            }
             // Backend css class:
             $wsAlt['_CSSCLASS'] = 'ver-element';
             // Changing input record to the workspace version alternative:
@@ -3541,12 +3537,25 @@ class BackendUtility
                     ->from($table)
                     ->where(
                         $queryBuilder->expr()->eq(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
                             't3ver_wsid',
                             $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->orX(
+                            // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                            $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->eq(
+                                    'uid',
+                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                ),
+                                $queryBuilder->expr()->eq(
+                                    't3ver_state',
+                                    $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                                )
+                            ),
+                            $queryBuilder->expr()->eq(
+                                't3ver_oid',
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            )
                         )
                     )
                     ->execute()
@@ -3590,9 +3599,14 @@ class BackendUtility
         }
         $liveVersionId = null;
         if (self::isTableWorkspaceEnabled($table)) {
-            $currentRecord = self::getRecord($table, $uid, 'pid,t3ver_oid');
-            if (is_array($currentRecord) && (int)$currentRecord['t3ver_oid'] > 0) {
-                $liveVersionId = $currentRecord['t3ver_oid'];
+            $currentRecord = self::getRecord($table, $uid, 'pid,t3ver_oid,t3ver_state');
+            if (is_array($currentRecord)) {
+                if ((int)$currentRecord['t3ver_oid'] > 0) {
+                    $liveVersionId = $currentRecord['t3ver_oid'];
+                } elseif ((int)($currentRecord['t3ver_state']) === VersionState::NEW_PLACEHOLDER) {
+                    // New versions do not have a live counterpart
+                    $liveVersionId = (int)$uid;
+                }
             }
         }
         return $liveVersionId;

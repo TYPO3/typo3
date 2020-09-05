@@ -7,8 +7,7 @@
 # @todo broken: The sub pages should be turned into delete placeholders too if deleting a parent page?!
 ,91,88,768,0,89,1,4,0,89,"Relations","/data-handler/relations",,,,,,
 ,92,88,128,0,0,1,1,0,0,"Testing #1","/data-handler/testing-1",,,,,,
-,93,88,128,0,0,1,-1,0,92,"Testing #1","/data-handler/testing-1",,,,,,
-,94,1,256,0,88,1,2,0,88,"DataHandlerTest","/data-handler",,,,,,
+,93,1,256,0,88,1,2,0,88,"DataHandlerTest","/data-handler",,,,,,
 "sys_workspace",,,,,,,,,,,,,,,,,
 ,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
 ,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0

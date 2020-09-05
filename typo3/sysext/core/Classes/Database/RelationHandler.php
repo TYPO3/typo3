@@ -1166,18 +1166,6 @@ class RelationHandler
                         );
                     $this->updateRefIndex($table, $uid);
                 }
-                // Update accordant fields in the database for workspaces overlays/placeholders:
-                if ($considerWorkspaces) {
-                    // It's the specific versioned record -> update placeholder (if any)
-                    if (!empty($row['t3ver_oid']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-                        $this->getConnectionForTableName($table)
-                            ->update(
-                                $table,
-                                $updateValues,
-                                ['uid' => (int)$row['t3ver_oid']]
-                            );
-                    }
-                }
             }
         }
     }

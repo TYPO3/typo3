@@ -25,11 +25,14 @@ final class VersionState extends Enumeration
     const __default = self::DEFAULT_STATE;
 
     /**
+     * This record was used until TYPO3 v11, but is not in use anymore.
      * If a new record is created in a workspace a version
      * with t3ver_state -1 is created. This
      * record is the version of the "live" record
      * (t3ver_state=1) where changes are stored, the so-called
      * "versioned record" for new elements.
+     *
+     * @deprecated this constant is not in use anymore and should be removed from any third-party code
      */
     const NEW_PLACEHOLDER_VERSION = -1;
 
@@ -41,14 +44,11 @@ final class VersionState extends Enumeration
     const DEFAULT_STATE = 0;
 
     /**
-     * Creating elements is done by first creating a
-     * placeholder element which is in fact live but
-     * carrying a flag (t3ver_state=1) that makes it
-     * invisible online when fetching records from the database.
-     * This t3ver_state=1 element is the placeholder which
-     * does not contain any additional value except that the
-     * ID of this element is stored in the versioned record
-     * (t3ver_state=-1)
+     * If a new record is created in a workspace a new
+     * record is added with t3ver_state = 1, a so-called
+     * "newly versioned record", which acts as a standalone
+     * record and has no t3ver_oid value. Publishing this record
+     * is done by changing the t3ver_wsid field to "0".
      */
     const NEW_PLACEHOLDER = 1;
 
@@ -72,7 +72,7 @@ final class VersionState extends Enumeration
      *
      * Move placeholders (t3ver_state=3) is not in use anymore, never
      * created and not evaluated anymore since TYPO3 v11.
-]     */
+     */
     /** @deprecated this constant is not in use anymore and should be removed from any third-party code */
     const MOVE_PLACEHOLDER = 3;
     const MOVE_POINTER = 4;
@@ -82,6 +82,6 @@ final class VersionState extends Enumeration
      */
     public function indicatesPlaceholder()
     {
-        return (int)$this->__toString() > self::DEFAULT_STATE;
+        return (int)$this->__toString() > self::NEW_PLACEHOLDER;
     }
 }

@@ -29,7 +29,6 @@
 ,312,90,768,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10",,,,
 ,320,89,512,0,0,0,0,298,2,2,0,298,"Regular Element #2",,,,
 ,321,89,128,0,0,0,0,298,1,1,0,0,"Regular Element #2 (copy 1)",,,,
-,322,89,128,0,0,0,0,298,1,-1,0,321,"Regular Element #2 (copy 1)",,,,
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,
 ,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,,,,,

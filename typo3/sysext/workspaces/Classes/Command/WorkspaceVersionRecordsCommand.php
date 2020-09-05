@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Fetches all versions in the database, and checks for integrity
@@ -59,7 +58,7 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected $foundRecords = [
         // All versions of records found
-        // Subset of "all" which are offline versions (pid=-1) [Informational]
+        // Subset of "all" which are offline versions (t3ver_oid > 0) [Informational]
         'all_versioned_records' => [],
         // All records that has been published and can therefore be removed permanently
         // Subset of "versions" that is a count of 1 or more (has been published) [Informational]
@@ -103,7 +102,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 'action',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Specify which action should be taken. Set it to "versions_in_live", "published_versions", "invalid_workspace" or "unused_placeholders"'
+                'Specify which action should be taken. Set it to "versions_in_live", "published_versions" or "invalid_workspace"'
             );
     }
 
@@ -156,8 +155,6 @@ class WorkspaceVersionRecordsCommand extends Command
             ksort($this->foundRecords[$kk]);
         }
 
-        $unusedPlaceholders = $this->findUnusedPlaceholderRecords();
-
         if (!$io->isQuiet()) {
             $numberOfVersionedRecords = 0;
             foreach ($this->foundRecords['all_versioned_records'] as $records) {
@@ -207,11 +204,6 @@ class WorkspaceVersionRecordsCommand extends Command
                     $io->listing($records);
                 }
             }
-
-            $io->section('Found ' . count($unusedPlaceholders) . ' unused placeholder records.');
-            if ($io->isVeryVerbose()) {
-                $io->listing(array_keys($unusedPlaceholders));
-            }
         }
 
         // Actually permanently delete / update records
@@ -236,13 +228,6 @@ class WorkspaceVersionRecordsCommand extends Command
             case 'invalid_workspace':
                 $io->section('Moving versions in invalid workspaces to live workspace now. ' . ($dryRun ? ' (Not deleting now, just a dry run)' : ''));
                 $this->resetRecordsWithoutValidWorkspace($this->foundRecords['invalid_workspace'], $dryRun, $io);
-                break;
-
-            // Finding all placeholders with no records attached
-            // Placeholder records which are not used anymore by offline versions.
-            case 'unused_placeholders':
-                $io->section('Deleting unused placeholder records now. ' . ($dryRun ? ' (Not deleting now, just a dry run)' : ''));
-                $this->deleteUnusedPlaceholders($unusedPlaceholders, $dryRun, $io);
                 break;
 
             default:
@@ -372,52 +357,6 @@ class WorkspaceVersionRecordsCommand extends Command
         }
     }
 
-    /**
-     * Find all records where the field t3ver_state=1 (new placeholder)
-     *
-     * @return array the records (md5 as hash) with "table:uid" as value
-     */
-    protected function findUnusedPlaceholderRecords(): array
-    {
-        $unusedPlaceholders = [];
-        $tableNames = $this->getAllVersionableTables();
-        foreach ($tableNames as $table) {
-            $queryBuilder = $this->connectionPool
-                ->getQueryBuilderForTable($table);
-
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $result = $queryBuilder
-                ->select('uid', 'pid')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq(
-                        't3ver_state',
-                        $queryBuilder->createNamedParameter(
-                            (string)new VersionState(VersionState::NEW_PLACEHOLDER),
-                            \PDO::PARAM_INT
-                        )
-                    )
-                )
-                ->execute();
-
-            while ($placeholderRecord = $result->fetch()) {
-                $versions = (array)BackendUtility::selectVersionsOfRecord($table, $placeholderRecord['uid'], 'uid', null);
-                if (count($versions) <= 1) {
-                    $unusedPlaceholders[$table . ':' . $placeholderRecord['uid']] = [
-                        'table' => $table,
-                        'uid'   => $placeholderRecord['uid']
-                    ];
-                }
-            }
-        }
-        ksort($unusedPlaceholders);
-        return $unusedPlaceholders;
-    }
-
     /**************************
      * actions / delete methods
      **************************/
@@ -500,36 +439,6 @@ class WorkspaceVersionRecordsCommand extends Command
                     if (!$io->isQuiet()) {
                         $io->writeln('Flushed record "' . $table . ':' . $uid . '".');
                     }
-                }
-            }
-        }
-    }
-
-    /**
-     * Delete unused placeholders
-     *
-     * @param array $records array with array of table and uid of each record
-     * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
-     * @param SymfonyStyle $io
-     */
-    protected function deleteUnusedPlaceholders(array $records, bool $dryRun, SymfonyStyle $io)
-    {
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([], []);
-        foreach ($records as $record) {
-            $table = $record['table'];
-            $uid = $record['uid'];
-            if ($io->isVeryVerbose()) {
-                $io->writeln('Deleting unused placeholder (soft) "' . $table . ':' . $uid . '"');
-            }
-            if (!$dryRun) {
-                $dataHandler->deleteAction($table, $uid);
-                // Return errors if any
-                if (!empty($dataHandler->errorLog)) {
-                    $errorMessage = array_merge(['DataHandler reported an error'], $dataHandler->errorLog);
-                    $io->error($errorMessage);
-                } elseif (!$io->isQuiet()) {
-                    $io->writeln('Permanently deleted unused placeholder "' . $table . ':' . $uid . '".');
                 }
             }
         }

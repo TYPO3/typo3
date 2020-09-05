@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Main backend controller almost always used if some database record is edited in the backend.
@@ -2341,7 +2342,7 @@ class EditDocumentController
                 // Check for versioning support of the table:
                 if ($tableSupportsVersioning) {
                     // If the record is already a version of "something" pass it by.
-                    if ($reqRecord['t3ver_oid'] > 0) {
+                    if ($reqRecord['t3ver_oid'] > 0 || (int)$reqRecord['t3ver_state'] === VersionState::NEW_PLACEHOLDER) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but
                         // that is handled inside DataHandler then and in the interface it would clearly be an error of
                         // links if the user accesses such a scenario)

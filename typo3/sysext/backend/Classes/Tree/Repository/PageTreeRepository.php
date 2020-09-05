@@ -480,7 +480,7 @@ class PageTreeRepository
         $expressionBuilder = $queryBuilder->expr();
 
         if ($this->currentWorkspace === 0) {
-            // Only include ws_id=0
+            // Only include records from live workspace
             $workspaceIdExpression = $expressionBuilder->eq('t3ver_wsid', 0);
         } else {
             // Include live records PLUS records from the given workspace

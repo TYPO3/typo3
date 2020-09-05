@@ -1065,31 +1065,17 @@ class DataHandler implements LoggerAwareInterface
                 }
                 // Processing of all fields in incomingFieldArray and setting them in $fieldArray
                 $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
-                $newVersion_placeholderFieldArray = [];
-                if ($createNewVersion) {
-                    // create a placeholder array with already processed field content
-                    $newVersion_placeholderFieldArray = $fieldArray;
-                }
                 // NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations to field!
                 // Forcing some values unto field array:
                 // NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
                 $fieldArray = $this->overrideFieldArray($table, $fieldArray);
-                if ($createNewVersion) {
-                    $newVersion_placeholderFieldArray = $this->overrideFieldArray($table, $newVersion_placeholderFieldArray);
-                }
                 // Setting system fields
                 if ($status === 'new') {
                     if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
-                        if ($createNewVersion) {
-                            $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
-                        }
                     }
                     if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $this->userid;
-                        if ($createNewVersion) {
-                            $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $this->userid;
-                        }
                     }
                 } elseif ($this->checkSimilar) {
                     // Removing fields which are equal to the current value:
@@ -1097,9 +1083,6 @@ class DataHandler implements LoggerAwareInterface
                 }
                 if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] && !empty($fieldArray)) {
                     $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
-                    if ($createNewVersion) {
-                        $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
-                    }
                 }
                 // Set stage to "Editing" to make sure we restart the workflow
                 if (BackendUtility::isTableWorkspaceEnabled($table)) {
@@ -1120,36 +1103,18 @@ class DataHandler implements LoggerAwareInterface
                             $this->pagetreeNeedsRefresh = true;
                         }
 
-                        // This creates a new version of the record with online placeholder and offline version
+                        // This creates a version of the record, instead of adding it to the live workspace
                         if ($createNewVersion) {
                             // new record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
                             $this->pagetreeNeedsRefresh = true;
-
-                            // Setting placeholder state value for temporary record
-                            $newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
-                            // Setting workspace - only so display of placeholders can filter out those from other workspaces.
-                            $newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-                            // Only set a label if it is an input field
-                            $labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
-                            if ($GLOBALS['TCA'][$table]['columns'][$labelField]['config']['type'] === 'input') {
-                                $newVersion_placeholderFieldArray[$labelField] = $this->getPlaceholderTitleForTableLabel($table);
-                            }
-                            // Saving placeholder as 'original'
-                            $this->insertDB($table, $id, $newVersion_placeholderFieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
-                            // For the actual new offline version, set versioning values to point to placeholder
                             $fieldArray['pid'] = $theRealPid;
-                            $fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
-                            // Setting placeholder state value for version (so it can know it is currently a new version...)
-                            $fieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER_VERSION);
+                            $fieldArray['t3ver_oid'] = 0;
+                            // Setting state for version (so it can know it is currently a new version...)
+                            $fieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
                             $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-                            // When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
-                            $phShadowId = $this->insertDB($table, $id, $fieldArray, true, 0, true);
-                            if ($phShadowId) {
-                                // Processes fields of the placeholder record:
-                                $this->triggerRemapAction($table, $id, [$this, 'placeholderShadowing'], [$table, $phShadowId]);
-                                // Hold auto-versionized ids of placeholders:
-                                $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $phShadowId;
-                            }
+                            $this->insertDB($table, $id, $fieldArray, true, (int)($incomingFieldArray['uid'] ?? 0));
+                            // Hold auto-versionized ids of placeholders
+                            $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $this->substNEWwithIDs[$id];
                         } else {
                             $this->insertDB($table, $id, $fieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
                         }
@@ -1163,7 +1128,6 @@ class DataHandler implements LoggerAwareInterface
                             }
                         }
                         $this->updateDB($table, $id, $fieldArray);
-                        $this->placeholderShadowing($table, $id);
                     }
                 }
                 // Hook: processDatamap_afterDatabaseOperations
@@ -1249,79 +1213,6 @@ class DataHandler implements LoggerAwareInterface
             $fieldArray['pid'] = $this->getDefaultLanguagePageId($record['pid']);
         }
         return $fieldArray;
-    }
-
-    /**
-     * Fix shadowing of data in case we are editing an offline version of a live "New" placeholder record.
-     *
-     * @param string $table Table name
-     * @param int $id Record uid
-     * @internal should only be used from within DataHandler
-     */
-    public function placeholderShadowing($table, $id)
-    {
-        $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $id, '*');
-        if (empty($liveRecord)) {
-            return;
-        }
-
-        $liveState = VersionState::cast($liveRecord['t3ver_state']);
-        $versionRecord = BackendUtility::getRecord($table, $id);
-        $versionState = VersionState::cast($versionRecord['t3ver_state']);
-
-        if (!$liveState->indicatesPlaceholder() || $versionState->equals(VersionState::MOVE_POINTER)) {
-            return;
-        }
-
-        $placeholderRecord = $liveRecord;
-        $factory = GeneralUtility::makeInstance(
-            PlaceholderShadowColumnsResolver::class,
-            $table,
-            $GLOBALS['TCA'][$table] ?? []
-        );
-        $shadowColumns = $factory->forNewPlaceholder();
-        if (empty($shadowColumns)) {
-            return;
-        }
-
-        $placeholderValues = [];
-        foreach ($shadowColumns as $fieldName) {
-            if ((string)$versionRecord[$fieldName] !== (string)$placeholderRecord[$fieldName]) {
-                $placeholderValues[$fieldName] = $versionRecord[$fieldName];
-            }
-        }
-        if (empty($placeholderValues)) {
-            return;
-        }
-
-        if ($this->enableLogging) {
-            $this->log($table, $placeholderRecord['uid'], SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Shadowing done on fields <i>' . implode(',', array_keys($placeholderValues)) . '</i> in placeholder record ' . $table . ':' . $liveRecord['uid'] . ' (offline version UID=' . $id . ')', -1, [], $this->eventPid($table, $liveRecord['uid'], $liveRecord['pid']));
-        }
-        $this->updateDB($table, $placeholderRecord['uid'], $placeholderValues);
-    }
-
-    /**
-     * Create a placeholder title for the label field that does match the field requirements
-     *
-     * @param string $table The table name
-     * @param string $placeholderContent Placeholder content to be used
-     * @return string placeholder value
-     * @internal should only be used from within DataHandler
-     */
-    public function getPlaceholderTitleForTableLabel($table, $placeholderContent = null)
-    {
-        if ($placeholderContent === null) {
-            $placeholderContent = 'PLACEHOLDER';
-        }
-
-        $labelPlaceholder = '[' . $placeholderContent . ', WS#' . $this->BE_USER->workspace . ']';
-        $labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
-        if (!isset($GLOBALS['TCA'][$table]['columns'][$labelField]['config']['eval'])) {
-            return $labelPlaceholder;
-        }
-        $evalCodesArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$labelField]['config']['eval'], true);
-        $transformedLabel = $this->checkValue_input_Eval($labelPlaceholder, $evalCodesArray, '', $table);
-        return $transformedLabel['value'] ?? $labelPlaceholder;
     }
 
     /**
@@ -4482,10 +4373,6 @@ class DataHandler implements LoggerAwareInterface
             $previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
             // Execute the copy:
             $newId = $this->copyRecord($table, $uid, -$previousUid, true, $overrideValues, '', $language);
-            $autoVersionNewId = $this->getAutoVersionId($table, $newId);
-            if ($autoVersionNewId !== null) {
-                $this->triggerRemapAction($table, $newId, [$this, 'placeholderShadowing'], [$table, $autoVersionNewId], true);
-            }
         } else {
             // Create new page which needs to contain the same pid as the original page
             $overrideValues['pid'] = $row['pid'];
@@ -5293,32 +5180,15 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
-        // Gather versioned and placeholder record if there are any
+        // Gather versioned record
         $versionRecord = null;
-        $placeholderRecord = null;
         if ((int)$record['t3ver_wsid'] === 0) {
             $record = BackendUtility::getWorkspaceVersionOfRecord($userWorkspace, $table, $uid);
         }
         if (!is_array($record)) {
             return;
         }
-        $recordState = VersionState::cast($record['t3ver_state']);
-        if ($recordState->equals(VersionState::NEW_PLACEHOLDER)) {
-            $placeholderRecord = $record;
-            $versionRecord = BackendUtility::getWorkspaceVersionOfRecord($userWorkspace, $table, $uid);
-            if (!is_array($versionRecord)) {
-                return;
-            }
-        } elseif ($recordState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-            $versionRecord = $record;
-            $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, $uid);
-            if (!is_array($placeholderRecord)) {
-                return;
-            }
-        } else {
-            $versionRecord = $record;
-        }
-        // Do not use $record, $recordState and $uid below anymore, rely on $versionRecord and $placeholderRecord
+        $versionRecord = $record;
 
         // User access checks
         if ($userWorkspace !== (int)$versionRecord['t3ver_wsid']) {
@@ -5341,8 +5211,8 @@ class DataHandler implements LoggerAwareInterface
 
         // Perform discard operations
         $versionState = VersionState::cast($versionRecord['t3ver_state']);
-        if ($table === 'pages' && $versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-            // When discarding a new page page, there can be new sub pages and new records.
+        if ($table === 'pages' && $versionState->equals(VersionState::NEW_PLACEHOLDER)) {
+            // When discarding a new page, there can be new sub pages and new records.
             // Those need to be discarded, otherwise they'd end up as records without parent page.
             $this->discardSubPagesAndRecordsOnPage($versionRecord);
         }
@@ -5364,12 +5234,6 @@ class DataHandler implements LoggerAwareInterface
             [],
             (int)$versionRecord['pid']
         );
-
-        if ($versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-            // Drop placeholder records if any
-            $this->hardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
-            $this->deletedRecords[$table][] = (int)$placeholderRecord['uid'];
-        }
     }
 
     /**
@@ -5382,6 +5246,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $isLocalizedPage = false;
         $sysLanguageId = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+        $versionState = VersionState::cast($page['t3ver_state']);
         if ($sysLanguageId > 0) {
             // New or moved localized page.
             // Discard records on this page localization, but no sub pages.
@@ -5389,11 +5254,15 @@ class DataHandler implements LoggerAwareInterface
             // @todo: Discard other page translations that inherit from this?! (l10n_source field)
             $isLocalizedPage = true;
             $pid = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
-        } else {
-            // New or moved default language page.
+        } elseif ($versionState->equals(VersionState::NEW_PLACEHOLDER)) {
+            // New default language page.
             // Discard any sub pages and all other records of this page, including any page localizations.
-            // The t3ver_state=-1 record is incoming here. Records on this page have their pid field set to the uid
-            // of the t3ver_state=1 record, which is in the t3ver_oid field of the incoming record.
+            // The t3ver_state=1 record is incoming here. Records on this page have their pid field set to the uid
+            // of this record. So, since t3ver_state=1 does not have an online counter-part, the actual UID is used here.
+            $pid = (int)$page['uid'];
+        } else {
+            // Moved default language page.
+            // Discard any sub pages and all other records of this page, including any page localizations.
             $pid = (int)$page['t3ver_oid'];
         }
         $tables = $this->compileAdminTables();
@@ -5489,12 +5358,6 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         $uid = (int)$record['uid'];
-        $versionState = VersionState::cast($record['t3ver_state']);
-        if ($versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-            // The t3ver_state=-1 record is incoming here. Localization overlays of this record have their uid field set
-            // to the uid of the t3ver_state=1 record, which is in the t3ver_oid field of the incoming record.
-            $uid = (int)$record['t3ver_oid'];
-        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $statement = $queryBuilder->select('*')
@@ -6170,30 +6033,6 @@ class DataHandler implements LoggerAwareInterface
             ];
 
             $this->updateDB($table, $uid, $values);
-        }
-    }
-
-    /**
-     * Triggers a remap action for a specific record.
-     *
-     * Some records are post-processed by the processRemapStack() method (e.g. IRRE children).
-     * This method determines whether an action/modification is executed directly to a record
-     * or is postponed to happen after remapping data.
-     *
-     * @param string $table Name of the table
-     * @param string $id Id of the record (can also be a "NEW..." string)
-     * @param array $callback The method to be called
-     * @param array $arguments The arguments to be submitted to the callback method
-     * @param bool $forceRemapStackActions Whether to force to use the stack
-     * @see processRemapStack
-     */
-    protected function triggerRemapAction($table, $id, array $callback, array $arguments, $forceRemapStackActions = false)
-    {
-        // Check whether the affected record is marked to be remapped:
-        if (!$forceRemapStackActions && !isset($this->remapStackRecords[$table][$id]) && !isset($this->remapStackChildIds[$id])) {
-            call_user_func_array($callback, $arguments);
-        } else {
-            $this->addRemapAction($table, $id, $callback, $arguments);
         }
     }
 

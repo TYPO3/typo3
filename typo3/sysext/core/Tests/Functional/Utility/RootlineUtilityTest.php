@@ -144,11 +144,10 @@ class RootlineUtilityTest extends FunctionalTestCase
             1 => [
                 'pid' => 1000,
                 'uid' => 1400,
-                't3ver_oid' => 1400,
+                't3ver_oid' => 0,
                 't3ver_wsid' => 1,
-                't3ver_state' => -1,
+                't3ver_state' => 1,
                 'title' => 'EN: A new page in workspace',
-                '_ORIG_uid' => 10002,
             ],
             0 => [
                 'pid' => 0,
@@ -160,13 +159,6 @@ class RootlineUtilityTest extends FunctionalTestCase
                 '_ORIG_uid' => 10000,
             ],
         ];
-        self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
-        // Now explicitly requesting the versioned ID, which DOES not hold the same information
-        // it explicitly removes the _ORIG_uid, and does not rewrite the uid
-        $subject = new RootlineUtility(10002, '', $context);
-        $result = $subject->get();
-        $expected[1]['uid'] = 10002;
-        unset($expected[1]['_ORIG_uid']);
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
     }
 

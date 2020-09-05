@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -928,13 +929,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $recData = BackendUtility::getRecord(
                 $table,
                 $recData,
-                'pid' . ($tableSupportsVersioning ? ',t3ver_oid,t3ver_wsid,t3ver_stage' : '')
+                'pid' . ($tableSupportsVersioning ? ',t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage' : '')
             );
         }
         if (is_array($recData)) {
             // We are testing a "version" (identified by having a t3ver_oid): it can be edited provided
             // that workspace matches and versioning is enabled for the table.
-            if ($tableSupportsVersioning && (int)($recData['t3ver_oid'] ?? 0) > 0) {
+            $versionState = new VersionState($recData['t3ver_state'] ?? 0);
+            if ($tableSupportsVersioning
+                && (
+                    $versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)(($recData['t3ver_oid'] ?? 0) > 0)
+                )
+            ) {
                 if ((int)$recData['t3ver_wsid'] !== $this->workspace) {
                     // So does workspace match?
                     return 'Workspace ID of record didn\'t match current workspace';
@@ -970,10 +976,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return 'Table does not support versioning.';
         }
         if (!is_array($recData)) {
-            $recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_oid,t3ver_wsid,t3ver_stage');
+            $recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage');
         }
         if (is_array($recData)) {
-            if ((int)$recData['t3ver_oid'] > 0) {
+            $versionState = new VersionState($recData['t3ver_state']);
+            if ($versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)$recData['t3ver_oid'] > 0) {
                 return $this->workspaceCannotEditRecord($table, $recData);
             }
             return 'Not an offline version';

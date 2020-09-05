@@ -453,7 +453,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function movePageLocalizedToDifferentPageTwice()
     {
-        // Localize page first. In workspaces, this localization is created within ws, creating a "new" t3ver_state=-1 record
+        // Localize page first. In workspaces, this localization is created within ws, creating a "new" t3ver_state=1 record
         $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);

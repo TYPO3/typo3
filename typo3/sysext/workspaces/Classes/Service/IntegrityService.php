@@ -113,7 +113,7 @@ class IntegrityService
     /**
      * Checks workspace localization integrity of a single elements.
      * If current record is a localization and its localization parent
-     * is new in this workspace (has only a placeholder record in live),
+     * is new in this workspace,
      * then both (localization and localization parent) should be published.
      *
      * @param CombinedRecord $element
@@ -127,9 +127,9 @@ class IntegrityService
             $versionRow = $element->getVersionRecord()->getRow();
             // If element is a localization:
             if ($versionRow[$languageField] > 0) {
-                // Get localization parent from live workspace:
+                // Get localization parent from live workspace
                 $languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
-                // If localization parent is a "new placeholder" record:
+                // If localization parent is a new version....
                 if (VersionState::cast($languageParentRecord['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)) {
                     $title = BackendUtility::getRecordTitle($table, $versionRow);
                     $languageService = $this->getLanguageService();

@@ -327,6 +327,7 @@ class TcaMigration
 
     /**
      * Removes $TCA[$mytable][ctrl][shadowColumnsForMovePlaceholders]
+     * and $TCA[$mytable][ctrl][shadowColumnsForNewPlaceholders]
      *
      * @param array $tca
      * @return array the modified TCA structure
@@ -334,6 +335,12 @@ class TcaMigration
     protected function removeWorkspacePlaceholderShadowColumnsConfiguration(array $tca): array
     {
         foreach ($tca as $table => &$configuration) {
+            if (isset($configuration['ctrl']['shadowColumnsForNewPlaceholders'])) {
+                $this->messages[] = 'The TCA table \'' . $table . '\' defines '
+                    . '[ctrl][shadowColumnsForNewPlaceholders] which should be removed from TCA, '
+                    . 'as it is not in use anymore.';
+                unset($configuration['ctrl']['shadowColumnsForNewPlaceholders']);
+            }
             if (isset($configuration['ctrl']['shadowColumnsForMovePlaceholders'])) {
                 $this->messages[] = 'The TCA table \'' . $table . '\' defines '
                     . '[ctrl][shadowColumnsForMovePlaceholders] which should be removed from TCA, '

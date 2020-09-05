@@ -707,7 +707,7 @@ class Typo3DbQueryParser
                 $whereClause[] = $pageIdStatement;
             }
         } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
-            // Always prevent workspace records from being returned
+            // Always prevent workspace records from being returned (except for newly created records)
             $whereClause[] = $this->queryBuilder->expr()->eq($tableAlias . '.t3ver_oid', 0);
         }
 

@@ -250,7 +250,7 @@ class DataHandlerHook
                     } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
                         // Delete those in WS 0 + if their live records state was not "Placeholder".
                         $dataHandler->deleteEl($table, $id);
-                    } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
+                    } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER)) {
                         $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$id);
                         $dataHandler->deleteEl($table, (int)$id);
                         if (is_array($placeholderRecord)) {
@@ -263,6 +263,9 @@ class DataHandlerHook
             } else {
                 $dataHandler->newlog('Versioning not enabled for record with an online ID (t3ver_oid) given', SystemLogErrorClassification::SYSTEM_ERROR);
             }
+        } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER)) {
+            // If it is a new versioned record, delete it directly.
+            $dataHandler->deleteEl($table, $id);
         } elseif ($dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
             // Look, if record is "online" then delete directly.
             $dataHandler->deleteEl($table, $id);
@@ -354,7 +357,7 @@ class DataHandlerHook
         // Check workspace permissions:
         $workspaceAccessBlocked = [];
         // Element was in "New/Deleted/Moved" so it can be moved...
-        $recIsNewVersion = $moveRecVersionState->indicatesPlaceholder();
+        $recIsNewVersion = $moveRecVersionState->equals(VersionState::NEW_PLACEHOLDER) || $moveRecVersionState->indicatesPlaceholder();
         $recordMustNotBeVersionized = $dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table);
         $canMoveRecord = $recIsNewVersion || $tableSupportsVersioning;
         // Workspace source check:
@@ -375,16 +378,9 @@ class DataHandlerHook
 
         if (empty($workspaceAccessBlocked)) {
             $versionedRecordUid = (int)$versionedRecord['uid'];
-            // moving not needed, just behave like in live workspace
-            if (!$versionedRecordUid || !$tableSupportsVersioning) {
+            // custom moving not needed, just behave like in live workspace (also for newly versioned records)
+            if (!$versionedRecordUid || !$tableSupportsVersioning || $recIsNewVersion) {
                 $recordWasMoved = false;
-            } elseif ($recIsNewVersion) {
-                // A newly created record is marked to be moved, so TYPO3 Core is taking care of moving
-                // the new placeholder.
-                $recordWasMoved = false;
-                // However, TYPO3 Core should move the versioned record as well, which is done directly in Core,
-                // before the placeholder is moved.
-                $dataHandler->moveRecord_raw($table, $versionedRecordUid, (int)$destPid);
             } else {
                 // If the move operation is done on a versioned record, which is
                 // NOT new/deleted placeholder, then mark the versioned record as "moved"
@@ -561,6 +557,11 @@ class DataHandlerHook
         // Currently live version, contents will be removed.
         $curVersion = BackendUtility::getRecord($table, $id, '*');
         // Versioned records which contents will be moved into $curVersion
+        $isNewRecord = ((int)($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER);
+        if ($isNewRecord) {
+            $this->publishNewRecord($table, $curVersion, $dataHandler, $comment, (array)$notificationAlternativeRecipients);
+            return;
+        }
         $swapVersion = BackendUtility::getRecord($table, $swapWith, '*');
         if (!(is_array($curVersion) && is_array($swapVersion))) {
             $dataHandler->newlog(
@@ -580,7 +581,7 @@ class DataHandlerHook
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
-        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10)) {
+        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
             $dataHandler->newlog('Records in workspace #' . $workspaceId . ' can only be published when in "Publish" stage.', SystemLogErrorClassification::USER_ERROR);
             return;
         }
@@ -711,10 +712,6 @@ class DataHandlerHook
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
             $this->remappedIds[$table][$swapWith] = $id;
-            if ((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER) {
-                // Delete t3ver_state = 1 record as t3ver_state = -1 record is going to be live
-                $dataHandler->deleteEl($table, $id, true);
-            }
             if ((int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER) {
                 // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
                 // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
@@ -909,6 +906,149 @@ class DataHandlerHook
     }
 
     /**
+     * When a new record in a workspace is published, there is no "replacing" the online version with
+     * the versioned record, but instead the workspace ID and the state is changed.
+     *
+     * @param string $table
+     * @param array $newRecordInWorkspace
+     * @param DataHandler $dataHandler
+     * @param string $comment
+     * @param array $notificationAlternativeRecipients
+     */
+    protected function publishNewRecord(string $table, array $newRecordInWorkspace, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients): void
+    {
+        $id = (int)$newRecordInWorkspace['uid'];
+        $workspaceId = (int)$newRecordInWorkspace['t3ver_wsid'];
+        if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
+            $dataHandler->newlog('User could not publish records from workspace #' . $workspaceId, SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+        $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
+        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$newRecordInWorkspace['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
+            $dataHandler->newlog('Records in workspace #' . $workspaceId . ' can only be published when in "Publish" stage.', SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+        if (!($dataHandler->doesRecordExist($table, $id, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $id))) {
+            $dataHandler->newlog('You cannot publish a record you do not have edit and show permissions for', SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+
+        // Modify versioned record to become online
+        $updatedFields = [
+            't3ver_oid' => 0,
+            't3ver_wsid' => 0,
+            't3ver_stage' => 0,
+            't3ver_state' => VersionState::DEFAULT_STATE
+        ];
+
+        try {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+            $connection->update(
+                $table,
+                $updatedFields,
+                [
+                    'uid' => (int)$id
+                ],
+                [
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT
+                ]
+            );
+        } catch (DBALException $e) {
+            $dataHandler->newlog('During Publishing: SQL errors happened: ' . $e->getPrevious()->getMessage(), SystemLogErrorClassification::SYSTEM_ERROR);
+        }
+
+        if ($dataHandler->enableLogging) {
+            $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "' . $table . '" uid ' . $id . ' (new record)', -1, [], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+        }
+
+        // Set log entry for record
+        $propArr = $dataHandler->getRecordPropertiesFromRow($table, $newRecordInWorkspace);
+        $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
+        $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
+        $dataHandler->setHistory($table, $id);
+
+        $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
+        $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
+        $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
+        $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
+        $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
+        // Write to log with stageId -20 (STAGE_PUBLISH_EXECUTE_ID)
+        if ($dataHandler->enableLogging) {
+            $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+        }
+        $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
+
+        // Clear cache
+        $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
+        // Update the reference index: Drop the references in the workspace, but update them in the live workspace
+        $dataHandler->registerReferenceIndexRowsForDrop($table, $id, $workspaceId);
+        $dataHandler->updateRefIndex($table, $id, 0);
+        $this->updateReferenceIndexForL10nOverlays($table, $id, $workspaceId, $dataHandler);
+    }
+
+    /**
+     * A new record was just published, but the reference index for the localized elements needs
+     * an update too.
+     *
+     * @param string $table
+     * @param int $newVersionedRecordId
+     * @param int $workspaceId
+     * @param DataHandler $dataHandler
+     */
+    protected function updateReferenceIndexForL10nOverlays(string $table, int $newVersionedRecordId, int $workspaceId, DataHandler $dataHandler): void
+    {
+        if (!BackendUtility::isTableLocalizable($table)) {
+            return;
+        }
+        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+            return;
+        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $l10nParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        $constraints = $queryBuilder->expr()->eq(
+            $l10nParentFieldName,
+            $queryBuilder->createNamedParameter($newVersionedRecordId, \PDO::PARAM_INT)
+        );
+        $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null;
+        if ($translationSourceFieldName) {
+            $constraints = $queryBuilder->expr()->orX(
+                $constraints,
+                $queryBuilder->expr()->eq(
+                    $translationSourceFieldName,
+                    $queryBuilder->createNamedParameter($newVersionedRecordId, \PDO::PARAM_INT)
+                )
+            );
+        }
+
+        $queryBuilder
+            ->select('uid', $l10nParentFieldName)
+            ->from($table)
+            ->where(
+                $constraints,
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                )
+            );
+
+        if ($translationSourceFieldName) {
+            $queryBuilder->addSelect($translationSourceFieldName);
+        }
+
+        $statement = $queryBuilder->execute();
+        while ($record = $statement->fetch()) {
+            $dataHandler->updateRefIndex($table, $record['uid']);
+        }
+    }
+
+    /**
      * Updates foreign field sorting values of versioned and live
      * parents after(!) the whole structure has been published.
      *
@@ -1000,9 +1140,15 @@ class DataHandlerHook
                         ),
                         // t3ver_oid >= 0 basically omits placeholder records here, those would otherwise
                         // fail to delete later in DH->discard() and would create "can't do that" log entries.
-                        $queryBuilder->expr()->gt(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->gt(
+                                't3ver_oid',
+                                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                't3ver_state',
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                            )
                         )
                     )
                     ->orderBy('uid')

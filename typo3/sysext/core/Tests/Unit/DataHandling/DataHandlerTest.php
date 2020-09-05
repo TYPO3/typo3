@@ -704,64 +704,6 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * @param bool $expected
-     * @param array $eval
-     * @dataProvider getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider
-     * @test
-     */
-    public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditions($expected, $eval)
-    {
-        $table = 'phpunit_dummy';
-
-        /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(
-            DataHandler::class,
-            ['dummy']
-        );
-
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $subject->BE_USER = $backendUser;
-        $subject->BE_USER->workspace = 1;
-
-        $GLOBALS['TCA'][$table] = [];
-        $GLOBALS['TCA'][$table]['ctrl'] = ['label' => 'dummy'];
-        $GLOBALS['TCA'][$table]['columns'] = [
-            'dummy' => [
-                'config' => [
-                    'eval' => $eval
-                ]
-            ]
-        ];
-
-        self::assertEquals($expected, $subject->_call('getPlaceholderTitleForTableLabel', $table));
-    }
-
-    /**
-     * @return array
-     */
-    public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider()
-    {
-        return [
-            [
-                0.10,
-                'double2'
-            ],
-            [
-                0,
-                'int'
-            ],
-            [
-                '0',
-                'datetime'
-            ],
-            [
-                '[PLACEHOLDER, WS#1]',
-                ''
-            ]
-        ];
-    }
-
-    /**
      * @test
      */
     public function deletePagesOnRootLevelIsDenied()

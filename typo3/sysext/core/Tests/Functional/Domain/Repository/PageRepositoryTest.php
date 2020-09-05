@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -398,9 +399,9 @@ class PageRepositoryTest extends FunctionalTestCase
         $pageRec = $subject->getPage(11);
 
         self::assertEquals(11, $pageRec['uid']);
-        self::assertEquals(11, $pageRec['t3ver_oid']);
+        self::assertEquals(0, $pageRec['t3ver_oid']);
         self::assertEquals(987654321, $pageRec['t3ver_wsid']);
-        self::assertEquals(-1, $pageRec['t3ver_state']);
+        self::assertEquals(VersionState::NEW_PLACEHOLDER, $pageRec['t3ver_state']);
     }
 
     /**
@@ -418,10 +419,10 @@ class PageRepositoryTest extends FunctionalTestCase
 
         $pageRec = $subject->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
 
-        self::assertEquals(12, $pageRec['uid']);
-        self::assertEquals(11, $pageRec['t3ver_oid']);
+        self::assertEquals(11, $pageRec['uid']);
+        self::assertEquals(0, $pageRec['t3ver_oid']);
         self::assertEquals(987654321, $pageRec['t3ver_wsid']);
-        self::assertEquals(-1, $pageRec['t3ver_state']);
+        self::assertEquals(VersionState::NEW_PLACEHOLDER, $pageRec['t3ver_state']);
     }
 
     ////////////////////////////////

@@ -81,16 +81,6 @@
         <t3ver_state>1</t3ver_state>
         <perms_everybody>15</perms_everybody>
     </pages>
-    <pages>
-        <uid>12</uid>
-        <pid>0</pid>
-        <title>Workspace Root</title>
-        <deleted>0</deleted>
-        <t3ver_oid>11</t3ver_oid>
-        <t3ver_wsid>987654321</t3ver_wsid>
-        <t3ver_state>-1</t3ver_state>
-        <perms_everybody>15</perms_everybody>
-    </pages>
 
     <pages>
         <uid>901</uid>

@@ -27,7 +27,6 @@
 ,5,89,64,0,0,0,0,0,0,0,"Hotel #1",8,,,,,
 ,6,89,64,0,0,0,1,0,0,5,"Hotel #1",8,,,,,
 ,7,89,32,0,0,0,1,1,0,0,"Hotel #2",,,,,,
-,8,89,32,0,0,0,1,-1,0,7,"Hotel #2",,,,,,
 "tx_irretutorial_1ncsv_offer",,,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","prices",,,,,
 ,5,89,256,0,0,0,0,0,0,0,"Offer #1.1","7,8,9",,,,,
@@ -66,4 +65,4 @@
 ,"cf01cfc89feaf0f5179c910286e7aa6e","tx_irretutorial_1ncsv_offer",9,"prices",,,,0,0,1,"tx_irretutorial_1ncsv_price",14,,,,,
 ,"0128094550d73607c65746681a564c2e","tx_irretutorial_1ncsv_hotel",6,"offers",,,,0,0,1,"tx_irretutorial_1ncsv_offer",9,,,,,
 ,"a748994a013110920de5088cf1ce7df1","tt_content",299,"tx_irretutorial_1ncsv_hotels",,,,0,0,1,"tx_irretutorial_1ncsv_hotel",6,,,,,
-,"ec447ff93eba5f73009acb1ba89e4771","tt_content",299,"tx_irretutorial_1ncsv_hotels",,,,1,0,1,"tx_irretutorial_1ncsv_hotel",8,,,,,
+,"d53037d72c30d03a2ca867a209163f76","tt_content",299,"tx_irretutorial_1ncsv_hotels",,,,1,0,1,"tx_irretutorial_1ncsv_hotel",7,,,,,

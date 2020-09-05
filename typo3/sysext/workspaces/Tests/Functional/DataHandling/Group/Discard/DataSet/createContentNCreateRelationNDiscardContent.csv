@@ -25,7 +25,6 @@
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",,,,,,
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",,,,,,
 ,4,89,128,0,0,0,1,1,0,0,"Testing #1",,,,,,
-,5,89,128,0,0,0,1,-1,0,4,"Testing #1",,,,,,
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,
 ,"67070566eb5b788c5edd02dbdbc63da1","tt_content",297,"tx_testdatahandler_group",,,,0,0,0,"tx_testdatahandler_element",1,,,,,

@@ -1578,16 +1578,15 @@ class PageRepository implements LoggerAwareInterface
                     }
                     // For versions of single elements or page+content, preserve online UID
                     // (this will produce true "overlay" of element _content_, not any references)
-                    $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+                    // For new versions there is no online counterpart
+                    if (!$rowVersionState->equals(VersionState::NEW_PLACEHOLDER)) {
+                        $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+                    }
                     $wsAlt['uid'] = $row['uid'];
                     // Changing input record to the workspace version alternative:
                     $row = $wsAlt;
-                    // Check if it is deleted/new
-                    if (
-                        $rowVersionState->equals(VersionState::NEW_PLACEHOLDER)
-                        || $rowVersionState->equals(VersionState::DELETE_PLACEHOLDER)
-                    ) {
-                        // Unset record if it turned out to be deleted in workspace
+                    // Unset record if it turned out to be deleted in workspace
+                    if ($rowVersionState->equals(VersionState::DELETE_PLACEHOLDER)) {
                         $row = false;
                     }
                     // Check if move-pointer in workspace (unless if a move-placeholder is the
@@ -1599,8 +1598,7 @@ class PageRepository implements LoggerAwareInterface
                         $row = false;
                     }
                 } else {
-                    // No version found, then check if t3ver_state = VersionState::NEW_PLACEHOLDER
-                    // (online version is dummy-representation)
+                    // No version found, then check if online version is dummy-representation
                     // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
                     // enablefields for BOTH the version AND the online record deselects it. See
                     // note for $bypassEnableFieldsCheck
@@ -1696,12 +1694,25 @@ class PageRepository implements LoggerAwareInterface
                 ->from($table)
                 ->where(
                     $queryBuilder->expr()->eq(
-                        't3ver_oid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->orX(
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                't3ver_state',
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_oid',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        )
                     )
                 )
                 ->setMaxResults(1)
@@ -1721,12 +1732,25 @@ class PageRepository implements LoggerAwareInterface
             if (is_array($newrow)) {
                 $queryBuilder->where(
                     $queryBuilder->expr()->eq(
-                        't3ver_oid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->orX(
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                't3ver_state',
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_oid',
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        )
                     )
                 );
                 if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {

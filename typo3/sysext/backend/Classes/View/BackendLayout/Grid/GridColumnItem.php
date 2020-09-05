@@ -60,7 +60,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function isVersioned(): bool
     {
-        return $this->record['_ORIG_uid'] > 0;
+        return $this->record['_ORIG_uid'] > 0 || (int)$this->record['t3ver_state'] !== 0;
     }
 
     public function getPreview(): string

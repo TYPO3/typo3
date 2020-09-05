@@ -30,7 +30,6 @@
 ,128,89,0,0,0,0,0,0,0,21,331,"tt_content","image",1,"sys_file","Taken at T3BOARD",,,
 ,129,89,0,0,0,0,0,0,0,1,331,"tt_content","image",2,"sys_file","This is Kasper",,,
 ,130,89,1,0,0,1,1,0,0,1,332,"tt_content","image",1,"sys_file","Image #1",,,
-,131,89,1,0,0,1,-1,0,130,1,332,"tt_content","image",1,"sys_file","Image #1",,,
 "tt_content",,,,,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image",,,,,,,
 ,330,89,256,0,0,0,0,0,0,0,"Regular Element #1",2,,,,,,,
@@ -53,4 +52,4 @@
 ,"fc208fc9d55a71b2faa9f4e4d4fa941d","tt_content",330,"image",,,,1,0,0,"sys_file_reference",126,,,,,,,
 ,"48540de7710e3082f347bdd65ca340f2","tt_content",331,"image",,,,0,0,0,"sys_file_reference",128,,,,,,,
 ,"ceaebd2148901a6d7b0a52c546aa5218","tt_content",331,"image",,,,1,0,0,"sys_file_reference",129,,,,,,,
-,"eab0cafc17f8d63c1ebd4994d7ab7413","sys_file_reference",131,"uid_local",,,,0,1,1,"sys_file",1,,,,,,,
+,"54181605033e8aafaf9b24394607e994","sys_file_reference",130,"uid_local",,,,0,1,1,"sys_file",1,,,,,,,

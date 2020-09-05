@@ -18,7 +18,6 @@ return [
         'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
-        'shadowColumnsForNewPlaceholders' => 'prices',
     ],
     'columns' => [
         'sys_language_uid' => [

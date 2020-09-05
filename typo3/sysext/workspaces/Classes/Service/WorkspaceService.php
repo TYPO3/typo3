@@ -171,8 +171,9 @@ class WorkspaceService implements SingletonInterface
             // Traverse the selection to build CMD array:
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
-                    // Build the cmd Array:
-                    $cmd[$table][$rec['t3ver_oid']]['version'] = ['action' => 'swap', 'swapWith' => $rec['uid']];
+                    // For new records, the live ID is the same as the version ID
+                    $liveId = $rec['t3ver_oid'] ?: $rec['uid'];
+                    $cmd[$table][$liveId]['version'] = ['action' => 'swap', 'swapWith' => $rec['uid']];
                 }
             }
         }
@@ -259,8 +260,16 @@ class WorkspaceService implements SingletonInterface
             }
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $stage, $language);
+                $newRecords = $this->getNewVersionsForPages($table, $pageList, $wsid, (int)$stage, $language);
+                foreach ($newRecords as &$newRecord) {
+                    // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
+                    // live counterpart, but the publish methods later need a live uid to publish to. We thus
+                    // use the uid as t3ver_oid here to be transparent on javascript side.
+                    $newRecord['t3ver_oid'] = $newRecord['uid'];
+                }
+                unset($newRecord);
                 $moveRecs = $this->getMovedRecordsFromPages($table, $pageList, $wsid, $stage);
-                $recs = array_merge($recs, $moveRecs);
+                $recs = array_merge($recs, $newRecords, $moveRecs);
                 $recs = $this->filterPermittedElements($recs, $table);
                 if (!empty($recs)) {
                     $output[$table] = $recs;
@@ -271,7 +280,7 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Find all versionized elements except moved records.
+     * Find all versionized elements except moved and new records.
      *
      * @param string $table
      * @param string $pageList
@@ -394,6 +403,125 @@ class WorkspaceService implements SingletonInterface
             ->fetchAll();
 
         return $rows;
+    }
+
+    /**
+     * Find all versionized elements which are new (= do not have a live counterpart),
+     * so this method does not need to have a JOIN SQL statement.
+     *
+     * @param string $table
+     * @param string $pageList
+     * @param int $wsid
+     * @param int $stage
+     * @param int|null $language
+     * @return array
+     */
+    protected function getNewVersionsForPages(
+        string $table,
+        string $pageList,
+        int $wsid,
+        int $stage,
+        ?int $language
+    ): array {
+        // Include root level page as there might be some records with where root level
+        // restriction is ignored (e.g. FAL records)
+        if ($pageList !== '' && BackendUtility::isRootLevelRestrictionIgnored($table)) {
+            $pageList .= ',0';
+        }
+        $isTableLocalizable = BackendUtility::isTableLocalizable($table);
+        // If table is not localizable, but localized records shall
+        // be collected, an empty result array needs to be returned:
+        if ($isTableLocalizable === false && $language > 0) {
+            return [];
+        }
+
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $fields = ['uid', 'pid', 't3ver_oid', 't3ver_state', 't3ver_stage', 'pid AS wspid', 'pid AS livepid'];
+
+        // If the table is localizable, $languageField and $transOrigPointerField
+        // are set and should be added to the query
+        if ($isTableLocalizable) {
+            $fields[] = $languageField;
+            $fields[] = $transOrigPointerField;
+        }
+
+        $constraints = [
+            $queryBuilder->expr()->eq(
+                't3ver_state',
+                $queryBuilder->createNamedParameter(
+                    VersionState::NEW_PLACEHOLDER,
+                    \PDO::PARAM_INT
+                )
+            )
+        ];
+
+        if ($pageList) {
+            $pageIdRestriction = GeneralUtility::intExplode(',', $pageList, true);
+            if ($table === 'pages' && $transOrigPointerField !== '') {
+                $constraints[] = $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    ),
+                    $queryBuilder->expr()->in(
+                        $transOrigPointerField,
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                );
+            } else {
+                $constraints[] = $queryBuilder->expr()->in(
+                    'pid',
+                    $queryBuilder->createNamedParameter(
+                        $pageIdRestriction,
+                        Connection::PARAM_INT_ARRAY
+                    )
+                );
+            }
+        }
+
+        if ($isTableLocalizable && MathUtility::canBeInterpretedAsInteger($language)) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                $languageField,
+                $queryBuilder->createNamedParameter((int)$language, \PDO::PARAM_INT)
+            );
+        }
+
+        if ($wsid >= 0) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                't3ver_wsid',
+                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+            );
+        }
+
+        if ($stage !== -99) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                't3ver_stage',
+                $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
+            );
+        }
+
+        // Select all records from this table in the database from the workspace
+        // Order by UID, mostly to have a sorting in the backend overview module which
+        // doesn't "jump around" when publishing.
+        return $queryBuilder
+            ->select(...$fields)
+            ->from($table)
+            ->where(...$constraints)
+            ->orderBy('uid')
+            ->execute()
+            ->fetchAll();
     }
 
     /**

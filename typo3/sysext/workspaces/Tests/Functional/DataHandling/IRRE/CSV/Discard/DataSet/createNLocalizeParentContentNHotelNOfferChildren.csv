@@ -5,7 +5,6 @@
 ,89,88,256,0,0,0,0,0,"Relations",,,,,,,,
 ,90,88,512,0,0,0,0,0,"Target",,,,,,,,
 ,91,88,256,0,1,1,0,0,"[Translate to Dansk:] Relations",,,,,,,,
-,92,88,256,0,1,-1,0,91,"[Translate to Dansk:] Relations",,,,,,,,
 "sys_workspace",,,,,,,,,,,,,,,,,
 ,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
 ,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
@@ -59,5 +58,5 @@
 ,"3178d1ee76c81fd8e1df63f1ea01fed0","tx_irretutorial_1ncsv_offer",6,"prices",,,,1,0,0,"tx_irretutorial_1ncsv_price",11,,,,,
 ,"ab1e9a9e0886a217f4f4b5c1f3fde0b8","tx_irretutorial_1ncsv_offer",7,"prices",,,,0,0,0,"tx_irretutorial_1ncsv_price",12,,,,,
 ,"0743c3e1d65b2bc5d64ef528767c3a32","tx_irretutorial_1ncsv_offer",8,"prices",,,,0,0,0,"tx_irretutorial_1ncsv_price",13,,,,,
-,"620500aee65485a0aed7d1ee2d0eff17","pages",92,"l10n_parent",,,,0,0,1,"pages",89,,,,,
-,"3b9b0ab6d387f6186973afb429f525dc","pages",92,"sys_language_uid",,,,0,0,1,"sys_language",1,,,,,
+,"222ae5688ffd7f67894283fa8e2bfe5a","pages",91,"l10n_parent",,,,0,0,1,"pages",89,,,,,
+,"2100b5fec1577ecdf1bf0326bffc110c","pages",91,"sys_language_uid",,,,0,0,1,"sys_language",1,,,,,

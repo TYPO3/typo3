@@ -121,7 +121,7 @@ class DataHandlerHookTest extends FunctionalTestCase
         $this->setWorkspaceId(1);
         // Create a pages move placeholder uid:93 and a versioned record uid:94 - both should be fully deleted after deleting ws1
         $this->actionService->moveRecord('pages', 92, -1);
-        // Create a new placeholder uid:311 and a versioned record uid:312 - both should be fully deleted after deleting ws1
+        // Create a versioned record uid:311 - should be fully deleted after deleting ws1
         $this->actionService->createNewRecord('tt_content', 89, ['header' => 'Testing #1']);
         // Create a versioned record of a translated record uid:313 - should be fully deleted after deleting ws1
         $this->actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed']);
@@ -129,7 +129,7 @@ class DataHandlerHookTest extends FunctionalTestCase
         $this->actionService->deleteRecord('tt_content', 310);
 
         $this->setWorkspaceId(2);
-        // Create a versioned record uid:315 in ws2 - should be kept after deleting ws1
+        // Create a versioned record uid:314 in ws2 - should be kept after deleting ws1
         $this->actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed in ws2']);
 
         // Switch to live and delete sys_workspace record 1

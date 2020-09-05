@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -584,7 +585,9 @@ class TreeController
         }
         $workspaceId = (int)$this->getBackendUser()->workspace;
         if ($workspaceId > 0 && ExtensionManagementUtility::isLoaded('workspaces')) {
-            if ($page['t3ver_oid'] > 0 && (int)$page['t3ver_wsid'] === $workspaceId) {
+            if ((int)$page['t3ver_wsid'] === $workspaceId
+                && ((int)$page['t3ver_oid'] > 0 || (int)$page['t3ver_state'] === VersionState::NEW_PLACEHOLDER)
+            ) {
                 $classes[] = 'ver-element';
                 $classes[] = 'ver-versions';
             } elseif (

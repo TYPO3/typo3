@@ -172,6 +172,14 @@ class GridDataService implements LoggerAwareInterface
                     $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
                     $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
                     [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
+                    $calculatedT3verOid = $record['t3ver_oid'];
+                    if ((int)$record['t3ver_state'] === VersionState::NEW_PLACEHOLDER) {
+                        // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
+                        // live counterpart, but the publish methods later need a live uid to publish to. We thus
+                        // use the uid as t3ver_oid here to be transparent on javascript side.
+                        $calculatedT3verOid = $record['uid'];
+                    }
+
                     $versionArray = [];
                     $versionArray['table'] = $table;
                     $versionArray['id'] = $table . ':' . $record['uid'];
@@ -195,7 +203,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
                     $versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
                     $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
-                    $versionArray['t3ver_oid'] = $record['t3ver_oid'];
+                    $versionArray['t3ver_oid'] = $calculatedT3verOid;
                     $versionArray['livepid'] = $record['livepid'];
                     $versionArray['stage'] = $versionRecord['t3ver_stage'];
                     $versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, Icon::SIZE_SMALL)->render();
@@ -563,7 +571,7 @@ class GridDataService implements LoggerAwareInterface
             $hiddenState = 'unhidden';
         }
         switch ($stateId) {
-            case VersionState::NEW_PLACEHOLDER_VERSION:
+            case VersionState::NEW_PLACEHOLDER:
                 $state = 'new';
                 break;
             case VersionState::DELETE_PLACEHOLDER:

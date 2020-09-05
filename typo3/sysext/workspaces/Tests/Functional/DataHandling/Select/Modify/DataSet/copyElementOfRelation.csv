@@ -18,7 +18,6 @@
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",,
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",,
 ,4,89,128,0,0,0,1,1,0,0,"Element #1 (copy 1)",,
-,5,89,128,0,0,0,1,-1,0,4,"Element #1 (copy 1)",,
 "sys_refindex",,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string"
 ,"1d5f3ff5e2c46e921da27c6379578cbb","tt_content",297,"tx_testdatahandler_select",,,,0,0,0,"tx_testdatahandler_element",1,
