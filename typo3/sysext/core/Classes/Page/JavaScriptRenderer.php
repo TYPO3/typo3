@@ -24,6 +24,8 @@ class JavaScriptRenderer
 {
     protected string $handlerUri;
     protected JavaScriptItems $items;
+    protected ImportMap $importMap;
+    protected int $javaScriptModuleInstructionFlags = 0;
 
     public static function create(string $uri = null): self
     {
@@ -37,6 +39,7 @@ class JavaScriptRenderer
     {
         $this->handlerUri = $handlerUri;
         $this->items = GeneralUtility::makeInstance(JavaScriptItems::class);
+        $this->importMap = GeneralUtility::makeInstance(ImportMapFactory::class)->create();
     }
 
     public function addGlobalAssignment(array $payload): void
@@ -46,7 +49,45 @@ class JavaScriptRenderer
 
     public function addJavaScriptModuleInstruction(JavaScriptModuleInstruction $instruction): void
     {
+        if ($instruction->shallLoadImportMap()) {
+            $this->importMap->includeImportsFor($instruction->getName());
+        }
+        if ($instruction->shallLoadRequireJs()) {
+            $url = $this->importMap->resolveImport($instruction->getName() . '.js');
+
+            if ($url) {
+                // @todo: Map instruction to an ImportMap instruction. (to avoid loading requirejs if not actually required)
+                $this->javaScriptModuleInstructionFlags |= JavaScriptModuleInstruction::FLAG_LOAD_IMPORTMAP;
+            } else {
+                // If no modules were included, the RequireJS module is not yet
+                // backed by an ES6 replacement, therefore we load all importmap configurations,
+                // in order for all dependencies to be loadable.
+                // But we do only do this for logged in backend users (to avoid extension-list disclosure)
+                if (!empty($GLOBALS['BE_USER']->user['uid'])) {
+                    $this->includeAllImports();
+                }
+            }
+        }
+        $this->javaScriptModuleInstructionFlags |= $instruction->getFlags();
         $this->items->addJavaScriptModuleInstruction($instruction);
+    }
+
+    public function hasImportMap(): bool
+    {
+        return ($this->javaScriptModuleInstructionFlags & JavaScriptModuleInstruction::FLAG_LOAD_IMPORTMAP) === JavaScriptModuleInstruction::FLAG_LOAD_IMPORTMAP;
+    }
+
+    public function hasRequirejs(): bool
+    {
+        return ($this->javaScriptModuleInstructionFlags & JavaScriptModuleInstruction::FLAG_LOAD_REQUIRE_JS) === JavaScriptModuleInstruction::FLAG_LOAD_REQUIRE_JS;
+    }
+
+    /**
+     * HEADS UP: Do only use in authenticated mode as this discloses as installed extensions
+     */
+    public function includeAllImports(): void
+    {
+        $this->importMap->includeAllImports();
     }
 
     /**
@@ -70,6 +111,11 @@ class JavaScriptRenderer
             'src' => $this->handlerUri,
             'async' => 'async',
         ], $this->jsonEncode($this->toArray()));
+    }
+
+    public function renderImportMap(string $sitePath, string $nonce): string
+    {
+        return $this->importMap->render($sitePath, $nonce);
     }
 
     protected function isEmpty(): bool

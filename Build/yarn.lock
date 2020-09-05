@@ -2914,6 +2914,11 @@ es-abstract@^1.18.0-next.0:
     string.prototype.trimend "^1.0.1"
     string.prototype.trimstart "^1.0.1"
 
+es-module-shims@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/es-module-shims/-/es-module-shims-1.3.6.tgz#288c7844f50c1b9ede8f21c2607ff3931caeeca6"
+  integrity sha512-W4Lt+UfaoUYrhzJUaOXYvuDEeWzPwghazTVDE+O5TH49s1zcs/2iRYCgTs5rIbXNADuoED89gtKqZdW9ss4P2Q==
+
 es-to-primitive@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/es-to-primitive/-/es-to-primitive-1.2.1.tgz#e55cd4c9cdc188bcefb03b366c736323fc5c898a"

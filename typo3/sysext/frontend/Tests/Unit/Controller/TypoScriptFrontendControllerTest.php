@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -69,6 +71,11 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $importMapProphecy = $this->prophesize(ImportMap::class);
+        $importMapProphecy->render(Argument::type('string'), Argument::type('string'))->willReturn('');
+        $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
+        $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $this->subject->_set('context', new Context());
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';

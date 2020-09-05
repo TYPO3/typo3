@@ -106,6 +106,49 @@
   var originalLoad = req.load;
 
   /**
+   * Fallback to importShim() after import()
+   * failed the first time (considering
+   * importmaps are not supported by the browser).
+   */
+  let useShim = false;
+
+  const moduleImporter = (moduleName) => {
+    if (useShim) {
+      return window.importShim(moduleName)
+    } else {
+      return import(moduleName).catch(() => {
+        // Consider that import-maps are not available and use shim from now on
+        useShim = true;
+        return moduleImporter(moduleName)
+      })
+    }
+  };
+
+  const importMap = (() => {
+    try {
+      return JSON.parse(document.querySelector('script[type="importmap"]').innerHTML).imports || {};
+    } catch (e) {
+      return {}
+    }
+  })();
+
+  const isDefinedInImportMap = (moduleName) => {
+    if (moduleName in importMap) {
+      return true
+    }
+
+    const moduleParts = moduleName.split('/');
+    for (let i = 1; i < moduleParts.length; ++i) {
+      const prefix = moduleParts.slice(0, i).join('/') + '/';
+      if (prefix in importMap) {
+        return true
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Does the request to load a module for the browser case.
    * Make this a separate function to allow other environments
    * to override it.
@@ -115,8 +158,34 @@
    * @param {Object} url the URL to the module.
    */
   req.load = function(context, name, url) {
-    if (inPath(context.config, name) || url.charAt(0) === '/') {
-      return originalLoad.call(req, context, name, url);
+
+    /* Shim to load module via ES6 if available, fallback to original loading otherwise */
+    const esmName = name in importMap ? name : name + '.js';
+    if (isDefinedInImportMap(esmName)) {
+      const importPromise = moduleImporter(esmName);
+      importPromise.catch(function(e) {
+        var error = new Error('Failed to load ES6 module ' + esmName);
+        error.contextName = context.contextName;
+        error.requireModules = [name];
+        error.originalError = e;
+        context.onError(error);
+      });
+      importPromise.then(function(module) {
+        define(name, function() {
+          return typeof module === 'object' && 'default' in module ? module.default : module;
+        });
+        context.completeLoad(name);
+      });
+      return;
+    }
+
+    if (
+      inPath(context.config, name) ||
+      url.charAt(0) === '/' ||
+      context.config.typo3BaseUrl === false
+    ) {
+      originalLoad.call(req, context, name, url);
+      return;
     }
 
     fetchConfiguration(
@@ -137,4 +206,4 @@
       }
     );
   };
-})(requirejs);
+})(window.requirejs);

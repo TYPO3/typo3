@@ -519,6 +519,7 @@ module.exports = function (grunt) {
           'autosize.js': 'autosize/dist/autosize.min.js',
           'taboverride.js': 'taboverride/build/output/taboverride.js',
           'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
+          'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.min.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
@@ -556,6 +557,7 @@ module.exports = function (grunt) {
       },
       thirdparty: {
         files: {
+          "<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js": ["<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],

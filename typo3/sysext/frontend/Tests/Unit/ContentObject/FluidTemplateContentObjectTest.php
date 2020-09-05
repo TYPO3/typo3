@@ -24,6 +24,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -84,6 +86,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $importMapProphecy = $this->prophesize(ImportMap::class);
+        $importMapProphecy->render(Argument::type('string'), Argument::type('string'))->willReturn('');
+        $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
+        $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
         $this->contentDataProcessor = new ContentDataProcessor($this->prophesize(ContainerInterface::class)->reveal());
         $this->contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);

@@ -18,6 +18,7 @@
  */
 
 const FLAG_USE_REQUIRE_JS = 1;
+const FLAG_USE_IMPORTMAP = 2;
 const FLAG_USE_TOP_WINDOW = 16;
 const deniedProperties = ['__proto__', 'prototype', 'constructor'];
 const allowedJavaScriptItemTypes = ['assign', 'invoke', 'instance'];
@@ -41,9 +42,36 @@ interface JavaScriptItem {
   payload: JavaScriptItemPayload;
 }
 
+/**
+ * Fallback to importShim() once import() failed the first time
+ * (considering importmaps are not supported by the browser).
+ */
+let useShim = false;
+
+const moduleImporter = (moduleName: string): Promise<any> => {
+  if (useShim) {
+    return (window as any).importShim(moduleName)
+  } else {
+    return import(moduleName).catch(() => {
+      // Consider that importmaps are not supported and use shim from now on
+      useShim = true;
+      return moduleImporter(moduleName)
+    })
+  }
+};
+
 function loadModule(payload: JavaScriptItemPayload): Promise<any> {
   if (!payload.name) {
     throw new Error('JavaScript module name is required');
+  }
+
+  if ((payload.flags & FLAG_USE_IMPORTMAP) === FLAG_USE_IMPORTMAP) {
+    if (!(payload.flags & FLAG_USE_TOP_WINDOW)) {
+      return moduleImporter(payload.name);
+    } else {
+      // @todo implement
+      throw new Error('FLAG_USE_TOP_WINDOW is not yet supported for JavaScript modules');
+    }
   }
 
   if ((payload.flags & FLAG_USE_REQUIRE_JS) === FLAG_USE_REQUIRE_JS) {
@@ -71,7 +99,13 @@ function executeJavaScriptModuleInstruction(json: JavaScriptItemPayload) {
   }
   const exportName = json.exportName;
   const resolveSubjectRef = (__esModule: any): any => {
-    return typeof exportName === 'string' ? __esModule[exportName] : __esModule;
+    if (typeof exportName === 'string') {
+      return __esModule[exportName];
+    }
+    if ((json.flags & FLAG_USE_REQUIRE_JS) === FLAG_USE_REQUIRE_JS) {
+      return __esModule;
+    }
+    return __esModule.default;
   }
   const items = json.items
     .filter((item) => allowedJavaScriptItemTypes.includes(item.type))

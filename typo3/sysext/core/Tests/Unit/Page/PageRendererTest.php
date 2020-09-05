@@ -17,8 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,12 +35,25 @@ class PageRendererTest extends UnitTestCase
     use ProphecyTrait;
 
     /**
+     * @var bool Reset singletons created by subject
+     */
+    protected bool $resetSingletonInstances = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $importMapProphecy = $this->prophesize(ImportMap::class);
+        $importMapProphecy->render(Argument::type('string'), Argument::type('string'))->willReturn('');
+        $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
+        $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+    }
+
+    /**
      * @test
      */
     public function renderMethodCallsResetInAnyCase(): void
     {
-        $this->resetSingletonInstances = true;
-
         /** @var PageRenderer|AccessibleObjectInterface $pageRenderer */
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
             ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplate'])
@@ -248,7 +265,6 @@ class PageRendererTest extends UnitTestCase
      */
     public function getAddedMetaTag(): void
     {
-        $this->resetSingletonInstances = true;
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'foobar');
@@ -266,7 +282,6 @@ class PageRendererTest extends UnitTestCase
      */
     public function overrideMetaTag(): void
     {
-        $this->resetSingletonInstances = true;
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'Axel Foley');
@@ -285,7 +300,6 @@ class PageRendererTest extends UnitTestCase
      */
     public function unsetAddedMetaTag(): void
     {
-        $this->resetSingletonInstances = true;
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'foobar');
