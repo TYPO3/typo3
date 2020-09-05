@@ -83,6 +83,7 @@ Options:
             - checkXlf: test .xlf files for integrity
             - composerInstall: "composer install", handy if host has no PHP, uses composer cache of users home
             - composerValidate: "composer validate"
+            - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: functional tests
             - install: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - lint: PHP linting
@@ -405,6 +406,12 @@ case ${TEST_SUITE} in
     composerValidate)
         setUpDockerComposeDotEnv
         docker-compose run composer_validate
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    fixCsvFixtures)
+        setUpDockerComposeDotEnv
+        docker-compose run fix_csv_fixtures
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
