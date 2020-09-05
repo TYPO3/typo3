@@ -31,9 +31,9 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -290,7 +290,7 @@ class BackendUtility
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace));
 
             $queryBuilder->select('*')
                 ->from($table)
@@ -1742,7 +1742,7 @@ class BackendUtility
                                 $queryBuilder->getRestrictions()
                                     ->removeAll()
                                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace));
                                 $constraints = [
                                     $queryBuilder->expr()->eq(
                                         $theColConf['foreign_field'],

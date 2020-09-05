@@ -19,8 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
@@ -881,7 +881,7 @@ class DataMapProcessor
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, $this->backendUser->workspace, false));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->backendUser->workspace));
         $statement = $queryBuilder
             ->select(...array_values($fieldNames))
             ->from($tableName)
@@ -1090,7 +1090,7 @@ class DataMapProcessor
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, $this->backendUser->workspace, false));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->backendUser->workspace));
 
         $zeroParameter = $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT);
         $ids = $this->filterNumericIds($ids);

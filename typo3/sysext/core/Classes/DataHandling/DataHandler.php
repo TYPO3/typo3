@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -4289,24 +4288,19 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
 
-        $queryBuilder->select('*')
+        $l10nRecords = $queryBuilder->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
                 )
-            );
+            )
+            ->execute()
+            ->fetchAll();
 
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-            );
-        }
-
-        $l10nRecords = $queryBuilder->execute()->fetchAll();
         if (is_array($l10nRecords)) {
             $localizedDestPids = [];
             // If $$originalRecordDestinationPid < 0, then it is the uid of the original language record we are inserting after
