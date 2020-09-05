@@ -27,20 +27,34 @@ class AbstractIntroductionPackage
      */
     protected function manipulateSiteConfigurationOnlyForTesting(InstallTester $I): void
     {
+        $acceptanceUrl = $I->grabModuleConfig('WebDriver', 'url');
+        $acceptanceUrlWithTrailingSlash = rtrim($acceptanceUrl, '/') . '/';
+        $acceptanceHost = $this->getHostWithPortFromUrl($acceptanceUrl);
+
         $trustedHostsPatternConfig = '<?php' . PHP_EOL
-            . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'trustedHostsPattern\'] = \'web:8000\';';
+            . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'trustedHostsPattern\'] = \'' . $acceptanceHost . '\';';
         $I->writeToFile('typo3conf/AdditionalConfiguration.php', $trustedHostsPatternConfig);
 
         $configFile = __DIR__ . '/../../../../../../typo3temp/var/tests/acceptance/typo3conf/sites/introduction/config.yaml';
         $config = file($configFile);
         if (strpos($config[0], 'base: /') !== false) {
             $I->amGoingTo('manipulate base in sites config');
-            $config[0] = 'base: http://web:8000/typo3temp/var/tests/acceptance/' . PHP_EOL;
+            $config[0] = 'base: ' . $acceptanceUrlWithTrailingSlash . PHP_EOL;
             file_put_contents($configFile, $config);
         }
         $I->amOnPage('/typo3');
         $I->click('Maintenance');
         $I->switchToContentFrame();
         $I->click('Flush cache');
+    }
+
+    /**
+     * @param string $url
+     * @return string Host with port
+     */
+    protected function getHostWithPortFromUrl(string $url): string
+    {
+        $urlParts = parse_url($url);
+        return $urlParts['host'] . (isset($urlParts['port']) ? ':' . $urlParts['port'] : '');
     }
 }
