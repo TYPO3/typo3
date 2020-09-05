@@ -301,11 +301,6 @@ class DatabaseRecordList
     public $clickTitleMode = '';
 
     /**
-     * @var int
-     */
-    public $showIcon = 1;
-
-    /**
      * Levels to search down.
      *
      * @var int
@@ -1016,7 +1011,7 @@ class DatabaseRecordList
                     if ($totalItems > $itemsLimitPerTable) {
                         $countOnFirstPage = $totalItems > $itemsLimitSingleTable ? $itemsLimitSingleTable : $totalItems;
                         $hasMore = $totalItems > $itemsLimitSingleTable;
-                        $colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
+                        $colspan =  (count($this->fieldArray) + 1);
                         $rowOutput .= '<tr><td colspan="' . $colspan . '">
 								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
                             . '<span class="t3-icon fa fa-chevron-down"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
@@ -3522,23 +3517,21 @@ class DatabaseRecordList
 		<!-- Element, begin: -->
 		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $l10nParent . '">';
         // Show icon and lines
-        if ($this->showIcon) {
-            $out .= '
+        $out .= '
 			<' . $colType . ' class="col-icon nowrap">';
-            if (!$h) {
-                $out .= '&nbsp;';
-            } else {
-                for ($a = 0; $a < $h; $a++) {
-                    if (!$a) {
-                        if ($icon) {
-                            $out .= $icon;
-                        }
+        if (!$h) {
+            $out .= '&nbsp;';
+        } else {
+            for ($a = 0; $a < $h; $a++) {
+                if (!$a) {
+                    if ($icon) {
+                        $out .= $icon;
                     }
                 }
             }
-            $out .= '</' . $colType . '>
-			';
         }
+        $out .= '</' . $colType . '>';
+
         // Init rendering.
         $colsp = '';
         $lastKey = '';
