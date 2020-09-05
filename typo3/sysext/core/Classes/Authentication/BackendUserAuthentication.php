@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
+use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
@@ -1447,8 +1448,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $this->userGroups[$row['uid']] = $row;
         }
 
-        $permission = new Permission($this->user['options']);
-
+        $mountOptions = new BackendGroupMountOption((int)$this->user['options']);
         // Traversing records in the correct order
         foreach (explode(',', $grList) as $uid) {
             // Get row:
@@ -1465,11 +1465,11 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 // Add the group uid, current list to the internal arrays.
                 $this->includeGroupArray[] = $uid;
                 // Mount group database-mounts
-                if ($permission->showPagePermissionIsGranted()) {
+                if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
                     $this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
                 }
                 // Mount group file-mounts
-                if ($permission->editPagePermissionIsGranted()) {
+                if ($mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
                     $this->dataLists['filemount_list'] .= ',' . $row['file_mountpoints'];
                 }
                 // The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
@@ -1708,7 +1708,8 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
 
             // Mount group home-dirs
-            if ((new Permission($this->user['options'] ?? Permission::NOTHING))->editPagePermissionIsGranted() && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
+            $mountOptions = new BackendGroupMountOption((int)$this->user['options']);
+            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] !== '' && $mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
                 // If groupHomePath is set, we attempt to mount it
                 [$groupHomeStorageUid, $groupHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
                 $groupHomeStorageUid = (int)$groupHomeStorageUid;
@@ -2065,7 +2066,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
             switch ((string)$wsRec['uid']) {
                     case '0':
-                        $retVal = (new Permission($this->groupData['workspace_perms'] ?? Permission::NOTHING))->showPagePermissionIsGranted()
+                        $retVal = (($this->groupData['workspace_perms'] ?? 0) & 1)
                             ? array_merge($wsRec, ['_ACCESS' => 'online'])
                             : false;
                         break;
