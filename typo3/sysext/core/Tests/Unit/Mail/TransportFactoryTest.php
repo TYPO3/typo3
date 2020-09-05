@@ -19,14 +19,15 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
-use Symfony\Component\Mime\Message;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\FileSpool;
+use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeFileSpoolFixture;
@@ -210,7 +211,17 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $transport->send(new Message());
+
+        $message = new MailMessage();
+        $message->setTo(['foo@bar.com'])
+            ->text('foo')
+            ->from('bar@foo.com')
+        ;
+        try {
+            $transport->send($message);
+        } catch (TransportExceptionInterface $exception) {
+            // connection is not valid in tests, so we just catch the exception here.
+        }
 
         $eventDispatcher->dispatch(Argument::any())->shouldHaveBeenCalledOnce();
     }
@@ -233,7 +244,16 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $transport->send(new Message());
+        $message = new MailMessage();
+        $message->setTo(['foo@bar.com'])
+            ->text('foo')
+            ->from('bar@foo.com')
+        ;
+        try {
+            $transport->send($message);
+        } catch (TransportExceptionInterface $exception) {
+            // connection is not valid in tests, so we just catch the exception here.
+        }
 
         $eventDispatcher->dispatch(Argument::any())->shouldHaveBeenCalledOnce();
     }
@@ -256,7 +276,12 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $transport->send(new Message());
+        $message = new MailMessage();
+        $message->setTo(['foo@bar.com'])
+            ->text('foo')
+            ->from('bar@foo.com')
+        ;
+        $transport->send($message);
 
         $eventDispatcher->dispatch(Argument::any())->shouldHaveBeenCalledOnce();
     }
