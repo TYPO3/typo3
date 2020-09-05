@@ -14,3 +14,7 @@ extensions:
 modules:
   enabled:
     - Filesystem
+    - TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Config
+params:
+  - parameters.yml
+  - env

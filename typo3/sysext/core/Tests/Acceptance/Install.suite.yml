@@ -2,7 +2,7 @@ actor: InstallTester
 modules:
   enabled:
     - WebDriver:
-        url: http://web:8000/typo3temp/var/tests/acceptance
+        url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
         browser: chrome
         wait: 1
         host: chrome

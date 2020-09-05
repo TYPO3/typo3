@@ -1,0 +1,6 @@
+#
+# Default parameters for use in the codeception.yml.
+# These values can be overridden by environment variables,
+# e.g. in Build/testing-docker/local/docker-compose.yml
+#
+typo3TestingAcceptanceBaseUrl: http://web:8000
