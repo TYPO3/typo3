@@ -14,6 +14,8 @@ declare(strict_types = 1);
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 if (PHP_SAPI !== 'cli') {
@@ -24,10 +26,30 @@ if (PHP_SAPI !== 'cli') {
  * Core integrity test script:
  *
  * Find all CSV files in fixtures and make sure they have the correct column
- * count across all lines in them
+ * count across all lines in them and fix them if --fix argument is given.
  */
 class checkIntegrityCsvFixtures
 {
+    /**
+     * @var bool True to fix broken files
+     */
+    private $fix = false;
+
+    /**
+     * @var bool True to drop superfluous comma on all CSV fixture files
+     */
+    private $fixAll = false;
+
+    public function setFix(bool $fix)
+    {
+        $this->fix = $fix;
+    }
+
+    public function setFixAll(bool $fixAll)
+    {
+        $this->fixAll = $fixAll;
+    }
+
     /**
      * Executes the CGL check.
      * The return value is used directly in the ext() call outside this class.
@@ -37,27 +59,38 @@ class checkIntegrityCsvFixtures
     public function execute(): int
     {
         $filesToProcess = $this->findCsvFixtures();
-        $scanResult = [];
-        $failureCount = 0;
+        $outputLines = [];
         $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-        $resultAcrossAllFiles = 0;
+        $exitStatus = 0;
         /** @var \SplFileInfo $csvFixture */
         foreach ($filesToProcess as $csvFixture) {
             $fullFilePath = $csvFixture->getRealPath();
+            if ($this->fixAll) {
+                $changed = $this->fixCsvFile($fullFilePath);
+                if ($changed) {
+                    $outputLines[] = 'Changed file "' . $this->formatOutputString($this->getRelativePath($fullFilePath)) . '"';
+                }
+                continue;
+            }
             $singleFileScanResult = $this->validateCsvFile($fullFilePath);
             if ($singleFileScanResult !== '') {
-                $resultAcrossAllFiles = 1;
-                $failureCount++;
-                $scanResult[$this->getRelativePath($fullFilePath)] = $singleFileScanResult;
+                if ($this->fix) {
+                    $this->fixCsvFile($fullFilePath);
+                    $outputLines[] = 'Fixed file "' . $this->formatOutputString($this->getRelativePath($fullFilePath)) . '"';
+                } else {
+                    $exitStatus = 1;
+                    $outputLines[] = 'File "' . $this->formatOutputString($this->getRelativePath($fullFilePath)) . '"'
+                        . ' is not in valid CSV format: ' . $singleFileScanResult;
+                }
             }
         }
-        if (!empty($scanResult)) {
-            foreach ($scanResult as $key => $reason) {
-                $output->writeln('The file "' . $this->formatOutputString($key) . '" is not in valid CSV format: ' . $reason);
+        if (!empty($outputLines)) {
+            foreach ($outputLines as $line) {
+                $output->writeln($line);
             }
         }
-        return $resultAcrossAllFiles;
+        return $exitStatus;
     }
 
     /**
@@ -105,6 +138,72 @@ class checkIntegrityCsvFixtures
         return '';
     }
 
+    /**
+     * Fix a single CSV file.
+     *
+     * @param string $csvFixture
+     * @return bool True if the file has been changed
+     */
+    private function fixCsvFile(string $csvFixture): bool
+    {
+        $changeNeeded = false;
+        // Load file content into array split by line
+        $lines = file($csvFixture);
+        $neededColumns = 0;
+        $csvLines = [];
+        foreach ($lines as $line) {
+            // Find out how many columns are needed in this file
+            $csvLine = str_getcsv($line);
+            $csvLines[] = $csvLine;
+            foreach ($csvLine as $columnNumber => $columnContent) {
+                if (!empty($columnContent) && $columnNumber + 1 > $neededColumns) {
+                    $neededColumns = $columnNumber + 1;
+                }
+            }
+        }
+        foreach ($csvLines as $csvLine) {
+            // Set $changeNeeded to true if this file needs an update and line is not a comment
+            if (count($csvLine) !== $neededColumns && substr($csvLine[0], 0, 2) !== '# ') {
+                $changeNeeded = true;
+                break;
+            }
+        }
+        if ($changeNeeded) {
+            // Update file
+            $fileHandle = fopen($csvFixture, 'w');
+            if (!$fileHandle) {
+                throw new \Exception('Opening file "' . $csvFixture . '" for writing failed.');
+            }
+            foreach ($csvLines as $csvLine) {
+                // Extend / reduce to needed size
+                $csvLine = array_slice(array_pad($csvLine, $neededColumns, ''), 0, $neededColumns);
+                $isComment = false;
+                $line = array_reduce($csvLine, function ($carry, $column) use (&$isComment) {
+                    if ($carry === null && substr($column, 0, 2) === '# ') {
+                        $isComment = true;
+                        $carry .= $column;
+                    } elseif ($isComment) {
+                        // comment lines are not filled up with comma
+                        return $carry;
+                    } elseif (empty($column) && $column !== '0') {
+                        // No leading comma if first column
+                        $carry .= $carry === null ? '' : ',';
+                    } elseif (MathUtility::canBeInterpretedAsInteger($column)) {
+                        // No leading comma if first column and integer payload
+                        $carry .= ($carry === null ? '' : ',') . $column;
+                    } else {
+                        // No leading comma if first column and string payload
+                        $carry .= ($carry === null ? '' : ',') . '"' . $column . '"';
+                    }
+                    return $carry;
+                });
+                fwrite($fileHandle, $line . chr(10));
+            }
+            fclose($fileHandle);
+        }
+        return $changeNeeded;
+    }
+
     private function getRelativePath(string $fullPath): string
     {
         $pathSegment = str_replace('Build/Scripts', '', __DIR__);
@@ -129,4 +228,11 @@ class checkIntegrityCsvFixtures
 }
 
 $cglFixer = new checkIntegrityCsvFixtures();
+$args = getopt('', ['fix', 'fixAll']);
+if (array_key_exists('fix', $args)) {
+    $cglFixer->setFix(true);
+}
+if (array_key_exists('fixAll', $args)) {
+    $cglFixer->setFixAll(true);
+}
 exit($cglFixer->execute());
