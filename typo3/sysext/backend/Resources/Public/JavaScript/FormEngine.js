@@ -32,7 +32,7 @@ define(['jquery',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/BackendException',
   'TYPO3/CMS/Backend/Event/InteractionRequestMap'
-], function($, FormEngineValidation, DocumentSaveActions, Icons, Modal, MessageUtility, Severity, BackendException, InteractionRequestMap) {
+], function($, FormEngineValidation, DocumentSaveActions, Icons, Modal, MessageUtility, Severity, BackendExceptionModule, InteractionRequestMap) {
 
   /**
    * @param {InteractionRequest} interactionRequest
@@ -393,7 +393,7 @@ define(['jquery',
    */
   FormEngine.consume = function(interactionRequest) {
     if (!interactionRequest) {
-      throw new BackendException('No interaction request given', 1496589980);
+      throw new BackendExceptionModule.BackendException('No interaction request given', 1496589980);
     }
     if (interactionRequest.concernsTypes(FormEngine.consumeTypes)) {
       var outerMostRequest = interactionRequest.outerMostRequest;
