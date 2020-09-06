@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class for rendering of Web>List module
@@ -2770,98 +2771,19 @@ class DatabaseRecordList
     /**
      * Creates the search box
      *
-     * @param bool $formFields If TRUE, the search box is wrapped in its own form-tags
      * @return string HTML for the search box
      */
-    public function getSearchBox($formFields = true)
+    public function getSearchBox(): string
     {
-        $lang = $this->getLanguageService();
-        // Setting form-elements, if applicable:
-        $formElements = ['', ''];
-        if ($formFields) {
-            $formElements = [
-                '<form action="' . htmlspecialchars(
-                    $this->listURL('', '-1', 'firstElementNumber,search_field')
-                ) . '" method="post">',
-                '</form>'
-            ];
-        }
-        // Make level selector:
-        $opt = [];
-
-        // "New" generation of search levels ... based on TS config
-        $config = BackendUtility::getPagesTSconfig($this->id);
-        $searchLevelsFromTSconfig = $config['mod.']['web_list.']['searchLevel.']['items.'];
-        $searchLevelItems = [];
-
-        // get translated labels for search levels from pageTS
-        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
-            $label = $lang->sL('LLL:' . $labelConfigured);
-            if ($label === '') {
-                $label = $labelConfigured;
-            }
-            $searchLevelItems[$keySearchLevel] = $label;
-        }
-
-        foreach ($searchLevelItems as $kv => $label) {
-            $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars(
-                $label
-            ) . '</option>';
-        }
-        $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')
-        ) . '" id="search_levels">' . implode('', $opt) . '</select>';
-        // Table with the search box:
-        $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
-			' . $formElements[0] . '
-                <div id="typo3-dblist-search">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-sm-6 col-xs-12">
-                                    <label for="search_field">' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')
-        ) . '</label>
-									<input class="form-control" type="search" placeholder="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
-        ) . '" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')
-        ) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-									<label for="search_levels">' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')
-        ) . '</label>
-									' . $lMenu . '
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-									<label for="showLimit">' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')
-        ) . '</label>
-									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
-        ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-            ($this->showLimit ?: '')
-        ) . '" />
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="form-control-wrap">
-                                        <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
-        ) . '">
-                                            ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
-            ) . ' ' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')
-            ) . '
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-			' . $formElements[1] . '</div>';
-        return $content;
+        return $this->getFluidTemplateObject('Search.html')
+            ->assignMultiple([
+                'formUrl' => $this->listURL('', '-1', 'firstElementNumber,search_field'),
+                'searchLevelsFromTSconfig' => (array)(BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.']['searchLevel.']['items.'] ?? []),
+                'selectedSearchLevel' => $this->searchLevels,
+                'searchString' => $this->searchString,
+                'showLimit' => $this->showLimit
+            ])
+            ->render();
     }
 
     /**
@@ -3819,5 +3741,21 @@ class DatabaseRecordList
     {
         $this->languagesAllowedForUser = $languagesAllowedForUser;
         return $this;
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        $view->setTemplate($filename);
+        return $view;
     }
 }
