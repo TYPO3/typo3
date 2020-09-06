@@ -105,13 +105,6 @@ class DatabaseRecordList
     public $clickMenuEnabled = true;
 
     /**
-     * Count of record rows in view
-     *
-     * @var int
-     */
-    public $totalRowCount;
-
-    /**
      * Space icon used for alignment
      *
      * @var string
@@ -917,7 +910,6 @@ class DatabaseRecordList
                         }
                     }
                 }
-                $this->totalRowCount = count($accRows);
                 // CSV initiated
                 if ($this->csvOutput) {
                     $this->addHeaderRowToCSV();
@@ -1144,13 +1136,6 @@ class DatabaseRecordList
             && GeneralUtility::inList($this->currentLink['tableNames'], $table)
         ) {
             $tagAttributes['class'][] = 'active';
-        }
-        // Add special classes for first and last row
-        if ($cc == 1 && $indent == 0) {
-            $tagAttributes['class'][] = 'firstcol';
-        }
-        if ($cc == $this->totalRowCount) {
-            $tagAttributes['class'][] = 'lastcol';
         }
         // Overriding with versions background color if any:
         if (!empty($row['_CSSCLASS'])) {
