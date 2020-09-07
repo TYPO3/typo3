@@ -435,4 +435,12 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         $this->description = $array['description'];
         $this->itemTableName = $array['table_name'];
     }
+
+    protected static function getCollectionDatabaseTable(): string
+    {
+        if (!empty(static::$storageTableName)) {
+            return static::$storageTableName;
+        }
+        throw new \RuntimeException('No storage table name was defined the class "' . static::class . '".', 1592207959);
+    }
 }
