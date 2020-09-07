@@ -14,7 +14,6 @@
 import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -103,7 +102,7 @@ class FolderStructure extends AbstractInteractableModule {
             InfoBox.render(element.severity, element.title, element.message),
           );
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -139,7 +138,7 @@ class FolderStructure extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );

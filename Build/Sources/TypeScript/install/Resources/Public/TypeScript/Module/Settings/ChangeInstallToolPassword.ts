@@ -17,7 +17,6 @@ import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Router = require('../../Router');
 import PasswordStrength = require('../PasswordStrength');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 
 /**
@@ -53,7 +52,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -80,7 +79,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
       } else {
         Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
       }
-    }, (error: ResponseError): void => {
+    }, (error: AjaxResponse): void => {
       Router.handleAjaxError(error, modalContent);
     }).finally((): void => {
       this.findInModal('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('');

@@ -14,7 +14,6 @@
 import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
@@ -110,7 +109,7 @@ class LanguagePacks extends AbstractInteractableModule {
 
           this.renderNotifications();
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -146,7 +145,7 @@ class LanguagePacks extends AbstractInteractableModule {
           }
           this.getData();
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -181,7 +180,7 @@ class LanguagePacks extends AbstractInteractableModule {
           }
           this.getData();
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -299,7 +298,7 @@ class LanguagePacks extends AbstractInteractableModule {
                 this.addNotification(m);
               }
             },
-            (error: ResponseError): void => {
+            (error: AjaxResponse): void => {
               Router.handleAjaxError(error, modalContent);
             }
           );
