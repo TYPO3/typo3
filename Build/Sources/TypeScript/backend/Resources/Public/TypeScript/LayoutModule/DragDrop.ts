@@ -189,7 +189,13 @@ class DragDrop {
         targetPid = 0 - parseInt(targetFound, 10);
       }
 
-      const language = parseInt($droppableElement.closest('[data-language-uid]').data('language-uid'), 10);
+      // the dragged elements language uid
+      let language: number = parseInt($draggableElement.data('language-uid'), 10);
+      if (language !== -1) {
+        // new elements language must be the same as the column the element is dropped in if element is not -1
+        language = parseInt($droppableElement.closest('[data-language-uid]').data('language-uid'), 10);
+      }
+
       let colPos: number | boolean = 0;
       if (targetPid !== 0) {
         colPos = newColumn;
