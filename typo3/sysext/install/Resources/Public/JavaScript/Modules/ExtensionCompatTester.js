@@ -71,11 +71,11 @@ define([
           if (data.success === true) {
             self.loadExtLocalconf().done(function() {
               $outputContainer.append(
-                InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', ''),
+                InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', '')
               );
               self.loadExtTables().done(function() {
                 $outputContainer.append(
-                  InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', ''),
+                  InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', '')
                 );
               }).fail(function(xhr) {
                 self.renderFailureMessages('ext_tables.php', xhr.responseJSON.brokenExtensions, $outputContainer);
@@ -85,7 +85,7 @@ define([
             }).fail(function(xhr) {
               self.renderFailureMessages('ext_localconf.php', xhr.responseJSON.brokenExtensions, $outputContainer);
               $outputContainer.append(
-                InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', ''),
+                InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', '')
               );
               self.unlockModal();
             });
@@ -118,9 +118,9 @@ define([
           InfoBox.render(
             Severity.error,
             'Loading ' + scope + ' of extension "' + extension.name + '" failed',
-            (extension.isProtected ? 'Extension is mandatory and cannot be uninstalled.' : ''),
+            (extension.isProtected ? 'Extension is mandatory and cannot be uninstalled.' : '')
           ),
-          uninstallAction,
+          uninstallAction
         );
       }
 

@@ -386,7 +386,7 @@ define([
           $('<td>').text(language.name),
           $('<td>').text(language.iso),
           $('<td>').text(language.dependencies.join(', ')),
-          $('<td>').text(language.lastUpdate === null ? '' : language.lastUpdate),
+          $('<td>').text(language.lastUpdate === null ? '' : language.lastUpdate)
         );
         $tbody.append($tr);
       });
@@ -408,7 +408,7 @@ define([
               $('<th>').text('Language'),
               $('<th>').text('Locale'),
               $('<th>').text('Dependencies'),
-              $('<th>').text('Last update'),
+              $('<th>').text('Last update')
             )
           ),
           $tbody
@@ -432,7 +432,7 @@ define([
       var $headerRow = $('<tr>');
       $headerRow.append(
         $('<th>').text('Extension'),
-        $('<th>').text('Key'),
+        $('<th>').text('Key')
       );
       data.activeLanguages.forEach(function(language) {
         $headerRow.append(
