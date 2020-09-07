@@ -73,12 +73,12 @@ class ImageContentObject extends AbstractContentObject
             $info
         );
 
-        $layoutKey = $this->cObj->stdWrapValue('layoutKey', $conf);
+        $layoutKey = $this->cObj->stdWrapValue('layoutKey', $conf ?? []);
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
         $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);
 
         $altParam = $this->getAltParam($conf);
-        $params = $this->cObj->stdWrapValue('params', $conf);
+        $params = $this->cObj->stdWrapValue('params', $conf ?? []);
         if ($params !== '' && $params[0] !== ' ') {
             $params = ' ' . $params;
         }
@@ -97,14 +97,14 @@ class ImageContentObject extends AbstractContentObject
         $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $theValue = $markerTemplateEngine->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
 
-        $linkWrap = $this->cObj->stdWrapValue('linkWrap', $conf);
+        $linkWrap = $this->cObj->stdWrapValue('linkWrap', $conf ?? []);
         if ($linkWrap) {
             $theValue = $this->linkWrap($theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap']) {
             $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
-        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf ?? []);
         if ((string)$wrap !== '') {
             $theValue = $this->cObj->wrap($theValue, $conf['wrap']);
         }
@@ -192,7 +192,7 @@ class ImageContentObject extends AbstractContentObject
                     'file.' => $conf['file.'] ?? null
                 ];
 
-                $imageQuality = $this->cObj->stdWrapValue('quality', $sourceConfiguration);
+                $imageQuality = $this->cObj->stdWrapValue('quality', $sourceConfiguration ?? []);
                 if ($imageQuality) {
                     $sourceRenderConfiguration['file.']['params'] = '-quality ' . (int)$imageQuality;
                 }
@@ -290,8 +290,8 @@ class ImageContentObject extends AbstractContentObject
      */
     public function getAltParam($conf, $longDesc = true)
     {
-        $altText = trim($this->cObj->stdWrapValue('altText', $conf));
-        $titleText = trim($this->cObj->stdWrapValue('titleText', $conf));
+        $altText = trim($this->cObj->stdWrapValue('altText', $conf ?? []));
+        $titleText = trim($this->cObj->stdWrapValue('titleText', $conf ?? []));
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
             $longDescUrl = $this->cObj->typoLink_URL($conf['longdescURL.']);
         } else {
@@ -302,7 +302,7 @@ class ImageContentObject extends AbstractContentObject
         // "alt":
         $altParam = ' alt="' . htmlspecialchars($altText) . '"';
         // "title":
-        $emptyTitleHandling = $this->cObj->stdWrapValue('emptyTitleHandling', $conf);
+        $emptyTitleHandling = $this->cObj->stdWrapValue('emptyTitleHandling', $conf ?? []);
         // Choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
         if ($titleText || $emptyTitleHandling === 'keepEmpty') {
             $altParam .= ' title="' . htmlspecialchars($titleText) . '"';

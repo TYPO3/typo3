@@ -60,7 +60,7 @@ class RecordsContentObject extends AbstractContentObject
             ++$GLOBALS['TSFE']->recordRegister[$originalRec];
         }
 
-        $tables = $this->cObj->stdWrapValue('tables', $conf);
+        $tables = $this->cObj->stdWrapValue('tables', $conf ?? []);
         if ($tables) {
             $tablesArray = array_unique(GeneralUtility::trimExplode(',', $tables, true));
             // Add tables which have a configuration (note that this may create duplicate entries)
@@ -74,8 +74,8 @@ class RecordsContentObject extends AbstractContentObject
 
             // Get the data, depending on collection method.
             // Property "source" is considered more precise and thus takes precedence over "categories"
-            $source = $this->cObj->stdWrapValue('source', $conf);
-            $categories = $this->cObj->stdWrapValue('categories', $conf);
+            $source = $this->cObj->stdWrapValue('source', $conf ?? []);
+            $categories = $this->cObj->stdWrapValue('categories', $conf ?? []);
             if ($source) {
                 $this->collectRecordsFromSource($source, $tablesArray);
             } elseif ($categories) {
@@ -102,7 +102,7 @@ class RecordsContentObject extends AbstractContentObject
                     }
                     // Might be unset during the overlay process
                     if (is_array($row)) {
-                        $dontCheckPid = $this->cObj->stdWrapValue('dontCheckPid', $conf);
+                        $dontCheckPid = $this->cObj->stdWrapValue('dontCheckPid', $conf ?? []);
                         if (!$dontCheckPid) {
                             $validPageId = $this->getPageRepository()->filterAccessiblePageIds([$row['pid']]);
                             $row = !empty($validPageId) ? $row : '';
@@ -123,7 +123,7 @@ class RecordsContentObject extends AbstractContentObject
                 }
             }
         }
-        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf ?? []);
         if ($wrap) {
             $theValue = $this->cObj->wrap($theValue, $wrap);
         }

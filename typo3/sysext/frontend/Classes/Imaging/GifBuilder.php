@@ -148,15 +148,15 @@ class GifBuilder extends GraphicalFunctions
             // Getting sorted list of TypoScript keys from setup.
             $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
             // Setting the background color, passing it through stdWrap
-            $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup);
+            $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup ?? []);
             if (!$this->setup['backColor']) {
                 $this->setup['backColor'] = 'white';
             }
-            $this->setup['transparentColor_array'] = explode('|', trim($this->cObj->stdWrapValue('transparentColor', $this->setup)));
-            $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup);
-            $this->setup['reduceColors'] = $this->cObj->stdWrapValue('reduceColors', $this->setup);
+            $this->setup['transparentColor_array'] = explode('|', trim($this->cObj->stdWrapValue('transparentColor', $this->setup ?? [])));
+            $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup ?? []);
+            $this->setup['reduceColors'] = $this->cObj->stdWrapValue('reduceColors', $this->setup ?? []);
             // Set default dimensions
-            $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup);
+            $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup ?? []);
             if (!$this->setup['XY']) {
                 $this->setup['XY'] = '120,50';
             }
@@ -242,9 +242,9 @@ class GifBuilder extends GraphicalFunctions
             }
             // Calculate offsets on elements
             $this->setup['XY'] = $this->calcOffset($this->setup['XY']);
-            $this->setup['offset'] = $this->cObj->stdWrapValue('offset', $this->setup);
+            $this->setup['offset'] = $this->cObj->stdWrapValue('offset', $this->setup ?? []);
             $this->setup['offset'] = $this->calcOffset($this->setup['offset']);
-            $this->setup['workArea'] = $this->cObj->stdWrapValue('workArea', $this->setup);
+            $this->setup['workArea'] = $this->cObj->stdWrapValue('workArea', $this->setup ?? []);
             $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
@@ -311,8 +311,8 @@ class GifBuilder extends GraphicalFunctions
             }
             // Get trivial data
             $XY = GeneralUtility::intExplode(',', $this->setup['XY']);
-            $maxWidth = (int)$this->cObj->stdWrapValue('maxWidth', $this->setup);
-            $maxHeight = (int)$this->cObj->stdWrapValue('maxHeight', $this->setup);
+            $maxWidth = (int)$this->cObj->stdWrapValue('maxWidth', $this->setup ?? []);
+            $maxHeight = (int)$this->cObj->stdWrapValue('maxHeight', $this->setup ?? []);
             $XY[0] = MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
             $XY[1] = MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
             $this->XY = $XY;

@@ -79,9 +79,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             /** @var TypolinkModifyLinkConfigForPageLinksHookInterface $hookObject */
             $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
         }
-        $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrapValue('no_cache', $conf);
+        $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrapValue('no_cache', $conf ?? []);
 
-        $sectionMark = trim((string)$this->contentObjectRenderer->stdWrapValue('section', $conf));
+        $sectionMark = trim((string)$this->contentObjectRenderer->stdWrapValue('section', $conf ?? []));
         if ($sectionMark === '' && isset($linkDetails['fragment'])) {
             $sectionMark = $linkDetails['fragment'];
         }
@@ -113,7 +113,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // Query Params:
         $addQueryParams = $conf['addQueryString'] ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.']) : '';
-        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf));
+        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
         if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
             $addQueryParams = '';
         }

@@ -45,7 +45,7 @@ class CategoryMenuUtility
         $selectedPages = [];
         $categoriesPerPage = [];
         // Determine the name of the relation field
-        $relationField = $parentObject->getParentContentObject()->stdWrapValue('relation', $configuration);
+        $relationField = $parentObject->getParentContentObject()->stdWrapValue('relation', $configuration ?? []);
         // Get the pages for each selected category
         $selectedCategories = GeneralUtility::intExplode(',', $selectedCategories, true);
         foreach ($selectedCategories as $aCategory) {
@@ -79,8 +79,8 @@ class CategoryMenuUtility
         }
 
         // Sort the pages according to the sorting property
-        self::$sortingField = $parentObject->getParentContentObject()->stdWrapValue('sorting', $configuration);
-        $order = $parentObject->getParentContentObject()->stdWrapValue('order', $configuration);
+        self::$sortingField = $parentObject->getParentContentObject()->stdWrapValue('sorting', $configuration ?? []);
+        $order = $parentObject->getParentContentObject()->stdWrapValue('order', $configuration ?? []);
         $selectedPages = $this->sortPages($selectedPages, $order);
 
         return $selectedPages;

@@ -76,7 +76,7 @@ class DatabaseQueryProcessor implements DataProcessorInterface
         }
 
         // the table to query, if none given, exit
-        $tableName = $cObj->stdWrapValue('table', $processorConfiguration);
+        $tableName = $cObj->stdWrapValue('table', $processorConfiguration ?? []);
         if (empty($tableName)) {
             return $processedData;
         }

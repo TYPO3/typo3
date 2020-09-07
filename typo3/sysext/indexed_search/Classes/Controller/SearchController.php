@@ -1554,45 +1554,45 @@ class SearchController extends ActionController
         $typoScriptArray = $fullTypoScriptArray['results.'];
 
         $this->settings['results.']['summaryCropAfter'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('summaryCropAfter', $typoScriptArray),
+            $GLOBALS['TSFE']->cObj->stdWrapValue('summaryCropAfter', $typoScriptArray ?? []),
             10,
             5000,
             180
         );
-        $this->settings['results.']['summaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('summaryCropSignifier', $typoScriptArray);
+        $this->settings['results.']['summaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('summaryCropSignifier', $typoScriptArray ?? []);
         $this->settings['results.']['titleCropAfter'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('titleCropAfter', $typoScriptArray),
+            $GLOBALS['TSFE']->cObj->stdWrapValue('titleCropAfter', $typoScriptArray ?? []),
             10,
             500,
             50
         );
-        $this->settings['results.']['titleCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('titleCropSignifier', $typoScriptArray);
+        $this->settings['results.']['titleCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('titleCropSignifier', $typoScriptArray ?? []);
         $this->settings['results.']['markupSW_summaryMax'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_summaryMax', $typoScriptArray),
+            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_summaryMax', $typoScriptArray ?? []),
             10,
             5000,
             300
         );
         $this->settings['results.']['markupSW_postPreLgd'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_postPreLgd', $typoScriptArray),
+            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_postPreLgd', $typoScriptArray ?? []),
             1,
             500,
             60
         );
         $this->settings['results.']['markupSW_postPreLgd_offset'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_postPreLgd_offset', $typoScriptArray),
+            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_postPreLgd_offset', $typoScriptArray ?? []),
             1,
             50,
             5
         );
-        $this->settings['results.']['markupSW_divider'] = $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_divider', $typoScriptArray);
+        $this->settings['results.']['markupSW_divider'] = $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_divider', $typoScriptArray ?? []);
         $this->settings['results.']['hrefInSummaryCropAfter'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('hrefInSummaryCropAfter', $typoScriptArray),
+            $GLOBALS['TSFE']->cObj->stdWrapValue('hrefInSummaryCropAfter', $typoScriptArray ?? []),
             10,
             400,
             60
         );
-        $this->settings['results.']['hrefInSummaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray);
+        $this->settings['results.']['hrefInSummaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray ?? []);
     }
 
     /**

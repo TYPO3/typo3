@@ -31,7 +31,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     public function render($conf = []): string
     {
-        $renderMode = $this->cObj->stdWrapValue('renderMode', $conf);
+        $renderMode = $this->cObj->stdWrapValue('renderMode', $conf ?? []);
 
         if ($renderMode === 'inline') {
             return $this->renderInline($conf);
@@ -69,7 +69,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
             // remove xml version tag
             $content = $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
         } else {
-            $value = $this->cObj->stdWrapValue('value', $conf);
+            $value = $this->cObj->stdWrapValue('value', $conf ?? []);
             if (!empty($value)) {
                 $content = [];
                 $content[] = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . (int)$width . '" height="' . (int)$height . '">';
@@ -121,7 +121,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     protected function resolveAbsoluteSourcePath(array $conf): string
     {
-        $src = $this->cObj->stdWrapValue('src', $conf);
+        $src = $this->cObj->stdWrapValue('src', $conf ?? []);
         return GeneralUtility::getFileAbsFileName($src);
     }
 
@@ -134,8 +134,8 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     {
         $isDefaultWidth = false;
         $isDefaultHeight = false;
-        $width = $this->cObj->stdWrapValue('width', $conf);
-        $height = $this->cObj->stdWrapValue('height', $conf);
+        $width = $this->cObj->stdWrapValue('width', $conf ?? []);
+        $height = $this->cObj->stdWrapValue('height', $conf ?? []);
 
         if (empty($width)) {
             $isDefaultWidth = true;

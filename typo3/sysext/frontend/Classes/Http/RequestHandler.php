@@ -391,7 +391,7 @@ class RequestHandler implements RequestHandlerInterface
             foreach ($controller->tmpl->setup['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
                     if ($iCSScode['_CSS_DEFAULT_STYLE'] ?? false && empty($controller->config['config']['removeDefaultCss'])) {
-                        $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode);
+                        $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode ?? []);
                         $stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
                     }
                     if ($iCSScode['_CSS_PAGE_STYLE'] ?? false && empty($controller->config['config']['removePageCss'])) {

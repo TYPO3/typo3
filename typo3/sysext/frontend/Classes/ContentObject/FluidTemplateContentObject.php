@@ -157,7 +157,7 @@ class FluidTemplateContentObject extends AbstractContentObject
         ) {
             $templateRootPaths = $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']);
             $this->view->setTemplateRootPaths($templateRootPaths);
-            $templateName = $this->cObj->stdWrapValue('templateName', $conf);
+            $templateName = $this->cObj->stdWrapValue('templateName', $conf ?? []);
             $this->view->setTemplate($templateName);
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
             // Fetch the Fluid template by template cObject
@@ -171,7 +171,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $this->view->setTemplateSource($templateSource);
         } else {
             // Fetch the Fluid template by file stdWrap
-            $file = $this->cObj->stdWrapValue('file', $conf);
+            $file = $this->cObj->stdWrapValue('file', $conf ?? []);
             // Get the absolute file name
             $templatePathAndFilename = GeneralUtility::getFileAbsFileName($file);
             $this->view->setTemplatePathAndFilename($templatePathAndFilename);
@@ -187,7 +187,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     {
         // Override the default layout path via typoscript
         $layoutPaths = [];
-        $layoutRootPath = $this->cObj->stdWrapValue('layoutRootPath', $conf);
+        $layoutRootPath = $this->cObj->stdWrapValue('layoutRootPath', $conf ?? []);
         if ($layoutRootPath) {
             $layoutPaths[] = GeneralUtility::getFileAbsFileName($layoutRootPath);
         }
@@ -207,7 +207,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function setPartialRootPath(array $conf)
     {
         $partialPaths = [];
-        $partialRootPath = $this->cObj->stdWrapValue('partialRootPath', $conf);
+        $partialRootPath = $this->cObj->stdWrapValue('partialRootPath', $conf ?? []);
         if ($partialRootPath) {
             $partialPaths[] = GeneralUtility::getFileAbsFileName($partialRootPath);
         }
@@ -226,7 +226,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setFormat(array $conf)
     {
-        $format = $this->cObj->stdWrapValue('format', $conf);
+        $format = $this->cObj->stdWrapValue('format', $conf ?? []);
         if ($format) {
             $this->view->setFormat($format);
         }

@@ -233,7 +233,7 @@ abstract class AbstractMenuContentObject
             $this->tmpl = $tmpl;
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
-            $this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf);
+            $this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf ?? []);
             if (trim($this->conf['alwaysActivePIDlist'])) {
                 $this->alwaysActivePIDlist = GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
             }
@@ -245,7 +245,7 @@ abstract class AbstractMenuContentObject
             }
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(
-                $this->parent_cObj->stdWrapValue('entryLevel', $this->conf),
+                $this->parent_cObj->stdWrapValue('entryLevel', $this->conf ?? []),
                 $this->tmpl->rootLine
             );
             // Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
@@ -491,7 +491,7 @@ abstract class AbstractMenuContentObject
         $alternativeSortingField = trim($this->mconf['alternativeSortingField']) ?: 'sorting';
 
         // Additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
-        $additionalWhere = $this->parent_cObj->stdWrapValue('additionalWhere', $this->mconf);
+        $additionalWhere = $this->parent_cObj->stdWrapValue('additionalWhere', $this->mconf ?? []);
         $additionalWhere .= $this->getDoktypeExcludeWhere();
 
         // ... only for the FIRST level of a HMENU
@@ -1307,7 +1307,7 @@ abstract class AbstractMenuContentObject
         if ($altTarget) {
             $mainTarget = $altTarget;
         } else {
-            $mainTarget = $this->parent_cObj->stdWrapValue('target', $this->mconf);
+            $mainTarget = $this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
         }
         // Creating link:
         $addParams = $this->mconf['addParams'] . $MP_params;
@@ -1502,7 +1502,7 @@ abstract class AbstractMenuContentObject
         // Make submenu if the page is the next active
         $menuType = $this->conf[($this->menuNumber + 1) . $objSuffix];
         // stdWrap for expAll
-        $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf);
+        $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf ?? []);
         if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
             try {
                 $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
@@ -1801,7 +1801,7 @@ abstract class AbstractMenuContentObject
      */
     protected function getBannedUids()
     {
-        $excludeUidList = $this->parent_cObj->stdWrapValue('excludeUidList', $this->conf);
+        $excludeUidList = $this->parent_cObj->stdWrapValue('excludeUidList', $this->conf ?? []);
         if (!trim($excludeUidList)) {
             return [];
         }
