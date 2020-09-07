@@ -30,9 +30,13 @@ class SecurityUtility {
     if (length <= 0 || length !== Math.ceil(length)) {
       throw new SyntaxError('Length must be a positive integer');
     }
-    const values = new Uint8Array(Math.ceil(length / 2));
-    crypto.getRandomValues(values);
-    return Array.from(values)
+    const binaryValues = new Uint8Array(Math.ceil(length / 2));
+    const values = [];
+    crypto.getRandomValues(binaryValues);
+    for (let i = 0; i < binaryValues.byteLength; i++) {
+      values[i] = binaryValues[i];
+    }
+    return values
       .map((item: number): string => {
         let hex = item.toString(16);
         return hex.length === 2 ? hex : '0' + hex;
