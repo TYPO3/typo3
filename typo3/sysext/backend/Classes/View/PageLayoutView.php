@@ -445,7 +445,8 @@ class PageLayoutView implements LoggerAwareInterface
                                 $highlightHeader = ' t3-page-ce-warning';
                             }
                             $singleElementHTML = '<div class="t3-page-ce' . $highlightHeader . ' t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
-                                . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
+                                . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '" data-language-uid="'
+                                . $row['sys_language_uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
                             $singleElementHTML .= '<div class="t3-page-ce" data-colpos="' . $columnId . '">';
                             $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-page-' . $id .
