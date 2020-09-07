@@ -10,14 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * @deprecated Not used anymore
- */
-export class ResponseError {
-  public readonly response: Response;
-
-  constructor(response: Response) {
-    this.response = response;
-  }
-}
+define(["require","exports"],(function(e,r){"use strict";Object.defineProperty(r,"__esModule",{value:!0})}));

@@ -14,7 +14,6 @@
 import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -79,12 +78,12 @@ class ExtensionCompatTester extends AbstractInteractableModule {
                 $innerOutputContainer.append(
                   InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', ''),
                 );
-              }, async (error: ResponseError): Promise<void> => {
+              }, async (error: AjaxResponse): Promise<void> => {
                 this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
               }).finally((): void => {
                 this.unlockModal();
               })
-            }, async (error: ResponseError): Promise<void> => {
+            }, async (error: AjaxResponse): Promise<void> => {
               this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
               $innerOutputContainer.append(
                 InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', ''),
@@ -95,7 +94,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -182,7 +181,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );

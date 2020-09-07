@@ -14,7 +14,6 @@
 import $ from 'jquery';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from './Module/AbstractInteractableModule';
 import {AbstractInlineModule} from './Module/AbstractInlineModule';
 import Icons = require('TYPO3/CMS/Backend/Icons');
@@ -132,7 +131,7 @@ class Router {
             this.executeSilentConfigurationUpdate();
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -157,7 +156,7 @@ class Router {
             $outputContainer.empty().append(message);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -184,13 +183,13 @@ class Router {
             $outputContainer.empty().append(message);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
   }
 
-  public async handleAjaxError(error: ResponseError, $outputContainer?: JQuery): Promise<any> {
+  public async handleAjaxError(error: AjaxResponse, $outputContainer?: JQuery): Promise<any> {
     let $message: any;
     if (error.response.status === 403) {
       // Install tool session expired - depending on context render error message or login
@@ -261,7 +260,7 @@ class Router {
             this.showEnableInstallTool();
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -277,7 +276,7 @@ class Router {
             $(this.selectorBody).empty().append(data.html);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -295,7 +294,7 @@ class Router {
             this.showLogin();
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -311,7 +310,7 @@ class Router {
             $(this.selectorBody).empty().append(data.html);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -341,7 +340,7 @@ class Router {
             });
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -357,7 +356,7 @@ class Router {
             this.showEnableInstallTool();
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -377,7 +376,7 @@ class Router {
             outputContainer.empty().append(message);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );
@@ -403,7 +402,7 @@ class Router {
             this.executeSilentConfigurationUpdate();
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           this.handleAjaxError(error)
         }
       );

@@ -13,7 +13,6 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
@@ -75,7 +74,7 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
             modalContent.find(this.selectorOutputContainer).append(m4);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );

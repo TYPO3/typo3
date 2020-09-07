@@ -13,7 +13,6 @@
 
 import JQueryNativePromises from '../BackwardCompat/JQueryNativePromises';
 import {AjaxResponse} from './AjaxResponse';
-import {ResponseError} from './ResponseError';
 import {GenericKeyValue, InputTransformer} from './InputTransformer';
 
 class AjaxRequest {
@@ -143,7 +142,7 @@ class AjaxRequest {
   private async send(init: RequestInit = {}): Promise<Response> {
     const response = await fetch(this.composeRequestUrl(), this.getMergedOptions(init));
     if (!response.ok) {
-      throw new ResponseError(response);
+      throw new AjaxResponse(response);
     }
     return response;
   }

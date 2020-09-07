@@ -20,7 +20,7 @@ To send a request, a new instance of `AjaxRequest` must be created which receive
 * :js:`url` (string) - The endpoint to send the request to
 
 For compatibility reasons the :js:`Promise` prototype is extended to have basic support for jQuery's :js:`$.Deferred()`.
-In all erroneous cases, the internal promise is rejected with an instance of `ResponseError` containing the original
+In all erroneous cases, the internal promise is rejected with an instance of `AjaxResponse` containing the original
 `response object`_.
 
 withQueryArguments()

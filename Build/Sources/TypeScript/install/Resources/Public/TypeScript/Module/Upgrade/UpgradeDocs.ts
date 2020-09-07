@@ -14,7 +14,6 @@
 import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import '../../Renderable/Clearable';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -96,7 +95,7 @@ class UpgradeDocs extends AbstractInteractableModule {
             this.loadChangelogs();
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
@@ -128,7 +127,7 @@ class UpgradeDocs extends AbstractInteractableModule {
               Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
             }
           },
-          (error: ResponseError): void => {
+          (error: AjaxResponse): void => {
             Router.handleAjaxError(error, modalContent);
           }
         );
@@ -298,7 +297,7 @@ class UpgradeDocs extends AbstractInteractableModule {
           action: 'upgradeDocsMarkRead',
         },
       })
-      .catch((error: ResponseError): void => {
+      .catch((error: AjaxResponse): void => {
         Router.handleAjaxError(error, modalContent);
       });
   }
@@ -319,7 +318,7 @@ class UpgradeDocs extends AbstractInteractableModule {
           action: 'upgradeDocsUnmarkRead',
         },
       })
-      .catch((error: ResponseError): void => {
+      .catch((error: AjaxResponse): void => {
         Router.handleAjaxError(error, modalContent);
       });
   }

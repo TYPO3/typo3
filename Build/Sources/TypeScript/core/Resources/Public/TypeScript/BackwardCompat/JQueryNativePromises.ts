@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import {ResponseError} from '../Ajax/ResponseError';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 
 /**
  * Introduces a polyfill to support jQuery callbacks in native promises.
@@ -27,7 +27,7 @@ export default class JQueryNativePromises {
 
     if (typeof Promise.prototype.fail !== 'function') {
       Promise.prototype.fail = function (onRejected: Function): Promise<any> {
-        this.catch(async (err: ResponseError): Promise<void> => {
+        this.catch(async (err: AjaxResponse): Promise<void> => {
           const response = err.response;
           onRejected(await JQueryNativePromises.createFakeXhrObject(response), 'error', response.statusText);
         });

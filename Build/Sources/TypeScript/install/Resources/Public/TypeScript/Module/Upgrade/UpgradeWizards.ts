@@ -14,7 +14,6 @@
 import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
@@ -113,7 +112,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error);
         }
       );
@@ -138,7 +137,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             }
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );
@@ -166,7 +165,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             $outputContainer.append(message);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );
@@ -213,7 +212,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error);
         }
       );
@@ -242,7 +241,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             $outputContainer.append(message);
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );
@@ -299,7 +298,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error);
         }
       );
@@ -349,7 +348,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           }
           modalContent.find(this.selectorOutputWizardsContainer).append(input);
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );
@@ -390,7 +389,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );
@@ -442,7 +441,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );
@@ -476,7 +475,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
-        (error: ResponseError): void => {
+        (error: AjaxResponse): void => {
           Router.handleAjaxError(error, $outputContainer);
         }
       );

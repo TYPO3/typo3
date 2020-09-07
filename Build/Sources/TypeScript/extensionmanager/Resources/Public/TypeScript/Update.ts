@@ -15,7 +15,6 @@ import $ from 'jquery';
 import NProgress from 'nprogress';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 enum ExtensionManagerUpdateIdentifier {
@@ -91,7 +90,7 @@ class ExtensionManagerUpdate {
         reload = true;
         window.location.replace(window.location.href);
       }
-    }, async (error: ResponseError): Promise<void> => {
+    }, async (error: AjaxResponse): Promise<void> => {
       // Create an error message with diagnosis info.
       const errorMessage = error.response.statusText + '(' + error.response.status + '): ' + await error.response.text();
 
