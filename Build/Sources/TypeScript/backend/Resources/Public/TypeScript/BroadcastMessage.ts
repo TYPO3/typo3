@@ -11,6 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/**
+ * @module TYPO3/CMS/Backend/BroadcastMessage
+ */
 export class BroadcastMessage {
   readonly componentName: string;
   readonly eventName: string;

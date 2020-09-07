@@ -15,21 +15,34 @@ import 'broadcastchannel';
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 
+/**
+ * @module TYPO3/CMS/Backend/BroadcastService
+ */
 class BroadcastService {
   private readonly channel: BroadcastChannel;
+
+  public get isListening(): boolean {
+    return typeof this.channel.onmessage === 'function';
+  }
+
+  private static onMessage(evt: MessageEvent): void {
+    if (!MessageUtility.verifyOrigin(evt.origin)) {
+      throw 'Denied message sent by ' + evt.origin;
+    }
+    const message = BroadcastMessage.fromData(evt.data);
+    document.dispatchEvent(message.createCustomEvent('typo3'));
+  }
 
   public constructor() {
     this.channel = new BroadcastChannel('typo3');
   }
 
   public listen(): void {
-    this.channel.onmessage = (evt: MessageEvent) => {
-      if (!MessageUtility.verifyOrigin(evt.origin)) {
-        throw 'Denied message sent by ' + evt.origin;
-      }
-      const message = BroadcastMessage.fromData(evt.data);
-      document.dispatchEvent(message.createCustomEvent('typo3'));
-    };
+    if (this.isListening) {
+      return;
+    }
+    // once `this` becomes necessary, use `.bind(this)`
+    this.channel.onmessage = BroadcastService.onMessage;
   }
 
   public post(message: BroadcastMessage): void {
