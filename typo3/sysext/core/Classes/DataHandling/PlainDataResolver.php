@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -176,7 +177,8 @@ class PlainDataResolver
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $result = $queryBuilder
             ->select('uid', 't3ver_oid', 't3ver_state')
@@ -228,7 +230,8 @@ class PlainDataResolver
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $result = $queryBuilder
             ->select('uid', 't3ver_move_id')
@@ -284,6 +287,11 @@ class PlainDataResolver
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName);
 
+        // @todo: DeletedRestriction should be added here, too. This however currently makes test
+        // workspaces/Tests/Functional/DataHandling/FAL/Publish/ActionTest::modifyContentAndDeleteFileReference
+        // fail with postgres. Suspected reason: On publish, there seems to be a missing RefenenceIndex->updateRefIndexTable()
+        // call, so sys_refindex still has relations to workspace records that don't exist anymore after publish. If that
+        // is solved and old sys_refindex relations are correctly dropped, the DeletedRestriction should be added here.
         $queryBuilder->getRestrictions()->removeAll();
 
         $queryBuilder
@@ -327,7 +335,8 @@ class PlainDataResolver
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $result = $queryBuilder
             ->select('uid', 't3ver_oid')
