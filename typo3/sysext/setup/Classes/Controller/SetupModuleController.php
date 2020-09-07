@@ -708,8 +708,7 @@ class SetupModuleController
             <select aria-labelledby="label_lang" id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
             </select>';
         if ($backendUser->uc['lang'] && !@is_dir(Environment::getLabelsPath() . '/' . $backendUser->uc['lang'])) {
-            // TODO: The text constants have to be moved into language files
-            $languageUnavailableWarning = 'The selected language "' . htmlspecialchars($language->getLL('lang_' . $backendUser->uc['lang'])) . '" is not available before the language files are installed.&nbsp;&nbsp;<br />&nbsp;&nbsp;' . ($backendUser->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
+            $languageUnavailableWarning = htmlspecialchars(sprintf($language->getLL('languageUnavailable'), $language->getLL('lang_' . $backendUser->uc['lang']))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($language->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
             $languageCode = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $languageCode;
         }
         return $languageCode;

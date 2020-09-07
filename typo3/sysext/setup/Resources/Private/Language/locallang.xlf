@@ -9,6 +9,15 @@
 			<trans-unit id="language" resname="language">
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="languageUnavailable" resname="languageUnavailable">
+				<source>The selected language "%s" is not available before the language files are installed.</source>
+			</trans-unit>
+			<trans-unit id="languageUnavailable.admin" resname="languageUnavailable.admin">
+				<source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+			</trans-unit>
+			<trans-unit id="languageUnavailable.user" resname="languageUnavailable.user">
+				<source>Please ask your system administrator to do this.</source>
+			</trans-unit>
 			<trans-unit id="lang_default" resname="lang_default">
 				<source>English</source>
 			</trans-unit>
