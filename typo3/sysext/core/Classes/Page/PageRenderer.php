@@ -1363,7 +1363,7 @@ class PageRenderer implements SingletonInterface
         $corePath = PathUtility::getAbsoluteWebPath($corePath);
         // first, load all paths for the namespaces, and configure contrib libs.
         $requireJsConfig['public']['paths'] = [
-            'jquery' => $corePath . '/jquery/jquery',
+            'jquery' => $corePath . 'jquery/jquery',
             'jquery-ui' => $corePath . 'jquery-ui',
             'nprogress' => $corePath . 'nprogress',
             'moment' => $corePath . 'moment',
@@ -1378,7 +1378,7 @@ class PageRenderer implements SingletonInterface
             'Sortable' => $corePath . 'Sortable.min',
             'tablesort' => $corePath . 'tablesort',
             'tablesort.dotsep' => $corePath . 'tablesort.dotsep',
-            'broadcastchannel' => $corePath . '/broadcastchannel-polyfill',
+            'broadcastchannel' => $corePath . 'broadcastchannel-polyfill',
         ];
         $requireJsConfig['public']['shim'] = [
             'tablesort.dotsep' => ['deps' => ['tablesort']],
