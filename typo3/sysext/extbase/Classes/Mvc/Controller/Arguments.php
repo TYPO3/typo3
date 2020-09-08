@@ -15,9 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * A composite of controller arguments
@@ -25,11 +25,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  */
 class Arguments extends \ArrayObject
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * @var array Names of the arguments contained by this object
      */
@@ -39,14 +34,6 @@ class Arguments extends \ArrayObject
      * @var array
      */
     protected $argumentShortNames = [];
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * Constructor. If this one is removed, reflection breaks.
@@ -145,7 +132,7 @@ class Arguments extends \ArrayObject
     public function addNewArgument($name, $dataType = 'Text', $isRequired = false, $defaultValue = null)
     {
         /** @var Argument $argument */
-        $argument = $this->objectManager->get(Argument::class, $name, $dataType);
+        $argument = GeneralUtility::makeInstance(Argument::class, $name, $dataType);
         $argument->setRequired($isRequired);
         $argument->setDefaultValue($defaultValue);
         $this->addArgument($argument);

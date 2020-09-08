@@ -15,9 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
-use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
@@ -26,11 +25,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
  */
 class Argument
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-     */
-    protected $propertyMapper;
-
     /**
      * @var MvcPropertyMappingConfiguration
      */
@@ -98,22 +92,6 @@ class Argument
     private $hasBeenValidated = false;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     */
-    public function injectPropertyMapper(PropertyMapper $propertyMapper)
-    {
-        $this->propertyMapper = $propertyMapper;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration $propertyMappingConfiguration
-     */
-    public function injectPropertyMappingConfiguration(MvcPropertyMappingConfiguration $propertyMappingConfiguration)
-    {
-        $this->propertyMappingConfiguration = $propertyMappingConfiguration;
-    }
-
-    /**
      * Constructs this controller argument
      *
      * @param string $name Name of this argument
@@ -132,6 +110,7 @@ class Argument
         $this->dataType = TypeHandlingUtility::normalizeType($dataType);
 
         $this->validationResults = new Result();
+        $this->propertyMappingConfiguration = GeneralUtility::makeInstance(MvcPropertyMappingConfiguration::class);
     }
 
     /**
@@ -252,28 +231,10 @@ class Argument
      * @param mixed $rawValue The value of this argument
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument
-     * @throws \TYPO3\CMS\Extbase\Property\Exception
      */
     public function setValue($rawValue)
     {
-        if ($rawValue === null) {
-            $this->value = null;
-            return $this;
-        }
-        if (is_object($rawValue) && $rawValue instanceof $this->dataType) {
-            $this->value = $rawValue;
-            return $this;
-        }
-        try {
-            $this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
-        } catch (TargetNotFoundException $e) {
-            // for optional arguments no exception is thrown.
-            if ($this->isRequired()) {
-                throw $e;
-            }
-        }
-        $this->validationResults->merge($this->propertyMapper->getMessages());
-        $this->propertyMapper->resetMessages();
+        $this->value = $rawValue;
         return $this;
     }
 
@@ -333,6 +294,15 @@ class Argument
         }
 
         $this->hasBeenValidated = true;
+        return $this->validationResults;
+    }
+
+    /**
+     * @return Result
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    public function getValidationResults(): Result
+    {
         return $this->validationResults;
     }
 }

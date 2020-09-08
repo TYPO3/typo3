@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -73,13 +72,9 @@ class ArgumentsTest extends UnitTestCase
      */
     public function addNewArgumentProvidesFluentInterface(): void
     {
-        $mockArgument = $this->createMock(Argument::class);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects(self::once())->method('get')->with(Argument::class)->willReturn($mockArgument);
         $arguments = new Arguments();
-        $arguments->injectObjectManager($mockObjectManager);
         $newArgument = $arguments->addNewArgument('someArgument');
-        self::assertSame($newArgument, $mockArgument);
+        self::assertInstanceOf(Argument::class, $newArgument);
     }
 
     /**
@@ -211,10 +206,7 @@ class ArgumentsTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockArgument->method('getName')->willReturn('dummyName');
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects(self::once())->method('get')->with(Argument::class)->willReturn($mockArgument);
         $arguments = new Arguments();
-        $arguments->injectObjectManager($mockObjectManager);
         $addedArgument = $arguments->addNewArgument('dummyName');
         self::assertInstanceOf(Argument::class, $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
         $retrievedArgument = $arguments['dummyName'];
@@ -231,10 +223,7 @@ class ArgumentsTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockArgument->method('getName')->willReturn('dummyName');
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects(self::once())->method('get')->with(Argument::class, 'dummyName', 'Text')->willReturn($mockArgument);
         $arguments = new Arguments();
-        $arguments->injectObjectManager($mockObjectManager);
         $arguments->addNewArgument('dummyName');
     }
 
@@ -243,17 +232,9 @@ class ArgumentsTest extends UnitTestCase
      */
     public function addNewArgumentCanAddArgumentsMarkedAsRequired(): void
     {
-        $mockArgument = $this->getMockBuilder(Argument::class)
-            ->onlyMethods(['getName', 'setRequired'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockArgument->expects(self::once())->method('getName')->willReturn('dummyName');
-        $mockArgument->expects(self::once())->method('setRequired')->with(true);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects(self::once())->method('get')->with(Argument::class, 'dummyName', 'Text')->willReturn($mockArgument);
         $arguments = new Arguments();
-        $arguments->injectObjectManager($mockObjectManager);
-        $arguments->addNewArgument('dummyName', 'Text', true);
+        $argument = $arguments->addNewArgument('dummyName', 'Text', true);
+        self::assertTrue($argument->isRequired());
     }
 
     /**
@@ -261,18 +242,9 @@ class ArgumentsTest extends UnitTestCase
      */
     public function addNewArgumentCanAddArgumentsMarkedAsOptionalWithDefaultValues(): void
     {
-        $mockArgument = $this->getMockBuilder(Argument::class)
-            ->onlyMethods(['getName', 'setRequired', 'setDefaultValue'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockArgument->expects(self::once())->method('getName')->willReturn('dummyName');
-        $mockArgument->expects(self::once())->method('setRequired')->with(false);
-        $mockArgument->expects(self::once())->method('setDefaultValue')->with('someDefaultValue');
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects(self::once())->method('get')->with(Argument::class, 'dummyName', 'Text')->willReturn($mockArgument);
         $arguments = new Arguments();
-        $arguments->injectObjectManager($mockObjectManager);
-        $arguments->addNewArgument('dummyName', 'Text', false, 'someDefaultValue');
+        $argument = $arguments->addNewArgument('dummyName', 'Text', false, 'someDefaultValue');
+        self::assertFalse($argument->isRequired());
     }
 
     /**

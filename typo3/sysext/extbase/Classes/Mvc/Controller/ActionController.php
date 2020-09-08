@@ -38,6 +38,8 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\CacheService;
@@ -178,6 +180,11 @@ class ActionController implements ControllerInterface
     protected $configurationManager;
 
     /**
+     * @var PropertyMapper
+     */
+    private $propertyMapper;
+
+    /**
      * @param ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
@@ -194,7 +201,7 @@ class ActionController implements ControllerInterface
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->arguments = $this->objectManager->get(Arguments::class);
+        $this->arguments = GeneralUtility::makeInstance(Arguments::class);
     }
 
     /**
@@ -257,6 +264,11 @@ class ActionController implements ControllerInterface
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function injectPropertyMapper(PropertyMapper $propertyMapper): void
+    {
+        $this->propertyMapper = $propertyMapper;
     }
 
     /**
@@ -941,10 +953,43 @@ class ActionController implements ControllerInterface
         foreach ($this->arguments as $argument) {
             $argumentName = $argument->getName();
             if ($this->request->hasArgument($argumentName)) {
-                $argument->setValue($this->request->getArgument($argumentName));
+                $this->setArgumentValue($argument, $this->request->getArgument($argumentName));
             } elseif ($argument->isRequired()) {
                 throw new RequiredArgumentMissingException('Required argument "' . $argumentName . '" is not set for ' . $this->request->getControllerObjectName() . '->' . $this->request->getControllerActionName() . '.', 1298012500);
             }
         }
+    }
+
+    /**
+     * @param Argument $argument
+     * @param mixed $rawValue
+     */
+    private function setArgumentValue(Argument $argument, $rawValue): void
+    {
+        if ($rawValue === null) {
+            $argument->setValue(null);
+            return;
+        }
+        $dataType = $argument->getDataType();
+        if (is_object($rawValue) && $rawValue instanceof $dataType) {
+            $argument->setValue($rawValue);
+            return;
+        }
+        $this->propertyMapper->resetMessages();
+        try {
+            $argument->setValue(
+                $this->propertyMapper->convert(
+                    $rawValue,
+                    $dataType,
+                    $argument->getPropertyMappingConfiguration()
+                )
+            );
+        } catch (TargetNotFoundException $e) {
+            // for optional arguments no exception is thrown.
+            if ($argument->isRequired()) {
+                throw $e;
+            }
+        }
+        $argument->getValidationResults()->merge($this->propertyMapper->getMessages());
     }
 }

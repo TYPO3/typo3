@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
@@ -333,17 +332,14 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
         $requestHashService->_set('hashService', $mockHashService);
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockArgument = $this->getAccessibleMock(Argument::class, ['getName'], [], '', false);
 
         $propertyMappingConfiguration = new MvcPropertyMappingConfiguration();
 
         $mockArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguration);
         $mockArgument->expects(self::any())->method('getName')->willReturn('foo');
-        $mockObjectManager->expects(self::once())->method('get')->with(Argument::class)->willReturn($mockArgument);
 
         $arguments = $this->getAccessibleMock(Arguments::class, ['dummy']);
-        $arguments->_set('objectManager', $mockObjectManager);
         $arguments->addNewArgument('foo');
 
         $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
