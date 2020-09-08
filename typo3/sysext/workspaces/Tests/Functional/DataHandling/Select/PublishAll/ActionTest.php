@@ -28,12 +28,7 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Select/PublishAll/DataSet/';
 
     /**
-     * Relations
-     */
-
-    /**
      * @test
-     * See DataSet/addElementRelation.csv
      */
     public function addElementRelation()
     {
@@ -49,7 +44,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteElementRelation.csv
      */
     public function deleteElementRelation()
     {
@@ -68,7 +62,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeElementSorting.csv
      */
     public function changeElementSorting()
     {
@@ -84,7 +77,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeElementRelationSorting.csv
      */
     public function changeElementRelationSorting()
     {
@@ -100,7 +92,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentNAddRelation.csv
      */
     public function createContentAndAddElementRelation()
     {
@@ -118,7 +109,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentNCreateRelation.csv
      */
     public function createContentAndCreateElementRelation()
     {
@@ -136,7 +126,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyElementOfRelation.csv
      */
     public function modifyElementOfRelation()
     {
@@ -152,7 +141,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyContentOfRelation.csv
      */
     public function modifyContentOfRelation()
     {
@@ -167,7 +155,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyBothSidesOfRelation.csv
      */
     public function modifyBothSidesOfRelation()
     {
@@ -185,7 +172,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentOfRelation.csv
      */
     public function deleteContentOfRelation()
     {
@@ -200,7 +186,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteElementOfRelation.csv
      */
     public function deleteElementOfRelation()
     {
@@ -216,7 +201,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentOfRelation.csv
      */
     public function copyContentOfRelation()
     {
@@ -233,7 +217,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyElementOfRelation.csv
      */
     public function copyElementOfRelation()
     {
@@ -253,7 +236,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentOfRelation.csv
      */
     public function localizeContentOfRelation()
     {
@@ -269,7 +251,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeElementOfRelation.csv
      */
     public function localizeElementOfRelation()
     {
@@ -287,7 +268,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentOfRelationToDifferentPage.csv
      */
     public function moveContentOfRelationToDifferentPage()
     {

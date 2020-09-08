@@ -66,24 +66,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
 
     /**
-     * See Modify/DataSet/modifyContent.csv
+     * Modify a content element
      */
     public function modifyContent()
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
     }
 
-    /**
-     * See Modify/DataSet/deleteContent.csv
-     */
     public function deleteContent()
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
-    /**
-     * See Modify/DataSet/copyContent.csv
-     */
     public function copyContent()
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
@@ -99,47 +93,28 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    /**
-     * See Modify/DataSet/localizeContent.csv
-     */
     public function localizeContent()
     {
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    /**
-     * See Modify/DataSet/changeContentSorting.csv
-     */
     public function changeContentSorting()
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
     }
 
-    /**
-     * See Modify/DataSet/moveContentToDifferentPage.csv
-     */
     public function moveContentToDifferentPage()
     {
-        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
+        return $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
     }
 
-    /**
-     * See Modify/DataSet/moveContentToDifferentPageNChangeSorting.csv
-     */
     public function moveContentToDifferentPageAndChangeSorting()
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
     }
 
-    /**
-     * File references
-     */
-
-    /**
-     * See Modify/DataSet/createContentWFileReference.csv
-     */
     public function createContentWithFileReference()
     {
         $newTableIds = $this->actionService->createNewRecords(
@@ -152,9 +127,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    /**
-     * See Modify/DataSet/modifyContentWFileReference.csv
-     */
     public function modifyContentWithFileReference()
     {
         $this->actionService->modifyRecords(
@@ -166,9 +138,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * See Modify/DataSet/modifyContentNAddFileReference.csv
-     */
     public function modifyContentAndAddFileReference()
     {
         $this->actionService->modifyRecords(
@@ -180,9 +149,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * See Modify/DataSet/modifyContentNDeleteFileReference.csv
-     */
     public function modifyContentAndDeleteFileReference()
     {
         $this->actionService->modifyRecord(
@@ -193,9 +159,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * See Modify/DataSet/modifyContentNDeleteAllFileReference.csv
-     */
     public function modifyContentAndDeleteAllFileReference()
     {
         $this->actionService->modifyRecord(

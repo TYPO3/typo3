@@ -413,7 +413,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createNLocalizeParentContentNHotelNOfferChildrenWOSortBy.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration()
     {

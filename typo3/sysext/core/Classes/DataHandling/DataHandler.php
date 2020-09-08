@@ -4812,9 +4812,7 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // Delete the hard way...:
             try {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->delete($table, ['uid' => (int)$uid]);
+                $this->hardDeleteSingleRecord($table, (int)$uid);
                 $this->deletedRecords[$table][] = (int)$uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
             } catch (DBALException $e) {
@@ -5268,6 +5266,297 @@ class DataHandler implements LoggerAwareInterface
                 }
             }
             $this->deleteAction($table, (int)$record['t3ver_oid'] > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
+        }
+    }
+
+    /*********************************************
+     *
+     * Cmd: Workspace discard & flush
+     *
+     ********************************************/
+
+    /**
+     * Discard a versioned record from this workspace. This deletes records from the database - no soft delete.
+     * This main entry method is called recursive for sub pages, localizations, relations and records on a page.
+     * The method checks user access and gathers facts about this record to hand the deletion over to detail methods.
+     *
+     * The incoming $uid or $row can be anything: The workspace of current user is respected and only records
+     * of current user workspace are discarded. If giving a live record uid, the versioned overly will be fetched.
+     *
+     * @param string $table Database table name
+     * @param int|null $uid Uid of live or versioned record to be discarded, or null if $record is given
+     * @param array|null $record Record row that should be discarded. Used instead of $uid within recursion.
+     */
+    public function discard(string $table, ?int $uid, array $record = null): void
+    {
+        if ($uid === null && $record === null) {
+            throw new \RuntimeException('Either record $uid or $record row must be given', 1600373491);
+        }
+
+        // Fetch record we are dealing with if not given
+        if ($record === null) {
+            $record = BackendUtility::getRecord($table, $uid);
+        }
+        if (!is_array($record)) {
+            return;
+        }
+        $uid = (int)$record['uid'];
+
+        // Call hook and return if hook took care of the element
+        $recordWasDiscarded = false;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'processCmdmap_discardAction')) {
+                $hookObj->processCmdmap_discardAction($table, $uid, $record, $recordWasDiscarded);
+            }
+        }
+
+        $userWorkspace = (int)$this->BE_USER->workspace;
+        if ($recordWasDiscarded
+            || $userWorkspace === 0
+            || !BackendUtility::isTableWorkspaceEnabled($table)
+            || $this->hasDeletedRecord($table, $uid)
+        ) {
+            return;
+        }
+
+        // Gather versioned, live and placeholder record if there are any
+        $liveRecord = null;
+        $versionRecord = null;
+        $placeholderRecord = null;
+        if ((int)$record['t3ver_wsid'] === 0) {
+            $liveRecord = $record;
+            $record = BackendUtility::getWorkspaceVersionOfRecord($userWorkspace, $table, $uid);
+        }
+        if (!is_array($record)) {
+            return;
+        }
+        $recordState = VersionState::cast($record['t3ver_state']);
+        if ($recordState->equals(VersionState::NEW_PLACEHOLDER)) {
+            $placeholderRecord = $record;
+            $versionRecord = BackendUtility::getWorkspaceVersionOfRecord($userWorkspace, $table, $uid);
+            if (!is_array($versionRecord)) {
+                return;
+            }
+        } elseif ($recordState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
+            $versionRecord = $record;
+            $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, $uid);
+            if (!is_array($placeholderRecord)) {
+                return;
+            }
+        } elseif ($recordState->equals(VersionState::MOVE_POINTER)) {
+            $versionRecord = $record;
+            $liveRecord = $liveRecord ?: BackendUtility::getLiveVersionOfRecord($table, $uid);
+            if (!is_array($liveRecord)) {
+                return;
+            }
+            $placeholderRecord = BackendUtility::getMovePlaceholder($table, $liveRecord['uid']);
+            if (!is_array($placeholderRecord)) {
+                return;
+            }
+        } else {
+            $versionRecord = $record;
+            $liveRecord = $liveRecord ?: BackendUtility::getLiveVersionOfRecord($table, $uid);
+            if (!is_array($liveRecord)) {
+                return;
+            }
+        }
+        // Do not use $record, $recordState and $uid below anymore, rely on $versionRecord, $liveRecord and $placeholderRecord
+
+        // User access checks
+        if ($userWorkspace !== (int)$versionRecord['t3ver_wsid']) {
+            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: Different workspace', SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+        if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $versionRecord['uid'])) {
+            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+        if (!$this->checkRecordUpdateAccess($table, $versionRecord['uid'])) {
+            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no edit access', SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+        $fullLanguageAccessCheck = !($table === 'pages' && (int)$versionRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] !== 0);
+        if (!$this->BE_USER->recordEditAccessInternals($table, $versionRecord, false, true, $fullLanguageAccessCheck)) {
+            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no delete access', SystemLogErrorClassification::USER_ERROR);
+            return;
+        }
+
+        // Perform discard operations
+        $versionState = VersionState::cast($versionRecord['t3ver_state']);
+        if ($table === 'pages' && $versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
+            // When discarding a new page page, there can be new sub pages and new records.
+            // Those need to be discarded, otherwise they'd end up as records without parent page.
+            $this->discardSubPagesAndRecordsOnPage($versionRecord);
+        }
+
+        $this->discardLocalizationOverlayRecords($table, $versionRecord);
+        $this->discardRecordRelations($table, $versionRecord);
+        $this->hardDeleteSingleRecord($table, (int)$versionRecord['uid']);
+        $this->deletedRecords[$table][] = (int)$versionRecord['uid'];
+        $this->updateRefIndex($table, (int)$versionRecord['uid']);
+        $this->getRecordHistoryStore()->deleteRecord($table, (int)$versionRecord['uid'], $this->correlationId);
+        $this->log(
+            $table,
+            (int)$versionRecord['uid'],
+            SystemLogDatabaseAction::DELETE,
+            0,
+            SystemLogErrorClassification::MESSAGE,
+            'Record ' . $table . ':' . $versionRecord['uid'] . ' was deleted unrecoverable from page ' . $versionRecord['pid'],
+            0,
+            [],
+            (int)$versionRecord['pid']
+        );
+
+        if ($versionState->equals(VersionState::MOVE_POINTER)
+            || $versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)
+        ) {
+            // Drop placeholder records if any
+            $this->hardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
+            $this->deletedRecords[$table][] = (int)$placeholderRecord['uid'];
+            $this->updateRefIndex($table, (int)$placeholderRecord['uid']);
+        }
+    }
+
+    /**
+     * Also discard any sub pages and records of a new parent page if this page is discarded.
+     * Discarding only in specific localization, if needed.
+     *
+     * @param array $page Page record row
+     */
+    protected function discardSubPagesAndRecordsOnPage(array $page): void
+    {
+        $isLocalizedPage = false;
+        $sysLanguageId = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+        if ($sysLanguageId > 0) {
+            // New or moved localized page.
+            // Discard records on this page localization, but no sub pages.
+            // Records of a translated page have the pid set to the default language page uid. Found in l10n_parent.
+            // @todo: Discard other page translations that inherit from this?! (l10n_source field)
+            $isLocalizedPage = true;
+            $pid = (int)$page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
+        } else {
+            // New or moved default language page.
+            // Discard any sub pages and all other records of this page, including any page localizations.
+            // The t3ver_state=-1 record is incoming here. Records on this page have their pid field set to the uid
+            // of the t3ver_state=1 record, which is in the t3ver_oid field of the incoming record.
+            $pid = (int)$page['t3ver_oid'];
+        }
+        $tables = $this->compileAdminTables();
+        foreach ($tables as $table) {
+            if (($isLocalizedPage && $table === 'pages')
+                || ($isLocalizedPage && !BackendUtility::isTableLocalizable($table))
+                || !BackendUtility::isTableWorkspaceEnabled($table)
+            ) {
+                continue;
+            }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $queryBuilder->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)
+                    )
+                );
+            if ($isLocalizedPage) {
+                // Add sys_language_uid = x restriction if discarding a localized page
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($sysLanguageId, \PDO::PARAM_INT)
+                    )
+                );
+            }
+            $statement = $queryBuilder->execute();
+            while ($row = $statement->fetch()) {
+                $this->discard($table, null, $row);
+            }
+        }
+    }
+
+    /**
+     * Discard record relations like inline and MM of a record.
+     *
+     * @param string $table Table name of this record
+     * @param array $record The record row to handle
+     */
+    protected function discardRecordRelations(string $table, array $record): void
+    {
+        foreach ($record as $field => $value) {
+            $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? null;
+            if (!isset($fieldConfig['type'])) {
+                continue;
+            }
+            if ($fieldConfig['type'] === 'inline') {
+                $foreignTable = $fieldConfig['foreign_table'] ?? null;
+                if (!$foreignTable
+                     || (isset($fieldConfig['behaviour']['enableCascadingDelete'])
+                        && (bool)$fieldConfig['behaviour']['enableCascadingDelete'] === false)
+                ) {
+                    continue;
+                }
+                $inlineType = $this->getInlineFieldType($fieldConfig);
+                if ($inlineType === 'list' || $inlineType === 'field') {
+                    $dbAnalysis = $this->createRelationHandlerInstance();
+                    $dbAnalysis->start($value, $fieldConfig['foreign_table'], '', (int)$record['uid'], $table, $fieldConfig);
+                    $dbAnalysis->undeleteRecord = true;
+                    foreach ($dbAnalysis->itemArray as $relationRecord) {
+                        $this->discard($relationRecord['table'], (int)$relationRecord['id']);
+                    }
+                }
+            } elseif ($this->isReferenceField($fieldConfig)) {
+                $allowedTables = $fieldConfig['type'] === 'group' ? $fieldConfig['allowed'] : $fieldConfig['foreign_table'];
+                $dbAnalysis = $this->createRelationHandlerInstance();
+                $dbAnalysis->start($value, $allowedTables, $fieldConfig['MM'], (int)$record['uid'], $table, $fieldConfig);
+                foreach ($dbAnalysis->itemArray as $relationRecord) {
+                    // @todo: Something should happen with these relations here ...
+                    $this->updateRefIndex($relationRecord['table'], (int)$relationRecord['id']);
+                }
+            }
+        }
+    }
+
+    /**
+     * Find localization overlays of a record and discard them.
+     *
+     * @param string $table Table of this record
+     * @param array $record Record row
+     */
+    protected function discardLocalizationOverlayRecords(string $table, array $record): void
+    {
+        if (!BackendUtility::isTableLocalizable($table)) {
+            return;
+        }
+        $uid = (int)$record['uid'];
+        $versionState = VersionState::cast($record['t3ver_state']);
+        if ($versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
+            // The t3ver_state=-1 record is incoming here. Localization overlays of this record have their uid field set
+            // to the uid of the t3ver_state=1 record, which is in the t3ver_oid field of the incoming record.
+            $uid = (int)$record['t3ver_oid'];
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $statement = $queryBuilder->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)
+                )
+            )
+            ->execute();
+        while ($record = $statement->fetch()) {
+            $this->discard($table, null, $record);
         }
     }
 
@@ -6036,6 +6325,19 @@ class DataHandler implements LoggerAwareInterface
         }
     }
 
+    /**
+     * Simple helper method to hard delete one row from table ignoring delete TCA field
+     *
+     * @param string $table A row from this table should be deleted
+     * @param int $uid Uid of row to be deleted
+     */
+    protected function hardDeleteSingleRecord(string $table, int $uid): void
+    {
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->delete($table, ['uid' => $uid], [\PDO::PARAM_INT]);
+    }
+
     /*****************************
      *
      * Access control / Checking functions
@@ -6751,10 +7053,7 @@ class DataHandler implements LoggerAwareInterface
                 if ($this->BE_USER->isAdmin() && $suggestedUid && $this->suggestedInsertUids[$table . ':' . $suggestedUid]) {
                     // When the value of ->suggestedInsertUids[...] is "DELETE" it will try to remove the previous record
                     if ($this->suggestedInsertUids[$table . ':' . $suggestedUid] === 'DELETE') {
-                        // DELETE:
-                        GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getConnectionForTable($table)
-                            ->delete($table, ['uid' => (int)$suggestedUid]);
+                        $this->hardDeleteSingleRecord($table, (int)$suggestedUid);
                     }
                     $fieldArray['uid'] = $suggestedUid;
                 }

@@ -2,14 +2,12 @@
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header","tx_irretutorial_1nff_hotels",,,
 ,297,89,256,0,0,0,0,0,0,0,0,"Testing #2",2,,,
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",1,,,
-,299,89,256,1,0,0,1,0,0,297,0,"Testing #1",2,,,
 "tx_irretutorial_1nff_hotel",,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title","parentid","parenttable","parentidentifier","offers"
 ,2,89,1,0,0,0,0,0,0,0,0,"Hotel #0",89,"pages",,0
 ,3,89,1,0,0,0,0,0,0,0,0,"Hotel #1",297,"tt_content",,2
 ,4,89,2,0,0,0,0,0,0,0,0,"Testing #2",297,"tt_content",,1
 ,5,89,1,0,0,0,0,0,0,0,0,"Hotel #1",298,"tt_content",,1
-,7,89,2,1,0,0,1,0,0,4,0,"Testing #1",297,"tt_content",,1
 "tx_irretutorial_1nff_offer",,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title","parentid","parenttable","parentidentifier","prices"
 ,5,89,1,0,0,0,0,0,0,0,0,"Offer #1.1",3,"tx_irretutorial_1nff_hotel",,3
@@ -33,8 +31,9 @@
 ,"5f87b200c780cdaad0604f50da06ff64","tx_irretutorial_1nff_hotel",5,"offers",0,0,0,"tx_irretutorial_1nff_offer",8,,,,,,,
 ,"a94608071329f0b81c051da65b9c3e53","tx_irretutorial_1nff_offer",8,"prices",0,0,0,"tx_irretutorial_1nff_price",13,,,,,,,
 ,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",0,0,0,"sys_workspace_stage",1,,,,,,,
-,"5f86bf11669af5e26bbcfe9a1ed22f48","tt_content",297,"tx_irretutorial_1nff_hotels",0,0,0,"tx_irretutorial_1nff_hotel",6,,,,,,,
-,"56868271bd21c4550a9db37cf08a299b","tt_content",297,"tx_irretutorial_1nff_hotels",1,0,0,"tx_irretutorial_1nff_hotel",8,,,,,,,
+# @todo: next 2 rows broken
+,"6d4d9901c52a6cf2a8efc70ca1641ae7","tt_content",297,"tx_irretutorial_1nff_hotels",0,0,0,"tx_irretutorial_1nff_hotel",8,,,,,,,
+,"e808ec388bdc57b06c96e9fb5eb839cb","tt_content",297,"tx_irretutorial_1nff_hotels",1,0,0,"tx_irretutorial_1nff_hotel",9,,,,,,,
 ,"991035e9a032ce5a95b3dbc7f2f31471","tx_irretutorial_1nff_hotel",3,"offers",0,0,0,"tx_irretutorial_1nff_offer",5,,,,,,,
 ,"3a59a2c65f05196774ee38fad12b11a8","tx_irretutorial_1nff_hotel",3,"offers",1,0,0,"tx_irretutorial_1nff_offer",6,,,,,,,
 ,"fcc697bfb91755f75e07f6ce1784b18b","tx_irretutorial_1nff_hotel",4,"offers",0,0,0,"tx_irretutorial_1nff_offer",7,,,,,,,
