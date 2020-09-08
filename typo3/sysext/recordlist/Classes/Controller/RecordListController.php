@@ -108,7 +108,7 @@ class RecordListController
         $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         // GPvars:
         $id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
-        $pointer =  max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
+        $pointer = max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
         $table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $search_field = (string)($parsedBody['search_field'] ?? $queryParams['search_field'] ?? '');
         $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);

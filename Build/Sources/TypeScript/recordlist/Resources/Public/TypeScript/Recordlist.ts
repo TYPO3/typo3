@@ -15,7 +15,6 @@ import $ from 'jquery';
 import Icons = require('TYPO3/CMS/Backend/Icons');
 import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import Viewport = require('TYPO3/CMS/Backend/Viewport');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
@@ -64,6 +63,7 @@ class Recordlist {
     $(document).on('click', this.identifier.localize, this.disableButton);
     DocumentService.ready().then((): void => {
       Tooltip.initialize('.table-fit a[title]');
+      this.registerPaginationEvents();
     });
     new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
   }
@@ -227,6 +227,24 @@ class Recordlist {
     const fullName = 'CBC[' + CBname + ']';
     const checkbox: HTMLInputElement = document.querySelector('form[name="dblistForm"] [name="' + fullName + '"]');
     return checkbox.checked;
+  }
+
+  private registerPaginationEvents = (): void => {
+    document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {
+      trigger.addEventListener('keyup', (e: KeyboardEvent) => {
+        e.preventDefault();
+        let value = parseInt(trigger.value, 10);
+        if (value < parseInt(trigger.min, 10)) {
+          value = parseInt(trigger.min, 10);
+        }
+        if (value > parseInt(trigger.max, 10)) {
+          value = parseInt(trigger.max, 10);
+        }
+        if (e.key === 'Enter' && value !== parseInt(trigger.dataset.currentpage, 10)) {
+          window.location.href = trigger.dataset.currenturl + value.toString();
+        }
+      });
+    });
   }
 }
 

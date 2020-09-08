@@ -1,0 +1,45 @@
+<tr>
+    <td colspan="{colspan + 1}">
+        <nav class="mb-2 mt-2" aria-labelledby="recordlist-pagination">
+            <f:comment>Number of records</f:comment>
+            <span id="recordlist-pagination" class="page-item ps-2 pe-2 pagination-label">
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator" arguments="{firstElement: firstElement, lastElement: lastElement}" />
+                <span class="sr-only">, <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{currentPage: currentPage, totalPages: totalPages}"/></span>
+            </span>
+
+            <ul class="pagination">
+                <f:comment>First page and previous page</f:comment>
+                <f:if condition="{currentPage} > 1">
+                    <f:then>
+                        <li class="page-item ps-2"><a href="{currentUrl}&pointer=1" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first')}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first')}"><core:icon identifier="actions-view-paging-first"/></a></li>
+                        <li class="page-item ps-2"><a href="{currentUrl}&pointer={currentPage -1}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:previous')}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:previous')}"><core:icon identifier="actions-view-paging-previous" /></a></li>
+                    </f:then>
+                    <f:else>
+                        <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-first" /></li>
+                        <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-previous" /></li>
+                    </f:else>
+                </f:if>
+
+                <f:variable name="pageInput">
+                    <input type="number" autocomplete="off" data-currentpage="{currentPage}" data-currenturl="{currentUrl}&pointer=" name="pointer"  min="1" max="{totalPages}" value="{currentPage}" size="3" class="t3js-recordlist-paging form-control form-control-sm paginator-input" /></label><span aria-hidden="true">
+                </f:variable>
+                <li class="page-item ps-2">
+                    <label><f:format.raw><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{pageInput: pageInput, totalPages: totalPages}"/></f:format.raw></span>
+                </li>
+
+                <f:comment>Next page and last page</f:comment>
+                <f:if condition="{currentPage} < {totalPages}">
+                    <f:then>
+                        <li class="page-item ps-2"><a href="{currentUrl}&pointer={currentPage + 1}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:next')}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:next')}"><core:icon identifier="actions-view-paging-next" /></a></li>
+                        <li class="page-item ps-2"><a href="{currentUrl}&pointer={totalPages}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:last')}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:last')}"><core:icon identifier="actions-view-paging-last" /></a></li>
+                    </f:then>
+                    <f:else>
+                        <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-next" /></li>
+                        <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-last" /></li>
+                    </f:else>
+                </f:if>
+                <li class="page-item ps-2"><a href="{currentUrl}&pointer={currentPage}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:reload')}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:reload')}"><core:icon identifier="actions-refresh" /></a></li>
+            </ul>
+        </nav>
+    </td>
+</tr>

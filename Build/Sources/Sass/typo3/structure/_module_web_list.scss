@@ -8,6 +8,10 @@ div.recordlist {
             text-decoration: line-through;
         }
     }
+
+    .pagination {
+        display: inline-flex;
+    }
 }
 
 table.typo3-dblist-overview {

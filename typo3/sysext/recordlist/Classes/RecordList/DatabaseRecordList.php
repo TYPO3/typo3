@@ -309,11 +309,11 @@ class DatabaseRecordList
     public $setFields = [];
 
     /**
-     * Pointer for browsing list
+     * Paging for the single table view
      *
      * @var int
      */
-    public $firstElementNumber = 0;
+    protected $page = 0;
 
     /**
      * Search string
@@ -781,15 +781,16 @@ class DatabaseRecordList
         // Implode it into a list of fields for the SQL-statement.
         $selFieldList = implode(',', $selectFields);
 
-        if ($this->firstElementNumber > 2 && $iLimit > 0) {
+        $firstElement = (($this->page -1) * $iLimit);
+        if ($firstElement > 2 && $iLimit > 0) {
             // Get the two previous rows for sorting if displaying page > 1
-            $this->firstElementNumber -= 2;
+            $firstElement -= 2;
             $iLimit += 2;
-            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $iLimit);
-            $this->firstElementNumber += 2;
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $firstElement, $iLimit);
+            $firstElement += 2;
             $iLimit -= 2;
         } else {
-            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $this->firstElementNumber, $iLimit);
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $firstElement, $iLimit);
         }
 
         // Init:
@@ -811,10 +812,10 @@ class DatabaseRecordList
                     $iLimit = $totalItems;
                     $dbCount = $totalItems;
                 } else {
-                    if ($this->firstElementNumber + $this->showLimit <= $totalItems) {
+                    if ($firstElement + $this->showLimit <= $totalItems) {
                         $dbCount = $this->showLimit + 2;
                     } else {
-                        $dbCount = $totalItems - $this->firstElementNumber + 2;
+                        $dbCount = $totalItems - $firstElement + 2;
                     }
                 }
             }
@@ -876,7 +877,7 @@ class DatabaseRecordList
                 $prevUid = 0;
                 $prevPrevUid = 0;
                 // Get first two rows and initialize prevPrevUid and prevUid if on page > 1
-                if ($this->firstElementNumber > 2 && $iLimit > 0) {
+                if ($firstElement > 2 && $iLimit > 0) {
                     $row = $queryResult->fetch();
                     $prevPrevUid = -((int)$row['uid']);
                     $row = $queryResult->fetch();
@@ -956,7 +957,7 @@ class DatabaseRecordList
                 // Record navigation is added to the beginning and end of the table if in single
                 // table mode
                 if ($this->table) {
-                    $rowOutput = $this->renderListNavigation('top', $totalItems, $iLimit, (string)$table) . $rowOutput . $this->renderListNavigation('bottom', $totalItems, $iLimit, (string)$table);
+                    $rowOutput = $this->renderListNavigation($totalItems, $iLimit) . $rowOutput . $this->renderListNavigation($totalItems, $iLimit);
                 } else {
                     // Show that there are more records than shown
                     if ($totalItems > $itemsLimitPerTable) {
@@ -1500,123 +1501,36 @@ class DatabaseRecordList
     }
 
     /**
-     * Get pointer for first element on the page
-     *
-     * @param int $page Page number starting with 1
-     * @param int $iLimit
-     * @return int Pointer to first element on the page (starting with 0)
-     */
-    protected function getPointerForPage($page, int $iLimit)
-    {
-        return ($page - 1) * $iLimit;
-    }
-
-    /**
      * Creates a page browser for tables with many records
      *
-     * @param string $renderPart Distinguish between 'top' and 'bottom' part of the navigation (above or below the records)
      * @param int $totalItems
      * @param int $iLimit
-     * @param string $table
      * @return string Navigation HTML
      */
-    protected function renderListNavigation($renderPart, int $totalItems, int $iLimit, string $table)
+    protected function renderListNavigation(int $totalItems, int $iLimit): string
     {
+        $currentPage = $this->page;
+        $paginationColumns = count($this->fieldArray);
         $totalPages = (int)ceil($totalItems / $iLimit);
         // Show page selector if not all records fit into one page
         if ($totalPages <= 1) {
             return '';
         }
-        $content = '';
-        $listURL = $this->listURL('', $this->table, 'firstElementNumber');
-        // 1 = first page
-        // 0 = first element
-        $currentPage = (int)floor($this->firstElementNumber / $iLimit) + 1;
-        // Compile first, previous, next, last and refresh buttons
-        if ($currentPage > 1) {
-            $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first'));
-            $labelPrevious = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:previous'));
-            $first = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1, $iLimit) . '" title="' . $labelFirst . '" class="page-link">'
-                . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</a></li>';
-            $previous = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1, $iLimit) . '" title="' . $labelPrevious . '" class="page-link">'
-                . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</a></li>';
-        } else {
-            $first = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</span></li>';
-            $previous = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</span></li>';
-        }
-        if ($currentPage < $totalPages) {
-            $labelNext = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:next'));
-            $labelLast = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:last'));
-            $next = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1, $iLimit) . '" title="' . $labelNext . '" class="page-link">'
-                . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</a></li>';
-            $last = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages, $iLimit) . '" title="' . $labelLast . '" class="page-link">'
-                . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</a></li>';
-        } else {
-            $next = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</span></li>';
-            $last = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</span></li>';
-        }
-        $reload = '<li class="page-item"><a href="#" onclick="document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
-            . '&pointer=') . '+calculatePointer(document.getElementById(' . GeneralUtility::quoteJSvalue('jumpPage-' . $renderPart)
-            . ').value); document.dblistForm.submit(); return true;" title="'
-            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:reload')) . '" class="page-link">'
-            . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a></li>';
-        if ($renderPart === 'top') {
-            // Add js to traverse a page select input to a pointer value
-            $content = '
-<script>
-/*<![CDATA[*/
-	function calculatePointer(page) {
-		if (page > ' . $totalPages . ') {
-			page = ' . $totalPages . ';
-		}
-		if (page < 1) {
-			page = 1;
-		}
-		return (page - 1) * ' . $iLimit . ';
-	}
-/*]]>*/
-</script>
-';
-        }
-        $pageNumberInput = '
-			<input type="number" min="1" max="' . $totalPages . '" value="' . $currentPage . '" size="3" class="form-control form-control-sm paginator-input" id="jumpPage-' . $renderPart . '" name="jumpPage-'
-            . $renderPart . '" onkeyup="if (event.keyCode == 13) { document.dblistForm.action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($listURL . '&pointer='))
-            . '+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
-			';
-        $pageIndicatorText = sprintf(
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator'),
-            $pageNumberInput,
-            $totalPages
-        );
-        $pageIndicator = '<li class="page-item"><span class="page-link">' . $pageIndicatorText . '</span></li>';
-        if ($totalItems > $this->firstElementNumber + $iLimit) {
-            $lastElementNumber = $this->firstElementNumber + $iLimit;
+        if ($totalItems > $currentPage * $iLimit) {
+            $lastElementNumber = $currentPage * $iLimit;
         } else {
             $lastElementNumber = $totalItems;
         }
-        $rangeIndicator = '<li class="page-item"><span class="page-link">' . sprintf(
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'),
-            $this->firstElementNumber + 1,
-            $lastElementNumber
-        ) . '</span></li>';
-
-        $titleColumn = $GLOBALS['TCA'][$table]['ctrl']['label'];
-        $data = [
-            $titleColumn => $content . '
-				<nav class="pagination-wrap">
-					<ul class="pagination">
-						' . $first . '
-						' . $previous . '
-						' . $rangeIndicator . '
-						' . $pageIndicator . '
-						' . $next . '
-						' . $last . '
-						' . $reload . '
-					</ul>
-				</nav>
-			'
-        ];
-        return $this->addElement(1, '', $data);
+        return $this->getFluidTemplateObject('ListNavigation.html')
+            ->assignMultiple([
+                'currentUrl' => $this->listURL('', '-1', 'pointer'),
+                'currentPage' => $currentPage,
+                'totalPages' => $totalPages,
+                'firstElement' => ((($currentPage -1) * $iLimit) + 1),
+                'lastElement' => $lastElementNumber,
+                'colspan' => $paginationColumns
+            ])
+            ->render();
     }
 
     /*********************************
@@ -2333,7 +2247,7 @@ class DatabaseRecordList
             $field = 'pid';
         }
         //	 Create the sort link:
-        $sortUrl = $this->listURL('', '-1', 'sortField,sortRev,table,firstElementNumber') . '&table=' . $table
+        $sortUrl = $this->listURL('', '-1', 'sortField,sortRev,table,pointer') . '&table=' . $table
             . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || $this->sortField != $field ? 0 : 1);
         $sortArrow = $this->sortField === $field
             ? $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render()
@@ -2567,7 +2481,7 @@ class DatabaseRecordList
             // Setting single table mode, if table exists:
             $this->table = $table;
         }
-        $this->firstElementNumber = $pointer;
+        $this->page = MathUtility::forceIntegerInRange((int)$pointer, 1, 1000);
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
         $this->showLimit = MathUtility::forceIntegerInRange($showLimit, 0, 10000);
@@ -2680,7 +2594,7 @@ class DatabaseRecordList
     {
         return $this->getFluidTemplateObject('Search.html')
             ->assignMultiple([
-                'formUrl' => $this->listURL('', '-1', 'firstElementNumber,search_field'),
+                'formUrl' => $this->listURL('', '-1', 'pointer,search_field'),
                 'searchLevelsFromTSconfig' => (array)(BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.']['searchLevel.']['items.'] ?? []),
                 'selectedSearchLevel' => $this->searchLevels,
                 'searchString' => $this->searchString,
@@ -2983,23 +2897,21 @@ class DatabaseRecordList
     }
 
     /**
-     * Returns the title (based on $code) of a table ($table) with the proper link around. For headers over tables.
+     * Returns the title (based on $label) of a table ($table) with the proper link around. For headers over tables.
      * The link will cause the display of all extended mode or not for the table.
      *
      * @param string $table Table name
-     * @param string $code Table label
+     * @param string $label Table label
      * @return string The linked table label
      */
-    public function linkWrapTable($table, $code)
+    public function linkWrapTable(string $table, string $label): string
     {
         if ($this->table !== $table) {
-            return '<a href="' . htmlspecialchars(
-                $this->listURL('', $table, 'firstElementNumber')
-            ) . '">' . $code . '</a>';
+            $url = $this->listURL('', $table, 'pointer');
+        } else {
+            $url = $this->listURL('', '', 'sortField,sortRev,table,pointer');
         }
-        return '<a href="' . htmlspecialchars(
-            $this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')
-        ) . '">' . $code . '</a>';
+        return '<a href="' . htmlspecialchars($url) . '">' . $label . '</a>';
     }
 
     /**
@@ -3078,7 +2990,7 @@ class DatabaseRecordList
                 // Output the label now:
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
-                        $this->listURL((string)$uid, '', 'firstElementNumber')
+                        $this->listURL((string)$uid, '', 'pointer')
                     ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
@@ -3116,7 +3028,7 @@ class DatabaseRecordList
      *
      * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
      * @param string $table Table name to display. Enter "-1" for the current table.
-     * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
+     * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "pointer")
      * @return string URL
      */
     public function listURL($altId = '', $table = '-1', $exclList = '')
@@ -3144,8 +3056,8 @@ class DatabaseRecordList
         if ($this->showLimit) {
             $urlParameters['showLimit'] = $this->showLimit;
         }
-        if ((!$exclList || !GeneralUtility::inList($exclList, 'firstElementNumber')) && $this->firstElementNumber) {
-            $urlParameters['pointer'] = $this->firstElementNumber;
+        if ((!$exclList || !GeneralUtility::inList($exclList, 'pointer')) && $this->page) {
+            $urlParameters['pointer'] = $this->page;
         }
         if ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField) {
             $urlParameters['sortField'] = $this->sortField;
