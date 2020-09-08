@@ -901,7 +901,7 @@ services:
           set -x
         fi
         yarn install \
-          && ./node_modules/grunt/bin/grunt tslint;
+          && ./node_modules/grunt/bin/grunt eslint;
       "
 
   unit:
