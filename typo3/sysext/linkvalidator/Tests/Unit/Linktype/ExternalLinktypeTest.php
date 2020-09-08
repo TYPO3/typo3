@@ -128,6 +128,16 @@ class ExternalLinktypeTest extends UnitTestCase
 
     public function preprocessUrlsDataProvider()
     {
+        // regression test for issue #92230: handle incomplete or faulty URLs gracefully
+        yield 'faulty URL with mailto' => [
+            'mailto:http://example.org',
+            'mailto:http://example.org'
+        ];
+        yield 'Relative URL' => [
+            '/abc',
+            '/abc'
+        ];
+
         // regression tests for issues #89488, #89682
         yield 'URL with query parameter and ampersand' => [
             'https://standards.cen.eu/dyn/www/f?p=204:6:0::::FSP_ORG_ID,FSP_LANG_ID:,22&cs=1A3FFBC44FAB6B2A181C9525249C3A829',

@@ -219,21 +219,20 @@ class ExternalLinktype extends AbstractLinktype
      */
     protected function preprocessUrl(string $url): string
     {
-        try {
-            $url = html_entity_decode($url);
-            $parts = parse_url($url);
-            $newDomain = (string)HttpUtility::idn_to_ascii($parts['host']);
-            if (strcmp($parts['host'], $newDomain) !== 0) {
-                $parts['host'] = $newDomain;
-                $url = HttpUtility::buildUrl($parts);
+        $url = html_entity_decode($url);
+        $parts = parse_url($url);
+        $host = (string)($parts['host'] ?? '');
+        if ($host !== '') {
+            try {
+                $newDomain = (string)HttpUtility::idn_to_ascii($host);
+                if (strcmp($host, $newDomain) !== 0) {
+                    $parts['host'] = $newDomain;
+                    $url = HttpUtility::buildUrl($parts);
+                }
+            } catch (\Exception | \Throwable $e) {
+                // ignore error and proceed with link checking
             }
-            return $url;
-        } catch (\Exception $e) {
-            // in case of any error, return empty url.
-            $this->errorParams['errorType'] = 'exception';
-            $this->errorParams['exception'] = $e->getMessage();
-            $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-            return '';
         }
+        return $url;
     }
 }
