@@ -15,12 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model;
+namespace ExtbaseTeam\ActionControllerArgumentTest\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * Fixture model data transfer object
+ * Fixture model
  */
-class ModelDto
+class Model extends AbstractEntity
 {
     /**
      * @var string
@@ -28,7 +30,7 @@ class ModelDto
     protected $value;
 
     /**
-     * @var ModelDto
+     * @var Model
      */
     protected $model;
 
@@ -51,18 +53,18 @@ class ModelDto
     }
 
     /**
-     * @return ModelDto
+     * @return Model
      */
-    public function getModel(): ModelDto
+    public function getModel(): Model
     {
         return $this->model;
     }
 
     /**
-     * @param ModelDto $model
+     * @param Model $model
      * @return self
      */
-    public function setModel(ModelDto $model): self
+    public function setModel(Model $model): self
     {
         $this->model = $model;
         return $this;

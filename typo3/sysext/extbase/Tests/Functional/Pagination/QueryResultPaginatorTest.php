@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Pagination;
 
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -43,11 +41,8 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
-
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->postRepository = $objectManager->get(PostRepository::class);
+        $this->postRepository = $this->getContainer()->get(PostRepository::class);
     }
 
     /**

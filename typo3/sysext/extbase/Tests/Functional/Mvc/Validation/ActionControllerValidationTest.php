@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 use ExtbaseTeam\BlogExample\Controller\BlogController;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -26,7 +25,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -77,9 +75,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 
-        $objectManager = $this->getObjectManager();
         $response = new Response();
-        $request = $objectManager->get(Request::class);
+        $request = new Request();
 
         $request->setControllerActionName('testForward');
         $request->setArgument('blogPost', $blogPostArgument);
@@ -95,7 +92,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $titleMappingResults = new Result();
         while (!$request->isDispatched()) {
             try {
-                $blogController = $objectManager->get(BlogController::class);
+                $blogController = $this->getContainer()->get(BlogController::class);
                 $response = $blogController->processRequest($request);
                 if ($response instanceof ForwardResponse) {
                     $titleMappingResults = $response->getArgumentsValidationResult()->forProperty('blogPost.title');
@@ -129,8 +126,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 
-        $objectManager = $this->getObjectManager();
-        $request = $objectManager->get(Request::class);
+        $response = new Response();
+        $request = new Request();
 
         $request->setControllerActionName('testRelatedObject');
         $request->setArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
@@ -161,7 +158,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
 
         while (!$request->isDispatched()) {
             try {
-                $blogController = $objectManager->get(BlogController::class);
+                $blogController = $this->getContainer()->get(BlogController::class);
                 $response = $blogController->processRequest($request);
                 if ($response instanceof ForwardResponse) {
 
@@ -189,7 +186,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     protected function generateTrustedPropertiesToken(array $formFieldNames)
     {
-        $mvcPropertyMappingConfigurationService = $this->getObjectManager()->get(
+        $mvcPropertyMappingConfigurationService = $this->getContainer()->get(
             MvcPropertyMappingConfigurationService::class
         );
         return $mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, '');
@@ -200,14 +197,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     protected function getHashService()
     {
-        return $this->getObjectManager()->get(HashService::class);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return $this->getContainer()->get(HashService::class);
     }
 }

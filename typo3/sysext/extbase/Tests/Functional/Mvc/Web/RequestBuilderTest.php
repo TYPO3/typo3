@@ -23,14 +23,12 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Exception;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RequestBuilderTest extends FunctionalTestCase
@@ -55,8 +53,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -88,8 +85,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['format'] = 'json';
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -120,8 +116,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -156,8 +151,7 @@ class RequestBuilderTest extends FunctionalTestCase
         static::expectExceptionCode(1289843277);
         static::expectExceptionMessage('"pluginName" is not properly configured. Request can\'t be dispatched!');
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration(['extensionName' => 'blog_example']);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -193,8 +187,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
@@ -251,8 +244,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
@@ -304,8 +296,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -339,8 +330,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = true;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -365,8 +355,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -395,8 +384,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = true;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -437,8 +425,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -474,8 +461,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -509,8 +495,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = true;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -540,8 +525,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = true;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -575,8 +559,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -611,8 +594,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -647,8 +629,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
@@ -687,8 +668,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
@@ -725,8 +705,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);

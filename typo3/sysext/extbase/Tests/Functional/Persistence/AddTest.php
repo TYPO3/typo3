@@ -19,15 +19,13 @@ use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class AddTest extends FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistentManager;
 
@@ -42,12 +40,7 @@ class AddTest extends FunctionalTestCase
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Repository
+     * @var BlogRepository
      */
     protected $blogRepository;
 
@@ -58,9 +51,8 @@ class AddTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->persistentManager = $this->objectManager->get(PersistenceManager::class);
-        $this->blogRepository = $this->objectManager->get(BlogRepository::class);
+        $this->persistentManager = $this->getContainer()->get(PersistenceManager::class);
+        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 
@@ -70,10 +62,9 @@ class AddTest extends FunctionalTestCase
     public function addSimpleObjectTest()
     {
         $newBlogTitle = 'aDi1oogh';
-        $newBlog = $this->objectManager->get(Blog::class);
+        $newBlog = new Blog();
         $newBlog->setTitle($newBlogTitle);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
@@ -100,10 +91,9 @@ class AddTest extends FunctionalTestCase
     public function addObjectSetsDefaultLanguageTest()
     {
         $newBlogTitle = 'aDi1oogh';
-        $newBlog = $this->objectManager->get(Blog::class);
+        $newBlog = new Blog();
         $newBlog->setTitle($newBlogTitle);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
@@ -130,11 +120,10 @@ class AddTest extends FunctionalTestCase
     public function addObjectSetsDefinedLanguageTest()
     {
         $newBlogTitle = 'aDi1oogh';
-        $newBlog = $this->objectManager->get(Blog::class);
+        $newBlog = new Blog();
         $newBlog->setTitle($newBlogTitle);
         $newBlog->_setProperty('_languageUid', -1);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
@@ -161,11 +150,10 @@ class AddTest extends FunctionalTestCase
     public function addObjectSetsNullAsNullForSimpleTypes()
     {
         $newBlogTitle = 'aDi1oogh';
-        $newBlog = $this->objectManager->get(Blog::class);
+        $newBlog = new Blog();
         $newBlog->setTitle($newBlogTitle);
         $newBlog->setSubtitle('subtitle');
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 

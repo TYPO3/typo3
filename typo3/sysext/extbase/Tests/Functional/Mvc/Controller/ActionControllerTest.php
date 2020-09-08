@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use ExtbaseTeam\ActionControllerTest\Controller\TestController;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -34,7 +32,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class ActionControllerTest extends FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     * @var Request
      */
     protected $request;
 
@@ -44,24 +42,29 @@ class ActionControllerTest extends FunctionalTestCase
     protected $response;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController
+     * @var TestController
      */
-    protected $controller;
+    protected $subject;
+
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-        $this->request = $objectManager->get(Request::class);
+        $this->request = new Request();
         $this->request->setPluginName('Pi1');
-        $this->request->setControllerExtensionName('Extbase\\Tests\\Functional\\Mvc\\Controller\\Fixture');
+        $this->request->setControllerExtensionName('ActionControllerTest');
         $this->request->setControllerName('Test');
         $this->request->setMethod('GET');
         $this->request->setFormat('html');
 
-        $this->controller = $objectManager->get(TestController::class);
+        $this->subject = $this->getContainer()->get(TestController::class);
     }
 
     /**
@@ -74,10 +77,10 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setArgument('barParam', '');
 
         // Test run
-        $this->controller->processRequest($this->request);
+        $this->subject->processRequest($this->request);
 
         // Assertions
-        $arguments = $this->controller->getControllerContext()->getArguments();
+        $arguments = $this->subject->getControllerContext()->getArguments();
         $argument = $arguments->getArgument('barParam');
 
         /** @var ConjunctionValidator $validator */
@@ -102,10 +105,10 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setArgument('bazParam', [ 'notEmpty' ]);
 
         // Test run
-        $this->controller->processRequest($this->request);
+        $this->subject->processRequest($this->request);
 
         // Assertions
-        $arguments = $this->controller->getControllerContext()->getArguments();
+        $arguments = $this->subject->getControllerContext()->getArguments();
         $argument = $arguments->getArgument('bazParam');
 
         /** @var ConjunctionValidator $validator */
@@ -127,22 +130,22 @@ class ActionControllerTest extends FunctionalTestCase
     public function resolveViewRespectsDefaultViewObjectName()
     {
         // Test setup
-        $reflectionClass = new \ReflectionClass($this->controller);
+        $reflectionClass = new \ReflectionClass($this->subject);
         $reflectionMethod = $reflectionClass->getProperty('defaultViewObjectName');
         $reflectionMethod->setAccessible(true);
-        $reflectionMethod->setValue($this->controller, JsonView::class);
+        $reflectionMethod->setValue($this->subject, JsonView::class);
 
         $this->request->setControllerActionName('qux');
 
         // Test run
-        $this->controller->processRequest($this->request);
+        $this->subject->processRequest($this->request);
 
         // Assertions
         $reflectionMethod = $reflectionClass->getProperty('view');
         $reflectionMethod->setAccessible(true);
-        $reflectionMethod->getValue($this->controller);
+        $reflectionMethod->getValue($this->subject);
 
-        $view = $reflectionMethod->getValue($this->controller);
+        $view = $reflectionMethod->getValue($this->subject);
         self::assertInstanceOf(JsonView::class, $view);
     }
 }

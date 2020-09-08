@@ -15,9 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
-use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class QueryParserTest extends FunctionalTestCase
@@ -32,16 +31,6 @@ class QueryParserTest extends FunctionalTestCase
      * @var array
      */
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
-
-    /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
-     */
-    protected $blogRepository;
 
     /**
      * Sets up this test suite.
@@ -60,9 +49,6 @@ class QueryParserTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
-
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->blogRepository = $this->objectManager->get(BlogRepository::class);
     }
 
     /**
@@ -70,8 +56,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -94,8 +79,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->equals('tags.name', 'Tag12')
@@ -112,8 +96,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult()
     {
-        /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository */
-        $frontendUserRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        $frontendUserRepository = $this->getContainer()->get(FrontendUserRepository::class);
         $query = $frontendUserRepository->createQuery();
         $query->matching(
             $query->equals('usergroup.title', 'Group A')
@@ -130,8 +113,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->equals('author.firstname', 'Author')
@@ -146,8 +128,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function orReturnsExpectedResult()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalOr(
@@ -164,8 +145,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -183,8 +163,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithFindInSetReturnsExpectedResult()
     {
-        /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository */
-        $frontendUserRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        $frontendUserRepository = $this->getContainer()->get(FrontendUserRepository::class);
         $query = $frontendUserRepository->createQuery();
 
         $result = $query->matching($query->contains('usergroup', 1))
@@ -197,7 +176,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryForPostWithCategoriesReturnsPostWithCategories()
     {
-        $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $post = $query->matching($query->equals('uid', 1))->execute()->current();
         self::assertCount(3, $post->getCategories());

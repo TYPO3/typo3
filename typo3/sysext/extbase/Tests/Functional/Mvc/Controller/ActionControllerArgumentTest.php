@@ -17,19 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use ExtbaseTeam\ActionControllerArgumentTest\Controller\ArgumentTestController;
+use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model;
+use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Object\Container\Container;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\ArgumentTestController;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\ModelDto;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -39,36 +36,26 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 {
     private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
 
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
+    private string $pluginName = 'Pi1';
+    private string $extensionName = 'ActionControllerArgumentTest';
+    private ?string $pluginNamespacePrefix = null;
 
     /**
-     * @var Container
+     * @var array
      */
-    protected $objectContainer;
-
-    private $pluginName;
-    private $extensionName;
-    private $pluginNamespacePrefix;
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test',
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->pluginName = 'Pi1';
-        $this->extensionName = 'Extbase\\Tests\\Functional\\Mvc\\Controller\\Fixture';
         $this->pluginNamespacePrefix = strtolower('tx_' . $this->extensionName . '_' . $this->pluginName);
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->objectContainer = $this->objectManager->get(Container::class);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = self::ENCRYPTION_KEY;
     }
 
     protected function tearDown(): void
     {
-        unset($this->objectManager, $this->objectContainer);
-        unset($this->extensionName, $this->pluginName, $this->pluginNamespacePrefix);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
         parent::tearDown();
     }
@@ -227,7 +214,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function buildRequest(string $actionName, array $arguments = null): Request
     {
-        $request = $this->objectManager->get(Request::class);
+        $request = new Request();
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerName('ArgumentTest');
@@ -242,6 +229,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function buildController(): ArgumentTestController
     {
-        return $this->objectManager->get(ArgumentTestController::class);
+        return $this->getContainer()->get(ArgumentTestController::class);
     }
 }

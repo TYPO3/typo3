@@ -24,8 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -48,12 +47,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Repository
+     * @var PostRepository
      */
     protected $postRepository;
 
@@ -72,7 +66,6 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translatedBlogExampleData.csv');
         $this->setUpBasicFrontendEnvironment();
 
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
@@ -83,10 +76,10 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                 ]
             ]
         ];
-        $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
-        $this->postRepository = $this->objectManager->get(PostRepository::class);
-        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        $this->postRepository = $this->getContainer()->get(PostRepository::class);
+        $this->persistenceManager = $this->getContainer()->get(PersistenceManager::class);
     }
 
     /**
@@ -1166,7 +1159,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
 
-        $blogRepository = $this->objectManager->get(BlogRepository::class);
+        $blogRepository = $this->getContainer()->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectSysLanguage(false);

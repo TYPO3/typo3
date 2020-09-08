@@ -15,13 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ExtbaseTeam\B\Domain\Model;
+namespace ExtbaseTeam\B\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-/**
- * Class ExtbaseTeam\B\Domain\Model\BRepository
- */
 class BRepository extends Repository
 {
 }

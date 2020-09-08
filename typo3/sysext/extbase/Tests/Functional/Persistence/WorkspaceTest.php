@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -181,9 +180,7 @@ class WorkspaceTest extends FunctionalTestCase
         );
         GeneralUtility::setSingletonInstance(Context::class, $context);
         GeneralUtility::makeInstance(EnvironmentService::class)->setFrontendMode(true);
-
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->blogRepository = $objectManager->get(BlogRepository::class);
+        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
     }
 
     /**
@@ -201,8 +198,6 @@ class WorkspaceTest extends FunctionalTestCase
             ]
         );
         GeneralUtility::setSingletonInstance(Context::class, $context);
-
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->blogRepository = $objectManager->get(BlogRepository::class);
+        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
     }
 }

@@ -270,6 +270,7 @@
 			"typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/",
 			"typo3/sysext/extbase/Tests/UnitDeprecated/Object/Container/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
+			"typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/",
 			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/"
 		],
 		"files": [

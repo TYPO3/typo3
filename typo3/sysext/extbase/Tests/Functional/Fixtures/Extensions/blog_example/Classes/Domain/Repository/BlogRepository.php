@@ -27,16 +27,4 @@ class BlogRepository extends Repository
         'crdate' => QueryInterface::ORDER_DESCENDING,
         'uid' => QueryInterface::ORDER_DESCENDING
     ];
-
-    /**
-     * Life cycle method.
-     */
-    public function initializeObject()
-    {
-        /*
-        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-        $querySettings->setRespectStoragePage(FALSE);
-        $this->setDefaultQuerySettings($querySettings);
-         */
-    }
 }

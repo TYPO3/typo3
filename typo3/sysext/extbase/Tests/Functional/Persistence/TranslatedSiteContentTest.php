@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
@@ -54,11 +51,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
      * @var array
      */
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    /**
-     * @var ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
 
     /**
      * @var TtContentRepository
@@ -97,8 +89,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');
 
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->contentRepository = $this->objectManager->get(TtContentRepository::class);
+        $this->contentRepository = $this->getContainer()->get(TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
             'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript'
@@ -107,7 +98,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     protected function tearDown(): void
     {
-        unset($this->objectManager, $this->contentRepository);
+        unset($this->contentRepository);
         parent::tearDown();
     }
 

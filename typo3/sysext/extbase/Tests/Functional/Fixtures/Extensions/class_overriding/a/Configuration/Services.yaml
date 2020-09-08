@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ExtbaseTeam\A\Domain\Repository\ARepository:
+    public: true
+
+  ExtbaseTeam\B\Domain\Repository\BRepository:
+    public: true

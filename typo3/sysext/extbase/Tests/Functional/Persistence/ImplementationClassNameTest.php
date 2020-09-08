@@ -17,15 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
-use ExtbaseTeam\A\Domain\Model\ARepository;
-use ExtbaseTeam\B\Domain\Model\BRepository;
+use ExtbaseTeam\A\Domain\Repository\ARepository;
+use ExtbaseTeam\B\Domain\Repository\BRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Class TYPO3\CMS\Extbase\Tests\Functional\ImplementationClassNameTest
- */
 class ImplementationClassNameTest extends FunctionalTestCase
 {
     /**
@@ -41,17 +37,9 @@ class ImplementationClassNameTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
         $this->importCSVDataSet(GeneralUtility::getFileAbsFileName(
             'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/class_overriding/b/tx_a_domain_model_a.csv'
         ));
@@ -62,7 +50,7 @@ class ImplementationClassNameTest extends FunctionalTestCase
     */
     public function testARepositoryObjectsAreTakenFromSession(): void
     {
-        $aRepository = $this->objectManager->get(ARepository::class);
+        $aRepository = $this->getContainer()->get(ARepository::class);
         $a1 = $aRepository->findByUid(1);
         $a2 = $aRepository->findByUid(1);
 
@@ -74,7 +62,7 @@ class ImplementationClassNameTest extends FunctionalTestCase
     */
     public function testBRepositoryObjectsAreTakenFromSession(): void
     {
-        $bRepository = $this->objectManager->get(BRepository::class);
+        $bRepository = $this->getContainer()->get(BRepository::class);
         $b1 = $bRepository->findByUid(1);
         $b2 = $bRepository->findByUid(1);
 

@@ -15,13 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller;
+namespace ExtbaseTeam\ActionControllerTest\Controller;
 
+use ExtbaseTeam\ActionControllerTest\Domain\Model\Model;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model;
 
 /**
  * Fixture controller
@@ -41,7 +41,7 @@ class TestController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model $fooParam
+     * @param \ExtbaseTeam\ActionControllerTest\Domain\Model\Model $fooParam
      * @return string
      */
     public function fooAction(Model $fooParam)

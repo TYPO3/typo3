@@ -15,16 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller;
+namespace ExtbaseTeam\ActionControllerArgumentTest\Controller;
 
+use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model;
+use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model;
-use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\ModelDto;
-use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * Fixture controller
@@ -55,14 +53,6 @@ class ArgumentTestController extends ActionController
         $this->forwardTargetArguments = $forwardTargetArguments;
     }
 
-    protected function setViewConfiguration(ViewInterface $view)
-    {
-        if ($view instanceof TemplateView) {
-            // assign template path directly without forging external configuration for that...
-            $view->getTemplatePaths()->setTemplateRootPaths([dirname(__DIR__) . '/Templates']);
-        }
-    }
-
     protected function addErrorFlashMessage()
     {
         // ignore flash messages
@@ -74,7 +64,7 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model $preset
+     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model $preset
      */
     public function inputPresetModelAction(Model $preset): void
     {
@@ -86,7 +76,7 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\ModelDto $preset
+     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto $preset
      */
     public function inputPresetDtoAction(ModelDto $preset): void
     {
@@ -98,8 +88,8 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model $model
-     * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Functional.Mvc.Controller.Fixture:FailingValidator", param="model")
+     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model $model
+     * @Extbase\Validate("ExtbaseTeam.ActionControllerArgumentTest.Domain:FailingValidator", param="model")
      */
     public function validateModelAction($model): void
     {
@@ -107,8 +97,8 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\ModelDto $dto
-     * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Functional.Mvc.Controller.Fixture:FailingValidator", param="dto")
+     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto $dto
+     * @Extbase\Validate("ExtbaseTeam.ActionControllerArgumentTest.Domain:FailingValidator", param="dto")
      */
     public function validateDtoAction($dto): void
     {

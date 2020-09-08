@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use ExtbaseTeam\BlogExample\Domain\Model\TtContent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -28,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class DataMapFactoryTest extends FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
+     * @var DataMapFactory
      */
     protected $dataMapFactory;
 
@@ -43,20 +41,12 @@ class DataMapFactoryTest extends FunctionalTestCase
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
-
-    /**
      * Sets up this test suite.
      */
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->dataMapFactory = $this->objectManager->get(DataMapFactory::class);
-
+        $this->dataMapFactory = $this->getContainer()->get(DataMapFactory::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 

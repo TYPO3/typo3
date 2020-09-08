@@ -25,10 +25,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -42,18 +40,13 @@ class RelationTest extends FunctionalTestCase
     protected $blog;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistentManager;
 
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
 
     /**
      * Sets up this test suite.
@@ -72,11 +65,8 @@ class RelationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
 
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->persistentManager = $this->objectManager->get(PersistenceManager::class);
-        /* @var $blogRepository \TYPO3\CMS\Extbase\Persistence\Repository */
-        $blogRepository = $this->objectManager->get(BlogRepository::class);
-        $this->blog = $blogRepository->findByUid(1);
+        $this->persistentManager = $this->getContainer()->get(PersistenceManager::class);
+        $this->blog = $this->getContainer()->get(BlogRepository::class)->findByUid(1);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->workspace = 0;
@@ -103,8 +93,7 @@ class RelationTest extends FunctionalTestCase
             ->fetchColumn(0);
 
         $newPostTitle = 'sdufhisdhuf';
-        /** @var Post $newPost */
-        $newPost = $this->objectManager->get(Post::class);
+        $newPost = new Post();
         $newPost->setBlog($this->blog);
         $newPost->setTitle($newPostTitle);
         $newPost->setContent('Bla Bla Bla');
@@ -235,7 +224,7 @@ class RelationTest extends FunctionalTestCase
         ->fetchColumn(0);
 
         /** @var Post $newPost */
-        $newPost = $this->objectManager->get(Post::class);
+        $newPost = new Post();
 
         $posts = clone $this->blog->getPosts();
         $this->blog->getPosts()->removeAll($posts);
@@ -439,11 +428,9 @@ class RelationTest extends FunctionalTestCase
 
         $newTagTitle = 'sdufhisdhuf';
 
-        /** @var Tag $newTag */
-        $newTag = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Tag', $newTagTitle);
+        $newTag = new Tag($newTagTitle);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $post->addTag($newTag);
 
@@ -491,8 +478,7 @@ class RelationTest extends FunctionalTestCase
             ->execute()
             ->fetchColumn(0);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = $post->getTags();
         $tagsArray = $tags->toArray();
@@ -569,14 +555,12 @@ class RelationTest extends FunctionalTestCase
             ->execute()
             ->fetchColumn(0);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
         $post->setTags(new ObjectStorage());
 
-        /** @var Tag $newTag */
-        $newTag = $this->objectManager->get(Tag::class, 'INSERTED TAG at position 6 : ' . strftime(''));
+        $newTag = new Tag('INSERTED TAG at position 6 : ' . strftime(''));
 
         $counter = 1;
         foreach ($tags as $tag) {
@@ -653,8 +637,7 @@ class RelationTest extends FunctionalTestCase
             ->fetchColumn(0);
         self::assertEquals(10, $countTags);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
         $counter = 1;
@@ -732,8 +715,7 @@ class RelationTest extends FunctionalTestCase
             ->fetchColumn(0);
         self::assertEquals(10, $countTags);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
         $tagsArray = $tags->toArray();
@@ -824,8 +806,7 @@ class RelationTest extends FunctionalTestCase
             ->execute()
             ->fetch();
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $post->setTitle('newTitle');
 
@@ -851,8 +832,7 @@ class RelationTest extends FunctionalTestCase
      */
     public function mmRelationWithoutMatchFieldIsResolved()
     {
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
         self::assertCount(1, $posts);
     }
@@ -885,8 +865,7 @@ class RelationTest extends FunctionalTestCase
             ->fetchColumn(0);
         self::assertEquals(3, $countCategories);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         self::assertSame(3, count($post->getCategories()));
     }
@@ -898,8 +877,7 @@ class RelationTest extends FunctionalTestCase
      */
     public function mmRelationWithMatchFieldIsResolvedFromForeignSide()
     {
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $posts = $postRepository->findByCategory(1);
         self::assertSame(2, count($posts));
 
@@ -935,12 +913,10 @@ class RelationTest extends FunctionalTestCase
             ->fetchColumn(0);
         self::assertEquals(3, $countCategories);
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
 
-        /** @var \TYPO3\CMS\Extbase\Domain\Model\Category $newCategory */
-        $newCategory = $this->objectManager->get(Category::class);
+        $newCategory = new Category();
         $newCategory->setTitle('New Category');
 
         $post->addCategory($newCategory);
@@ -977,9 +953,7 @@ class RelationTest extends FunctionalTestCase
      */
     public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations()
     {
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(PostRepository::class);
-        /** @var Post $post */
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         // Move category down
         foreach ($post->getCategories() as $category) {
@@ -1153,7 +1127,7 @@ class RelationTest extends FunctionalTestCase
      */
     protected function provideFindPostsByPublisherQuery(int $publisherId)
     {
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalOr([
@@ -1213,7 +1187,7 @@ class RelationTest extends FunctionalTestCase
      */
     protected function provideFindBlogsByPostsSinceQuery(\DateTime $date)
     {
-        $blogRepository = $this->objectManager->get(BlogRepository::class);
+        $blogRepository = $this->getContainer()->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
         $query->matching(
             $query->greaterThanOrEqual('posts.date', $date)
@@ -1266,7 +1240,7 @@ class RelationTest extends FunctionalTestCase
      */
     protected function provideFindPersonsByTagNameQuery(string $tagName)
     {
-        $personRepository = $this->objectManager->get(PersonRepository::class);
+        $personRepository = $this->getContainer()->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
             $query->logicalOr([
@@ -1322,7 +1296,7 @@ class RelationTest extends FunctionalTestCase
      */
     protected function provideFindPostsByAuthorTagName(string $tagName)
     {
-        $postRepository = $this->objectManager->get(PostRepository::class);
+        $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalOr([
@@ -1338,8 +1312,7 @@ class RelationTest extends FunctionalTestCase
      */
     protected function updateAndPersistBlog()
     {
-        /** @var BlogRepository $blogRepository */
-        $blogRepository = $this->objectManager->get(BlogRepository::class);
+        $blogRepository = $this->getContainer()->get(BlogRepository::class);
         $blogRepository->update($this->blog);
         $this->persistentManager->persistAll();
     }

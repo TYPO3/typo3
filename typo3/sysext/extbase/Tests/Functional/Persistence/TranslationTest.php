@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -43,12 +42,7 @@ class TranslationTest extends FunctionalTestCase
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Repository
+     * @var PostRepository
      */
     protected $postRepository;
 
@@ -78,8 +72,7 @@ class TranslationTest extends FunctionalTestCase
 
         $this->setUpBasicFrontendEnvironment();
 
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->postRepository = $this->objectManager->get(PostRepository::class);
+        $this->postRepository = $this->getContainer()->get(PostRepository::class);
     }
 
     /**

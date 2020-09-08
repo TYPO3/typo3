@@ -22,9 +22,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -63,7 +62,6 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
 
         $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translatedBlogExampleData.csv');
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
@@ -74,16 +72,16 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
                 ]
             ]
         ];
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
-        $this->request = $objectManager->get(Request::class);
+        $this->request = new Request();
         $this->request->setPluginName('Pi1');
         $this->request->setControllerExtensionName(BlogController::class);
         $this->request->setControllerName('Blog');
         $this->request->setMethod('GET');
         $this->request->setFormat('html');
 
-        $this->controller = $objectManager->get(BlogController::class);
+        $this->controller = $this->getContainer()->get(BlogController::class);
     }
 
     public function actionGetsBlogFromUidArgumentDataProvider()

@@ -15,19 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Validator;
+namespace ExtbaseTeam\ActionControllerArgumentTest\Domain\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Fixture model validator
+ * Validator which always fails
  */
-class ModelValidator extends AbstractValidator
+class FailingValidator extends AbstractValidator
 {
     /**
      * @param mixed $value
      */
     protected function isValid($value)
     {
+        $this->addError('This will always fail', 157882910);
     }
 }
