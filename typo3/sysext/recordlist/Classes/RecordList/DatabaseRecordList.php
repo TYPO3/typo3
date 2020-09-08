@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Recordlist\RecordList;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -1202,6 +1203,15 @@ class DatabaseRecordList
                 }
             } elseif ($fCol === 'pid') {
                 $theData[$fCol] = $row[$fCol];
+            } elseif ($fCol !== '' && $fCol === ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? '')) {
+                $beUserRecord = BackendUtility::getRecord('be_users', (int)$row[$fCol]);
+                if (is_array($beUserRecord)) {
+                    $avatar = GeneralUtility::makeInstance(Avatar::class);
+                    $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
+                    $theData[$fCol] = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
+                } else {
+                    $theData[$fCol] = '<strong>&ndash;</strong>';
+                }
             } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
             } elseif ($fCol === '_REF_') {
