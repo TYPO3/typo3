@@ -278,10 +278,16 @@ class ExternalLinktype extends AbstractLinktype
     {
         $url = html_entity_decode($url);
         $parts = parse_url($url);
-        $newDomain = (string)HttpUtility::idn_to_ascii($parts['host']);
-        if (strcmp($parts['host'], $newDomain) !== 0) {
-            $parts['host'] = $newDomain;
-            $url = HttpUtility::buildUrl($parts);
+        if ($parts['host'] ?? false) {
+            try {
+                $newDomain = (string)HttpUtility::idn_to_ascii($parts['host']);
+                if (strcmp($parts['host'], $newDomain) !== 0) {
+                    $parts['host'] = $newDomain;
+                    $url = HttpUtility::buildUrl($parts);
+                }
+            } catch (\Exception | \Throwable $e) {
+                // ignore error and proceed with link checking
+            }
         }
         return $url;
     }
