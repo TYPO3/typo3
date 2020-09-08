@@ -113,7 +113,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentNCreateRelation.csv
      */
     public function createContentAndCreateElementRelation()
     {

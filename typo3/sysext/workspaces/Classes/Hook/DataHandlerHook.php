@@ -115,10 +115,8 @@ class DataHandlerHook
                 );
                 break;
             case 'clearWSID':
-                $this->version_clearWSID($table, (int)$id, false, $dataHandler);
-                break;
             case 'flush':
-                $this->version_clearWSID($table, (int)$id, true, $dataHandler);
+                $dataHandler->discard($table, (int)$id);
                 break;
             case 'setStage':
                 $elementIds = GeneralUtility::intExplode(',', (string)$id, true);
@@ -265,10 +263,13 @@ class DataHandlerHook
                                 $this->softOrHardDeleteSingleRecord($table, (int)$movePlaceholder['uid']);
                             }
                         }
-                    } else {
-                        // If live record was placeholder (new/deleted), rather clear
-                        // it from workspace (because it clears both version and placeholder).
-                        $this->version_clearWSID($table, (int)$id, false, $dataHandler);
+                    } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
+                        $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$id);
+                        $dataHandler->deleteEl($table, (int)$id);
+                        if (is_array($placeholderRecord)) {
+                            $this->softOrHardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
+                            $dataHandler->updateRefIndex($table, (int)$placeholderRecord['uid']);
+                        }
                     }
                 } else {
                     $dataHandler->newlog('Tried to delete record from another workspace', SystemLogErrorClassification::USER_ERROR);
@@ -947,91 +948,6 @@ class DataHandlerHook
     }
 
     /**
-     * Remove a versioned record from this workspace. Often referred to as "discarding a version" = throwing away a version.
-     * This means to delete the record and remove any placeholders that are not needed anymore.
-     *
-     * In previous versions, this meant that the versioned record was marked as deleted and moved into "live" workspace.
-     *
-     * @param string $table Database table name
-     * @param int $versionId Version record uid
-     * @param bool $flush If set, will completely delete element
-     * @param DataHandler $dataHandler DataHandler object
-     */
-    protected function version_clearWSID(string $table, int $versionId, bool $flush, DataHandler $dataHandler): void
-    {
-        if ($dataHandler->hasDeletedRecord($table, $versionId)) {
-            // If discarding pages and records at once, deleting the page record may have already deleted
-            // records on the page, rendering a call to delete single elements of this page bogus. The
-            // data handler tracks which records have been deleted in the same process, so ignore
-            // the record in question if its in the list.
-            return;
-        }
-        if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $versionId)) {
-            $dataHandler->newlog('Attempt to reset workspace for record ' . $table . ':' . $versionId . ' failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
-            return;
-        }
-        if (!$dataHandler->checkRecordUpdateAccess($table, $versionId)) {
-            $dataHandler->newlog('Attempt to reset workspace for record ' . $table . ':' . $versionId . ' failed because you do not have edit access', SystemLogErrorClassification::USER_ERROR);
-            return;
-        }
-        $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $versionId, 'uid,t3ver_state');
-        if (!$liveRecord) {
-            // Attempting to discard a record that has no live version, don't do anything
-            return;
-        }
-
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-        $liveState = VersionState::cast($liveRecord['t3ver_state']);
-        $versionRecord = BackendUtility::getRecord($table, $versionId);
-        $versionState = VersionState::cast($versionRecord['t3ver_state']);
-        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
-
-        if ($flush || $versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
-            // Purge delete placeholder since it would not contain any modified information
-            $dataHandler->deleteEl($table, $versionRecord['uid'], true, true);
-        } elseif ($deleteField === null) {
-            // let DataHandler decide how to delete the record that does not have a deleted field
-            $dataHandler->deleteEl($table, $versionRecord['uid'], true);
-        } else {
-            $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
-            if ($deleteField) {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->update(
-                        $table,
-                        ['t3ver_tstamp' => $GLOBALS['EXEC_TIME'], $deleteField => 1],
-                        ['uid' => (int)$versionId]
-                    );
-            } else {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->delete(
-                        $table,
-                        ['uid' => (int)$versionId]
-                    );
-            }
-            $dataHandler->updateRefIndex($table, (int)$versionId);
-        }
-
-        if ($versionState->equals(VersionState::MOVE_POINTER)) {
-            // purge move placeholder as it has been created just for the sake of pointing to a version
-            $movePlaceHolderRecord = BackendUtility::getMovePlaceholder($table, $liveRecord['uid'], 'uid');
-            if (is_array($movePlaceHolderRecord)) {
-                $dataHandler->deleteEl($table, (int)$movePlaceHolderRecord['uid'], true, $flush);
-            }
-        } elseif ($liveState->equals(VersionState::NEW_PLACEHOLDER)) {
-            $connection->update(
-                $table,
-                ['t3ver_tstamp' => $GLOBALS['EXEC_TIME']],
-                ['uid' => (int)$liveRecord['uid']]
-            );
-            // purge new placeholder as it has been created just for the sake of pointing to a version
-            // THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
-            $dataHandler->deleteEl($table, $liveRecord['uid'], true, $flush);
-        }
-    }
-
-    /**
      * In case a sys_workspace_stage record is deleted we do a hard reset
      * for all existing records in that stage to avoid that any of these end up
      * as orphan records.
@@ -1086,7 +1002,7 @@ class DataHandlerHook
                             $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
                         ),
                         // t3ver_oid >= 0 basically omits placeholder records here, those would otherwise
-                        // fail to delete later in version_clearWSID() and would create "can't do that" log entries.
+                        // fail to delete later in DH->discard() and would create "can't do that" log entries.
                         $queryBuilder->expr()->gt(
                             't3ver_oid',
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -1102,7 +1018,7 @@ class DataHandlerHook
         }
         if (!empty($command)) {
             // Execute the command array via DataHandler to flush all records from this workspace.
-            // Switch to target workspace temporarily, otherwise clearWSID() and friends do not
+            // Switch to target workspace temporarily, otherwise DH->discard() do not
             // operate on correct workspace if fetching additional records.
             $backendUser = $GLOBALS['BE_USER'];
             $savedWorkspace = $backendUser->workspace;
@@ -1513,7 +1429,8 @@ class DataHandlerHook
                 ->update(
                     $table,
                     [$deleteField => 1],
-                    ['uid' => $uid]
+                    ['uid' => $uid],
+                    [\PDO::PARAM_INT]
                 );
         } else {
             GeneralUtility::makeInstance(ConnectionPool::class)

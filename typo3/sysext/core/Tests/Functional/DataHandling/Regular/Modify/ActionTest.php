@@ -489,6 +489,19 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function createPageAndSubPageAndSubPageContent()
+    {
+        parent::createPageAndSubPageAndSubPageContent();
+        $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
+
+        $responseSections = $this->getFrontendResponse($this->recordIds['newSubPageId'])->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
+    }
+
+    /**
+     * @test
      * See DataSet/createPageRecordWithSlugOverrideConfiguration.csv
      */
     public function createPageWithSlugOverrideConfiguration(): void
@@ -640,16 +653,24 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizePageAndContentsAndDeletePageLocalization.csv
      */
     public function localizePageAndContentsAndDeletePageLocalization()
     {
         // Create localized page and localize content elements first
-        parent::localizePageAndContents();
+        parent::localizePageAndContentsAndDeletePageLocalization();
 
         // Deleting the localized page should also delete its localized records
         $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
+    }
+
+    /**
+     * @test
+     */
+    public function localizeNestedPagesAndContents()
+    {
+        parent::localizeNestedPagesAndContents();
+        $this->assertAssertionDataSet('localizeNestedPagesAndContents');
     }
 
     /**

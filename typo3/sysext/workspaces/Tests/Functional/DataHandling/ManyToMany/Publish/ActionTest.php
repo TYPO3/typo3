@@ -28,12 +28,7 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/Publish/DataSet/';
 
     /**
-     * MM Relations
-     */
-
-    /**
      * @test
-     * See DataSet/addCategoryRelation.csv
      */
     public function addCategoryRelation()
     {
@@ -49,7 +44,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteCategoryRelation.csv
      */
     public function deleteCategoryRelation()
     {
@@ -68,7 +62,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeCategoryRelationSorting.csv
      */
     public function changeCategoryRelationSorting()
     {
@@ -84,7 +77,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentRecordAndAddCategoryRelation.csv
      */
     public function createContentAndAddRelation()
     {
@@ -102,7 +94,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createCategoryRecordAndAddCategoryRelation.csv
      */
     public function createCategoryAndAddRelation()
     {
@@ -120,17 +111,14 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentRecordAndCreateCategoryRelation.csv
      */
     public function createContentAndCreateRelation()
     {
         parent::createContentAndCreateRelation();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Category => [$this->recordIds['newCategoryId']],
-                self::TABLE_Content => [$this->recordIds['newContentId']],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Content => [$this->recordIds['newContentId']],
+        ]);
         $this->assertAssertionDataSet('createContentNCreateRelation');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
@@ -143,56 +131,46 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createCategoryRecordAndCreateCategoryRelation.csv
      */
     public function createCategoryAndCreateRelation()
     {
         parent::createCategoryAndCreateRelation();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Content => [$this->recordIds['newContentId']],
-                self::TABLE_Category => [$this->recordIds['newCategoryId']],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Content => [$this->recordIds['newContentId']],
+            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+        ]);
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('createCategoryNCreateRelation');
     }
 
     /**
      * @test
-     * See DataSet/createContentWCategoryNAddRelation.csv
      */
     public function createContentWithCategoryAndAddRelation()
     {
         parent::createContentWithCategoryAndAddRelation();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Category => [$this->recordIds['newCategoryId']],
-                self::TABLE_Content => [$this->recordIds['newContentId']],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Content => [$this->recordIds['newContentId']],
+        ]);
         $this->assertAssertionDataSet('createContentWCategoryNAddRelation');
     }
 
     /**
      * @test
-     * See DataSet/createCategoryWContentNAddRelation.csv
      */
     public function createCategoryWithContentAndAddRelation()
     {
         parent::createCategoryWithContentAndAddRelation();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Content => [$this->recordIds['newContentId']],
-                self::TABLE_Category => [$this->recordIds['newCategoryId']],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Content => [$this->recordIds['newContentId']],
+            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+        ]);
         $this->assertAssertionDataSet('createCategoryWContentNAddRelation');
     }
 
     /**
      * @test
-     * See DataSet/modifyCategoryRecordOfCategoryRelation.csv
      */
     public function modifyCategoryOfRelation()
     {
@@ -208,7 +186,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyContentRecordOfCategoryRelation.csv
      */
     public function modifyContentOfRelation()
     {
@@ -223,17 +200,14 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyBothRecordsOfCategoryRelation.csv
      */
     public function modifyBothsOfRelation()
     {
         parent::modifyBothsOfRelation();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Content => [self::VALUE_ContentIdFirst],
-                self::TABLE_Category => [self::VALUE_CategoryIdFirst],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Content => [self::VALUE_ContentIdFirst],
+            self::TABLE_Category => [self::VALUE_CategoryIdFirst],
+        ]);
         $this->assertAssertionDataSet('modifyBothsOfRelation');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
@@ -246,7 +220,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentRecordOfCategoryRelation.csv
      */
     public function deleteContentOfRelation()
     {
@@ -261,7 +234,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteCategoryRecordOfCategoryRelation.csv
      */
     public function deleteCategoryOfRelation()
     {
@@ -277,7 +249,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentRecordOfCategoryRelation.csv
      */
     public function copyContentOfRelation()
     {
@@ -293,7 +264,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyCategoryRecordOfCategoryRelation.csv
      */
     public function copyCategoryOfRelation()
     {
@@ -309,7 +279,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecordOfCategoryRelation.csv
      */
     public function localizeContentOfRelation()
     {
@@ -325,7 +294,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeCategoryRecordOfCategoryRelation.csv
      */
     public function localizeCategoryOfRelation()
     {
@@ -344,7 +312,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordOfCategoryRelationToDifferentPage.csv
      */
     public function moveContentOfRelationToDifferentPage()
     {
@@ -360,17 +327,14 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPage.csv
      */
     public function copyPage()
     {
         parent::copyPage();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Page => [$this->recordIds['newPageId']],
-                self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Page => [$this->recordIds['newPageId']],
+            self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
+        ]);
         $this->assertAssertionDataSet('copyPage');
 
         $responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();

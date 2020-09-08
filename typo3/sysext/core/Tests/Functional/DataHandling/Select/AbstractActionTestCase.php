@@ -54,13 +54,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    /**
-     * Relations
-     */
-
-    /**
-     * See DataSet/addElementRelation.csv
-     */
     public function addElementRelation()
     {
         $this->actionService->modifyReferences(
@@ -71,9 +64,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * See DataSet/deleteElementRelation.csv
-     */
     public function deleteElementRelation()
     {
         $this->actionService->modifyReferences(
@@ -84,17 +74,11 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * See DataSet/changeElementSorting.csv
-     */
     public function changeElementSorting()
     {
         $this->actionService->moveRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, -self::VALUE_ElementIdSecond);
     }
 
-    /**
-     * See DataSet/changeElementRelationSorting.csv
-     */
     public function changeElementRelationSorting()
     {
         $this->actionService->modifyReferences(
@@ -105,9 +89,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * See DataSet/createContentNAddRelation.csv
-     */
     public function createContentAndAddElementRelation()
     {
         $newTableIds = $this->actionService->createNewRecord(
@@ -118,9 +99,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    /**
-     * See DataSet/createContentNCreateRelation.csv
-     */
     public function createContentAndCreateElementRelation()
     {
         $newElementIds = $this->actionService->createNewRecord(self::TABLE_Element, self::VALUE_PageId, ['title' => 'Testing #1']);
@@ -130,59 +108,38 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newContentIds[self::TABLE_Content][0];
     }
 
-    /**
-     * See DataSet/modifyElementOfRelation.csv
-     */
     public function modifyElementOfRelation()
     {
         $this->actionService->modifyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, ['title' => 'Testing #1']);
     }
 
-    /**
-     * See DataSet/modifyContentOfRelation.csv
-     */
     public function modifyContentOfRelation()
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
-    /**
-     * See DataSet/modifyBothSidesOfRelation.csv
-     */
     public function modifyBothSidesOfRelation()
     {
         $this->actionService->modifyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, ['title' => 'Testing #1']);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
-    /**
-     * See DataSet/deleteContentOfRelation.csv
-     */
     public function deleteContentOfRelation()
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
-    /**
-     * See DataSet/deleteElementOfRelation.csv
-     */
     public function deleteElementOfRelation()
     {
         $this->actionService->deleteRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
     }
 
-    /**
-     * See DataSet/copyContentOfRelation.csv
-     */
     public function copyContentOfRelation()
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
         $this->recordIds['copiedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    /**
-     * See DataSet/copyElementOfRelation.csv
-     */
     public function copyElementOfRelation()
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, self::VALUE_PageId);
@@ -207,27 +164,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedElementId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst];
     }
 
-    /**
-     * See DataSet/localizeContentOfRelation.csv
-     */
     public function localizeContentOfRelation()
     {
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    /**
-     * See DataSet/localizeElementOfRelation.csv
-     */
     public function localizeElementOfRelation()
     {
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, self::VALUE_LanguageId);
         $this->recordIds['localizedElementId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst];
     }
 
-    /**
-     * See DataSet/moveContentOfRelationToDifferentPage.csv
-     */
     public function moveContentOfRelationToDifferentPage()
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);

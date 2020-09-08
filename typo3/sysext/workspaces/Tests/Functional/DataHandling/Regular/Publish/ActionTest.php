@@ -53,37 +53,17 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentRecordAndDiscardCreatedContentRecord.csv
      */
-    public function createContentAndDiscardCreatedContent()
+    public function createContentAndCopyContent()
     {
-        parent::createContentAndDiscardCreatedContent();
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId'], false);
-        $this->assertAssertionDataSet('createContentNDiscardCreatedContent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-    }
-
-    /**
-     * @test
-     * See DataSet/createAndCopyContentRecordAndDiscardCopiedContentRecord.csv
-     */
-    public function createAndCopyContentAndDiscardCopiedContent()
-    {
-        parent::createAndCopyContentAndDiscardCopiedContent();
+        parent::createContentAndCopyContent();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['copiedContentId'], false);
-        $this->assertAssertionDataSet('createNCopyContentNDiscardCopiedContent');
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
+        $this->assertAssertionDataSet('createContentAndCopyContent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1 (copy 1)'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #1 (copy 1)'));
     }
 
     /**
@@ -103,7 +83,40 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentRecord.csv
+     */
+    public function hideContent()
+    {
+        parent::hideContent();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->assertAssertionDataSet('hideContent');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+    }
+
+    /**
+     * @test
+     */
+    public function hideContentAndMoveToDifferentPage()
+    {
+        parent::hideContent();
+        parent::moveContentToDifferentPage();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->assertAssertionDataSet('hideContentAndMoveToDifferentPage');
+
+        $responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId)->getResponseSections();
+        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+        self::assertThat($responseSectionsSource, $this->getRequestSectionDoesNotHaveRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+        $responseSectionsTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId)->getResponseSections();
+        self::assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+    }
+
+    /**
+     * @test
      */
     public function deleteContent()
     {
@@ -120,7 +133,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteLocalizedContentNDeleteContent.csv
      */
     public function deleteLocalizedContentAndDeleteContent()
     {
@@ -142,7 +154,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentRecord.csv
      */
     public function copyContent()
     {
@@ -157,7 +168,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentToLanguage.csv
      */
     public function copyContentToLanguage()
     {
@@ -179,7 +189,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
      */
     public function copyContentToLanguageFromNonDefaultLanguage()
     {
@@ -201,7 +210,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecord.csv
      */
     public function localizeContent()
     {
@@ -219,7 +227,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentFromNonDefaultLanguage.csv
      */
     public function localizeContentFromNonDefaultLanguage()
     {
@@ -237,7 +244,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentRecordSorting.csv
      */
     public function changeContentSorting()
     {
@@ -252,7 +258,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentRecordSortingAfterSelf.csv
      */
     public function changeContentSortingAfterSelf()
     {
@@ -267,7 +272,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -285,16 +289,13 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {
         parent::moveContentToDifferentPageAndChangeSorting();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond],
+        ]);
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0)->getResponseSections();
@@ -303,12 +304,25 @@ class ActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @test
+     */
+    public function moveContentToDifferentPageAndHide()
+    {
+        parent::moveContentToDifferentPageAndHide();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->assertAssertionDataSet('moveContentToDifferentPageAndHide');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+    }
+
+    /**
      * Page records
      */
 
     /**
      * @test
-     * See DataSet/createPageRecord.csv
      */
     public function createPage()
     {
@@ -323,7 +337,21 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyPageRecord.csv
+     */
+    public function createPageAndSubPageAndSubPageContent()
+    {
+        parent::createPageAndSubPageAndSubPageContent();
+        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['newPageId']);
+        $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
+
+        // Sub page is not published together with parent page
+        $responseSections = $this->getFrontendResponse($this->recordIds['newSubPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
+    }
+
+    /**
+     * @test
      */
     public function modifyPage()
     {
@@ -338,7 +366,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deletePageRecord.csv
      */
     public function deletePage()
     {
@@ -354,7 +381,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentAndPage.csv
      */
     public function deleteContentAndPage()
     {
@@ -370,7 +396,17 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPageRecord.csv
+     */
+    public function localizeNestedPagesAndContents()
+    {
+        parent::localizeNestedPagesAndContents();
+        // Will publish only the page translation, not it's content elements
+        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedParentPageId']);
+        $this->assertAssertionDataSet('localizeNestedPagesAndContents');
+    }
+
+    /**
+     * @test
      */
     public function copyPage()
     {
@@ -390,7 +426,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPageFreeMode.csv
      */
     public function copyPageFreeMode()
     {
@@ -412,7 +447,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizePageRecord.csv
      */
     public function localizePage()
     {
@@ -427,7 +461,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageAndChangePageSorting.csv
      */
     public function createPageAndChangePageSorting()
     {
@@ -438,7 +471,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageAndMoveCreatedPage.csv
      */
     public function createPageAndMoveCreatedPage()
     {
@@ -449,7 +481,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()
     {
@@ -466,7 +497,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changePageSortingAfterSelf.csv
      */
     public function changePageSortingAfterSelf()
     {
@@ -483,7 +513,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/movePageRecordToDifferentPage.csv
      */
     public function movePageToDifferentPage()
     {
@@ -500,16 +529,13 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/movePageRecordToDifferentPageAndChangeSorting.csv
      */
     public function movePageToDifferentPageAndChangeSorting()
     {
         parent::movePageToDifferentPageAndChangeSorting();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Page => [self::VALUE_PageId, self::VALUE_PageIdTarget],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Page => [self::VALUE_PageId, self::VALUE_PageIdTarget],
+        ]);
         $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
 
         $responseSectionsPage = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
@@ -525,18 +551,15 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/movePageRecordToDifferentPageAndCreatePageRecordAfterMovedPageRecord.csv
      * @see https://forge.typo3.org/issues/33104
      * @see https://forge.typo3.org/issues/55573
      */
     public function movePageToDifferentPageAndCreatePageAfterMovedPage()
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Page => [self::VALUE_PageIdTarget, $this->recordIds['newPageId']],
-            ]
-        );
+        $this->actionService->publishRecords([
+            self::TABLE_Page => [self::VALUE_PageIdTarget, $this->recordIds['newPageId']],
+        ]);
         $this->assertAssertionDataSet('movePageToDifferentPageNCreatePageAfterMovedPage');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageIdWebsite, 0)->getResponseSections();
@@ -547,7 +570,35 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPlaceholdersAndDeleteDraftParentPage.csv
+     */
+    public function createContentAndCopyDraftPage()
+    {
+        parent::createContentAndCopyDraftPage();
+        $this->actionService->publishRecords([
+            self::TABLE_Content => [$this->recordIds['newContentId']],
+            self::TABLE_Page => [$this->recordIds['copiedPageId']]
+        ]);
+        $this->assertAssertionDataSet('createContentAndCopyDraftPage');
+
+        $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
+
+    /**
+     * @test
+     */
+    public function createPageAndCopyDraftParentPage()
+    {
+        parent::createPageAndCopyDraftParentPage();
+        $this->actionService->publishRecords([
+            self::TABLE_Page => [$this->recordIds['newPageId'], $this->recordIds['copiedPageId']]
+        ]);
+        $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
+    }
+
+    /**
+     * @test
      */
     public function createPlaceholdersAndDeleteDraftParentPage()
     {

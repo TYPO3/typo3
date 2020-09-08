@@ -35,7 +35,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentRecords.csv
      */
     public function createContents()
     {
@@ -49,37 +48,19 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentRecordAndDiscardCreatedContentRecord.csv
      */
-    public function createContentAndDiscardCreatedContent()
+    public function createContentAndCopyContent()
     {
-        parent::createContentAndDiscardCreatedContent();
-        $this->assertAssertionDataSet('createContentNDiscardCreatedContent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-    }
-
-    /**
-     * @test
-     * See DataSet/createAndCopyContentRecordAndDiscardCopiedContentRecord.csv
-     */
-    public function createAndCopyContentAndDiscardCopiedContent()
-    {
-        parent::createAndCopyContentAndDiscardCopiedContent();
-        $this->assertAssertionDataSet('createNCopyContentNDiscardCopiedContent');
+        parent::createContentAndCopyContent();
+        $this->assertAssertionDataSet('createContentAndCopyContent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1 (copy 1)'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #1 (copy 1)'));
     }
 
     /**
      * @test
-     * See DataSet/modifyContentRecord.csv
      */
     public function modifyContent()
     {
@@ -93,7 +74,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/hideContent.csv
      */
     public function hideContent()
     {
@@ -107,7 +87,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/hideContentAndMoveToDifferentPage.csv
      */
     public function hideContentAndMoveToDifferentPage()
     {
@@ -127,7 +106,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentRecord.csv
      */
     public function deleteContent()
     {
@@ -143,13 +121,11 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteLocalizedContentNDeleteContent.csv
      */
     public function deleteLocalizedContentAndDeleteContent()
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
 
@@ -162,7 +138,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentRecord.csv
      */
     public function copyContent()
     {
@@ -176,7 +151,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentToLanguage.csv
      */
     public function copyContentToLanguage()
     {
@@ -196,7 +170,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
      */
     public function copyContentToLanguageFromNonDefaultLanguage()
     {
@@ -217,7 +190,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContent.csv
      */
     public function localizeContent()
     {
@@ -233,7 +205,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentWithEmptyTcaIntegrityColumns.csv
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
     public function localizeContentWithEmptyTcaIntegrityColumns()
@@ -249,7 +220,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecord.csv
      */
     public function localizeContentWithHideAtCopy()
     {
@@ -265,7 +235,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentFromNonDefaultLanguage.csv
      */
     public function localizeContentFromNonDefaultLanguage()
     {
@@ -283,7 +252,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentSorting.csv
      */
     public function changeContentSorting()
     {
@@ -297,7 +265,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentSortingAfterSelf.csv
      */
     public function changeContentSortingAfterSelf()
     {
@@ -311,7 +278,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentSortingNDeleteMovedRecord.csv
+     * @todo: Publish and PublishAll for this are missing - TF throws an exception on publish due to deleted state
      */
     public function changeContentSortingAndDeleteMovedRecord()
     {
@@ -325,7 +292,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentSortingNDeleteLiveRecord.csv
      */
     public function changeContentSortingAndDeleteLiveRecord()
     {
@@ -341,7 +307,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -358,35 +323,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordToDifferentPageAndDiscard.csv
-     */
-    public function moveContentToDifferentPageAndDiscard()
-    {
-        parent::moveContentToDifferentPageAndDiscard();
-        $this->assertAssertionDataSet('moveContentToDifferentPageAndDiscard');
-
-        $responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
-    }
-
-    /**
-     * @test
-     * See DataSet/moveContentRecordToDifferentPageAndDiscardWithoutSoftDelete.csv
-     */
-    public function moveContentToDifferentPageAndDiscardWithoutSoftDelete()
-    {
-        parent::moveContentToDifferentPageAndDiscardWithoutSoftDelete();
-        $this->assertAssertionDataSet('moveContentToDifferentPageAndDiscardWithoutSoftDelete');
-
-        $responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
-        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
-    }
-
-    /**
-     * @test
-     * See DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {
@@ -400,7 +336,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentToDifferentPageAndHide.csv
      */
     public function moveContentToDifferentPageAndHide()
     {
@@ -418,7 +353,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageRecord.csv
      */
     public function createPage()
     {
@@ -432,7 +366,19 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyPageRecord.csv
+     */
+    public function createPageAndSubPageAndSubPageContent()
+    {
+        parent::createPageAndSubPageAndSubPageContent();
+        $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
+
+        $responseSections = $this->getFrontendResponse($this->recordIds['newSubPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
+    }
+
+    /**
+     * @test
      */
     public function modifyPage()
     {
@@ -446,7 +392,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deletePageRecord.csv
      */
     public function deletePage()
     {
@@ -462,7 +407,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentAndPage.csv
      */
     public function deleteContentAndPage()
     {
@@ -478,12 +422,12 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizePageAndContentsAndDeletePageLocalization
+     * Publish tests missing since TF throws exception if publishing deleted records
      */
     public function localizePageAndContentsAndDeletePageLocalization()
     {
         // Create localized page and localize content elements first
-        parent::localizePageAndContents();
+        parent::localizePageAndContentsAndDeletePageLocalization();
 
         // Deleting the localized page in workspace should also delete its localized records
         $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
@@ -498,7 +442,15 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPageRecord.csv
+     */
+    public function localizeNestedPagesAndContents()
+    {
+        parent::localizeNestedPagesAndContents();
+        $this->assertAssertionDataSet('localizeNestedPagesAndContents');
+    }
+
+    /**
+     * @test
      */
     public function copyPage()
     {
@@ -512,7 +464,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPageFreeMode.csv
      */
     public function copyPageFreeMode()
     {
@@ -528,7 +479,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizePageRecord.csv
      */
     public function localizePage()
     {
@@ -542,7 +492,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageAndChangePageSorting.csv
      */
     public function createPageAndChangePageSorting()
     {
@@ -552,7 +501,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageAndMoveCreatedPage.csv
      */
     public function createPageAndMoveCreatedPage()
     {
@@ -562,7 +510,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changePageSorting.csv
      */
     public function changePageSorting()
     {
@@ -578,7 +525,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changePageSortingAfterSelf.csv
      */
     public function changePageSortingAfterSelf()
     {
@@ -594,7 +540,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/movePageRecordToDifferentPage.csv
      */
     public function movePageToDifferentPage()
     {
@@ -610,7 +555,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/movePageRecordToDifferentPageAndChangeSorting.csv
      */
     public function movePageToDifferentPageAndChangeSorting()
     {
@@ -630,7 +574,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/movePageRecordToDifferentPageAndCreatePageRecordAfterMovedPageRecord.csv
      * @see https://forge.typo3.org/issues/33104
      * @see https://forge.typo3.org/issues/55573
      */
@@ -651,7 +594,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentAndCopyDraftPage.csv
      */
     public function createContentAndCopyDraftPage()
     {
@@ -667,7 +609,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createContentAndCopyLivePage.csv
+     * Test does not make sense for Publish, PublishAll and Discard
      */
     public function createContentAndCopyLivePage()
     {
@@ -684,7 +626,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageAndCopyDraftParentPage.csv
      */
     public function createPageAndCopyDraftParentPage()
     {
@@ -700,7 +641,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPageAndCopyParentPage.csv
+     * Test does not make sense for Publish, PublishAll and Discard
      */
     public function createPageAndCopyLiveParentPage()
     {
@@ -717,7 +658,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createNestedPagesAndCopyDraftParentPage.csv
+     * Skipping test in Publish but it is available in PublishAll
      */
     public function createNestedPagesAndCopyDraftParentPage()
     {
@@ -733,7 +674,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createNestedPagesAndCopyParentPage.csv
+     * Test does not make sense for Publish, PublishAll and Discard
      */
     public function createNestedPagesAndCopyLiveParentPage()
     {
@@ -750,7 +691,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentAndCopyDraftPage.csv
+     * Skipped test in Publish, PublishAll and Discard: It's only interesting if the copy operation copies the deleted record
      */
     public function deleteContentAndCopyDraftPage()
     {
@@ -766,7 +707,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentAndCopyLivePage.csv
+     * Skipped test in Publish, PublishAll and Discard: It's only interesting if the copy operation copies the deleted record
      */
     public function deleteContentAndCopyLivePage()
     {
@@ -783,10 +724,10 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentSortingAndCopyDraftPage.csv
      * @group not-postgres
      * @group not-mssql
      * @todo Analyze PostgreSQL issues further, which is a generic issue
+     * Test skipped in publish and discard, but exists in PublishAll
      */
     public function changeContentSortingAndCopyDraftPage()
     {
@@ -802,7 +743,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentSortingAndCopyLivePage.csv
+     * Test does not make sense for Publish, PublishAll and Discard
      */
     public function changeContentSortingAndCopyLivePage()
     {
@@ -819,7 +760,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentAndCopyDraftPage.csv
+     * Skipped test in Publish, PublishAll and Discard: It's only interesting if the move operation does sane things
      */
     public function moveContentAndCopyDraftPage()
     {
@@ -837,7 +778,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentAndCopyLivePage.csv
+     * Test does not make sense for Publish, PublishAll and Discard
      */
     public function moveContentAndCopyLivePage()
     {
@@ -858,7 +799,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPlaceholdersAndDeleteDraftParentPage.csv
      */
     public function createPlaceholdersAndDeleteDraftParentPage()
     {
@@ -868,7 +808,7 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createPlaceholdersAndDeleteLiveParentPage.csv
+     * Test does not make much sense in Publish and Discard and is skipped there
      */
     public function createPlaceholdersAndDeleteLiveParentPage()
     {

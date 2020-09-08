@@ -33,7 +33,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyContentRecord.csv
      */
     public function modifyContent()
     {
@@ -50,7 +49,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteContentRecord.csv
      */
     public function deleteContent()
     {
@@ -66,7 +64,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyContentRecord.csv
      */
     public function copyContent()
     {
@@ -83,7 +80,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeContentRecord.csv
      */
     public function localizeContent()
     {
@@ -103,7 +99,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeContentRecordSorting.csv
      */
     public function changeContentSorting()
     {
@@ -123,7 +118,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -147,7 +141,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {
@@ -171,7 +164,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSets/createContentWFileReference.csv
      */
     public function createContentWithFileReference()
     {
@@ -188,7 +180,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSets/modifyContentWFileReference.csv
      */
     public function modifyContentWithFileReference()
     {
@@ -205,7 +196,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSets/modifyContentNAddFileReference.csv
      */
     public function modifyContentAndAddFileReference()
     {
@@ -220,7 +210,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSets/modifyContentNDeleteFileReference.csv
      */
     public function modifyContentAndDeleteFileReference()
     {
@@ -238,7 +227,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSets/modifyContentNDeleteAllFileReference.csv
      */
     public function modifyContentAndDeleteAllFileReference()
     {

@@ -34,7 +34,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createParentContentRecord.csv
      */
     public function createParentContent()
     {
@@ -49,7 +48,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyParentContentRecord.csv
      */
     public function modifyParentContent()
     {
@@ -67,7 +65,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteParentContentRecord.csv
      */
     public function deleteParentContent()
     {
@@ -82,23 +79,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deleteParentContentRecordAndDiscardDeletedParentRecord.csv
-     */
-    public function deleteParentContentAndDiscardDeletedParent()
-    {
-        parent::deleteParentContentAndDiscardDeletedParent();
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast, false);
-        $this->assertAssertionDataSet('deleteParentContentNDiscardDeletedParent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-    }
-
-    /**
-     * @test
-     * See DataSet/copyParentContentRecord.csv
      */
     public function copyParentContent()
     {
@@ -114,7 +94,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyParentContentToDifferentPage.csv
      */
     public function copyParentContentToDifferentPage()
     {
@@ -130,7 +109,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/localizeParentContentWAllChildren.csv
      */
     public function localizeParentContentWithAllChildren()
     {
@@ -149,7 +127,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/changeParentContentRecordSorting.csv
      */
     public function changeParentContentSorting()
     {
@@ -168,7 +145,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveParentContentRecordToDifferentPage.csv
      */
     public function moveParentContentToDifferentPage()
     {
@@ -187,7 +163,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/moveParentContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveParentContentToDifferentPageAndChangeSorting()
     {
@@ -216,7 +191,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyPageRecord.csv
      */
     public function modifyPage()
     {
@@ -234,7 +208,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/deletePageRecord.csv
      */
     public function deletePage()
     {
@@ -250,7 +223,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPageRecord.csv
      */
     public function copyPage()
     {
@@ -270,7 +242,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyPageWHotelBeforeParentContent.csv
      */
     public function copyPageWithHotelBeforeParentContent()
     {
@@ -294,7 +265,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createParentContentRecordWithHotelAndOfferChildRecords.csv
      */
     public function createParentContentWithHotelAndOfferChildren()
     {
@@ -312,7 +282,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createAndCopyParentContentRecordWithHotelAndOfferChildRecords.csv
      */
     public function createAndCopyParentContentWithHotelAndOfferChildren()
     {
@@ -337,24 +306,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord.csv
-     */
-    public function createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent()
-    {
-        parent::createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent();
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['copiedContentId'], false);
-        $this->assertAssertionDataSet('createNCopyParentNHotelNOfferChildrenNDiscardCopiedParent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1 (copy 1)'));
-    }
-
-    /**
-     * @test
-     * See DataSet/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildren()
     {
@@ -379,40 +330,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
-     */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent()
-    {
-        parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent();
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId'], false);
-        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardCreatedParent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', '[Translate to Dansk:] Testing #1'));
-    }
-
-    /**
-     * @test
-     * See DataSet/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecordsAndDiscardLocalizedParentRecord.csv
-     */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent()
-    {
-        parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], false);
-        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardLocParent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
-    }
-
-    /**
-     * @test
-     * See DataSet/modifyOnlyHotelChildRecord.csv
      */
     public function modifyOnlyHotelChild()
     {
@@ -428,7 +345,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyParentRecordAndChangeHotelChildRecordsSorting.csv
      */
     public function modifyParentAndChangeHotelChildrenSorting()
     {
@@ -444,7 +360,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyParentRecordWithHotelChildRecord.csv
      */
     public function modifyParentWithHotelChild()
     {
@@ -460,50 +375,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyParentRecordWithHotelChildRecordAndDiscardModifiedParentRecord.csv
-     */
-    public function modifyParentWithHotelChildAndDiscardModifiedParent()
-    {
-        parent::modifyParentWithHotelChildAndDiscardModifiedParent();
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, false);
-        $this->assertAssertionDataSet('modifyParentNHotelChildNDiscardModifiedParent');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        // Discarding the parent shall not discard the child records
-        // Since the discarded parent does not need to be published, version children are not published as well
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
-        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Testing #1'));
-    }
-
-    /**
-     * @test
-     * See DataSet/modifyParentRecordWithHotelChildRecordAndDiscardAllModifiedRecords.csv
-     */
-    public function modifyParentWithHotelChildAndDiscardAll()
-    {
-        parent::modifyParentWithHotelChildAndDiscardAll();
-        // Actually this is not required, since there's nothing to publish... but it's a test case!
-        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, false);
-        $this->assertAssertionDataSet('modifyParentNHotelChildNDiscardAll');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections('Default', 'Extbase:list()');
-        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
-    }
-
-    /**
-     * @test
-     * See DataSet/modifyParentRecordAndAddHotelChildRecord.csv
      */
     public function modifyParentAndAddHotelChild()
     {
@@ -519,7 +390,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyParentRecordAndDeleteHotelChildRecord.csv
      */
     public function modifyParentAndDeleteHotelChild()
     {
@@ -538,7 +408,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/modifyNDiscardNModifyParentWHotelChild.csv
      */
     public function modifyAndDiscardAndModifyParentWithHotelChild()
     {
