@@ -451,7 +451,6 @@ return [
             ]
         ],
         'colPos' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos',
             'config' => [
                 'type' => 'select',
