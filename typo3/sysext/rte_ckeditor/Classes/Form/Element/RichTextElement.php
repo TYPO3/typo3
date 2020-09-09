@@ -181,17 +181,18 @@ class RichTextElement extends AbstractFormElement
         }
         $contentLanguageUid = (int)max($currentLanguageUid, 0);
         if ($contentLanguageUid) {
-            $contentLanguage = $this->data['systemLanguageRows'][$currentLanguageUid]['iso'];
+            // the language rows might not be fully inialized, so we fallback to en_US in this case
+            $contentLanguage = $this->data['systemLanguageRows'][$currentLanguageUid]['iso'] ?? 'en_US';
         } else {
             $contentLanguage = $this->rteConfiguration['config']['defaultContentLanguage'] ?? 'en_US';
-            $languageCodeParts = explode('_', $contentLanguage);
-            $contentLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
-            // Find the configured language in the list of localization locales
-            $locales = GeneralUtility::makeInstance(Locales::class);
-            // If not found, default to 'en'
-            if (!in_array($contentLanguage, $locales->getLocales(), true)) {
-                $contentLanguage = 'en';
-            }
+        }
+        $languageCodeParts = explode('_', $contentLanguage);
+        $contentLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
+        // Find the configured language in the list of localization locales
+        $locales = GeneralUtility::makeInstance(Locales::class);
+        // If not found, default to 'en'
+        if (!in_array($contentLanguage, $locales->getLocales(), true)) {
+            $contentLanguage = 'en';
         }
         return $contentLanguage;
     }
