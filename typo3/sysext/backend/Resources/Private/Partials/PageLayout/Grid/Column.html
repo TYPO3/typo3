@@ -1,6 +1,6 @@
 <td valign="top" colspan="{column.colSpan}" rowspan="{column.rowSpan}"
-    data-colpos="{column.columnNumber}" data-language-uid="{column.backendLayout.drawingConfiguration.languageColumnsPointer}"
-    class="t3js-page-lang-column-{column.backendLayout.drawingConfiguration.languageColumnsPointer} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{column.columnNumber}
+    data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
+    class="t3js-page-lang-column-{column.context.siteLanguage.languageId} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{column.columnNumber}
         {f:if(condition: column.active, else: 't3-grid-cell-unassigned')}
         t3-gridCell-width{column.colSpan}
         t3-gridCell-height{column.rowSpan}">
@@ -52,8 +52,8 @@
         </div>
     </f:if>
     <f:if condition="{column.items}">
-        <div data-colpos="{column.columnNumber}" data-language-uid="{column.backendLayout.drawingConfiguration.languageColumnsPointer}"
-            class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.backendLayout.drawingConfiguration.languageColumnsPointer} t3-page-ce-wrapper
+        <div data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
+            class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
                 {f:if(condition: column.items, else: 't3-page-ce-empty')}">
             <f:for each="{column.items}" as="item">
                 <f:if condition="{item.deletePlaceholder} == 0">
