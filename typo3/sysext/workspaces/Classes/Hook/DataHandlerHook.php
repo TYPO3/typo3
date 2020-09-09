@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -629,27 +628,7 @@ class DataHandlerHook
             $dataHandler->newlog('In offline record, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', SystemLogErrorClassification::SYSTEM_ERROR);
             return;
         }
-        // Lock file name:
-        $lockFileName = Environment::getVarPath() . '/lock/workspaces_publish' . $table . '_' . $id . '.json';
-        if (@is_file($lockFileName)) {
-            $lockFileContents = file_get_contents($lockFileName);
-            $lockFileContents = json_decode($lockFileContents ?: '', true);
-            // Only skip if the lock file is newer than the last 1h (a publishing process should not be running longer than 60mins)
-            if (isset($lockFileContents['tstamp']) && $lockFileContents['tstamp'] > ($GLOBALS['EXEC_TIME']-3600)) {
-                $dataHandler->newlog('A publishing lock file was present. Either another publish process is already running or a previous publish process failed. Ask your administrator to handle the situation.', SystemLogErrorClassification::SYSTEM_ERROR);
-                return;
-            }
-        }
 
-        // Now start to publishing records by first creating the lock file
-
-        // Write lock-file:
-        GeneralUtility::writeFileToTypo3tempDir($lockFileName, (string)json_encode([
-            'tstamp' => $GLOBALS['EXEC_TIME'],
-            'user' => $dataHandler->BE_USER->user['username'],
-            'curVersion' => $curVersion,
-            'swapVersion' => $swapVersion
-        ]));
         // Find fields to keep
         $keepFields = $this->getUniqueFields($table);
         if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
@@ -767,7 +746,6 @@ class DataHandlerHook
                     ['uid' => (int)$swapWith],
                     $types
                 );
-                unlink($lockFileName);
             } catch (DBALException $e) {
                 $sqlErrors[] = $e->getPrevious()->getMessage();
             }
