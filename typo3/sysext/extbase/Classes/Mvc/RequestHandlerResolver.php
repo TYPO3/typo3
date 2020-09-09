@@ -15,8 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Mvc;
 
+use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Analyzes the raw request and delivers a request handler which can handle it.
@@ -25,9 +26,9 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 class RequestHandlerResolver
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ContainerInterface
      */
-    protected $objectManager;
+    private $container;
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\RequestHandlersConfiguration
@@ -35,18 +36,13 @@ class RequestHandlerResolver
     private $requestHandlersConfiguration;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
+     * @param ContainerInterface $container
      * @param RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception
      */
-    public function __construct(RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory)
+    public function __construct(ContainerInterface $container, RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory)
     {
+        $this->container = $container;
         $this->requestHandlersConfiguration = $requestHandlersConfigurationFactory->createRequestHandlersConfiguration();
     }
 
@@ -62,7 +58,10 @@ class RequestHandlerResolver
         $suitableRequestHandlers = [];
         foreach ($this->requestHandlersConfiguration->getRegisteredRequestHandlers() as $requestHandlerClassName) {
             /** @var RequestHandlerInterface $requestHandler */
-            $requestHandler = $this->objectManager->get($requestHandlerClassName);
+            $requestHandler = $this->container->has($requestHandlerClassName)
+                ? $this->container->get($requestHandlerClassName)
+                : GeneralUtility::makeInstance($requestHandlerClassName)
+            ;
             if ($requestHandler->canHandleRequest()) {
                 $priority = $requestHandler->getPriority();
                 if (isset($suitableRequestHandlers[$priority])) {
