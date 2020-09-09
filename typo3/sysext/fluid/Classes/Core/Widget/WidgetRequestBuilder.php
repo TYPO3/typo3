@@ -61,7 +61,7 @@ class WidgetRequestBuilder extends RequestBuilder
         }
         $widgetContext = $this->ajaxWidgetContextHolder->get($rawGetArguments['fluid-widget-id']);
 
-        $request = $this->objectManager->get(WidgetRequest::class, $widgetContext->getControllerObjectName());
+        $request = GeneralUtility::makeInstance(WidgetRequest::class, $widgetContext->getControllerObjectName());
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri($baseUri);
         $request->setMethod($_SERVER['REQUEST_METHOD'] ?? null);

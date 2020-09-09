@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
@@ -37,11 +36,6 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
  */
 class RequestBuilder implements SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * This is a unique key for a plugin (not the extension key!)
      *
@@ -113,14 +107,6 @@ class RequestBuilder implements SingletonInterface
      * @var array|string[]
      */
     private $allowedControllerAliases = [];
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -217,7 +203,7 @@ class RequestBuilder implements SingletonInterface
         }
 
         /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
-        $request = $this->objectManager->get(Request::class);
+        $request = GeneralUtility::makeInstance(Request::class);
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
