@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Fixture\Entity;
@@ -60,10 +61,12 @@ class CollectionValidatorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->resetSingletonInstances = true;
         $this->mockValidatorResolver = $this->getAccessibleMock(
             ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction']
         );
+        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, $this->mockValidatorResolver);
         $this->validator = $this->getValidator();
         $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
     }

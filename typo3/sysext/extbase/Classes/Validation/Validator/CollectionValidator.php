@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -35,16 +36,15 @@ class CollectionValidator extends GenericObjectValidator
     ];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
+     * @var ValidatorResolver
      */
     protected $validatorResolver;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
-     */
-    public function injectValidatorResolver(ValidatorResolver $validatorResolver)
+    public function __construct(array $options = [])
     {
-        $this->validatorResolver = $validatorResolver;
+        parent::__construct($options);
+
+        $this->validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
     }
 
     /**

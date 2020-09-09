@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Validation;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
@@ -34,11 +33,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 class ValidatorResolver implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
      */
     protected $reflectionService;
@@ -47,14 +41,6 @@ class ValidatorResolver implements SingletonInterface
      * @var array
      */
     protected $baseValidatorConjunctions = [];
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
@@ -83,7 +69,7 @@ class ValidatorResolver implements SingletonInterface
              */
             $validatorObjectName = ValidatorClassNameResolver::resolve($validatorType);
 
-            $validator = $this->objectManager->get($validatorObjectName, $validatorOptions);
+            $validator = GeneralUtility::makeInstance($validatorObjectName, $validatorOptions);
 
             // Move this check into ClassSchema
             if (!($validator instanceof ValidatorInterface)) {
@@ -148,7 +134,7 @@ class ValidatorResolver implements SingletonInterface
 
             // Model based validator
             /** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
-            $objectValidator = $this->objectManager->get(GenericObjectValidator::class, []);
+            $objectValidator = GeneralUtility::makeInstance(GenericObjectValidator::class, []);
             foreach ($classSchema->getProperties() as $property) {
                 if ($property->getType() === null) {
                     // todo: The type is only necessary here for further analyzations whether it's a simple type or
