@@ -307,7 +307,7 @@ AddDefaultCharset utf-8
 
 	# Stop rewrite processing, if we are in the typo3/ directory or any other known directory
 	# NOTE: Add your additional local storages here
-	RewriteRule ^(?:typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
+	RewriteRule ^(?:typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
 
 	# If the file/symlink/directory does not exist => Redirect to index.php.
 	# For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.
