@@ -1554,6 +1554,7 @@ abstract class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
                     "composer install -n\n" +
+                    "composer config platform.php 7.2.0\n" +
                     "composer update --prefer-lowest --no-progress  -n\n" +
                     "composer dumpautoload"
             )
