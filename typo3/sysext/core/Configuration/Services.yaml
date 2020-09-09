@@ -415,7 +415,7 @@ services:
     alias: GuzzleHttp\Client
     public: true
   Symfony\Contracts\EventDispatcher\EventDispatcherInterface:
-    alias: TYPO3\CMS\Core\Adapter\SymfonyEventDispatcher
+    alias: TYPO3\SymfonyPsrEventDispatcherAdapter\EventDispatcherAdapter
     public: true
 
   # External dependencies
