@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -25,19 +25,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class QueryObjectModelFactory implements SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
     /**
      * Selects a subset of the nodes in the repository based on node type.
      *
@@ -51,7 +38,7 @@ class QueryObjectModelFactory implements SingletonInterface
         if ($selectorName === '') {
             $selectorName = $nodeTypeName;
         }
-        return $this->objectManager->get(Selector::class, $selectorName, $nodeTypeName);
+        return GeneralUtility::makeInstance(Selector::class, $selectorName, $nodeTypeName);
     }
 
     /**
@@ -63,7 +50,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function statement($statement, array $boundVariables = [])
     {
-        return $this->objectManager->get(Statement::class, $statement, $boundVariables);
+        return GeneralUtility::makeInstance(Statement::class, $statement, $boundVariables);
     }
 
     /**
@@ -77,7 +64,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function join(SourceInterface $left, SourceInterface $right, $joinType, JoinConditionInterface $joinCondition)
     {
-        return $this->objectManager->get(Join::class, $left, $right, $joinType, $joinCondition);
+        return GeneralUtility::makeInstance(Join::class, $left, $right, $joinType, $joinCondition);
     }
 
     /**
@@ -92,7 +79,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name)
     {
-        return $this->objectManager->get(EquiJoinCondition::class, $selector1Name, $property1Name, $selector2Name, $property2Name);
+        return GeneralUtility::makeInstance(EquiJoinCondition::class, $selector1Name, $property1Name, $selector2Name, $property2Name);
     }
 
     /**
@@ -105,7 +92,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function _and(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
     {
-        return $this->objectManager->get(LogicalAnd::class, $constraint1, $constraint2);
+        return GeneralUtility::makeInstance(LogicalAnd::class, $constraint1, $constraint2);
     }
 
     /**
@@ -118,7 +105,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function _or(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
     {
-        return $this->objectManager->get(LogicalOr::class, $constraint1, $constraint2);
+        return GeneralUtility::makeInstance(LogicalOr::class, $constraint1, $constraint2);
     }
 
     /**
@@ -130,7 +117,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function not(ConstraintInterface $constraint)
     {
-        return $this->objectManager->get(LogicalNot::class, $constraint);
+        return GeneralUtility::makeInstance(LogicalNot::class, $constraint);
     }
 
     /**
@@ -144,7 +131,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function comparison(PropertyValueInterface $operand1, $operator, $operand2)
     {
-        return $this->objectManager->get(Comparison::class, $operand1, $operator, $operand2);
+        return GeneralUtility::makeInstance(Comparison::class, $operand1, $operator, $operand2);
     }
 
     /**
@@ -157,7 +144,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function propertyValue($propertyName, $selectorName = '')
     {
-        return $this->objectManager->get(PropertyValue::class, $propertyName, $selectorName);
+        return GeneralUtility::makeInstance(PropertyValue::class, $propertyName, $selectorName);
     }
 
     /**
@@ -169,7 +156,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function lowerCase(PropertyValueInterface $operand)
     {
-        return $this->objectManager->get(LowerCase::class, $operand);
+        return GeneralUtility::makeInstance(LowerCase::class, $operand);
     }
 
     /**
@@ -181,7 +168,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function upperCase(PropertyValueInterface $operand)
     {
-        return $this->objectManager->get(UpperCase::class, $operand);
+        return GeneralUtility::makeInstance(UpperCase::class, $operand);
     }
 
     /**
@@ -195,7 +182,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function ascending(DynamicOperandInterface $operand)
     {
-        return $this->objectManager->get(Ordering::class, $operand, QueryInterface::ORDER_ASCENDING);
+        return GeneralUtility::makeInstance(Ordering::class, $operand, QueryInterface::ORDER_ASCENDING);
     }
 
     /**
@@ -209,7 +196,7 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function descending(DynamicOperandInterface $operand)
     {
-        return $this->objectManager->get(Ordering::class, $operand, QueryInterface::ORDER_DESCENDING);
+        return GeneralUtility::makeInstance(Ordering::class, $operand, QueryInterface::ORDER_DESCENDING);
     }
 
     /**
@@ -221,6 +208,6 @@ class QueryObjectModelFactory implements SingletonInterface
      */
     public function bindVariable($bindVariableName)
     {
-        return $this->objectManager->get(BindVariableValue::class, $bindVariableName);
+        return GeneralUtility::makeInstance(BindVariableValue::class, $bindVariableName);
     }
 }
