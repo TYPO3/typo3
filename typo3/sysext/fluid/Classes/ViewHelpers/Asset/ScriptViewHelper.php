@@ -98,7 +98,7 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
             'priority' => $this->arguments['priority']
         ];
         if ($src !== null) {
-            $this->assetCollector->addJavaScript($identifier, $src, $attributes, $options);
+            $this->assetCollector->addJavaScript($identifier, html_entity_decode($src), $attributes, $options);
         } else {
             $content = (string)$this->renderChildren();
             if ($content !== '') {
