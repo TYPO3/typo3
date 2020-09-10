@@ -193,6 +193,21 @@ TYPO3:
                             10:
                               value: default
                               label: formEditor.elements.Form.finisher.EmailToSender.editor.language.1
+                        1300:
+                          identifier: useFluidEmail
+                          templateName: Inspector-CheckboxEditor
+                          label: formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label
+                          propertyPath: options.useFluidEmail
+                          fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.fieldExplanationText
+                        1400:
+                          identifier: title
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.Form.finisher.EmailToSender.editor.title.label
+                          propertyPath: options.title
+                          fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText
+                          enableFormelementSelectionButton: true
+                          propertyValidators:
+                            10: FormElementIdentifierWithinCurlyBracesInclusive
                         9999:
                           identifier: removeButton
                           templateName: Inspector-RemoveElementEditor
@@ -319,6 +334,21 @@ TYPO3:
                             10:
                               value: default
                               label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1
+                        1300:
+                          identifier: useFluidEmail
+                          templateName: Inspector-CheckboxEditor
+                          label: formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.label
+                          propertyPath: options.useFluidEmail
+                          fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.fieldExplanationText
+                        1400:
+                          identifier: title
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label
+                          propertyPath: options.title
+                          fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText
+                          enableFormelementSelectionButton: true
+                          propertyValidators:
+                            10: FormElementIdentifierWithinCurlyBracesInclusive
                         9999:
                           identifier: removeButton
                           templateName: Inspector-RemoveElementEditor

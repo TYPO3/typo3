@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Send out templated HTML/plain text emails with Fluid.
@@ -141,6 +142,15 @@ class FluidEmail extends Email
     {
         $this->generateTemplatedBody();
         return parent::getBody();
+    }
+
+    /**
+     * @return ViewHelperVariableContainer
+     * @internal Only used for ext:form, not part of TYPO3 Core API.
+     */
+    public function getViewHelperVariableContainer(): ViewHelperVariableContainer
+    {
+        return $this->view->getRenderingContext()->getViewHelperVariableContainer();
     }
 
     protected function generateTemplatedBody(): void

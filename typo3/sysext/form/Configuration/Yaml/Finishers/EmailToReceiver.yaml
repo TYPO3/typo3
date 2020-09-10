@@ -26,6 +26,8 @@ TYPO3:
                     attachUploads: true
                     translation:
                       language: ''
+                    useFluidEmail: false
+                    title: ''
               FormEngine:
                 label: tt_content.finishersDefinition.EmailToReceiver.label
                 elements:
@@ -149,3 +151,7 @@ TYPO3:
                           10:
                             - tt_content.finishersDefinition.EmailToReceiver.language.1
                             - default
+                  title:
+                    label: tt_content.finishersDefinition.EmailToReceiver.title.label
+                    config:
+                      type: input

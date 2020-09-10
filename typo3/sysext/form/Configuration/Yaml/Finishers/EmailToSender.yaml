@@ -24,6 +24,8 @@ TYPO3:
                     blindCarbonCopyRecipients: {  }
                     addHtmlPart: true
                     attachUploads: true
+                    useFluidEmail: false
+                    title: ''
               FormEngine:
                 label: tt_content.finishersDefinition.EmailToSender.label
                 elements:
@@ -147,3 +149,7 @@ TYPO3:
                           10:
                             - tt_content.finishersDefinition.EmailToSender.language.1
                             - default
+                  title:
+                    label: tt_content.finishersDefinition.EmailToSender.title.label
+                    config:
+                      type: input
