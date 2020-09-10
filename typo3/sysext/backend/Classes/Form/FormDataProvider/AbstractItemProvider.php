@@ -781,7 +781,10 @@ abstract class AbstractItemProvider
                 && (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
             ) {
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
-                    if (isset($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) && (bool)$GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
+                    $isExcludeField = (bool)($GLOBALS['TCA'][$table]['columns'][$field]['exclude'] ?? false);
+                    $isOnlyVisibleForAdmins = ($GLOBALS['TCA'][$table]['columns'][$field]['displayCond'] ?? '') === 'HIDE_FOR_NON_ADMINS';
+                    // Only show fields that can be excluded for editors, or are hidden for non-admins
+                    if ($isExcludeField && !$isOnlyVisibleForAdmins) {
                         // Get human readable names of fields
                         $translatedField = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
                         // Add entry, key 'labels' needed for sorting

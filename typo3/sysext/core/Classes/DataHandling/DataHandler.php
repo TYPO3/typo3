@@ -6772,7 +6772,10 @@ class DataHandler implements LoggerAwareInterface
             foreach ($GLOBALS['TCA'] as $table => $tableConfiguration) {
                 if (isset($tableConfiguration['columns'])) {
                     foreach ($tableConfiguration['columns'] as $field => $config) {
-                        if ($config['exclude'] && !isset($nonExcludeFieldsArray[$table . ':' . $field])) {
+                        $isExcludeField = ($config['exclude'] ?? false);
+                        $isOnlyVisibleForAdmins = ($GLOBALS['TCA'][$table]['columns'][$field]['displayCond'] ?? '') === 'HIDE_FOR_NON_ADMINS';
+                        $editorHasPermissionForThisField = isset($nonExcludeFieldsArray[$table . ':' . $field]);
+                        if ($isOnlyVisibleForAdmins || ($isExcludeField && !$editorHasPermissionForThisField)) {
                             $list[] = $table . '-' . $field;
                         }
                     }

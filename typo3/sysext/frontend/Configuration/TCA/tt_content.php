@@ -248,6 +248,7 @@ return [
         ],
         'editlock' => [
             'exclude' => true,
+            'displayCond' => 'HIDE_FOR_NON_ADMINS',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
             'config' => [
                 'type' => 'check',
