@@ -238,8 +238,8 @@ class WorkspacePreview implements MiddlewareInterface
         $cookieSameSite = $this->sanitizeSameSiteCookieValue(
             strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
         );
-        // None needs the secure option (only allowed on HTTPS)
-        $cookieSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
+        // SameSite Cookie = None needs the secure option (only allowed on HTTPS)
+        $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
 
         $cookie = new Cookie(
             $this->previewKey,
@@ -247,7 +247,7 @@ class WorkspacePreview implements MiddlewareInterface
             0,
             $normalizedParams->getSitePath(),
             null,
-            $cookieSecure,
+            $isSecure,
             true,
             false,
             $cookieSameSite

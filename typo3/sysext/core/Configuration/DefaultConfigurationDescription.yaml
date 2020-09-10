@@ -84,13 +84,6 @@ SYS:
         cookieDomain:
             type: text
             description: 'Restricts the domain name for FE and BE session cookies. When setting the value to ".domain.com" (replace domain.com with your domain!), login sessions will be shared across subdomains. Alternatively, if you have more than one domain with sub-domains, you can set the value to a regular expression to match against the domain of the HTTP request. The result of the match is used as the domain for the cookie. eg. <code>/\.(example1|example2)\.com$/</code> or <code>/\.(example1\.com)|(example2\.net)$/</code>. Separate domains for FE and BE can be set using <a href="#FE-cookieDomain">$TYPO3_CONF_VARS[''FE''][''cookieDomain'']</a> and <a href="#BE-cookieDomain">$TYPO3_CONF_VARS[''BE''][''cookieDomain'']</a> respectively.'
-        cookieSecure:
-            type: int
-            allowedValues:
-              '0': 'Always send the cookie, regardless if the connection is secure'
-              '1': 'Force HTTPS: the cookie will only be set if a secure (HTTPS) connection exists - use this in combination with lockSSL since otherwise the application will fail and throw an exception'
-              '2': 'The cookie will be set in each case, but uses the secure flag if a secure (HTTPS) connection exists'
-            description: 'Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client.'
         trustedHostsPattern:
             type: text
             description: 'Regular expression pattern that matches all allowed hostnames (including their ports) of this TYPO3 installation, or the string "SERVER_NAME" (default). The default value <code>SERVER_NAME</code> checks if the HTTP Host header equals the SERVER_NAME and SERVER_PORT. This is secure in correctly configured hosting environments and does not need further configuration. If you cannot change your hosting environment, you can enter a regular expression here. Examples: <code>.*\.domain\.com</code> matches all hosts that end with <code>.domain.com</code> with all corresponding subdomains. <code>(.*\.domain|.*\.otherdomain)\.com</code> matches all hostnames with subdomains from <code>.domain.com</code> and <code>.otherdomain.com</code>. Be aware that HTTP Host header may also contain a port. If your installation runs on a specific port, you need to explicitly allow this in your pattern, e.g. <code>www\.domain\.com:88</code> allows only <code>www.domain.com:88</code>, <strong>not</strong> <code>www.domain.com</code>. To disable this check completely (not recommended because it is <strong>insecure</strong>) you can use ".*" as pattern.'

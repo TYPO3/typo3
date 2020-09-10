@@ -83,7 +83,6 @@ return [
         'sitename' => 'TYPO3',
         'encryptionKey' => '',
         'cookieDomain' => '',
-        'cookieSecure' => 0,
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
         'ddmmyy' => 'd-m-y',

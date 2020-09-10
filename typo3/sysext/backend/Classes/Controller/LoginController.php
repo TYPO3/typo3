@@ -713,15 +713,13 @@ class LoginController implements LoggerAwareInterface
             // Use the secure option when the current request is served by a secure connection
             /** @var NormalizedParams $normalizedParams */
             $normalizedParams = $request->getAttribute('normalizedParams');
-            $isHttps = $normalizedParams->isHttps();
-            $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && $isHttps;
             $cookie = new Cookie(
                 'be_lastLoginProvider',
                 $loginProvider,
                 $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
                 $normalizedParams->getSitePath() . TYPO3_mainDir,
                 '',
-                $cookieSecure,
+                $normalizedParams->isHttps(),
                 true,
                 false,
                 Cookie::SAMESITE_STRICT

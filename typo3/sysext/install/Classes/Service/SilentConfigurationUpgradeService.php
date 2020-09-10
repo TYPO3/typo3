@@ -157,6 +157,8 @@ class SilentConfigurationUpgradeService
         'SYS/systemLogLevel',
         // #91974
         'FE/IPmaskMountGroups',
+        // #87301
+        'SYS/cookieSecure',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)
