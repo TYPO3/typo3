@@ -1097,6 +1097,7 @@ class BackendUtilityTest extends UnitTestCase
             'pid' => -1,
             't3ver_oid' => 7,
             't3ver_wsid' => 42,
+            't3ver_state' => 0
         ];
         $reference = $rr;
         BackendUtility::fixVersioningPid($tableName, $rr);

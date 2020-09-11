@@ -1449,78 +1449,81 @@ class PageRepository implements LoggerAwareInterface
      * ONLY active when backend user is previewing records. MUST NEVER affect a site
      * served which is not previewed by backend users!!!
      *
-     * Will look if the "pid" value of the input record is -1 (it is an offline
-     * version) and if the table supports versioning; if so, it will translate the -1
-     * PID into the PID of the original record.
+     * What happens in this method:
+     * If a record was moved in a workspace, the records' PID might be different. This is only reason
+     * nowadays why this method exists.
+     *
+     * This is checked:
+     * 1. If the record has a "online pendant" (t3ver_oid > 0), it overrides the "pid" with the one from the online version.
+     * 2. If a record is a live version, check if there is a moved version in this workspace, and override the LIVE version with the new moved "pid" value.
      *
      * Used whenever you are tracking something back, like making the root line.
      *
      * Principle; Record offline! => Find online?
      *
      * @param string $table Table name
-     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
+     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid", "t3ver_state" and "t3ver_wsid", "t3ver_state" is nice and will save you a DB query.
      * @see BackendUtility::fixVersioningPid()
      * @see versionOL()
-     * @see getRootLine()
      */
     public function fixVersioningPid($table, &$rr)
     {
-        if ($this->versioningWorkspaceId > 0 && is_array($rr) && $this->hasTableWorkspaceSupport($table)) {
-            $oid = 0;
-            $wsid = 0;
-            // Check values for t3ver_oid and t3ver_wsid:
-            if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
-                // If "t3ver_oid" is already a field, just set this:
-                $oid = $rr['t3ver_oid'];
-                $wsid = $rr['t3ver_wsid'];
-            } else {
-                // Otherwise we have to expect "uid" to be in the record and look up based
-                // on this:
-                $uid = (int)$rr['uid'];
-                if ($uid > 0) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $newPidRec = $queryBuilder->select('t3ver_oid', 't3ver_wsid')
-                        ->from($table)
-                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-                        ->execute()
-                        ->fetch();
+        if ($this->versioningWorkspaceId <= 0) {
+            return;
+        }
+        if (!is_array($rr)) {
+            return;
+        }
+        if (!$this->hasTableWorkspaceSupport($table)) {
+            return;
+        }
+        $uid = (int)$rr['uid'];
+        $oid = 0;
+        $workspaceId = 0;
+        $versionState = null;
+        // Check values for t3ver_oid and t3ver_wsid
+        if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid']) && isset($rr['t3ver_state'])) {
+            // If "t3ver_oid" is already a field, just set this:
+            $oid = $rr['t3ver_oid'];
+            $workspaceId = (int)$rr['t3ver_wsid'];
+            $versionState = (int)$rr['t3ver_state'];
+        } elseif ($uid > 0) {
+            // Otherwise we have to expect "uid" to be in the record and look up based
+            // on this:
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $newPidRec = $queryBuilder->select('t3ver_oid', 't3ver_wsid', 't3ver_state')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+                ->execute()
+                ->fetch();
 
-                    if (is_array($newPidRec)) {
-                        $oid = $newPidRec['t3ver_oid'];
-                        $wsid = $newPidRec['t3ver_wsid'];
-                    }
-                }
-            }
-            // If workspace ids matches and ID of current online version is found, look up
-            // the PID value of that:
-            if ($oid && (int)$wsid === (int)$this->versioningWorkspaceId) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $oidRec = $queryBuilder->select('pid')
-                    ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($oid, \PDO::PARAM_INT)))
-                    ->execute()
-                    ->fetch();
-
-                if (is_array($oidRec)) {
-                    // SWAP uid as well? Well no, because when fixing a versioning PID happens it is
-                    // assumed that this is a "branch" type page and therefore the uid should be
-                    // kept (like in versionOL()). However if the page is NOT a branch version it
-                    // should not happen - but then again, direct access to that uid should not
-                    // happen!
-                    $rr['_ORIG_pid'] = $rr['pid'];
-                    $rr['pid'] = $oidRec['pid'];
-                }
+            if (is_array($newPidRec)) {
+                $oid = $newPidRec['t3ver_oid'];
+                $workspaceId = (int)$newPidRec['t3ver_wsid'];
+                $versionState = (int)$newPidRec['t3ver_state'];
             }
         }
-        // Changing PID in case of moving pointer:
-        if ($movePlhRec = $this->getMovePlaceholder($table, $rr['uid'], 'pid')) {
-            $rr['pid'] = $movePlhRec['pid'];
+
+        // Workspace does not match, so this is skipped
+        if ($workspaceId !== (int)$this->versioningWorkspaceId) {
+            return;
+        }
+        // Now set the "pid" properly.
+        // This will only make a difference when handing in move placeholders but is kept for backwards-compat
+        // however it's always the same for live + versioned record, except for moving, where _ORIG_pid will
+        // be set to the live PID, and pid to the moved location
+        if ($oid) {
+            $rr['_ORIG_pid'] = $rr['pid'];
+        }
+        // Changing PID in case there is a move pointer
+        // This happens if the $uid is still a live version but the overlay happened (via t3ver_oid) and the t3ver_state was
+        // Changed to MOVE_POINTER. This logic happens in versionOL(), where the "pid" of the live version is kept.
+        if ($versionState === VersionState::MOVE_POINTER && $movedPageId = $this->getMovedPidOfVersionedRecord($table, $uid)) {
+            $rr['_ORIG_pid'] = $rr['pid'];
+            $rr['pid'] = $movedPageId;
         }
     }
 
@@ -1561,6 +1564,8 @@ class PageRepository implements LoggerAwareInterface
                     // Keep the old (-1) - indicates it was a version...
                     $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
                     // Set in the online versions PID.
+                    // Side note: For move pointers, this is set back to the PID of the live record now
+                    // The only place where PID is actually different.
                     $wsAlt['pid'] = $row['pid'];
                     // For versions of single elements or page+content, preserve online UID and PID
                     // (this will produce true "overlay" of element _content_, not any references)
@@ -1671,52 +1676,58 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Returns move placeholder of online (live) version
+     * Returns the PID of the new (moved) location within a version, when a $liveUid is given.
+     *
+     * Please note: This is only performed within a workspace.
+     * This was previously stored in the move placeholder's PID, but move pointer's PID and move placeholder's PID
+     * are the same since TYPO3 v10, so the MOVE_POINTER is queried.
      *
      * @param string $table Table name
-     * @param int $uid Record UID of online version
-     * @param string $fields Field list, default is *
-     * @return array If found, the record, otherwise nothing.
+     * @param int $liveUid Record UID of online version
+     * @return int|null If found, the Page ID of the moved record, otherwise null.
      * @see BackendUtility::getMovePlaceholder()
      */
-    protected function getMovePlaceholder($table, $uid, $fields = '*')
+    protected function getMovedPidOfVersionedRecord(string $table, int $liveUid): ?int
     {
-        $workspace = (int)$this->versioningWorkspaceId;
-        if ($workspace > 0 && $this->hasTableWorkspaceSupport($table)) {
-            // Select workspace version of record:
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_state',
-                        $queryBuilder->createNamedParameter(
-                            (string)VersionState::cast(VersionState::MOVE_PLACEHOLDER),
-                            \PDO::PARAM_INT
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_move_id',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1)
-                ->execute()
-                ->fetch();
-
-            if (is_array($row)) {
-                return $row;
-            }
+        if ($this->versioningWorkspaceId <= 0) {
+            return null;
         }
-        return false;
+        if (!$this->hasTableWorkspaceSupport($table)) {
+            return null;
+        }
+        // Select workspace version of record
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $row = $queryBuilder->select('pid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->createNamedParameter(
+                        (string)VersionState::cast(VersionState::MOVE_POINTER),
+                        \PDO::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_oid',
+                    $queryBuilder->createNamedParameter($liveUid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($this->versioningWorkspaceId, \PDO::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+
+        if (is_array($row)) {
+            return (int)$row['pid'];
+        }
+        return null;
     }
 
     /**
