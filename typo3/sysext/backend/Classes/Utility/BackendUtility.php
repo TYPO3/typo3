@@ -3378,7 +3378,7 @@ class BackendUtility
      * to detect if a record was in fact in a versionized branch.
      *
      * @param string $table Table name
-     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
+     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid", "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
      * @param bool $ignoreWorkspaceMatch Ignore workspace match
      * @see PageRepository::fixVersioningPid()
      * @internal should only be used from within TYPO3 Core
@@ -3391,43 +3391,53 @@ class BackendUtility
         if (!static::isTableWorkspaceEnabled($table)) {
             return;
         }
-        // Check that the input record is an offline version from a table that supports versioning:
-        if (is_array($rr)) {
-            // Check values for t3ver_oid and t3ver_wsid:
-            if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
-                // If "t3ver_oid" is already a field, just set this:
-                $oid = $rr['t3ver_oid'];
-                $wsid = $rr['t3ver_wsid'];
-            } else {
-                $oid = 0;
-                $wsid = 0;
-                // Otherwise we have to expect "uid" to be in the record and look up based on this:
-                $newPidRec = self::getRecord($table, $rr['uid'], 't3ver_oid,t3ver_wsid');
-                if (is_array($newPidRec)) {
-                    $oid = $newPidRec['t3ver_oid'];
-                    $wsid = $newPidRec['t3ver_wsid'];
-                }
+        // Check that the input record is an offline version from a table that supports versioning
+        if (!is_array($rr)) {
+            return;
+        }
+        $incomingPid = $rr['pid'] ?? null;
+        // Check values for t3ver_oid and t3ver_wsid:
+        if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid']) && isset($rr['t3ver_state'])) {
+            // If "t3ver_oid" is already a field, just set this:
+            $oid = $rr['t3ver_oid'];
+            $workspaceId = (int)$rr['t3ver_wsid'];
+            $versionState = (int)$rr['t3ver_state'];
+        } else {
+            $oid = 0;
+            $workspaceId = 0;
+            $versionState = 0;
+            // Otherwise we have to expect "uid" to be in the record and look up based on this:
+            $newPidRec = self::getRecord($table, $rr['uid'], 'pid,t3ver_oid,t3ver_wsid,t3ver_state');
+            if (is_array($newPidRec)) {
+                $incomingPid = $newPidRec['pid'];
+                $oid = $newPidRec['t3ver_oid'];
+                $workspaceId = $newPidRec['t3ver_wsid'];
+                $versionState = $newPidRec['t3ver_state'];
             }
-            // If ID of current online version is found, look up the PID value of that:
-            if ($oid
-                && ($ignoreWorkspaceMatch || (static::getBackendUserAuthentication() instanceof BackendUserAuthentication && (int)$wsid === (int)static::getBackendUserAuthentication()->workspace))
-            ) {
-                $oidRec = self::getRecord($table, $oid, 'pid');
-                if (is_array($oidRec)) {
-                    $rr['_ORIG_pid'] = $rr['pid'];
-                    $rr['pid'] = $oidRec['pid'];
+        }
+        if ($oid && ($ignoreWorkspaceMatch || (static::getBackendUserAuthentication() instanceof BackendUserAuthentication && $workspaceId === (int)static::getBackendUserAuthentication()->workspace))) {
+            if ($incomingPid === null) {
+                // This can be removed, as this is the same for all versioned records
+                $onlineRecord = self::getRecord($table, $oid, 'pid');
+                if (is_array($onlineRecord)) {
+                    $rr['_ORIG_pid'] = $onlineRecord['pid'];
+                    $rr['pid'] = $onlineRecord['pid'];
                 }
-                // Use target PID in case of move pointer
-                if (
-                    !isset($rr['t3ver_state'])
-                    || VersionState::cast($rr['t3ver_state'])->equals(VersionState::MOVE_POINTER)
-                ) {
-                    $movePlaceholder = self::getMovePlaceholder($table, $oid, 'pid');
-                    if ($movePlaceholder) {
-                        $rr['_ORIG_pid'] = $rr['pid'];
-                        $rr['pid'] = $movePlaceholder['pid'];
-                    }
+            } else {
+                // This can be removed, as this is the same for all versioned records (clearly obvious here)
+                $rr['_ORIG_pid'] = $incomingPid;
+                $rr['pid'] = $incomingPid;
+            }
+            // Use moved PID in case of move pointer
+            if ($versionState === VersionState::MOVE_POINTER) {
+                if ($incomingPid !== null) {
+                    $movedPageIdInWorkspace = $incomingPid;
+                } else {
+                    $versionedMovePointer = self::getRecord($table, $rr['uid'], 'pid');
+                    $movedPageIdInWorkspace = $versionedMovePointer['pid'];
                 }
+                $rr['_ORIG_pid'] = $incomingPid;
+                $rr['pid'] = $movedPageIdInWorkspace;
             }
         }
     }
