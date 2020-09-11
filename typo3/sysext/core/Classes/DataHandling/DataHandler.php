@@ -6142,7 +6142,6 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Checks if user may insert a record from $insertTable on $pid
-     * Does not check for workspace, use BE_USER->workspaceAllowLiveRecordsInPID for this in addition to this function call.
      *
      * @param string $insertTable Tablename to check
      * @param int $pid Integer PID

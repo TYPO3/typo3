@@ -989,36 +989,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Check if "live" records from $table may be created or edited in this PID.
-     * If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
-     * If the answer is 1 or 2 it means it is OK to create a record, if -1 it means that it is OK in terms
-     * of versioning because the element was within a versionized branch
-     * but NOT ok in terms of the state the root point had!
-     *
-     * Note: this method is not in use anymore and will likely be deprecated in future TYPO3 versions.
-     *
-     * @param int $pid PID value to check for. OBSOLETE!
-     * @param string $table Table name
-     * @return mixed Returns FALSE if a live record cannot be created and must be versionized in order to do so. 2 means a) Workspace is "Live" or workspace allows "live edit" of records from non-versionized tables (and the $table is not versionizable). 1 and -1 means the pid is inside a versionized branch where -1 means that the branch-point did NOT allow a new record according to its state.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function workspaceAllowLiveRecordsInPID($pid, $table)
-    {
-        // Always for Live workspace AND if live-edit is enabled
-        // and tables are completely without versioning it is ok as well.
-        if (
-            $this->workspace === 0
-            || $this->workspaceRec['live_edit'] && !BackendUtility::isTableWorkspaceEnabled($table)
-            || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']
-        ) {
-            // OK to create for this table.
-            return 2;
-        }
-        // If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
-        return false;
-    }
-
-    /**
      * Checks if a record is allowed to be edited in the current workspace.
      * This is not bound to an actual record, but to the mere fact if the user is in a workspace
      * and depending on the table settings.
@@ -1044,26 +1014,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // If the answer is FALSE it means the only valid way to create or edit records by creating records in the workspace
         return false;
-    }
-
-    /**
-     * Evaluates if a record from $table can be created in $pid
-     *
-     * Note: this method is not in use anymore and will likely be deprecated in future TYPO3 versions.
-     *
-     * @param int $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
-     * @param string $table Table name
-     * @return bool TRUE if OK.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function workspaceCreateNewRecord($pid, $table)
-    {
-        // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
-        if (!$this->workspaceAllowsLiveEditingInTable($table) && !BackendUtility::isTableWorkspaceEnabled($table)) {
-            // So, if no live records were allowed, we have to create a new version of this record
-            return false;
-        }
-        return true;
     }
 
     /**
