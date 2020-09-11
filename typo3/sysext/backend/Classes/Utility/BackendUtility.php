@@ -3303,12 +3303,10 @@ class BackendUtility
         $includeDeletedRecords = false,
         $row = null
     ) {
-        $realPid = 0;
         $outputRows = [];
         if (static::isTableWorkspaceEnabled($table)) {
             if (is_array($row) && !$includeDeletedRecords) {
                 $row['_CURRENT_VERSION'] = true;
-                $realPid = $row['pid'];
                 $outputRows[] = $row;
             } else {
                 // Select UID version:
@@ -3316,7 +3314,6 @@ class BackendUtility
                 // Add rows to output array:
                 if ($row) {
                     $row['_CURRENT_VERSION'] = true;
-                    $realPid = $row['pid'];
                     $outputRows[] = $row;
                 }
             }
@@ -3362,10 +3359,6 @@ class BackendUtility
             // Add rows to output array:
             if (is_array($rows)) {
                 $outputRows = array_merge($outputRows, $rows);
-            }
-            // Set real-pid:
-            foreach ($outputRows as $idx => $oRow) {
-                $outputRows[$idx]['_REAL_PID'] = $realPid;
             }
             return $outputRows;
         }
