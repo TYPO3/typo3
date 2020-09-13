@@ -9,7 +9,7 @@
                     </div>
 
                     <div class="card-header-body">
-                        <h1 class="card-title">{title -> f:format.crop(maxCharacters: maxTitleLength)} [{extraFields.uid.fieldLabel}: {extraFields.uid.value}]</h1>
+                        <h1 class="card-title">{title -> f:format.crop(maxCharacters: maxTitleLength)}<f:if condition="{extraFields.uid.value}">[{extraFields.uid.fieldLabel}: {extraFields.uid.value}]</f:if></h1>
                         <f:if condition="{table}">
                             <span class="card-subtitle">{table}</span>
                         </f:if>
