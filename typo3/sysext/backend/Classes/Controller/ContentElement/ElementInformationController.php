@@ -281,6 +281,7 @@ class ElementInformationController
             'title' => BackendUtility::getRecordTitle($this->table, $this->row)
         ];
         if ($this->type === 'folder') {
+            $pageTitle['title'] = htmlspecialchars($this->folderObject->getName());
             $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder');
             $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
         } elseif ($this->type === 'file') {
@@ -489,52 +490,56 @@ class ElementInformationController
     {
         $lang = $this->getLanguageService();
         $keyLabelPair = [];
-        $extraFields = [
-            'uid' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid'))
-        ];
-
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
-                $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
-                $extraFields['modification_date'] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'));
-            }
-        } else {
-            foreach (['crdate' => 'creationDate', 'tstamp' => 'timestamp', 'cruser_id' => 'creationUserId'] as $field => $label) {
-                if (isset($GLOBALS['TCA'][$this->table]['ctrl'][$field])) {
-                    $extraFields[(string)$GLOBALS['TCA'][$this->table]['ctrl'][$field]] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label));
-                }
-            }
-        }
-
-        foreach ($extraFields as $name => $fieldLabel) {
-            if (in_array($name, ['creation_date', 'modification_date', 'tstamp', 'crdate'], true)) {
-                $rowValue = BackendUtility::datetime($this->row[$name]);
-                $keyLabelPair[$name] = [
-                    'value' => $rowValue,
-                    'fieldLabel' => rtrim($fieldLabel, ':'),
+                $keyLabelPair['uid'] = [
+                    'value' => BackendUtility::getProcessedValueExtra($this->table, 'uid', $this->row['uid']),
+                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid')), ':'),
+                ];
+                $keyLabelPair['creation_date'] = [
+                    'value' => BackendUtility::datetime($this->row['creation_date']),
+                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate')), ':'),
                     'isDatetime' => true,
                 ];
-            } else {
-                $rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
-
-                // show the backend username who created the issue
-                if ($name === 'cruser_id' && $rowValue) {
-                    $creatorRecord = BackendUtility::getRecord('be_users', (int)$rowValue);
-                    if ($creatorRecord) {
-                        /** @var Avatar $avatar */
-                        $avatar = GeneralUtility::makeInstance(Avatar::class);
-                        $creatorRecord['icon'] = $avatar->render($creatorRecord);
-                        $name = 'creatorRecord';
-                        $rowValue = $creatorRecord;
-                    }
-                }
-                $keyLabelPair[$name] = [
-                    'value' => $rowValue,
-                    'fieldLabel' => rtrim($fieldLabel, ':'),
+                $keyLabelPair['modification_date'] = [
+                    'value' => BackendUtility::datetime($this->row['modification_date']),
+                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')), ':'),
+                    'isDatetime' => true,
                 ];
             }
+        } else {
+            $keyLabelPair['uid'] = [
+                'value' => BackendUtility::getProcessedValueExtra($this->table, 'uid', $this->row['uid']),
+                'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid')), ':'),
+            ];
+            foreach (['crdate' => 'creationDate', 'tstamp' => 'timestamp', 'cruser_id' => 'creationUserId'] as $field => $label) {
+                if (isset($GLOBALS['TCA'][$this->table]['ctrl'][$field])) {
+                    if ($field === 'crdate' || $field === 'tstamp') {
+                        $keyLabelPair[$field] = [
+                            'value' => BackendUtility::datetime($this->row[$GLOBALS['TCA'][$this->table]['ctrl'][$field]]),
+                            'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label)), ':'),
+                            'isDatetime' => true,
+                        ];
+                    }
+                    if ($field === 'cruser_id') {
+                        $rowValue = BackendUtility::getProcessedValueExtra($this->table, $GLOBALS['TCA'][$this->table]['ctrl'][$field], $this->row[$GLOBALS['TCA'][$this->table]['ctrl'][$field]]);
+                        if ($rowValue) {
+                            $creatorRecord = BackendUtility::getRecord('be_users', (int)$rowValue);
+                            if ($creatorRecord) {
+                                /** @var Avatar $avatar */
+                                $avatar = GeneralUtility::makeInstance(Avatar::class);
+                                $creatorRecord['icon'] = $avatar->render($creatorRecord);
+                                $rowValue = $creatorRecord;
+                                $keyLabelPair['creatorRecord'] = [
+                                    'value' => $rowValue,
+                                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label)), ':'),
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
         }
-
         return $keyLabelPair;
     }
 
