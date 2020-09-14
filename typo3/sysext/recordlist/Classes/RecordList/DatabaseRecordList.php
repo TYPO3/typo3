@@ -2057,7 +2057,7 @@ class DatabaseRecordList
         if ($this->clipObj->current === 'normal') {
             // Show copy/cut icons:
             $isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
-            if ($isL10nOverlay || !$this->overlayEditLockPermissions($table, $row) || $isRecordDeletePlaceholder) {
+            if ($isL10nOverlay || $isRecordDeletePlaceholder) {
                 $cells['copy'] = $this->spaceIcon;
                 $cells['cut'] = $this->spaceIcon;
             } else {
@@ -2086,14 +2086,11 @@ class DatabaseRecordList
                     $localCalcPerms = new Permission($this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
                     $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
                 } else {
-                    $permsEdit = $this->calcPerms->editContentPermissionIsGranted();
+                    $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
                 }
                 $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
-
-                // If the listed table is 'pages' we have to request the permission settings for each page:
-                if ($table === 'pages') {
-                    if ($permsEdit) {
-                        $cells['cut'] = '<a class="btn btn-default" href="'
+                if ($permsEdit) {
+                    $cells['cut'] = '<a class="btn btn-default" href="'
                         . htmlspecialchars($this->clipObj->selUrlDB(
                             $table,
                             $row['uid'],
@@ -2103,20 +2100,6 @@ class DatabaseRecordList
                         ))
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
-                    } else {
-                        $cells['cut'] = $this->spaceIcon;
-                    }
-                } elseif ($this->calcPerms & Permission::CONTENT_EDIT) {
-                    $cells['cut'] = '<a class="btn btn-default" href="'
-                    . htmlspecialchars($this->clipObj->selUrlDB(
-                        $table,
-                        $row['uid'],
-                        0,
-                        $isSel === 'cut',
-                        ['returnUrl' => $this->listURL()]
-                    ))
-                    . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
-                    . $cutIcon->render() . '</a>';
                 } else {
                     $cells['cut'] = $this->spaceIcon;
                 }
