@@ -44,6 +44,8 @@ class FlexFormElementContainer extends AbstractContainer
 
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
+        $showFieldName = $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUserAuthentication()->isAdmin();
+
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (
                 // No item array found at all
@@ -147,6 +149,7 @@ class FlexFormElementContainer extends AbstractContainer
                     $html[] =   '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
                     $html[] =       '<label class="t3js-formengine-label">';
                     $html[] =           BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
+                    $html[] =           $showFieldName ? ('<code>[' . htmlspecialchars($flexFormFieldName) . ']</code>') : '';
                     $html[] =       '</label>';
                     $html[] =       '<div class="formengine-field-item t3js-formengine-field-item">';
                     $html[] =           $childResult['html'];
