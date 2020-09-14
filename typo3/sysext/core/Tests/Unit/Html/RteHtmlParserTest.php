@@ -31,7 +31,7 @@ class RteHtmlParserTest extends UnitTestCase
      */
     protected bool $resetSingletonInstances = true;
 
-    protected array $procOptions = ['overruleMode' => 'default'];
+    protected array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr'];
 
     /**
      * Data provider for hrTagCorrectlyTransformedOnWayToDataBase
@@ -707,5 +707,16 @@ class RteHtmlParserTest extends UnitTestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
+    }
+
+    /**
+     * @test
+     */
+    public function allowTagsOutsidePreventsWrappingTaginPTag(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        self::assertEquals('<abbr>Allowed outside of p-tag</abbr>', $subject->transformTextForRichTextEditor('<abbr>Allowed outside of p-tag</abbr>', $this->procOptions));
+        self::assertEquals('<p><span>Not allowed outside of p-tag</span></p>', $subject->transformTextForRichTextEditor('<span>Not allowed outside of p-tag</span>', $this->procOptions));
     }
 }
