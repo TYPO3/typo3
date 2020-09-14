@@ -107,6 +107,12 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" resname="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" xml:space="preserve">
                 <source>Add HTML mail part</source>
             </trans-unit>
+			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" resname="tt_content.finishersDefinition.EmailToSender.language.label" xml:space="preserve">
+                <source>Translation language</source>
+            </trans-unit>
+			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" resname="tt_content.finishersDefinition.EmailToSender.language.1" xml:space="preserve">
+                <source>Default</source>
+            </trans-unit>
 
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" resname="tt_content.finishersDefinition.EmailToReceiver.label" xml:space="preserve">
                 <source>Email to receiver (you)</source>
@@ -643,6 +649,12 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" xml:space="preserve">
                 <source>Attach uploads</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" xml:space="preserve">
+                <source>Translation language</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" xml:space="preserve">
+                <source>EN</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve">

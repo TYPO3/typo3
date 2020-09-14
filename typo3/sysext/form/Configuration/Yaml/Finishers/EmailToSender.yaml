@@ -134,3 +134,16 @@ TYPO3:
                     config:
                       type: check
                       default: 1
+                  translation:
+                    language:
+                      label: tt_content.finishersDefinition.EmailToSender.language.label
+                      config:
+                        type: select
+                        renderType: selectSingle
+                        minitems: 1
+                        maxitems: 1
+                        size: 1
+                        items:
+                          10:
+                            - tt_content.finishersDefinition.EmailToSender.language.1
+                            - default

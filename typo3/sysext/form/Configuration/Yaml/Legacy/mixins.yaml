@@ -954,6 +954,15 @@ TYPO3:
                 templateName: Inspector-CheckboxEditor
                 label: formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label
                 propertyPath: options.attachUploads
+              1200:
+                identifier: language
+                templateName: Inspector-SingleSelectEditor
+                label: formEditor.elements.Form.finisher.EmailToSender.editor.language.label
+                propertyPath: options.translation.language
+                selectOptions:
+                  10:
+                    value: default
+                    label: formEditor.elements.Form.finisher.EmailToSender.editor.language.1
               9999:
                 identifier: removeButton
                 templateName: Inspector-RemoveElementEditor
