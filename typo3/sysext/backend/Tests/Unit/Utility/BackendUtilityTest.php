@@ -620,7 +620,7 @@ class BackendUtilityTest extends UnitTestCase
      * @param array $tca
      * @param string $expectedFields
      */
-    public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix = '', array $presetFields, array $tca, $expectedFields = '')
+    public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix, array $presetFields, array $tca, $expectedFields = '')
     {
         $GLOBALS['TCA'][$table] = $tca;
         $selectFields = BackendUtility::getCommonSelectFields($table, $prefix, $presetFields);
@@ -710,7 +710,7 @@ class BackendUtilityTest extends UnitTestCase
      * @param array $tca
      * @param string $expectedLabel
      */
-    public function getLabelFromItemlistReturnsCorrectFields($table, $col = '', $key = '', array $tca, $expectedLabel = '')
+    public function getLabelFromItemlistReturnsCorrectFields($table, $col, $key, array $tca, $expectedLabel = '')
     {
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
@@ -783,7 +783,7 @@ class BackendUtilityTest extends UnitTestCase
      * @param array $tca
      * @param string $expectedLabel
      */
-    public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '')
+    public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column, $key, array $tca, $expectedLabel = '')
     {
         $GLOBALS['TCA'][$table] = $tca;
 

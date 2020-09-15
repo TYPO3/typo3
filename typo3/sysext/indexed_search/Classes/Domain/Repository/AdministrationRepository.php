@@ -465,7 +465,7 @@ class AdministrationRepository
      * @param string $mode
      * @return array
      */
-    public function getTree($pageId, $depth = 4, $mode)
+    public function getTree($pageId, $depth, $mode)
     {
         $allLines = [];
         $pageRecord = BackendUtility::getRecord('pages', (int)$pageId);

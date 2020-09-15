@@ -460,7 +460,7 @@ class TranslationService implements SingletonInterface
         RootRenderableInterface $element,
         int $code,
         array $arguments,
-        string $defaultValue = '',
+        string $defaultValue,
         FormRuntime $formRuntime
     ): string {
         if (empty($code)) {

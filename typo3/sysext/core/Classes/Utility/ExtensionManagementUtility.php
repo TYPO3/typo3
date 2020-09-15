@@ -958,12 +958,12 @@ class ExtensionManagementUtility
      *
      * @param string $modname Module name
      * @param string $className Class name
-     * @param string $_ unused
+     * @param string $_unused not in use anymore
      * @param string $title Title of module
      * @param string $MM_key Menu array key - default is "function
      * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
      */
-    public static function insertModuleFunction($modname, $className, $_ = null, $title, $MM_key = 'function', $WS = '')
+    public static function insertModuleFunction($modname, $className, $_unused, $title, $MM_key = 'function', $WS = '')
     {
         $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = [
             'name' => $className,

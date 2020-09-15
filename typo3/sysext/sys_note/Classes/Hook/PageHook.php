@@ -36,7 +36,7 @@ class PageHook
      * @param \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject
      * @return string
      */
-    public function renderInHeader(array $params = [], PageLayoutController $parentObject)
+    public function renderInHeader(array $params, PageLayoutController $parentObject)
     {
         $controller = GeneralUtility::makeInstance(NoteController::class);
         return $controller->listAction($parentObject->id, SysNoteRepository::SYS_NOTE_POSITION_TOP);
@@ -49,7 +49,7 @@ class PageHook
      * @param \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject
      * @return string
      */
-    public function renderInFooter(array $params = [], PageLayoutController $parentObject)
+    public function renderInFooter(array $params, PageLayoutController $parentObject)
     {
         $controller = GeneralUtility::makeInstance(NoteController::class);
         return $controller->listAction($parentObject->id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM);

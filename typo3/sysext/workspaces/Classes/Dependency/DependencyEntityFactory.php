@@ -41,7 +41,7 @@ class DependencyEntityFactory
      * @param DependencyResolver $dependency
      * @return ElementEntity
      */
-    public function getElement($table, $id, array $data = [], DependencyResolver $dependency)
+    public function getElement($table, $id, array $data, DependencyResolver $dependency)
     {
         $element = GeneralUtility::makeInstance(ElementEntity::class, $table, $id, $data, $dependency);
         $elementName = $element->__toString();
@@ -79,7 +79,7 @@ class DependencyEntityFactory
      * @see getElement
      * @see getReference
      */
-    public function getReferencedElement($table, $id, $field, array $data = [], DependencyResolver $dependency)
+    public function getReferencedElement($table, $id, $field, array $data, DependencyResolver $dependency)
     {
         return $this->getReference($this->getElement($table, $id, $data, $dependency), $field);
     }

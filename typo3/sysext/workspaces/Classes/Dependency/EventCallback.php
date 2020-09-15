@@ -58,7 +58,7 @@ class EventCallback
      * @param string $eventName
      * @return mixed
      */
-    public function execute(array $callerArguments = [], $caller, $eventName)
+    public function execute(array $callerArguments, $caller, $eventName)
     {
         $callable = [$this->object, $this->method];
         if (is_callable($callable)) {

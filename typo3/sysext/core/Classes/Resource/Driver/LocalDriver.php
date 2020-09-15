@@ -356,7 +356,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * @return array
      * @throws \InvalidArgumentException
      */
-    protected function getDirectoryItemList($folderIdentifier, $start = 0, $numberOfItems = 0, array $filterMethods, $includeFiles = true, $includeDirs = true, $recursive = false, $sort = '', $sortRev = false)
+    protected function getDirectoryItemList($folderIdentifier, $start, $numberOfItems, array $filterMethods, $includeFiles = true, $includeDirs = true, $recursive = false, $sort = '', $sortRev = false)
     {
         $folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
         $realPath = $this->getAbsolutePath($folderIdentifier);

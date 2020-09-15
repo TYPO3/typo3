@@ -759,7 +759,7 @@ class Typo3DbQueryParser
      * @return string
      * @throws InconsistentQuerySettingsException
      */
-    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = [], $includeDeleted)
+    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored, $includeDeleted)
     {
         $statement = '';
         if ($ignoreEnableFields && !$includeDeleted) {
