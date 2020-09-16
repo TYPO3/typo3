@@ -3643,45 +3643,6 @@ class BackendUtility
     }
 
     /**
-     * Will return where clause de-selecting new(/deleted)-versions from other workspaces.
-     * If in live-workspace, don't show "MOVE-TO-PLACEHOLDERS" records if versioningWS is 2 (allows moving)
-     *
-     * @param string $table Table name
-     * @return string Where clause if applicable.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function versioningPlaceholderClause($table)
-    {
-        if (static::isTableWorkspaceEnabled($table) && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
-            $currentWorkspace = (int)static::getBackendUserAuthentication()->workspace;
-            return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
-        }
-        return '';
-    }
-
-    /**
-     * Get additional where clause to select records of a specific workspace (includes live as well).
-     *
-     * @param string $table Table name
-     * @param int $workspaceId Workspace ID
-     * @return string Workspace where clause
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function getWorkspaceWhereClause($table, $workspaceId = null)
-    {
-        $whereClause = '';
-        if (self::isTableWorkspaceEnabled($table) && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
-            if ($workspaceId === null) {
-                $workspaceId = static::getBackendUserAuthentication()->workspace;
-            }
-            $workspaceId = (int)$workspaceId;
-            $comparison = $workspaceId === 0 ? '=' : '>';
-            $whereClause = ' AND ' . $table . '.t3ver_wsid=' . $workspaceId . ' AND ' . $table . '.t3ver_oid' . $comparison . '0';
-        }
-        return $whereClause;
-    }
-
-    /**
      * Performs mapping of new uids to new versions UID in case of import inside a workspace.
      *
      * @param string $table Table name

@@ -1170,17 +1170,6 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function versioningPlaceholderClauseReturnsEmptyIfNoBeUserIsAvailable()
-    {
-        $GLOBALS['BE_USER'] = null;
-        $tableName = 'table_a';
-        $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
-        self::assertSame('', BackendUtility::versioningPlaceholderClause($tableName));
-    }
-
-    /**
-     * @test
-     */
     public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable()
     {
         $tableName = 'table_a';
@@ -1207,17 +1196,6 @@ class BackendUtilityTest extends UnitTestCase
         ];
 
         self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
-    }
-
-    /**
-     * @test
-     */
-    public function getWorkspaceWhereClauseReturnsEmptyIfNoBeUserIsAvailable()
-    {
-        $GLOBALS['BE_USER'] = null;
-        $tableName = 'table_a';
-        $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
-        self::assertSame('', BackendUtility::getWorkspaceWhereClause($tableName));
     }
 
     /**

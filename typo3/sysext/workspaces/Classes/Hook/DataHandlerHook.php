@@ -657,8 +657,7 @@ class DataHandlerHook
         $swapVersion['t3ver_oid'] = 0;
         // In case of swapping and the offline record has a state
         // (like 2 or 4 for deleting or move-pointer) we set the
-        // current workspace ID so the record is not deselected
-        // in the interface by BackendUtility::versioningPlaceholderClause()
+        // current workspace ID so the record is not deselected.
         $swapVersion['t3ver_wsid'] = 0;
         $swapVersion['t3ver_stage'] = 0;
         $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
