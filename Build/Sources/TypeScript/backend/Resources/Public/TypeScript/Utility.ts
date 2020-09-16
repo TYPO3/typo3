@@ -109,7 +109,17 @@ class Utility {
       const value = element.value;
 
       if (name) {
-        obj[name] = value;
+        if (element instanceof HTMLInputElement && element.type == 'checkbox') {
+          if (obj[name] === undefined) {
+            obj[name] = [];
+          }
+          if (element.checked){
+            obj[name].push(value);
+          }
+
+        }else{
+          obj[name] = value;
+        }
       }
     });
 
