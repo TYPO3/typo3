@@ -2010,15 +2010,39 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             // The actual permission checking on page level is done elsewhere
             // as usual anyway before the page tree is rendered.
             $readPerms = '1=1';
-            // Traverse mount points of the
-            $dbMountpoints = GeneralUtility::intExplode(',', $dbMountpoints);
+            // Traverse mount points of the workspace, add them,
+            // but make sure they match against the users' DB mounts
+
+            $workspaceWebMounts = GeneralUtility::intExplode(',', $dbMountpoints);
+            $webMountsOfUser = GeneralUtility::intExplode(',', $this->dataLists['webmount_list']);
+            $webMountsOfUser = array_combine($webMountsOfUser, $webMountsOfUser);
+
+            $entryPointRootLineUids = [];
+            foreach ($webMountsOfUser as $webMountPageId) {
+                $rootLine = BackendUtility::BEgetRootLine($webMountPageId, '', true);
+                $entryPointRootLineUids[$webMountPageId] = array_map('intval', array_column($rootLine, 'uid'));
+            }
+            foreach ($entryPointRootLineUids as $webMountOfUser => $uidsOfRootLine) {
+                // Remove the DB mounts of the user if the DB mount is not in the list of
+                // workspace mounts
+                foreach ($workspaceWebMounts as $webmountOfWorkspace) {
+                    // This workspace DB mount is somewhere in the rootline of the users' web mount,
+                    // so this is "OK" to be included
+                    if (in_array($webmountOfWorkspace, $uidsOfRootLine, true)) {
+                        continue;
+                    }
+                    // Remove the user's DB Mount (possible via array_combine, see above)
+                    unset($webMountsOfUser[$webMountOfUser]);
+                }
+            }
+            $dbMountpoints = array_merge($workspaceWebMounts, $webMountsOfUser);
+            $dbMountpoints = array_unique($dbMountpoints);
             foreach ($dbMountpoints as $mpId) {
                 if ($this->isInWebMount($mpId, $readPerms)) {
                     $filteredDbMountpoints[] = $mpId;
                 }
             }
-            // Re-insert webmounts:
-            $filteredDbMountpoints = array_unique($filteredDbMountpoints);
+            // Re-insert webmounts
             $this->groupData['webmounts'] = implode(',', $filteredDbMountpoints);
         }
     }
