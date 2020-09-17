@@ -160,7 +160,7 @@ CREATE TABLE index_config (
 #
 CREATE TABLE index_stat_word (
   uid int(11) NOT NULL auto_increment,
-  word varchar(30) DEFAULT '' NOT NULL,
+  word varchar(50) DEFAULT '' NOT NULL,
   index_stat_search_id int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
   pageid int(11) DEFAULT '0' NOT NULL,
