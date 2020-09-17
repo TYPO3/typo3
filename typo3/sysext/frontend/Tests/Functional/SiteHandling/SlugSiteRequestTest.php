@@ -121,7 +121,10 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $expectedStatusCode = 307;
-        $expectedHeaders = ['location' => ['https://website.local/welcome']];
+        $expectedHeaders = [
+            'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+            'location' => ['https://website.local/welcome']
+        ];
 
         $response = $this->executeFrontendRequest(
             new InternalRequest($uri),

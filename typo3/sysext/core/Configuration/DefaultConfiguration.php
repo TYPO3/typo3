@@ -1364,6 +1364,7 @@ return [
             'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
             'options' => [],
         ],
+        'exposeRedirectInformation' => false,
     ],
     'MAIL' => [ // Mail configurations to tune how \TYPO3\CMS\Core\Mail\ classes will send their mails.
         'transport' => 'sendmail',

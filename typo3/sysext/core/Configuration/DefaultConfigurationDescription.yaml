@@ -534,6 +534,10 @@ FE:
                 options:
                     type: array
                     description: 'Special settings for specific hashes.'
+        exposeRedirectInformation:
+          type: bool
+          description: 'If set, redirects executed by TYPO3 publicly expose the page ID in the HTTP header. As this is an internal information about the TYPO3 system, it should only be enabled for debugging purposes.'
+
 MAIL:
     type: container
     description: 'Mail'

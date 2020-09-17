@@ -23,6 +23,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -46,10 +47,19 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $exposeInformation = $GLOBALS['TYPO3_CONF_VARS']['FE']['exposeRedirectInformation'] ?? false;
+
         // Check for shortcut page and mount point redirect
         $redirectToUri = $this->getRedirectUri($request);
         if ($redirectToUri !== null && $redirectToUri !== (string)$request->getUri()) {
-            return new RedirectResponse($redirectToUri, 307);
+            /** @var PageArguments $pageArguments */
+            $pageArguments = $request->getAttribute('routing', null);
+            $message = 'TYPO3 Shortcut/Mountpoint' . ($exposeInformation ? ' at page with ID ' . $pageArguments->getPageId() : '');
+            return new RedirectResponse(
+                $redirectToUri,
+                307,
+                ['X-Redirect-By' => $message]
+            );
         }
 
         // See if the current page is of doktype "External URL", if so, do a redirect as well.
@@ -60,7 +70,12 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
                 $request->getAttribute('normalizedParams')->getSiteUrl()
             );
             if (!empty($externalUrl)) {
-                return new RedirectResponse($externalUrl, 303);
+                $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $this->controller->page['uid'] : '');
+                return new RedirectResponse(
+                    $externalUrl,
+                    303,
+                    ['X-Redirect-By' => $message]
+                );
             }
         }
 
