@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -196,7 +197,8 @@ class TranslationStatusController
                 )
             ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
-            $status = GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : 'success';
+            $pageTranslationVisibility = new PageTranslationVisibility((int)($data['row']['l18n_cfg'] ?? 0));
+            $status = $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? 'danger' : 'success';
             // Create links:
             $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
@@ -222,8 +224,8 @@ class TranslationStatusController
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
                 ) . '">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= '&nbsp;';
-            $info .= GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
-            $info .= GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2')) . '">N</span>' : '&nbsp;';
+            $info .= $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
+            $info .= $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2')) . '">N</span>' : '&nbsp;';
             // Put into cell:
             $tCells[] = '<td class="' . $status . ' col-border-left"><div class="btn-group">' . $info . '</div></td>';
             $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
@@ -237,9 +239,16 @@ class TranslationStatusController
                 }
                 if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === $languageId) {
                     $row = $this->getLangStatus($data['row']['uid'], $languageId);
+                    if ($pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
+                        $status = 'danger';
+                    } else {
+                        $status = '';
+                    }
                     if (is_array($row)) {
                         $langRecUids[$languageId][] = $row['uid'];
-                        $status = $row['_HIDDEN'] ? (GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '') : 'success';
+                        if (!$row['_HIDDEN']) {
+                            $status = 'success';
+                        }
                         $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render();
                         $info = $icon . ($showPageId ? ' [' . (int)$row['uid'] . ']' : '') . ' ' . htmlspecialchars(
                             GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
@@ -274,7 +283,6 @@ class TranslationStatusController
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
                         ) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], $languageId) . '</td>';
                     } else {
-                        $status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '';
                         $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
                         $info .= '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" value="1" />';
                         $info .= '<span class="t3-icon fa"></span></label></div>';

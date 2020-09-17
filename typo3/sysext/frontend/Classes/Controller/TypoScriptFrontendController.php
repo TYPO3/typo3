@@ -59,6 +59,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -1927,6 +1928,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $languageId = $languageAspect->getId();
         $languageContentId = $languageAspect->getContentId();
 
+        $pageTranslationVisibility = new PageTranslationVisibility((int)($this->page['l18n_cfg'] ?? 0));
         // If sys_language_uid is set to another language than default:
         if ($languageAspect->getId() > 0) {
             // check whether a shortcut is overwritten by a translated page
@@ -1937,7 +1939,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $olRec = $this->sys_page->getPageOverlay($this->id, $languageAspect->getId());
             if (empty($olRec)) {
                 // If requested translation is not available:
-                if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
+                if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                         $request,
                         'Page is not available in the requested language.',
@@ -2013,7 +2015,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         // If default language is not available:
         if ((!$languageAspect->getContentId() || !$languageAspect->getId())
-            && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'] ?? 0)
+            && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
         ) {
             $message = 'Page is not available in default language.';
             $this->logger->error($message);

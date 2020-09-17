@@ -3042,9 +3042,11 @@ class GeneralUtility
      *
      * @param int $l18n_cfg_fieldValue Value from "l18n_cfg" field of a page record
      * @return bool TRUE if the page should be hidden
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12. Use PageTranslationVisibility BitSet instead.
      */
     public static function hideIfNotTranslated($l18n_cfg_fieldValue)
     {
+        trigger_error('GeneralUtility::hideIfNotTranslated() will be removed in TYPO3 v12, use the PageTranslationVisibility BitSet API instead.', E_USER_DEPRECATED);
         return $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] xor ($l18n_cfg_fieldValue & 2);
     }
 
@@ -3054,9 +3056,11 @@ class GeneralUtility
      *
      * @param int $localizationConfiguration
      * @return bool
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12. Use PageTranslationVisibility BitSet instead.
      */
     public static function hideIfDefaultLanguage($localizationConfiguration)
     {
+        trigger_error('GeneralUtility::hideIfDefaultLanguage() will be removed in TYPO3 v12, use the PageTranslationVisibility BitSet API instead.', E_USER_DEPRECATED);
         return (bool)($localizationConfiguration & 1);
     }
 

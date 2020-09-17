@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -477,10 +478,11 @@ class PageRepository implements LoggerAwareInterface
         $languageUid = $languageAspect->getId();
         // Checks if the default language version can be shown
         // Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
-        if (GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg']) && (!$languageUid || $languageUid && !$page['_PAGES_OVERLAY'])) {
+        $pageTranslationVisibility = new PageTranslationVisibility((int)($page['l18n_cfg'] ?? 0));
+        if ($pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() && (!$languageUid || $languageUid && !$page['_PAGES_OVERLAY'])) {
             return false;
         }
-        if ($languageUid > 0 && GeneralUtility::hideIfNotTranslated($page['l18n_cfg'])) {
+        if ($languageUid > 0 && $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
             if (!$page['_PAGES_OVERLAY'] || (int)$page['_PAGES_OVERLAY_LANGUAGE'] !== $languageUid) {
                 return false;
             }

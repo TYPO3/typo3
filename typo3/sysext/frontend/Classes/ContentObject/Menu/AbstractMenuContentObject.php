@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -603,8 +604,9 @@ abstract class AbstractMenuContentObject
                 $lRecs = [];
             }
             // Checking if the "disabled" state should be set.
-            if (GeneralUtility::hideIfNotTranslated($tsfe->page['l18n_cfg']) && $sUid &&
-                empty($lRecs) || GeneralUtility::hideIfDefaultLanguage($tsfe->page['l18n_cfg']) &&
+            $pageTranslationVisibility = new PageTranslationVisibility((int)($tsfe->page['l18n_cfg'] ?? 0));
+            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $sUid &&
+                empty($lRecs) || $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() &&
                 (!$sUid || empty($lRecs)) ||
                 !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && empty($lRecs)
             ) {
@@ -1213,7 +1215,8 @@ abstract class AbstractMenuContentObject
         }
         // Checking if "&L" should be modified so links to non-accessible pages will not happen.
         if ($this->getCurrentLanguageAspect()->getId() > 0 && $this->conf['protectLvar']) {
-            if ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
+            $pageTranslationVisibility = new PageTranslationVisibility((int)($data['l18n_cfg'] ?? 0));
+            if ($this->conf['protectLvar'] === 'all' || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                 $olRec = $this->sys_page->getPageOverlay($data['uid'], $this->getCurrentLanguageAspect()->getId());
                 if (empty($olRec)) {
                     // If no page translation record then page can NOT be accessed in
@@ -1633,13 +1636,13 @@ abstract class AbstractMenuContentObject
             }
             // No valid subpage if the default language should be shown and the page settings
             // are excluding the visibility of the default language
-            if (!$languageId && GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'] ?? 0)) {
+            $pageTranslationVisibility = new PageTranslationVisibility((int)($theRec['l18n_cfg'] ?? 0));
+            if (!$languageId && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
                 continue;
             }
             // No valid subpage if the alternative language should be shown and the page settings
             // are requiring a valid overlay but it doesn't exists
-            $hideIfNotTranslated = GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg'] ?? null);
-            if ($languageId && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
+            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !$theRec['_PAGES_OVERLAY']) {
                 continue;
             }
             // No valid subpage if the subpage is banned by excludeUidList

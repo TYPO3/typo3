@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -193,14 +194,15 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
             // Check if the target page can be access depending on l18n_cfg
             if (!$tsfe->sys_page->isPageSuitableForLanguage($page, $languageAspect)) {
-                if ($siteLanguageOfTargetPage->getLanguageId() === 0 && GeneralUtility::hideIfDefaultLanguage($page['l18n_cfg'])) {
+                $pageTranslationVisibility = new PageTranslationVisibility((int)($page['l18n_cfg'] ?? 0));
+                if ($siteLanguageOfTargetPage->getLanguageId() === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
                     throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1551621985, null, $linkText);
                 }
                 // If the requested language is not the default language and the page has no overlay for this language
                 // generating a link would cause a 404 error when using this like if one of those conditions apply:
                 //  - The page is set to be hidden if it is not translated (evaluated in TSFE)
                 //  - The site configuration has a "strict" fallback set (evaluated in the Router - very early)
-                if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_PAGES_OVERLAY']) && (GeneralUtility::hideIfNotTranslated($page['l18n_cfg']) || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
+                if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_PAGES_OVERLAY']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
                     throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
                 }
             }

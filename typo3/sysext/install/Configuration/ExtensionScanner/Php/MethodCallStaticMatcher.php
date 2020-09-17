@@ -1022,4 +1022,18 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-92551-GeneralUtilityMethodsRelatedToPagesl18n_cfgBehavior.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-92551-GeneralUtilityMethodsRelatedToPagesl18n_cfgBehavior.rst'
+        ],
+    ],
 ];
