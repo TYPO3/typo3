@@ -1739,6 +1739,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
+                    "composer config --unset platform.php \n" +
                     "composer update --no-progress --no-suggest --no-interaction"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
