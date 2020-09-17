@@ -185,8 +185,8 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
         switch ($mailSettings['transport_spool_type']) {
             case self::SPOOL_FILE:
                 $path = GeneralUtility::getFileAbsFileName($mailSettings['transport_spool_filepath']);
-                if (empty($path) || !file_exists($path) || !is_writable($path)) {
-                    throw new \RuntimeException('The Spool Type filepath must be available and writeable for TYPO3 in order to be used. Be sure that it\'s not accessible via the web.', 1518558797);
+                if (empty($path)) {
+                    throw new \RuntimeException('The Spool Type filepath must be configured for TYPO3 in order to be used. Be sure that it\'s not accessible via the web.', 1518558797);
                 }
                 $spool = GeneralUtility::makeInstance(FileSpool::class, $path);
                 break;
