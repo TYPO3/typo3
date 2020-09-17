@@ -158,9 +158,9 @@ class CommandRegistry implements CommandLoaderInterface, \IteratorAggregate, Sin
      * @param string $identifier
      * @throws CommandNameAlreadyInUseException
      * @throws UnknownCommandException
-     * @return Command
+     * @return Command|null
      */
-    public function getCommandByIdentifier(string $identifier): Command
+    public function getCommandByIdentifier(string $identifier): ?Command
     {
         $this->populateCommandsFromPackages();
 
