@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Impexp\Domain\Repository;
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -109,6 +110,8 @@ class PresetRepository
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_impexp_presets');
         $presetData = GeneralUtility::_GP('preset');
+        $context = GeneralUtility::makeInstance(Context::class);
+        $currentTimestamp = $context->getPropertyFromAspect('date', 'timestamp');
         $err = false;
         $msg = '';
         // Save preset
@@ -126,7 +129,8 @@ class PresetRepository
                             'public' => $inData['preset']['public'],
                             'title' => $inData['preset']['title'],
                             'item_uid' => $inData['pagetree']['id'],
-                            'preset_data' => serialize($inData)
+                            'preset_data' => serialize($inData),
+                            'tstamp' => $currentTimestamp
                         ],
                         ['uid' => (int)$preset['uid']],
                         ['preset_data' => Connection::PARAM_LOB]
@@ -146,7 +150,9 @@ class PresetRepository
                         'public' => $inData['preset']['public'],
                         'title' => $inData['preset']['title'],
                         'item_uid' => (int)$inData['pagetree']['id'],
-                        'preset_data' => serialize($inData)
+                        'preset_data' => serialize($inData),
+                        'tstamp' => $currentTimestamp,
+                        'crdate' => $currentTimestamp
                     ],
                     ['preset_data' => Connection::PARAM_LOB]
                 );
