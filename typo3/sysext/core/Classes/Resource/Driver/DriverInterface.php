@@ -183,8 +183,8 @@ interface DriverInterface
     /**
      * Adds a file from the local server hard disk to a given path in TYPO3s
      * virtual file system. This assumes that the local file exists, so no
-     * further check is done here! After a successful the original file must
-     * not exist anymore.
+     * further check is done here! After a successful operation the original
+     * file must not exist anymore.
      *
      * @param string $localFilePath within public web path
      * @param string $targetFolderIdentifier
