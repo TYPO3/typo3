@@ -9,7 +9,7 @@ See :issue:`91712`
 Description
 ===========
 
-A new scheduler task and CLI command has been added to cleanup existing redirects periodically under given conditions.
+A new CLI command (which can also run as scheduler task) has been added to cleanup existing redirects periodically under given conditions.
 
 In the scheduler task settings it is possible to set the following options:
 

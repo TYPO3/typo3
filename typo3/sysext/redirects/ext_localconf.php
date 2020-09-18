@@ -30,18 +30,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:statusProvider'][] = \TYPO3\CMS\Redirects\Report\Status\RedirectStatus::class;
 }
-
-// Register Scheduler Task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Redirects\Task\CleanupRedirectsTask::class] = [
-    'extension' => 'redirects',
-    'title' => 'LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.name',
-    'description' => 'LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.description',
-    'additionalFields' => \TYPO3\CMS\Redirects\Task\CleanupRedirectsAdditionalFieldProvider::class,
-    'defaults' => [
-        'days' => 90,
-        'domains' => [],
-        'statusCodes' => [],
-        'hitCount' => null,
-        'path' => null
-    ]
-];
