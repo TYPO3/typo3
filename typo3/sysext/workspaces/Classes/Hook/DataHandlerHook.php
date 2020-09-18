@@ -268,7 +268,6 @@ class DataHandlerHook
                         $dataHandler->deleteEl($table, (int)$id);
                         if (is_array($placeholderRecord)) {
                             $this->softOrHardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
-                            $dataHandler->updateRefIndex($table, (int)$placeholderRecord['uid']);
                         }
                     }
                 } else {

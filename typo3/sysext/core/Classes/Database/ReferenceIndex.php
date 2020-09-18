@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Reference index processing and relation extraction
@@ -381,9 +382,17 @@ class ReferenceIndex implements LoggerAwareInterface
     protected function generateDataUsingRecord(string $tableName, array $record): array
     {
         $this->relations = [];
-        $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
+
+        if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            // Never write relations for t3ver_state = 1 and t3ver_state = 3 placeholder records
+            $versionState = VersionState::cast($record['t3ver_state']);
+            if ($versionState->equals(VersionState::NEW_PLACEHOLDER) || $versionState->equals(VersionState::MOVE_PLACEHOLDER)) {
+                return [];
+            }
+        }
 
         // Is the record deleted?
+        $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
         $deleted = $deleteField && $record[$deleteField] ? 1 : 0;
 
         // Get all relations from record:
@@ -1330,7 +1339,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $selectFields .= ',' . $deleteField;
                 }
                 if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                    $selectFields .= ',t3ver_wsid';
+                    $selectFields .= ',t3ver_wsid,t3ver_state';
                 }
             }
 
