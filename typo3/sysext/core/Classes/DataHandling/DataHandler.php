@@ -5414,7 +5414,6 @@ class DataHandler implements LoggerAwareInterface
             // Drop placeholder records if any
             $this->hardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
             $this->deletedRecords[$table][] = (int)$placeholderRecord['uid'];
-            $this->updateRefIndex($table, (int)$placeholderRecord['uid']);
         }
     }
 
