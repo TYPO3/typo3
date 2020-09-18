@@ -36,4 +36,4 @@ Examples for custom implementations might be:
 * compress uploaded pdf files into zip archives
 * store images that should be cropped at a separate position in the target storage
 
-.. index:: Backend, ext:core, fal
+.. index:: Backend, ext:core, FAL
