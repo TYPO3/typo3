@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "419ece139f1ebf63bed3caedf52a9251",
+    "content-hash": "cdffbbf3f8055138685d340ff8fc0edd",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2601,20 +2601,6 @@
                 "polyfill",
                 "portable"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-27T09:26:54+00:00"
         },
         {
@@ -2672,20 +2658,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -2749,20 +2721,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-09T19:04:49+00:00"
         },
         {
@@ -2822,20 +2780,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-09T19:04:49+00:00"
         },
         {
@@ -2890,20 +2834,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -2962,20 +2892,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -6546,174 +6462,6 @@
                 "simple-cache"
             ],
             "time": "2017-10-23T01:57:42+00:00"
-        },
-        {
-            "name": "rector/rector",
-            "version": "v0.7.14",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rectorphp/rector.git",
-                "reference": "4393ff8e3611495f0a87588041539f5e2b09d70f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/4393ff8e3611495f0a87588041539f5e2b09d70f",
-                "reference": "4393ff8e3611495f0a87588041539f5e2b09d70f",
-                "shasum": ""
-            },
-            "require": {
-                "composer/xdebug-handler": "^1.4",
-                "doctrine/annotations": "^1.8",
-                "doctrine/inflector": "^1.3",
-                "ext-json": "*",
-                "jean85/pretty-package-versions": "^1.2",
-                "jetbrains/phpstorm-stubs": "^2019.3",
-                "nette/robot-loader": "^3.2",
-                "nette/utils": "^3.1",
-                "nikic/php-parser": "4.3.*",
-                "ondram/ci-detector": "^3.1",
-                "php": "^7.2.4",
-                "phpstan/phpdoc-parser": "^0.4",
-                "phpstan/phpstan": "^0.12.11",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "sebastian/diff": "^3.0|^4.0",
-                "symfony/console": "^4.4.6|^5.0.6",
-                "symfony/dependency-injection": "^4.4.6|^5.0.6",
-                "symfony/finder": "^4.4.6|^5.0.6",
-                "symfony/process": "^4.4.6|^5.0.6",
-                "symplify/auto-bind-parameter": "^7.2.4",
-                "symplify/autowire-array-parameter": "^7.2.4",
-                "symplify/package-builder": "^7.2.4",
-                "symplify/set-config-resolver": "^7.2.4",
-                "tracy/tracy": "^2.7"
-            },
-            "replace": {
-                "rector/rector-prefixed": "self.version"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "ocramius/package-versions": "^1.4|^1.5",
-                "phpunit/phpunit": "^8.4|^9.0",
-                "symplify/changelog-linker": "^7.2.4",
-                "symplify/easy-coding-standard": "^7.2.4",
-                "symplify/monorepo-builder": "^7.2.4",
-                "symplify/phpstan-extensions": "^7.2.4",
-                "thecodingmachine/phpstan-strict-rules": "^0.12"
-            },
-            "bin": [
-                "bin/rector"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Rector\\Architecture\\": "rules/architecture/src",
-                    "Rector\\PostRector\\": "packages/post-rector/src",
-                    "Rector\\AttributeAwarePhpDoc\\": "packages/attribute-aware-php-doc/src",
-                    "Rector\\Autodiscovery\\": "rules/autodiscovery/src",
-                    "Rector\\BetterPhpDocParser\\": "packages/better-php-doc-parser/src",
-                    "Rector\\CakePHPToSymfony\\": "rules/cakephp-to-symfony/src",
-                    "Rector\\CakePHP\\": "rules/cakephp/src",
-                    "Rector\\Celebrity\\": "rules/celebrity/src",
-                    "Rector\\ChangesReporting\\": "packages/changes-reporting/src",
-                    "Rector\\CodeQuality\\": "rules/code-quality/src",
-                    "Rector\\CodingStyle\\": "rules/coding-style/src",
-                    "Rector\\ConsoleDiffer\\": "packages/console-differ/src",
-                    "Rector\\Core\\": "src",
-                    "Rector\\DeadCode\\": "rules/dead-code/src",
-                    "Rector\\DoctrineCodeQuality\\": "rules/doctrine-code-quality/src",
-                    "Rector\\DoctrineGedmoToKnplabs\\": "rules/doctrine-gedmo-to-knplabs/src",
-                    "Rector\\Doctrine\\": "rules/doctrine/src",
-                    "Rector\\DynamicTypeAnalysis\\": "packages/dynamic-type-analysis/src",
-                    "Rector\\DoctrineAnnotationGenerated\\": "packages/doctrine-annotation-generated/src",
-                    "Rector\\ElasticSearchDSL\\": "rules/elastic-search-dsl/src",
-                    "Rector\\FileSystemRector\\": "packages/file-system-rector/src",
-                    "Rector\\FrameworkMigration\\": "rules/framework-migration/src",
-                    "Rector\\Guzzle\\": "rules/guzzle/src",
-                    "Rector\\JMS\\": "rules/jms/src",
-                    "Rector\\Laravel\\": "rules/laravel/src",
-                    "Rector\\Legacy\\": "rules/legacy/src",
-                    "Rector\\MinimalScope\\": "rules/minimal-scope/src",
-                    "Rector\\MysqlToMysqli\\": "rules/mysql-to-mysqli/src",
-                    "Rector\\NetteTesterToPHPUnit\\": "rules/nette-tester-to-phpunit/src",
-                    "Rector\\NetteToSymfony\\": "rules/nette-to-symfony/src",
-                    "Rector\\Nette\\": "rules/nette/src",
-                    "Rector\\NodeCollector\\": "packages/node-collector/src",
-                    "Rector\\NodeNameResolver\\": "packages/node-name-resolver/src",
-                    "Rector\\NodeTypeResolver\\": "packages/node-type-resolver/src",
-                    "Rector\\Oxid\\": "rules/oxid/src",
-                    "Rector\\PHPStanStaticTypeMapper\\": "packages/phpstan-static-type-mapper/src",
-                    "Rector\\PHPStan\\": "rules/phpstan/src",
-                    "Rector\\PHPUnitSymfony\\": "rules/phpunit-symfony/src",
-                    "Rector\\PHPUnit\\": "rules/phpunit/src",
-                    "Rector\\PSR4\\": "rules/psr4/src",
-                    "Rector\\Phalcon\\": "rules/phalcon/src",
-                    "Rector\\Php52\\": "rules/php52/src",
-                    "Rector\\Php53\\": "rules/php53/src",
-                    "Rector\\Php54\\": "rules/php54/src",
-                    "Rector\\Php55\\": "rules/php55/src",
-                    "Rector\\Php56\\": "rules/php56/src",
-                    "Rector\\Php70\\": "rules/php70/src",
-                    "Rector\\Php71\\": "rules/php71/src",
-                    "Rector\\Php72\\": "rules/php72/src",
-                    "Rector\\Php73\\": "rules/php73/src",
-                    "Rector\\Php74\\": "rules/php74/src",
-                    "Rector\\Php80\\": "rules/php80/src",
-                    "Rector\\PhpDeglobalize\\": "rules/php-deglobalize/src",
-                    "Rector\\PhpSpecToPHPUnit\\": "rules/php-spec-to-phpunit/src",
-                    "Rector\\Polyfill\\": "packages/polyfill/src",
-                    "Rector\\Privatization\\": "rules/privatization/src",
-                    "Rector\\RectorGenerator\\": "packages/rector-generator/src",
-                    "Rector\\Refactoring\\": "packages/refactoring/src",
-                    "Rector\\RemovingStatic\\": "rules/removing-static/src",
-                    "Rector\\Renaming\\": "rules/renaming/src",
-                    "Rector\\Restoration\\": "rules/restoration/src",
-                    "Rector\\SOLID\\": "rules/solid/src",
-                    "Rector\\NodeNestingScope\\": "packages/node-nesting-scope/src",
-                    "Rector\\Sensio\\": "rules/sensio/src",
-                    "Rector\\Shopware\\": "rules/shopware/src",
-                    "Rector\\Silverstripe\\": "rules/silverstripe/src",
-                    "Rector\\StaticTypeMapper\\": "packages/static-type-mapper/src",
-                    "Rector\\StrictCodeQuality\\": "rules/strict-code-quality/src",
-                    "Rector\\Sylius\\": "rules/sylius/src",
-                    "Rector\\SymfonyCodeQuality\\": "rules/symfony-code-quality/src",
-                    "Rector\\SymfonyPHPUnit\\": "rules/symfony-phpunit/src",
-                    "Rector\\Symfony\\": "rules/symfony/src",
-                    "Rector\\Twig\\": "rules/twig/src",
-                    "Rector\\TypeDeclaration\\": "rules/type-declaration/src",
-                    "Rector\\VendorLocker\\": "packages/vendor-locker/src",
-                    "Rector\\ZendToSymfony\\": "rules/zend-to-symfony/src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tomas Votruba",
-                    "email": "tomas.vot@gmail.com",
-                    "homepage": "https://tomasvotruba.com"
-                },
-                {
-                    "name": "Jan Mikes",
-                    "email": "j.mikes@me.com",
-                    "homepage": "https://janmikes.cz"
-                }
-            ],
-            "description": "Instant upgrade and refactoring of your PHP code",
-            "homepage": "https://getrector.org",
-            "keywords": [
-                "ast",
-                "automated refactoring",
-                "instant refactoring",
-                "instant upgrades"
-            ],
-            "time": "2020-04-14T08:57:34+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

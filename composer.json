@@ -91,7 +91,6 @@
 		"php-webdriver/webdriver": "^1.8",
 		"phpspec/prophecy": "^1.7.5",
 		"phpstan/phpstan": "^0.12.13",
-		"rector/rector": "^0.7.14",
 		"typo3/cms-styleguide": "~10.0.4",
 		"typo3/testing-framework": "^6.4.2"
 	},
