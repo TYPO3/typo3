@@ -51,6 +51,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Depending on current page, routing and page path configuration.
  *
+ * TextWrap usage
+ * --------------
+ *
+ * ::
+ *
+ *    <f:link.typolink parameter="123" textWrap="<span>|</span>"/>
+ *
+ * Output::
+ *
+ *    <a href="/some/page">
+ *       <span>Page title of some page wrapped in span</span>
+ *    </a>
+ *
+ * Depending on current page, routing and page path configuration.
+ *
  * Full parameter usage
  * --------------------
  *
@@ -100,6 +115,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
         $this->registerArgument('parts-as', 'string', 'Variable name containing typoLink parts (if any)', false, 'typoLinkParts');
+        $this->registerArgument('textWrap', 'string', 'Wrap the link using the typoscript "wrap" data type', false, '');
     }
 
     /**
@@ -160,6 +176,10 @@ class TypolinkViewHelper extends AbstractViewHelper
             $instructions['addQueryString.'] = [
                 'exclude' => $addQueryStringExclude,
             ];
+        }
+        if ((string)($arguments['textWrap'] ?? '') !== '') {
+            $instructions['ATagBeforeWrap'] = true;
+            $instructions['wrap'] = $arguments['textWrap'];
         }
 
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);

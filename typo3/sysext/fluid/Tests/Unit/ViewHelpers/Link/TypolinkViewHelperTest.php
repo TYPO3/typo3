@@ -82,6 +82,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     {
         $addQueryString = true;
         $addQueryStringExclude = 'cHash';
+        $textWrap = '<span>|</span>';
 
         $this->subject->expects(self::any())->method('renderChildren')->willReturn('innerContent');
         $this->subject->setArguments([
@@ -93,7 +94,8 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
             'additionalAttributes' => [],
             'addQueryString' => $addQueryString,
             'addQueryStringExclude' => $addQueryStringExclude,
-            'absolute' => false
+            'absolute' => false,
+            'textWrap' => $textWrap
         ]);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
         $contentObjectRendererMock->expects(self::once())
@@ -109,6 +111,8 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                             'exclude' => $addQueryStringExclude,
                         ],
                         'forceAbsoluteUrl' => false,
+                        'ATagBeforeWrap' => true,
+                        'wrap' => $textWrap
                     ],
                 ]
             )
