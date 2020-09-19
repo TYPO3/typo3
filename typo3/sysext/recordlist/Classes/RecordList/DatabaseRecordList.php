@@ -692,15 +692,13 @@ class DatabaseRecordList
 
         // Setting fields selected in fieldselectBox (saved in uc)
         $rowListArray = [];
-        if ($this->allFields) {
+        if ($this->allFields && is_array($this->setFields[$table] ?? null)) {
             $rowListArray = $this->makeFieldList($table, false, true);
             if ($this->csvOutput === false) {
                 $rowListArray[] = '_PATH_';
                 $rowListArray[] = '_REF_';
             }
-            if (is_array($this->setFields[$table])) {
-                $rowListArray = array_intersect($rowListArray, $this->setFields[$table]);
-            }
+            $rowListArray = array_intersect($rowListArray, $this->setFields[$table]);
         }
         // if no columns have been specified, show description (if configured)
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
