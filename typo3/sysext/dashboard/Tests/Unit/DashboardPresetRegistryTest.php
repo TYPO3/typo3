@@ -47,7 +47,7 @@ class DashboardPresetRegistryTest extends UnitTestCase
         $presets = $this->subject->getDashboardPresets();
         self::assertCount(1, $presets);
 
-        self::assertEquals('dashboardPreset-fallback', array_key_first($presets));
+        self::assertSame('dashboardPreset-fallback', key($presets));
         self::assertInstanceOf(DashboardPreset::class, reset($presets));
     }
 
