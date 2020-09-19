@@ -769,6 +769,7 @@ class ReferenceIndex implements LoggerAwareInterface
         if ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
             $dbAnalysis->setUseLiveReferenceIds(false);
+            $dbAnalysis->setWorkspaceId($this->getWorkspaceId());
             $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
             return $dbAnalysis->itemArray;
             // DB record lists:
