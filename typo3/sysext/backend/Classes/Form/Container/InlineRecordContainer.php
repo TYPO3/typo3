@@ -367,7 +367,7 @@ class InlineRecordContainer extends AbstractContainer
                 }
                 if ($fileObject && $fileObject->isMissing()) {
                     $thumbnail .= '<span class="label label-danger">'
-                        . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
+                        . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                         . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                 } elseif ($fileObject) {
                     $imageSetup = $inlineConfig['appearance']['headerThumbnail'];
