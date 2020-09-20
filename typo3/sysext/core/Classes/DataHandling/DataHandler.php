@@ -42,7 +42,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
@@ -571,12 +570,15 @@ class DataHandler implements LoggerAwareInterface
     protected $remapStackRefIndex = [];
 
     /**
-     * Array used for additional calls to $this->updateRefIndex
+     * Registry object to gather reference index update requests and perform updates after
+     * main processing has been done. The first call to start() instantiates this object.
+     * Recursive sub instances receive this instance via __construct().
+     * The final update() call is done at the end of process_cmdmap() or process_datamap()
+     * in the outer most instance.
      *
-     * @var array
-     * @internal
+     * @var ReferenceIndexUpdater
      */
-    public $updateRefIndexStack = [];
+    protected $referenceIndexUpdater;
 
     /**
      * Tells, that this DataHandler instance was called from \TYPO3\CMS\Impext\ImportExport.
@@ -653,13 +655,21 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Sets up the data handler cache and some additional options, the main logic is done in the start() method.
+     *
+     * @param ReferenceIndexUpdater|null $referenceIndexUpdater Hand over from outer most instance to sub instances
      */
-    public function __construct()
+    public function __construct(ReferenceIndexUpdater $referenceIndexUpdater = null)
     {
         $this->checkStoredRecords = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecords'];
         $this->checkStoredRecords_loose = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecordsLoose'];
         $this->runtimeCache = $this->getRuntimeCache();
         $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class, $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']);
+        if ($referenceIndexUpdater === null) {
+            // Create ReferenceIndexUpdater object. This should only happen on outer most instance,
+            // sub instances should receive the reference index updater from a parent.
+            $referenceIndexUpdater = GeneralUtility::makeInstance(ReferenceIndexUpdater::class);
+        }
+        $this->referenceIndexUpdater = $referenceIndexUpdater;
     }
 
     /**
@@ -918,7 +928,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // Pre-process data-map and synchronize localization states
         $this->datamap = GeneralUtility::makeInstance(SlugEnricher::class)->enrichDataMap($this->datamap);
-        $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER)->process();
+        $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER, $this->referenceIndexUpdater)->process();
         // Organize tables so that the pages-table is always processed first. This is required if you want to make sure that content pointing to a new page will be created.
         $orderOfTables = [];
         // Set pages first.
@@ -1064,7 +1074,7 @@ class DataHandler implements LoggerAwareInterface
                                 $this->pagetreeNeedsRefresh = true;
 
                                 /** @var DataHandler $tce */
-                                $tce = GeneralUtility::makeInstance(__CLASS__);
+                                $tce = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
                                 $tce->enableLogging = $this->enableLogging;
                                 // Setting up command for creating a new version of the record:
                                 $cmd = [];
@@ -1241,7 +1251,9 @@ class DataHandler implements LoggerAwareInterface
                 $hookObj->processDatamap_afterAllOperations($this);
             }
         }
+
         if ($this->isOuterMostInstance()) {
+            $this->referenceIndexUpdater->update();
             $this->processClearCacheQueue();
             $this->resetElementsToBeDeleted();
         }
@@ -3228,6 +3240,7 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         if ($this->isOuterMostInstance()) {
+            $this->referenceIndexUpdater->update();
             $this->processClearCacheQueue();
             $this->resetNestedElementCalls();
         }
@@ -4662,7 +4675,7 @@ class DataHandler implements LoggerAwareInterface
         // Remove child records (if synchronization requested it):
         if (is_array($removeArray) && !empty($removeArray)) {
             /** @var DataHandler $tce */
-            $tce = GeneralUtility::makeInstance(__CLASS__);
+            $tce = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
             $tce->enableLogging = $this->enableLogging;
             $tce->start([], $removeArray, $this->BE_USER);
             $tce->process_cmdmap();
@@ -4902,25 +4915,6 @@ class DataHandler implements LoggerAwareInterface
 
         // Update reference index:
         $this->updateRefIndex($table, $uid);
-
-        // We track calls to update the reference index as to avoid calling it twice
-        // with the same arguments. This is done because reference indexing is quite
-        // costly and the update reference index stack usually contain duplicates.
-        // NB: also filled and checked in loop below. The initialisation prevents
-        // running the "root" record twice if it appears in the stack twice.
-        $updateReferenceIndexCalls = [[$table, $uid]];
-
-        // If there are entries in the updateRefIndexStack
-        if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
-            while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
-                if (!in_array($args, $updateReferenceIndexCalls, true)) {
-                    // $args[0]: table, $args[1]: uid
-                    $this->updateRefIndex($args[0], $args[1]);
-                    $updateReferenceIndexCalls[] = $args;
-                }
-            }
-            unset($this->updateRefIndexStack[$table][$uid]);
-        }
     }
 
     /**
@@ -5083,7 +5077,7 @@ class DataHandler implements LoggerAwareInterface
                     ]
                 ];
                 /** @var DataHandler $dataHandler */
-                $dataHandler = GeneralUtility::makeInstance(__CLASS__);
+                $dataHandler = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
                 $dataHandler->enableLogging = $this->enableLogging;
                 $dataHandler->neverHideAtCopy = true;
                 $dataHandler->start([], $command, $this->BE_USER);
@@ -5273,7 +5267,7 @@ class DataHandler implements LoggerAwareInterface
             $dbAnalysis = $this->createRelationHandlerInstance();
             $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
             foreach ($dbAnalysis->itemArray as $v) {
-                $this->updateRefIndexStack[$table][$uid][] = [$v['table'], $v['id']];
+                $this->updateRefIndex($v['table'], $v['id']);
             }
         }
     }
@@ -5844,7 +5838,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function getLocalTCE()
     {
-        $copyTCE = GeneralUtility::makeInstance(DataHandler::class);
+        $copyTCE = GeneralUtility::makeInstance(DataHandler::class, $this->referenceIndexUpdater);
         $copyTCE->copyTree = $this->copyTree;
         $copyTCE->enableLogging = $this->enableLogging;
         // Transformations should NOT be carried out during copy
@@ -7317,22 +7311,16 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Update Reference Index (sys_refindex) for a record
+     * Register a table/uid combination in current user workspace for reference updating.
      * Should be called on almost any update to a record which could affect references inside the record.
      *
      * @param string $table Table name
-     * @param int $id Record UID
+     * @param int $uid Record UID
      * @internal should only be used from within DataHandler
      */
-    public function updateRefIndex($table, $id)
+    public function updateRefIndex($table, $uid): void
     {
-        /** @var ReferenceIndex $refIndexObj */
-        $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
-            $refIndexObj->setWorkspaceId($this->BE_USER->workspace);
-        }
-        $refIndexObj->enableRuntimeCache();
-        $refIndexObj->updateRefIndexTable($table, $id);
+        $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, (int)$this->BE_USER->workspace);
     }
 
     /*********************************************
@@ -9263,6 +9251,7 @@ class DataHandler implements LoggerAwareInterface
         $relationHandler->setWorkspaceId($this->BE_USER->workspace);
         $relationHandler->setUseLiveReferenceIds($isWorkspacesLoaded);
         $relationHandler->setUseLiveParentIds($isWorkspacesLoaded);
+        $relationHandler->setReferenceIndexUpdater($this->referenceIndexUpdater);
         return $relationHandler;
     }
 
