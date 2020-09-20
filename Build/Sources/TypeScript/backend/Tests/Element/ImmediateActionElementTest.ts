@@ -28,7 +28,7 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     root = null;
   });
 
-  it('dispatches action when created via constructor', () => {
+  it('dispatches action when created via constructor', async () => {
     const backup = viewportObject.Topbar.refresh;
     const observer = {
       callback: (): void => {
@@ -41,11 +41,12 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
     expect(observer.callback).not.toHaveBeenCalled();
     root.appendChild(element);
+    await import('TYPO3/CMS/Backend/Viewport');
     expect(observer.callback).toHaveBeenCalled();
     viewportObject.Topbar.refresh = backup;
   });
 
-  it('dispatches action when created via createElement', () => {
+  it('dispatches action when created via createElement', async () => {
     const backup = viewportObject.Topbar.refresh;
     const observer = {
       callback: (): void => {
@@ -58,11 +59,12 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
     expect(observer.callback).not.toHaveBeenCalled();
     root.appendChild(element);
+    await import('TYPO3/CMS/Backend/Viewport');
     expect(observer.callback).toHaveBeenCalled();
     viewportObject.Topbar.refresh = backup;
   });
 
-  it('dispatches action when created from string', () => {
+  it('dispatches action when created from string', async () => {
     const backup = moduleMenuApp.App.refreshMenu;
     const observer = {
       callback: (): void => {
@@ -74,11 +76,12 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     const element = document.createRange().createContextualFragment('<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>').querySelector('typo3-immediate-action');
     expect(observer.callback).not.toHaveBeenCalled();
     root.appendChild(element);
+    await import('TYPO3/CMS/Backend/ModuleMenu');
     expect(observer.callback).toHaveBeenCalled();
     moduleMenuApp.App.refreshMenu = backup;
   });
 
-  it('dispatches action when created via innerHTML', () => {
+  it('dispatches action when created via innerHTML', async () => {
     const backup = moduleMenuApp.App.refreshMenu;
     const observer = {
       callback: (): void => {
@@ -88,6 +91,7 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     spyOn(observer, 'callback').and.callThrough();
     moduleMenuApp.App.refreshMenu = observer.callback;
     root.innerHTML = '<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>';
+    await import('TYPO3/CMS/Backend/ModuleMenu');
     expect(observer.callback).toHaveBeenCalled();
     moduleMenuApp.App.refreshMenu = backup;
   });

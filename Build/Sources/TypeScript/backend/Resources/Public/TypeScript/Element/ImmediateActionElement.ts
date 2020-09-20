@@ -11,9 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
-import viewportObject = require('TYPO3/CMS/Backend/Viewport');
-import windowManager = require('TYPO3/CMS/Backend/WindowManager');
 import Utility = require('TYPO3/CMS/Backend/Utility');
 
 /**
@@ -29,13 +26,16 @@ export class ImmediateActionElement extends HTMLElement {
   private action: string;
   private args: any[] = [];
 
-  private static getDelegate(action: string): Function {
+  private static async getDelegate(action: string): Promise<Function> {
     switch (action) {
       case 'TYPO3.ModuleMenu.App.refreshMenu':
+        const moduleMenuApp = await import('TYPO3/CMS/Backend/ModuleMenu');
         return moduleMenuApp.App.refreshMenu.bind(moduleMenuApp);
       case 'TYPO3.Backend.Topbar.refresh':
+        const viewportObject = await import('TYPO3/CMS/Backend/Viewport');
         return viewportObject.Topbar.refresh.bind(viewportObject.Topbar);
       case 'TYPO3.WindowManager.localOpen':
+        const windowManager = await import('TYPO3/CMS/Backend/WindowManager');
         return windowManager.localOpen.bind(windowManager);
       default:
         throw Error('Unknown action "' + action + '"');
@@ -75,7 +75,7 @@ export class ImmediateActionElement extends HTMLElement {
     if (!this.action) {
       throw new Error('Missing mandatory action attribute');
     }
-    ImmediateActionElement.getDelegate(this.action).apply(null, this.args);
+    ImmediateActionElement.getDelegate(this.action).then((callback: Function): void => callback.apply(null, this.args));
   }
 }
 

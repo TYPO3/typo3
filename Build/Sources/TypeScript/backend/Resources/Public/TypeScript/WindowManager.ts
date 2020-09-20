@@ -18,11 +18,13 @@ class WindowManager {
   private windows: {[key: string]: Window} = {};
 
   // alias for `localOpen`
-  public open = (...args: any[]): Window => this.localOpen.apply(this, args);
+  public open = (...args: any[]): Window => this._localOpen.apply(this, args);
   // @todo Not implemented, yet
-  public globalOpen = (...args: any[]): Window => this.localOpen.apply(this, args);
+  public globalOpen = (...args: any[]): Window => this._localOpen.apply(this, args);
 
-  public localOpen(uri: string, switchFocus?: boolean, windowName: string = 'newTYPO3frontendWindow', windowFeatures: string = ''): Window | null {
+  public localOpen = (uri: string, switchFocus?: boolean, windowName: string = 'newTYPO3frontendWindow', windowFeatures: string = ''): Window | null => this._localOpen(uri, switchFocus, windowName, windowFeatures);
+
+  private _localOpen(uri: string, switchFocus?: boolean, windowName: string = 'newTYPO3frontendWindow', windowFeatures: string = ''): Window | null {
     if (!uri) {
       return null;
     }
