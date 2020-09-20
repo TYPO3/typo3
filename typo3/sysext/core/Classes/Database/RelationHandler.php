@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
+use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -182,9 +183,16 @@ class RelationHandler
     protected $MM_oppositeUsage;
 
     /**
+     * If false, reference index is not updated.
+     *
      * @var bool
      */
     protected $updateReferenceIndex = true;
+
+    /**
+     * @var ReferenceIndexUpdater|null
+     */
+    protected $referenceIndexUpdater;
 
     /**
      * @var bool
@@ -197,7 +205,7 @@ class RelationHandler
     protected $useLiveReferenceIds = true;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $workspaceId;
 
@@ -218,7 +226,7 @@ class RelationHandler
      *
      * @return int
      */
-    public function getWorkspaceId()
+    public function getWorkspaceId(): int
     {
         if (!isset($this->workspaceId)) {
             $this->workspaceId = (int)$GLOBALS['BE_USER']->workspace;
@@ -231,9 +239,20 @@ class RelationHandler
      *
      * @param int $workspaceId
      */
-    public function setWorkspaceId($workspaceId)
+    public function setWorkspaceId($workspaceId): void
     {
         $this->workspaceId = (int)$workspaceId;
+    }
+
+    /**
+     * Setter to carry the 'deferred' reference index updater registry around.
+     *
+     * @param ReferenceIndexUpdater $updater
+     * @internal Used internally within DataHandler only
+     */
+    public function setReferenceIndexUpdater(ReferenceIndexUpdater $updater): void
+    {
+        $this->referenceIndexUpdater = $updater;
     }
 
     /**
@@ -353,6 +372,7 @@ class RelationHandler
      * Sets whether the reference index shall be updated.
      *
      * @param bool $updateReferenceIndex Whether the reference index shall be updated
+     * @todo: Unused in core, should be removed, use ReferenceIndexUpdater instead
      */
     public function setUpdateReferenceIndex($updateReferenceIndex)
     {
@@ -1282,25 +1302,32 @@ class RelationHandler
     }
 
     /**
-     * Update Reference Index (sys_refindex) for a record
+     * Update Reference Index (sys_refindex) for a record.
      * Should be called any almost any update to a record which could affect references inside the record.
-     * (copied from DataHandler)
+     * If used from within DataHandler, only registers a row for update for later processing.
      *
      * @param string $table Table name
-     * @param int $id Record UID
-     * @return array Information concerning modifications delivered by \TYPO3\CMS\Core\Database\ReferenceIndex::updateRefIndexTable()
+     * @param int $uid Record uid
+     * @return array Result from ReferenceIndex->updateRefIndexTable() updated directly, else empty array
+     * @internal Should be protected
      */
-    public function updateRefIndex($table, $id)
+    public function updateRefIndex($table, $uid): array
     {
-        $statisticsArray = [];
-        if ($this->updateReferenceIndex) {
-            /** @var \TYPO3\CMS\Core\Database\ReferenceIndex $refIndexObj */
-            $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+        if (!$this->updateReferenceIndex) {
+            return [];
+        }
+        if ($this->referenceIndexUpdater) {
+            // Add to update registry if given
+            $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, $this->getWorkspaceId());
+            $statisticsArray = [];
+        } else {
+            // Update reference index directly if enabled
+            $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $refIndexObj->setWorkspaceId($this->getWorkspaceId());
+                $referenceIndex->setWorkspaceId($this->getWorkspaceId());
             }
-            $refIndexObj->enableRuntimeCache();
-            $statisticsArray = $refIndexObj->updateRefIndexTable($table, $id);
+            $referenceIndex->enableRuntimeCache();
+            $statisticsArray = $referenceIndex->updateRefIndexTable($table, $uid);
         }
         return $statisticsArray;
     }
