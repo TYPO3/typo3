@@ -12,8 +12,6 @@
  */
 
 import 'TYPO3/CMS/Core/Contrib/document-register-element-polyfill';
-import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
-import viewportObject = require('TYPO3/CMS/Backend/Viewport');
 
 /**
  * Module: TYPO3/CMS/Backend/Element/ImmediateActionElement
@@ -27,11 +25,13 @@ import viewportObject = require('TYPO3/CMS/Backend/Viewport');
 export class ImmediateActionElement extends HTMLElement {
   private action: string;
 
-  private static getDelegate(action: string): Function {
+  private static async getDelegate(action: string): Promise<Function> {
     switch (action) {
       case 'TYPO3.ModuleMenu.App.refreshMenu':
+        const moduleMenuApp = await import('TYPO3/CMS/Backend/ModuleMenu');
         return moduleMenuApp.App.refreshMenu.bind(moduleMenuApp);
       case 'TYPO3.Backend.Topbar.refresh':
+        const viewportObject = await import('TYPO3/CMS/Backend/Viewport');
         return viewportObject.Topbar.refresh.bind(viewportObject.Topbar);
       default:
         throw Error('Unknown action "' + action + '"');
@@ -63,7 +63,7 @@ export class ImmediateActionElement extends HTMLElement {
       throw new Error('Missing mandatory action attribute');
     }
     // @todo similar to ActionDispatcher, it might be required to pass custom arguments
-    ImmediateActionElement.getDelegate(this.action).apply(null, []);
+    ImmediateActionElement.getDelegate(this.action).then((callback: Function): void => callback.apply(null, []));
   }
 }
 
