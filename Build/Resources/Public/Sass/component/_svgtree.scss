@@ -266,6 +266,10 @@ $svgColors: (
 }
 
 .nodes-drop-zone {
+    &[data-open='false'] {
+        display: none;
+    }
+
     rect {
         fill: map_get($svgColors, dragAlertBorder);
         cursor: -webkit-grabbing;
