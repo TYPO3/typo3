@@ -202,6 +202,17 @@ class LanguageMenuProcessor implements DataProcessorInterface
                         'wrap' => ',"direction":|'
                     ]
                 ],
+                '25' => 'USER',
+                '25.' => [
+                    'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
+                    'language.' => [
+                        'data' => 'register:languageId'
+                    ],
+                    'field' => 'flag',
+                    'stdWrap.' => [
+                        'wrap' => ',"flag":|'
+                    ]
+                ],
                 '90' => 'TEXT',
                 '90.' => [
                     'value' => self::LINK_PLACEHOLDER,
