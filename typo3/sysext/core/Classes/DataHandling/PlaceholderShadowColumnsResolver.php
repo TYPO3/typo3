@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class resolves the columns for a TCA table record that should be kept in sync.
  *
  * @see \TYPO3\CMS\Core\DataHandling\DataHandler::placeholderShadowing()
- * @see \TYPO3\CMS\Workspaces\Hook\DataHandlerHook::moveRecord_wsPlaceholders()
  */
 class PlaceholderShadowColumnsResolver
 {
@@ -83,18 +82,6 @@ class PlaceholderShadowColumnsResolver
     {
         $flags = $flags ?? self::FLAG_APPLY_SYSTEM_COLUMNS | self::FLAG_APPLY_SLUG_COLUMNS;
         $shadowColumnsList = $this->tableConfiguration['ctrl']['shadowColumnsForNewPlaceholders'] ?? '';
-        return $this->forTable($shadowColumnsList, $flags);
-    }
-
-    /**
-     * @param int|null $flags Custom flags to adjust resolving behavior
-     * @return string[] Placeholder shadow column names
-     */
-    public function forMovePlaceholder(int $flags = null): array
-    {
-        $shadowColumnsList = $this->tableConfiguration['ctrl']['shadowColumnsForMovePlaceholders']
-            ?? $this->tableConfiguration['ctrl']['shadowColumnsForNewPlaceholders'] ?? '';
-        // @todo Applying same flags as for new-placeholders would streamline database integrity
         return $this->forTable($shadowColumnsList, $flags);
     }
 

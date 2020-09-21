@@ -561,10 +561,10 @@ class RootlineUtility
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter(VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    't3ver_move_id',
+                    't3ver_oid',
                     $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT)
                 )
             )

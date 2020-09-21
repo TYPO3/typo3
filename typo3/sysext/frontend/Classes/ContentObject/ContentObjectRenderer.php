@@ -6017,7 +6017,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         ];
 
         $isInWorkspace = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'isOffline');
-        $considerMovePlaceholders = (
+        $considerMovePointers = (
             $isInWorkspace && $table !== 'pages'
             && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
         );
@@ -6025,16 +6025,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (trim($conf['uidInList'])) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $conf['uidInList']));
 
-            // If move placeholder shall be considered, select via t3ver_move_id
-            if ($considerMovePlaceholders) {
+            // If moved records shall be considered, select via t3ver_oid
+            if ($considerMovePointers) {
                 $constraints[] = (string)$expressionBuilder->orX(
                     $expressionBuilder->in($table . '.uid', $listArr),
                     $expressionBuilder->andX(
                         $expressionBuilder->eq(
                             $table . '.t3ver_state',
-                            (int)(string)VersionState::cast(VersionState::MOVE_PLACEHOLDER)
+                            (int)(string)VersionState::cast(VersionState::MOVE_POINTER)
                         ),
-                        $expressionBuilder->in($table . '.t3ver_move_id', $listArr)
+                        $expressionBuilder->in($table . '.t3ver_oid', $listArr)
                     )
                 );
             } else {

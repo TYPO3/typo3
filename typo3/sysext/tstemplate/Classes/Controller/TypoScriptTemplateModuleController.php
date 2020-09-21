@@ -272,8 +272,7 @@ class TypoScriptTemplateModuleController
                     'endtime',
                     't3ver_oid',
                     't3ver_wsid',
-                    't3ver_state',
-                    't3ver_move_id'
+                    't3ver_state'
                 )
                 ->from('sys_template')
                 ->orderBy('sys_template.pid')

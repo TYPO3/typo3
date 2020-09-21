@@ -421,5 +421,10 @@ return [
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
+    ],
+    'TYPO3\CMS\Core\Versioning\VersionState::MOVE_PLACEHOLDER' => [
+        'restFiles' => [
+            'Breaking-92497-WorkspacesMovePlaceholdersRemoved.rst'
+        ],
     ]
 ];

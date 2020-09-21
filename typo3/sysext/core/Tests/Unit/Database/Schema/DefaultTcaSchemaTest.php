@@ -746,27 +746,6 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verMoveId()
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
-        $result = $this->subject->enrich([$this->defaultTable]);
-        $expectedColumn = new Column(
-            '`t3ver_move_id`',
-            Type::getType('integer'),
-            [
-                'default' => 0,
-                'notnull' => true,
-                'unsigned' => true,
-            ]
-        );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_move_id'));
-    }
-
-    /**
-     * @test
-     */
     public function enrichAddsT3verOidIndex()
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

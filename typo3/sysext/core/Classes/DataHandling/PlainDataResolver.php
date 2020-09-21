@@ -225,30 +225,30 @@ class PlainDataResolver
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $result = $queryBuilder
-            ->select('uid', 't3ver_move_id')
+            ->select('uid', 't3ver_oid')
             ->from($this->tableName)
             ->where(
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter((string)VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
                     $queryBuilder->createNamedParameter($this->workspaceId, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->in(
-                    't3ver_move_id',
+                    't3ver_oid',
                     $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
                 )
             )
             ->execute();
 
-        while ($movePlaceholder = $result->fetch()) {
-            $liveReferenceId = $movePlaceholder['t3ver_move_id'];
-            $movePlaceholderId = $movePlaceholder['uid'];
-            // Substitute MOVE_PLACEHOLDER and purge live reference
-            if (isset($ids[$movePlaceholderId])) {
-                $ids[$movePlaceholderId] = $liveReferenceId;
+        while ($movedRecord = $result->fetch()) {
+            $liveReferenceId = (int)$movedRecord['t3ver_oid'];
+            $movedVersionId = (int)$movedRecord['uid'];
+            // Substitute moved record and purge live reference
+            if (isset($ids[$movedVersionId])) {
+                $ids[$movedVersionId] = $liveReferenceId;
                 unset($ids[$liveReferenceId]);
             } elseif (!$this->keepMovePlaceholder) {
                 // Just purge live reference

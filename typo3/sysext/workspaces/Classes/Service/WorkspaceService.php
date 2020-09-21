@@ -259,7 +259,7 @@ class WorkspaceService implements SingletonInterface
             }
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $stage, $language);
-                $moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $stage);
+                $moveRecs = $this->getMovedRecordsFromPages($table, $pageList, $wsid, $stage);
                 $recs = array_merge($recs, $moveRecs);
                 $recs = $this->filterPermittedElements($recs, $table);
                 if (!empty($recs)) {
@@ -405,28 +405,16 @@ class WorkspaceService implements SingletonInterface
      * @param int $stage
      * @return array
      */
-    protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $stage)
+    protected function getMovedRecordsFromPages($table, $pageList, $wsid, $stage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // Aliases:
-        // A - moveTo placeholder
         // B - online record
-        // C - moveFrom placeholder
+        // C - move pointer (t3ver_state = 4)
         $constraints = [
-            $queryBuilder->expr()->eq(
-                'A.t3ver_state',
-                $queryBuilder->createNamedParameter(
-                    (string)new VersionState(VersionState::MOVE_PLACEHOLDER),
-                    \PDO::PARAM_INT
-                )
-            ),
-            $queryBuilder->expr()->gt(
-                'B.pid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            ),
             $queryBuilder->expr()->eq(
                 'B.t3ver_state',
                 $queryBuilder->createNamedParameter(
@@ -445,22 +433,17 @@ class WorkspaceService implements SingletonInterface
                     \PDO::PARAM_INT
                 )
             ),
-            $queryBuilder->expr()->eq('A.t3ver_move_id', $queryBuilder->quoteIdentifier('B.uid')),
             $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid'))
         ];
 
         if ($wsid >= 0) {
-            $constraints[] = $queryBuilder->expr()->eq(
-                'A.t3ver_wsid',
-                $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
-            );
             $constraints[] = $queryBuilder->expr()->eq(
                 'C.t3ver_wsid',
                 $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
             );
         }
 
-        if ((int)$stage != -99) {
+        if ((int)$stage !== -99) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'C.t3ver_stage',
                 $queryBuilder->createNamedParameter($stage, \PDO::PARAM_INT)
@@ -479,6 +462,13 @@ class WorkspaceService implements SingletonInterface
                         )
                     ),
                     $queryBuilder->expr()->in(
+                        'C.pid',
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    ),
+                    $queryBuilder->expr()->in(
                         'B.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter(
                             $pageIdRestriction,
@@ -488,7 +478,7 @@ class WorkspaceService implements SingletonInterface
                 );
             } else {
                 $constraints[] = $queryBuilder->expr()->in(
-                    'A.pid',
+                    'C.pid',
                     $queryBuilder->createNamedParameter(
                         $pageIdRestriction,
                         Connection::PARAM_INT_ARRAY
@@ -498,12 +488,11 @@ class WorkspaceService implements SingletonInterface
         }
 
         $rows = $queryBuilder
-            ->select('A.pid AS wspid', 'B.uid AS t3ver_oid', 'C.uid AS uid', 'B.pid AS livepid')
-            ->from($table, 'A')
+            ->select('C.pid AS wspid', 'B.uid AS t3ver_oid', 'C.uid AS uid', 'B.pid AS livepid')
             ->from($table, 'B')
             ->from($table, 'C')
             ->where(...$constraints)
-            ->orderBy('A.uid')
+            ->orderBy('C.uid')
             ->execute()
             ->fetchAll();
 
@@ -555,16 +544,20 @@ class WorkspaceService implements SingletonInterface
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $result = $queryBuilder
-                ->select('uid', 'pid', 't3ver_move_id')
+                ->select('uid', 'pid', 't3ver_oid')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->in(
-                        't3ver_move_id',
+                        't3ver_oid',
                         $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_state',
+                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
                     )
                 )
                 ->orderBy('uid')
@@ -572,7 +565,7 @@ class WorkspaceService implements SingletonInterface
 
             $movedAwayPages = [];
             while ($row = $result->fetch()) {
-                $movedAwayPages[$row['t3ver_move_id']] = $row;
+                $movedAwayPages[$row['t3ver_oid']] = $row;
             }
 
             // move all pages away
@@ -595,7 +588,7 @@ class WorkspaceService implements SingletonInterface
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $result = $queryBuilder->select('uid', 't3ver_move_id')
+            $result = $queryBuilder->select('uid', 't3ver_oid')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->in(
@@ -618,8 +611,8 @@ class WorkspaceService implements SingletonInterface
 
             $newList = [];
             foreach ($pageIds as $pageId) {
-                if ((int)$pages[$pageId]['t3ver_move_id'] > 0) {
-                    $newList[] = (int)$pages[$pageId]['t3ver_move_id'];
+                if ((int)$pages[$pageId]['t3ver_oid'] > 0) {
+                    $newList[] = (int)$pages[$pageId]['t3ver_oid'];
                 } else {
                     $newList[] = $pageId;
                 }
@@ -705,7 +698,7 @@ class WorkspaceService implements SingletonInterface
         }
         $page = BackendUtility::getRecord('pages', $pageId, 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
 
-        return $GLOBALS['BE_USER']->doesUserHaveAccess($page, 1);
+        return $GLOBALS['BE_USER']->doesUserHaveAccess($page, Permission::PAGE_SHOW);
     }
 
     /**
@@ -887,58 +880,32 @@ class WorkspaceService implements SingletonInterface
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-            $movePointerParameter = $queryBuilder->createNamedParameter(
-                VersionState::MOVE_POINTER,
-                \PDO::PARAM_INT
-            );
-            $workspaceIdParameter = $queryBuilder->createNamedParameter(
-                $workspaceId,
-                \PDO::PARAM_INT
-            );
-            $onlineVersionParameter = $queryBuilder->createNamedParameter(
-                0,
-                \PDO::PARAM_INT
-            );
-            // create sub-queries, parameters are available for main query
-            $versionQueryBuilder = $this->createQueryBuilderForTable($tableName)
-                ->select('A.t3ver_oid')
-                ->from($tableName, 'A')
-                ->where(
-                    $queryBuilder->expr()->gt('A.t3ver_oid', $onlineVersionParameter),
-                    $queryBuilder->expr()->eq('A.t3ver_wsid', $workspaceIdParameter),
-                    $queryBuilder->expr()->neq('A.t3ver_state', $movePointerParameter)
-                );
-            $movePointerQueryBuilder = $this->createQueryBuilderForTable($tableName)
-                ->select('A.t3ver_oid')
-                ->from($tableName, 'A')
-                ->where(
-                    $queryBuilder->expr()->gt('A.t3ver_oid', $onlineVersionParameter),
-                    $queryBuilder->expr()->eq('A.t3ver_wsid', $workspaceIdParameter),
-                    $queryBuilder->expr()->eq('A.t3ver_state', $movePointerParameter)
-                );
-            $subQuery = '%s IN (%s)';
-            // execute main query
+            // Fetch all versioned record within a workspace
             $result = $queryBuilder
-                ->select('B.pid AS pageId')
-                ->from($tableName, 'B')
-                ->orWhere(
-                    sprintf(
-                        $subQuery,
-                        $queryBuilder->quoteIdentifier('B.uid'),
-                        $versionQueryBuilder->getSQL()
+                ->select('pid')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->gt(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter(
+                            0,
+                            \PDO::PARAM_INT
+                        )
                     ),
-                    sprintf(
-                        $subQuery,
-                        $queryBuilder->quoteIdentifier('B.t3ver_move_id'),
-                        $movePointerQueryBuilder->getSQL()
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(
+                            $workspaceId,
+                            \PDO::PARAM_INT
+                        )
                     )
                 )
-                ->groupBy('B.pid')
+                ->groupBy('pid')
                 ->execute();
 
             $pageIds = [];
             while ($row = $result->fetch()) {
-                $pageIds[$row['pageId']] = true;
+                $pageIds[$row['pid']] = true;
             }
 
             $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;

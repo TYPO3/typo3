@@ -18,21 +18,19 @@
 ,311,90,512,0,1,0,310,310,0,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
 ,312,90,768,0,2,0,311,311,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
 ,320,89,512,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
-,321,90,512,0,0,0,0,298,1,4,0,298,0,"Regular Element #2"
-,322,90,128,0,0,0,0,0,1,3,0,0,298,"[MOVE-TO PLACEHOLDER for #298, WS#1]"
-,323,89,256,0,0,0,0,296,1,4,0,296,0,"Regular Element #0"
-,324,89,128,0,0,0,0,0,1,3,0,0,296,"[MOVE-TO PLACEHOLDER for #296, WS#1]"
-,325,91,256,0,0,0,0,299,0,0,0,0,0,"Regular Element #3"
-,326,91,128,0,1,325,325,300,0,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
-,327,91,64,0,0,0,0,298,0,0,0,0,0,"Regular Element #2"
-,328,91,32,0,0,0,0,297,0,0,0,0,0,"Regular Element #1"
-,329,91,16,0,1,328,328,301,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
-,330,91,8,0,2,328,329,302,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+,321,90,128,0,0,0,0,298,1,4,0,298,0,"Regular Element #2"
+,322,89,128,0,0,0,0,296,1,4,0,296,0,"Regular Element #0"
+,323,91,256,0,0,0,0,299,0,0,0,0,0,"Regular Element #3"
+,324,91,128,0,1,323,323,300,0,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
+,325,91,64,0,0,0,0,298,0,0,0,0,0,"Regular Element #2"
+,326,91,32,0,0,0,0,297,0,0,0,0,0,"Regular Element #1"
+,327,91,16,0,1,326,326,301,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
+,328,91,8,0,2,326,327,302,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
 "sys_refindex",,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,
 ,"25426f92d44dd2ccf416108462b446e3","sys_workspace",1,"custom_stages",0,0,0,"sys_workspace_stage",1,,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",0,0,0,"be_users",3,,,,,
 ,"1b70a8e25c22645f7a49a79f57f3cf3f","sys_category",31,"parent",0,0,0,"sys_category",28,,,,,
-,"cba4488ac1485b42042c18b57b735b10","tt_content",326,"l18n_parent",0,0,0,"tt_content",325,,,,,
-,"1f5c21b840e79d6415203856788a8640","tt_content",329,"l18n_parent",0,0,0,"tt_content",328,,,,,
-,"0778b0497e2fe32a08fa672dba9272d2","tt_content",330,"l18n_parent",0,0,0,"tt_content",328,,,,,
+,"f13721e7d1fd83de05a9f8d031343b97","tt_content",324,"l18n_parent",0,0,0,"tt_content",323,,,,,
+,"f24c7cee8cbb3818bd6dc9531350237f","tt_content",327,"l18n_parent",0,0,0,"tt_content",326,,,,,
+,"a4bd48d945cacb90cafced2be23805f3","tt_content",328,"l18n_parent",0,0,0,"tt_content",326,,,,,

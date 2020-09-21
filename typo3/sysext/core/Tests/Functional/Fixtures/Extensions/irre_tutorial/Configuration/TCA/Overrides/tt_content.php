@@ -4,7 +4,6 @@
 $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
 
 $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForNewPlaceholders'] .= ',tx_irretutorial_1ncsv_hotels';
-$GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] .= ',tx_irretutorial_1ncsv_hotels';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',

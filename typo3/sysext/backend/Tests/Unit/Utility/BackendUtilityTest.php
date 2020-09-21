@@ -1209,14 +1209,4 @@ class BackendUtilityTest extends UnitTestCase
         $uid = 42;
         self::assertSame(42, BackendUtility::wsMapId($tableName, $uid));
     }
-
-    /**
-     * @test
-     */
-    public function getMovePlaceholderReturnsFalseIfNoBeUserIsAvailable()
-    {
-        $GLOBALS['BE_USER'] = null;
-        $tableName = 'table_a';
-        self::assertFalse(BackendUtility::getMovePlaceholder($tableName, 42));
-    }
 }

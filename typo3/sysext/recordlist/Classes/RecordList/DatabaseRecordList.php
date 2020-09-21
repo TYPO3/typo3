@@ -944,38 +944,6 @@ class DatabaseRecordList
                         // which point to the main record:
                         if ($l10nEnabled && $this->searchString === '' && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table))) {
                             foreach ($translations as $lRow) {
-                                // $lRow isn't always what we want - if record was moved we've to work with the
-                                // placeholder records otherwise the list is messed up a bit
-                                if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
-                                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                                            ->getQueryBuilderForTable($table);
-                                    $queryBuilder->getRestrictions()
-                                            ->removeAll()
-                                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                                    $predicates = [
-                                            $queryBuilder->expr()->eq(
-                                                't3ver_move_id',
-                                                $queryBuilder->createNamedParameter((int)$lRow['uid'], \PDO::PARAM_INT)
-                                            ),
-                                            $queryBuilder->expr()->eq(
-                                                'pid',
-                                                $queryBuilder->createNamedParameter((int)$row['_MOVE_PLH_pid'], \PDO::PARAM_INT)
-                                            ),
-                                            $queryBuilder->expr()->eq(
-                                                't3ver_wsid',
-                                                $queryBuilder->createNamedParameter((int)$row['t3ver_wsid'], \PDO::PARAM_INT)
-                                            ),
-                                        ];
-
-                                    $tmpRow = $queryBuilder
-                                            ->select(...$selFieldList)
-                                            ->from($table)
-                                            ->andWhere(...$predicates)
-                                            ->execute()
-                                            ->fetch();
-
-                                    $lRow = is_array($tmpRow) ? $tmpRow : $lRow;
-                                }
                                 if (!$this->isRowListingConditionFulfilled($table, $lRow)) {
                                     continue;
                                 }

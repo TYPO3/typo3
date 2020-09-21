@@ -363,11 +363,12 @@ class PageRepositoryTest extends FunctionalTestCase
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $expectedSQL = sprintf(
-            ' AND ((%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s = 0) AND (%s = 0) AND (%s <= 1451779200) AND ((%s = 0) OR (%s > 1451779200))) AND (%s <> 255)',
+            ' AND ((%s = 0) AND (%s <= 0) AND (%s = 0) AND ((%s = 0) OR (%s = 4)) AND (%s = 0) AND (%s <= 1451779200) AND ((%s = 0) OR (%s > 1451779200))) AND (%s <> 255)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_state'),
             $connection->quoteIdentifier('pages.t3ver_wsid'),
             $connection->quoteIdentifier('pages.t3ver_oid'),
+            $connection->quoteIdentifier('pages.t3ver_state'),
             $connection->quoteIdentifier('pages.hidden'),
             $connection->quoteIdentifier('pages.starttime'),
             $connection->quoteIdentifier('pages.endtime'),
@@ -451,7 +452,7 @@ class PageRepositoryTest extends FunctionalTestCase
         );
         self::assertThat(
             $conditions,
-            self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0)'),
+            self::stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' = 4))'),
             'Records with online version'
         );
     }
@@ -482,7 +483,7 @@ class PageRepositoryTest extends FunctionalTestCase
         );
         self::assertThat(
             $conditions,
-            self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0)'),
+            self::stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' = 4))'),
             'Records from online versions'
         );
     }

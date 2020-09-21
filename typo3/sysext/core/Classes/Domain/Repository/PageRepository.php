@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
@@ -808,8 +807,7 @@ class PageRepository implements LoggerAwareInterface
 
             // Versioning Preview Overlay
             $this->versionOL('pages', $page, true);
-            // Skip if page got disabled due to version overlay
-            // (might be delete or move placeholder)
+            // Skip if page got disabled due to version overlay (might be delete placeholder)
             if (empty($page)) {
                 continue;
             }
@@ -1316,8 +1314,8 @@ class PageRepository implements LoggerAwareInterface
             if ($this->hasTableWorkspaceSupport($table)) {
                 // this should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
                 if ($this->versioningWorkspaceId === 0) {
-                    // Filter out placeholder records (new/moved/deleted items)
-                    // in case we are NOT in a versioning preview (that means we are online!)
+                    // Filter out placeholder records (new/deleted items)
+                    // in case we are NOT in a version preview (that means we are online!)
                     $constraints[] = $expressionBuilder->lte(
                         $table . '.t3ver_state',
                         new VersionState(VersionState::DEFAULT_STATE)
@@ -1335,7 +1333,10 @@ class PageRepository implements LoggerAwareInterface
                 // Filter out versioned records
                 if (empty($ignore_array['pid'])) {
                     // Always filter out versioned records that have an "offline" record
-                    $constraints[] = $expressionBuilder->eq($table . '.t3ver_oid', 0);
+                    $constraints[] = $expressionBuilder->orX(
+                        $expressionBuilder->eq($table . '.t3ver_oid', 0),
+                        $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER)
+                    );
                 }
             }
 
@@ -1512,7 +1513,7 @@ class PageRepository implements LoggerAwareInterface
             return;
         }
         // Now set the "pid" properly.
-        // This will only make a difference when handing in move placeholders but is kept for backwards-compat
+        // This will only make a difference when handing in moved records but is kept for backwards-compat
         // however it's always the same for live + versioned record, except for moving, where _ORIG_pid will
         // be set to the live PID, and pid to the moved location
         if ($oid) {
@@ -1550,13 +1551,25 @@ class PageRepository implements LoggerAwareInterface
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
     {
         if ($this->versioningWorkspaceId > 0 && is_array($row)) {
-            // will overlay any movePlhOL found with the real record, which in turn
-            // will be overlaid with its workspace version if any.
-            $movePldSwap = $this->movePlhOL($table, $row);
             // implode(',',array_keys($row)) = Using fields from original record to make
             // sure no additional fields are selected. This is best for eg. getPageOverlay()
             // Computed properties are excluded since those would lead to SQL errors.
             $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
+            // will overlay any incoming moved record with the live record, which in turn
+            // will be overlaid with its workspace version again to fetch both PID fields.
+            $movePldSwap = (int)($row['t3ver_oid'] ?? 0) > 0 && (int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
+            if ($movePldSwap) {
+                // Fetch the live version again if the given $row is a move pointer, so we know the original PID
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fieldNames, true))
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], \PDO::PARAM_INT)))
+                    ->execute()
+                    ->fetch();
+            }
             if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
                 if (is_array($wsAlt)) {
                     // Always fix PID (like in fixVersioningPid() above). [This is usually not
@@ -1614,68 +1627,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Checks if record is a move-placeholder
-     * (t3ver_state==VersionState::MOVE_PLACEHOLDER) and if so it will set $row to be
-     * the pointed-to live record (and return TRUE) Used from versionOL
-     *
-     * @param string $table Table name
-     * @param array $row Row (passed by reference) - only online records...
-     * @return bool TRUE if overlay is made.
-     * @see BackendUtility::movePlhOl()
-     */
-    protected function movePlhOL($table, &$row)
-    {
-        if ($this->hasTableWorkspaceSupport($table)
-            && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
-        ) {
-            $moveID = 0;
-            // If t3ver_move_id is not found, then find it (but we like best if it is here)
-            if (!isset($row['t3ver_move_id'])) {
-                if ((int)$row['uid'] > 0) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $moveIDRec = $queryBuilder->select('t3ver_move_id')
-                        ->from($table)
-                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)))
-                        ->execute()
-                        ->fetch();
-
-                    if (is_array($moveIDRec)) {
-                        $moveID = $moveIDRec['t3ver_move_id'];
-                    }
-                }
-            } else {
-                $moveID = $row['t3ver_move_id'];
-            }
-            // Find pointed-to record.
-            if ($moveID) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-                $origRow = $queryBuilder->select(...array_keys($this->purgeComputedProperties($row)))
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($moveID, \PDO::PARAM_INT)
-                        )
-                    )
-                    ->setMaxResults(1)
-                    ->execute()
-                    ->fetch();
-
-                if ($origRow) {
-                    $row = $origRow;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * Returns the PID of the new (moved) location within a version, when a $liveUid is given.
      *
      * Please note: This is only performed within a workspace.
@@ -1685,7 +1636,6 @@ class PageRepository implements LoggerAwareInterface
      * @param string $table Table name
      * @param int $liveUid Record UID of online version
      * @return int|null If found, the Page ID of the moved record, otherwise null.
-     * @see BackendUtility::getMovePlaceholder()
      */
     protected function getMovedPidOfVersionedRecord(string $table, int $liveUid): ?int
     {

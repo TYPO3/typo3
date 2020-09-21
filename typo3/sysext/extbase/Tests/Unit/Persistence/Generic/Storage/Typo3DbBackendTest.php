@@ -166,7 +166,7 @@ class Typo3DbBackendTest extends UnitTestCase
             'workspace' => new WorkspaceAspect($workspaceUid)
         ]);
         $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['movePlhOL', 'getWorkspaceVersionOfRecord'])
+            ->setMethods(['getWorkspaceVersionOfRecord'])
             ->setConstructorArgs([$context])
             ->getMock();
         $query = new Query('random');

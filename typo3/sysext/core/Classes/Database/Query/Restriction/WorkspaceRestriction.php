@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Restriction to make queries workspace-aware. This restriction is new compared to the "older"
@@ -77,9 +78,15 @@ class WorkspaceRestriction implements QueryRestrictionInterface
             // Always filter out versioned records that have an "offline" record
             $constraints[] = $expressionBuilder->andX(
                 $workspaceIdExpression,
-                $expressionBuilder->eq(
-                    $tableAlias . '.t3ver_oid',
-                    0
+                $expressionBuilder->orX(
+                    $expressionBuilder->eq(
+                        $tableAlias . '.t3ver_oid',
+                        0
+                    ),
+                    $expressionBuilder->eq(
+                        $tableAlias . '.t3ver_state',
+                        VersionState::MOVE_POINTER
+                    )
                 )
             );
         }

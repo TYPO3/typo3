@@ -158,14 +158,6 @@ class WorkspaceVersionRecordsCommand extends Command
 
         $unusedPlaceholders = $this->findUnusedPlaceholderRecords();
 
-        // Finding all move placeholders with inconsistencies
-        // Move-to placeholder records which have bad integrity
-        $invalidMovePlaceholders = $this->findInvalidMovePlaceholderRecords();
-
-        // Finding move_id_check inconsistencies
-        // Checking if t3ver_move_id is correct. t3ver_move_id must only be set with online records having t3ver_state=3.
-        $recordsWithInvalidMoveIds = $this->findInvalidMoveIdRecords();
-
         if (!$io->isQuiet()) {
             $numberOfVersionedRecords = 0;
             foreach ($this->foundRecords['all_versioned_records'] as $records) {
@@ -219,16 +211,6 @@ class WorkspaceVersionRecordsCommand extends Command
             $io->section('Found ' . count($unusedPlaceholders) . ' unused placeholder records.');
             if ($io->isVeryVerbose()) {
                 $io->listing(array_keys($unusedPlaceholders));
-            }
-
-            $io->section('Found ' . count($invalidMovePlaceholders) . ' invalid move placeholders.');
-            if ($io->isVeryVerbose()) {
-                $io->listing($invalidMovePlaceholders);
-            }
-
-            $io->section('Found ' . count($recordsWithInvalidMoveIds) . ' versions with an invalid move ID.');
-            if ($io->isVeryVerbose()) {
-                $io->listing($recordsWithInvalidMoveIds);
             }
         }
 
@@ -434,104 +416,6 @@ class WorkspaceVersionRecordsCommand extends Command
         }
         ksort($unusedPlaceholders);
         return $unusedPlaceholders;
-    }
-
-    /**
-     * Find all records where the field t3ver_state=3 (move placeholder)
-     * and checks against the ws_id etc.
-     *
-     * @return array the records (md5 as hash) with an array of data
-     */
-    protected function findInvalidMovePlaceholderRecords(): array
-    {
-        $invalidMovePlaceholders = [];
-        $tableNames = $this->getAllVersionableTables();
-        foreach ($tableNames as $table) {
-            $queryBuilder = $this->connectionPool
-                ->getQueryBuilderForTable($table);
-
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $result = $queryBuilder
-                ->select('uid', 'pid', 't3ver_move_id', 't3ver_wsid', 't3ver_state')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq(
-                        't3ver_state',
-                        $queryBuilder->createNamedParameter(
-                            (string)new VersionState(VersionState::MOVE_PLACEHOLDER),
-                            \PDO::PARAM_INT
-                        )
-                    )
-                )
-                ->execute();
-            while ($placeholderRecord = $result->fetch()) {
-                $shortID = GeneralUtility::shortMD5($table . ':' . $placeholderRecord['uid']);
-                if ((int)$placeholderRecord['t3ver_wsid'] !== 0) {
-                    $phrecCopy = $placeholderRecord;
-                    if (BackendUtility::movePlhOL($table, $placeholderRecord)) {
-                        if ($wsAlt = BackendUtility::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $placeholderRecord['uid'], 'uid,pid,t3ver_state')) {
-                            if (!VersionState::cast($wsAlt['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
-                                $invalidMovePlaceholders[$shortID] = $table . ':' . $placeholderRecord['uid'] . ' - State for version was not "4" as it should be!';
-                            }
-                        } else {
-                            $invalidMovePlaceholders[$shortID] = $table . ':' . $placeholderRecord['uid'] . ' - No version was found for online record to be moved. A version must exist.';
-                        }
-                    } else {
-                        $invalidMovePlaceholders[$shortID] = $table . ':' . $placeholderRecord['uid'] . ' - Did not find online record for "t3ver_move_id" value ' . $placeholderRecord['t3ver_move_id'];
-                    }
-                } else {
-                    $invalidMovePlaceholders[$shortID] = $table . ':' . $placeholderRecord['uid'] . ' - Placeholder was not assigned a workspace value in t3ver_wsid.';
-                }
-            }
-        }
-        ksort($invalidMovePlaceholders);
-        return $invalidMovePlaceholders;
-    }
-
-    /**
-     * Find records with a t3ver_move_id field != 0 that are
-     * neither a move placeholder or, if it is a move placeholder is offline
-     *
-     * @return array
-     */
-    protected function findInvalidMoveIdRecords(): array
-    {
-        $records = [];
-        $tableNames = $this->getAllVersionableTables();
-        foreach ($tableNames as $table) {
-            $queryBuilder = $this->connectionPool
-                ->getQueryBuilderForTable($table);
-
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $result = $queryBuilder
-                ->select('uid', 'pid', 't3ver_move_id', 't3ver_wsid', 't3ver_oid', 't3ver_state')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->neq(
-                        't3ver_move_id',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
-                )
-                ->execute();
-
-            while ($placeholderRecord = $result->fetch()) {
-                if (VersionState::cast($placeholderRecord['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
-                    if ((int)$placeholderRecord['t3ver_oid'] > 0) {
-                        $records[] = $table . ':' . $placeholderRecord['uid'] . ' - Record was offline, must not be!';
-                    }
-                } else {
-                    $records[] = $table . ':' . $placeholderRecord['uid'] . ' - Record had t3ver_move_id set to "' . $placeholderRecord['t3ver_move_id'] . '" while having t3ver_state=' . $placeholderRecord['t3ver_state'];
-                }
-            }
-        }
-        return $records;
     }
 
     /**************************

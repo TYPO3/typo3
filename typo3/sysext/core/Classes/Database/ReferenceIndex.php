@@ -384,9 +384,9 @@ class ReferenceIndex implements LoggerAwareInterface
         $this->relations = [];
 
         if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-            // Never write relations for t3ver_state = 1 and t3ver_state = 3 placeholder records
+            // Never write relations for t3ver_state = 1 placeholder records
             $versionState = VersionState::cast($record['t3ver_state']);
-            if ($versionState->equals(VersionState::NEW_PLACEHOLDER) || $versionState->equals(VersionState::MOVE_PLACEHOLDER)) {
+            if ($versionState->equals(VersionState::NEW_PLACEHOLDER)) {
                 return [];
             }
         }

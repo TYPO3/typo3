@@ -46,7 +46,6 @@ class BrowseTreeView extends AbstractTreeView
         'extendToSubpages',
         'nav_hide',
         't3ver_wsid',
-        't3ver_move_id',
         'is_siteroot'
     ];
 

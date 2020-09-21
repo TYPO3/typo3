@@ -40,7 +40,6 @@ class InlineOverrideChildTca implements FormDataProviderInterface
         't3ver_wsid',
         't3ver_state',
         't3ver_stage',
-        't3ver_move_id',
     ];
 
     /**

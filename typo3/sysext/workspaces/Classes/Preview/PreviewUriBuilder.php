@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -141,7 +140,6 @@ class PreviewUriBuilder
      */
     public function buildUriForElement(string $table, int $uid, array $liveRecord = null, array $versionRecord = null): string
     {
-        $movePlaceholder = [];
         if ($table === 'pages') {
             return BackendUtility::viewOnClick((int)BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
         }
@@ -152,12 +150,9 @@ class PreviewUriBuilder
         if ($versionRecord === null) {
             $versionRecord = BackendUtility::getRecord($table, $uid);
         }
-        if (VersionState::cast($versionRecord['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
-            $movePlaceholder = BackendUtility::getMovePlaceholder($table, $liveRecord['uid'], 'pid');
-        }
 
         // Directly use pid value and consider move placeholders
-        $previewPageId = (empty($movePlaceholder['pid']) ? $liveRecord['pid'] : $movePlaceholder['pid']);
+        $previewPageId = (empty($versionRecord['pid']) ? $liveRecord['pid'] : $versionRecord['pid']);
         $additionalParameters = '&previewWS=' . $versionRecord['t3ver_wsid'];
         // Add language parameter if record is a localization
         if (BackendUtility::isTableLocalizable($table)) {

@@ -20,7 +20,6 @@ return [
         'origUid' => 't3_origuid',
         // @see https://forge.typo3.org/issues/29278 which solves it implicitly in the Core
         // 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
-        'shadowColumnsForMovePlaceholders' => 'parentid,parenttable,parentidentifier',
     ],
     'columns' => [
         'sys_language_uid' => [

@@ -566,10 +566,11 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
-        // Fetches the move-placeholder in case it is supported
+        // Fetches the moved record in case it is supported
         // by the table and if there's only one row in the result set
         // (applying this to all rows does not work, since the sorting
         // order would be destroyed and possible limits not met anymore)
+        // The move pointers are later unset (see versionOL() last argument)
         if (!empty($workspaceUid)
             && BackendUtility::isTableWorkspaceEnabled($tableName)
             && count($rows) === 1
@@ -577,19 +578,19 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $versionId = $workspaceUid;
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
-            $movePlaceholder = $queryBuilder
+            $movedRecords = $queryBuilder
                 ->select('*')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($versionId, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
                 )
                 ->setMaxResults(1)
                 ->execute()
                 ->fetchAll();
-            if (!empty($movePlaceholder)) {
-                $rows = $movePlaceholder;
+            if (!empty($movedRecords)) {
+                $rows = $movedRecords;
             }
         }
         $overlaidRows = [];

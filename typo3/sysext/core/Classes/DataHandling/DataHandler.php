@@ -1280,24 +1280,17 @@ class DataHandler implements LoggerAwareInterface
         $versionRecord = BackendUtility::getRecord($table, $id);
         $versionState = VersionState::cast($versionRecord['t3ver_state']);
 
-        if (!$liveState->indicatesPlaceholder() && !$versionState->indicatesPlaceholder()) {
+        if (!$liveState->indicatesPlaceholder() || $versionState->equals(VersionState::MOVE_POINTER)) {
             return;
         }
+
+        $placeholderRecord = $liveRecord;
         $factory = GeneralUtility::makeInstance(
             PlaceholderShadowColumnsResolver::class,
             $table,
             $GLOBALS['TCA'][$table] ?? []
         );
-
-        if ($versionState->equals(VersionState::MOVE_POINTER)) {
-            $placeholderRecord = BackendUtility::getMovePlaceholder($table, $liveRecord['uid'], '*', $versionRecord['t3ver_wsid']);
-            $shadowColumns = $factory->forMovePlaceholder();
-        } elseif ($liveState->indicatesPlaceholder()) {
-            $placeholderRecord = $liveRecord;
-            $shadowColumns = $factory->forNewPlaceholder();
-        } else {
-            return;
-        }
+        $shadowColumns = $factory->forNewPlaceholder();
         if (empty($shadowColumns)) {
             return;
         }
@@ -3433,7 +3426,6 @@ class DataHandler implements LoggerAwareInterface
                         $fields[] = 't3ver_oid';
                         $fields[] = 't3ver_state';
                         $fields[] = 't3ver_wsid';
-                        $fields[] = 't3ver_move_id';
                     }
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                     $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
@@ -3457,16 +3449,16 @@ class DataHandler implements LoggerAwareInterface
                         $movedLiveIds = [];
                         $movedLiveRecords = [];
                         while ($row = $result->fetch()) {
-                            if ($isTableWorkspaceEnabled && (int)$row['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
-                                $movedLiveIds[(int)$row['t3ver_move_id']] = (int)$row['uid'];
+                            if ($isTableWorkspaceEnabled && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER) {
+                                $movedLiveIds[(int)$row['t3ver_oid']] = (int)$row['uid'];
                             }
                             $rows[(int)$row['uid']] = $row;
                         }
                         // Resolve placeholders of workspace versions
                         if (!empty($rows) && $currentWorkspaceId > 0 && $isTableWorkspaceEnabled) {
-                            // If a record was moved within the page, the PlainDataResolver needs the move placeholder
-                            // but not the original live version, otherwise the move placeholder is not considered at all
-                            // For this reason, we find the live ids, where there was also a move placeholder in the SQL
+                            // If a record was moved within the page, the PlainDataResolver needs the moved record
+                            // but not the original live version, otherwise the moved record is not considered at all.
+                            // For this reason, we find the live ids, where there was also a moved record in the SQL
                             // query above in $movedLiveIds and now we removed them before handing them over to PlainDataResolver.
                             // see changeContentSortingAndCopyDraftPage test
                             foreach ($movedLiveIds as $liveId => $movePlaceHolderId) {
@@ -3899,13 +3891,13 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
 
-        // Never copy the actual move placeholders around, as the newly copied records are
-        // Always created as new record / new placeholder pairs
+        // Never copy the actual placeholders around, as the newly copied records are
+        // always created as new record / new placeholder pairs
         if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->notIn(
+                $queryBuilder->expr()->neq(
                     't3ver_state',
-                    [VersionState::MOVE_PLACEHOLDER, VersionState::DELETE_PLACEHOLDER]
+                    VersionState::DELETE_PLACEHOLDER
                 )
             );
         }
@@ -4740,15 +4732,6 @@ class DataHandler implements LoggerAwareInterface
                     } else {
                         $this->deleteRecord($table, $verRec['uid'], true, $forceHardDelete);
                     }
-
-                    // Delete move-placeholder
-                    $versionState = VersionState::cast($verRec['t3ver_state']);
-                    if ($versionState->equals(VersionState::MOVE_POINTER)) {
-                        $versionMovePlaceholder = BackendUtility::getMovePlaceholder($table, $uid, 'uid', $verRec['t3ver_wsid']);
-                        if (!empty($versionMovePlaceholder)) {
-                            $this->deleteEl($table, $versionMovePlaceholder['uid'], true, $forceHardDelete);
-                        }
-                    }
                 }
             }
         }
@@ -5005,64 +4988,16 @@ class DataHandler implements LoggerAwareInterface
                 $statement = $queryBuilder->execute();
 
                 while ($row = $statement->fetch()) {
-                    // Handle a detail related to workspace placeholder records, delete any
-                    // further workspace overlays for the record in question, then delete the record.
-                    $this->copyMovedRecordToNewLocation($table, $row['uid']);
+                    // Delete any further workspace overlays of the record in question, then delete the record.
                     $this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
                     $this->deleteRecord($table, $row['uid'], true, $forceHardDelete);
                 }
             }
         }
 
-        // Handle a detail related to workspace placeholder records, delete any
-        // further workspace overlays for the page in question, then delete the page.
-        $this->copyMovedRecordToNewLocation('pages', $uid);
+        // Delete any further workspace overlays of the record in question, then delete the record.
         $this->deleteVersionsForRecord('pages', $uid, $forceHardDelete);
         $this->deleteRecord('pages', $uid, true, $forceHardDelete);
-    }
-
-    /**
-     * Copies the move placeholder of a record to its new location (pid).
-     * This will create a "new" placeholder at the new location and
-     * a version for this new placeholder. The original move placeholder
-     * is then deleted because it is not needed anymore.
-     *
-     * This method is used to assure that moved records are not deleted
-     * when the origin page is deleted.
-     *
-     * @param string $table Record table
-     * @param int $uid Record uid
-     */
-    protected function copyMovedRecordToNewLocation($table, $uid)
-    {
-        if ($this->BE_USER->workspace > 0) {
-            $originalRecord = BackendUtility::getRecord($table, $uid);
-            $movePlaceholder = BackendUtility::getMovePlaceholder($table, $uid);
-            // Check whether target page to copied to is different to current page
-            // Cloning on the same page is superfluous and does not help at all
-            if (!empty($originalRecord) && !empty($movePlaceholder) && (int)$originalRecord['pid'] !== (int)$movePlaceholder['pid']) {
-                // If move placeholder exists, copy to new location
-                // This will create a New placeholder on the new location
-                // and a version for this new placeholder
-                $command = [
-                    $table => [
-                        $uid => [
-                            'copy' => '-' . $movePlaceholder['uid']
-                        ]
-                    ]
-                ];
-                /** @var DataHandler $dataHandler */
-                $dataHandler = GeneralUtility::makeInstance(__CLASS__, $this->referenceIndexUpdater);
-                $dataHandler->enableLogging = $this->enableLogging;
-                $dataHandler->neverHideAtCopy = true;
-                $dataHandler->start([], $command, $this->BE_USER);
-                $dataHandler->process_cmdmap();
-                unset($dataHandler);
-
-                // Delete move placeholder
-                $this->deleteRecord($table, $movePlaceholder['uid'], true, true);
-            }
-        }
     }
 
     /**
@@ -5341,12 +5276,10 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
-        // Gather versioned, live and placeholder record if there are any
-        $liveRecord = null;
+        // Gather versioned and placeholder record if there are any
         $versionRecord = null;
         $placeholderRecord = null;
         if ((int)$record['t3ver_wsid'] === 0) {
-            $liveRecord = $record;
             $record = BackendUtility::getWorkspaceVersionOfRecord($userWorkspace, $table, $uid);
         }
         if (!is_array($record)) {
@@ -5365,24 +5298,10 @@ class DataHandler implements LoggerAwareInterface
             if (!is_array($placeholderRecord)) {
                 return;
             }
-        } elseif ($recordState->equals(VersionState::MOVE_POINTER)) {
-            $versionRecord = $record;
-            $liveRecord = $liveRecord ?: BackendUtility::getLiveVersionOfRecord($table, $uid);
-            if (!is_array($liveRecord)) {
-                return;
-            }
-            $placeholderRecord = BackendUtility::getMovePlaceholder($table, $liveRecord['uid']);
-            if (!is_array($placeholderRecord)) {
-                return;
-            }
         } else {
             $versionRecord = $record;
-            $liveRecord = $liveRecord ?: BackendUtility::getLiveVersionOfRecord($table, $uid);
-            if (!is_array($liveRecord)) {
-                return;
-            }
         }
-        // Do not use $record, $recordState and $uid below anymore, rely on $versionRecord, $liveRecord and $placeholderRecord
+        // Do not use $record, $recordState and $uid below anymore, rely on $versionRecord and $placeholderRecord
 
         // User access checks
         if ($userWorkspace !== (int)$versionRecord['t3ver_wsid']) {
@@ -5429,9 +5348,7 @@ class DataHandler implements LoggerAwareInterface
             (int)$versionRecord['pid']
         );
 
-        if ($versionState->equals(VersionState::MOVE_POINTER)
-            || $versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)
-        ) {
+        if ($versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
             // Drop placeholder records if any
             $this->hardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
             $this->deletedRecords[$table][] = (int)$placeholderRecord['uid'];
@@ -5629,12 +5546,6 @@ class DataHandler implements LoggerAwareInterface
             return null;
         }
 
-        // Record must not be placeholder for moving.
-        if (VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
-            $this->newlog('Record cannot be versioned because it is a placeholder for a moving operation', SystemLogErrorClassification::USER_ERROR);
-            return null;
-        }
-
         if ($delete && $this->cannotDeleteRecord($table, $id)) {
             $this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), SystemLogErrorClassification::USER_ERROR);
             return null;
@@ -5661,7 +5572,7 @@ class DataHandler implements LoggerAwareInterface
             // Create raw-copy and return result:
             // The information of the label to be used for the workspace record
             // as well as the information whether the record shall be removed
-            // must be forwarded (creating remove placeholders on a workspace are
+            // must be forwarded (creating delete placeholders on a workspace are
             // done by copying the record and override several fields).
             $workspaceOptions = [
                 'delete' => $delete,
@@ -7323,6 +7234,9 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder
             ->select($sortColumn, 'pid', 'uid')
             ->from($table);
+        if ($considerWorkspaces) {
+            $queryBuilder->addSelect('t3ver_state');
+        }
 
         // find and return the sorting value for the first record on that pid
         if ($pid >= 0) {
@@ -7332,7 +7246,10 @@ class DataHandler implements LoggerAwareInterface
 
             if ($considerWorkspaces) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq('t3ver_oid', 0)
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->eq('t3ver_oid', 0),
+                        $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER)
+                    )
                 );
             }
             $row = $queryBuilder
@@ -7372,18 +7289,16 @@ class DataHandler implements LoggerAwareInterface
 
         // There is a previous record
         if (!empty($row)) {
-            // Look, if the record UID happens to be an offline record. If so, find its live version.
-            // Offline uids will be used when a page is versionized as "branch" so this is when we must correct
-            // - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
-            if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
+            // Look if the record UID happens to be a versioned record. If so, find its live version.
+            // If this is already a moved record in workspace, this is not needed
+            if ((int)$row['t3ver_state'] !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
                 $row = $lookForLiveVersion;
-            }
-            // Fetch move placeholder, since it might point to a new page in the current workspace.
-            // Only do that if we're not inserting a record after itself, otherwise we'd update the
-            // move placeholder that we're currently trying to move around with data of itself.
-            $movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortColumn);
-            if ($movePlaceholder && ((int)$movePlaceholder['uid'] !== (int)$uid)) {
-                $row = $movePlaceholder;
+            } elseif ($considerWorkspaces && $this->BE_USER->workspace > 0) {
+                // In case the previous record is moved in the workspace, we need to fetch the information from this specific record
+                $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $row['uid'], $sortColumn . ',pid,uid,t3ver_state');
+                if (is_array($versionedRecord) && (int)$versionedRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
+                    $row = $versionedRecord;
+                }
             }
             // If the record should be inserted after itself, keep the current sorting information:
             if ((int)$row['uid'] === (int)$uid) {
@@ -7411,7 +7326,10 @@ class DataHandler implements LoggerAwareInterface
 
                 if ($considerWorkspaces) {
                     $queryBuilder->andWhere(
-                        $queryBuilder->expr()->eq('t3ver_oid', 0)
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq('t3ver_oid', 0),
+                            $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER)
+                        )
                     );
                 }
 
@@ -8781,7 +8699,7 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Resolves versioned records for the current workspace scope.
-     * Delete placeholders and move placeholders are substituted and removed.
+     * Delete placeholders are substituted and removed.
      *
      * @param string $tableName Name of the table to be processed
      * @param string $fieldNames List of the field names to be fetched

@@ -19,7 +19,6 @@ return [
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'shadowColumnsForNewPlaceholders' => 'offers',
-        'shadowColumnsForMovePlaceholders' => 'offers',
     ],
     'columns' => [
         'sys_language_uid' => [

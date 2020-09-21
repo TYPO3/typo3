@@ -5,11 +5,10 @@
 ,89,88,256,0,0,0,0,0,0,0,"Relations","/data-handler/relations",,
 ,90,88,512,0,0,0,0,0,0,0,"Target","/data-handler/target",,
 # @todo broken: The sub pages should be turned into delete placeholders too if deleting a parent page?!
-,91,88,256,0,89,1,4,0,89,0,"Relations","/data-handler/relations",,
-,92,88,768,0,0,1,3,0,0,89,"[MOVE-TO PLACEHOLDER for #89, WS#1]",,,
-,93,88,128,0,0,1,1,0,0,0,"Testing #1","/data-handler/testing-1",,
-,94,88,128,0,0,1,-1,0,93,0,"Testing #1","/data-handler/testing-1",,
-,95,1,256,0,88,1,2,0,88,0,"DataHandlerTest","/data-handler",,
+,91,88,768,0,89,1,4,0,89,0,"Relations","/data-handler/relations",,
+,92,88,128,0,0,1,1,0,0,0,"Testing #1","/data-handler/testing-1",,
+,93,88,128,0,0,1,-1,0,92,0,"Testing #1","/data-handler/testing-1",,
+,94,1,256,0,88,1,2,0,88,0,"DataHandlerTest","/data-handler",,
 "tt_content",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header"
 ,296,88,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #0"

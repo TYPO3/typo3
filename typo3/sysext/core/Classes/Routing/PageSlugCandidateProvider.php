@@ -233,7 +233,7 @@ class PageSlugCandidateProvider
             $mountPageInformation = null;
             // This changes the PID value and adds a _ORIG_PID value (only different in move actions)
             // In live: This fetches everything in a bad way ! as there is no workspace limitation given, fetching all new and moved placeholders here!
-            // In a workspace: Filter out versioned records (t3ver_oid=0), leaving effectively the new/move placeholders in place, where the new placeholder
+            // In a workspace: Filter out versioned records (t3ver_oid=0), leaving effectively the new placeholders and moved records in place.
             // However, this is checked in $siteFinder->getSiteByPageId() via RootlineUtility where overlays are happening
             // so the fixVersioningPid() call is probably irrelevant.
             $pageRepository->fixVersioningPid('pages', $row);

@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\DataHandling\PlaceholderShadowColumnsResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
@@ -251,17 +250,6 @@ class DataHandlerHook
                     } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
                         // Delete those in WS 0 + if their live records state was not "Placeholder".
                         $dataHandler->deleteEl($table, $id);
-                        if ($recordVersionState->equals(VersionState::MOVE_POINTER)) {
-                            // Delete move-placeholder if current version record is a move-to-pointer.
-                            // deleteEl() can't be used here: The deleteEl() for the MOVE_POINTER record above
-                            // already triggered a delete cascade for children (inline, ...). If we'd
-                            // now call deleteEl() again, we'd trigger adding delete placeholder records for children.
-                            // Thus, it's safe here to just set the MOVE_PLACEHOLDER to deleted (or drop row) straight ahead.
-                            $movePlaceholder = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid', $record['t3ver_wsid']);
-                            if (!empty($movePlaceholder)) {
-                                $this->softOrHardDeleteSingleRecord($table, (int)$movePlaceholder['uid']);
-                            }
-                        }
                     } elseif ($recordVersionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
                         $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$id);
                         $dataHandler->deleteEl($table, (int)$id);
@@ -277,24 +265,6 @@ class DataHandlerHook
             }
         } elseif ($dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
             // Look, if record is "online" then delete directly.
-            $dataHandler->deleteEl($table, $id);
-        } elseif ($recordVersionState->equals(VersionState::MOVE_PLACEHOLDER)) {
-            // Placeholders for moving operations are deletable directly.
-            // Get record which its a placeholder for and reset the t3ver_state of that:
-            if ($wsRec = BackendUtility::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
-                // Clear the state flag of the workspace version of the record
-                // Setting placeholder state value for version (so it can know it is currently a new version...)
-
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->update(
-                        $table,
-                        [
-                            't3ver_state' => (string)new VersionState(VersionState::DEFAULT_STATE)
-                        ],
-                        ['uid' => (int)$wsRec['uid']]
-                    );
-            }
             $dataHandler->deleteEl($table, $id);
         } else {
             // Otherwise, try to delete by versioning:
@@ -362,24 +332,15 @@ class DataHandlerHook
             return;
         }
         $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
-        // Fetch move placeholder, since it might point to a new page in the current workspace
-        $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid,pid');
-        if ($movePlaceHolder !== false && $destPid < 0) {
-            $resolvedPid = $movePlaceHolder['pid'];
-        }
         $recordWasMoved = true;
         $moveRecVersionState = VersionState::cast($moveRec['t3ver_state']);
         // Get workspace version of the source record, if any:
-        $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
-        // Handle move-placeholders if the current record is not one already
-        if (
-            $tableSupportsVersioning
-            && !$moveRecVersionState->equals(VersionState::MOVE_PLACEHOLDER)
-        ) {
+        $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+        if ($tableSupportsVersioning) {
             // Create version of record first, if it does not exist
             if (empty($workspaceVersion['uid'])) {
                 $dataHandler->versionizeRecord($table, $uid, 'MovePointer');
-                $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+                $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
                 if ((int)$resolvedPid !== (int)$propArr['pid']) {
                     $this->moveRecord_processFields($dataHandler, $resolvedPid, $table, $uid);
                 }
@@ -398,7 +359,7 @@ class DataHandlerHook
         $canMoveRecord = $recIsNewVersion || $tableSupportsVersioning;
         // Workspace source check:
         if (!$recIsNewVersion) {
-            $errorCode = $dataHandler->BE_USER->workspaceCannotEditRecord($table, $workspaceVersion['uid'] ?: $uid);
+            $errorCode = $dataHandler->BE_USER->workspaceCannotEditRecord($table, $versionedRecord['uid'] ?: $uid);
             if ($errorCode) {
                 $workspaceAccessBlocked['src1'] = 'Record could not be edited in workspace: ' . $errorCode . ' ';
             } elseif (!$canMoveRecord && !$recordMustNotBeVersionized) {
@@ -413,7 +374,7 @@ class DataHandlerHook
         }
 
         if (empty($workspaceAccessBlocked)) {
-            $versionedRecordUid = (int)$workspaceVersion['uid'];
+            $versionedRecordUid = (int)$versionedRecord['uid'];
             // moving not needed, just behave like in live workspace
             if (!$versionedRecordUid || !$tableSupportsVersioning) {
                 $recordWasMoved = false;
@@ -426,8 +387,8 @@ class DataHandlerHook
                 $dataHandler->moveRecord_raw($table, $versionedRecordUid, (int)$destPid);
             } else {
                 // If the move operation is done on a versioned record, which is
-                // NOT new/deleted placeholder, then also create a move placeholder
-                $this->moveRecord_wsPlaceholders($table, (int)$uid, (int)$destPid, (int)$resolvedPid, $versionedRecordUid, $dataHandler);
+                // NOT new/deleted placeholder, then mark the versioned record as "moved"
+                $this->moveRecord_moveVersionedRecord($table, (int)$uid, (int)$destPid, $versionedRecordUid, $dataHandler);
             }
         } else {
             $dataHandler->newlog('Move attempt failed due to workspace restrictions: ' . implode(' // ', $workspaceAccessBlocked), SystemLogErrorClassification::USER_ERROR);
@@ -496,7 +457,11 @@ class DataHandlerHook
             // record at the beginning, thus the order is reversed here:
             foreach ($dbAnalysis->itemArray as $item) {
                 $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $item['table'], $item['id'], 'uid,t3ver_state');
-                if (empty($versionedRecord) || VersionState::cast($versionedRecord['t3ver_state'])->indicatesPlaceholder()) {
+                if (empty($versionedRecord)) {
+                    continue;
+                }
+                $versionState = VersionState::cast($versionedRecord['t3ver_state']);
+                if ($versionState->indicatesPlaceholder()) {
                     continue;
                 }
                 $dataHandler->moveRecord($item['table'], $item['id'], $resolvedPageId);
@@ -593,10 +558,10 @@ class DataHandlerHook
             return;
         }
         // Select the two versions:
+        // Currently live version, contents will be removed.
         $curVersion = BackendUtility::getRecord($table, $id, '*');
+        // Versioned records which contents will be moved into $curVersion
         $swapVersion = BackendUtility::getRecord($table, $swapWith, '*');
-        $movePlh = [];
-        $movePlhID = 0;
         if (!(is_array($curVersion) && is_array($swapVersion))) {
             $dataHandler->newlog(
                 sprintf(
@@ -628,10 +593,12 @@ class DataHandlerHook
             $dataHandler->newlog('In offline record, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', SystemLogErrorClassification::SYSTEM_ERROR);
             return;
         }
+        $versionState = new VersionState($swapVersion['t3ver_state']);
 
         // Find fields to keep
         $keepFields = $this->getUniqueFields($table);
-        if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+        // Sorting needs to be exchanged for moved records
+        if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$versionState->equals(VersionState::MOVE_POINTER)) {
             $keepFields[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
         }
         // l10n-fields must be kept otherwise the localization
@@ -649,8 +616,10 @@ class DataHandlerHook
         $t3ver_state = [];
         $t3ver_state['swapVersion'] = $swapVersion['t3ver_state'];
         // Modify offline version to become online:
-        // Set pid for ONLINE
-        $swapVersion['pid'] = (int)$curVersion['pid'];
+        // Set pid for ONLINE (but not for moved records)
+        if (!$versionState->equals(VersionState::MOVE_POINTER)) {
+            $swapVersion['pid'] = (int)$curVersion['pid'];
+        }
         // We clear this because t3ver_oid only make sense for offline versions
         // and we want to prevent unintentional misuse of this
         // value for online records.
@@ -661,22 +630,6 @@ class DataHandlerHook
         $swapVersion['t3ver_wsid'] = 0;
         $swapVersion['t3ver_stage'] = 0;
         $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
-        // Moving element.
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
-            //  && $t3ver_state['swapVersion']==4   // Maybe we don't need this?
-            if ($plhRec = BackendUtility::getMovePlaceholder($table, $id, 't3ver_state,pid,uid' . ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ? ',' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : ''))) {
-                $movePlhID = $plhRec['uid'];
-                $movePlh['pid'] = $swapVersion['pid'];
-                $swapVersion['pid'] = (int)$plhRec['pid'];
-                $curVersion['t3ver_state'] = (int)$swapVersion['t3ver_state'];
-                $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
-                if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-                    // sortby is a "keepFields" which is why this will work...
-                    $movePlh[$GLOBALS['TCA'][$table]['ctrl']['sortby']] = $swapVersion[$GLOBALS['TCA'][$table]['ctrl']['sortby']];
-                    $swapVersion[$GLOBALS['TCA'][$table]['ctrl']['sortby']] = $plhRec[$GLOBALS['TCA'][$table]['ctrl']['sortby']];
-                }
-            }
-        }
         // Take care of relations in each field (e.g. IRRE):
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldConf) {
@@ -758,12 +711,6 @@ class DataHandlerHook
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
             $this->remappedIds[$table][$swapWith] = $id;
-            // If a moving operation took place...:
-            if ($movePlhID) {
-                // Remove, if normal publishing:
-                // For delete + completely delete!
-                $dataHandler->deleteEl($table, $movePlhID, true, true);
-            }
             // Checking for delete:
             // Delete only if new/deleted placeholders are there.
             if (((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER || (int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER)) {
@@ -1305,115 +1252,41 @@ class DataHandlerHook
     }
 
     /**
-     * Creates a move placeholder for workspaces.
-     * USE ONLY INTERNALLY
-     * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=VersionState::NEW_PLACEHOLDER
-     * Moving original: Will either create the placeholder if it doesn't exist or move existing placeholder in workspace.
+     * Moves a versioned record, which is not new or deleted.
+     *
+     * This is critical for a versioned record to be marked as MOVED (t3ver_state=4)
      *
      * @param string $table Table name to move
-     * @param int $uid Record uid to move (online record)
+     * @param int $liveUid Record uid to move (online record)
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     * @param int $resolvedId Effective page ID
-     * @param int $offlineUid UID of offline version of online record
+     * @param int $versionedRecordUid UID of offline version of online record
      * @param DataHandler $dataHandler DataHandler object
      * @see moveRecord()
      */
-    protected function moveRecord_wsPlaceholders(string $table, int $uid, int $destPid, int $resolvedId, int $offlineUid, DataHandler $dataHandler): void
+    protected function moveRecord_moveVersionedRecord(string $table, int $liveUid, int $destPid, int $versionedRecordUid, DataHandler $dataHandler): void
     {
-        // If a record gets moved after a record that already has a placeholder record
-        // then the new placeholder record needs to be after the existing one
+        // If a record gets moved after a record that already has a versioned record
+        // then the versioned record needs to be placed after the existing one
         $originalRecordDestinationPid = $destPid;
-        $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid');
-        if ($movePlaceHolder !== false && $destPid < 0) {
-            $destPid = -$movePlaceHolder['uid'];
+        $movedTargetRecordInWorkspace = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, abs($destPid), 'uid');
+        if (is_array($movedTargetRecordInWorkspace) && $destPid < 0) {
+            $destPid = -$movedTargetRecordInWorkspace['uid'];
         }
-        if ($plh = BackendUtility::getMovePlaceholder($table, $uid, 'uid')) {
-            // If already a placeholder exists, move it:
-            $dataHandler->moveRecord_raw($table, $plh['uid'], $destPid);
-        } else {
-            // First, we create a placeholder record in the Live workspace that
-            // represents the position to where the record is eventually moved to.
-            $newVersion_placeholderFieldArray = [];
-
-            $factory = GeneralUtility::makeInstance(
-                PlaceholderShadowColumnsResolver::class,
+        $dataHandler->moveRecord_raw($table, $versionedRecordUid, $destPid);
+        // Update the state of this record now
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->update(
                 $table,
-                $GLOBALS['TCA'][$table] ?? []
+                [
+                    't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
+                ],
+                [
+                    'uid' => (int)$versionedRecordUid
+                ]
             );
-            $shadowColumns = $factory->forMovePlaceholder();
-            // Set values from the versioned record to the move placeholder
-            if (!empty($shadowColumns)) {
-                $versionedRecord = BackendUtility::getRecord($table, $offlineUid);
-                foreach ($shadowColumns as $shadowColumn) {
-                    if (isset($versionedRecord[$shadowColumn])) {
-                        $newVersion_placeholderFieldArray[$shadowColumn] = $versionedRecord[$shadowColumn];
-                    }
-                }
-            }
-
-            if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
-                $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
-                $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $dataHandler->userid;
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
-                $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
-            }
-            if ($table === 'pages') {
-                // Copy page access settings from original page to placeholder
-                $perms_clause = $dataHandler->BE_USER->getPagePermsClause(Permission::PAGE_SHOW);
-                $access = BackendUtility::readPageAccess($uid, $perms_clause);
-                $newVersion_placeholderFieldArray['perms_userid'] = $access['perms_userid'];
-                $newVersion_placeholderFieldArray['perms_groupid'] = $access['perms_groupid'];
-                $newVersion_placeholderFieldArray['perms_user'] = $access['perms_user'];
-                $newVersion_placeholderFieldArray['perms_group'] = $access['perms_group'];
-                $newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
-            }
-            $newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
-            // Setting placeholder state value for temporary record
-            $newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::MOVE_PLACEHOLDER);
-            // Setting workspace - only so display of place holders can filter out those from other workspaces.
-            $newVersion_placeholderFieldArray['t3ver_wsid'] = $dataHandler->BE_USER->workspace;
-            $labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
-            if ($GLOBALS['TCA'][$table]['columns'][$labelField]['config']['type'] === 'input') {
-                $newVersion_placeholderFieldArray[$labelField] = $dataHandler->getPlaceholderTitleForTableLabel($table, 'MOVE-TO PLACEHOLDER for #' . $uid);
-            }
-            // moving localized records requires to keep localization-settings for the placeholder too
-            if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField']) && isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
-                $l10nParentRec = BackendUtility::getRecord($table, $uid);
-                $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
-                $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
-                if (isset($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'])) {
-                    $newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']];
-                }
-                unset($l10nParentRec);
-            }
-            // @todo Check why $destPid cannot be used directly
-            // Initially, create at root level.
-            $newVersion_placeholderFieldArray['pid'] = 0;
-            $id = 'NEW_MOVE_PLH';
-            // Saving placeholder as 'original'
-            $dataHandler->insertDB($table, $id, $newVersion_placeholderFieldArray, false);
-            // Move the new placeholder from temporary root-level to location:
-            $dataHandler->moveRecord_raw($table, $dataHandler->substNEWwithIDs[$id], $destPid);
-            // Move the workspace-version of the original to be the version of the move-to-placeholder:
-            // Setting placeholder state value for version (so it can know it is currently a new version...)
-            $updateFields = [
-                'pid' => $resolvedId,
-                't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
-            ];
-
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($table)
-                ->update(
-                    $table,
-                    $updateFields,
-                    ['uid' => (int)$offlineUid]
-                );
-        }
         // Check for the localizations of that element and move them as well
-        $dataHandler->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
+        $dataHandler->moveL10nOverlayRecords($table, $liveUid, $destPid, $originalRecordDestinationPid);
     }
 
     /**

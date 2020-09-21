@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\RowUpdater\L18nDiffsourceToJsonMigration;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
+use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceMovePlaceholderRemovalMigration;
 use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceVersionRecordsMigration;
 
 /**
@@ -51,6 +52,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
     protected $rowUpdater = [
         WorkspaceVersionRecordsMigration::class,
         L18nDiffsourceToJsonMigration::class,
+        WorkspaceMovePlaceholderRemovalMigration::class,
     ];
 
     /**

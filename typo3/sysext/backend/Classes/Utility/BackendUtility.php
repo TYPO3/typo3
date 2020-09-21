@@ -471,14 +471,12 @@ class BackendUtility
                 if ($workspaceOL) {
                     self::workspaceOL('pages', $row);
                     if (is_array($row) && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER) {
-                        $newLocation = self::getMovePlaceholder('pages', $row['uid'], 'pid');
+                        $newLocation = $row['_ORIG_pid'];
                     }
                 }
                 if (is_array($row)) {
                     if ($newLocation !== false) {
-                        $row['pid'] = $newLocation['pid'];
-                    } else {
-                        self::fixVersioningPid('pages', $row);
+                        $row['pid'] = $newLocation;
                     }
                     $pageForRootlineCache[$ident] = $row;
                     $runtimeCache->set('backendUtilityPageForRootLine', $pageForRootlineCache);
@@ -1204,9 +1202,6 @@ class BackendUtility
             case new VersionState(VersionState::DELETE_PLACEHOLDER):
                 $parts[] = 'Deleted element!';
                 break;
-            case new VersionState(VersionState::MOVE_PLACEHOLDER):
-                $parts[] = 'OLD LOCATION (Move Placeholder) WSID#' . $row['t3ver_wsid'];
-                break;
             case new VersionState(VersionState::MOVE_POINTER):
                 $parts[] = 'NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
                 break;
@@ -1317,9 +1312,6 @@ class BackendUtility
                         break;
                     case new VersionState(VersionState::DELETE_PLACEHOLDER):
                         $out .= ' - Deleted element!';
-                        break;
-                    case new VersionState(VersionState::MOVE_PLACEHOLDER):
-                        $out .= ' - OLD LOCATION (Move Placeholder) WSID#' . $row['t3ver_wsid'];
                         break;
                     case new VersionState(VersionState::MOVE_POINTER):
                         $out .= ' - NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
@@ -3446,127 +3438,83 @@ class BackendUtility
     /**
      * Workspace Preview Overlay
      * Generally ALWAYS used when records are selected based on uid or pid.
-     * If records are selected on other fields than uid or pid (eg. "email = ....")
-     * then usage might produce undesired results and that should be evaluated on individual basis.
      * Principle; Record online! => Find offline?
-     * Recently, this function has been modified so it MAY set $row to FALSE.
-     * This happens if a version overlay with the move-id pointer is found in which case we would like a backend preview.
-     * In other words, you should check if the input record is still an array afterwards when using this function.
+     * The function MAY set $row to FALSE. This happens if a move pointer record is given and
+     * $unsetMovePointers is set to true. In other words, you should check if the input record
+     * is still an array afterwards when using this function.
      *
      * @param string $table Table name
-     * @param array $row Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
+     * @param array $row Record by reference. At least "uid", "pid", "t3ver_oid" and "t3ver_state" must be set. Keys not prefixed with '_' are used as field names in SQL.
      * @param int $wsid Workspace ID, if not specified will use static::getBackendUserAuthentication()->workspace
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
      * @see fixVersioningPid()
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces') || !is_array($row)) {
             return;
         }
-        // If this is FALSE the placeholder is shown raw in the backend.
-        // I don't know if this move can be useful for users to toggle. Technically it can help debugging.
-        $previewMovePlaceholders = true;
-        // Initialize workspace ID
-        if ($wsid == -99 && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
-            $wsid = static::getBackendUserAuthentication()->workspace;
-        }
-        // Check if workspace is different from zero and record is set:
-        if ($wsid !== 0 && is_array($row)) {
-            // Check if input record is a move-placeholder and if so, find the pointed-to live record:
-            $movePldSwap = null;
-            $orig_uid = 0;
-            $orig_pid = 0;
-            if ($previewMovePlaceholders) {
-                $orig_uid = $row['uid'];
-                $orig_pid = $row['pid'];
-                $movePldSwap = self::movePlhOL($table, $row);
-            }
-            $wsAlt = self::getWorkspaceVersionOfRecord(
-                $wsid,
-                $table,
-                $row['uid'],
-                implode(',', static::purgeComputedPropertyNames(array_keys($row)))
-            );
-            // If version was found, swap the default record with that one.
-            if (is_array($wsAlt)) {
-                // Check if this is in move-state:
-                if ($previewMovePlaceholders && !$movePldSwap && static::isTableWorkspaceEnabled($table) && $unsetMovePointers) {
-                    // Only for WS ver 2... (moving)
-                    // If t3ver_state is not found, then find it... (but we like best if it is here...)
-                    if (!isset($wsAlt['t3ver_state'])) {
-                        $stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
-                        $versionState = VersionState::cast($stateRec['t3ver_state']);
-                    } else {
-                        $versionState = VersionState::cast($wsAlt['t3ver_state']);
-                    }
-                    if ($versionState->equals(VersionState::MOVE_POINTER)) {
-                        // @todo Same problem as frontend in versionOL(). See TODO point there.
-                        $row = false;
-                        return;
-                    }
-                }
-                // Always correct PID from -1 to what it should be
-                if (isset($wsAlt['pid'])) {
-                    // Keep the old (-1) - indicates it was a version.
-                    $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
-                    // Set in the online versions PID.
-                    $wsAlt['pid'] = $row['pid'];
-                }
-                // For versions of single elements or page+content, swap UID and PID
-                $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-                $wsAlt['uid'] = $row['uid'];
-                // Backend css class:
-                $wsAlt['_CSSCLASS'] = 'ver-element';
-                // Changing input record to the workspace version alternative:
-                $row = $wsAlt;
-            }
-            // If the original record was a move placeholder, the uid and pid of that is preserved here:
-            if ($movePldSwap) {
-                $row['_MOVE_PLH'] = true;
-                $row['_MOVE_PLH_uid'] = $orig_uid;
-                $row['_MOVE_PLH_pid'] = $orig_pid;
-                // For display; To make the icon right for the placeholder vs. the original
-                $row['t3ver_state'] = (string)new VersionState(VersionState::MOVE_PLACEHOLDER);
-            }
-        }
-    }
 
-    /**
-     * Checks if record is a move-placeholder (t3ver_state==VersionState::MOVE_PLACEHOLDER) and if so
-     * it will set $row to be the pointed-to live record (and return TRUE)
-     *
-     * @param string $table Table name
-     * @param array $row Row (passed by reference) - must be online record!
-     * @return bool TRUE if overlay is made.
-     * @see PageRepository::movePlhOl()
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function movePlhOL($table, &$row)
-    {
-        if (static::isTableWorkspaceEnabled($table)) {
-            // If t3ver_move_id or t3ver_state is not found, then find it... (but we like best if it is here...)
-            if (!isset($row['t3ver_move_id']) || !isset($row['t3ver_state'])) {
-                $moveIDRec = self::getRecord($table, $row['uid'], 't3ver_move_id, t3ver_state');
-                $moveID = $moveIDRec['t3ver_move_id'];
-                $versionState = VersionState::cast($moveIDRec['t3ver_state']);
-            } else {
-                $moveID = $row['t3ver_move_id'];
-                $versionState = VersionState::cast($row['t3ver_state']);
-            }
-            // Find pointed-to record.
-            if ($versionState->equals(VersionState::MOVE_PLACEHOLDER) && $moveID) {
-                if ($origRow = self::getRecord(
-                    $table,
-                    $moveID,
-                    implode(',', static::purgeComputedPropertyNames(array_keys($row)))
-                )) {
-                    $row = $origRow;
-                    return true;
+        // Initialize workspace ID
+        $wsid = (int)$wsid;
+        if ($wsid === -99 && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
+            $wsid = (int)static::getBackendUserAuthentication()->workspace;
+        }
+        if ($wsid === 0) {
+            // Return early if in live workspace
+            return;
+        }
+
+        // Check if input record is a moved record
+        $movePldSwap = false;
+        if (isset($row['t3ver_oid'], $row['t3ver_state'])
+            && $row['t3ver_oid'] > 0
+            && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER
+        ) {
+            // @todo: This handling needs a review, together with the 4th param $unsetMovePointers
+            $movePldSwap = true;
+        }
+
+        $wsAlt = self::getWorkspaceVersionOfRecord(
+            $wsid,
+            $table,
+            $row['uid'],
+            implode(',', static::purgeComputedPropertyNames(array_keys($row)))
+        );
+
+        // If version was found, swap the default record with that one.
+        if (is_array($wsAlt)) {
+            // Check if this is in move-state
+            if (!$movePldSwap && static::isTableWorkspaceEnabled($table) && $unsetMovePointers) {
+                // Only for WS ver 2... (moving)
+                // If t3ver_state is not found, then find it... (but we like best if it is here...)
+                if (!isset($wsAlt['t3ver_state'])) {
+                    $stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
+                    $versionState = VersionState::cast($stateRec['t3ver_state']);
+                } else {
+                    $versionState = VersionState::cast($wsAlt['t3ver_state']);
+                }
+                if ($versionState->equals(VersionState::MOVE_POINTER)) {
+                    // @todo Same problem as frontend in versionOL(). See TODO point there and todo above.
+                    $row = false;
+                    return;
                 }
             }
+            // Always correct PID from -1 to what it should be
+            if (isset($wsAlt['pid'])) {
+                // Keep the old (-1) - indicates it was a version.
+                $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
+                // Set in the online versions PID.
+                $wsAlt['pid'] = $row['pid'];
+            }
+            // For versions of single elements or page+content, swap UID and PID
+            $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+            $wsAlt['uid'] = $row['uid'];
+            // Backend css class:
+            $wsAlt['_CSSCLASS'] = 'ver-element';
+            // Changing input record to the workspace version alternative:
+            $row = $wsAlt;
         }
-        return false;
     }
 
     /**
@@ -3673,56 +3621,6 @@ class BackendUtility
             );
         }
         return is_array($wsRec) ? $wsRec['uid'] : $uid;
-    }
-
-    /**
-     * Returns move placeholder of online (live) version
-     *
-     * @param string $table Table name
-     * @param int $uid Record UID of online version
-     * @param string $fields Field list, default is *
-     * @param int|null $workspace The workspace to be used
-     * @return array|bool If found, the record, otherwise false
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function getMovePlaceholder($table, $uid, $fields = '*', $workspace = null)
-    {
-        if ($workspace === null && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
-            $workspace = static::getBackendUserAuthentication()->workspace;
-        }
-        if ((int)$workspace !== 0 && static::isTableWorkspaceEnabled($table)) {
-            // Select workspace version of record:
-            $queryBuilder = static::getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $row = $queryBuilder
-                ->select(...GeneralUtility::trimExplode(',', $fields, true))
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_state',
-                        $queryBuilder->createNamedParameter(
-                            (string)new VersionState(VersionState::MOVE_PLACEHOLDER),
-                            \PDO::PARAM_INT
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_move_id',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
-                    )
-                )
-                ->execute()
-                ->fetch();
-
-            return $row ?: false;
-        }
-        return false;
     }
 
     /*******************************************
