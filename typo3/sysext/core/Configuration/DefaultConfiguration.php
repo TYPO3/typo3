@@ -76,8 +76,7 @@ return [
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
             'security.frontend.keepSessionDataOnLogout' => false,
-            'security.backend.enforceReferrer' => true,
-            'rearrangedRedirectMiddlewares' => false,
+            'security.backend.enforceReferrer' => true
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

@@ -22,7 +22,6 @@ return [
         'features' => [
             'fluidBasedPageModule' => true,
             'unifiedPageTranslationHandling' => true,
-            'rearrangedRedirectMiddlewares' => true,
         ],
     ],
 ];
