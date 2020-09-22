@@ -365,8 +365,18 @@ class InputLinkElement extends AbstractFormElement
                 $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
                 // Is this a real page
                 if ($pageRecord['uid']) {
+                    $fragmentTitle = '';
+                    if (isset($linkData['fragment'])) {
+                        if (MathUtility::canBeInterpretedAsInteger($linkData['fragment'])) {
+                            $contentElement = BackendUtility::getRecord('tt_content', (int)$linkData['fragment'], '*', 'pid=' . $pageRecord['uid']);
+                            if ($contentElement) {
+                                $fragmentTitle = BackendUtility::getRecordTitle('tt_content', $contentElement, false, false);
+                            }
+                        }
+                        $fragmentTitle = ' #' . ($fragmentTitle ?: $linkData['fragment']);
+                    }
                     $data = [
-                        'text' => $pageRecord['_thePathFull'] . '[' . $pageRecord['uid'] . ']',
+                        'text' => $pageRecord['_thePathFull'] . '[' . $pageRecord['uid'] . ']' . $fragmentTitle,
                         'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render()
                     ];
                 }
