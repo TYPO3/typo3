@@ -62,8 +62,7 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
     {
         $this->namespaces = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'];
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE && $this->getBackendUser() instanceof BackendUserAuthentication) {
-            $configuration = $this->getBackendUser()->uc['AdminPanel'];
-            if (isset($configuration['preview_showFluidDebug']) && $configuration['preview_showFluidDebug']) {
+            if ($this->getBackendUser()->uc['AdminPanel']['preview_showFluidDebug'] ?? false) {
                 $this->namespaces['f'][] = 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Debug';
             }
         }
