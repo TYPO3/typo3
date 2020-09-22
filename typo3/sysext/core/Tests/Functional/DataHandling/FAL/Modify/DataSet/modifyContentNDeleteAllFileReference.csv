@@ -10,8 +10,6 @@
 ,331,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",0,,,,,,
 "sys_refindex",,,,,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,,,,,,
-,"48540de7710e3082f347bdd65ca340f2","tt_content",331,"image",0,0,0,"sys_file_reference",128,,,,,,,,,,,
-,"ceaebd2148901a6d7b0a52c546aa5218","tt_content",331,"image",1,0,0,"sys_file_reference",129,,,,,,,,,,,
 ,"fb266d0b94cee39b87fe03b9b7875c25","sys_file_reference",129,"uid_local",0,1,0,"sys_file",1,,,,,,,,,,,
 ,"b1315f6a325027205050c81764294b72","sys_file",1,"storage",0,0,0,"sys_file_storage",1,,,,,,,,,,,
 ,"10034d14de6b8c87aa0096de9d029498","sys_file",1,"metadata",0,0,0,"sys_file_metadata",1,,,,,,,,,,,

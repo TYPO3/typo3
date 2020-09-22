@@ -158,4 +158,15 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
     }
+
+    /**
+     * @test
+     */
+    public function createContentWithFileReferenceAndDeleteFileReference()
+    {
+        parent::createContentWithFileReferenceAndDeleteFileReference();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertAssertionDataSet('createContentWFileReferenceNDeleteFileReference');
+        // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
+    }
 }

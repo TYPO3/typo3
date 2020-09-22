@@ -4907,8 +4907,10 @@ class DataHandler implements LoggerAwareInterface
             $this->getRecordHistoryStore()->deleteRecord($table, $uid, $this->correlationId);
         }
 
-        // Update reference index:
+        // Update reference index with table/uid on left side (recuid)
         $this->updateRefIndex($table, $uid);
+        // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted / undeleted.
+        $this->registerReferenceUpdatesForReferencesToItem($table, $uid);
     }
 
     /**
@@ -7315,6 +7317,31 @@ class DataHandler implements LoggerAwareInterface
     public function updateRefIndex($table, $uid): void
     {
         $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, (int)$this->BE_USER->workspace);
+    }
+
+    /**
+     * Find reference index rows pointing to given table/uid combination and register them for update.
+     * Important in delete scenarios where a child is deleted to make sure any references to this child are dropped, too.
+     *
+     * @param string $table Table name, used as ref_table
+     * @param int $uid Record uid, used as ref_uid
+     */
+    protected function registerReferenceUpdatesForReferencesToItem(string $table, int $uid): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $statement = $queryBuilder
+            ->select('tablename', 'recuid')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
+                $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT))
+            )
+            ->execute();
+        while ($row = $statement->fetch()) {
+            $this->updateRefIndex($row['tablename'], (int)$row['recuid']);
+        }
     }
 
     /*********************************************
