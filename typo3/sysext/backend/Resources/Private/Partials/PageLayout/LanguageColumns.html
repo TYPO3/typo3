@@ -64,9 +64,11 @@
         <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
             <tr>
                 <f:for each="{languageColumns}" as="languageColumn">
-                    <f:variable name="grid" value="{languageColumn.grid}" />
-                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                    <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
+                    <f:if condition="{languageColumn.grid.columns}">
+                        <f:variable name="grid" value="{languageColumn.grid}" />
+                        <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                        <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
+                    </f:if>
                 </f:for>
             </tr>
         </f:for>
