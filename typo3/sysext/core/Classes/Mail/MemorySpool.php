@@ -45,7 +45,7 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Logge
     /**
      * @var SentMessage[]
      */
-    protected $queuedMessages;
+    protected $queuedMessages = [];
 
     /**
      * Maximum number of retries when the real transport has failed.
@@ -72,7 +72,7 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Logge
      */
     public function flushQueue(TransportInterface $transport): int
     {
-        if (!$this->queuedMessages) {
+        if ($this->queuedMessages === []) {
             return 0;
         }
 
