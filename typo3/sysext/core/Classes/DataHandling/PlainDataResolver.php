@@ -68,11 +68,6 @@ class PlainDataResolver
     protected $keepMovePlaceholder = true;
 
     /**
-     * @var int[]
-     */
-    protected $resolvedIds;
-
-    /**
      * @param string $tableName
      * @param int[] $liveIds
      * @param array|null $sortingStatement
@@ -135,26 +130,22 @@ class PlainDataResolver
      */
     public function get()
     {
-        if (isset($this->resolvedIds)) {
-            return $this->resolvedIds;
+        $resolvedIds = $this->processVersionOverlays($this->liveIds);
+        if ($resolvedIds !== $this->liveIds) {
+            $resolvedIds = $this->reindex($resolvedIds);
         }
 
-        $this->resolvedIds = $this->processVersionOverlays($this->liveIds);
-        if ($this->resolvedIds !== $this->liveIds) {
-            $this->resolvedIds = $this->reindex($this->resolvedIds);
+        $tempIds = $this->processSorting($resolvedIds);
+        if ($tempIds !== $resolvedIds) {
+            $resolvedIds = $this->reindex($tempIds);
         }
 
-        $tempIds = $this->processSorting($this->resolvedIds);
-        if ($tempIds !== $this->resolvedIds) {
-            $this->resolvedIds = $this->reindex($tempIds);
+        $tempIds = $this->applyLiveIds($resolvedIds);
+        if ($tempIds !== $resolvedIds) {
+            $resolvedIds = $this->reindex($tempIds);
         }
 
-        $tempIds = $this->applyLiveIds($this->resolvedIds);
-        if ($tempIds !== $this->resolvedIds) {
-            $this->resolvedIds = $this->reindex($tempIds);
-        }
-
-        return $this->resolvedIds;
+        return $resolvedIds;
     }
 
     /**
