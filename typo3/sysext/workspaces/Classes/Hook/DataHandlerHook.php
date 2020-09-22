@@ -610,13 +610,14 @@ class DataHandlerHook
             );
             return;
         }
-        if (!$dataHandler->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid'])) {
-            $dataHandler->newlog('User could not publish records from workspace #' . $swapVersion['t3ver_wsid'], SystemLogErrorClassification::USER_ERROR);
+        $workspaceId = (int)$swapVersion['t3ver_wsid'];
+        if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
+            $dataHandler->newlog('User could not publish records from workspace #' . $workspaceId, SystemLogErrorClassification::USER_ERROR);
             return;
         }
-        $wsAccess = $dataHandler->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
-        if (!($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10)) {
-            $dataHandler->newlog('Records in workspace #' . $swapVersion['t3ver_wsid'] . ' can only be published when in "Publish" stage.', SystemLogErrorClassification::USER_ERROR);
+        $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
+        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10)) {
+            $dataHandler->newlog('Records in workspace #' . $workspaceId . ' can only be published when in "Publish" stage.', SystemLogErrorClassification::USER_ERROR);
             return;
         }
         if (!($dataHandler->doesRecordExist($table, $swapWith, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
@@ -753,6 +754,8 @@ class DataHandlerHook
         if (!empty($sqlErrors)) {
             $dataHandler->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), SystemLogErrorClassification::SYSTEM_ERROR);
         } else {
+            // Update localized elements to use the live l10n_parent now
+            $this->updateL10nOverlayRecordsOnPublish($table, $id, $swapWith, $workspaceId, $dataHandler);
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
             $this->remappedIds[$table][$swapWith] = $id;
@@ -827,6 +830,90 @@ class DataHandlerHook
             $refIndexObj->setWorkspaceId(0);
             $refIndexObj->updateRefIndexTable($table, $id);
             $refIndexObj->updateRefIndexTable($table, $swapWith);
+        }
+    }
+
+    /**
+     * If an editor is doing "partial" publishing, the translated children need to be "linked" to the now pointed
+     * live record, as if the versioned record (which is deleted) would have never existed.
+     *
+     * This is related to the l10n_source and l10n_parent fields.
+     *
+     * This needs to happen before the hook calls DataHandler->deleteEl() otherwise the children get deleted as well.
+     *
+     * @param string $table the database table of the published record
+     * @param int $liveId the live version / online version of the record that was just published
+     * @param int $previouslyUsedVersionId the versioned record ID (wsid>0) which is about to be deleted
+     * @param int $workspaceId the workspace ID
+     * @param DataHandler $dataHandler
+     */
+    protected function updateL10nOverlayRecordsOnPublish(string $table, int $liveId, int $previouslyUsedVersionId, int $workspaceId, DataHandler $dataHandler): void
+    {
+        if (!BackendUtility::isTableLocalizable($table)) {
+            return;
+        }
+        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+            return;
+        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $l10nParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        $constraints = $queryBuilder->expr()->eq(
+            $l10nParentFieldName,
+            $queryBuilder->createNamedParameter($previouslyUsedVersionId, \PDO::PARAM_INT)
+        );
+        $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null;
+        if ($translationSourceFieldName) {
+            $constraints = $queryBuilder->expr()->orX(
+                $constraints,
+                $queryBuilder->expr()->eq(
+                    $translationSourceFieldName,
+                    $queryBuilder->createNamedParameter($previouslyUsedVersionId, \PDO::PARAM_INT)
+                )
+            );
+        }
+
+        $queryBuilder
+            ->select('uid', $l10nParentFieldName)
+            ->from($table)
+            ->where(
+                $constraints,
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                )
+            );
+
+        if ($translationSourceFieldName) {
+            $queryBuilder->addSelect($translationSourceFieldName);
+        }
+
+        $statement = $queryBuilder->execute();
+        while ($record = $statement->fetch()) {
+            $updateFields = [];
+            $dataTypes = [\PDO::PARAM_INT];
+            if ((int)$record[$l10nParentFieldName] === $previouslyUsedVersionId) {
+                $updateFields[$l10nParentFieldName] = $liveId;
+                $dataTypes[] = \PDO::PARAM_INT;
+            }
+            if ($translationSourceFieldName && (int)$record[$translationSourceFieldName] === $previouslyUsedVersionId) {
+                $updateFields[$translationSourceFieldName] = $liveId;
+                $dataTypes[] = \PDO::PARAM_INT;
+            }
+
+            if (empty($updateFields)) {
+                continue;
+            }
+
+            $connection->update(
+                $table,
+                $updateFields,
+                ['uid' => (int)$record['uid']],
+                $dataTypes
+            );
+            $dataHandler->updateRefIndex($table, $record['uid']);
         }
     }
 
