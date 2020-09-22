@@ -272,4 +272,14 @@ class ActionTest extends AbstractActionTestCase
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
     }
+
+    /**
+     * @test
+     */
+    public function createContentWithFileReferenceAndDeleteFileReference()
+    {
+        parent::createContentWithFileReferenceAndDeleteFileReference();
+        $this->assertAssertionDataSet('createContentWFileReferenceNDeleteFileReference');
+        // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
+    }
 }

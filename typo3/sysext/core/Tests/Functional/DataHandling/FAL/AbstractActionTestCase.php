@@ -168,4 +168,25 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             [self::TABLE_FileReference => [self::VALUE_FileReferenceContentLastFileFirst, self::VALUE_FileReferenceContentLastFileLast]]
         );
     }
+
+    protected function createContentWithFileReferenceAndDeleteFileReference()
+    {
+        // Create content element with a file reference
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid'],
+                self::TABLE_FileReference => ['title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->recordIds['newSysFileReference'] = $newTableIds[self::TABLE_FileReference][0];
+        // Delete the file reference again, but keep the content element
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            $this->recordIds['newContentId'],
+            [self::FIELD_ContentImage => ''],
+            [self::TABLE_FileReference => [$this->recordIds['newSysFileReference']]]
+        );
+    }
 }
