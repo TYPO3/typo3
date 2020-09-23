@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Object\Container\Fixtures;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 
@@ -23,7 +23,7 @@ class PublicPropertyInjectClass
 {
     /**
      * @Extbase\Inject
-     * @var \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection
+     * @var \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection
      */
     public $foo;
 }
@@ -37,7 +37,7 @@ class ProtectedPropertyInjectClass
 
     /**
      * @Extbase\Inject
-     * @var \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection
+     * @var \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection
      */
     protected $foo;
 

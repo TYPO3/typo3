@@ -15,7 +15,6 @@
 
 namespace OliverHader\IrreTutorial\Controller;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
@@ -28,10 +27,18 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 class QueueController extends AbstractController
 {
     /**
-     * @Extbase\Inject
      * @var \OliverHader\IrreTutorial\Domain\Repository\ContentRepository
      */
-    public $contentRepository;
+    private $contentRepository;
+
+    public function __construct(
+        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
+        \OliverHader\IrreTutorial\Domain\Repository\ContentRepository $contentRepository
+    ) {
+        parent::__construct($dataMapFactory);
+
+        $this->contentRepository = $contentRepository;
+    }
 
     /**
      * @var string

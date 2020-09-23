@@ -67,17 +67,6 @@ class PropertyTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsInjectProperty(): void
-    {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
-            ->getProperty('propertyWithInjectAnnotation');
-
-        self::assertTrue($property->isInjectProperty());
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsTransientProperty(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))

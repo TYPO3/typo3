@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Annotation;
 /**
  * @Annotation
  * @Target({"PROPERTY"})
+ * @deprecated since v11, will be removed in v12
  */
 class Inject
 {

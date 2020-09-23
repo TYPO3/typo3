@@ -25,12 +25,10 @@ use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClass;
-use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgument;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\MandatoryConstructorArgumentTwo;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\OptionalConstructorArgument;
-use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\PublicPropertyInjectClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\SimpleTypeConstructorArgument;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional;
 use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsFirstOptional;
@@ -957,14 +955,5 @@ class ContainerTest extends UnitTestCase
             $second,
             $object->argumentTestClassTwo
         );
-    }
-
-    /**
-     * @test
-     */
-    public function getInstanceInjectsPublicProperties()
-    {
-        $object = $this->subject->getInstance(PublicPropertyInjectClass::class);
-        self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->foo);
     }
 }

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace ExtbaseTeam\BlogExample\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -32,10 +31,9 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 class ContentController extends ActionController
 {
     /**
-     * @Extbase\Inject
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository
      */
-    public $contentRepository;
+    private $contentRepository;
 
     /**
      * @var string
@@ -43,10 +41,17 @@ class ContentController extends ActionController
     protected $defaultViewObjectName = JsonView::class;
 
     /**
-     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
-    public $dataMapFactory;
+    private $dataMapFactory;
+
+    public function __construct(
+        \ExtbaseTeam\BlogExample\Domain\Repository\TtContentRepository $contentRepository,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
+    ) {
+        $this->contentRepository = $contentRepository;
+        $this->dataMapFactory = $dataMapFactory;
+    }
 
     /**
      * @return array

@@ -267,6 +267,7 @@
 			"typo3/sysext/core/Tests/Unit/Core/Fixtures/test_extension/",
 			"typo3/sysext/core/Tests/Functional/Fixtures/",
 			"typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/",
+			"typo3/sysext/extbase/Tests/UnitDeprecated/Object/Container/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
 			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/"
 		],

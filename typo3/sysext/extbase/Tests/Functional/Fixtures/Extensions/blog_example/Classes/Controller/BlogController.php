@@ -17,7 +17,6 @@ namespace ExtbaseTeam\BlogExample\Controller;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -32,10 +31,9 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 class BlogController extends ActionController
 {
     /**
-     * @Extbase\Inject
      * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
      */
-    public $blogRepository;
+    private $blogRepository;
 
     /**
      * @var string
@@ -43,10 +41,17 @@ class BlogController extends ActionController
     protected $defaultViewObjectName = JsonView::class;
 
     /**
-     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
-    public $dataMapFactory;
+    private $dataMapFactory;
+
+    public function __construct(
+        \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository,
+        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
+    ) {
+        $this->blogRepository = $blogRepository;
+        $this->dataMapFactory = $dataMapFactory;
+    }
 
     public function listAction(): ResponseInterface
     {

@@ -15,11 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchemaTest;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchemaTest as AliasedClassSchemaTest;
+use TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\ClassSchemaTest;
+use TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\ClassSchemaTest as AliasedClassSchemaTest;
 
 /**
  * Fixture class with absolute inject annotation
@@ -28,7 +28,7 @@ class DummyClassWithInjectDoctrineAnnotation
 {
     /**
      * @Extbase\Inject
-     * @var \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInjectDoctrineAnnotation
+     * @var \TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture\DummyClassWithInjectDoctrineAnnotation
      */
     public $propertyWithFullQualifiedClassName;
 

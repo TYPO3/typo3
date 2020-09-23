@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Fluid\FluidTest\:
+    resource: '../Classes/*'
+    exclude: '../Classes/ViewHelpers'

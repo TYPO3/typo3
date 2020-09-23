@@ -249,6 +249,10 @@ class ClassSchema
                 && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject);
 
             if ($isInjectProperty) {
+                trigger_error(
+                    sprintf('Property "%s" of class "%s" uses Extbase\' property injection which is deprecated.', $propertyName, $reflectionClass->getName()),
+                    E_USER_DEPRECATED
+                );
                 $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_INJECT;
                 $classHasInjectProperties = true;
             }

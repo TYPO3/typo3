@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithConstructorAndConstructorArguments;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInjectDoctrineAnnotation;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParam;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAnnotationWithoutParamTypeHint;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyEntity;
@@ -125,28 +124,6 @@ class ClassSchemaTest extends UnitTestCase
             ],
             array_keys((new ClassSchema(DummyClassWithAllTypesOfMethods::class))->getMethods())
         );
-    }
-
-    /**
-     * @test
-     */
-    public function classSchemaDetectsInjectProperties()
-    {
-        $classSchema = new ClassSchema(DummyClassWithInjectDoctrineAnnotation::class);
-        self::assertTrue($classSchema->hasInjectProperties());
-
-        $injectProperties = $classSchema->getInjectProperties();
-        self::assertArrayHasKey('propertyWithFullQualifiedClassName', $injectProperties);
-        self::assertSame(DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']->getType());
-
-        self::assertArrayHasKey('propertyWithRelativeClassName', $injectProperties);
-        self::assertSame(DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithRelativeClassName']->getType());
-
-        self::assertArrayHasKey('propertyWithImportedClassName', $injectProperties);
-        self::assertSame(self::class, $injectProperties['propertyWithImportedClassName']->getType());
-
-        self::assertArrayHasKey('propertyWithImportedAndAliasedClassName', $injectProperties);
-        self::assertSame(self::class, $injectProperties['propertyWithImportedAndAliasedClassName']->getType());
     }
 
     /**

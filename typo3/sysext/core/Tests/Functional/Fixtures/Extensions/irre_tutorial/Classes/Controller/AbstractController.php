@@ -17,7 +17,6 @@ namespace OliverHader\IrreTutorial\Controller;
 
 use OliverHader\IrreTutorial\Service\QueueService;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -31,10 +30,14 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 abstract class AbstractController extends ActionController
 {
     /**
-     * @Extbase\Inject
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
     public $dataMapFactory;
+
+    public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory)
+    {
+        $this->dataMapFactory = $dataMapFactory;
+    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request

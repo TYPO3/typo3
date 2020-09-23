@@ -54,7 +54,6 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
     public $propertyWithIgnoredTags;
 
     /**
-     * @Extbase\Inject
      * @var DummyClassWithAllTypesOfProperties
      */
     public $propertyWithInjectAnnotation;

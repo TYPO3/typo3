@@ -25,10 +25,18 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 class ContentController extends AbstractController
 {
     /**
-     * @Extbase\Inject
      * @var \OliverHader\IrreTutorial\Domain\Repository\ContentRepository
      */
-    public $contentRepository;
+    private $contentRepository;
+
+    public function __construct(
+        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
+        \OliverHader\IrreTutorial\Domain\Repository\ContentRepository $contentRepository
+    ) {
+        parent::__construct($dataMapFactory);
+
+        $this->contentRepository = $contentRepository;
+    }
 
     /**
      * @var string
