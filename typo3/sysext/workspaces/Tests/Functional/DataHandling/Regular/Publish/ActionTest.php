@@ -601,6 +601,22 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function createContentAndLocalize()
+    {
+        parent::createContentAndLocalize();
+        $this->actionService->publishRecords([
+            self::TABLE_Content => [$this->recordIds['newContentId']],
+        ]);
+        $this->assertAssertionDataSet('createContentAndLocalize');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
+    }
+
+    /**
+     * @test
+     */
     public function createPageAndCopyDraftParentPage()
     {
         parent::createPageAndCopyDraftParentPage();
