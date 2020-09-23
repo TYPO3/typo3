@@ -59,6 +59,17 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function createContentAndLocalize()
+    {
+        parent::createContentAndLocalize();
+        // discard default language content
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertAssertionDataSet('createContentAndLocalize');
+    }
+
+    /**
+     * @test
+     */
     public function modifyContent()
     {
         parent::modifyContent();
