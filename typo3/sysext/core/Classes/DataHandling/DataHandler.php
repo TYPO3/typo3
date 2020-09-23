@@ -5395,7 +5395,7 @@ class DataHandler implements LoggerAwareInterface
         $this->discardRecordRelations($table, $versionRecord);
         $this->hardDeleteSingleRecord($table, (int)$versionRecord['uid']);
         $this->deletedRecords[$table][] = (int)$versionRecord['uid'];
-        $this->updateRefIndex($table, (int)$versionRecord['uid']);
+        $this->dropReferenceIndexRowsForRecord($table, (int)$versionRecord['uid']);
         $this->getRecordHistoryStore()->deleteRecord($table, (int)$versionRecord['uid'], $this->correlationId);
         $this->log(
             $table,
@@ -5516,6 +5516,7 @@ class DataHandler implements LoggerAwareInterface
                 $dbAnalysis->start($value, $allowedTables, $fieldConfig['MM'], (int)$record['uid'], $table, $fieldConfig);
                 foreach ($dbAnalysis->itemArray as $relationRecord) {
                     // @todo: Something should happen with these relations here ...
+                    // @todo: Can't use dropReferenceIndexRowsForRecord() here, this would drop sys_refindex entries we want to keep
                     $this->updateRefIndex($relationRecord['table'], (int)$relationRecord['id']);
                 }
             }
@@ -7275,6 +7276,35 @@ class DataHandler implements LoggerAwareInterface
         while ($row = $statement->fetch()) {
             $this->updateRefIndex($row['tablename'], (int)$row['recuid']);
         }
+    }
+
+    /**
+     * Delete rows from sys_refindex a table / uid combination is involved in:
+     * Either on left side (tablename + recuid) OR right side (ref_table + ref_uid).
+     * Useful in scenarios like workspace-discard where parents or children are hard deleted: The
+     * expensive updateRefIndex() does not need to be called since we can just drop straight ahead.
+     *
+     * @param string $table Table name, used as tablename and ref_table
+     * @param int $uid Record uid, used as recuid and ref_uid
+     */
+    protected function dropReferenceIndexRowsForRecord(string $table, int $uid): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->delete('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
+                        $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
+                        $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                    )
+                )
+            )
+            ->execute();
     }
 
     /*********************************************
