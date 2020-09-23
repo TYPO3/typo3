@@ -371,26 +371,28 @@ class DateTimeConverterTest extends UnitTestCase
     public function convertFromArrayDataProvider()
     {
         return [
-            [['date' => '2005-08-15T15:52:01+01:00'], true],
-            [['date' => '1308174051', 'dateFormat' => ''], false],
-            [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false],
-            [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false],
-            [['date' => '12:13', 'dateFormat' => 'H:i'], true],
-            [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true],
-            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true],
-            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => \DateTime::ATOM], true],
-            [['date' => '1308174051', 'dateFormat' => 'U'], true],
-            [['date' => 1308174051, 'dateFormat' => 'U'], true],
+            [['date' => '2005-08-15T15:52:01+01:00'], true, '2005-08-15T15:52:01+01:00'],
+            [['date' => '1308174051', 'dateFormat' => ''], false, null],
+            [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false, null],
+            [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false, null],
+            [['date' => '12:13', 'dateFormat' => 'H:i'], true, null],
+            [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true, null],
+            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true, '2005-08-15T15:52:01+00:00'],
+            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => \DateTime::ATOM], true, '2005-08-15T15:52:01+00:00'],
+            [['date' => '1308174051', 'dateFormat' => 'U'], true, '2011-06-15T21:40:51+00:00'],
+            [['date' => 1308174051, 'dateFormat' => 'U'], true, '2011-06-15T21:40:51+00:00'],
+            [['date' => -1308174051, 'dateFormat' => 'U'], true, '1928-07-19T02:19:09+00:00'],
         ];
     }
 
     /**
      * @param array $source the array to be converted
      * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
+     * @param string|null $expectedResult
      * @test
      * @dataProvider convertFromArrayDataProvider
      */
-    public function convertFromArrayTests(array $source, $isValid)
+    public function convertFromArrayTests(array $source, $isValid, ?string $expectedResult)
     {
         $dateFormat = isset($source['dateFormat']) && $source['dateFormat'] !== '' ? $source['dateFormat'] : null;
         if ($dateFormat !== null) {
@@ -416,6 +418,9 @@ class DateTimeConverterTest extends UnitTestCase
         }
         $dateAsString = isset($source['date']) ? (string)$source['date'] : '';
         self::assertSame($dateAsString, $date->format($dateFormat));
+        if ($expectedResult !== null) {
+            self::assertSame($expectedResult, $date->format('c'));
+        }
     }
 
     /**
