@@ -96,6 +96,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
                     throw new TransportException('Could not create file for spooling', 1561618885);
                 }
                 fclose($fp);
+                break;
             } else {
                 // The file already exists, we try a longer fileName
                 $fileName .= $this->getRandomString(1);
