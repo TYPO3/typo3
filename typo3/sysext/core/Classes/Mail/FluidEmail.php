@@ -145,6 +145,9 @@ class FluidEmail extends Email
 
     protected function generateTemplatedBody(): void
     {
+        if (!$this->view) {
+            $this->initializeView();
+        }
         if (in_array(static::FORMAT_HTML, $this->format, true)) {
             $this->html($this->renderContent('html'));
         }
