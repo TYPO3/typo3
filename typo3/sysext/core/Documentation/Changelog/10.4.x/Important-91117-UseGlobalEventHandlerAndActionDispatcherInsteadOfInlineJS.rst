@@ -47,6 +47,17 @@ Navigates to URL once selected drop-down was changed, including selected value
 
 .. code-block:: html
 
+   <input type="checkbox" name="setting" onclick="window.location.href='/?setting='+(this.checked ? 1 : 0)">
+   <!-- ... changed to ... -->
+   <input type="checkbox" name="setting" value="1" data-empty-value="0"
+      data-global-event="change" data-action-navigate="$data=~s/$value/">
+
+Checkboxes used to send a particular value when being unchecked can be achieved by using
+:html:`data-empty-value="0"` - in case this attribute is omitted, an empty string `''` is sent.
+
+
+.. code-block:: html
+
    <input type="checkbox" onclick="document.getElementById('formIdentifier').submit();">
    <!-- ... changed to ... -->
    <input type="checkbox" data-global-event="change" data-action-submit="$form">

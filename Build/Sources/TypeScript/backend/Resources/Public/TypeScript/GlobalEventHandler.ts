@@ -153,7 +153,15 @@ class GlobalEventHandler {
     if (element instanceof HTMLSelectElement) {
       return element.options[element.selectedIndex].value;
     } else if (element instanceof HTMLInputElement && type === 'checkbox') {
-      return element.checked ? element.value : '';
+      // used for representing unchecked state as e.g. `data-empty-value="0"`
+      const emptyValue: string = element.dataset.emptyValue;
+      if (element.checked) {
+        return element.value;
+      } else if (typeof emptyValue !== 'undefined') {
+        return emptyValue;
+      } else {
+        return '';
+      }
     } else if (element instanceof HTMLInputElement) {
       return element.value;
     }

@@ -2727,6 +2727,7 @@ class BackendUtility
             'data-global-event' => 'change',
             'data-action-navigate' => '$data=~s/$value/',
             'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
+            'data-empty-value' => '0',
         ], true);
         return
             '<input ' . $attributes .
