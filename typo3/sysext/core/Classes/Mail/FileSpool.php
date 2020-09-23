@@ -86,7 +86,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
      */
     protected function doSend(SentMessage $message): void
     {
-        $ser = serialize($message);
+        $ser = serialize($message->getOriginalMessage());
         $fileName = $this->path . '/' . $this->getRandomString(10);
         for ($i = 0; $i < $this->_retryLimit; ++$i) {
             // We try an exclusive creation of the file. This is an atomic operation, it avoid locking mechanism
