@@ -236,6 +236,8 @@ The following class constants have been dropped:
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_SanitizeFileName`
 - :php:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess`
 - :php:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PostFileProcess`
+- :php:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher::FORMAT_PLAINTEXT`
+- :php:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher::FORMAT_HTML`
 - :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_BeforeCaching`
 - :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_PostProcesss`
 - :php:`\TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GetDataArray_PostProcesss`

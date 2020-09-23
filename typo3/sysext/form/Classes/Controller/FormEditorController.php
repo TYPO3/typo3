@@ -27,17 +27,13 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Fluid\View\TemplateView;
-use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
-use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
-use TYPO3\CMS\Form\Domain\Finishers\EmailFinisher;
 use TYPO3\CMS\Form\Exception;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -502,9 +498,7 @@ class FormEditorController extends AbstractBackendController
         }
 
         $formDefinition = $this->filterEmptyArrays($formDefinition);
-        $formDefinition = $this->migrateTranslationFileOptions($formDefinition);
         $formDefinition = $this->migrateEmailFinisherRecipients($formDefinition);
-        $formDefinition = $this->migrateEmailFormatOption($formDefinition);
 
         // @todo: replace with rte parsing
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
@@ -636,51 +630,6 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Migrate singular "translationFile" options to plural "translationFiles"
-     *
-     * @param array $formDefinition
-     * @return array
-     * @deprecated since v10 and will be removed in TYPO3 v11
-     */
-    protected function migrateTranslationFileOptions(array $formDefinition): array
-    {
-        GeneralUtility::makeInstance(ArrayProcessor::class, $formDefinition)->forEach(
-            GeneralUtility::makeInstance(
-                ArrayProcessing::class,
-                'translationFile',
-                '((.+)\.translationFile)(?:\.|$)',
-                function ($key, $value, $matches) use (&$formDefinition) {
-                    [, $singleOptionPath, $parentOptionPath] = $matches;
-
-                    try {
-                        $translationFiles = ArrayUtility::getValueByPath($formDefinition, $singleOptionPath, '.');
-                    } catch (MissingArrayPathException $e) {
-                        // Already migrated by a previous "translationFile.N" entry
-                        return;
-                    }
-
-                    if (is_string($translationFiles)) {
-                        // 10 is usually used by EXT:form
-                        $translationFiles = [20 => $translationFiles];
-                    }
-
-                    $formDefinition = ArrayUtility::setValueByPath(
-                        $formDefinition,
-                        sprintf('%s.translationFiles', $parentOptionPath),
-                        $translationFiles,
-                        '.'
-                    );
-                    $formDefinition = ArrayUtility::removeByPath($formDefinition, $singleOptionPath, '.');
-
-                    return $value;
-                }
-            )
-        );
-
-        return $formDefinition;
-    }
-
-    /**
      * Migrate single recipient options to their list successors
      *
      * @param array $formDefinition
@@ -722,33 +671,6 @@ class FormEditorController extends AbstractBackendController
                 $finisherConfiguration['options']['blindCarbonCopyAddress'],
                 $finisherConfiguration['options']['replyToAddress']
             );
-            $formDefinition['finishers'][$i] = $finisherConfiguration;
-        }
-
-        return $formDefinition;
-    }
-
-    /**
-     * Migrate email "format" option to "addHtmlPart"
-     *
-     * @param array $formDefinition
-     * @return array
-     * @deprecated since v10 and will be removed in TYPO3 v11
-     */
-    protected function migrateEmailFormatOption(array $formDefinition): array
-    {
-        foreach ($formDefinition['finishers'] ?? [] as $i => $finisherConfiguration) {
-            if (!in_array($finisherConfiguration['identifier'], ['EmailToSender', 'EmailToReceiver'], true)) {
-                continue;
-            }
-
-            $format = $finisherConfiguration['options']['format'] ?? null;
-
-            if (!empty($format)) {
-                $finisherConfiguration['options']['addHtmlPart'] = empty($format) || $format !== EmailFinisher::FORMAT_PLAINTEXT;
-            }
-
-            unset($finisherConfiguration['options']['format']);
             $formDefinition['finishers'][$i] = $finisherConfiguration;
         }
 

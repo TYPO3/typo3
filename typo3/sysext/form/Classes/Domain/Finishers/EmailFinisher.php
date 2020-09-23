@@ -59,9 +59,6 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 class EmailFinisher extends AbstractFinisher
 {
-    const FORMAT_PLAINTEXT = 'plaintext';
-    const FORMAT_HTML = 'html';
-
     /**
      * @var array
      */

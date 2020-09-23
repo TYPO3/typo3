@@ -186,11 +186,13 @@ return [
     'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher::FORMAT_PLAINTEXT' => [
         'restFiles' => [
             'Deprecation-87200-EmailFinisherFormatContants.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher::FORMAT_HTML' => [
         'restFiles' => [
             'Deprecation-87200-EmailFinisherFormatContants.rst',
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreProcessStorage' => [
