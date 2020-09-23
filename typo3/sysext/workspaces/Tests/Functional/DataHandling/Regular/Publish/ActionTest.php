@@ -570,6 +570,19 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * @group not-postgres
+     * @group not-mssql
+     * @todo Analyze PostgreSQL issues further, which is a generic issue
+     */
+    public function changeContentSortingAndCopyDraftPage()
+    {
+        parent::changeContentSortingAndCopyDraftPage();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
+    }
+
+    /**
+     * @test
      */
     public function createContentAndCopyDraftPage()
     {

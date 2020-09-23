@@ -3880,6 +3880,17 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
 
+        // Never copy the actual move placeholders around, as the newly copied records are
+        // Always created as new record / new placeholder pairs
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->notIn(
+                    't3ver_state',
+                    [VersionState::MOVE_PLACEHOLDER, VersionState::DELETE_PLACEHOLDER]
+                )
+            );
+        }
+
         // If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
         $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
         // Get the localized records to be copied
