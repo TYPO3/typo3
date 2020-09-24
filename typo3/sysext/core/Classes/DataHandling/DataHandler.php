@@ -3467,6 +3467,7 @@ class DataHandler implements LoggerAwareInterface
     {
         // Copy the page itself:
         $theNewRootID = $this->copyRecord('pages', $uid, $destPid, $first);
+        $currentWorkspaceId = (int)$this->BE_USER->workspace;
         // If a new page was created upon the copy operation we will proceed with all the tables ON that page:
         if ($theNewRootID) {
             foreach ($copyTablesArray as $table) {
@@ -3487,9 +3488,15 @@ class DataHandler implements LoggerAwareInterface
                         }
                     }
                     $isTableWorkspaceEnabled = BackendUtility::isTableWorkspaceEnabled($table);
+                    if ($isTableWorkspaceEnabled) {
+                        $fields[] = 't3ver_oid';
+                        $fields[] = 't3ver_state';
+                        $fields[] = 't3ver_wsid';
+                        $fields[] = 't3ver_move_id';
+                    }
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                     $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-                    $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->BE_USER->workspace));
+                    $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $currentWorkspaceId));
                     $queryBuilder
                         ->select(...$fields)
                         ->from($table)
@@ -3506,11 +3513,27 @@ class DataHandler implements LoggerAwareInterface
                     try {
                         $result = $queryBuilder->execute();
                         $rows = [];
+                        $movedLiveIds = [];
+                        $movedLiveRecords = [];
                         while ($row = $result->fetch()) {
-                            $rows[$row['uid']] = $row;
+                            if ($isTableWorkspaceEnabled && (int)$row['t3ver_state'] === VersionState::MOVE_PLACEHOLDER) {
+                                $movedLiveIds[(int)$row['t3ver_move_id']] = (int)$row['uid'];
+                            }
+                            $rows[(int)$row['uid']] = $row;
                         }
                         // Resolve placeholders of workspace versions
-                        if (!empty($rows) && (int)$this->BE_USER->workspace !== 0 && $isTableWorkspaceEnabled) {
+                        if (!empty($rows) && $currentWorkspaceId > 0 && $isTableWorkspaceEnabled) {
+                            // If a record was moved within the page, the PlainDataResolver needs the move placeholder
+                            // but not the original live version, otherwise the move placeholder is not considered at all
+                            // For this reason, we find the live ids, where there was also a move placeholder in the SQL
+                            // query above in $movedLiveIds and now we removed them before handing them over to PlainDataResolver.
+                            // see changeContentSortingAndCopyDraftPage test
+                            foreach ($movedLiveIds as $liveId => $movePlaceHolderId) {
+                                if (isset($rows[$liveId])) {
+                                    $movedLiveRecords[$movePlaceHolderId] = $rows[$liveId];
+                                    unset($rows[$liveId]);
+                                }
+                            }
                             $rows = array_reverse(
                                 $this->resolveVersionedRecords(
                                     $table,
@@ -3520,6 +3543,9 @@ class DataHandler implements LoggerAwareInterface
                                 ),
                                 true
                             );
+                            foreach ($movedLiveRecords as $movePlaceHolderId => $liveRecord) {
+                                $rows[$movePlaceHolderId] = $liveRecord;
+                            }
                         }
                         if (is_array($rows)) {
                             $languageSourceMap = [];
@@ -3529,7 +3555,7 @@ class DataHandler implements LoggerAwareInterface
                                 // Skip localized records that will be processed in
                                 // copyL10nOverlayRecords() on copying the default language record
                                 $transOrigPointer = $row[$transOrigPointerField];
-                                if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
+                                if ($row[$languageField] > 0 && $transOrigPointer > 0 && (isset($rows[$transOrigPointer]) || isset($movedLiveIds[$transOrigPointer]))) {
                                     continue;
                                 }
                                 // Copying each of the underlying records...
