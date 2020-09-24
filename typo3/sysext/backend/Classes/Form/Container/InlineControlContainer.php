@@ -282,10 +282,8 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Render the level links (create new record):
-        $levelLinks = '';
-        if (!isset($config['appearance']['showNewRecordLink']) || $config['appearance']['showNewRecordLink']) {
-            $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
-        }
+        $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
+
         // Wrap all inline fields of a record with a <div> (like a container)
         $html = '<div class="form-group" id="' . htmlspecialchars($nameObject) . '" data-uid="' . htmlspecialchars($row['uid']) . '" data-foreign-table="' . htmlspecialchars($foreign_table) . '" data-object-group="' . htmlspecialchars($nameObject) . '-' . htmlspecialchars($foreign_table) . '" data-form-field="' . htmlspecialchars($nameForm) . '" data-appearance="' . htmlspecialchars(json_encode($config['appearance'])) . '">';
 

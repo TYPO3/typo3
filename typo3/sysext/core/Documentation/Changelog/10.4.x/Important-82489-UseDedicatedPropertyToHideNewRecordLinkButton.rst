@@ -17,11 +17,8 @@ column.
 The property is therefore from now on only used for the controls section of each
 inline record.
 
-To still enable extension authors to hide the `newRecordLink` button, independent
-of the controls `new` button, a new property :php:`['appearance']['showNewRecordLink']`
-is now available for TCA type `inline`.
-
-For backwards compatibility the `newRecordLink` button is only hidden if
-`showNewRecordLink` is explicit set to :php:`FALSE`. If not set the button is shown.
+To hide the `newRecordLink` button, independent of the controls `new` button,
+use the already existing property :php:`['appearance']['levelLinksPosition']`
+with `none` as value.
 
 .. index:: Backend, TCA, ext:backend
