@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -83,7 +84,7 @@ class WorkspacePreview implements MiddlewareInterface
         // the cookie for the backend preview.
         if ($keyword === 'LOGOUT') {
             // "log out", and unset the cookie
-            $message = $this->getLogoutTemplateMessage($request->getQueryParams()['returnUrl'] ?? '');
+            $message = $this->getLogoutTemplateMessage($request->getUri());
             $response = new HtmlResponse($message);
             return $this->addCookie('', $normalizedParams, $response);
         }
@@ -131,7 +132,7 @@ class WorkspacePreview implements MiddlewareInterface
 
         // Add an info box to the frontend content
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
-            $previewInfo = $this->renderPreviewInfo($GLOBALS['TSFE'], $request->getAttribute('normalizedParams'));
+            $previewInfo = $this->renderPreviewInfo($GLOBALS['TSFE'], $request->getUri());
             $body = $response->getBody();
             $body->rewind();
             $content = $body->getContents();
@@ -152,13 +153,12 @@ class WorkspacePreview implements MiddlewareInterface
      * Renders the logout template when the "logout" button was pressed.
      * Returns a string which can be put into a HttpResponse.
      *
-     * @param string $returnUrl
+     * @param UriInterface $currentUrl
      * @return string
      */
-    protected function getLogoutTemplateMessage(string $returnUrl = ''): string
+    protected function getLogoutTemplateMessage(UriInterface $currentUrl): string
     {
-        $returnUrl = GeneralUtility::sanitizeLocalUrl($returnUrl);
-        $returnUrl = $this->removePreviewParameterFromUrl($returnUrl);
+        $currentUrl = $this->removePreviewParameterFromUrl($currentUrl);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']) {
             $templateFile = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']);
             if (@is_file($templateFile)) {
@@ -171,9 +171,9 @@ class WorkspacePreview implements MiddlewareInterface
         } else {
             $message = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewLogoutSuccess');
             $message = htmlspecialchars($message);
-            $message = sprintf($message, '<a href="' . htmlspecialchars($returnUrl) . '">', '</a>');
+            $message = sprintf($message, '<a href="' . htmlspecialchars((string)$currentUrl) . '">', '</a>');
         }
-        return sprintf($message, htmlspecialchars($returnUrl));
+        return sprintf($message, htmlspecialchars((string)$currentUrl));
     }
 
     /**
@@ -311,10 +311,10 @@ class WorkspacePreview implements MiddlewareInterface
      * via TypoScript.
      *
      * @param TypoScriptFrontendController $tsfe
-     * @param NormalizedParams $normalizedParams
+     * @param UriInterface $currentUrl
      * @return string
      */
-    protected function renderPreviewInfo(TypoScriptFrontendController $tsfe, NormalizedParams $normalizedParams): string
+    protected function renderPreviewInfo(TypoScriptFrontendController $tsfe, UriInterface $currentUrl): string
     {
         $content = '';
         if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
@@ -335,8 +335,7 @@ class WorkspacePreview implements MiddlewareInterface
                 $stopPreviewText = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stopPreview');
                 $stopPreviewText = htmlspecialchars($stopPreviewText);
                 if ($GLOBALS['BE_USER'] instanceof PreviewUserAuthentication) {
-                    $url = $this->removePreviewParameterFromUrl($normalizedParams->getRequestUri());
-                    $urlForStoppingPreview = $normalizedParams->getSiteUrl() . 'index.php?returnUrl=' . rawurlencode($url) . '&ADMCMD_prev=LOGOUT';
+                    $urlForStoppingPreview = (string)$this->removePreviewParameterFromUrl($currentUrl, 'LOGOUT');
                     $text .= '<br><a style="color: #000; pointer-events: visible;" href="' . htmlspecialchars($urlForStoppingPreview) . '">' . $stopPreviewText . '</a>';
                 }
                 $styles = [];
@@ -388,12 +387,24 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Used for generating URLs (e.g. in logout page) without the existing ADMCMD_prev keyword as GET variable
      *
-     * @param string $url
-     * @return string
+     * @param UriInterface $url
+     * @param string $newAdminCommand
+     * @return UriInterface
      */
-    protected function removePreviewParameterFromUrl(string $url): string
+    protected function removePreviewParameterFromUrl(UriInterface $url, string $newAdminCommand = ''): UriInterface
     {
-        return (string)preg_replace('/\\&?' . $this->previewKey . '=[[:alnum:]]+/', '', $url);
+        $queryString = $url->getQuery();
+        if (!empty($queryString)) {
+            $queryStringParts = GeneralUtility::explodeUrl2Array($queryString);
+            unset($queryStringParts[$this->previewKey]);
+        } else {
+            $queryStringParts = [];
+        }
+        if ($newAdminCommand !== '') {
+            $queryStringParts[$this->previewKey] = $newAdminCommand;
+        }
+        $queryString = http_build_query($queryStringParts, '', '&', PHP_QUERY_RFC3986);
+        return $url->withQuery($queryString);
     }
 
     /**
