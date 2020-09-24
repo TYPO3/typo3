@@ -17,7 +17,7 @@ column.
 The property is therefore from now on only used for the controls section of each
 inline record.
 
-To to hide the `newRecordLink` button, independent of the controls `new` button,
+To hide the `newRecordLink` button, independent of the controls `new` button,
 use the already existing property :php:`['appearance']['levelLinksPosition']`
 with `none` as value.
 
