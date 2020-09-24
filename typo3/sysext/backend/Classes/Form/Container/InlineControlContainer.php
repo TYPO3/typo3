@@ -282,10 +282,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Render the level links (create new record):
-        $levelLinks = '';
-        if (!isset($config['appearance']['showNewRecordLink']) || $config['appearance']['showNewRecordLink']) {
-            $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
-        }
+        $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
 
         $formGroupAttributes = [
             'class' => 'form-group',
