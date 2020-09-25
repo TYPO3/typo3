@@ -2256,10 +2256,10 @@ class DatabaseRecordList
             }
             // Determine, if checkbox should be checked
             if (in_array($fieldName, $setFields, true) || $fieldName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
-                $checked = ' checked="checked"';
+                $checked = true;
             } else {
                 $checkAllChecked = false;
-                $checked = '';
+                $checked = false;
             }
 
             // Field label
@@ -2278,35 +2278,22 @@ class DatabaseRecordList
             }
 
             $fieldLabel = $fieldLabel ?: BackendUtility::getItemLabel($table, $fieldName);
-
-            $checkboxes[] = '<tr><td class="col-checkbox"><input type="checkbox" id="check-' . $fieldName . '" name="displayFields['
-                . $table . '][]" value="' . $fieldName . '" ' . $checked
-                . ($fieldName === $GLOBALS['TCA'][$table]['ctrl']['label'] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
-                . '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($lang->sL($fieldLabel)) . ' <span class="text-muted text-monospace">[' . htmlspecialchars($fieldName) . ']</span></label></td></tr>';
+            $checkboxes[] = [
+                'fieldName' => $fieldName,
+                'checked' => $checked,
+                'disabled' => ($fieldName === $GLOBALS['TCA'][$table]['ctrl']['label']),
+                'fieldLabel' => $fieldLabel
+            ];
         }
-        // Table with the field selector::
-        return '
-            <div class="fieldSelectBox">
-            <form action="' . htmlspecialchars($this->listURL()) . '" method="post" name="fieldSelectBox">
-			<input type="hidden" name="displayFields[' . $table . '][]" value="">
-			<div class="table-fit table-scrollable">
-				<table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
-					<thead>
-						<tr>
-							<th class="col-checkbox checkbox" colspan="2">
-								<label><input type="checkbox" class="checkbox checkAll" ' . ($checkAllChecked ? ' checked="checked"' : '') . '>
-								' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall')) . '</label>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-					' . implode('', $checkboxes) . '
-					</tbody>
-				</table>
-			</div>
-			<input type="submit" name="search" class="btn btn-default" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.setFields')) . '"/>
-            </form></div>';
+        // Table with the field selector
+        return $this->getFluidTemplateObject('FieldSelectBox.html')
+            ->assignMultiple([
+                'formUrl' => $this->listURL(),
+                'table' => $table,
+                'allChecked' => $checkAllChecked,
+                'checkboxes' => $checkboxes
+            ])
+            ->render();
     }
 
     /*********************************

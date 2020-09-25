@@ -1,0 +1,44 @@
+<div class="fieldSelectBox">
+    <form action="{formUrl}" method="post" name="fieldSelectBox">
+        <input type="hidden" name="displayFields[{table}][]" value="">
+        <div class="table-fit table-scrollable">
+            <table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
+                <thead>
+                <tr>
+                    <th class="col-checkbox checkbox" colspan="2">
+                        <label>
+                            <input type="checkbox" class="checkbox checkAll" {f:if(condition:'{allChecked}', then: ' checked="checked"')} />
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall" />
+                        </label>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{checkboxes}" as="checkbox">
+                        <tr>
+                            <td class="col-checkbox">
+                                <input
+                                        type="checkbox"
+                                        id="check-{checkbox.fieldName}"
+                                        name="displayFields[{table}][]"
+                                        value="{checkbox.fieldName}"
+                                        {f:if(condition:'{checkbox.checked}', then:' checked')}
+                                        {f:if(condition:'{checkbox.disabled}', then: 'disabled')}
+                                />
+                            </td>
+                            <td class="col-title">
+                                <label class="label-block" for="check-{checkbox.fieldName}">
+                                    <f:if condition="{checkbox.fieldLabel}">
+                                        <f:translate key="{checkbox.fieldLabel}">{checkbox.fieldLabel}</f:translate>
+                                    </f:if>
+                                    <span class="text-muted text-monospace">[{checkbox.fieldName}]</span>
+                                </label>
+                            </td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
+        <input type="submit" name="search" class="btn btn-default" value="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.setFields')}" />
+    </form>
+</div>
