@@ -218,6 +218,9 @@ class RichTextElement extends AbstractFormElement
                 }
             }
             $configuration['extraPlugins'] .= ',' . $extraPluginName;
+            if (isset($this->data['parameterArray']['fieldConf']['config']['placeholder'])) {
+                $configuration['editorplaceholder'] = (string)$this->data['parameterArray']['fieldConf']['config']['placeholder'];
+            }
 
             $externalPlugins .= 'CKEDITOR.plugins.addExternal(';
             $externalPlugins .= GeneralUtility::quoteJSvalue($extraPluginName) . ',';

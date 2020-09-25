@@ -55,6 +55,7 @@ editor:
       - selectall
       - autolink
       - wordcount
+      - editorplaceholder
 
     removePlugins:
       - image
