@@ -1846,8 +1846,10 @@ class DatabaseRecordList
             if ($permsEdit && $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField && !$this->searchLevels) {
                 if (!$isL10nOverlay && !$isDeletePlaceHolder && isset($this->currentTable['prev'][$row['uid']])) {
                     // Up
-                    $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
-                    $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                    $params = [];
+                    $params['redirect'] = $this->listURL();
+                    $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['prev'][$row['uid']];
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                     $moveUpAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveUp')) . '">'
                         . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
@@ -1857,8 +1859,10 @@ class DatabaseRecordList
 
                 if (!$isL10nOverlay && !$isDeletePlaceHolder && $this->currentTable['next'][$row['uid']]) {
                     // Down
-                    $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
-                    $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                    $params = [];
+                    $params['redirect'] = $this->listURL();
+                    $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['next'][$row['uid']];
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                     $moveDownAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveDown')) . '">'
                         . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
@@ -1937,8 +1941,10 @@ class DatabaseRecordList
                 // Up (Paste as the page right after the current parent page)
                 if ($this->calcPerms->createPagePermissionIsGranted()) {
                     if (!$isDeletePlaceHolder && !$isL10nOverlay) {
-                        $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
-                        $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                        $params = [];
+                        $params['redirect'] = $this->listURL();
+                        $params['cmd'][$table][$row['uid']]['move'] = -$this->id;
+                        $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                         $moveLeftAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
                             . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
                         $this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
@@ -1950,8 +1956,10 @@ class DatabaseRecordList
                 if (!$isL10nOverlay && !$isDeletePlaceHolder && $this->currentTable['prevUid'][$row['uid']]) {
                     $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']])));
                     if ($localCalcPerms->createPagePermissionIsGranted()) {
-                        $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
-                        $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                        $params = [];
+                        $params['redirect'] = $this->listURL();
+                        $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['prevUid'][$row['uid']];
+                        $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                         $moveRightAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('nextLevel')) . '">'
                             . $this->iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
@@ -2201,10 +2209,10 @@ class DatabaseRecordList
                             'returnUrl' => $this->listURL()
                         ]
                 );
-                $href = BackendUtility::getLinkToDataHandlerAction(
-                    '&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
-                    $redirectUrl
-                );
+                $params = [];
+                $params['redirect'] = $redirectUrl;
+                $params['cmd'][$table][$row['uid']]['localize'] = $lUid_OnPage;
+                $href = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                 $language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
                 if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
                     $lC = $this->iconFactory->getIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render();

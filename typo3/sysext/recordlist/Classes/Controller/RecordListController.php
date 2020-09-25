@@ -450,11 +450,10 @@ class RecordListController
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ];
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
-                $targetUrl = BackendUtility::getLinkToDataHandlerAction(
-                    '&cmd[pages][' . $id . '][localize]=' . $languageUid,
-                    $redirectUrl
-                );
-
+                $params = [];
+                $params['redirect'] = $redirectUrl;
+                $params['cmd']['pages'][$id]['localize'] = $languageUid;
+                $targetUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                 $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
             }
 
