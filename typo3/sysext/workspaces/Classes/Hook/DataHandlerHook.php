@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\PlaceholderShadowColumnsResolver;
@@ -775,8 +774,6 @@ class DataHandlerHook
                 $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
             }
 
-            // Update reference index of the live record:
-            $dataHandler->addRemapStackRefIndex($table, $id);
             // Set log entry for live record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
             if (($propArr['t3ver_oid'] ?? 0) > 0) {
@@ -786,8 +783,6 @@ class DataHandlerHook
             }
             $theLogId = $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
             $dataHandler->setHistory($table, $id, $theLogId);
-            // Update reference index of the offline record:
-            $dataHandler->addRemapStackRefIndex($table, $swapWith);
             // Set log entry for offline record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $curVersion);
             if (($propArr['t3ver_oid'] ?? 0) > 0) {
@@ -824,12 +819,10 @@ class DataHandlerHook
                 $dataHandler->deleteEl($table, $swapWith, true, true);
             }
 
-            // Update reference index for live workspace too:
-            /** @var \TYPO3\CMS\Core\Database\ReferenceIndex $refIndexObj */
-            $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-            $refIndexObj->setWorkspaceId(0);
-            $refIndexObj->updateRefIndexTable($table, $id);
-            $refIndexObj->updateRefIndexTable($table, $swapWith);
+            // Update reference index of the live record - which could have been a workspace record in case 'new'
+            $dataHandler->updateRefIndex($table, $id, 0);
+            // The 'swapWith' record has been deleted, so we can drop any reference index the record is involved in
+            $dataHandler->registerReferenceIndexRowsForDrop($table, $swapWith, (int)$dataHandler->BE_USER->workspace);
         }
     }
 

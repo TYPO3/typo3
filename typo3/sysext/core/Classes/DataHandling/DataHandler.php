@@ -533,13 +533,6 @@ class DataHandler implements LoggerAwareInterface
     protected $remapStackActions = [];
 
     /**
-     * Array used for executing post-processing on the reference index
-     *
-     * @var array
-     */
-    protected $remapStackRefIndex = [];
-
-    /**
      * Registry object to gather reference index update requests and perform updates after
      * main processing has been done. The first call to start() instantiates this object.
      * Recursive sub instances receive this instance via __construct().
@@ -4790,6 +4783,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function deleteRecord($table, $uid, $noRecordCheck = false, $forceHardDelete = false, $undeleteRecord = false)
     {
+        $currentUserWorkspace = (int)$this->BE_USER->workspace;
         $uid = (int)$uid;
         if (!$GLOBALS['TCA'][$table] || !$uid) {
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions. [' . $this->BE_USER->errorMsg . ']');
@@ -4895,7 +4889,7 @@ class DataHandler implements LoggerAwareInterface
         // Update reference index with table/uid on left side (recuid)
         $this->updateRefIndex($table, $uid);
         // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted / undeleted.
-        $this->registerReferenceUpdatesForReferencesToItem($table, $uid);
+        $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $currentUserWorkspace);
     }
 
     /**
@@ -5421,7 +5415,7 @@ class DataHandler implements LoggerAwareInterface
         $this->discardRecordRelations($table, $versionRecord);
         $this->hardDeleteSingleRecord($table, (int)$versionRecord['uid']);
         $this->deletedRecords[$table][] = (int)$versionRecord['uid'];
-        $this->dropReferenceIndexRowsForRecord($table, (int)$versionRecord['uid']);
+        $this->registerReferenceIndexRowsForDrop($table, (int)$versionRecord['uid'], $userWorkspace);
         $this->getRecordHistoryStore()->deleteRecord($table, (int)$versionRecord['uid'], $this->correlationId);
         $this->log(
             $table,
@@ -6201,18 +6195,10 @@ class DataHandler implements LoggerAwareInterface
                 }
             }
         }
-        // Processes the reference index updates of the remap stack:
-        foreach ($this->remapStackRefIndex as $table => $idArray) {
-            foreach ($idArray as $id) {
-                $this->updateRefIndex($table, $id);
-                unset($this->remapStackRefIndex[$table][$id]);
-            }
-        }
         // Reset:
         $this->remapStack = [];
         $this->remapStackRecords = [];
         $this->remapStackActions = [];
-        $this->remapStackRefIndex = [];
     }
 
     /**
@@ -6302,18 +6288,6 @@ class DataHandler implements LoggerAwareInterface
             'callback' => $callback,
             'arguments' => $arguments
         ];
-    }
-
-    /**
-     * Adds a table-id-pair to the reference index remapping stack.
-     *
-     * @param string $table
-     * @param int $id
-     * @internal should only be used from within DataHandler
-     */
-    public function addRemapStackRefIndex($table, $id)
-    {
-        $this->remapStackRefIndex[$table][$id] = $id;
     }
 
     /**
@@ -7272,36 +7246,15 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $uid Record UID
+     * @param int $workspace Workspace the record lives in
      * @internal should only be used from within DataHandler
      */
-    public function updateRefIndex($table, $uid): void
+    public function updateRefIndex($table, $uid, int $workspace = null): void
     {
-        $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, (int)$this->BE_USER->workspace);
-    }
-
-    /**
-     * Find reference index rows pointing to given table/uid combination and register them for update.
-     * Important in delete scenarios where a child is deleted to make sure any references to this child are dropped, too.
-     *
-     * @param string $table Table name, used as ref_table
-     * @param int $uid Record uid, used as ref_uid
-     */
-    protected function registerReferenceUpdatesForReferencesToItem(string $table, int $uid): void
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $statement = $queryBuilder
-            ->select('tablename', 'recuid')
-            ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)),
-                $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT))
-            )
-            ->execute();
-        while ($row = $statement->fetch()) {
-            $this->updateRefIndex($row['tablename'], (int)$row['recuid']);
+        if ($workspace === null) {
+            $workspace = (int)$this->BE_USER->workspace;
         }
+        $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, $workspace);
     }
 
     /**
@@ -7312,25 +7265,11 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name, used as tablename and ref_table
      * @param int $uid Record uid, used as recuid and ref_uid
+     * @param int $workspace Workspace the record lives in
      */
-    protected function dropReferenceIndexRowsForRecord(string $table, int $uid): void
+    public function registerReferenceIndexRowsForDrop(string $table, int $uid, int $workspace): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $queryBuilder->delete('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
-                        $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-                    ),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
-                        $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-                    )
-                )
-            )
-            ->execute();
+        $this->referenceIndexUpdater->registerForDrop($table, $uid, $workspace);
     }
 
     /*********************************************
