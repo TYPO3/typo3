@@ -62,7 +62,7 @@
     "bootstrap-slider": "^9.7.3",
     "chosen-js": "^1.7.0",
     "ckeditor-wordcount-plugin": "^1.17.2",
-    "ckeditor4": "^4.14.0",
+    "ckeditor4": "^4.15.0",
     "codemirror": "^5.49.0",
     "cropper": "^2.3.4",
     "d3": "^4.10.0",
