@@ -401,7 +401,7 @@ class QueryBuilder
      * Specifies items that are to be returned in the query result.
      * Replaces any previously specified selections, if any.
      *
-     * @param array<int,string> $selects
+     * @param string ...$selects
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function select(string ...$selects): QueryBuilder
@@ -414,8 +414,7 @@ class QueryBuilder
     /**
      * Adds an item that is to be returned in the query result.
      *
-     * @param array<int,string> $selects The selection expression.
-     *
+     * @param string ...$selects
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function addSelect(string ...$selects): QueryBuilder
@@ -431,7 +430,7 @@ class QueryBuilder
      * This should only be used for literal SQL expressions as no
      * quoting/escaping of any kind will be performed on the items.
      *
-     * @param array<int,string> $selects Literal SQL expressions to be selected. Warning: No quoting will be done!
+     * @param string ...$selects Literal SQL expressions to be selected. Warning: No quoting will be done!
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function selectLiteral(string ...$selects): QueryBuilder
@@ -446,7 +445,7 @@ class QueryBuilder
      * only be used for literal SQL expressions as no quoting/escaping of
      * any kind will be performed on the items.
      *
-     * @param array<int,string> $selects Literal SQL expressions to be selected.
+     * @param string ...$selects Literal SQL expressions to be selected.
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function addSelectLiteral(string ...$selects): QueryBuilder

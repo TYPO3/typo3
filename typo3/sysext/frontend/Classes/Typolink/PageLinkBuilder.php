@@ -513,7 +513,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Create mount point map, based on TypoScript config.MP_mapRootPoints and config.MP_defaults.
      *
      * @param string $defaultMountPoints a string as defined in config.MP_defaults
-     * @param string|null $mapRootPointList a string as defined in config.MP_mapRootPoints
+     * @param string $mapRootPointList a string as defined in config.MP_mapRootPoints
      * @return array
      */
     protected function initializeMountPointMap(string $defaultMountPoints = null, string $mapRootPointList = null): array
