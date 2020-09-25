@@ -552,7 +552,7 @@ module.exports = function (grunt) {
           // the jquery ui stuff should be replaced by modern libs asap
           // 'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
           'jquery-ui/widget.js': 'jquery-ui/ui/widget.js',
-          'Sortable.min.js': 'sortablejs/Sortable.min.js'
+          'Sortable.min.js': 'sortablejs/dist/sortable.umd.js'
         }
       }
     },

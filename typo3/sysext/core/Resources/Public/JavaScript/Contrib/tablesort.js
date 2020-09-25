@@ -1,5 +1,5 @@
 /*!
- * tablesort v5.1.0 (2020-01-22)
+ * tablesort v5.2.1 (2020-06-02)
  * http://tristen.ca/tablesort/demo/
  * Copyright (c) 2020 ; Licensed MIT
 */
