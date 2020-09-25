@@ -37,3 +37,5 @@
 ,"9290dcb69ef23b84311bf19bfde278ee","sys_file_reference",132,"sys_language_uid",0,0,0,"sys_language",1,,,,,,,,,,,
 ,"8535295b134627a7c3c55d311f8211a5","sys_file_reference",132,"l10n_parent",0,0,0,"sys_file_reference",129,,,,,,,,,,,
 ,"96faaba988970bfcd00b334d8925b5ec","sys_file_reference",132,"uid_local",0,0,0,"sys_file",1,,,,,,,,,,,
+,"7f0edf5e6a8704b7825f934cf264f3d6","tt_content",332,"image",0,0,0,"sys_file_reference",130,,,,,,,,,,,
+,"01ab20f517d1e81ea1ba24e62561c039","tt_content",332,"image",1,0,0,"sys_file_reference",132,,,,,,,,,,,
