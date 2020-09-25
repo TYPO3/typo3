@@ -81,7 +81,7 @@ class SiteLanguage
      *
      * @var string
      */
-    protected $hreflang = 'en-US';
+    protected $hreflang = '';
 
     /**
      * The direction for this language

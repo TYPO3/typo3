@@ -61,7 +61,7 @@ class HrefLangGenerator
         /** @var SiteLanguage $siteLanguage */
         $siteLanguage = $event->getRequest()->getAttribute('language');
         foreach ($languages['languagemenu'] as $language) {
-            if ($language['available'] === 1 && !empty($language['link'])) {
+            if ($language['available'] === 1 && !empty($language['link']) && $language['hreflang']) {
                 $href = $this->getAbsoluteUrl($language['link'], $siteLanguage);
                 $hrefLangs[$language['hreflang']] = $href;
             }

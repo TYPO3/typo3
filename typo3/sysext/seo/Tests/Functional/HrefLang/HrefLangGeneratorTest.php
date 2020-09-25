@@ -43,6 +43,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
         'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
+        'NL' => ['id' => 3, 'title' => 'Dutch', 'locale' => 'nl_NL.UTF8', 'iso' => 'nl', 'hrefLang' => '', 'direction' => ''],
     ];
 
     public static function setUpBeforeClass(): void
@@ -67,6 +68,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('DE', '/de'),
+                $this->buildLanguageConfiguration('NL', '/nl'),
             ]
         );
 
@@ -133,6 +135,30 @@ class HrefLangGeneratorTest extends FunctionalTestCase
                     '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
                 ],
                 []
+            ],
+            'English page, with German and Dutch translation, without Dutch hreflang config' => [
+                'https://acme.com/hello',
+                [
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello"/>',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen"/>',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
+                ],
+                [
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/nl/welkom"/>',
+                    '<link rel="alternate" hreflang="" href="https://acme.com/nl/welkom"/>',
+                ]
+            ],
+            'Dutch page, with German and English translation, without Dutch hreflang config' => [
+                'https://acme.com/hello',
+                [
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello"/>',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen"/>',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
+                ],
+                [
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/nl/welkom"/>',
+                    '<link rel="alternate" hreflang="" href="https://acme.com/nl/welkom"/>',
+                ]
             ],
         ];
     }
