@@ -64,7 +64,7 @@
     "chosen-js": "^1.7.0",
     "ckeditor-wordcount-plugin": "^1.17.2",
     "ckeditor4": "^4.15.0",
-    "codemirror": "^5.49.0",
+    "codemirror": "^5.58.1",
     "cropper": "^2.3.4",
     "d3": "^4.10.0",
     "datatables": "^1.10.13",
