@@ -1049,10 +1049,10 @@ circular-json@^0.5.5:
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.9.tgz#932763ae88f4f7dead7a0d09c8a51a4743a53b1d"
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
 
-ckeditor-wordcount-plugin@^1.17.2:
-  version "1.17.2"
-  resolved "https://registry.yarnpkg.com/ckeditor-wordcount-plugin/-/ckeditor-wordcount-plugin-1.17.2.tgz#9bd528bcf3f2898948fc056d8fdbe80106e87381"
-  integrity sha512-CAS64xhKCQJE3TGIFQECBIrGNFp4neFRdhB4JQ5DiCvnZ36VXd7UydJm6UiIBXZEUag9ykdBe4n5anYIkG6sNA==
+ckeditor-wordcount-plugin@^1.17.6:
+  version "1.17.6"
+  resolved "https://registry.yarnpkg.com/ckeditor-wordcount-plugin/-/ckeditor-wordcount-plugin-1.17.6.tgz#cb1a2a988ce8c3f29cd701f38b120c3a03daef85"
+  integrity sha512-73Q0/W445UoToQ8fyaBhXxhsZXMOxoeGGaIZ1HyiPc1nisK1gbIGAFi1ksgKoavQhri0+sOfpnYSFXDEC608EQ==
 
 ckeditor4@^4.15.0:
   version "4.15.0"

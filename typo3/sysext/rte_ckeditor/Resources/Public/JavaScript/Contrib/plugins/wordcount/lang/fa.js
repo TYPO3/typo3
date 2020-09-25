@@ -6,6 +6,7 @@ CKEDITOR.plugins.setLang('wordcount', 'fa', {
     CharCount: 'کاراکتر:',
     CharCountWithHTML: 'کاراکترها (با HTML):',
     Paragraphs: 'پاراگراف:',
+    ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'محتوای مورد نظر را نمی توان چسباند. زیرا این بیشتر از حد مجاز است.',
     Selected: 'انتخاب شده: ',
     title: 'آمار'
