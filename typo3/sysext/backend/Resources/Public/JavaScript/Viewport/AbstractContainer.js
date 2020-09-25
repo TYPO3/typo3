@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","../Event/ConsumerScope"],function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var o=function(e){this.consumerScope=n,this.consumerScope=e};t.AbstractContainer=o});
+define(["require","exports","../Event/ConsumerScope"],(function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var o=function(e){this.consumerScope=n,this.consumerScope=e};t.AbstractContainer=o}));

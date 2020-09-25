@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/BackendException"],function(e,n,c){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/BackendException",function(){it("sets exception message",function(){var e=new c.BackendException("some message");expect(e.message).toBe("some message")}),it("sets exception code",function(){var e=new c.BackendException("",12345);expect(e.code).toBe(12345)})})});
+define(["require","exports","TYPO3/CMS/Backend/BackendException"],(function(e,n,c){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/BackendException",(function(){it("sets exception message",(function(){var e=new c.BackendException("some message");expect(e.message).toBe("some message")})),it("sets exception code",(function(){var e=new c.BackendException("",12345);expect(e.code).toBe(12345)}))}))}));

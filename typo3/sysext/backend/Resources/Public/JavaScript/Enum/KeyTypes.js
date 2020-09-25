@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,E){"use strict";var r;Object.defineProperty(E,"__esModule",{value:!0}),(r=E.KeyTypesEnum||(E.KeyTypesEnum={}))[r.ENTER=13]="ENTER",r[r.ESCAPE=27]="ESCAPE"});
+define(["require","exports"],(function(e,E){"use strict";Object.defineProperty(E,"__esModule",{value:!0}),function(e){e[e.ENTER=13]="ENTER",e[e.ESCAPE=27]="ESCAPE"}(E.KeyTypesEnum||(E.KeyTypesEnum={}))}));

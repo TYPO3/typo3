@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","bootstrap"],function(t,o,i){"use strict";var e=new(function(){function t(){var t=this;i(function(){t.initialize('[data-toggle="tooltip"]')})}return t.prototype.initialize=function(t,o){o=o||{},i(t).tooltip(o)},t.prototype.show=function(t,o){t.attr("data-placement","auto").attr("data-title",o).tooltip("show")},t.prototype.hide=function(t){t.tooltip("hide")},t}());return TYPO3.Tooltip=e,e});
+define(["require","exports","jquery","bootstrap"],(function(t,o,i){"use strict";var e=new(function(){function t(){var t=this;i((function(){t.initialize('[data-toggle="tooltip"]')}))}return t.prototype.initialize=function(t,o){o=o||{},i(t).tooltip(o)},t.prototype.show=function(t,o){t.attr("data-placement","auto").attr("data-title",o).tooltip("show")},t.prototype.hide=function(t){t.tooltip("hide")},t}());return TYPO3.Tooltip=e,e}));

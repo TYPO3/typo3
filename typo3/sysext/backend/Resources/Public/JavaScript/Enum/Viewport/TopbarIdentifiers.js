@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),(t.TopbarIdentifiersEnum||(t.TopbarIdentifiersEnum={})).buttonNavigationComponent=".t3js-topbar-button-navigationcomponent"});
+define(["require","exports"],(function(e,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),function(e){e.buttonNavigationComponent=".t3js-topbar-button-navigationcomponent"}(n.TopbarIdentifiersEnum||(n.TopbarIdentifiersEnum={}))}));

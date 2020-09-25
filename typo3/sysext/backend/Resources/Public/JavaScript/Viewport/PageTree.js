@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(t,n){"use strict";return function(){function t(t){this.instance=null,this.instance=t}return t.prototype.refreshTree=function(){null!==this.instance&&this.instance.refreshOrFilterTree()},t.prototype.setTemporaryMountPoint=function(t){null!==this.instance&&this.instance.setTemporaryMountPoint(t)},t.prototype.unsetTemporaryMountPoint=function(){null!==this.instance&&this.instance.unsetTemporaryMountPoint()},t.prototype.selectNode=function(t){null!==this.instance&&this.instance.selectNode(t)},t}()});
+define(["require","exports"],(function(t,n){"use strict";return function(){function t(t){this.instance=null,this.instance=t}return t.prototype.refreshTree=function(){null!==this.instance&&this.instance.refreshOrFilterTree()},t.prototype.setTemporaryMountPoint=function(t){null!==this.instance&&this.instance.setTemporaryMountPoint(t)},t.prototype.unsetTemporaryMountPoint=function(){null!==this.instance&&this.instance.unsetTemporaryMountPoint()},t.prototype.selectNode=function(t){null!==this.instance&&this.instance.selectNode(t)},t}()}));
