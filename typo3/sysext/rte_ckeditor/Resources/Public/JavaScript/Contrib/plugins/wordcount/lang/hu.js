@@ -7,6 +7,7 @@ CKEDITOR.plugins.setLang('wordcount', 'hu', {
     CharCount: 'Karakaterek:',
     CharCountWithHTML: 'Karakterek (HTML tagekkel):',
     Paragraphs: 'Bekezdések:',
+    ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'A szöveget nem lehet beilleszteni, mert a megadott limit felett van',
     Selected: 'Kiválasztva: ',
     title: 'Statisztika'
