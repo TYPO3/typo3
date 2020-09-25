@@ -5,6 +5,7 @@ CKEDITOR.plugins.setLang('wordcount', 'ar', {
     CharCount: 'حروف:',
     CharCountWithHTML: 'حروف مع إتش تي إم إل',
     Paragraphs: 'فقرات',
+    ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'لا يمكن اضافة هذا المحتوى لانه تجاوز الحد الاقصى',
     Selected: 'محدد: ',
     title: 'احصائيات'

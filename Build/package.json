@@ -77,7 +77,7 @@
     "broadcastchannel-polyfill": "^1.0.0",
     "chart.js": "^2.9.3",
     "chosen-js": "^1.8.7",
-    "ckeditor-wordcount-plugin": "^1.17.2",
+    "ckeditor-wordcount-plugin": "^1.17.6",
     "ckeditor4": "^4.15.0",
     "codemirror": "^5.58.1",
     "cropper": "^2.3.4",

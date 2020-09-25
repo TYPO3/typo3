@@ -7,6 +7,7 @@ CKEDITOR.plugins.setLang('wordcount', 'he', {
     CharCount: 'תווים:',
     CharCountWithHTML: 'תווים (כולל HTML):',
     Paragraphs: 'פסקאות:',
+    ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'לא ניתן להדביק תוכן בשל עודף תווים',
     Selected: 'נבחר: ',
     title: 'סטטיסטיקות'
