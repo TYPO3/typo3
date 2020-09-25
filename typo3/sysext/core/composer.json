@@ -70,7 +70,7 @@
 		"codeception/module-webdriver": "^1.0.1",
 		"friendsofphp/php-cs-fixer": "^2.16.1",
 		"phpspec/prophecy": "^1.7.5",
-		"phpstan/phpstan": "^0.12.13",
+		"phpstan/phpstan": "^0.12.44",
 		"typo3/cms-styleguide": "~10.0.4",
 		"typo3/testing-framework": "^6.4.2"
 	},

@@ -10,13 +10,15 @@ rules:
 	- PHPStan\Rules\Arrays\UnpackIterableInArrayRule
 	- PHPStan\Rules\Functions\ArrowFunctionReturnTypeRule
 	- PHPStan\Rules\Functions\ClosureReturnTypeRule
-	- PHPStan\Rules\Functions\ReturnTypeRule
 	- PHPStan\Rules\Generators\YieldTypeRule
 #	- PHPStan\Rules\Methods\ReturnTypeRule
 	- PHPStan\Rules\Properties\DefaultValueTypesAssignedToPropertiesRule
 #	- PHPStan\Rules\Properties\TypesAssignedToPropertiesRule
 	- PHPStan\Rules\Variables\ThrowTypeRule
 	- PHPStan\Rules\Variables\VariableCloningRule
+
+parameters:
+	checkPhpDocMethodSignatures: false # todo: set to true
 
 services:
 	-
@@ -51,6 +53,14 @@ services:
 		tags:
 			- phpstan.rules.rule
 
+#	-
+#		class: PHPStan\Rules\Functions\ReturnTypeRule
+#		arguments:
+#			functionReflector: @betterReflectionFunctionReflector
+#
+#		tags:
+#			- phpstan.rules.rule
+
 	-
 		class: PHPStan\Rules\Generators\YieldFromTypeRule
 		arguments:
@@ -66,12 +76,3 @@ services:
 
 		tags:
 			- phpstan.rules.rule
-
-#	-
-#		class: PHPStan\Rules\Methods\MethodSignatureRule
-#		arguments:
-#			reportMaybes: %reportMaybesInMethodSignatures%
-#			reportStatic: %reportStaticMethodSignatures%
-#
-#		tags:
-#			- phpstan.rules.rule

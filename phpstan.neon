@@ -10,6 +10,8 @@ parameters:
   # Set to true during local runs to find unmatched ignored errors. bamboo needs this to be set to false.
   reportUnmatchedIgnoredErrors: false
 
+  scanDirectories:
+    - %currentWorkingDirectory%/typo3/sysext/
   paths:
     - %currentWorkingDirectory%/typo3/sysext/
 
@@ -21,17 +23,13 @@ parameters:
 
   ignoreErrors:
     # ignored errors for level 0
-    - '#Undefined variable: \$_EXTKEY#'
+    - '#Variable \$_EXTKEY might not be defined\.#'
     -
       message: '#Instantiated class Composer\\Util\\Filesystem not found\.#'
       path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Composer/CliEntryPoint.php
     -
       message: '#Parameter \$event of method [\w\\]+::\w+\(\) has invalid typehint type Composer\\Script\\Event\.#'
       path: %currentWorkingDirectory%/typo3/sysext/*/Classes/Composer/*
-    -
-      message: "#^Access to undefined constant PDO\\:\\:SQLSRV_ENCODING_BINARY\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/Driver/PDOSqlsrv/Statement.php
     -
       message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\:\\:__default\\.$#"
       count: 1
@@ -95,12 +93,6 @@ parameters:
       count: 1
       path: typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
 
-    # Ignored errors for level 2
-    -
-      message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Processing\\\\ImageCropScaleMaskTask\\:\\:fileNeedsProcessing\\(\\) should return bool but return statement is missing\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Resource/Processing/ImageCropScaleMaskTask.php
-
     # Ignored errors for level 3
     -
       message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$tableName \\(string\\) does not accept default value of type int\\.$#"
@@ -112,30 +104,6 @@ parameters:
       path: typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
 
     # Ignored errors for level 4
-    -
-      message: "#^Unreachable statement \\- code above always terminates\\.$#"
-      count: 1
-      path: typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
-    -
-      message: "#^Unreachable statement \\- code above always terminates\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-    -
-      message: "#^Unreachable statement \\- code above always terminates\\.$#"
-      count: 1
-      path: typo3/sysext/frontend/Classes/Aspect/FileMetadataOverlayAspect.php
-    -
-      message: "#^Unreachable statement \\- code above always terminates\\.$#"
-      count: 1
-      path: typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
-    -
-      message: "#^Unreachable statement \\- code above always terminates\\.$#"
-      count: 1
-      path: typo3/sysext/indexed_search/Classes/Lexer.php
-    -
-      message: "#^Unreachable statement \\- code above always terminates\\.$#"
-      count: 1
-      path: typo3/sysext/scheduler/Classes/Task/FileStorageIndexingAdditionalFieldProvider.php
     -
       message: "#^Ternary operator condition is always false\\.$#"
       count: 1
