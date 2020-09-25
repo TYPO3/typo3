@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb15076f4778a02d7147e516b610b2d4",
+    "content-hash": "19298b87a63c62f4b6e1be515e7c0df3",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4929,23 +4929,23 @@
         },
         {
             "name": "friendsoftypo3/phpstan-typo3",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfTYPO3/phpstan-typo3.git",
-                "reference": "634dafe109923ee4a556200ddf80951f3714c935"
+                "reference": "815214002f44c7c298969acee315ab90c93caf0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/634dafe109923ee4a556200ddf80951f3714c935",
-                "reference": "634dafe109923ee4a556200ddf80951f3714c935",
+                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/815214002f44c7c298969acee315ab90c93caf0e",
+                "reference": "815214002f44c7c298969acee315ab90c93caf0e",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
-                "phpstan/phpstan": "^0.12.28",
-                "typo3/cms-core": "11.0.*@dev",
-                "typo3/cms-extbase": "11.0.*@dev"
+                "phpstan/phpstan": "^0.12.44",
+                "typo3/cms-core": "^10.4 || 11.0.*@dev",
+                "typo3/cms-extbase": "^10.4 || 11.0.*@dev"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.3",
@@ -4964,7 +4964,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "TYPO3 rules for PHPStan",
-            "time": "2020-06-10T15:34:04+00:00"
+            "time": "2020-09-25T09:00:18+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -6076,16 +6076,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.37",
+            "version": "0.12.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "5e16d83e6eb2dd784fbdaeaece5e2bca72e4f68a"
+                "reference": "330b45776ea77f167b150e24787412414a8fa469"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5e16d83e6eb2dd784fbdaeaece5e2bca72e4f68a",
-                "reference": "5e16d83e6eb2dd784fbdaeaece5e2bca72e4f68a",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/330b45776ea77f167b150e24787412414a8fa469",
+                "reference": "330b45776ea77f167b150e24787412414a8fa469",
                 "shasum": ""
             },
             "require": {
@@ -6128,7 +6128,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-09T14:32:41+00:00"
+            "time": "2020-09-24T15:28:47+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -6378,8 +6378,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Utility class for timing",
@@ -7134,8 +7134,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -7768,6 +7768,7 @@
                     "type": "patreon"
                 }
             ],
+            "abandoned": true,
             "time": "2020-04-09T23:55:34+00:00"
         },
         {
