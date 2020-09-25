@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -98,6 +99,12 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                 if (!empty($row['language_isocode'])) {
                     $defaultDatabaseRow['iso-639-1'] = $row['language_isocode'];
                     $defaultDatabaseRow['base'] = '/' . $row['language_isocode'] . '/';
+
+                    $locales = GeneralUtility::makeInstance(Locales::class);
+                    $allLanguages = $locales->getLanguages();
+                    if (isset($allLanguages[$row['language_isocode']])) {
+                        $defaultDatabaseRow['typo3Language'] = $row['language_isocode'];
+                    }
                 }
                 if (!empty($row['flag']) && $row['flag'] === 'multiple') {
                     $defaultDatabaseRow['flag'] = 'global';
