@@ -1,6 +1,3 @@
-includes:
-	- phpstan.level2.neon
-
 rules:
 #	- PHPStan\Rules\Arrays\AppendedArrayItemTypeRule
 	- PHPStan\Rules\Arrays\IterableInForeachRule
