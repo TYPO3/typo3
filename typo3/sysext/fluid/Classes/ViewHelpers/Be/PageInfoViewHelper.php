@@ -73,9 +73,8 @@ class PageInfoViewHelper extends AbstractBackendViewHelper
         $id = GeneralUtility::_GP('id');
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         // Add icon with context menu, etc:
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if ($pageRecord['uid']) {
+        if (is_array($pageRecord) && $pageRecord['uid']) {
             // If there IS a real page
             $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
             $theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';

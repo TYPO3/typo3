@@ -419,6 +419,7 @@ class FormViewHelper extends AbstractFormViewHelper
     {
         if (count($arguments)) {
             foreach ($arguments as $argumentName => $argumentValue) {
+                $argumentName = (string)$argumentName;
                 if (is_array($argumentValue)) {
                     $prefix = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
                     $this->postProcessUriArgumentsForRequestHash($argumentValue, $results, $prefix, $level + 1);

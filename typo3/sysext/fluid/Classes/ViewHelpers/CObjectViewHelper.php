@@ -150,7 +150,7 @@ class CObjectViewHelper extends AbstractViewHelper
             $contentObjectRenderer->setCurrentVal($data[$currentValueKey]);
         }
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
-        $lastSegment = array_pop($pathSegments);
+        $lastSegment = (string)array_pop($pathSegments);
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
