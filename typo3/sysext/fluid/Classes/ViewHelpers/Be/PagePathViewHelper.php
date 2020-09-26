@@ -72,15 +72,16 @@ class PagePathViewHelper extends AbstractBackendViewHelper
         $id = GeneralUtility::_GP('id');
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         // Is this a real page
-        if ($pageRecord['uid']) {
-            $title = $pageRecord['_thePathFull'];
+        if ($pageRecord['_thePathFull'] ?? false) {
+            $title = (string)$pageRecord['_thePathFull'];
         } else {
-            $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+            $title = (string)$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
         // Setting the path of the page
         $pagePath = htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
         $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
+        $cropLength = (int)$cropLength;
         $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
         if ($croppedTitle !== $title) {
             $pagePath .= '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';

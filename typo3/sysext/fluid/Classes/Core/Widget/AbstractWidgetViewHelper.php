@@ -171,7 +171,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
     {
         $this->widgetContext->setWidgetConfiguration($this->getWidgetConfiguration());
         $this->initializeWidgetIdentifier();
-        $this->widgetContext->setControllerObjectName(get_class($this->controller));
+        $this->widgetContext->setControllerObjectName($this->controller === null ? 'null' : get_class($this->controller));
         $extensionName = $this->renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
         $pluginName = $this->renderingContext->getControllerContext()->getRequest()->getPluginName();
         $this->widgetContext->setParentExtensionName($extensionName);

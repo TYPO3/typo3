@@ -230,7 +230,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getLastSubmittedFormData()
     {
-        $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()), '.');
+        $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()) ?? '', '.');
         $value = ObjectAccess::getPropertyPath(
             $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest()->getArguments(),
             $propertyPath

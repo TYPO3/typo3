@@ -243,15 +243,15 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
                         if (method_exists($key, '__toString')) {
                             $key = (string)$key;
                         } else {
-                            throw new Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
+                            throw new Exception('Identifying value for object of class "' . (is_object($value) ? get_class($value) : gettype($value)) . '" was an object.', 1247827428);
                         }
                     }
                 } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
                     // @todo use $this->persistenceManager->isNewObject() once it is implemented
                     $key = $this->persistenceManager->getIdentifierByObject($value);
-                } elseif (method_exists($value, '__toString')) {
+                } elseif (is_object($value) && method_exists($value, '__toString')) {
                     $key = (string)$value;
-                } else {
+                } elseif (is_object($value)) {
                     throw new Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
                 }
                 if ($this->hasArgument('optionLabelField')) {
@@ -263,7 +263,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
                             throw new Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
                         }
                     }
-                } elseif (method_exists($value, '__toString')) {
+                } elseif (is_object($value) && method_exists($value, '__toString')) {
                     $value = (string)$value;
                 } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
                     // @todo use $this->persistenceManager->isNewObject() once it is implemented

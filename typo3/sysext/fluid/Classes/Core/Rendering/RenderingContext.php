@@ -26,6 +26,7 @@ use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\Configuration;
 use TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
@@ -87,7 +88,9 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         if (method_exists($this, 'setTemplateProcessors')) {
-            $this->setTemplateProcessors(array_map([$objectManager, 'get'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors']));
+            /** @var TemplateProcessorInterface[] $processors */
+            $processors = array_map([$objectManager, 'get'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors']);
+            $this->setTemplateProcessors($processors);
         }
         $this->setExpressionNodeTypes($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes']);
         $this->setTemplatePaths($objectManager->get(TemplatePaths::class));

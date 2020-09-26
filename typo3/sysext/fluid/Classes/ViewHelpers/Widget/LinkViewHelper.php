@@ -97,7 +97,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $arguments['type'] = 7076;
         $arguments['fluid-widget-id'] = $this->renderingContext->getControllerContext()->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
         $arguments['action'] = $action;
-        return '?' . http_build_query($arguments, null, '&');
+        return '?' . http_build_query($arguments, '', '&');
     }
 
     /**
