@@ -219,7 +219,7 @@ class RecordListController
                 if (!empty($items)) {
                     $cmd = [];
                     foreach ($items as $iK => $value) {
-                        $iKParts = explode('|', $iK);
+                        $iKParts = explode('|', (string)$iK);
                         $cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
                     }
                     $tce = GeneralUtility::makeInstance(DataHandler::class);

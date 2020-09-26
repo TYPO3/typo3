@@ -1563,7 +1563,7 @@ class DatabaseRecordList
      */
     protected function renderListNavigation($renderPart, int $totalItems, int $iLimit, string $table)
     {
-        $totalPages = ceil($totalItems / $iLimit);
+        $totalPages = (int)ceil($totalItems / $iLimit);
         // Show page selector if not all records fit into one page
         if ($totalPages <= 1) {
             return '';
@@ -1572,7 +1572,7 @@ class DatabaseRecordList
         $listURL = $this->listURL('', $this->table, 'firstElementNumber');
         // 1 = first page
         // 0 = first element
-        $currentPage = floor($this->firstElementNumber / $iLimit) + 1;
+        $currentPage = (int)floor($this->firstElementNumber / $iLimit) + 1;
         // Compile first, previous, next, last and refresh buttons
         if ($currentPage > 1) {
             $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first'));
@@ -1913,7 +1913,7 @@ class DatabaseRecordList
                     $table,
                     $row['uid'],
                     ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
-                    $this->getReferenceCount($table, $row['uid'])
+                    (string)$this->getReferenceCount($table, $row['uid'])
                 ) . BackendUtility::translationCount(
                     $table,
                     $row['uid'],
@@ -2426,6 +2426,7 @@ class DatabaseRecordList
     protected function addHeaderRowToCSV()
     {
         $fieldArray = array_combine($this->fieldArray, $this->fieldArray);
+        $fieldArray = is_array($fieldArray) ? $fieldArray : [];
         $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['customizeCsvHeader'] ?? [];
         if (!empty($hooks)) {
             $hookParameters = [
@@ -3117,7 +3118,7 @@ class DatabaseRecordList
                 // Output the label now:
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
-                        $this->listURL($uid, '', 'firstElementNumber')
+                        $this->listURL((string)$uid, '', 'firstElementNumber')
                     ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
