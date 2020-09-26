@@ -365,6 +365,7 @@ abstract class ImportExport
             // Subrecords:
             if (is_array($this->dat['header']['pid_lookup'][$k])) {
                 foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
+                    $t = (string)$t;
                     if ($t !== 'pages') {
                         foreach ($recUidArr as $ruid => $value) {
                             $this->singleRecordLines($t, $ruid, $lines, $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;');
@@ -429,19 +430,19 @@ abstract class ImportExport
     /**
      * Go through remaining pages (not in tree)
      *
-     * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
+     * @param array<int, array> $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
      * @param array $lines Output lines array (is passed by reference and modified)
      */
     public function traversePageRecords($pT, &$lines)
     {
         foreach ($pT as $k => $rHeader) {
-            $this->singleRecordLines('pages', $k, $lines, '', 1);
+            $this->singleRecordLines('pages', (int)$k, $lines, '', true);
             // Subrecords:
             if (is_array($this->dat['header']['pid_lookup'][$k])) {
                 foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
                     if ($t !== 'pages') {
                         foreach ($recUidArr as $ruid => $value) {
-                            $this->singleRecordLines($t, $ruid, $lines, '&nbsp;&nbsp;&nbsp;&nbsp;');
+                            $this->singleRecordLines((string)$t, (int)$ruid, $lines, '&nbsp;&nbsp;&nbsp;&nbsp;');
                         }
                     }
                 }
@@ -463,7 +464,7 @@ abstract class ImportExport
             if ($t !== 'pages') {
                 $preCode = '';
                 foreach ($recUidArr as $ruid => $value) {
-                    $this->singleRecordLines($t, $ruid, $lines, $preCode, 1);
+                    $this->singleRecordLines((string)$t, (int)$ruid, $lines, $preCode, true);
                 }
             }
         }
@@ -1133,7 +1134,7 @@ abstract class ImportExport
                     if (isset($importRecord[$fN])) {
                         if (trim($databaseRecord[$fN]) !== trim($importRecord[$fN])) {
                             // Create diff-result:
-                            $output[$fN] = $diffUtility->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1));
+                            $output[$fN] = $diffUtility->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, true, true), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, true, true));
                         }
                         unset($importRecord[$fN]);
                     }
@@ -1151,7 +1152,7 @@ abstract class ImportExport
                 foreach ($output as $fN => $state) {
                     $tRows[] = '
 						<tr>
-							<td>' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'])) . ' (' . htmlspecialchars($fN) . ')</td>
+							<td>' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'])) . ' (' . htmlspecialchars((string)$fN) . ')</td>
 							<td>' . $state . '</td>
 						</tr>
 					';

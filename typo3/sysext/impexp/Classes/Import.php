@@ -595,7 +595,7 @@ class Import extends ImportExport
             if (!empty($pageRecords)) {
                 $remainingPageUids = array_keys($pageRecords);
                 foreach ($remainingPageUids as $pUid) {
-                    $this->addSingle('pages', $pUid, $pid);
+                    $this->addSingle('pages', (int)$pUid, $pid);
                 }
             }
             // Now write to database:
@@ -696,6 +696,7 @@ class Import extends ImportExport
         $this->import_data = [];
         if (is_array($this->dat['header']['records'])) {
             foreach ($this->dat['header']['records'] as $table => $recs) {
+                $table = (string)$table;
                 $this->addGeneralErrorsByTable($table);
                 if ($table !== 'pages') {
                     foreach ($recs as $uid => $thisRec) {
@@ -1418,7 +1419,7 @@ class Import extends ImportExport
             if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
                 // File in fileadmin/ folder:
                 // Create file (and possible resources)
-                $newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, PathUtility::basename($relFileName), $cfg['file_ID'], $table, $uid);
+                $newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, PathUtility::basename($relFileName), $cfg['file_ID'], $table, $uid) ?: '';
                 if (strlen($newFileName)) {
                     $relFileName = $newFileName;
                 } else {
@@ -1452,7 +1453,7 @@ class Import extends ImportExport
             return PathUtility::stripPathSitePrefix($this->fileIDMap[$fileID]);
         }
         // Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
-        $dirPrefix = $this->verifyFolderAccess($origDirPrefix);
+        $dirPrefix = (string)$this->verifyFolderAccess($origDirPrefix);
         if ($dirPrefix && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
             $fileHeaderInfo = $this->dat['header']['files'][$fileID];
             $updMode = $this->update && $this->import_mapId[$table][$uid] === $uid && $this->import_mode[$table . ':' . $uid] !== 'as_new';
@@ -1465,7 +1466,7 @@ class Import extends ImportExport
             } else {
                 // Create unique filename:
                 $fileProcObj = $this->getFileProcObj();
-                $newName = $fileProcObj->getUniqueName($fileName, Environment::getPublicPath() . '/' . $dirPrefix);
+                $newName = (string)$fileProcObj->getUniqueName($fileName, Environment::getPublicPath() . '/' . $dirPrefix);
             }
             if ($this->writeFileVerify($newName, $fileID)) {
                 // If the resource was an HTML/CSS file with resources attached, we will write those as well!
@@ -1500,7 +1501,7 @@ class Import extends ImportExport
                         if (GeneralUtility::mkdir($resourceDir)) {
                             foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
                                 if ($this->dat['files'][$res_fileID]['filename']) {
-                                    $absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
+                                    $absResourceFileName = (string)$fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
                                     $relResourceFileName = substr($absResourceFileName, strlen(PathUtility::dirname($resourceDir)) + 1);
                                     $this->writeFileVerify($absResourceFileName, $res_fileID);
                                     $tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
@@ -1559,7 +1560,7 @@ class Import extends ImportExport
         }
         GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
         $this->fileIDMap[$fileID] = $fileName;
-        if (hash_equals(md5(file_get_contents($fileName)), $this->dat['files'][$fileID]['content_md5'])) {
+        if (hash_equals(md5((string)file_get_contents($fileName)), $this->dat['files'][$fileID]['content_md5'])) {
             return true;
         }
         $this->error('ERROR: File content "' . $fileName . '" was corrupted');
@@ -1628,7 +1629,7 @@ class Import extends ImportExport
         }
         if (strtolower($fI['extension']) === 'xml') {
             // XML:
-            $xmlContent = file_get_contents($filename);
+            $xmlContent = (string)file_get_contents($filename);
             if (strlen($xmlContent)) {
                 $this->dat = GeneralUtility::xml2array($xmlContent, '', true);
                 if (is_array($this->dat)) {
@@ -1646,18 +1647,17 @@ class Import extends ImportExport
         } else {
             // T3D
             if ($fd = fopen($filename, 'rb')) {
-                $this->dat['header'] = $this->getNextFilePart($fd, 1, 'header');
+                $this->dat['header'] = $this->getNextFilePart($fd, true, 'header');
                 if ($all) {
-                    $this->dat['records'] = $this->getNextFilePart($fd, 1, 'records');
-                    $this->dat['files'] = $this->getNextFilePart($fd, 1, 'files');
-                    $this->dat['files_fal'] = $this->getNextFilePart($fd, 1, 'files_fal');
+                    $this->dat['records'] = $this->getNextFilePart($fd, true, 'records');
+                    $this->dat['files'] = $this->getNextFilePart($fd, true, 'files');
+                    $this->dat['files_fal'] = $this->getNextFilePart($fd, true, 'files_fal');
                 }
                 $this->loadInit();
+                fclose($fd);
                 return true;
             }
             $this->error('Error opening file: ' . $filename);
-
-            fclose($fd);
         }
         return false;
     }
@@ -1690,12 +1690,12 @@ class Import extends ImportExport
             $this->error('File read error: InitString had a wrong length. (' . $name . ')');
             return null;
         }
-        $datString = fread($fd, (int)$initStrDat[2]);
+        $datString = (string)fread($fd, (int)$initStrDat[2]);
         fread($fd, 1);
         if (hash_equals($initStrDat[0], md5($datString))) {
             if ($initStrDat[1]) {
                 if ($this->compress) {
-                    $datString = gzuncompress($datString);
+                    $datString = (string)gzuncompress($datString);
                 } else {
                     $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.');
                     return null;
@@ -1717,9 +1717,9 @@ class Import extends ImportExport
     public function loadContent($filecontent)
     {
         $pointer = 0;
-        $this->dat['header'] = $this->getNextContentPart($filecontent, $pointer, 1, 'header');
-        $this->dat['records'] = $this->getNextContentPart($filecontent, $pointer, 1, 'records');
-        $this->dat['files'] = $this->getNextContentPart($filecontent, $pointer, 1, 'files');
+        $this->dat['header'] = $this->getNextContentPart($filecontent, $pointer, true, 'header');
+        $this->dat['records'] = $this->getNextContentPart($filecontent, $pointer, true, 'records');
+        $this->dat['files'] = $this->getNextContentPart($filecontent, $pointer, true, 'files');
         $this->loadInit();
     }
 
@@ -1743,12 +1743,12 @@ class Import extends ImportExport
             $this->error('Content read error: InitString had a wrong length. (' . $name . ')');
             return null;
         }
-        $datString = substr($filecontent, $pointer, (int)$initStrDat[2]);
+        $datString = (string)substr($filecontent, $pointer, (int)$initStrDat[2]);
         $pointer += (int)$initStrDat[2] + 1;
         if (hash_equals($initStrDat[0], md5($datString))) {
             if ($initStrDat[1]) {
                 if ($this->compress) {
-                    $datString = gzuncompress($datString);
+                    $datString = (string)gzuncompress($datString);
                     return $unserialize ? unserialize($datString, ['allowed_classes' => false]) : $datString;
                 }
                 $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.');

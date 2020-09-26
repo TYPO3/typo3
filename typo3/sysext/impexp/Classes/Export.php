@@ -720,7 +720,7 @@ class Export extends ImportExport
         $fileMd5 = md5_file($fI['ID_absFile']);
         if (!$this->saveFilesOutsideExportFile) {
             // ... and finally add the heavy stuff:
-            $fileRec['content'] = file_get_contents($fI['ID_absFile']);
+            $fileRec['content'] = (string)file_get_contents($fI['ID_absFile']);
         } else {
             GeneralUtility::upload_copy_move($fI['ID_absFile'], $this->getTemporaryFilesPathForExport() . $fileMd5);
         }
@@ -734,7 +734,7 @@ class Export extends ImportExport
             if ($this->includeExtFileResources && GeneralUtility::inList($this->extFileResourceExtensions, strtolower($html_fI['extension']))) {
                 $uniquePrefix = '###' . md5($GLOBALS['EXEC_TIME']) . '###';
                 if (strtolower($html_fI['extension']) === 'css') {
-                    $prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', '\\1' . $uniquePrefix . '\\2' . $uniquePrefix . '\\3', $fileRec['content']));
+                    $prefixedMedias = explode($uniquePrefix, (string)preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', '\\1' . $uniquePrefix . '\\2' . $uniquePrefix . '\\3', $fileRec['content']));
                 } else {
                     // html, htm:
                     $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
@@ -762,7 +762,7 @@ class Export extends ImportExport
                                 // Setting this data in the header
                                 $this->dat['header']['files'][$EXTres_ID] = $fileRec;
                                 // ... and finally add the heavy stuff:
-                                $fileRec['content'] = file_get_contents($EXTres_absPath);
+                                $fileRec['content'] = (string)file_get_contents($EXTres_absPath);
                                 $fileRec['content_md5'] = md5($fileRec['content']);
                                 $this->dat['files'][$EXTres_ID] = $fileRec;
                             }
@@ -1033,15 +1033,15 @@ class Export extends ImportExport
     /**
      * Returns a content part for a filename being build.
      *
-     * @param array $data Data to store in part
+     * @param string $data Data to store in part
      * @param bool $compress Compress file?
      * @return string Content stream.
      */
     public function addFilePart($data, $compress = false)
     {
         if ($compress) {
-            $data = gzcompress($data);
+            $data = (string)gzcompress($data);
         }
-        return md5($data) . ':' . ($compress ? '1' : '0') . ':' . str_pad(strlen($data), 10, '0', STR_PAD_LEFT) . ':' . $data . ':';
+        return md5($data) . ':' . ($compress ? '1' : '0') . ':' . str_pad((string)strlen($data), 10, '0', STR_PAD_LEFT) . ':' . $data . ':';
     }
 }
