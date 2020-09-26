@@ -82,10 +82,10 @@ class ImportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fileName = $input->getArgument('file');
+        $fileName = (string)$input->getArgument('file');
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        if (empty($fileName) || !file_exists($fileName)) {
-            throw new InvalidFileException('The given filename "' . ($fileName ?? $input->getArgument('file')) . '" could not be found', 1484483040);
+        if ($fileName === '' || !file_exists($fileName)) {
+            throw new InvalidFileException('The given filename "' . $fileName . '" could not be found', 1484483040);
         }
 
         $io = new SymfonyStyle($input, $output);

@@ -144,7 +144,7 @@ class ExportController extends ImportExportController
     {
         // BUILDING EXPORT DATA:
         // Processing of InData array values:
-        $inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'])));
+        $inData['filename'] = trim((string)preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'])));
         if ($inData['filename'] !== '') {
             $inData['filename'] .= $inData['filetype'] === 'xml' ? '.xml' : '.t3d';
         }
@@ -194,7 +194,7 @@ class ExportController extends ImportExportController
         if (is_array($inData['record'])) {
             foreach ($inData['record'] as $ref) {
                 $rParts = explode(':', $ref);
-                $this->export->export_addRecord($rParts[0], BackendUtility::getRecord($rParts[0], $rParts[1]));
+                $this->export->export_addRecord($rParts[0], BackendUtility::getRecord($rParts[0], (int)$rParts[1]));
             }
         }
         // Configure which tables to export
@@ -465,7 +465,7 @@ class ExportController extends ImportExportController
                 $rParts = explode(':', $ref);
                 [$tName, $rUid] = $rParts;
                 $nameSuggestion .= $tName . '_' . $rUid;
-                $rec = BackendUtility::getRecordWSOL($tName, $rUid);
+                $rec = BackendUtility::getRecordWSOL((string)$tName, (int)$rUid);
                 if (!empty($rec)) {
                     $records[] = [
                         'icon' => $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render(),
@@ -491,7 +491,7 @@ class ExportController extends ImportExportController
                     if ($referenceParts[1] === '0') {
                         $iconAndTitle = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
                     } else {
-                        $record = BackendUtility::getRecordWSOL('pages', $referenceParts[1]);
+                        $record = BackendUtility::getRecordWSOL('pages', (int)$referenceParts[1]);
                         $iconAndTitle = $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render()
                             . BackendUtility::getRecordTitle('pages', $record, true);
                     }
