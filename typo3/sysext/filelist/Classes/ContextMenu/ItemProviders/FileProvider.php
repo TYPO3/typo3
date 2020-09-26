@@ -261,7 +261,7 @@ class FileProvider extends AbstractProvider
      * Checks if folder and record are in the same filemount
      * Cannot copy folders between filemounts
      *
-     * @param File|Folder $fileOrFolderInClipBoard
+     * @param File|Folder|null $fileOrFolderInClipBoard
      * @return bool
      */
     protected function isFoldersAreInTheSameRoot($fileOrFolderInClipBoard): bool
@@ -344,7 +344,7 @@ class FileProvider extends AbstractProvider
             } else {
                 $confirmMessage .= BackendUtility::referenceCount(
                     'sys_file',
-                    $this->record->getUid(),
+                    (string)$this->record->getUid(),
                     ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile')
                 );
             }

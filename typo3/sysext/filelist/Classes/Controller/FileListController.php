@@ -535,7 +535,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         if (count($files) === 0) {
             $this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage(
                 new FlashMessage(
-                    LocalizationUtility::translate('flashmessage.no_results', 'filelist'),
+                    LocalizationUtility::translate('flashmessage.no_results', 'filelist') ?? '',
                     '',
                     FlashMessage::INFO
                 )
