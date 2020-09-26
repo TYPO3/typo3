@@ -281,7 +281,7 @@ class PermissionAjaxController
      * Print the string with the new edit lock state of a page record
      *
      * @param int $page The TYPO3 page id
-     * @param string $editLockState The state of the TYPO3 page (locked, unlocked)
+     * @param int $editLockState The state of the TYPO3 page (locked, unlocked)
      * @return string The new edit lock string wrapped in HTML
      */
     protected function renderToggleEditLock($page, $editLockState)

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Controller;
 
+use TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -22,6 +23,7 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Backend module user group administration controller
@@ -59,6 +61,7 @@ class BackendUserGroupController extends ActionController
      */
     public function indexAction(int $currentPage = 1): void
     {
+        /** @var QueryResultInterface<int, BackendUserGroup> $backendUsers */
         $backendUsers = $this->backendUserGroupRepository->findAll();
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
