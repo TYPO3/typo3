@@ -38,7 +38,7 @@ class MemoryUtility
      */
     public static function isMemoryConsumptionTooHigh(): bool
     {
-        $iniLimit = ini_get('memory_limit');
+        $iniLimit = (string)ini_get('memory_limit');
         $memoryLimit = $iniLimit === '-1' ? -1 : GeneralUtility::getBytesFromSizeMeasurement($iniLimit);
         $freeMemory = $memoryLimit - memory_get_usage(true);
 

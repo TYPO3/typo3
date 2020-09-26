@@ -223,7 +223,7 @@ class T3editorElement extends AbstractFormElement
 
         if (!empty($hiddenfields)) {
             foreach ($hiddenfields as $attributeName => $value) {
-                $code[] = '<input type="hidden" name="' . htmlspecialchars($attributeName) . '" value="' . htmlspecialchars((string)$value) . '" />';
+                $code[] = '<input type="hidden" name="' . htmlspecialchars((string)$attributeName) . '" value="' . htmlspecialchars((string)$value) . '" />';
             }
         }
         return implode(LF, $code);

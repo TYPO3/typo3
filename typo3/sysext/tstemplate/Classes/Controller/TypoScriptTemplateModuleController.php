@@ -194,6 +194,7 @@ class TypoScriptTemplateModuleController
         $this->request = $request;
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $changedMenuSettings = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
+        $changedMenuSettings = is_array($changedMenuSettings) ? $changedMenuSettings : [];
         $this->menuConfig($changedMenuSettings);
         // Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
         $this->extClassConf = $this->getExternalItemConfig('web_ts', 'function', $this->MOD_SETTINGS['function']);
@@ -630,7 +631,7 @@ page.10.value = HELLO WORLD!
      * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
      * Also loads the modTSconfig internal variable.
      *
-     * @param array|string|null $changedSettings can be anything
+     * @param array $changedSettings can be anything
      * @see mainAction()
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
      * @see mergeExternalItems()
@@ -699,7 +700,7 @@ page.10.value = HELLO WORLD!
      * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
      *
      * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()
-     * @param array|string|null $changedSettings
+     * @param array $changedSettings
      * @param ServerRequestInterface $request
      */
     protected function checkExtObj($changedSettings, ServerRequestInterface $request)

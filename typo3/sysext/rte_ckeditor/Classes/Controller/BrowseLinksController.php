@@ -230,7 +230,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                         $selected = 'selected="selected"';
                     }
                     $classLabel = !empty($this->thisConfig['classes'][$class]['name'])
-                        ? $this->getPageConfigLabel($this->thisConfig['classes'][$class]['name'], 0)
+                        ? $this->getPageConfigLabel($this->thisConfig['classes'][$class]['name'], false)
                         : $class;
                     $classStyle = !empty($this->thisConfig['classes'][$class]['value'])
                         ? $this->thisConfig['classes'][$class]['value']

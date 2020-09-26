@@ -64,7 +64,7 @@ class Typo3Status implements StatusProviderInterface
             foreach ($xclassFoundArray as $originalClass => $xClassName) {
                 $messageDetail = sprintf(
                     $this->getLanguageService()->getLL('status_xclassUsageFound_message_detail'),
-                    '<code>' . htmlspecialchars($originalClass) . '</code>',
+                    '<code>' . htmlspecialchars((string)$originalClass) . '</code>',
                     '<code>' . htmlspecialchars($xClassName) . '</code>'
                 );
                 $message .= '<li>' . $messageDetail . '</li>';
