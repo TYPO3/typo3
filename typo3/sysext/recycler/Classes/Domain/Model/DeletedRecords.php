@@ -386,6 +386,7 @@ class DeletedRecords
             $cmd = [];
             foreach ($recordsArray as $record) {
                 [$table, $uid] = explode(':', $record);
+                $uid = (int)$uid;
                 // get all parent pages and cover them
                 $pid = RecyclerUtility::getPidOfUid($uid, $table);
                 if ($pid > 0) {

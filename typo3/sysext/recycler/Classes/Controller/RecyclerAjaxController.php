@@ -144,7 +144,7 @@ class RecyclerAjaxController
                 $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
-                    'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
                 ];
                 break;
             case 'deleteRecords':
@@ -162,7 +162,7 @@ class RecyclerAjaxController
                 $messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
-                    'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
                 ];
                 break;
         }
@@ -171,6 +171,7 @@ class RecyclerAjaxController
 
     /**
      * Transforms the rows for the deleted records
+     * @param array<string, array> $deletedRowsArray
      */
     protected function transform(array $deletedRowsArray): array
     {
