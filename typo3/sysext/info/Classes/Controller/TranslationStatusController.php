@@ -91,7 +91,7 @@ class TranslationStatusController
             $h_func .= BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']);
             $theOutput .= $h_func;
             // Add CSH:
-            $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', null, '<div class="form-group"><span class="btn btn-default btn-sm">|</span></div><br />');
+            $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="form-group"><span class="btn btn-default btn-sm">|</span></div><br />');
             $theOutput .= '</div>';
             // Showing the tree:
             // Initialize starting point of page tree:
@@ -264,7 +264,7 @@ class TranslationStatusController
                             ],
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ]);
-                        $info = str_replace('###LANG_UID###', $languageId, $viewPageLink);
+                        $info = str_replace('###LANG_UID###', (string)$languageId, $viewPageLink);
                         $info .= '<a href="' . htmlspecialchars($editUrl)
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
