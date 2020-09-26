@@ -5,7 +5,13 @@ includes:
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
 parameters:
-  level: 1
+  level: 2
+
+  # level 2 parameters which are set to opposite values in the original level 2 configuration. Parameters need to be
+  # set to their opposite values and the resulting errors need to be fixed. Once they are fixed, the parameters can be
+  # removed from this file.
+  checkThisOnly: true
+  checkPhpDocMissingReturn: false
 
   # Set to true during local runs to find unmatched ignored errors. bamboo needs this to be set to false.
   reportUnmatchedIgnoredErrors: false
