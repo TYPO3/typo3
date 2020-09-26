@@ -101,7 +101,7 @@ class PageInformationController
         $theOutput .= '<div class="form-inline form-inline-spaced">'
             . $h_func
             . '<div class="form-group">'
-            . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], null, '<span class="btn btn-default btn-sm">|</span>')
+            . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<span class="btn btn-default btn-sm">|</span>')
             . '</div>'
             . '</div>'
             . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth']);
@@ -385,7 +385,7 @@ class PageInformationController
             switch ($field) {
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
-                    $pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
+                    $pTitle = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
                     $theData[$field] = $row['treeIcons'] . $theIcon . ($showPageId ? '[' . $row['uid'] . '] ' : '') . $pTitle;
                     break;
                 case 'php_tree_stop':
@@ -471,7 +471,7 @@ class PageInformationController
      */
     protected function getPagesTableFieldValue($field, array $row)
     {
-        return htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
+        return htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field]));
     }
 
     /**

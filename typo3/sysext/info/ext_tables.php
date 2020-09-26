@@ -21,18 +21,18 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     \TYPO3\CMS\Info\Controller\PageInformationController::class,
-    null,
+    '',
     'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page'
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     \TYPO3\CMS\Info\Controller\TranslationStatusController::class,
-    null,
+    '',
     'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_lang'
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     \TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController::class,
-    null,
+    '',
     'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:mod_pagetsconfig'
 );
