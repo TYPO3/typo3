@@ -118,7 +118,7 @@ class RedirectService implements LoggerAwareInterface
             if (!empty($allRedirects[$domainName]['regexp'])) {
                 $allRegexps = array_keys($allRedirects[$domainName]['regexp']);
                 foreach ($allRegexps as $regexp) {
-                    $matchResult = @preg_match($regexp, $path);
+                    $matchResult = @preg_match((string)$regexp, $path);
                     if ($matchResult) {
                         $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
                     } elseif ($matchResult === false) {
