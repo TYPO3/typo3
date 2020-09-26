@@ -79,7 +79,7 @@ class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         // prev page
         // show on all pages after the 1st one
         if ($currentPage > 0) {
-            $label = LocalizationUtility::translate('displayResults.previous', 'IndexedSearch');
+            $label = LocalizationUtility::translate('displayResults.previous', 'IndexedSearch') ?? '';
             $content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
         }
         // Check if $maximumNumberOfResultPages is in range
@@ -107,7 +107,7 @@ class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         }
         // next link
         if ($currentPage < $pageCount - 1) {
-            $label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch');
+            $label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch') ?? '';
             $content .= '<li>' . self::makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
         }
 
@@ -129,7 +129,7 @@ class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
      */
     protected function makecurrentPageSelector_link($str, $p, $freeIndexUid)
     {
-        $onclick = 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_pointer') . ').value=' . GeneralUtility::quoteJSvalue($p) . ';';
+        $onclick = 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_pointer') . ').value=' . GeneralUtility::quoteJSvalue((string)$p) . ';';
         if ($freeIndexUid !== null) {
             $onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_freeIndexUid') . ').value=' . GeneralUtility::quoteJSvalue($freeIndexUid) . ';';
         }

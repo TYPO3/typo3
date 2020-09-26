@@ -231,7 +231,7 @@ class IndexSearchRepository
             // Total search-result count
             $count = $result->rowCount();
             // The pointer is set to the result page that is currently being viewed
-            $pointer = MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->numberOfResults));
+            $pointer = MathUtility::forceIntegerInRange($this->resultpagePointer, 0, (int)floor($count / $this->numberOfResults));
             // Initialize result accumulation variables:
             $c = 0;
             // Result pointer: Counts up the position in the current search-result

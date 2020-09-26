@@ -487,7 +487,7 @@ class Indexer
         [$paramList, $isTagInText] = explode('>', substr($isTagInText, strlen($startTag)), 2);
         $afterTagInText = stristr($isTagInText, $endTag);
         if ($afterTagInText) {
-            $stringBefore = substr($string, 0, strpos(strtolower($string), strtolower($startTag)));
+            $stringBefore = substr($string, 0, (int)strpos(strtolower($string), strtolower($startTag)));
             $tagContent = substr($isTagInText, 0, strlen($isTagInText) - strlen($afterTagInText));
             $stringAfter = $stringBefore . substr($afterTagInText, strlen($endTag));
         } else {
@@ -506,6 +506,7 @@ class Indexer
     public function typoSearchTags(&$body)
     {
         $expBody = preg_split('/\\<\\!\\-\\-[\\s]?TYPO3SEARCH_/', $body);
+        $expBody = $expBody ?: [];
         if (count($expBody) > 1) {
             $body = '';
             $prev = '';
