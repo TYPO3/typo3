@@ -216,7 +216,7 @@ class DatabaseIntegrityController
             'sword' => ''
         ];
         // CLEAN SETTINGS
-        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, '', $this->moduleName, 'ses');
+        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], $this->moduleName, 'ses');
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName, 'ses');
         if (GeneralUtility::_GP('queryConfig')) {
             $qA = GeneralUtility::_GP('queryConfig');

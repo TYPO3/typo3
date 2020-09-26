@@ -672,7 +672,7 @@ class QueryGenerator
                         if (is_array($dA['qC'])) {
                             $dbSC[0] = $dA['qC'];
                         }
-                        $writeArray = $this->loadStoreQueryConfigs($dbSC, '0', $writeArray);
+                        $writeArray = $this->loadStoreQueryConfigs($dbSC, 0, $writeArray);
                         $saveStoreArray = 1;
                         $flashMessage = GeneralUtility::makeInstance(
                             FlashMessage::class,
@@ -705,7 +705,7 @@ class QueryGenerator
                             end($storeArray);
                             $storeIndex = key($storeArray);
                         }
-                        $storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, $storeIndex);
+                        $storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, (int)$storeIndex);
                         $saveStoreArray = 1;
                         $flashMessage = GeneralUtility::makeInstance(
                             FlashMessage::class,
@@ -1034,15 +1034,15 @@ class QueryGenerator
         switch ($fields['type']) {
             case 'date':
                 if ($fieldValue != -1) {
-                    $out = strftime('%d-%m-%Y', $fieldValue);
+                    $out = strftime('%d-%m-%Y', (int)$fieldValue);
                 }
                 break;
             case 'time':
                 if ($fieldValue != -1) {
                     if ($splitString === '<br />') {
-                        $out = strftime('%H:%M' . $splitString . '%d-%m-%Y', $fieldValue);
+                        $out = strftime('%H:%M' . $splitString . '%d-%m-%Y', (int)$fieldValue);
                     } else {
-                        $out = strftime('%H:%M %d-%m-%Y', $fieldValue);
+                        $out = strftime('%H:%M %d-%m-%Y', (int)$fieldValue);
                     }
                 }
                 break;
@@ -1069,7 +1069,7 @@ class QueryGenerator
      * @param string $permsClause
      * @return string comma separated list of descendant pages
      */
-    protected function getTreeList($id, $depth, $begin = 0, $permsClause = null)
+    protected function getTreeList($id, $depth, $begin = 0, $permsClause = '')
     {
         $depth = (int)$depth;
         $begin = (int)$begin;
@@ -1576,7 +1576,7 @@ class QueryGenerator
             }
             // Delete the entry and move the other entries
             unset($workArr[$ssArr[$i]]);
-            $workArrSize = count($workArr);
+            $workArrSize = count((array)$workArr);
             for ($j = $ssArr[$i]; $j < $workArrSize; $j++) {
                 $workArr[$j] = $workArr[$j + 1];
                 unset($workArr[$j + 1]);
@@ -1593,7 +1593,7 @@ class QueryGenerator
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Move all entries above position where new entry is to be inserted
-            $workArrSize = count($workArr);
+            $workArrSize = count((array)$workArr);
             for ($j = $workArrSize; $j > $ssArr[$i]; $j--) {
                 $workArr[$j] = $workArr[$j - 1];
             }
@@ -1651,7 +1651,7 @@ class QueryGenerator
             // Do stuff:
             $tempEl = $workArr[$ssArr[$i]];
             if (is_array($tempEl)) {
-                if ($tempEl['type'] === 'newlevel') {
+                if ($tempEl['type'] === 'newlevel' && is_array($workArr)) {
                     $a1 = array_slice($workArr, 0, $ssArr[$i]);
                     $a2 = array_slice($workArr, $ssArr[$i]);
                     array_shift($a2);
@@ -1711,7 +1711,7 @@ class QueryGenerator
                     }
                     $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
                     $queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
-                    $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], 1);
+                    $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], '1');
             }
         }
         return $queryConfig;
@@ -1738,7 +1738,7 @@ class QueryGenerator
             $fieldName = '';
             $subscript = $parent . '[' . $key . ']';
             $lineHTML = [];
-            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] !== 'FIELD_');
+            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], (bool)$c, $conf['type'] !== 'FIELD_');
             if (strpos($conf['type'], 'FIELD_') === 0) {
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
@@ -1855,7 +1855,7 @@ class QueryGenerator
                 }
                 $lineHTML[] = '</div>';
                 $codeArr[$arrCount]['html'] = implode(LF, $lineHTML);
-                $codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c > 0 ? 0 : 1);
+                $codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c === 0);
                 $arrCount++;
                 $c++;
             }
@@ -1932,7 +1932,7 @@ class QueryGenerator
                 } else {
                     $value = $val[0];
                 }
-                if (GeneralUtility::inList($conf['inputValue'], 2 ** $key)) {
+                if (GeneralUtility::inList($conf['inputValue'], (string)(2 ** $key))) {
                     $out[] = '<option value="' . 2 ** $key . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
                     $out[] = '<option value="' . 2 ** $key . '">' . htmlspecialchars($value) . '</option>';
@@ -2335,7 +2335,7 @@ class QueryGenerator
         $qs = '';
         // Since we don't traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean
         ksort($queryConfig);
-        $first = 1;
+        $first = true;
         foreach ($queryConfig as $key => $conf) {
             $conf = $this->convertIso8601DatetimeStringToUnixTimestamp($conf);
             switch ($conf['type']) {
@@ -2348,7 +2348,7 @@ class QueryGenerator
                 default:
                     $qs .= LF . $pad . $this->getQuerySingle($conf, $first);
             }
-            $first = 0;
+            $first = false;
         }
         return $qs;
     }
@@ -2383,7 +2383,7 @@ class QueryGenerator
             return false;
         }
         $format = 'Y-m-d\\TH:i:s\\Z';
-        $formattedDate = \DateTime::createFromFormat($format, $date);
+        $formattedDate = \DateTime::createFromFormat($format, (string)$date);
         return $formattedDate && $formattedDate->format($format) === $date;
     }
 
@@ -2422,7 +2422,7 @@ class QueryGenerator
             foreach ($inputValArray as $fileName) {
                 $inputVal += (int)$fileName;
             }
-            $qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
+            $qsTmp = str_replace('#VALUE#', (string)$inputVal, $qsTmp);
         } else {
             if (is_array($inputVal)) {
                 $inputVal = $inputVal[0];
@@ -2434,7 +2434,7 @@ class QueryGenerator
             $inputVal = $this->cleanInputVal($conf, '1');
             $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
         }
-        $qs .= trim($qsTmp);
+        $qs .= trim((string)$qsTmp);
         return $qs;
     }
 
@@ -2723,7 +2723,7 @@ class QueryGenerator
      */
     protected function getDateTimePickerField($name, $timestamp, $type)
     {
-        $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], strtotime($timestamp)) : '';
+        $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)strtotime($timestamp)) : '';
         $id = StringUtility::getUniqueId('dt_');
         $html = [];
         $html[] = '<div class="input-group" id="' . $id . '-wrapper">';

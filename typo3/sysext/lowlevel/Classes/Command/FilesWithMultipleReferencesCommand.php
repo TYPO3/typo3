@@ -233,7 +233,7 @@ If you want to get more detailed information, use the --verbose option.')
                         $io->writeln('Keeping "' . $fileName . '" for record "' . $recReference . '"');
                     } else {
                         // Create unique name for file
-                        $newName = $this->basicFileUtility->getUniqueName(PathUtility::basename($fileName), PathUtility::dirname($absoluteFileName));
+                        $newName = (string)$this->basicFileUtility->getUniqueName(PathUtility::basename($fileName), PathUtility::dirname($absoluteFileName));
                         $io->writeln('Copying "' . $fileName . '" to "' . PathUtility::stripPathSitePrefix($newName) . '" for record "' . $recReference . '"');
                         if (!$dryRun) {
                             GeneralUtility::upload_copy_move($absoluteFileName, $newName);
