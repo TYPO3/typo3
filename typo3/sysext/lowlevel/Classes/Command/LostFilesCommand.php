@@ -109,7 +109,9 @@ If you want to get more detailed information, use the --verbose option.')
 
         // Find the lost files
         if ($input->hasOption('exclude') && !empty($input->getOption('exclude'))) {
-            $excludedPaths = GeneralUtility::trimExplode(',', $input->getOption('exclude'), true);
+            $exclude = $input->getOption('exclude');
+            $exclude = is_string($exclude) ? $exclude : '';
+            $excludedPaths = GeneralUtility::trimExplode(',', $exclude, true);
         } else {
             $excludedPaths = [];
         }
@@ -118,6 +120,7 @@ If you want to get more detailed information, use the --verbose option.')
         $customPaths = '';
         if ($input->hasOption('custom-path') && !empty($input->getOption('custom-path'))) {
             $customPaths = $input->getOption('custom-path');
+            $customPaths = is_string($customPaths) ? $customPaths : '';
         }
 
         $lostFiles = $this->findLostFiles($excludedPaths, $customPaths);
@@ -189,7 +192,7 @@ If you want to get more detailed information, use the --verbose option.')
             $customPaths = GeneralUtility::trimExplode(',', $customPaths, true);
             foreach ($customPaths as $customPath) {
                 if (false === realpath(Environment::getPublicPath() . '/' . $customPath)
-                    || !GeneralUtility::isFirstPartOfStr(realpath(Environment::getPublicPath() . '/' . $customPath), realpath(Environment::getPublicPath()))) {
+                    || !GeneralUtility::isFirstPartOfStr((string)realpath(Environment::getPublicPath() . '/' . $customPath), (string)realpath(Environment::getPublicPath()))) {
                     throw new \Exception('The path: "' . $customPath . '" is invalid', 1450086736);
                 }
                 $files = GeneralUtility::getAllFilesAndFoldersInPath($files, Environment::getPublicPath() . '/' . $customPath);

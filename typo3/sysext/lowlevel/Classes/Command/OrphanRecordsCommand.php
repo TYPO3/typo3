@@ -156,6 +156,7 @@ Manual repair suggestions:
         }
         // Traverse tables of records that belongs to page
         foreach (array_keys($GLOBALS['TCA']) as $tableName) {
+            /** @var string $tableName */
             if ($tableName !== 'pages') {
                 // Select all records belonging to page:
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
