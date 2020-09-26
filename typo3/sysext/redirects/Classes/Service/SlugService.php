@@ -118,6 +118,9 @@ class SlugService implements LoggerAwareInterface
     public function rebuildSlugsForSlugChange(int $pageId, string $currentSlug, string $newSlug, CorrelationId $correlationId): void
     {
         $currentPageRecord = BackendUtility::getRecord('pages', $pageId);
+        if ($currentPageRecord === null) {
+            return;
+        }
         $this->initializeSettings($pageId);
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $this->createCorrelationIds($pageId, $correlationId);

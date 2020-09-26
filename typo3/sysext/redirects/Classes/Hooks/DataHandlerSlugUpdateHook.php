@@ -68,7 +68,7 @@ class DataHandlerSlugUpdateHook
             return;
         }
 
-        $record = BackendUtility::getRecordWSOL($table, $id, 'slug');
+        $record = BackendUtility::getRecordWSOL($table, (int)$id, 'slug');
         $this->persistedSlugValues[(int)$id] = $record['slug'];
     }
 
