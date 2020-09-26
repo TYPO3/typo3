@@ -225,7 +225,7 @@ class RichTextElement extends AbstractFormElement
             $externalPlugins .= '\'\');';
         }
 
-        $jsonConfiguration = json_encode($configuration);
+        $jsonConfiguration = (string)json_encode($configuration);
 
         // Make a hash of the configuration and append it to CKEDITOR.timestamp
         // This will mitigate browser caching issue when plugins are updated
@@ -425,8 +425,8 @@ class RichTextElement extends AbstractFormElement
      */
     protected function sanitizeFieldId(string $itemFormElementName): string
     {
-        $fieldId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);
-        return htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $fieldId));
+        $fieldId = (string)preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);
+        return htmlspecialchars((string)preg_replace('/^[^a-zA-Z]/', 'x', $fieldId));
     }
 
     /**

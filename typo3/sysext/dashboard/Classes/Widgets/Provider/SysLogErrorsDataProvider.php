@@ -101,9 +101,9 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
         $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
 
         for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
-            $this->labels[] = date($format, strtotime('-' . $daysBefore . ' day'));
-            $startPeriod = strtotime('-' . $daysBefore . ' day 0:00:00');
-            $endPeriod =  strtotime('-' . $daysBefore . ' day 23:59:59');
+            $this->labels[] = date($format, (int)strtotime('-' . $daysBefore . ' day'));
+            $startPeriod = (int)strtotime('-' . $daysBefore . ' day 0:00:00');
+            $endPeriod =  (int)strtotime('-' . $daysBefore . ' day 23:59:59');
 
             $this->data[] = $this->getNumberOfErrorsInPeriod($startPeriod, $endPeriod);
         }
