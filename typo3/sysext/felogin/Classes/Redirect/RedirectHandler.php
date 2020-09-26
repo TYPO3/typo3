@@ -158,7 +158,9 @@ class RedirectHandler
         }
 
         // Remove empty values, but keep "0" as value (that's why "strlen" is used as second parameter)
-        $redirectUrlList = array_filter($redirectUrlList, 'strlen');
+        $redirectUrlList = array_filter($redirectUrlList, static function (string $value): bool {
+            return strlen($value) > 0;
+        });
 
         return $redirectFirstMethod
             ? array_shift($redirectUrlList)

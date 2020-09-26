@@ -82,8 +82,8 @@ class RedirectUrlValidator implements LoggerAwareInterface
      */
     protected function isInCurrentDomain(string $url): bool
     {
-        $urlWithoutSchema = preg_replace('#^https?://#', '', $url);
-        $siteUrlWithoutSchema = preg_replace('#^https?://#', '', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+        $urlWithoutSchema = preg_replace('#^https?://#', '', $url) ?? '';
+        $siteUrlWithoutSchema = preg_replace('#^https?://#', '', GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) ?? '';
         return strpos($urlWithoutSchema . '/', GeneralUtility::getIndpEnv('HTTP_HOST') . '/') === 0
             && strpos($urlWithoutSchema, $siteUrlWithoutSchema) === 0;
     }
