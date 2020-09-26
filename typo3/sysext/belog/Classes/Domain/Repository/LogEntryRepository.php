@@ -148,7 +148,7 @@ class LogEntryRepository extends Repository
             $groupId = (int)substr($userOrGroup, 3);
             $userIds = [];
             foreach ($this->beUserList as $userId => $userData) {
-                if (GeneralUtility::inList($userData['usergroup_cached_list'], $groupId)) {
+                if (GeneralUtility::inList($userData['usergroup_cached_list'], (string)$groupId)) {
                     $userIds[] = $userId;
                 }
             }
@@ -179,7 +179,7 @@ class LogEntryRepository extends Repository
         $constraints[] = $queryBuilder->expr()->eq('details', $queryBuilder->createNamedParameter($logEntry->getDetails()));
         // If the detailsNo is 11 or 12 we got messages that are heavily using placeholders. In this case
         // we need to compare both the message and the actual log data to not remove too many log entries.
-        if (GeneralUtility::inList('11,12', $logEntry->getDetailsNumber())) {
+        if (GeneralUtility::inList('11,12', (string)$logEntry->getDetailsNumber())) {
             $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogData()));
         }
         return $queryBuilder->delete('sys_log')

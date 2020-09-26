@@ -143,11 +143,11 @@ class BackendLogController extends ActionController
         /** @var \TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry */
         $logEntry = $this->logEntryRepository->findByUid($errorUid);
         if (!$logEntry) {
-            $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog'), '', AbstractMessage::WARNING);
+            $this->addFlashMessage(LocalizationUtility::translate('actions.delete.noRowFound', 'belog') ?? '', '', AbstractMessage::WARNING);
             $this->redirect('list');
         }
         $numberOfDeletedRows = $this->logEntryRepository->deleteByMessageDetails($logEntry);
-        $this->addFlashMessage(sprintf(LocalizationUtility::translate('actions.delete.message', 'belog'), $numberOfDeletedRows));
+        $this->addFlashMessage(sprintf(LocalizationUtility::translate('actions.delete.message', 'belog') ?? '', $numberOfDeletedRows));
         $this->redirect('list');
     }
 
@@ -184,7 +184,7 @@ class BackendLogController extends ActionController
     protected function resetConstraintsOnMemoryExhaustionError()
     {
         $reservedMemory = new \SplFixedArray(187500); // 3M
-        register_shutdown_function(function () use (&$reservedMemory) {
+        register_shutdown_function(function () use (&$reservedMemory): void {
             $reservedMemory = null; // free the reserved memory
             $error = error_get_last();
             if (strpos($error['message'], 'Allowed memory size of') !== false) {
@@ -347,12 +347,12 @@ class BackendLogController extends ActionController
                 break;
             case self::TIMEFRAME_THISMONTH:
                 // This month
-                $startTime = mktime(0, 0, 0, date('m'), 1);
+                $startTime = mktime(0, 0, 0, (int)date('m'), 1);
                 break;
             case self::TIMEFRAME_LASTMONTH:
                 // Last month
-                $startTime = mktime(0, 0, 0, date('m') - 1, 1);
-                $endTime = mktime(0, 0, 0, date('m'), 1);
+                $startTime = mktime(0, 0, 0, (int)date('m') - 1, 1);
+                $endTime = mktime(0, 0, 0, (int)date('m'), 1);
                 break;
             case self::TIMEFRAME_LAST31DAYS:
                 // Last 31 days

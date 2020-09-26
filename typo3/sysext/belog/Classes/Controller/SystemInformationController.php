@@ -71,7 +71,7 @@ final class SystemInformationController
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
-                    LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'),
+                    LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog') ?? '',
                     $count,
                     (string)$uriBuilder->buildUriFromRoute(
                         'system_BelogLog',
