@@ -353,7 +353,7 @@ class CrawlerHook
                 // Select files and directories in path:
                 $extList = implode(',', GeneralUtility::trimExplode(',', $cfgRec['extensions'], true));
                 $fileArr = [];
-                $files = GeneralUtility::getAllFilesAndFoldersInPath($fileArr, $readpath, $extList, 0, 0);
+                $files = GeneralUtility::getAllFilesAndFoldersInPath($fileArr, $readpath, $extList, false, 0);
                 $directoryList = GeneralUtility::get_dirs($readpath);
                 if (is_array($directoryList) && $params['depth'] < $cfgRec['depth']) {
                     foreach ($directoryList as $subdir) {
@@ -589,7 +589,7 @@ class CrawlerHook
      */
     public function checkUrl($url, $urlLog, $baseUrl)
     {
-        $url = preg_replace('/\\/\\/$/', '/', $url);
+        $url = (string)preg_replace('/\\/\\/$/', '/', $url);
         [$url] = explode('#', $url);
         if (strpos($url, '../') === false) {
             if (GeneralUtility::isFirstPartOfStr($url, $baseUrl)) {
@@ -625,7 +625,7 @@ class CrawlerHook
         if (!$baseHref) {
             // Extract base href from current URL
             $baseHref = $baseAbsoluteHref;
-            $baseHref .= substr($url_qParts['path'], 0, strrpos($url_qParts['path'], '/'));
+            $baseHref .= substr($url_qParts['path'], 0, (int)strrpos($url_qParts['path'], '/'));
         }
         $baseHref = rtrim($baseHref, '/');
         // Get URLs on this page:
@@ -726,7 +726,7 @@ class CrawlerHook
             $aMidNight = mktime(0, 0, 0) - 1 * 24 * 3600;
         } else {
             $lastTime = $cfgRec['timer_next_indexing'] ?: $GLOBALS['EXEC_TIME'];
-            $aMidNight = mktime(0, 0, 0, date('m', $lastTime), date('d', $lastTime), date('y', $lastTime));
+            $aMidNight = mktime(0, 0, 0, (int)date('m', $lastTime), (int)date('d', $lastTime), (int)date('y', $lastTime));
         }
         // Find last offset time plus frequency in seconds:
         $lastSureOffset = $aMidNight + MathUtility::forceIntegerInRange($cfgRec['timer_offset'], 0, 86400);
@@ -843,7 +843,7 @@ class CrawlerHook
     {
         // Clean up the index
         if ($command === 'delete' && $table === 'pages') {
-            $this->deleteFromIndex($id);
+            $this->deleteFromIndex((int)$id);
         }
     }
 
@@ -867,7 +867,7 @@ class CrawlerHook
             $id = $pObj->substNEWwithIDs[$id];
         } elseif ($table === 'pages' && $status === 'update' && (array_key_exists('hidden', $fieldArray) && $fieldArray['hidden'] == 1 || array_key_exists('no_search', $fieldArray) && $fieldArray['no_search'] == 1)) {
             // If the page should be hidden or not indexed after update, delete index for this page
-            $this->deleteFromIndex($id);
+            $this->deleteFromIndex((int)$id);
         }
         // Get full record and if exists, search for indexing configurations:
         $currentRecord = BackendUtility::getRecord($table, $id);

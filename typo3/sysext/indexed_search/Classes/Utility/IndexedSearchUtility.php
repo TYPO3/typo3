@@ -104,18 +104,18 @@ class IndexedSearchUtility
             // There was a double-quote and we will then look for the ending quote.
             if (preg_match('/^"/', $sword)) {
                 // Removes first double-quote
-                $sword = preg_replace('/^"/', '', $sword);
+                $sword = (string)preg_replace('/^"/', '', $sword);
                 // Removes everything till next double-quote
                 preg_match('/^[^"]*/', $sword, $reg);
                 // reg[0] is the value, should not be trimmed
                 $value[] = $reg[0];
-                $sword = preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword);
+                $sword = (string)preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword);
                 // Removes last double-quote
-                $sword = trim(preg_replace('/^"/', '', $sword));
+                $sword = trim((string)preg_replace('/^"/', '', $sword));
             } elseif (preg_match('/^' . $specs . '/', $sword, $reg)) {
                 $value[] = $reg[0];
                 // Removes = sign
-                $sword = trim(preg_replace('/^' . $specs . '/', '', $sword));
+                $sword = trim((string)preg_replace('/^' . $specs . '/', '', $sword));
             } elseif (preg_match('/[\\+\\-]/', $sword)) {
                 // Check if $sword contains + or -
                 // + and - shall only be interpreted as $specchars when there's whitespace before it
@@ -123,7 +123,7 @@ class IndexedSearchUtility
                 // explode $sword to single words
                 $a_sword = explode(' ', $sword);
                 // get first word
-                $word = array_shift($a_sword);
+                $word = (string)array_shift($a_sword);
                 // Delete $delchars at end of string
                 $word = rtrim($word, $delchars);
                 // add searchword to values
@@ -136,7 +136,7 @@ class IndexedSearchUtility
                 // Delete $delchars at end of string
                 $word = rtrim(trim($reg[0]), $delchars);
                 $value[] = $word;
-                $sword = trim(preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword));
+                $sword = trim((string)preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword));
             }
         }
         return $value;

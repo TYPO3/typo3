@@ -358,13 +358,13 @@ class SearchController extends ActionController
                 // could we get this in the view?
                 if ($this->searchData['group'] === 'sections' && $freeIndexUid <= 0) {
                     $resultSectionsCount = count($this->resultSections);
-                    $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch'), $resultSectionsCount);
+                    $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch') ?? '', $resultSectionsCount);
                 }
             }
         }
         // Print a message telling which words in which sections we searched for
         if (strpos($this->searchData['sections'], 'rl') === 0) {
-            $result['searchedInSectionInfo'] = LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . $this->getPathFromPageId(substr($this->searchData['sections'], 4)) . '"';
+            $result['searchedInSectionInfo'] = (LocalizationUtility::translate('result.inSection', 'IndexedSearch') ?? '') . ' "' . $this->getPathFromPageId((int)substr($this->searchData['sections'], 4)) . '"';
         }
 
         if ($hookObj = $this->hookRequest('getDisplayResults_postProc')) {
@@ -429,7 +429,7 @@ class SearchController extends ActionController
                     $theId = $rlParts[0];
                     $theRLid = '0';
                 }
-                $sectionName = $this->getPathFromPageId($theId);
+                $sectionName = $this->getPathFromPageId((int)$theId);
                 $sectionName = ltrim($sectionName, '/');
                 if (!trim($sectionName)) {
                     $sectionTitleLinked = LocalizationUtility::translate('result.unnamedSection', 'IndexedSearch') . ':';
@@ -564,7 +564,7 @@ class SearchController extends ActionController
                 $lockedIcon = PathUtility::getAbsoluteWebPath($lockedIcon);
                 $resultData['access'] = '<img src="' . htmlspecialchars($lockedIcon) . '"'
                     . ' width="12" height="15" vspace="5" title="'
-                    . sprintf(LocalizationUtility::translate('result.memberGroups', 'IndexedSearch'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId])))
+                    . sprintf(LocalizationUtility::translate('result.memberGroups', 'IndexedSearch') ?? '', implode(',', array_unique($this->requiredFrontendUsergroups[$pathId])))
                     . '" alt="" />';
             }
         }
@@ -791,10 +791,11 @@ class SearchController extends ActionController
         $regExString = '(' . implode('|', $swForReg) . ')';
         // Split and combine:
         $parts = preg_split('/' . $regExString . '/i', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
+        $parts = $parts ?: [];
         // Constants:
         $summaryMax = $this->settings['results.']['markupSW_summaryMax'];
-        $postPreLgd = $this->settings['results.']['markupSW_postPreLgd'];
-        $postPreLgd_offset = $this->settings['results.']['markupSW_postPreLgd_offset'];
+        $postPreLgd = (int)$this->settings['results.']['markupSW_postPreLgd'];
+        $postPreLgd_offset = (int)$this->settings['results.']['markupSW_postPreLgd_offset'];
         $divider = $this->settings['results.']['markupSW_divider'];
         $occurrences = (count($parts) - 1) / 2;
         if ($occurrences) {
@@ -950,9 +951,9 @@ class SearchController extends ActionController
                     ['-', 'AND NOT'],
                     // Add operators for various languages
                     // Converts the operators to lowercase
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), 'utf-8'), 'AND'],
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), 'utf-8'), 'OR'],
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), 'utf-8'), 'AND NOT']
+                    [mb_strtolower(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch') ?? '', 'utf-8'), 'AND'],
+                    [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch') ?? '', 'utf-8'), 'OR'],
+                    [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch') ?? '', 'utf-8'), 'AND NOT']
                 ];
                 $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
                 if (is_array($swordArray)) {
@@ -1160,7 +1161,7 @@ class SearchController extends ActionController
         // Creating levels for section menu:
         // This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub sections.
         if ($this->settings['displayLevel1Sections']) {
-            $firstLevelMenu = $this->getMenuOfPages($this->searchRootPageIdList);
+            $firstLevelMenu = $this->getMenuOfPages((int)$this->searchRootPageIdList);
             $labelLevel1 = LocalizationUtility::translate('sections.rootLevel1', 'IndexedSearch');
             $labelLevel2 = LocalizationUtility::translate('sections.rootLevel2', 'IndexedSearch');
             foreach ($firstLevelMenu as $firstLevelKey => $menuItem) {
@@ -1306,7 +1307,7 @@ class SearchController extends ActionController
     {
         $allOptions = [];
         if (count($this->availableResultsNumbers) > 1) {
-            $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers);
+            $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers) ?: [];
         }
         // disable single entries by TypoScript
         $allOptions = $this->removeOptionsFromOptionList($allOptions, $this->settings['blind']['numberOfResults']);
