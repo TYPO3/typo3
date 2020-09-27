@@ -112,9 +112,9 @@ class RecordListController
     /**
      * Page select perms clause
      *
-     * @var int
+     * @var string
      */
-    protected $perms_clause;
+    protected $perms_clause = '';
 
     /**
      * Module TSconfig
@@ -331,7 +331,7 @@ class RecordListController
                 if (!empty($items)) {
                     $cmd = [];
                     foreach ($items as $iK => $value) {
-                        $iKParts = explode('|', $iK);
+                        $iKParts = explode('|', (string)$iK);
                         $cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
                     }
                     $tce = GeneralUtility::makeInstance(DataHandler::class);

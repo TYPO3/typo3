@@ -879,7 +879,7 @@ class DatabaseRecordList
         }
         // Unique list!
         $selectFields = array_unique($selectFields);
-        $fieldListFields = $this->makeFieldList($table, 1);
+        $fieldListFields = $this->makeFieldList($table, true);
         if (empty($fieldListFields) && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $message = sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:missingTcaColumnsMessage'), $table, $table);
             $messageTitle = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:missingTcaColumnsMessageTitle');
@@ -1713,7 +1713,7 @@ class DatabaseRecordList
      */
     protected function renderListNavigation($renderPart = 'top')
     {
-        $totalPages = ceil($this->totalItems / $this->iLimit);
+        $totalPages = (int)ceil($this->totalItems / $this->iLimit);
         // Show page selector if not all records fit into one page
         if ($totalPages <= 1) {
             return '';
@@ -1722,7 +1722,7 @@ class DatabaseRecordList
         $listURL = $this->listURL('', $this->table, 'firstElementNumber');
         // 1 = first page
         // 0 = first element
-        $currentPage = floor($this->firstElementNumber / $this->iLimit) + 1;
+        $currentPage = (int)floor($this->firstElementNumber / $this->iLimit) + 1;
         // Compile first, previous, next, last and refresh buttons
         if ($currentPage > 1) {
             $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first'));
@@ -2037,7 +2037,7 @@ class DatabaseRecordList
                     $table,
                     $row['uid'],
                     ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
-                    $this->getReferenceCount($table, $row['uid'])
+                    (string)$this->getReferenceCount($table, $row['uid'])
                 ) . BackendUtility::translationCount(
                     $table,
                     $row['uid'],
@@ -2210,9 +2210,9 @@ class DatabaseRecordList
                 // Check permission to cut page or content
                 if ($table === 'pages') {
                     $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
-                    $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
+                    $permsEdit = ($localCalcPerms & Permission::PAGE_EDIT) !== 0;
                 } else {
-                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT;
+                    $permsEdit = ($this->calcPerms & Permission::CONTENT_EDIT) !== 0;
                 }
                 $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
@@ -2613,6 +2613,7 @@ class DatabaseRecordList
     protected function addHeaderRowToCSV()
     {
         $fieldArray = array_combine($this->fieldArray, $this->fieldArray);
+        $fieldArray = is_array($fieldArray) ? $fieldArray : [];
         $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['customizeCsvHeader'] ?? [];
         if (!empty($hooks)) {
             $hookParameters = [
@@ -3075,7 +3076,7 @@ class DatabaseRecordList
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
         ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-            ($this->showLimit ?: '')
+            (string)($this->showLimit ?: '')
         ) . '" />
                                 </div>
                                 <div class="col-xs-12">
@@ -3191,7 +3192,7 @@ class DatabaseRecordList
         }
 
         if ($addSorting) {
-            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
+            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, true))) {
                 $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
             } else {
                 $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
@@ -3522,7 +3523,7 @@ class DatabaseRecordList
                 // Output the label now:
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
-                        $this->listURL($uid, '', 'firstElementNumber')
+                        $this->listURL((string)$uid, '', 'firstElementNumber')
                     ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);

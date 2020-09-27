@@ -254,7 +254,7 @@ abstract class AbstractLinkBrowserController
     /**
      * Reads the configured link handlers from page TSconfig
      *
-     * @return array
+     * @return array<string, array<mixed>>
      */
     protected function getLinkHandlers()
     {

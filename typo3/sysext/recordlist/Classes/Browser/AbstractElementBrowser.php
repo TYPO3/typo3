@@ -132,14 +132,14 @@ abstract class AbstractElementBrowser
     }
 
     /**
-     * @return string[] Array of body-tag attributes
+     * @return array<string, string> Array of body-tag attributes
      */
     abstract protected function getBodyTagAttributes();
 
     /**
      * Splits parts of $this->bparams and returns needed data attributes for the Javascript
      *
-     * @return string[] Data attributes for Javascript
+     * @return array<string, string> Data attributes for Javascript
      */
     protected function getBParamDataAttributes()
     {
