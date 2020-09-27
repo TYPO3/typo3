@@ -72,9 +72,6 @@ class RedirectStatus implements StatusProviderInterface
         );
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

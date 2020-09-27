@@ -28,10 +28,8 @@ class HitCountDisplayCondition
 {
     /**
      * Check whether the redirects hit count is globally enabled
-     *
-     * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount');
     }

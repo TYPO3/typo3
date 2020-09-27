@@ -36,11 +36,6 @@ class RedirectCacheService
      */
     protected $cache;
 
-    /**
-     * Constructor setting up the cache
-     * @param CacheManager|null $cacheManager
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
     public function __construct(CacheManager $cacheManager = null)
     {
         $cacheManager = $cacheManager ?? GeneralUtility::makeInstance(CacheManager::class);
@@ -49,8 +44,6 @@ class RedirectCacheService
 
     /**
      * Fetches all redirects available to the system, grouped by domain and regexp/nonregexp
-     *
-     * @return array
      */
     public function getRedirects(): array
     {

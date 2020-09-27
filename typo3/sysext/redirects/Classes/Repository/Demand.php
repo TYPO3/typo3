@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Repository;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Demand Object for filtering redirects in the backend module
@@ -29,6 +30,7 @@ class Demand
     protected const ORDER_ASCENDING = 'asc';
     protected const DEFAULT_ORDER_FIELD = 'source_host';
     protected const DEFAULT_SECONDARY_ORDER_FIELD = 'source_host';
+    protected const ORDER_FIELDS = ['source_host', 'source_path', 'lasthiton', 'hitcount', 'protected'];
 
     /**
      * @var string
@@ -41,9 +43,9 @@ class Demand
     protected $orderDirection;
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $sourceHost;
+    protected $sourceHosts;
 
     /**
      * @var string
@@ -56,9 +58,9 @@ class Demand
     protected $target;
 
     /**
-     * @var int
+     * @var int[]
      */
-    protected $statusCode;
+    protected $statusCodes = [];
 
     /**
      * @var int
@@ -75,32 +77,46 @@ class Demand
      */
     protected $secondaryOrderField;
 
+    /**
+     * @var int
+     */
+    private $maxHits;
+
+    /**
+     * @var \DateTimeInterface|null
+     */
+    private $olderThan;
+
     public function __construct(
         int $page = 1,
         string $orderField = self::DEFAULT_ORDER_FIELD,
         string $orderDirection = self::ORDER_ASCENDING,
-        string $sourceHost = '',
+        array $sourceHosts = [],
         string $sourcePath = '',
         string $target = '',
-        int $statusCode = 0
+        array $statusCodes = [],
+        int $maxHits = 0,
+        \DateTimeInterface $olderThan = null
     ) {
         $this->page = $page;
+        if (!in_array($orderField, self::ORDER_FIELDS, true)) {
+            $orderField = self::DEFAULT_ORDER_FIELD;
+        }
         $this->orderField = $orderField;
-        if (!in_array($orderDirection, [self::ORDER_DESCENDING, self::ORDER_ASCENDING])) {
+        if (!in_array($orderDirection, [self::ORDER_DESCENDING, self::ORDER_ASCENDING], true)) {
             $orderDirection = self::ORDER_ASCENDING;
         }
         $this->orderDirection = $orderDirection;
-        $this->sourceHost = $sourceHost;
+        $this->sourceHosts = $sourceHosts;
         $this->sourcePath = $sourcePath;
         $this->target = $target;
-        $this->statusCode = $statusCode;
+        $this->statusCodes = $statusCodes;
         $this->secondaryOrderField = $this->orderField === self::DEFAULT_ORDER_FIELD ? self::DEFAULT_SECONDARY_ORDER_FIELD : '';
+        $this->maxHits = $maxHits;
+        $this->olderThan = $olderThan;
     }
 
-    /**
-     * Creates a Demand object from the current request.
-     */
-    public static function createFromRequest(ServerRequestInterface $request): Demand
+    public static function fromRequest(ServerRequestInterface $request): self
     {
         $page = (int)($request->getQueryParams()['page'] ?? $request->getParsedBody()['page'] ?? 1);
         $orderField = $request->getQueryParams()['orderField'] ?? $request->getParsedBody()['orderField'] ?? self::DEFAULT_ORDER_FIELD;
@@ -110,10 +126,49 @@ class Demand
             return new self($page, $orderField, $orderDirection);
         }
         $sourceHost = $demand['source_host'] ?? '';
+        $sourceHosts = $sourceHost ? [$sourceHost] : [];
         $sourcePath = $demand['source_path'] ?? '';
         $statusCode = (int)($demand['target_statuscode'] ?? 0);
+        $statusCodes = $statusCode > 0 ? [$statusCode] : [];
         $target = $demand['target'] ?? '';
-        return new self($page, $orderField, $orderDirection, $sourceHost, $sourcePath, $target, $statusCode);
+        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes);
+    }
+
+    public static function fromCommandInput(InputInterface $input): self
+    {
+        return new self(
+            1,
+            self::DEFAULT_ORDER_FIELD,
+            self::ORDER_ASCENDING,
+            (array)$input->getOption('domain'),
+            (string)$input->getOption('path'),
+            '',
+            (array)$input->getOption('statusCode'),
+            $input->hasOption('hitCount') ? (int)$input->getOption('hitCount') : 0,
+            $input->getOption('days')
+                ? new \DateTimeImmutable($input->getOption('days') . ' days ago')
+                : new \DateTimeImmutable('90 days ago')
+        );
+    }
+
+    public function getMaxHits(): int
+    {
+        return $this->maxHits;
+    }
+
+    public function hasMaxHits(): bool
+    {
+        return $this->maxHits > 0;
+    }
+
+    public function getOlderThan(): ?\DateTimeInterface
+    {
+        return $this->olderThan;
+    }
+
+    public function hasOlderThan(): bool
+    {
+        return $this->olderThan instanceof \DateTimeInterface;
     }
 
     public function getOrderField(): string
@@ -146,9 +201,14 @@ class Demand
         return $this->secondaryOrderField;
     }
 
-    public function getSourceHost(): string
+    public function getFirstSourceHost(): string
     {
-        return $this->sourceHost;
+        return $this->sourceHosts[0] ?? '';
+    }
+
+    public function getSourceHosts(): ?array
+    {
+        return $this->sourceHosts === [] ? null : $this->sourceHosts;
     }
 
     public function getSourcePath(): string
@@ -166,14 +226,24 @@ class Demand
         return $this->limit;
     }
 
-    public function getStatusCode(): int
+    public function getFirstStatusCode(): int
     {
-        return $this->statusCode;
+        return $this->statusCodes[0] ?? 0;
     }
 
-    public function hasSourceHost(): bool
+    public function getStatusCodes(): array
     {
-        return $this->sourceHost !== '';
+        return $this->statusCodes;
+    }
+
+    public function hasStatusCodes(): bool
+    {
+        return !empty($this->statusCodes);
+    }
+
+    public function hasSourceHosts(): bool
+    {
+        return !empty($this->sourceHosts);
     }
 
     public function hasSourcePath(): bool
@@ -186,15 +256,10 @@ class Demand
         return $this->target !== '';
     }
 
-    public function hasStatusCode(): bool
-    {
-        return $this->statusCode !== 0;
-    }
-
     public function hasConstraints(): bool
     {
         return $this->hasSourcePath()
-            || $this->hasSourceHost()
+            || $this->hasSourceHosts()
             || $this->hasTarget();
     }
 
@@ -220,14 +285,14 @@ class Demand
         if ($this->hasSourcePath()) {
             $parameters['source_path'] = $this->getSourcePath();
         }
-        if ($this->hasSourceHost()) {
-            $parameters['source_host'] = $this->getSourceHost();
+        if ($this->hasSourceHosts()) {
+            $parameters['source_host'] = $this->getFirstSourceHost();
         }
         if ($this->hasTarget()) {
             $parameters['target'] = $this->getTarget();
         }
-        if ($this->hasStatusCode()) {
-            $parameters['target_statuscode'] = $this->getStatusCode();
+        if ($this->hasStatusCodes()) {
+            $parameters['target_statuscode'] = $this->getFirstStatusCode();
         }
         return $parameters;
     }

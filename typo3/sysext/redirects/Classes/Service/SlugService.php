@@ -254,11 +254,6 @@ class SlugService implements LoggerAwareInterface
     /**
      * Update a slug by given record, old parent page slug and new parent page slug.
      * In case no update is required, the method returns null else the new slug.
-     *
-     * @param array $subPageRecord
-     * @param string $oldSlugOfParentPage
-     * @param string $newSlugOfParentPage
-     * @return string|null
      */
     protected function updateSlug(array $subPageRecord, string $oldSlugOfParentPage, string $newSlugOfParentPage): ?string
     {
@@ -281,10 +276,6 @@ class SlugService implements LoggerAwareInterface
         return $newSlug;
     }
 
-    /**
-     * @param int $uid
-     * @param string $newSlug
-     */
     protected function persistNewSlug(int $uid, string $newSlug): void
     {
         $this->disableHook();

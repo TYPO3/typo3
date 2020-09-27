@@ -40,9 +40,6 @@ class DataHandlerSlugUpdateHook
      */
     protected $persistedSlugValues;
 
-    /**
-     * @param SlugService $slugService
-     */
     public function __construct(SlugService $slugService)
     {
         $this->slugService = $slugService;
@@ -77,12 +74,6 @@ class DataHandlerSlugUpdateHook
      *
      * Hook `processDatamap_postProcessFieldArray` is executed after `DataHandler::fillInFields` which
      * ensure access to pages.slug field and applies possible evaluations (`eval => 'trim,...`).
-     *
-     * @param string $status
-     * @param string $table
-     * @param string|int $id
-     * @param array $fieldArray
-     * @param DataHandler $dataHandler
      */
     public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
     {
@@ -105,9 +96,6 @@ class DataHandlerSlugUpdateHook
     /**
      * Determines whether our identifier is part of correlation id aspects.
      * In that case it would be a nested call which has to be ignored.
-     *
-     * @param DataHandler $dataHandler
-     * @return bool
      */
     protected function isNestedHookInvocation(DataHandler $dataHandler): bool
     {

@@ -50,13 +50,6 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
         $this->redirectService = $redirectService;
     }
 
-    /**
-     * First hook within the Frontend Request handling
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $port = $request->getUri()->getPort();
@@ -81,13 +74,6 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
         return $handler->handle($request);
     }
 
-    /**
-     * Creates a PSR-7 compatible Response object
-     *
-     * @param UriInterface $uri
-     * @param array $redirectRecord
-     * @return ResponseInterface
-     */
     protected function buildRedirectResponse(UriInterface $uri, array $redirectRecord): ResponseInterface
     {
         return new RedirectResponse(
@@ -98,11 +84,9 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
     }
 
     /**
-     * Updates the sys_record's hit counter by one
-     *
-     * @param array $redirectRecord
+     * Updates the sys_redirect's hit counter by one
      */
-    protected function incrementHitCount(array $redirectRecord)
+    protected function incrementHitCount(array $redirectRecord): void
     {
         // Track the hit if not disabled
         if (!GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount') || $redirectRecord['disable_hitcount']) {

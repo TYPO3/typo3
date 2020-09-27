@@ -41,8 +41,6 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 class ManagementController
 {
     /**
-     * ModuleTemplate object
-     *
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
@@ -63,22 +61,25 @@ class ManagementController
     protected $iconFactory;
 
     /**
-     * Instantiate the form protection before a simulated user is initialized.
+     * @var RedirectRepository
      */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    protected $redirectRepository;
+
+    public function __construct(
+        ModuleTemplate $moduleTemplate,
+        IconFactory $iconFactory,
+        RedirectRepository $redirectRepository
+    ) {
+        $this->moduleTemplate = $moduleTemplate;
+        $this->iconFactory = $iconFactory;
+        $this->redirectRepository = $redirectRepository;
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Redirects/RedirectsModule');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf');
     }
 
     /**
      * Injects the request object for the current request, and renders the overview of all redirects
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -91,34 +92,27 @@ class ManagementController
 
     /**
      * Show all redirects, and add a button to create a new redirect
-     * @param ServerRequestInterface $request
      */
-    protected function overviewAction(ServerRequestInterface $request)
+    protected function overviewAction(ServerRequestInterface $request): void
     {
         $this->getButtons();
-        $demand = Demand::createFromRequest($request);
-        $redirectRepository = GeneralUtility::makeInstance(RedirectRepository::class, $demand);
-        $count = $redirectRepository->countRedirectsByByDemand();
-
+        $demand = Demand::fromRequest($request);
         $this->view->assignMultiple([
-            'redirects' => $redirectRepository->findRedirectsByDemand(),
-            'hosts' => $redirectRepository->findHostsOfRedirects(),
-            'statusCodes' => $redirectRepository->findStatusCodesOfRedirects(),
+            'redirects' => $this->redirectRepository->findRedirectsByDemand($demand),
+            'hosts' => $this->redirectRepository->findHostsOfRedirects(),
+            'statusCodes' => $this->redirectRepository->findStatusCodesOfRedirects(),
             'demand' => $demand,
             'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
-            'pagination' => $this->preparePagination($demand, $count),
+            'pagination' => $this->preparePagination($demand),
         ]);
     }
 
     /**
      * Prepares information for the pagination of the module
-     *
-     * @param Demand $demand
-     * @param int $count
-     * @return array
      */
-    protected function preparePagination(Demand $demand, int $count): array
+    protected function preparePagination(Demand $demand): array
     {
+        $count = $this->redirectRepository->countRedirectsByByDemand($demand);
         $numberOfPages = ceil($count / $demand->getLimit());
         $endRecord = $demand->getOffset() + $demand->getLimit();
         if ($endRecord > $count) {
@@ -142,10 +136,7 @@ class ManagementController
         return $pagination;
     }
 
-    /**
-     * @param string $templateName
-     */
-    protected function initializeView(string $templateName)
+    protected function initializeView(string $templateName): void
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setTemplate($templateName);
@@ -157,7 +148,7 @@ class ManagementController
     /**
      * Create document header buttons
      */
-    protected function getButtons()
+    protected function getButtons(): void
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -194,17 +185,11 @@ class ManagementController
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

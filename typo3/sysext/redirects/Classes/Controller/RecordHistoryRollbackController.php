@@ -42,10 +42,6 @@ class RecordHistoryRollbackController
         $this->languageService = $languageService;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
     public function revertCorrelation(ServerRequestInterface $request): ResponseInterface
     {
         $revertedCorrelationTypes = [];

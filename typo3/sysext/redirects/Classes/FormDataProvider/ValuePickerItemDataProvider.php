@@ -32,10 +32,6 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
      */
     protected $siteFinder;
 
-    /**
-     * ValuePickerItemDataProvider constructor.
-     * @param SiteFinder|null $siteFinder
-     */
     public function __construct(SiteFinder $siteFinder = null)
     {
         $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
@@ -65,7 +61,7 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
     /**
      * Get all hosts from sites
      *
-     * @return array domain records
+     * @return string[] domain records
      */
     protected function getHosts(): array
     {

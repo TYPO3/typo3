@@ -18,26 +18,23 @@
 			<trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode">
 				<source>HTTP Status Code for the redirect, 301 is the default</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.name" resname="cleanupRedirectsTask.name">
-				<source>Cleanup Redirects Task</source>
+			<trans-unit id="cleanupRedirectsCommand.description" resname="cleanupRedirectsCommand.description">
+				<source>Cleanup old redirects periodically for given constraints like days, hit count or domains.</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.description" resname="cleanupRedirectsTask.description">
-				<source>Cleanup old redirects periodically for defined conditions like age, hit count or domains.</source>
+			<trans-unit id="cleanupRedirectsCommand.label.days" resname="cleanupRedirectsCommand.label.days">
+				<source>Cleanup redirects older than provided number of days</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.label.days" resname="cleanupRedirectsTask.label.days">
-				<source><![CDATA[Age of records in days ( query usage: createdon < :age )]]></source>
+			<trans-unit id="cleanupRedirectsCommand.label.domain" resname="cleanupRedirectsCommand.label.domain">
+				<source>Cleanup redirects matching provided domain(s)</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.label.domains" resname="cleanupRedirectsTask.label.domains">
-				<source><![CDATA[Domain(s) comma separated ( query usage: source_host IN (:domains) )]]></source>
+			<trans-unit id="cleanupRedirectsCommand.label.hitCount" resname="cleanupRedirectsCommand.label.hitCount">
+				<source>Cleanup redirects matching hit counts lower than given number</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.label.hitCount" resname="cleanupRedirectsTask.label.hitCount">
-				<source><![CDATA[Hit Count ( query usage: hitcount < :hitCount )]]></source>
+			<trans-unit id="cleanupRedirectsCommand.label.path" resname="cleanupRedirectsCommand.label.path">
+				<source>Cleanup redirects matching given path (as database like expression)></source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.label.path" resname="cleanupRedirectsTask.label.path">
-				<source><![CDATA[Path pattern ( query usage: source_path LIKE :path )]]></source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsTask.label.statusCodes" resname="cleanupRedirectsTask.label.statusCodes">
-				<source><![CDATA[Status code(s) comma separated ( query usage: target_statuscode IN (:statusCodes) )]]></source>
+			<trans-unit id="cleanupRedirectsCommand.label.statusCode" resname="cleanupRedirectsCommand.label.statusCode">
+				<source>Cleanup redirects matching provided status code(s)</source>
 			</trans-unit>
 		</body>
 	</file>

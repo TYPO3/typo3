@@ -83,10 +83,6 @@ class SourceHost
         return '';
     }
 
-    /**
-     * @param string $value
-     * @return string
-     */
     protected function parseUrl(string $value): string
     {
         $urlParts = parse_url($value);

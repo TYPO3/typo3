@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Redirects\Configuration\RedirectCleanupConfiguration;
 
 /**
  * Class for accessing redirect records from the database
@@ -31,48 +30,26 @@ use TYPO3\CMS\Redirects\Configuration\RedirectCleanupConfiguration;
 class RedirectRepository
 {
     /**
-     * @var Demand
-     */
-    protected $demand;
-
-    /**
-     * With a possible demand object
-     *
-     * @param Demand|null $demand
-     */
-    public function __construct(Demand $demand = null)
-    {
-        $this->demand = $demand ?? new Demand();
-    }
-
-    /**
      * Used within the backend module, which also includes the hidden records, but never deleted records.
-     *
-     * @return array
      */
-    public function findRedirectsByDemand(): array
+    public function findRedirectsByDemand(Demand $demand): array
     {
-        return $this->getQueryBuilderForDemand()
-            ->setMaxResults($this->demand->getLimit())
-            ->setFirstResult($this->demand->getOffset())
+        return $this->getQueryBuilderForDemand($demand)
+            ->setMaxResults($demand->getLimit())
+            ->setFirstResult($demand->getOffset())
             ->execute()
             ->fetchAll();
     }
 
-    /**
-     * @return int
-     */
-    public function countRedirectsByByDemand(): int
+    public function countRedirectsByByDemand(Demand $demand): int
     {
-        return $this->getQueryBuilderForDemand()->execute()->rowCount();
+        return $this->getQueryBuilderForDemand($demand)->execute()->rowCount();
     }
 
     /**
      * Prepares the QueryBuilder with Constraints from the Demand
-     *
-     * @return QueryBuilder
      */
-    protected function getQueryBuilderForDemand(): QueryBuilder
+    protected function getQueryBuilderForDemand(Demand $demand): QueryBuilder
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
@@ -80,42 +57,42 @@ class RedirectRepository
             ->from('sys_redirect');
 
         $queryBuilder->orderBy(
-            $this->demand->getOrderField(),
-            $this->demand->getOrderDirection()
+            $demand->getOrderField(),
+            $demand->getOrderDirection()
         );
 
-        if ($this->demand->hasSecondaryOrdering()) {
-            $queryBuilder->addOrderBy($this->demand->getSecondaryOrderField());
+        if ($demand->hasSecondaryOrdering()) {
+            $queryBuilder->addOrderBy($demand->getSecondaryOrderField());
         }
 
         $constraints = [];
-        if ($this->demand->hasSourceHost()) {
-            $constraints[] =$queryBuilder->expr()->eq(
+        if ($demand->hasSourceHosts()) {
+            $constraints[] =$queryBuilder->expr()->in(
                 'source_host',
-                $queryBuilder->createNamedParameter($this->demand->getSourceHost(), \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($demand->getSourceHosts(), Connection::PARAM_STR_ARRAY)
             );
         }
 
-        if ($this->demand->hasSourcePath()) {
-            $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($this->demand->getSourcePath()) . '%';
+        if ($demand->hasSourcePath()) {
+            $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($demand->getSourcePath()) . '%';
             $constraints[] = $queryBuilder->expr()->like(
                 'source_path',
                 $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
             );
         }
 
-        if ($this->demand->hasTarget()) {
-            $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($this->demand->getTarget()) . '%';
+        if ($demand->hasTarget()) {
+            $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($demand->getTarget()) . '%';
             $constraints[] = $queryBuilder->expr()->like(
                 'target',
                 $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
             );
         }
 
-        if ($this->demand->hasStatusCode()) {
-            $constraints[] =$queryBuilder->expr()->eq(
+        if ($demand->hasStatusCodes()) {
+            $constraints[] = $queryBuilder->expr()->in(
                 'target_statuscode',
-                $queryBuilder->createNamedParameter($this->demand->getStatusCode(), \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($demand->getStatusCodes(), Connection::PARAM_INT_ARRAY)
             );
         }
 
@@ -127,8 +104,6 @@ class RedirectRepository
 
     /**
      * Used for the filtering in the backend
-     *
-     * @return array
      */
     public function findHostsOfRedirects(): array
     {
@@ -143,8 +118,6 @@ class RedirectRepository
 
     /**
      * Used for the filtering in the backend
-     *
-     * @return array
      */
     public function findStatusCodesOfRedirects(): array
     {
@@ -157,9 +130,6 @@ class RedirectRepository
             ->fetchAll();
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function getQueryBuilder(): QueryBuilder
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
@@ -169,7 +139,7 @@ class RedirectRepository
         return $queryBuilder;
     }
 
-    public function removeRecordsByConfguration(RedirectCleanupConfiguration $redirectCleanupConfiguration)
+    public function removeByDemand(Demand $demand): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_redirect');
@@ -179,31 +149,31 @@ class RedirectRepository
                 $queryBuilder->expr()->eq('protected', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
 
-        if ($redirectCleanupConfiguration->getHitCount() !== null) {
+        if ($demand->hasMaxHits()) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->lt('hitcount', $queryBuilder->createNamedParameter($redirectCleanupConfiguration->getHitCount(), \PDO::PARAM_INT))
+                $queryBuilder->expr()->lt('hitcount', $queryBuilder->createNamedParameter($demand->getMaxHits(), \PDO::PARAM_INT))
             );
         }
-        if ($redirectCleanupConfiguration->getDomains() !== []) {
+        if ($demand->hasSourceHosts()) {
             $queryBuilder
                 ->andWhere('source_host IN (:domains)')
-                ->setParameter('domains', $redirectCleanupConfiguration->getDomains(), Connection::PARAM_STR_ARRAY);
+                ->setParameter('domains', $demand->getSourceHosts(), Connection::PARAM_STR_ARRAY);
         }
-        if ($redirectCleanupConfiguration->getStatusCodes() !== []) {
+        if ($demand->hasStatusCodes()) {
             $queryBuilder
                 ->andWhere('target_statuscode IN (:statusCodes)')
-                ->setParameter('statusCodes', $redirectCleanupConfiguration->getStatusCodes(), Connection::PARAM_INT_ARRAY);
+                ->setParameter('statusCodes', $demand->getStatusCodes(), Connection::PARAM_INT_ARRAY);
         }
-        if ($redirectCleanupConfiguration->getDays() !== null) {
-            $timeStamp = (new \DateTimeImmutable($redirectCleanupConfiguration->getDays() . ' days ago'))->getTimestamp();
+        if ($demand->hasOlderThan()) {
+            $timeStamp = $demand->getOlderThan()->getTimestamp();
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->lt('createdon', $queryBuilder->createNamedParameter($timeStamp, \PDO::PARAM_INT))
             );
         }
-        if ($redirectCleanupConfiguration->getPath() !== null) {
+        if ($demand->hasSourcePath()) {
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->like('source_path', ':path'))
-                ->setParameter('path', $redirectCleanupConfiguration->getPath(), \PDO::PARAM_STR);
+                ->setParameter('path', $demand->getSourcePath(), \PDO::PARAM_STR);
         }
 
         $queryBuilder->execute();

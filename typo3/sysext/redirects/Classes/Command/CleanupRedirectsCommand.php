@@ -22,25 +22,24 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Redirects\Configuration\RedirectCleanupConfiguration;
-use TYPO3\CMS\Redirects\Service\RedirectService;
+use TYPO3\CMS\Redirects\Repository\Demand;
+use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
 class CleanupRedirectsCommand extends Command
 {
     /**
-     * @var RedirectService
+     * @var RedirectRepository
      */
-    protected $redirectService;
+    protected $redirectRepository;
 
     /**
      * @var LanguageService
      */
     protected $languageService;
 
-    public function __construct(RedirectService $redirectService, LanguageService $languageService)
+    public function __construct(RedirectRepository $redirectRepository, LanguageService $languageService)
     {
-        $this->redirectService = $redirectService;
+        $this->redirectRepository = $redirectRepository;
         $this->languageService = $languageService;
         parent::__construct(null);
     }
@@ -48,40 +47,40 @@ class CleanupRedirectsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription($this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.description'))
+            ->setDescription($this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.description'))
             ->addOption(
-                'domains',
+                'domain',
                 'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.label.domains'),
-                []
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.domain'),
+                null
             )
             ->addOption(
-                'statusCodes',
+                'statusCode',
                 's',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.label.statusCodes'),
-                []
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.statusCode'),
+                null
             )
             ->addOption(
-                'age',
+                'days',
                 'a',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.label.days'),
-                90
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.days'),
+                null
             )
             ->addOption(
                 'hitCount',
                 'c',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.label.hitCount'),
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.hitCount'),
                 null
             )
             ->addOption(
                 'path',
                 'p',
                 InputOption::VALUE_OPTIONAL,
-                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsTask.label.path'),
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.path'),
                 null
             )
         ;
@@ -89,17 +88,7 @@ class CleanupRedirectsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $redirectCleanupConfiguration = GeneralUtility::makeInstance(RedirectCleanupConfiguration::class);
-        $redirectCleanupConfiguration
-            ->setDomains($input->getOption('domains'))
-            ->setStatusCodes($input->getOption('statusCodes'))
-            ->setDays((int)$input->getOption('age'))
-            ->setPath($input->getOption('path'));
-        $hitCount = $input->getOption('hitCount');
-        if ($hitCount !== null) {
-            $redirectCleanupConfiguration->setHitCount((int)$hitCount);
-        }
-        $this->redirectService->cleanupRedirectsByConfiguration($redirectCleanupConfiguration);
+        $this->redirectRepository->removeByDemand(Demand::fromCommandInput($input));
         return 0;
     }
 }

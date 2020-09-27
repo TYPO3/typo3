@@ -38,8 +38,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
-use TYPO3\CMS\Redirects\Configuration\RedirectCleanupConfiguration;
-use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
 /**
  * Creates a proper URL to redirect from a matched redirect of a request
@@ -65,28 +63,17 @@ class RedirectService implements LoggerAwareInterface
      */
     protected $siteFinder;
 
-    /**
-     * @var RedirectRepository
-     */
-    protected $redirectRepository;
-
-    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService, SiteFinder $siteFinder, RedirectRepository $redirectRepository)
+    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService, SiteFinder $siteFinder)
     {
         $this->redirectCacheService = $redirectCacheService;
         $this->linkService = $linkService;
         $this->siteFinder = $siteFinder;
-        $this->redirectRepository = $redirectRepository;
     }
 
     /**
      * Checks against all available redirects "flat" or "regexp", and against starttime/endtime
-     *
-     * @param string $domain
-     * @param string $path
-     * @param string $query
-     * @return array|null
      */
-    public function matchRedirect(string $domain, string $path, string $query = '')
+    public function matchRedirect(string $domain, string $path, string $query = ''): ?array
     {
         $allRedirects = $this->fetchRedirects();
         $path = rawurldecode($path);
@@ -138,16 +125,10 @@ class RedirectService implements LoggerAwareInterface
         return null;
     }
 
-    public function cleanupRedirectsByConfiguration(RedirectCleanupConfiguration $redirectCleanupConfiguration): void
-    {
-        $this->redirectRepository->removeRecordsByConfguration($redirectCleanupConfiguration);
-    }
-
     /**
      * Check if a redirect record matches the starttime and endtime and disable restrictions
      *
      * @param array $redirectRecord
-     *
      * @return bool whether the redirect is active and should be used for redirecting the current request
      */
     protected function isRedirectActive(array $redirectRecord): bool
@@ -159,8 +140,6 @@ class RedirectService implements LoggerAwareInterface
     /**
      * Fetches all redirects from the DB and caches them, grouped by the domain
      * does NOT take starttime/endtime into account, as it is cached.
-     *
-     * @return array
      */
     protected function fetchRedirects(): array
     {
@@ -171,7 +150,6 @@ class RedirectService implements LoggerAwareInterface
      * Check if the current request is actually a redirect, and then process the redirect.
      *
      * @param string $redirectTarget
-     *
      * @return array the link details from the linkService
      */
     protected function resolveLinkDetailsFromLinkTarget(string $redirectTarget): array
@@ -206,14 +184,6 @@ class RedirectService implements LoggerAwareInterface
         return $linkDetails;
     }
 
-    /**
-     * @param array $matchedRedirect
-     * @param array $queryParams
-     * @param FrontendUserAuthentication $frontendUserAuthentication
-     * @param UriInterface $uri
-     * @param SiteInterface|null $site
-     * @return UriInterface|null
-     */
     public function getTargetUrl(array $matchedRedirect, array $queryParams, FrontendUserAuthentication $frontendUserAuthentication, UriInterface $uri, ?SiteInterface $site = null): ?UriInterface
     {
         $this->logger->debug('Found a redirect to process', $matchedRedirect);
@@ -251,10 +221,6 @@ class RedirectService implements LoggerAwareInterface
 
     /**
      * Adds query parameters to a Uri object
-     *
-     * @param array $queryParams
-     * @param Uri $url
-     * @return Uri
      */
     protected function addQueryParams(array $queryParams, Uri $url): Uri
     {
@@ -274,13 +240,6 @@ class RedirectService implements LoggerAwareInterface
 
     /**
      * Called when TypoScript/TSFE is available, so typolink is used to generate the URL
-     *
-     * @param array $redirectRecord
-     * @param FrontendUserAuthentication $frontendUserAuthentication
-     * @param SiteInterface|null $site
-     * @param array $linkDetails
-     * @param array $queryParams
-     * @return UriInterface|null
      */
     protected function getUriFromCustomLinkDetails(array $redirectRecord, FrontendUserAuthentication $frontendUserAuthentication, ?SiteInterface $site, array $linkDetails, array $queryParams): ?UriInterface
     {
@@ -329,11 +288,6 @@ class RedirectService implements LoggerAwareInterface
      * - TSFE->cObj
      *
      * So a link to a page can be generated.
-     *
-     * @param FrontendUserAuthentication $frontendUserAuthentication
-     * @param SiteInterface|null $site
-     * @param array $queryParams
-     * @return TypoScriptFrontendController
      */
     protected function bootFrontendController(FrontendUserAuthentication $frontendUserAuthentication, ?SiteInterface $site, array $queryParams): TypoScriptFrontendController
     {
@@ -360,12 +314,6 @@ class RedirectService implements LoggerAwareInterface
         return $controller;
     }
 
-    /**
-     * @param array $matchedRedirect
-     * @param UriInterface $uri
-     * @param array $linkDetails
-     * @return array
-     */
     protected function replaceRegExpCaptureGroup(array $matchedRedirect, UriInterface $uri, array $linkDetails): array
     {
         $matchResult = @preg_match($matchedRedirect['source_path'], $uri->getPath(), $matches);

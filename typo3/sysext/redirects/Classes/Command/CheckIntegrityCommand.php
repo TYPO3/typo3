@@ -59,12 +59,8 @@ class CheckIntegrityCommand extends Command
 
     /**
      * Executes the command for checking for conflicting redirects
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->registry->remove(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY);
 

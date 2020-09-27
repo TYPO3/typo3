@@ -8,7 +8,10 @@ services:
     resource: '../Classes/*'
 
   TYPO3\CMS\Redirects\Controller\RecordHistoryRollbackController:
-    public: true
+    tags: ['backend.controller']
+
+  TYPO3\CMS\Redirects\Controller\ManagementController:
+    tags: ['backend.controller']
 
   TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook:
     public: true

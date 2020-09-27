@@ -53,9 +53,6 @@ class IntegrityService
 
     /**
      * Resolves all conflicting redirects
-     *
-     * @param string|null $siteIdentifier
-     * @return \Generator
      */
     public function findConflictingRedirects(string $siteIdentifier = null): \Generator
     {
@@ -105,9 +102,6 @@ class IntegrityService
 
     /**
      * Returns a list of all entry points for a site which is a combination of the site's base including its language bases
-     *
-     * @param Site $site
-     * @return array
      */
     private function getAllEntryPointsForSite(Site $site): array
     {
@@ -118,9 +112,6 @@ class IntegrityService
 
     /**
      * Generates a list of all slugs used in a site
-     *
-     * @param Site $site
-     * @return array
      */
     private function getAllSlugsForSite(Site $site): array
     {
@@ -141,9 +132,6 @@ class IntegrityService
 
     /**
      * Resolves the sub tree of a page and returns its slugs
-     *
-     * @param int $pageId
-     * @return array
      */
     private function getSlugsOfSubPages(int $pageId): array
     {
