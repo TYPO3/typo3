@@ -93,7 +93,7 @@ class PermissionsViewHelper extends AbstractViewHelper
                 . ' data-page="' . htmlspecialchars($arguments['pageId']) . '"'
                 . ' data-permissions="' . htmlspecialchars($arguments['permission']) . '"'
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
-                . ' data-bits="' . htmlspecialchars($mask) . '"'
+                . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
                 . ' class="t3-icon btn-clear change-permission fa ' . htmlspecialchars($permissionClass) . '"></button>';
         }

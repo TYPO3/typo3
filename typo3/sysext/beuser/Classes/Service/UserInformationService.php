@@ -112,7 +112,7 @@ class UserInformationService
         $data['groups']['diff'] = array_diff($data['groups']['inherit'], $data['groups']['direct']);
         foreach ($data['groups'] as $type => $groups) {
             foreach ($groups as $key => $id) {
-                $record = BackendUtility::getRecord('be_groups', $id);
+                $record = BackendUtility::getRecord('be_groups', (int)$id);
                 if ($record) {
                     $data['groups']['all'][$record['uid']]['row'] = $record;
                     $data['groups']['all'][$record['uid']][$type] = 1;
@@ -124,7 +124,7 @@ class UserInformationService
         $languages = GeneralUtility::trimExplode(',', $user->dataLists['allowed_languages'], true);
         asort($languages);
         foreach ($languages as $language) {
-            $record = BackendUtility::getRecord('sys_language', $language);
+            $record = BackendUtility::getRecord('sys_language', (int)$language);
             if ($record) {
                 $data['languages'][$language] = $record;
             }
@@ -145,7 +145,7 @@ class UserInformationService
         $dbMounts = GeneralUtility::trimExplode(',', $user->dataLists['webmount_list'], true);
         asort($dbMounts);
         foreach ($dbMounts as $mount) {
-            $record = BackendUtility::getRecord('pages', $mount);
+            $record = BackendUtility::getRecord('pages', (int)$mount);
             if ($record) {
                 $data['dbMounts'][] = $record;
             }
@@ -155,7 +155,7 @@ class UserInformationService
         $fileMounts = GeneralUtility::trimExplode(',', $user->dataLists['filemount_list'], true);
         asort($fileMounts);
         foreach ($fileMounts as $mount) {
-            $record = BackendUtility::getRecord('sys_filemounts', $mount);
+            $record = BackendUtility::getRecord('sys_filemounts', (int)$mount);
             if ($record) {
                 $data['fileMounts'][] = $record;
             }

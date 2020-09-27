@@ -228,8 +228,8 @@ class BackendUserController extends ActionController
         if (!$user || !$user->isPasswordResetEnabled() || !$context->getAspect('backend.user')->isAdmin()) {
             // Add an error message
             $this->addFlashMessage(
-                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.text', 'beuser'),
-                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.title', 'beuser'),
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.text', 'beuser') ?? '',
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.title', 'beuser') ?? '',
                 FlashMessage::ERROR
             );
         } else {
@@ -239,8 +239,8 @@ class BackendUserController extends ActionController
                 $user->getEmail()
             );
             $this->addFlashMessage(
-                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.text', 'beuser', [$user->getEmail()]),
-                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.title', 'beuser'),
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.text', 'beuser', [$user->getEmail()]) ?? '',
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.title', 'beuser') ?? '',
                 FlashMessage::OK
             );
         }
@@ -301,7 +301,7 @@ class BackendUserController extends ActionController
         $success = $sessionBackend->remove($sessionId);
 
         if ($success) {
-            $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser'));
+            $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
         }
         $this->forward('online');
     }
@@ -309,7 +309,7 @@ class BackendUserController extends ActionController
     /**
      * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
      *
-     * @param string $switchUser BE-user record that will be switched to
+     * @param int $switchUser BE-user record that will be switched to
      */
     protected function switchUser($switchUser)
     {
@@ -346,7 +346,7 @@ class BackendUserController extends ActionController
             $event = new SwitchUserEvent(
                 $this->getBackendUserAuthentication()->getSessionId(),
                 $targetUser,
-                $this->getBackendUserAuthentication()->user
+                (array)$this->getBackendUserAuthentication()->user
             );
             $this->eventDispatcher->dispatch($event);
 
