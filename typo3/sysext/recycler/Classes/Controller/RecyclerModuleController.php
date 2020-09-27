@@ -182,7 +182,7 @@ class RecyclerModuleController
             'startUid' => $this->id,
             'isSSL' => $normalizedParams->isHttps(),
             'deleteDisable' => !$this->allowDelete,
-            'depthSelection' => $this->getDataFromSession('depthSelection', 0),
+            'depthSelection' => $this->getDataFromSession('depthSelection', '0'),
             'tableSelection' => $this->getDataFromSession('tableSelection', ''),
             'States' => $this->getBackendUser()->uc['moduleData']['web_recycler']['States']
         ];

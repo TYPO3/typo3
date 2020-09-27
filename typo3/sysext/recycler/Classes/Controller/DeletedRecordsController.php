@@ -51,7 +51,7 @@ class DeletedRecordsController
     /**
      * Transforms the rows for the deleted records
      *
-     * @param array $deletedRowsArray Array with table as key and array with all deleted rows
+     * @param array<string, array> $deletedRowsArray Array with table as key and array with all deleted rows
      * @return array JSON array
      */
     public function transform($deletedRowsArray)
