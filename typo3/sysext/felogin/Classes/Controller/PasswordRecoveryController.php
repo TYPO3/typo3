@@ -108,6 +108,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
     protected function validateIfHashHasExpired(): void
     {
         $hash = $this->request->hasArgument('hash') ? $this->request->getArgument('hash') : '';
+        $hash = is_string($hash) ? $hash : '';
 
         if (!$this->hasValidHash($hash)) {
             $this->redirect('recovery', 'PasswordRecovery', 'felogin');
@@ -288,7 +289,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $hashedPassword = $event->getHashedPassword();
             if ($event->isPropagationStopped()) {
                 $requestResult = $this->request->getOriginalRequestMappingResults();
-                $requestResult->addError(new Error($event->getErrorMessage(), 1562846833));
+                $requestResult->addError(new Error($event->getErrorMessage() ?? '', 1562846833));
                 $this->request->setOriginalRequestMappingResults($requestResult);
 
                 $this->forward(

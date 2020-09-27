@@ -514,7 +514,7 @@ class FrontendLoginController extends AbstractPlugin
         $isAbsRefPrefix = !empty($this->frontendController->absRefPrefix);
         $isBaseURL = !empty($this->frontendController->baseUrl);
         $isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
-        $link = $this->pi_getPageLink($this->frontendController->id, '', [
+        $link = $this->pi_getPageLink((int)$this->frontendController->id, '', [
             $this->prefixId . '[user]' => $user['uid'],
             $this->prefixId . '[forgothash]' => $randHash
         ]);
@@ -929,7 +929,9 @@ class FrontendLoginController extends AbstractPlugin
         }
         // Remove empty values, but keep "0" as value (that's why "strlen" is used as second parameter)
         if (!empty($redirect_url)) {
-            return array_filter($redirect_url, 'strlen');
+            return array_filter($redirect_url, static function (string $value) {
+                return $value !== '';
+            });
         }
         return [];
     }
@@ -973,7 +975,7 @@ class FrontendLoginController extends AbstractPlugin
         if ($this->flexFormValue('redirectPageLogout', 's_redirect')) {
             $flex['redirectPageLogout'] = $this->flexFormValue('redirectPageLogout', 's_redirect');
         }
-        $pid = $flex['pages'] ? $this->pi_getPidList($flex['pages'], $flex['recursive']) : 0;
+        $pid = $flex['pages'] ? $this->pi_getPidList($flex['pages'], (int)$flex['recursive']) : 0;
         if ($pid > 0) {
             $flex['storagePid'] = $pid;
         }
