@@ -37,7 +37,8 @@ class CheckIntegrityCommand extends Command
             ->addArgument(
                 'site',
                 InputArgument::OPTIONAL,
-                'If set, then only pages of a specific site are checked'
+                'If set, then only pages of a specific site are checked',
+                ''
             );
     }
 
@@ -55,7 +56,8 @@ class CheckIntegrityCommand extends Command
 
         $integrityService = GeneralUtility::makeInstance(IntegrityService::class);
         $list = [];
-        foreach ($integrityService->findConflictingRedirects($input->getArgument('site')) as $conflict) {
+        $site = $input->getArgument('site') ?: null;
+        foreach ($integrityService->findConflictingRedirects($site) as $conflict) {
             $list[] = $conflict;
             $output->writeln(sprintf(
                 'Redirect (Host: %s, Path: %s) conflicts with %s',
