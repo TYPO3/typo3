@@ -54,7 +54,7 @@ class IntegrityService
     /**
      * Resolves all conflicting redirects
      */
-    public function findConflictingRedirects(string $siteIdentifier = null): \Generator
+    public function findConflictingRedirects(?string $siteIdentifier = null): \Generator
     {
         foreach ($this->getSites($siteIdentifier) as $site) {
             $entryPoints = $this->getAllEntryPointsForSite($site);

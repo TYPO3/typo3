@@ -53,7 +53,8 @@ class CheckIntegrityCommand extends Command
             ->addArgument(
                 'site',
                 InputArgument::OPTIONAL,
-                'If set, then only pages of a specific site are checked'
+                'If set, then only pages of a specific site are checked',
+                ''
             );
     }
 
@@ -65,7 +66,8 @@ class CheckIntegrityCommand extends Command
         $this->registry->remove(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY);
 
         $list = [];
-        foreach ($this->integrityService->findConflictingRedirects($input->getArgument('site')) as $conflict) {
+        $site = $input->getArgument('site') ?: null;
+        foreach ($this->integrityService->findConflictingRedirects($site) as $conflict) {
             $list[] = $conflict;
             $output->writeln(sprintf(
                 'Redirect (Host: %s, Path: %s) conflicts with %s',
