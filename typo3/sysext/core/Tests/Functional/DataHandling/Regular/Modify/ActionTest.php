@@ -32,8 +32,13 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/DataSet/';
 
     /**
-     * Content records
+     * @test
      */
+    public function verifyCleanReferenceIndex()
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
 
     /**
      * @test
@@ -256,6 +261,10 @@ class ActionTest extends AbstractActionTestCase
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
+
+        // Due to the changed TCA columns passthrough vs select, reference index updates are performed
+        // differently for this test. We disable the 'clean refindex' test in tearDown() here.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**

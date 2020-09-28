@@ -14,7 +14,8 @@
 ,301,89,384,1,1,297,297,297,0,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,302,89,448,1,2,297,301,301,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
 "sys_refindex",,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,
-,"083dd2fbf54e1d7279eb503359be31c8","tt_content",301,"l18n_parent",0,1,0,"tt_content",297,,,,,
-,"3d925d0a2a0939984e72ed3b10fd886f","tt_content",302,"l18n_parent",0,1,0,"tt_content",297,,,,,
-,"129f6a7f7dec4293b757c375e7dd7078","tt_content",300,"l18n_parent",0,1,0,"tt_content",299,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",
+,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,,
+,"083dd2fbf54e1d7279eb503359be31c8","tt_content",301,"l18n_parent",,,,0,1,0,"tt_content",297,,
+,"3d925d0a2a0939984e72ed3b10fd886f","tt_content",302,"l18n_parent",,,,0,1,0,"tt_content",297,,
+,"129f6a7f7dec4293b757c375e7dd7078","tt_content",300,"l18n_parent",,,,0,1,0,"tt_content",299,,

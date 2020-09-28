@@ -36,6 +36,11 @@ class HookTest extends AbstractDataHandlerActionTestCase
     const FIELD_Categories = 'categories';
 
     /**
+     * @var bool Reference index testing is not relevant here
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * @var HookFixture
      */
     protected $hookFixture;

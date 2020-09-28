@@ -29,6 +29,11 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/IRRE/CSV/Publish/DataSet/';
 
     /**
+     * @var bool False as temporary hack
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * @test
      */
     public function createParentContent()

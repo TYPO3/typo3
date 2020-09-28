@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -35,6 +36,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 {
     const VALUE_BackendUserId = 1;
+
+    /**
+     * @var bool True if assertCleanReferenceIndex() should be called in tearDown(). Set to false only with care.
+     */
+    protected $assertCleanReferenceIndex = true;
 
     /**
      * @var string
@@ -129,6 +135,9 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     protected function tearDown(): void
     {
         $this->assertErrorLogEntries();
+        if ($this->assertCleanReferenceIndex) {
+            $this->assertCleanReferenceIndex();
+        }
         unset($this->actionService);
         unset($this->recordIds);
         parent::tearDown();
@@ -269,6 +278,18 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             );
             $failureMessage .= '* ' . implode(LF . '* ', $entryMessages) . LF;
             self::fail($failureMessage);
+        }
+    }
+
+    /**
+     * Similar to log entries, verify DataHandler tests end up with a clean reference index.
+     */
+    protected function assertCleanReferenceIndex(): void
+    {
+        $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $referenceIndexFixResult = $referenceIndex->updateIndex(true);
+        if (count($referenceIndexFixResult['errors']) > 0) {
+            self::fail('Reference index not clean. ' . LF . implode(LF, $referenceIndexFixResult['errors']));
         }
     }
 

@@ -35,6 +35,11 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     protected $coreExtensionsToLoad = ['core', 'extbase', 'fluid'];
 
     /**
+     * @var bool Reference index testing not relevant here.
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * Sets up this test suite.
      */
     protected function setUp(): void

@@ -48,7 +48,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         parent::setUp();
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');
-        $this->importScenarioDataSet('ReferenceIndex');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);

@@ -28,6 +28,11 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Select/Modify/DataSet/';
 
     /**
+     * @var bool False as temporary hack
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * @test
      */
     public function addElementRelation()
