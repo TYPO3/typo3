@@ -10,8 +10,7 @@
 				<source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
 			</trans-unit>
 			<trans-unit id="site.base" resname="site.base">
-				<source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
-					full URLs</source>
+				<source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating full URLs</source>
 			</trans-unit>
 			<trans-unit id="site.websiteTitle" resname="site.websiteTitle">
 				<source>The title of the website is used for the title tag in the frontend</source>
