@@ -198,12 +198,23 @@ class EmailFinisher extends AbstractFinisher
      * @param string $format
      * @return StandaloneView
      * @throws FinisherException
+     * @deprecated since v11, will be removed in v12
      */
     protected function initializeStandaloneView(FormRuntime $formRuntime, string $format): StandaloneView
     {
+        trigger_error(
+            'Using StandaloneView for EmailFinisher \'' . $this->finisherIdentifier . '\' is deprecated and will be removed in v12. Please use FluidEmail in the finishers configuration instead.',
+            E_USER_DEPRECATED
+        );
+
         $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
 
         if (isset($this->options['templatePathAndFilename'])) {
+            trigger_error(
+                'The option \'templatePathAndFilename\' for EmailFinisher \'' . $this->finisherIdentifier . '\' is deprecated and will be removed in v12. Please use \'templateName\' and \'templateRootPaths\' in the finishers definition instead.',
+                E_USER_DEPRECATED
+            );
+
             $this->options['templatePathAndFilename'] = strtr($this->options['templatePathAndFilename'], [
                 '{@format}' => $format
             ]);
