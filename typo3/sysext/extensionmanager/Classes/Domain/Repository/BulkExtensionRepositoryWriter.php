@@ -13,25 +13,30 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
+namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
+use Doctrine\DBAL\DBALException;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser;
 use TYPO3\CMS\Extensionmanager\Utility\Parser\XmlParserFactory;
 
 /**
- * Importer object for extension list
- * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
+ * Importer object for extension list, which handles the XML parser and writes directly into the database.
+ *
+ * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
-class ExtensionListUtility implements \SplObserver
+class BulkExtensionRepositoryWriter implements \SplObserver
 {
+    /**
+     * @var string
+     */
+    private const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
+
     /**
      * Keeps instance of a XML parser.
      *
@@ -72,7 +77,7 @@ class ExtensionListUtility implements \SplObserver
         'authorcompany',
         'last_updated',
         'md5hash',
-        'repository',
+        'remote',
         'state',
         'review_state',
         'category',
@@ -83,13 +88,6 @@ class ExtensionListUtility implements \SplObserver
     ];
 
     /**
-     * Table name to be used to store extension models.
-     *
-     * @var string
-     */
-    protected static $tableName = 'tx_extensionmanager_domain_model_extension';
-
-    /**
      * Maximum of rows that can be used in a bulk insert for the current
      * database platform.
      *
@@ -98,28 +96,26 @@ class ExtensionListUtility implements \SplObserver
     protected $maxRowsPerChunk = 50;
 
     /**
-     * Keeps repository UID.
+     * Keeps the information from which remote the extension list was fetched.
      *
-     * The UID is necessary for inserting records.
-     *
-     * @var int
+     * @var string
      */
-    protected $repositoryUid = 1;
+    protected $remoteIdentifier;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
-     */
-    protected $repositoryRepository;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+     * @var ExtensionRepository
      */
     protected $extensionRepository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+     * @var Extension
      */
     protected $extensionModel;
+
+    /**
+     * @var ConnectionPool
+     */
+    protected $connectionPool;
 
     /**
      * Only import extensions newer than this date (timestamp),
@@ -130,19 +126,21 @@ class ExtensionListUtility implements \SplObserver
     protected $minimumDateToImport;
 
     /**
-     * Class constructor.
-     *
      * Method retrieves and initializes extension XML parser instance.
      *
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     * @param ExtensionRepository $repository
+     * @param Extension $extension
+     * @param ConnectionPool $connectionPool
+     *
+     * @throws ExtensionManagerException
+     * @throws DBALException
      */
-    public function __construct()
+    public function __construct(ExtensionRepository $repository, Extension $extension, ConnectionPool $connectionPool)
     {
-        $this->repositoryRepository = GeneralUtility::makeInstance(RepositoryRepository::class);
-        $this->extensionRepository = GeneralUtility::makeInstance(ExtensionRepository::class);
-        $this->extensionModel = GeneralUtility::makeInstance(Extension::class);
-        // @todo catch parser exception
-        $this->parser = XmlParserFactory::getParserInstance('extension');
+        $this->extensionRepository = $repository;
+        $this->extensionModel = $extension;
+        $this->connectionPool = $connectionPool;
+        $this->parser = XmlParserFactory::getParserInstance();
         if (is_object($this->parser)) {
             $this->parser->attach($this);
         } else {
@@ -152,8 +150,7 @@ class ExtensionListUtility implements \SplObserver
             );
         }
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable(self::$tableName);
+        $connection = $this->connectionPool->getConnectionForTable(self::TABLE_NAME);
         $maxBindParameters = PlatformInformation::getMaxBindParameters(
             $connection->getDatabasePlatform()
         );
@@ -179,30 +176,33 @@ class ExtensionListUtility implements \SplObserver
      * Method initializes parsing of extension.xml.gz file.
      *
      * @param string $localExtensionListFile absolute path to extension list xml.gz
-     * @param int $repositoryUid UID of repository when inserting records into DB
-     * @return int total number of imported extension versions
+     * @param string $remoteIdentifier identifier of the remote when inserting records into DB
      */
-    public function import($localExtensionListFile, $repositoryUid = null)
+    public function import(string $localExtensionListFile, string $remoteIdentifier): void
     {
-        if ($repositoryUid !== null && is_int($repositoryUid)) {
-            $this->repositoryUid = $repositoryUid;
-        }
+        // Remove all existing entries of this remote from the database
+        $this->connectionPool
+            ->getConnectionForTable(self::TABLE_NAME)
+            ->delete(
+                self::TABLE_NAME,
+                ['remote' => $remoteIdentifier],
+                [\PDO::PARAM_STR]
+            );
+        $this->remoteIdentifier = $remoteIdentifier;
         $zlibStream = 'compress.zlib://';
         $this->sumRecords = 0;
         $this->parser->parseXml($zlibStream . $localExtensionListFile);
         // flush last rows to database if existing
         if (!empty($this->arrRows)) {
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+            $this->connectionPool
+                ->getConnectionForTable(self::TABLE_NAME)
                 ->bulkInsert(
                     'tx_extensionmanager_domain_model_extension',
                     $this->arrRows,
                     self::$fieldNames
                 );
         }
-        $extensions = $this->extensionRepository->insertLastVersion($this->repositoryUid);
-        $this->repositoryRepository->updateRepositoryCount($extensions, $this->repositoryUid);
-        return $this->sumRecords;
+        $this->markExtensionWithMaximumVersionAsCurrent($remoteIdentifier);
     }
 
     /**
@@ -210,13 +210,13 @@ class ExtensionListUtility implements \SplObserver
      *
      * @param AbstractExtensionXmlParser $subject a subject notifying this observer
      */
-    protected function loadIntoDatabase(AbstractExtensionXmlParser &$subject)
+    protected function loadIntoDatabase(AbstractExtensionXmlParser $subject): void
     {
         if ($this->sumRecords !== 0 && $this->sumRecords % $this->maxRowsPerChunk === 0) {
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable(self::$tableName)
+            $this->connectionPool
+                ->getConnectionForTable(self::TABLE_NAME)
                 ->bulkInsert(
-                    self::$tableName,
+                    self::TABLE_NAME,
                     $this->arrRows,
                     self::$fieldNames
                 );
@@ -239,7 +239,7 @@ class ExtensionListUtility implements \SplObserver
             $subject->getAuthorcompany() ?? '',
             (int)$subject->getLastuploaddate(),
             $subject->getT3xfilemd5(),
-            $this->repositoryUid,
+            $this->remoteIdentifier,
             $this->extensionModel->getDefaultState($subject->getState() ?: ''),
             (int)$subject->getReviewstate(),
             $this->extensionModel->getCategoryIndexFromStringOrNumber($subject->getCategory() ?: ''),
@@ -256,12 +256,85 @@ class ExtensionListUtility implements \SplObserver
      *
      * @param \SplSubject $subject a subject notifying this observer
      */
-    public function update(\SplSubject $subject)
+    public function update(\SplSubject $subject): void
     {
         if (is_subclass_of($subject, AbstractExtensionXmlParser::class)) {
             if ((int)$subject->getLastuploaddate() > $this->minimumDateToImport) {
                 $this->loadIntoDatabase($subject);
             }
         }
+    }
+
+    /**
+     * Sets current_version = 1 for all extensions where the extension version is maximal.
+     *
+     * For performance reasons, the "native" database connection is used here directly.
+     *
+     * @param string $remoteIdentifier
+     */
+    protected function markExtensionWithMaximumVersionAsCurrent(string $remoteIdentifier): void
+    {
+        $uidsOfCurrentVersion = $this->fetchMaximalVersionsForAllExtensions($remoteIdentifier);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $connection = $this->connectionPool->getConnectionForTable(self::TABLE_NAME);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters(
+            $connection->getDatabasePlatform()
+        );
+
+        foreach (array_chunk($uidsOfCurrentVersion, $maxBindParameters - 10) as $chunk) {
+            $queryBuilder
+                ->update(self::TABLE_NAME)
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    )
+                )
+                ->set('current_version', 1)
+                ->execute();
+        }
+    }
+
+    /**
+     * Fetches the UIDs of all maximal versions for all extensions.
+     * This is done by doing a LEFT JOIN to itself ("a" and "b") and comparing
+     * both integer_version fields.
+     *
+     * @param string $remoteIdentifier
+     * @return array
+     */
+    protected function fetchMaximalVersionsForAllExtensions(string $remoteIdentifier): array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+
+        $queryResult = $queryBuilder
+            ->select('a.uid AS uid')
+            ->from(self::TABLE_NAME, 'a')
+            ->leftJoin(
+                'a',
+                self::TABLE_NAME,
+                'b',
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('a.remote', $queryBuilder->quoteIdentifier('b.remote')),
+                    $queryBuilder->expr()->eq('a.extension_key', $queryBuilder->quoteIdentifier('b.extension_key')),
+                    $queryBuilder->expr()->lt('a.integer_version', $queryBuilder->quoteIdentifier('b.integer_version'))
+                )
+            )
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'a.remote',
+                    $queryBuilder->createNamedParameter($remoteIdentifier)
+                ),
+                $queryBuilder->expr()->isNull('b.extension_key')
+            )
+            ->orderBy('a.uid')
+            ->execute();
+
+        $extensionUids = [];
+        while ($row = $queryResult->fetch()) {
+            $extensionUids[] = $row['uid'];
+        }
+
+        return $extensionUids;
     }
 }

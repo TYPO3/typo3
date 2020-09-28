@@ -15,12 +15,9 @@
 
 namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
-use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -313,116 +310,6 @@ class ExtensionRepository extends Repository
             'integerVersion' => QueryInterface::ORDER_DESCENDING
         ]);
         return $query->setLimit(1)->execute()->getFirst();
-    }
-
-    /**
-     * Updates the current_version field after update.
-     *
-     * @param int $repositoryUid
-     * @return int
-     */
-    public function insertLastVersion($repositoryUid = 1)
-    {
-        $this->markExtensionWithMaximumVersionAsCurrent($repositoryUid);
-
-        return $this->getNumberOfCurrentExtensions();
-    }
-
-    /**
-     * Sets current_version = 1 for all extensions where the extension version is maximal.
-     *
-     * For performance reasons, the "native" database connection is used here directly.
-     *
-     * @param int $repositoryUid
-     */
-    protected function markExtensionWithMaximumVersionAsCurrent($repositoryUid)
-    {
-        $uidsOfCurrentVersion = $this->fetchMaximalVersionsForAllExtensions($repositoryUid);
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE_NAME);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable(self::TABLE_NAME);
-        $maxBindParameters = PlatformInformation::getMaxBindParameters(
-            $connection->getDatabasePlatform()
-        );
-
-        foreach (array_chunk($uidsOfCurrentVersion, $maxBindParameters - 10) as $chunk) {
-            $queryBuilder
-                ->update(self::TABLE_NAME)
-                ->where(
-                    $queryBuilder->expr()->in(
-                        'uid',
-                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
-                    )
-                )
-                ->set('current_version', 1)
-                ->execute();
-        }
-    }
-
-    /**
-     * Fetches the UIDs of all maximal versions for all extensions.
-     * This is done by doing a LEFT JOIN to itself ("a" and "b") and comparing
-     * both integer_version fields.
-     *
-     * @param int $repositoryUid
-     * @return array
-     */
-    protected function fetchMaximalVersionsForAllExtensions($repositoryUid)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE_NAME);
-
-        $queryResult = $queryBuilder
-            ->select('a.uid AS uid')
-            ->from(self::TABLE_NAME, 'a')
-            ->leftJoin(
-                'a',
-                self::TABLE_NAME,
-                'b',
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('a.repository', $queryBuilder->quoteIdentifier('b.repository')),
-                    $queryBuilder->expr()->eq('a.extension_key', $queryBuilder->quoteIdentifier('b.extension_key')),
-                    $queryBuilder->expr()->lt('a.integer_version', $queryBuilder->quoteIdentifier('b.integer_version'))
-                )
-            )
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'a.repository',
-                    $queryBuilder->createNamedParameter($repositoryUid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->isNull('b.extension_key')
-            )
-            ->orderBy('a.uid')
-            ->execute();
-
-        $extensionUids = [];
-        while ($row = $queryResult->fetch()) {
-            $extensionUids[] = $row['uid'];
-        }
-
-        return $extensionUids;
-    }
-
-    /**
-     * Returns the number of extensions that are current.
-     *
-     * @return int
-     */
-    protected function getNumberOfCurrentExtensions()
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE_NAME);
-
-        return (int)$queryBuilder
-            ->count('*')
-            ->from(self::TABLE_NAME)
-            ->where($queryBuilder->expr()->eq(
-                'current_version',
-                $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-            ))
-            ->execute()
-            ->fetchColumn(0);
     }
 
     /**

@@ -2,10 +2,6 @@
 
 defined('TYPO3_MODE') or die();
 
-// Do not delete this wizard. This makes sure new installations get the TER repository set in the database.
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['extensionManagerTables']
-    = \TYPO3\CMS\Install\Updates\ExtensionManagerTables::class;
-
 // v9->v10 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rsaauthExtension']
     = \TYPO3\CMS\Install\Updates\RsaauthExtractionUpdate::class;

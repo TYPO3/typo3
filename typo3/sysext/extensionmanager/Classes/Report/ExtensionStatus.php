@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\Report;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -45,9 +45,9 @@ class ExtensionStatus implements StatusProviderInterface
     protected $error = '';
 
     /**
-     * @var RepositoryRepository
+     * @var RemoteRegistry
      */
-    protected $repositoryRepository;
+    protected $remoteRegistry;
 
     /**
      * @var ListUtility
@@ -60,11 +60,12 @@ class ExtensionStatus implements StatusProviderInterface
     protected $languageService;
 
     /**
-     * @param LanguageService $languageService
+     * @param RemoteRegistry|null  $remoteRegistry
+     * @param LanguageService|null $languageService
      */
-    public function __construct(LanguageService $languageService = null)
+    public function __construct(RemoteRegistry $remoteRegistry = null, LanguageService $languageService = null)
     {
-        $this->repositoryRepository = GeneralUtility::makeInstance(RepositoryRepository::class);
+        $this->remoteRegistry = $remoteRegistry ?? GeneralUtility::makeInstance(RemoteRegistry::class);
         $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);
         $this->languageService = $languageService ?? LanguageService::createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
@@ -96,14 +97,11 @@ class ExtensionStatus implements StatusProviderInterface
      */
     protected function getMainRepositoryStatus()
     {
-        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $mainRepository */
-        $mainRepository = $this->repositoryRepository->findOneTypo3OrgRepository();
-
-        if ($mainRepository === null) {
+        if (!$this->remoteRegistry->hasDefaultRemote()) {
             $value = $this->languageService->getLL('report.status.mainRepository.notFound.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notFound.message');
             $severity = Status::ERROR;
-        } elseif ($mainRepository->getLastUpdate()->getTimestamp() < $GLOBALS['EXEC_TIME'] - 24 * 60 * 60 * 7) {
+        } elseif ($this->remoteRegistry->getDefaultRemote()->needsUpdate()) {
             $value = $this->languageService->getLL('report.status.mainRepository.notUpToDate.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notUpToDate.message');
             $severity = Status::NOTICE;

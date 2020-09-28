@@ -16,8 +16,7 @@
 namespace TYPO3\CMS\Extensionmanager\Task;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -31,11 +30,13 @@ class UpdateExtensionListTask extends AbstractTask
      *
      * @return bool TRUE on success
      */
-    public function execute()
+    public function execute(): bool
     {
         // Throws exceptions if something went wrong
-        GeneralUtility::makeInstance(Helper::class)->updateExtList();
-        GeneralUtility::makeInstance(PersistenceManager::class)->persistAll();
+        $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+        foreach ($remoteRegistry->getListableRemotes() as $remote) {
+            $remote->getAvailablePackages();
+        }
         return true;
     }
 }

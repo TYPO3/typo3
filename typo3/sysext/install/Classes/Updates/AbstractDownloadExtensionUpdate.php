@@ -18,8 +18,9 @@ namespace TYPO3\CMS\Install\Updates;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
+use TYPO3\CMS\Extensionmanager\Remote\DownloadFailedException;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
+use TYPO3\CMS\Extensionmanager\Remote\VerificationFailedException;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
@@ -29,11 +30,6 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
  */
 abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface, ConfirmableInterface, ChattyInterface
 {
-    /**
-     * @var string
-     */
-    protected $repositoryUrl = 'https://typo3.org/fileadmin/ter/@filename';
-
     /**
      * @var OutputInterface
      */
@@ -74,11 +70,8 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
     protected function installExtension(ExtensionModel $extension): bool
     {
         $updateSuccessful = true;
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-        /** @var ListUtility $extensionListUtility */
-        $extensionListUtility = $objectManager->get(ListUtility::class);
+        $extensionListUtility = GeneralUtility::makeInstance(ListUtility::class);
         $availableExtensions = $extensionListUtility->getAvailableExtensions();
 
         $extensionKey = $extension->getKey();
@@ -86,23 +79,25 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
         $isComposerMode = Environment::isComposerMode();
 
         if (!$isComposerMode && !$isExtensionAvailable) {
-            /** @var TerUtility $extensionTerUtility */
-            $extensionTerUtility = $objectManager->get(TerUtility::class);
-            $t3xContent = $this->fetchExtension($extensionKey, $extension->getVersionString());
-            if (empty($t3xContent)) {
+            $extensionFileHandlingUtility = GeneralUtility::makeInstance(FileHandlingUtility::class);
+            $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+            if ($remoteRegistry->hasDefaultRemote()) {
+                $terRemote = $remoteRegistry->getDefaultRemote();
+                try {
+                    $terRemote->downloadExtension($extensionKey, $extension->getVersionString(), $extensionFileHandlingUtility);
+                } catch (DownloadFailedException $e) {
+                    $updateSuccessful = false;
+                    $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be downloaded.</error>');
+                } catch (VerificationFailedException $e) {
+                    $updateSuccessful = false;
+                    $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be extracted.</error>');
+                }
+            } else {
                 $updateSuccessful = false;
-                $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be downloaded.</error>');
+                $this->output->writeln(
+                    '<error>The extension ' . $extensionKey . ' could not be downloaded because no remote is available.</error>'
+                );
             }
-            $t3xExtracted = $extensionTerUtility->decodeExchangeData($t3xContent);
-            if (empty($t3xExtracted) || !is_array($t3xExtracted) || empty($t3xExtracted['extKey'])) {
-                $updateSuccessful = false;
-                $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be extracted.</error>');
-            }
-
-            /** @var FileHandlingUtility $extensionFileHandlingUtility */
-            $extensionFileHandlingUtility = $objectManager->get(FileHandlingUtility::class);
-            $extensionFileHandlingUtility->unpackExtensionFromExtensionDataArray($t3xExtracted);
-
             // The listUtility now needs to have the regenerated list of packages
             $extensionListUtility->reloadAvailableExtensions();
         }
@@ -118,66 +113,10 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
         }
 
         if ($updateSuccessful) {
-            /** @var InstallUtility $extensionInstallUtility */
-            $extensionInstallUtility = $objectManager->get(InstallUtility::class);
+            $extensionInstallUtility = GeneralUtility::makeInstance(InstallUtility::class);
             $extensionInstallUtility->install($extensionKey);
         }
 
         return $updateSuccessful;
-    }
-
-    /**
-     * Fetch extension from repository
-     *
-     * @param string $extensionKey The extension key to fetch
-     * @param string $version The version to fetch
-     * @throws \InvalidArgumentException
-     * @return string T3X file content
-     */
-    protected function fetchExtension($extensionKey, $version): string
-    {
-        if (empty($extensionKey) || empty($version)) {
-            throw new \InvalidArgumentException(
-                'No extension key for fetching an extension was given.',
-                1344687432
-            );
-        }
-
-        $filename = $extensionKey[0] . '/' . $extensionKey[1] . '/' . $extensionKey . '_' . $version . '.t3x';
-        $url = str_replace('@filename', $filename, $this->repositoryUrl);
-
-        return $this->fetchUrl($url);
-    }
-
-    /**
-     * Open an URL and return the response
-     * This wrapper method is required to try several download methods if
-     * the configuration is not valid or initially written by the installer.
-     *
-     * @param string $url The URL to file
-     * @throws \Exception
-     * @throws \InvalidArgumentException
-     * @return string File content
-     */
-    protected function fetchUrl($url): string
-    {
-        if (empty($url)) {
-            throw new \InvalidArgumentException(
-                'No URL for downloading an extension given.',
-                1344687436
-            );
-        }
-
-        $fileContent = GeneralUtility::getUrl($url);
-
-        // Can not fetch url, throw an exception
-        if ($fileContent === false) {
-            throw new \RuntimeException(
-                'Can not fetch URL "' . $url . '". Possible reasons are network problems or misconfiguration.',
-                1344685036
-            );
-        }
-
-        return $fileContent;
     }
 }

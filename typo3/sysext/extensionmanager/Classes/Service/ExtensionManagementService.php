@@ -16,14 +16,18 @@
 namespace TYPO3\CMS\Extensionmanager\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
-use TYPO3\CMS\Extensionmanager\Utility\DownloadUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
+use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -52,11 +56,6 @@ class ExtensionManagementService implements SingletonInterface
     protected $extensionModelUtility;
 
     /**
-     * @var DownloadUtility
-     */
-    protected $downloadUtility;
-
-    /**
      * @var bool
      */
     protected $automaticInstallationEnabled = true;
@@ -70,6 +69,27 @@ class ExtensionManagementService implements SingletonInterface
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
+
+    /**
+     * @var FileHandlingUtility
+     */
+    protected $fileHandlingUtility;
+
+    /**
+     * @var RemoteRegistry
+     */
+    protected $remoteRegistry;
+
+    /**
+     * @var string
+     */
+    protected $downloadPath = 'Local';
+
+    public function __construct(RemoteRegistry $remoteRegistry, FileHandlingUtility $fileHandlingUtility)
+    {
+        $this->remoteRegistry = $remoteRegistry;
+        $this->fileHandlingUtility = $fileHandlingUtility;
+    }
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -106,14 +126,6 @@ class ExtensionManagementService implements SingletonInterface
     public function injectExtensionModelUtility(ExtensionModelUtility $extensionModelUtility)
     {
         $this->extensionModelUtility = $extensionModelUtility;
-    }
-
-    /**
-     * @param DownloadUtility $downloadUtility
-     */
-    public function injectDownloadUtility(DownloadUtility $downloadUtility)
-    {
-        $this->downloadUtility = $downloadUtility;
     }
 
     /**
@@ -327,7 +339,7 @@ class ExtensionManagementService implements SingletonInterface
     protected function setInExtensionRepository($extensionKey)
     {
         $paths = Extension::returnInstallPaths();
-        $path = $paths[$this->downloadUtility->getDownloadPath()] ?? '';
+        $path = $paths[$this->downloadPath] ?? '';
         if (empty($path)) {
             return;
         }
@@ -403,7 +415,7 @@ class ExtensionManagementService implements SingletonInterface
     {
         $resolvedDependencies = [];
         foreach ($downloadQueue as $extensionToDownload) {
-            $this->downloadUtility->download($extensionToDownload);
+            $this->rawDownload($extensionToDownload);
             $this->downloadQueue->removeExtensionFromQueue($extensionToDownload);
             $resolvedDependencies['downloaded'][$extensionToDownload->getExtensionKey()] = $extensionToDownload;
             $this->markExtensionForInstallation($extensionToDownload->getExtensionKey());
@@ -440,7 +452,45 @@ class ExtensionManagementService implements SingletonInterface
         // The extension object has a uid if the extension is not present in the system
         // or an update of a present extension is triggered.
         if ($extension->getUid()) {
-            $this->downloadUtility->download($extension);
+            $this->rawDownload($extension);
         }
+    }
+
+    protected function rawDownload(Extension $extension): void
+    {
+        if (
+            Environment::isComposerMode()
+            || (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode')
+        ) {
+            throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
+        }
+
+        $remoteIdentifier = $extension->getRemoteIdentifier();
+
+        if ($this->remoteRegistry->hasRemote($remoteIdentifier)) {
+            $this->remoteRegistry
+                ->getRemote($remoteIdentifier)
+                ->downloadExtension(
+                    $extension->getExtensionKey(),
+                    $extension->getVersion(),
+                    $this->fileHandlingUtility,
+                    $extension->getMd5hash(),
+                    $this->downloadPath
+                );
+        }
+    }
+
+    /**
+     * Set the download path
+     *
+     * @param string $downloadPath
+     * @throws ExtensionManagerException
+     */
+    public function setDownloadPath(string $downloadPath): void
+    {
+        if (!in_array($downloadPath, Extension::returnAllowedInstallTypes(), true)) {
+            throw new ExtensionManagerException($downloadPath . ' not in allowed download paths', 1344766387);
+        }
+        $this->downloadPath = $downloadPath;
     }
 }

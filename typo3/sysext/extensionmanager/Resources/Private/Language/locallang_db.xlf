@@ -51,27 +51,6 @@
 			<trans-unit id="tx_extensionmanager_domain_model_extension.serializedDependencies" resname="tx_extensionmanager_domain_model_extension.serializedDependencies">
 				<source>Serialized dependencies</source>
 			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository" resname="tx_extensionmanager_domain_model_repository">
-				<source>Repository</source>
-			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository.title" resname="tx_extensionmanager_domain_model_repository.title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository.description" resname="tx_extensionmanager_domain_model_repository.description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository.wsdlUrl" resname="tx_extensionmanager_domain_model_repository.wsdlUrl">
-				<source>WSDL URL</source>
-			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository.mirrorListUrl" resname="tx_extensionmanager_domain_model_repository.mirrorListUrl">
-				<source>Mirror list URL</source>
-			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository.lastUpdate" resname="tx_extensionmanager_domain_model_repository.lastUpdate">
-				<source>Last update</source>
-			</trans-unit>
-			<trans-unit id="tx_extensionmanager_domain_model_repository.extensionCount" resname="tx_extensionmanager_domain_model_repository.extensionCount">
-				<source>Extension count</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

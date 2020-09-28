@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-use TYPO3\CMS\Extensionmanager\Utility\DownloadUtility;
+use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -39,13 +39,12 @@ class DownloadControllerTest extends UnitTestCase
         $dummyExtension = new Extension();
         $dummyExtension->setExtensionKey($dummyExtensionName);
 
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility|MockObject $downloadUtilityMock */
-        $downloadUtilityMock = $this->getMockBuilder(DownloadUtility::class)->getMock();
-        $downloadUtilityMock->expects(self::any())->method('setDownloadPath')->willThrowException($dummyException);
+        /** @var ExtensionManagementService|MockObject $downloadUtilityMock */
+        $extensionManagementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)->disableOriginalConstructor()->getMock();
+        $extensionManagementServiceMock->expects(self::any())->method('setDownloadPath')->willThrowException($dummyException);
 
-        /** @var \TYPO3\CMS\Extensionmanager\Controller\DownloadController $subject */
         $subject = new DownloadController();
-        $subject->injectDownloadUtility($downloadUtilityMock);
+        $subject->injectManagementService($extensionManagementServiceMock);
 
         $reflectionClass = new \ReflectionClass($subject);
         $reflectionMethod = $reflectionClass->getMethod('installFromTer');

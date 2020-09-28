@@ -25,7 +25,6 @@ use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\DependencyConfigurationNotFoundException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
-use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 
 /**
@@ -46,11 +45,6 @@ class UploadExtensionFileController extends AbstractController
      * @var FileHandlingUtility
      */
     protected $fileHandlingUtility;
-
-    /**
-     * @var TerUtility
-     */
-    protected $terUtility;
 
     /**
      * @var ExtensionManagementService
@@ -81,14 +75,6 @@ class UploadExtensionFileController extends AbstractController
     public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
     {
         $this->fileHandlingUtility = $fileHandlingUtility;
-    }
-
-    /**
-     * @param TerUtility $terUtility
-     */
-    public function injectTerUtility(TerUtility $terUtility)
-    {
-        $this->terUtility = $terUtility;
     }
 
     /**
@@ -245,7 +231,7 @@ class UploadExtensionFileController extends AbstractController
         if (!$fileContent) {
             throw new ExtensionManagerException('File had no or wrong content.', 1342859339);
         }
-        $extensionData = $this->terUtility->decodeExchangeData($fileContent);
+        $extensionData = $this->decodeExchangeData($fileContent);
         if (empty($extensionData['extKey'])) {
             throw new ExtensionManagerException('Decoding the file went wrong. No extension key found', 1342864309);
         }
@@ -354,5 +340,34 @@ class UploadExtensionFileController extends AbstractController
             GeneralUtility::rmdir($this->extensionBackupPath, true);
             $this->extensionBackupPath = '';
         }
+    }
+
+    /**
+     * Decodes extension upload array.
+     * This kind of data is when an extension is uploaded to TER
+     *
+     * @param string $stream Data stream
+     * @throws ExtensionManagerException
+     * @return array Array with result on success, otherwise an error string.
+     */
+    protected function decodeExchangeData(string $stream): array
+    {
+        [$expectedHash, $compressionType, $contents] = explode(':', $stream, 3);
+        if ($compressionType === 'gzcompress') {
+            if (function_exists('gzuncompress')) {
+                $contents = (string)gzuncompress($contents);
+            } else {
+                throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() functions are not available!', 1344761814);
+            }
+        }
+        if (hash_equals($expectedHash, md5($contents))) {
+            $output = unserialize($contents, ['allowed_classes' => false]);
+            if (!is_array($output)) {
+                throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
+            }
+        } else {
+            throw new ExtensionManagerException('Error: MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the browser and thereby corrupted!? (Always select "All" filetype when saving extensions)', 1344761991);
+        }
+        return $output;
     }
 }

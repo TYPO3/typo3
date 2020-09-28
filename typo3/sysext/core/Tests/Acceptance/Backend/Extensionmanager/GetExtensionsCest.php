@@ -75,7 +75,7 @@ class GetExtensionsCest
         $I->seeNumberOfElements('#terSearchTable tbody tr', 1);
         $I->see('Super Extension');
 
-        $I->amGoingTo('search extension neededext and submit with enter');
+        $I->amGoingTo('search extension needed ext and submit with enter');
 
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'neededext');
         $I->pressKey('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', WebDriverKeys::ENTER);

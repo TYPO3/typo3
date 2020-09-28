@@ -86,7 +86,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      * Unpack an extension in t3x data format and write files
      *
      * @param array $extensionData
-     * @param Extension $extension
+     * @param Extension|null $extension
      * @param string $pathType
      */
     public function unpackExtensionFromExtensionDataArray(array $extensionData, Extension $extension = null, $pathType = 'Local')
@@ -263,7 +263,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      *
      * @param array $extensionData
      * @param string $rootPath
-     * @param Extension $extension
+     * @param Extension|null $extension
      */
     protected function writeEmConfToFile(array $extensionData, $rootPath, Extension $extension = null)
     {

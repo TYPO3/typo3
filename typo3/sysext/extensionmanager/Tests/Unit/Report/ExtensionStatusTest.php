@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
 
+use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Repository;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
+use TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote;
 use TYPO3\CMS\Extensionmanager\Report\ExtensionStatus;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\Status;
@@ -37,16 +36,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ExtensionStatusTest extends UnitTestCase
 {
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $mockObjectManager;
-
-    /**
-     * @var RepositoryRepository
-     */
-    protected $mockRepositoryRepository;
-
-    /**
      * @var LanguageService
      */
     protected $languageService;
@@ -57,11 +46,6 @@ class ExtensionStatusTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        /** @var $mockRepositoryRepository RepositoryRepository|\PHPUnit\Framework\MockObject\MockObject */
-        $this->mockRepositoryRepository = $this->getMockBuilder(RepositoryRepository::class)
-            ->setConstructorArgs([$this->mockObjectManager])
-            ->getMock();
         $this->resetSingletonInstances = true;
         $this->languageService = $this->prophesize(LanguageService::class)->reveal();
     }
@@ -125,11 +109,11 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusCallsMainRepositoryForMainRepositoryStatusResult(): void
     {
-        $repositoryRepositoryProphecy = $this->setUpRepositoryStatusTests();
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $subject->getStatus();
 
-        $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->shouldHaveBeenCalled();
+        $remoteRegistryProphecy->hasDefaultRemote()->shouldHaveBeenCalled();
     }
 
     /**
@@ -137,10 +121,9 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorStatusIfRepositoryIsNotFound(): void
     {
-        $repositoryRepositoryProphecy = $this->setUpRepositoryStatusTests(0, true, false);
-        $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->willReturn(null);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(0, true, false);
 
-        $subject = new ExtensionStatus($this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -152,13 +135,25 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsNoticeIfRepositoryUpdateIsLongerThanSevenDaysAgo(): void
     {
-        $repositoryRepositoryProphecy = $this->setUpRepositoryStatusTests(0, true, false);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
+        $remote = new class() extends TerExtensionRemote {
+            public function __construct()
+            {
+            }
 
-        $repository = new Repository();
-        $repository->setLastUpdate(new \DateTime('-14days'));
-        $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->willReturn($repository);
+            public function getLastUpdate(): \DateTimeInterface
+            {
+                return new \DateTimeImmutable('-14days');
+            }
 
-        $subject = new ExtensionStatus($this->languageService);
+            protected function isDownloadedExtensionListUpToDate(): bool
+            {
+                return true;
+            }
+        };
+        $remoteRegistryProphecy->getDefaultRemote()->willReturn($remote);
+
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -170,8 +165,8 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsOkForLoadedExtensionIfNoInsecureExtensionIsLoaded(): void
     {
-        $this->setUpRepositoryStatusTests();
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -183,8 +178,8 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorForLoadedExtensionIfInsecureExtensionIsLoaded(): void
     {
-        $this->setUpRepositoryStatusTests(-1);
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-1);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -196,8 +191,8 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsOkForExistingExtensionIfNoInsecureExtensionExists(): void
     {
-        $this->setUpRepositoryStatusTests(0, false);
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(0, false);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         foreach ($status as $statusObject) {
             self::assertInstanceOf(Status::class, $statusObject);
@@ -210,8 +205,8 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsWarningForExistingExtensionIfInsecureExtensionExistsButIsNotLoaded(): void
     {
-        $this->setUpRepositoryStatusTests(-1, false);
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-1, false);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -223,8 +218,8 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsWarningForLoadedExtensionIfOutdatedExtensionIsLoaded(): void
     {
-        $this->setUpRepositoryStatusTests(-2, true);
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-2, true);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -236,8 +231,8 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorForExistingExtensionIfOutdatedExtensionExists(): void
     {
-        $this->setUpRepositoryStatusTests(-2, false);
-        $subject = new ExtensionStatus($this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-2, false);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -250,7 +245,7 @@ class ExtensionStatusTest extends UnitTestCase
      * @param bool $setupRepositoryStatusOk
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function setUpRepositoryStatusTests(int $reviewState = 0, bool $installed = true, bool $setupRepositoryStatusOk = true)
+    protected function setUpRegistryStatusTests(int $reviewState = 0, bool $installed = true, bool $setupRepositoryStatusOk = true)
     {
         $mockTerObject = new Extension();
         $mockTerObject->setVersion('1.0.6');
@@ -270,14 +265,28 @@ class ExtensionStatusTest extends UnitTestCase
                 ],
             ]);
 
-        $repositoryRepositoryProphecy = $this->prophesize(RepositoryRepository::class);
-        GeneralUtility::setSingletonInstance(RepositoryRepository::class, $repositoryRepositoryProphecy->reveal());
         GeneralUtility::setSingletonInstance(ListUtility::class, $mockListUtility);
+        $remoteRegistryProphecy = $this->prophesize(RemoteRegistry::class);
         if ($setupRepositoryStatusOk) {
-            $repository = new Repository();
-            $repository->setLastUpdate(new \DateTime('-4days'));
-            $repositoryRepositoryProphecy->findOneTypo3OrgRepository()->willReturn($repository);
+            $remote = new class() extends TerExtensionRemote {
+                public function __construct()
+                {
+                }
+                public function getLastUpdate(): \DateTimeInterface
+                {
+                    return new \DateTimeImmutable('-4days');
+                }
+                protected function isDownloadedExtensionListUpToDate(): bool
+                {
+                    return true;
+                }
+            };
+            $remoteRegistryProphecy->hasRemote(Argument::cetera())->willReturn(true);
+            $remoteRegistryProphecy->hasDefaultRemote()->willReturn(true);
+            $remoteRegistryProphecy->getDefaultRemote()->willReturn($remote);
+        } else {
+            $remoteRegistryProphecy->hasDefaultRemote()->willReturn(false);
         }
-        return $repositoryRepositoryProphecy;
+        return $remoteRegistryProphecy;
     }
 }

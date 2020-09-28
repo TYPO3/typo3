@@ -37,3 +37,17 @@ services:
         command: 'extension:uninstall'
         alias: true
         schedulable: false
+
+  TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry:
+    public: true
+
+  TYPO3\CMS\Extensionmanager\Domain\Repository\BulkExtensionRepositoryWriter:
+    public: true
+
+  extension.remote.ter:
+    class: 'TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote'
+    arguments:
+      $identifier: 'ter'
+    tags:
+      - name: 'extension.remote'
+        default: true

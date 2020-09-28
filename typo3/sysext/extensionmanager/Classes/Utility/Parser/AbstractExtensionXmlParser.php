@@ -19,8 +19,102 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * Abstract parser for TYPO3's extension.xml file.
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-abstract class AbstractExtensionXmlParser extends AbstractXmlParser
+abstract class AbstractExtensionXmlParser implements \SplSubject
 {
+    /**
+     * Keeps XML parser instance.
+     *
+     * @var mixed
+     */
+    protected $objXml;
+
+    /**
+     * Keeps name of required PHP extension
+     * for this class to work properly.
+     *
+     * @var string
+     */
+    protected $requiredPhpExtensions;
+
+    /**
+     * Keeps list of attached observers.
+     *
+     * @var \SplObserver[]
+     */
+    protected $observers = [];
+
+    /**
+     * Method attaches an observer.
+     *
+     * @param \SplObserver $observer an observer to attach
+     * @see detach()
+     * @see notify()
+     */
+    public function attach(\SplObserver $observer)
+    {
+        $this->observers[] = $observer;
+    }
+
+    /**
+     * Method detaches an attached observer
+     *
+     * @param \SplObserver $observer an observer to detach
+     * @see attach()
+     * @see notify()
+     */
+    public function detach(\SplObserver $observer)
+    {
+        $key = array_search($observer, $this->observers, true);
+        if ($key !== false) {
+            unset($this->observers[$key]);
+        }
+    }
+
+    /**
+     * Method notifies attached observers.
+     *
+     * @see attach()
+     * @see detach()
+     */
+    public function notify()
+    {
+        foreach ($this->observers as $observer) {
+            $observer->update($this);
+        }
+    }
+
+    /**
+     * Method determines if a necessary PHP extension is available.
+     *
+     * Method tries to load the extension if necessary and possible.
+     *
+     * @return bool TRUE, if PHP extension is available, otherwise FALSE
+     */
+    public function isAvailable()
+    {
+        $isAvailable = true;
+        if (!extension_loaded($this->requiredPhpExtensions)) {
+            $prefix = PHP_SHLIB_SUFFIX === 'dll' ? 'php_' : '';
+            if (!(((bool)ini_get('enable_dl') && !(bool)ini_get('safe_mode')) && function_exists('dl') && dl($prefix . $this->requiredPhpExtensions . PHP_SHLIB_SUFFIX))) {
+                $isAvailable = false;
+            }
+        }
+        return $isAvailable;
+    }
+
+    /**
+     * Method parses an XML file.
+     *
+     * @param string $file GZIP stream resource
+     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of XML parser errors
+     */
+    abstract public function parseXml($file);
+
+    /**
+     * Create required parser
+     */
+    abstract protected function createParser();
+
     /**
      * Keeps current author company of an extension's version.
      *

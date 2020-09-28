@@ -34,10 +34,10 @@ use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
-use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
 /**
  * Controller for extension listings (TER or local extensions)
@@ -242,12 +242,9 @@ class ListController extends AbstractModuleController
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
         if ($importExportInstalled) {
             try {
-                $repositoryHelper = GeneralUtility::makeInstance(Helper::class);
-                // Check if a TER update has been done at all, if not, fetch it directly
-                // Repository needs an update, but not because of the extension hash has changed
-                $isExtListUpdateNecessary = $repositoryHelper->isExtListUpdateNecessary();
-                if ($isExtListUpdateNecessary > 0 && ($isExtListUpdateNecessary & $repositoryHelper::PROBLEM_EXTENSION_HASH_CHANGED) === 0) {
-                    $repositoryHelper->updateExtList();
+                $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+                foreach ($remoteRegistry->getListableRemotes() as $remote) {
+                    $remote->getAvailablePackages();
                 }
             } catch (ExtensionManagerException $e) {
                 $this->addFlashMessage($e->getMessage(), $e->getCode(), FlashMessage::ERROR);

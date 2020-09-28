@@ -147,10 +147,10 @@ class DownloadQueue implements SingletonInterface
     /**
      * Return whether the queue contains extensions or not
      *
-     * @param string $stack
+     * @param string $stack either "download" or "update"
      * @return bool
      */
-    public function isQueueEmpty($stack = 'download')
+    public function isQueueEmpty($stack)
     {
         return empty($this->extensionStorage[$stack]);
     }

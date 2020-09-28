@@ -26,7 +26,6 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
-use TYPO3\CMS\Extensionmanager\Utility\DownloadUtility;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
@@ -44,11 +43,6 @@ class DownloadController extends AbstractController
      * @var ExtensionManagementService
      */
     protected $managementService;
-
-    /**
-     * @var DownloadUtility
-     */
-    protected $downloadUtility;
 
     /**
      * @var string
@@ -74,14 +68,6 @@ class DownloadController extends AbstractController
     public function injectManagementService(ExtensionManagementService $managementService)
     {
         $this->managementService = $managementService;
-    }
-
-    /**
-     * @param DownloadUtility $downloadUtility
-     */
-    public function injectDownloadUtility(DownloadUtility $downloadUtility)
-    {
-        $this->downloadUtility = $downloadUtility;
     }
 
     /**
@@ -339,7 +325,7 @@ class DownloadController extends AbstractController
         $result = false;
         $errorMessages = [];
         try {
-            $this->downloadUtility->setDownloadPath($downloadPath);
+            $this->managementService->setDownloadPath($downloadPath);
             $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
             $this->managementService->setAutomaticInstallationEnabled($isAutomaticInstallationEnabled);
             if (($result = $this->managementService->installExtension($extension)) === false) {

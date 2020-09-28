@@ -27,27 +27,18 @@ class XmlParserFactory
      * An array with instances of xml parsers.
      * This member is set in the getParserInstance() function.
      *
-     * @var array
+     * @var AbstractExtensionXmlParser
      */
-    protected static $instance = [];
+    protected static $instance;
 
     /**
      * Keeps array of all available parsers.
      *
-     * @todo This would better be moved to a global configuration array like
-     * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']. (might require EM to be moved in a sysext)
-     *
      * @var array
      */
     protected static $parsers = [
-        'extension' => [
-            ExtensionXmlPushParser::class => 'ExtensionXmlPushParser.php',
-            ExtensionXmlPullParser::class => 'ExtensionXmlPullParser.php',
-        ],
-        'mirror' => [
-            MirrorXmlPushParser::class => 'MirrorXmlPushParser.php',
-            MirrorXmlPullParser::class=> 'MirrorXmlPullParser.php',
-        ]
+        ExtensionXmlPushParser::class,
+        ExtensionXmlPullParser::class,
     ];
 
     /**
@@ -56,26 +47,22 @@ class XmlParserFactory
      * This function will return an instance of a class that implements
      * \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser
      *
-     * @param string $parserType type of parser, one of extension and mirror
-     * @param string $excludeClassNames (optional) comma-separated list of class names
      * @return AbstractExtensionXmlParser an instance of an extension.xml parser
      */
-    public static function getParserInstance($parserType, $excludeClassNames = '')
+    public static function getParserInstance()
     {
-        if (!isset(self::$instance[$parserType]) || !is_object(self::$instance[$parserType]) || !empty($excludeClassNames)) {
+        if (!isset(self::$instance) || !is_object(self::$instance)) {
             // reset instance
-            self::$instance[$parserType] = ($objParser = null);
-            foreach (self::$parsers[$parserType] as $className => $file) {
-                if (!GeneralUtility::inList($excludeClassNames, $className)) {
-                    $objParser = GeneralUtility::makeInstance($className);
-                    if ($objParser->isAvailable()) {
-                        self::$instance[$parserType] = &$objParser;
-                        break;
-                    }
-                    $objParser = null;
+            self::$instance = null;
+            foreach (self::$parsers as $className) {
+                /** @var AbstractExtensionXmlParser $objParser */
+                $objParser = GeneralUtility::makeInstance($className);
+                if ($objParser->isAvailable()) {
+                    self::$instance = $objParser;
+                    break;
                 }
             }
         }
-        return self::$instance[$parserType];
+        return self::$instance;
     }
 }

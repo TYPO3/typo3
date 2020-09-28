@@ -1,21 +1,11 @@
 #
-# Table structure for table 'tx_extensionmanager_domain_model_repository'
-#
-CREATE TABLE tx_extensionmanager_domain_model_repository (
-  title varchar(150) NOT NULL default '',
-  description mediumtext,
-  wsdl_url varchar(100) NOT NULL default '',
-  mirror_list_url varchar(100) NOT NULL default '',
-  last_update int(11) unsigned DEFAULT '0' NOT NULL,
-  extension_count int(11) DEFAULT '0' NOT NULL
-);
-
-#
 # Table structure for table 'tx_extensionmanager_domain_model_extension'
 #
 CREATE TABLE tx_extensionmanager_domain_model_extension (
   extension_key varchar(60) NOT NULL default '',
-  repository int(11) unsigned NOT NULL default '1',
+  # Can be removed once TYPO3s testing framework fixture does not set <repository>
+  repository int(1) NOT NULL default 1,
+  remote varchar(100) NOT NULL default 'ter',
   version varchar(15) NOT NULL default '',
   alldownloadcounter int(11) unsigned NOT NULL default '0',
   downloadcounter int(11) unsigned NOT NULL default '0',
@@ -37,8 +27,8 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   lastreviewedversion int(3) NOT NULL default '0',
   documentation_link varchar(2048),
 
-  KEY index_extrepo (extension_key,repository),
-  KEY index_versionrepo (integer_version,repository,extension_key),
+  KEY index_extrepo (extension_key,remote),
+  KEY index_versionrepo (integer_version,remote,extension_key),
   KEY index_currentversions (current_version,review_state),
-  UNIQUE versionextrepo (extension_key,version,repository)
+  UNIQUE versionextrepo (extension_key,version,remote)
 );

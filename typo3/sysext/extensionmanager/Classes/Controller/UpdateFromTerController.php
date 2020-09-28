@@ -19,10 +19,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
-use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
 /**
  * Controller for actions relating to update of full extension list from TER
@@ -31,14 +30,9 @@ use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 class UpdateFromTerController extends AbstractController
 {
     /**
-     * @var Helper
+     * @var RemoteRegistry
      */
-    protected $repositoryHelper;
-
-    /**
-     * @var RepositoryRepository
-     */
-    protected $repositoryRepository;
+    protected $remoteRegistry;
 
     /**
      * @var ListUtility
@@ -56,19 +50,11 @@ class UpdateFromTerController extends AbstractController
     protected $defaultViewObjectName = JsonView::class;
 
     /**
-     * @param Helper $repositoryHelper
+     * @param RemoteRegistry $remoteRegistry
      */
-    public function injectRepositoryHelper(Helper $repositoryHelper)
+    public function injectRemoteRegistry(RemoteRegistry $remoteRegistry)
     {
-        $this->repositoryHelper = $repositoryHelper;
-    }
-
-    /**
-     * @param RepositoryRepository $repositoryRepository
-     */
-    public function injectRepositoryRepository(RepositoryRepository $repositoryRepository)
-    {
-        $this->repositoryRepository = $repositoryRepository;
+        $this->remoteRegistry = $remoteRegistry;
     }
 
     /**
@@ -96,27 +82,33 @@ class UpdateFromTerController extends AbstractController
     {
         $updated = false;
         $errorMessage = '';
+        $lastUpdate = null;
 
-        if ($this->extensionRepository->countAll() === 0 || $forceUpdateCheck) {
-            try {
-                $updated = $this->repositoryHelper->updateExtList();
-            } catch (ExtensionManagerException $e) {
-                $errorMessage = $e->getMessage();
+        $emptyExtensionList = $this->extensionRepository->countAll() === 0;
+        try {
+            foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
+                if ((!$updated && $emptyExtensionList) || $forceUpdateCheck) {
+                    $remote->getAvailablePackages($forceUpdateCheck);
+                    $updated = $forceUpdateCheck;
+                }
+                if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
+                    $lastUpdate = $remote->getLastUpdate();
+                }
             }
+        } catch (ExtensionManagerException $e) {
+            $errorMessage = $e->getMessage();
         }
-        $repository = $this->repositoryRepository->findOneTypo3OrgRepository();
 
         $timeFormat = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');
-        $lastUpdateTime = $repository ? $repository->getLastUpdate() : null;
-        if (null === $lastUpdateTime) {
+        if ($lastUpdate === null) {
             $lastUpdatedSince = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never');
             $lastUpdateTime = date($timeFormat);
         } else {
             $lastUpdatedSince = BackendUtility::calcAge(
-                time() - $lastUpdateTime->format('U'),
+                $GLOBALS['EXEC_TIME'] - $lastUpdate->format('U'),
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
             );
-            $lastUpdateTime = $lastUpdateTime->format($timeFormat);
+            $lastUpdateTime = $lastUpdate->format($timeFormat);
         }
         $this->view->assign('value', [
             'updated' => $updated,

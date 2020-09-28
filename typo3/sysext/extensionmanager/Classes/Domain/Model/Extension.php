@@ -158,6 +158,11 @@ class Extension extends AbstractEntity
     protected $documentationLink = '';
 
     /**
+     * @var string
+     */
+    protected $remote;
+
+    /**
      * @internal
      * @var int
      */
@@ -610,5 +615,10 @@ class Extension extends AbstractEntity
     public function setDocumentationLink(string $documentationLink): void
     {
         $this->documentationLink = $documentationLink;
+    }
+
+    public function getRemoteIdentifier(): string
+    {
+        return $this->remote;
     }
 }
