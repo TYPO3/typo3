@@ -30,4 +30,4 @@
 ,12,89,1,1,0,0,0,0,0,0,0,0,"Price #2.1.1",7,"tx_irretutorial_1nff_offer",,
 ,13,89,1,1,0,0,0,0,0,0,0,0,"Price #1.1.1",8,"tx_irretutorial_1nff_offer",,
 "sys_refindex",,,,,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,

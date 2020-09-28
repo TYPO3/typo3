@@ -36,6 +36,12 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/FlexformIrre/DataSet/';
 
     /**
+     * @var bool
+     * @todo: Test setup should be updated to have true here
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * @test
      */
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave()

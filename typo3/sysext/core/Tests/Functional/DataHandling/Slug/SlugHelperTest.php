@@ -32,6 +32,11 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Slug/DataSet/';
 
     /**
+     * @var bool Reference index testing not relevant here.
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * Default Site Configuration
      * @var array
      */

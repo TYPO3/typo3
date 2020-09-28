@@ -43,6 +43,12 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     protected $backendUser;
 
     /**
+     * @var bool
+     * @todo: Test setup should be updated to have true here
+     */
+    protected $assertCleanReferenceIndex = false;
+
+    /**
      * @var array
      */
     protected $coreExtensionsToLoad = ['workspaces'];

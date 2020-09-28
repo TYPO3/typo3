@@ -1,24 +1,24 @@
-tt_content,,,,,,,,,,,,,,
-,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,tx_irretutorial_1ncsv_hotels
+"tt_content",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header","tx_irretutorial_1ncsv_hotels"
 ,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1","3,4"
 ,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",5
 ,299,89,128,0,0,0,0,0,0,0,0,0,"Testing #1",6
-tx_irretutorial_1ncsv_hotel,,,,,,,,,,,,,,
-,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,offers
+"tx_irretutorial_1ncsv_hotel",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title","offers"
 ,2,89,1,0,0,0,0,0,0,0,0,0,"Hotel #0",
 ,3,89,256,0,0,0,0,0,0,0,0,0,"Hotel #1","5,6"
 ,4,89,128,0,0,0,0,0,0,0,0,0,"Hotel #2",7
 ,5,89,64,0,0,0,0,0,0,0,0,0,"Hotel #1",8
 ,6,89,0,0,0,0,0,0,0,0,0,0,"Hotel #1",9
-tx_irretutorial_1ncsv_offer,,,,,,,,,,,,,,
-,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,prices
+"tx_irretutorial_1ncsv_offer",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title","prices"
 ,5,89,256,0,0,0,0,0,0,0,0,0,"Offer #1.1","7,8,9"
 ,6,89,128,0,0,0,0,0,0,0,0,0,"Offer #1.2","10,11"
 ,7,89,64,0,0,0,0,0,0,0,0,0,"Offer #2.1",12
 ,8,89,32,0,0,0,0,0,0,0,0,0,"Offer #1.1",13
 ,9,89,16,0,0,0,0,0,0,0,0,0,"Offer #1",
-tx_irretutorial_1ncsv_price,,,,,,,,,,,,,,
-,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3_origuid,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,
+"tx_irretutorial_1ncsv_price",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title",
 ,7,89,256,0,0,0,0,0,0,0,0,0,"Price #1.1.1",
 ,8,89,128,0,0,0,0,0,0,0,0,0,"Price #1.1.2",
 ,9,89,64,0,0,0,0,0,0,0,0,0,"Price #1.1.3",
@@ -27,6 +27,21 @@ tx_irretutorial_1ncsv_price,,,,,,,,,,,,,,
 ,12,89,8,0,0,0,0,0,0,0,0,0,"Price #2.1.1",
 ,13,89,4,0,0,0,0,0,0,0,0,0,"Price #1.1.1",
 "sys_refindex",,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,
-,"5822ca52c92c38f97af7a3cf2e50afc7","tt_content",299,"tx_irretutorial_1ncsv_hotels",0,0,0,"tx_irretutorial_1ncsv_hotel",6,,,,,
-,"1a8122d5b6f753957e91247a2df13b05","tx_irretutorial_1ncsv_hotel",6,"offers",0,0,0,"tx_irretutorial_1ncsv_offer",9,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",
+,"4787480de4393ca84a67fff60accb7b7","pages",89,"tx_irretutorial_1ncsv_hotels",,,,0,0,0,"tx_irretutorial_1ncsv_hotel",2,,
+,"d9f44c388aa588099712d6670cbc6434","tt_content",297,"tx_irretutorial_1ncsv_hotels",,,,0,0,0,"tx_irretutorial_1ncsv_hotel",3,,
+,"28d0d42330e7526ee15e2b2d2a12ff25","tt_content",297,"tx_irretutorial_1ncsv_hotels",,,,1,0,0,"tx_irretutorial_1ncsv_hotel",4,,
+,"11b80c408e5be8cc1b25d43b088ff654","tt_content",298,"tx_irretutorial_1ncsv_hotels",,,,0,0,0,"tx_irretutorial_1ncsv_hotel",5,,
+,"58cef9b05aef0a9f8347c142bb5573e7","tx_irretutorial_1ncsv_hotel",3,"offers",,,,0,0,0,"tx_irretutorial_1ncsv_offer",5,,
+,"b67fb0deabbe6e5c9e75b9e151e5897a","tx_irretutorial_1ncsv_hotel",3,"offers",,,,1,0,0,"tx_irretutorial_1ncsv_offer",6,,
+,"90505db860f187c6eae5d900b1447a06","tx_irretutorial_1ncsv_hotel",4,"offers",,,,0,0,0,"tx_irretutorial_1ncsv_offer",7,,
+,"478c7ed15330bd7cf68ca27cfbd1cee6","tx_irretutorial_1ncsv_hotel",5,"offers",,,,0,0,0,"tx_irretutorial_1ncsv_offer",8,,
+,"b88ffb156f67d9259af407eec374f3a1","tx_irretutorial_1ncsv_offer",5,"prices",,,,0,0,0,"tx_irretutorial_1ncsv_price",7,,
+,"f304da1bc292b25ce439369871ed39a4","tx_irretutorial_1ncsv_offer",5,"prices",,,,1,0,0,"tx_irretutorial_1ncsv_price",8,,
+,"ba481fa37867b2427dc4c6ea535391c1","tx_irretutorial_1ncsv_offer",5,"prices",,,,2,0,0,"tx_irretutorial_1ncsv_price",9,,
+,"49285566be2befb8cbbd07d37cfd2bc5","tx_irretutorial_1ncsv_offer",6,"prices",,,,0,0,0,"tx_irretutorial_1ncsv_price",10,,
+,"3178d1ee76c81fd8e1df63f1ea01fed0","tx_irretutorial_1ncsv_offer",6,"prices",,,,1,0,0,"tx_irretutorial_1ncsv_price",11,,
+,"ab1e9a9e0886a217f4f4b5c1f3fde0b8","tx_irretutorial_1ncsv_offer",7,"prices",,,,0,0,0,"tx_irretutorial_1ncsv_price",12,,
+,"0743c3e1d65b2bc5d64ef528767c3a32","tx_irretutorial_1ncsv_offer",8,"prices",,,,0,0,0,"tx_irretutorial_1ncsv_price",13,,
+,"5822ca52c92c38f97af7a3cf2e50afc7","tt_content",299,"tx_irretutorial_1ncsv_hotels",,,,0,0,0,"tx_irretutorial_1ncsv_hotel",6,,
+,"1a8122d5b6f753957e91247a2df13b05","tx_irretutorial_1ncsv_hotel",6,"offers",,,,0,0,0,"tx_irretutorial_1ncsv_offer",9,,

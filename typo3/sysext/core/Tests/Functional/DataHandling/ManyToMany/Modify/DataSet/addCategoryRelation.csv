@@ -16,6 +16,10 @@
 ,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1",0,3
 ,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",0,2
 "sys_refindex",,,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,,
-,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",0,0,0,"sys_category",28,,,,,,
-,"954980b97a4b7ef8ddc8247c3203ba72","sys_category",31,"items",0,0,0,"tt_content",297,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,
+,"58b0861c2821b9aa8c036f51c9992938","sys_category",28,"items",,,,0,0,0,"tt_content",297,,,
+,"a902304805e24ea0d57feaeb08d5c898","sys_category",29,"items",,,,0,0,0,"tt_content",297,,,
+,"4cf35307d2ebd8521d82d598a9d6fb37","sys_category",29,"items",,,,1,0,0,"tt_content",298,,,
+,"a39d4a457c3043438f34193027cdb8dc","sys_category",30,"items",,,,0,0,0,"tt_content",298,,,
+,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,,,
+,"954980b97a4b7ef8ddc8247c3203ba72","sys_category",31,"items",,,,0,0,0,"tt_content",297,,,
