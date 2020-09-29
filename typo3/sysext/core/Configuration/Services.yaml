@@ -256,7 +256,7 @@ services:
         identifier: 'legacy-slot'
         method: 'onResourceStorageEmitSanitizeFileNameSignal'
         event: TYPO3\CMS\Core\Resource\Event\SanitizeFileNameEvent
-      - name: event.listener,
+      - name: event.listener
         identifier: 'legacy-slot'
         method: 'onReferenceIndexShouldExcludeTableFromReferenceIndexSignal'
         event: TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent
