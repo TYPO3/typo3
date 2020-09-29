@@ -922,15 +922,23 @@ class DatabaseRecordList
                         $cc++;
                         // Reset translations
                         $translations = [];
+                        // Initialize with FALSE which causes the localization panel to not beeing displayed as
+                        // the record is already localized, in free mode or has sys_language_uid -1 set.
+                        // Only set to TRUE if TranslationConfigurationProvider::translationInfo() returns
+                        // an array indicating the record can be translated.
+                        $translationEnabled = false;
                         // Guard clause so we can quickly return if a record is localized to "all languages"
                         // It should only be possible to localize a record off default (uid 0)
                         if ($l10nEnabled && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
                             $translationsRaw = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $selFieldList);
-                            if (is_array($translationsRaw) && is_array($translationsRaw['translations'])) {
-                                $translations = $translationsRaw['translations'];
+                            if (is_array($translationsRaw)) {
+                                $translationEnabled = true;
+                                if (is_array($translationsRaw['translations'])) {
+                                    $translations = $translationsRaw['translations'];
+                                }
                             }
                         }
-                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, '', 0, $translations);
+                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, '', 0, $translations, $translationEnabled);
                         // If no search happened it means that the selected
                         // records are either default or All language and here we will not select translations
                         // which point to the main record:
@@ -975,7 +983,7 @@ class DatabaseRecordList
                                 BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
                                 if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                                     $currentIdList[] = $lRow['uid'];
-                                    $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, '', 18, []);
+                                    $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, '', 18, [], false);
                                 }
                             }
                         }
@@ -1102,12 +1110,13 @@ class DatabaseRecordList
      * @param string $titleCol Table field (column) where header value is found
      * @param string $thumbsCol Table field (column) where (possible) thumbnails can be found
      * @param int $indent Indent from left.
-     * @param array $translations
+     * @param array $translations Array of already existing translations for the current record
+     * @param bool $translationEnabled Whether the record can be translated
      * @return string Table row for the element
      * @internal
      * @see getTable()
      */
-    public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent, array $translations)
+    public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent, array $translations, bool $translationEnabled)
     {
         if (!is_array($row)) {
             return '';
@@ -1194,9 +1203,10 @@ class DatabaseRecordList
                 $theData[$fCol] = $this->makeClip($table, $row);
             } elseif ($fCol === '_LOCALIZATION_') {
                 // Language flag an title
-                $theData[$fCol] = $this->languageFlag($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                $theData[$fCol] = $this->languageFlag($table, $row);
                 // Localize record
-                $theData[$fCol . 'b'] = '<div class="btn-group">' . $this->makeLocalizationPanel($table, $row, $translations) . '</div>';
+                $localizationPanel = $translationEnabled ? $this->makeLocalizationPanel($table, $row, $translations) : '';
+                $theData[$fCol . 'b'] = '<div class="btn-group">' . $localizationPanel . '</div>';
             } elseif ($fCol === '_LOCALIZATION_b') {
                 // deliberately empty
             } else {
@@ -2183,9 +2193,6 @@ class DatabaseRecordList
      */
     public function makeLocalizationPanel($table, $row, array $translations): string
     {
-        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0) {
-            return '';
-        }
         $out = '';
         // All records excluding pages
         $possibleTranslations = $this->possibleTranslations;
@@ -3575,17 +3582,20 @@ class DatabaseRecordList
     /**
      * Return the icon for the language
      *
-     * @param int $sys_language_uid Sys language uid
+     * @param string $table
+     * @param array $row
      * @param bool $addAsAdditionalText If set to true, only the flag is returned
      * @return string Language icon
      */
-    public function languageFlag($sys_language_uid, $addAsAdditionalText = true)
+    public function languageFlag(string $table, array $row, bool $addAsAdditionalText = true): string
     {
         $out = '';
-        $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
-        if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
-            $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon(
-                $this->languageIconTitles[$sys_language_uid]['flagIcon'],
+        $languageUid = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+        $title = htmlspecialchars($this->languageIconTitles[$languageUid]['title']);
+        $indent = ($table !== 'pages' && $this->isLocalized($table, $row)) ? ' style="margin-left: 16px;"' : '';
+        if ($this->languageIconTitles[$languageUid]['flagIcon']) {
+            $out .= '<span title="' . $title . '"' . $indent . '>' . $this->iconFactory->getIcon(
+                $this->languageIconTitles[$languageUid]['flagIcon'],
                 Icon::SIZE_SMALL
             )->render() . '</span>';
             if (!$addAsAdditionalText) {
@@ -3679,5 +3689,19 @@ class DatabaseRecordList
         $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
         $view->setTemplate($filename);
         return $view;
+    }
+
+    /**
+     * Check if a given record is a localization
+     *
+     * @param string $table
+     * @param array $row
+     *
+     * @return bool
+     */
+    protected function isLocalized(string $table, array $row): bool
+    {
+        return ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] ?? false)
+            && ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?? false);
     }
 }
