@@ -2372,7 +2372,9 @@ class DatabaseRecordList
             if ($lNew) {
                 $out[1] .= $lNew;
             }
-        } elseif ($row['l18n_parent']) {
+        } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+            && (bool)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?? false)
+        ) {
             $out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;' . $out[0];
         }
         return $out;
