@@ -42,7 +42,12 @@ class SvgImageProcessor implements ProcessorInterface
     {
         $task->setExecuted(true);
         $task->getTargetFile()->setUsesOriginalFile();
-        $imageDimension = ImageDimension::fromProcessingTask($task);
+        try {
+            $imageDimension = ImageDimension::fromProcessingTask($task);
+        } catch (\Throwable $e) {
+            // To not fail image processing, we just assume an SVG image dimension here
+            $imageDimension = new ImageDimension(64, 64);
+        }
         $task->getTargetFile()->updateProperties(
             [
                 'width' => $imageDimension->getWidth(),

@@ -142,6 +142,9 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
             // Fallback to viewBox
             $viewBox = explode(' ', $xmlAttributes['viewBox']);
             $imagesSizes = [(int)$viewBox[2], (int)$viewBox[3]];
+        } else {
+            // To not fail image processing, we just assume an SVG image dimension here
+            $imagesSizes = [64, 64];
         }
 
         return $imagesSizes !== [] ? $imagesSizes : false;
