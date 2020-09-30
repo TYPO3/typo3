@@ -286,7 +286,6 @@ class BackendLayoutIconUpdateWizard implements UpgradeWizardInterface, ChattyInt
                     'tablenames' => $this->table,
                     'crdate' => time(),
                     'tstamp' => time(),
-                    'sorting' => $i + 256,
                     'sorting_foreign' => $i,
                 ];
 
