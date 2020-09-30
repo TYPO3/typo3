@@ -68,7 +68,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
  *
  * Value of key ``argumentsKey`` in the current website language
- * with ``%1`` and ``%2`` are replaced by "dog" and "fox" (:php:`printf()`).
+ * with each declared as ``%s`` in the language file are replaced by "dog" and "fox" (:php:`printf()`).
  * If the key is not found, the output is "default value".
  *
  * Inline notation with extension name
