@@ -804,42 +804,40 @@ to the field and adds a page URL as translation argument:
 
 .. code-block:: typoscript
 
-   plugin.tx_form {
-       settings {
-           formDefinitionOverrides {
-               <form-id> {
-                   renderables {
-                       0 {
-                           # Page
-                           renderables {
-                               fieldWithTranslationArguments {
-                                   renderingOptions {
-                                       translation {
-                                           arguments {
-                                               label {
-                                                   0 = TEXT
-                                                   0.typolink {
-                                                       # Terms and conditions page, could be
-                                                       # set also via TypoScript constants
-                                                       parameter = 42
-                                                       returnLast = url
-                                                    }
+ plugin.tx_form {
+     settings {
+         formDefinitionOverrides {
+             <form-id> {
+                 renderables {
+                     0 {
+                         # Page
+                         renderables {
+                             fieldWithTranslationArguments {
+                                 renderingOptions {
+                                     translation {
+                                         arguments {
+                                             label {
+                                                 0 = TEXT
+                                                 0.typolink {
+                                                     # Terms and conditions page, could be
+                                                     # set also via TypoScript constants
+                                                     parameter = 42
+                                                     returnLast = url
                                                  }
-                                              }
-                                           }
-                                        }
+                                             }
+                                         }
                                      }
-                                  }
-                               }
-                            }
+                                 }
+                             }
                          }
-                      }
-                   }
-                }
-            }
+                     }
+                 }
+             }
          }
-      }
-   }
+     }
+ }
+  
+
 
 The :yaml:`Page` element of the form definition was not registered with a named key so a numeric
 key :yaml:`0` must be used which, as mentioned above, is prone to errors when more pages are added
