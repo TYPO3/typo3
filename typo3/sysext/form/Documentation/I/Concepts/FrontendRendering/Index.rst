@@ -805,37 +805,33 @@ to the field and adds a page URL as translation argument:
 .. code-block:: typoscript
 
    plugin.tx_form {
-       settings {
-           formDefinitionOverrides {
-               <form-id> {
-                   renderables {
-                       0 {
-                           # Page
-                           renderables {
-                               fieldWithTranslationArguments {
-                                   renderingOptions {
-                                       translation {
-                                           arguments {
-                                               label {
-                                                   0 = TEXT
-                                                   0.typolink {
-                                                       # Terms and conditions page, could be
-                                                       # set also via TypoScript constants
-                                                       parameter = 42
-                                                       returnLast = url
-                                                    }
-                                                 }
-                                              }
-                                           }
-                                        }
-                                     }
-                                  }
-                               }
-                            }
-                         }
-                      }
-                   }
-                }
+      settings {
+         formDefinitionOverrides {
+            <form-id> {
+               renderables {
+                  0 {
+                     # Page
+                     renderables {
+                        fieldWithTranslationArguments {
+                           renderingOptions {
+                              translation {
+                                 arguments {
+                                    label {
+                                       0 = TEXT
+                                       0.typolink {
+                                          # Terms and conditions page, could be
+                                          # set also via TypoScript constants
+                                          parameter = 42
+                                          returnLast = url
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
             }
          }
       }
