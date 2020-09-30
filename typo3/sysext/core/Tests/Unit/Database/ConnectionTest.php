@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\DBAL\Driver\Mysqli\MysqliConnection;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -58,18 +60,19 @@ class ConnectionTest extends UnitTestCase
         parent::setUp();
 
         $this->connection = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
             ->setMethods(
                 [
                     'connect',
                     'executeQuery',
                     'executeUpdate',
+                    'executeStatement',
                     'getDatabasePlatform',
                     'getDriver',
                     'getExpressionBuilder',
                     'getWrappedConnection',
                 ]
             )
+            ->setConstructorArgs([['platform' => $this->prophesize(MySqlPlatform::class)->reveal()], $this->prophesize(Driver::class)->reveal(), new Configuration(), null])
             ->getMock();
 
         $this->connection->expects(self::any())
@@ -218,10 +221,19 @@ class ConnectionTest extends UnitTestCase
      */
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
     {
-        $this->connection->expects(self::once())
-            ->method('executeUpdate')
-            ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->willReturn(1);
+
+        // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
+        if (method_exists(Connection::class, 'executeStatement')) {
+            $this->connection->expects(self::once())
+                ->method('executeStatement')
+                ->with($expectedQuery, $expectedValues, $expectedTypes)
+                ->willReturn(1);
+        } else {
+            $this->connection->expects(self::once())
+                ->method('executeUpdate')
+                ->with($expectedQuery, $expectedValues, $expectedTypes)
+                ->willReturn(1);
+        }
 
         $this->connection->insert(...$args);
     }
@@ -282,10 +294,18 @@ class ConnectionTest extends UnitTestCase
      */
     public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
     {
-        $this->connection->expects(self::once())
-            ->method('executeUpdate')
-            ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->willReturn(1);
+        // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
+        if (method_exists(Connection::class, 'executeStatement')) {
+            $this->connection->expects(self::once())
+                ->method('executeStatement')
+                ->with($expectedQuery, $expectedValues, $expectedTypes)
+                ->willReturn(1);
+        } else {
+            $this->connection->expects(self::once())
+                ->method('executeUpdate')
+                ->with($expectedQuery, $expectedValues, $expectedTypes)
+                ->willReturn(1);
+        }
 
         $this->connection->update(...$args);
     }
@@ -333,10 +353,18 @@ class ConnectionTest extends UnitTestCase
      */
     public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
     {
-        $this->connection->expects(self::once())
-            ->method('executeUpdate')
-            ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->willReturn(1);
+        // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
+        if (method_exists(Connection::class, 'executeStatement')) {
+            $this->connection->expects(self::once())
+                ->method('executeStatement')
+                ->with($expectedQuery, $expectedValues, $expectedTypes)
+                ->willReturn(1);
+        } else {
+            $this->connection->expects(self::once())
+                ->method('executeUpdate')
+                ->with($expectedQuery, $expectedValues, $expectedTypes)
+                ->willReturn(1);
+        }
 
         $this->connection->delete(...$args);
     }
