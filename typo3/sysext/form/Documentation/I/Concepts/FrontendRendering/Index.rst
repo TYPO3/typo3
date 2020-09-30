@@ -799,6 +799,18 @@ should be enough:
            translationFiles:
              10: path/to/locallang.xlf
 
+In the path/to/locallang.xlf, the label has to exist to be replaced.
+If the label has HTML in it, it has to be wrapped in CDATA.
+
+.. code-block:: xml
+
+            <trans-unit id="<form-id>.element.field-with-translation-arguments.properties.label">
+                <source><![CDATA[I agree to the <a href="%s">terms and conditions</a>]]></source>
+            </trans-unit>
+
+In order to present the markup accordingly, the fluid template of this label should be wrapped in f:format.raw.
+
+
 The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
 to the field and adds a page URL as translation argument:
 
