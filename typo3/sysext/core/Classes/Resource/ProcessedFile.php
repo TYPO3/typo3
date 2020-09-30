@@ -368,7 +368,11 @@ class ProcessedFile extends AbstractFile
 
         // @todo when should this update be done?
         if (!$this->isUnchanged() && $this->exists()) {
-            $this->properties = array_merge($this->properties, $this->storage->getFileInfo($this));
+            $storage = $this->storage;
+            if ($this->usesOriginalFile()) {
+                $storage = $this->originalFile->getStorage();
+            }
+            $this->properties = array_merge($this->properties, $storage->getFileInfo($this));
         }
     }
 
