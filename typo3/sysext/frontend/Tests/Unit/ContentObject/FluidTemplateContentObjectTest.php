@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -64,13 +65,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->contentObjectRenderer = $this->getMockBuilder(
-            ContentObjectRenderer::class
-        )->getMock();
+        $this->contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $this->subject = $this->getAccessibleMock(
             FluidTemplateContentObject::class,
             ['initializeStandaloneViewInstance'],
-            [$this->contentObjectRenderer]
+            [$this->contentObjectRenderer->reveal()]
         );
         /** @var $tsfe TypoScriptFrontendController */
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
@@ -99,7 +98,9 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function constructSetsContentObjectRenderer(): void
     {
-        self::assertSame($this->contentObjectRenderer, $this->subject->getContentObjectRenderer());
+        $contentObjectRenderer = new ContentObjectRenderer();
+        $subject = new FluidTemplateContentObject($contentObjectRenderer);
+        self::assertEquals($contentObjectRenderer, $subject->getContentObjectRenderer());
     }
 
     /**
@@ -117,45 +118,31 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap(): void
-    {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::any())
-            ->method('stdWrap')
-            ->with('foo', ['bar' => 'baz']);
-        $this->subject->render(['file' => 'foo', 'file.' => ['bar' => 'baz']]);
-    }
-
-    /**
-     * @test
-     */
     public function renderCallsStandardWrapForGivenTemplateRootPathsWithStandardWrap(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(1))
-            ->method('stdWrap')
-            ->with('dummyPath', ['wrap' => '|5/']);
-        $this->contentObjectRenderer
-            ->expects(self::at(2))
-            ->method('stdWrap')
-            ->with('', ['field' => 'someField']);
-        $this->subject->render(
-            [
-                'templateName' => 'foobar',
-                'templateRootPaths.' => [
-                    10 => 'dummyPath',
-                    '10.' => [
-                        'wrap' => '|5/',
-                    ],
-                    15 => 'dummyPath6/',
-                    '25.' => [
-                        'field' => 'someField',
-                    ],
-                ]
+        $configuration = [
+            'templateName' => 'foobar',
+            'templateRootPaths.' => [
+                10 => 'dummyPath',
+                '10.' => [
+                    'wrap' => '|5/',
+                ],
+                15 => 'dummyPath6/',
+                '25.' => [
+                    'field' => 'someField',
+                ],
             ]
-        );
+        ];
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrap('dummyPath', ['wrap' => '|5/'])->shouldHaveBeenCalled();
+        $contentObjectRenderer->stdWrap('', ['field' => 'someField'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -163,17 +150,19 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsTemplateFileInView(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(1))
-            ->method('stdWrapValue')
-            ->with('file')
-            ->willReturn(Environment::getFrameworkBasePath() . '/core/bar.html');
-        $this->standaloneView
-            ->expects(self::any())
-            ->method('setTemplatePathAndFilename')
-            ->with(Environment::getFrameworkBasePath() . '/core/bar.html');
-        $this->subject->render(['file' => 'EXT:core/bar.html']);
+        $configuration = ['file' => 'EXT:core/bar.html'];
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn(Environment::getFrameworkBasePath() . '/core/bar.html');
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setTemplatePathAndFilename(Environment::getFrameworkBasePath() . '/core/bar.html')->shouldHaveBeenCalled();
     }
 
     /**
@@ -181,25 +170,24 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsTemplateFileByTemplateInView(): void
     {
-        $this->addMockViewToSubject();
-
-        $this->contentObjectRenderer
-            ->expects(self::any())
-            ->method('cObjGetSingle')
-            ->with('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'])
-            ->willReturn('baz');
-
-        $this->standaloneView
-            ->expects(self::any())
-            ->method('setTemplateSource')
-            ->with('baz');
-
-        $this->subject->render([
+        $configuration = [
             'template' => 'FILE',
             'template.' => [
                 'file' => Environment::getPublicPath() . '/foo/bar.html'
             ]
-        ]);
+        ];
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(7);
+        $contentObjectRenderer->cObjGetSingle('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'], 'template')->willReturn('baz');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setTemplateSource('baz')->shouldHaveBeenCalled();
     }
 
     /**
@@ -207,30 +195,31 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsTemplateFileByTemplateNameInView(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(1))
-            ->method('stdWrapValue')
-            ->with('templateName')
-            ->willReturn('foo');
-        $this->standaloneView
-            ->expects(self::any())
-            ->method('getFormat')
-            ->willReturn('html');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setTemplate')
-            ->with('foo');
-
-        $this->subject->render(
-            [
-                'templateName' => 'foo',
-                'templateRootPaths.' => [
-                    0 => 'dummyPath1/',
-                    1 => 'dummyPath2/'
-                ]
+        $configuration = [
+            'templateName' => 'foo',
+            'templateRootPaths.' => [
+                0 => 'dummyPath1/',
+                1 => 'dummyPath2/'
             ]
-        );
+        ];
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('templateName', $configuration)->willReturn('foo');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplateRootPaths(Argument::cetera())->shouldBeCalled();
+        $standAloneView->assignMultiple(Argument::cetera())->shouldBeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render()->shouldBeCalled();
+        $standAloneView->getFormat()->willReturn('html');
+        $standAloneView->setTemplate('foo')->shouldBeCalled();
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setTemplate('foo')->shouldHaveBeenCalled();
     }
 
     /**
@@ -238,8 +227,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsTemplateFileByTemplateNameStdWrapInView(): void
     {
-        $this->addMockViewToSubject();
-
         $configuration = [
             'templateName' => 'TEXT',
             'templateName.' => ['value' => 'bar'],
@@ -249,21 +236,24 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ]
         ];
 
-        $this->contentObjectRenderer
-            ->expects(self::at(1))
-            ->method('stdWrapValue')
-            ->with('templateName', $configuration)
-            ->willReturn('bar');
-        $this->standaloneView
-            ->expects(self::any())
-            ->method('getFormat')
-            ->willReturn('html');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setTemplate')
-            ->with('bar');
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('templateName', $configuration)->willReturn('bar');
 
-        $this->subject->render($configuration);
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplateRootPaths(Argument::cetera())->shouldBeCalled();
+        $standAloneView->assignMultiple(Argument::cetera())->shouldBeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render()->shouldBeCalled();
+        $standAloneView->getFormat()->willReturn('html');
+        $standAloneView->setTemplate('bar')->shouldBeCalled();
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setTemplate('bar')->shouldHaveBeenCalled();
     }
 
     /**
@@ -271,16 +261,19 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsLayoutRootPathInView(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(2))
-            ->method('stdWrapValue')
-            ->willReturn('foo/bar.html');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setLayoutRootPaths')
-            ->with([Environment::getPublicPath() . '/foo/bar.html']);
-        $this->subject->render(['layoutRootPath' => 'foo/bar.html']);
+        $configuration = ['layoutRootPath' => 'foo/bar.html'];
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->willReturn('foo/bar.html');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setLayoutRootPaths([Environment::getPublicPath() . '/foo/bar.html'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -288,18 +281,23 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapValueForLayoutRootPath(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'layoutRootPath' => 'foo',
             'layoutRootPath.' => [
                 'bar' => 'baz'
             ]
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(2))
-            ->method('stdWrapValue')
-            ->with('layoutRootPath', $configuration);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -307,22 +305,27 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function layoutRootPathsHasStdWrapSupport(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(3))
-            ->method('stdWrap')
-            ->with('FILE', ['file' => 'foo/bar.html']);
-        $this->subject->render(
-            [
-                'layoutRootPaths.' => [
-                    10 => 'FILE',
-                    '10.' => [
-                        'file' => 'foo/bar.html',
-                    ],
-                    20 => 'foo/bar2.html',
-                ]
+        $configuration = [
+            'layoutRootPaths.' => [
+                10 => 'FILE',
+                '10.' => [
+                    'file' => 'foo/bar.html',
+                ],
+                20 => 'foo/bar2.html',
             ]
-        );
+        ];
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrap('FILE', ['file' => 'foo/bar.html'])->shouldBeCalled();
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrap('FILE', ['file' => 'foo/bar.html'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -346,25 +349,26 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'layoutRootPath' => 'foo/main.html',
             'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(2))
-            ->method('stdWrapValue')
-            ->with('layoutRootPath', $configuration)
-            ->willReturn('foo/main.html');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setLayoutRootPaths')
-            ->with([
-                0 => Environment::getPublicPath() . '/foo/main.html',
-                10 => Environment::getPublicPath() . '/foo/bar.html',
-                20 => Environment::getPublicPath() . '/foo/bar2.html'
-            ]);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->willReturn('foo/main.html');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setLayoutRootPaths([
+            0 => Environment::getPublicPath() . '/foo/main.html',
+            10 => Environment::getPublicPath() . '/foo/bar.html',
+            20 => Environment::getPublicPath() . '/foo/bar2.html'
+        ])->shouldHaveBeenCalled();
     }
 
     /**
@@ -372,18 +376,19 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsPartialRootPathInView(): void
     {
-        $this->addMockViewToSubject();
         $configuration = ['partialRootPath' => 'foo/bar.html'];
-        $this->contentObjectRenderer
-            ->expects(self::at(3))
-            ->method('stdWrapValue')
-            ->with('partialRootPath', $configuration)
-            ->willReturn('foo/bar.html');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setPartialRootPaths')
-            ->with([Environment::getPublicPath() . '/foo/bar.html']);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('partialRootPath', $configuration)->willReturn('foo/bar.html');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setPartialRootPaths([Environment::getPublicPath() . '/foo/bar.html'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -391,22 +396,25 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function partialRootPathsHasStdWrapSupport(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(4))
-            ->method('stdWrap')
-            ->with('FILE', ['file' => 'foo/bar.html']);
-        $this->subject->render(
-            [
-                'partialRootPaths.' => [
-                    10 => 'FILE',
-                    '10.' => [
-                        'file' => 'foo/bar.html',
-                    ],
-                    20 => 'foo/bar2.html',
-                ]
+        $configuration = [
+            'partialRootPaths.' => [
+                10 => 'FILE',
+                '10.' => [
+                    'file' => 'foo/bar.html',
+                ],
+                20 => 'foo/bar2.html',
             ]
-        );
+        ];
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrap('FILE', ['file' => 'foo/bar.html'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -414,16 +422,20 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapValueForPartialRootPath(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'partialRootPath' => 'foo',
             'partialRootPath.' => ['bar' => 'baz']
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(3))
-            ->method('stdWrapValue')
-            ->with('partialRootPath', $configuration);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrapValue('partialRootPath', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -444,25 +456,26 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function fallbacksForPartialRootPathAreAppendedToPartialRootPath(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'partialRootPath' => 'main',
             'partialRootPaths.' => [10 => 'foo', 20 => 'bar']
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(3))
-            ->method('stdWrapValue')
-            ->with('partialRootPath', $configuration)
-            ->willReturn(Environment::getPublicPath() . '/main');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setPartialRootPaths')
-            ->with([
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('partialRootPath', $configuration)->willReturn(Environment::getPublicPath() . '/main');
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setPartialRootPaths([
                 0 => Environment::getPublicPath() . '/main',
                 10 => Environment::getPublicPath() . '/foo',
                 20 => Environment::getPublicPath() . '/bar'
-            ]);
-        $this->subject->render($configuration);
+            ])->shouldHaveBeenCalled();
     }
 
     /**
@@ -470,20 +483,21 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsFormatInView(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'format' => 'xml'
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(0))
-            ->method('stdWrapValue')
-            ->with('format', $configuration)
-            ->willReturn('xml');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('setFormat')
-            ->with('xml');
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('format', $configuration)->willReturn('xml');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->setFormat('xml')->shouldHaveBeenCalled();
     }
 
     /**
@@ -491,16 +505,20 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapValueForFormat(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'format' => 'foo',
             'format.' => ['bar' => 'baz']
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(0))
-            ->method('stdWrapValue')
-            ->with('format', $configuration);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrapValue('format', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -508,22 +526,31 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsExtbasePluginNameInRequest(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(4))
-            ->method('stdWrapValue')
-            ->with('pluginName', ['pluginName' => 'foo'])
-            ->willReturn('foo');
         $configuration = [
             'extbase.' => [
                 'pluginName' => 'foo',
             ],
         ];
-        $this->request
-            ->expects(self::once())
-            ->method('setPluginName')
-            ->with('foo');
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('pluginName', ['pluginName' => 'foo'])->willReturn('foo');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
+        $standAloneView->assignMultiple(['data' => [], 'current' => null])->shouldBeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render(Argument::cetera())->shouldBeCalled();
+
+        $request = $this->prophesize(Request::class);
+        $standAloneView->getRequest()->willReturn($request->reveal());
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $request->setPluginName('foo')->shouldHaveBeenCalled();
     }
 
     /**
@@ -531,18 +558,22 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapValueForExtbasePluginName(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'pluginName' => 'foo',
             'pluginName.' => [
                 'bar' => 'baz',
             ]
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(4))
-            ->method('stdWrapValue')
-            ->with('pluginName', $configuration);
-        $this->subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer->stdWrapValue('pluginName', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -550,22 +581,31 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsExtbaseControllerExtensionNameInRequest(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(5))
-            ->method('stdWrapValue')
-            ->with('controllerExtensionName', ['controllerExtensionName' => 'foo'])
-            ->willReturn('foo');
-        $this->request
-            ->expects(self::once())
-            ->method('setControllerExtensionName')
-            ->with('foo');
         $configuration = [
             'extbase.' => [
                 'controllerExtensionName' => 'foo',
             ],
         ];
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('controllerExtensionName', ['controllerExtensionName' => 'foo'])->willReturn('foo');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
+        $standAloneView->assignMultiple(['data' => [], 'current' => null])->shouldBeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render(Argument::cetera())->shouldBeCalled();
+
+        $request = $this->prophesize(Request::class);
+        $standAloneView->getRequest()->willReturn($request->reveal());
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $request->setControllerExtensionName('foo')->shouldHaveBeenCalled();
     }
 
     /**
@@ -573,18 +613,22 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapValueForExtbaseControllerExtensionName(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'controllerExtensionName' => 'foo',
             'controllerExtensionName.' => [
                 'bar' => 'baz',
             ],
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(5))
-            ->method('stdWrapValue')
-            ->with('controllerExtensionName', $configuration);
-        $this->subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+        $subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer->stdWrapValue('controllerExtensionName', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -592,22 +636,31 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsExtbaseControllerNameInRequest(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(6))
-            ->method('stdWrapValue')
-            ->with('controllerName', ['controllerName' => 'foo'])
-            ->willReturn('foo');
-        $this->request
-            ->expects(self::once())
-            ->method('setControllerName')
-            ->with('foo');
         $configuration = [
             'extbase.' => [
                 'controllerName' => 'foo',
             ],
         ];
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('controllerName', ['controllerName' => 'foo'])->willReturn('foo');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
+        $standAloneView->assignMultiple(['data' => [], 'current' => null])->shouldBeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render(Argument::cetera())->shouldBeCalled();
+
+        $request = $this->prophesize(Request::class);
+        $standAloneView->getRequest()->willReturn($request->reveal());
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $request->setControllerName('foo')->shouldHaveBeenCalled();
     }
 
     /**
@@ -615,18 +668,22 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapValueForExtbaseControllerName(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'controllerName' => 'foo',
             'controllerName.' => [
                 'bar' => 'baz',
             ],
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(6))
-            ->method('stdWrapValue')
-            ->with('controllerName', $configuration);
-        $this->subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer->stdWrapValue('controllerName', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -634,22 +691,30 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderSetsExtbaseControllerActionNameInRequest(): void
     {
-        $this->addMockViewToSubject();
-        $this->contentObjectRenderer
-            ->expects(self::at(7))
-            ->method('stdWrapValue')
-            ->with('controllerActionName', ['controllerActionName' => 'foo'])
-            ->willReturn('foo');
-        $this->request
-            ->expects(self::once())
-            ->method('setControllerActionName')
-            ->with('foo');
         $configuration = [
             'extbase.' => [
                 'controllerActionName' => 'foo',
             ],
         ];
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->stdWrapValue('controllerActionName', ['controllerActionName' => 'foo'])->willReturn('foo');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
+        $standAloneView->assignMultiple(['data' => [], 'current' => null])->shouldBeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render(Argument::cetera())->shouldBeCalled();
+
+        $request = $this->prophesize(Request::class);
+        $standAloneView->getRequest()->willReturn($request->reveal());
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $request->setControllerActionName('foo')->shouldHaveBeenCalled();
     }
 
     /**
@@ -657,18 +722,22 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapForExtbaseControllerActionName(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'controllerActionName' => 'foo',
             'controllerActionName.' => [
                 'bar' => 'baz',
             ],
         ];
-        $this->contentObjectRenderer
-            ->expects(self::at(7))
-            ->method('stdWrapValue')
-            ->with('controllerActionName', $configuration);
-        $this->subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render(['extbase.' => $configuration]);
+
+        $contentObjectRenderer->stdWrapValue('controllerActionName', $configuration)->shouldHaveBeenCalled();
     }
 
     /**
@@ -676,8 +745,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderAssignsSettingsArrayToView(): void
     {
-        $this->addMockViewToSubject();
-
         $configuration = [
             'settings.' => [
                 'foo' => 'value',
@@ -703,12 +770,13 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ->willReturn($expectedSettingsToBeSet);
         GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceMock);
 
-        $this->standaloneView
-            ->expects(self::at(1))
-            ->method('assign')
-            ->with('settings', $expectedSettingsToBeSet);
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+        $subject = new FluidTemplateContentObject($this->prophesize(ContentObjectRenderer::class)->reveal());
 
-        $this->subject->render($configuration);
+        $subject->render($configuration);
+
+        $standAloneView->assign('settings', $expectedSettingsToBeSet)->shouldHaveBeenCalled();
     }
 
     /**
@@ -754,7 +822,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsCObjGetSingleForAllowedVariable(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'variables.' => [
                 'aVar' => 'TEXT',
@@ -763,11 +830,16 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('cObjGetSingle')
-            ->with('TEXT', ['value' => 'foo']);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->cObjGetSingle('TEXT', ['value' => 'foo'], Argument::any())->shouldHaveBeenCalled();
     }
 
     /**
@@ -775,7 +847,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderAssignsRenderedContentObjectVariableToView(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'variables.' => [
                 'aVar' => 'TEXT',
@@ -784,15 +855,19 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('cObjGetSingle')
-            ->willReturn('foo');
-        $this->standaloneView
-            ->expects(self::once())
-            ->method('assignMultiple')
-            ->with(['aVar' => 'foo', 'data' => [], 'current' => null]);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
+        $contentObjectRenderer->cObjGetSingle(Argument::cetera())->willReturn('foo');
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $standAloneView->assignMultiple(['aVar' => 'foo', 'data' => [], 'current' => null])->shouldHaveBeenCalled();
     }
 
     /**
@@ -841,21 +916,26 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration(): void
     {
-        $this->addMockViewToSubject();
         $configuration = [
             'stdWrap.' => [
                 'foo' => 'bar',
             ],
         ];
-        $this->standaloneView
-            ->expects(self::any())
-            ->method('render')
-            ->willReturn('baz');
-        $this->contentObjectRenderer
-            ->expects(self::once())
-            ->method('stdWrap')
-            ->with('baz', ['foo' => 'bar']);
-        $this->subject->render($configuration);
+
+        $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+
+        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+
+        $standAloneView = $this->prophesize(StandaloneView::class);
+        $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
+        $standAloneView->assignMultiple(['data' => [], 'current' => null])->shouldbeCalled();
+        $standAloneView->renderSection(Argument::cetera())->shouldBeCalled();
+        $standAloneView->render()->willReturn('baz');
+        GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
+
+        $subject->render($configuration);
+
+        $contentObjectRenderer->stdWrap('baz', ['foo' => 'bar'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -901,38 +981,43 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function headerAssetDataProvider(): array
     {
         $viewWithHeaderData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithHeaderData->expects(self::at(0))->method('renderSection')->with(
+        $viewWithHeaderData->expects(self::exactly(2))->method('renderSection')
+            ->withConsecutive(
+                [
             'HeaderAssets',
             self::anything(),
             true
-        )->willReturn('custom-header-data');
-        $viewWithHeaderData->expects(self::at(1))->method('renderSection')->with(
-            'FooterAssets',
+                    ],
+                [
+                    'FooterAssets',
             self::anything(),
             true
-        )->willReturn(null);
+                ]
+            )->willReturnOnConsecutiveCalls('custom-header-data', null);
         $viewWithFooterData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithFooterData->expects(self::at(0))->method('renderSection')->with(
+        $viewWithFooterData->expects(self::exactly(2))->method('renderSection')
+            ->withConsecutive(
+                [
             'HeaderAssets',
             self::anything(),
             true
-        )->willReturn(null);
-        $viewWithFooterData->expects(self::at(1))->method('renderSection')->with(
-            'FooterAssets',
+                    ],
+                ['FooterAssets',
             self::anything(),
-            true
-        )->willReturn('custom-footer-data');
+            true]
+            )->willReturn(null, 'custom-footer-data');
         $viewWithBothData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithBothData->expects(self::at(0))->method('renderSection')->with(
+        $viewWithBothData->expects(self::exactly(2))->method('renderSection')
+            ->withConsecutive(
+                [
             'HeaderAssets',
             self::anything(),
             true
-        )->willReturn('custom-header-data');
-        $viewWithBothData->expects(self::at(1))->method('renderSection')->with(
-            'FooterAssets',
+                    ],
+                ['FooterAssets',
             self::anything(),
-            true
-        )->willReturn('custom-footer-data');
+            true]
+            )->willReturnOnConsecutiveCalls('custom-header-data', 'custom-footer-data');
         return [
             [$viewWithHeaderData, 'custom-header-data', null],
             [$viewWithFooterData, null, 'custom-footer-data'],

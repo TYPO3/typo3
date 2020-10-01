@@ -1276,7 +1276,7 @@ class AbstractPlugin
             }
         }
         if (empty($tempPiVars)) {
-            //@TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
+            // @TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
             return 1;
         }
         return null;
@@ -1308,7 +1308,7 @@ class AbstractPlugin
             }
         }
         if (empty($inArray)) {
-            //@TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
+            // @TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
             return 1;
         }
         return null;

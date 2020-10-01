@@ -91,12 +91,15 @@ class ExtendedFileUtilityTest extends UnitTestCase
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        $GLOBALS['LANG']->expects(self::at(0))->method('sL')
-            ->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences')
-            ->willReturn('folderNotDeletedHasFilesWithReferences');
-        $GLOBALS['LANG']->expects(self::at(1))->method('sL')
-            ->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences')
-            ->willReturn('folderNotDeletedHasFilesWithReferences');
+        $GLOBALS['LANG']->expects(self::exactly(2))->method('sL')
+            ->withConsecutive(
+                ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences'],
+                ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences']
+            )
+            ->willReturnOnConsecutiveCalls(
+                'folderNotDeletedHasFilesWithReferences',
+                'folderNotDeletedHasFilesWithReferences'
+            );
 
         $result = $subject->folderHasFilesInUse($folder);
         self::assertTrue($result);

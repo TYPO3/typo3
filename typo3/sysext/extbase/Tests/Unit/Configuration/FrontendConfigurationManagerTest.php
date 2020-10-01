@@ -200,8 +200,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testPluginSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->willReturn($testExtensionSettingsConverted);
-        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->willReturn($testPluginSettingsConverted);
+        $this->mockTypoScriptService->expects(self::exactly(2))->method('convertTypoScriptArrayToPlainArray')
+            ->withConsecutive([$testExtensionSettings], [$testPluginSettings])
+            ->willReturnOnConsecutiveCalls($testExtensionSettingsConverted, $testPluginSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -289,9 +290,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $frontendConfigurationManager->expects(self::at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->willReturn(['overridden' => 'storagePid']);
-        $frontendConfigurationManager->expects(self::at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->willReturn(['overridden' => 'pluginConfiguration']);
-        $frontendConfigurationManager->expects(self::at(2))->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->willReturn(['overridden' => 'flexFormConfiguration']);
+        $frontendConfigurationManager->expects(self::once())->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->willReturn(['overridden' => 'storagePid']);
+        $frontendConfigurationManager->expects(self::once())->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->willReturn(['overridden' => 'pluginConfiguration']);
+        $frontendConfigurationManager->expects(self::once())->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->willReturn(['overridden' => 'flexFormConfiguration']);
         $expectedResult = ['overridden' => 'flexFormConfiguration'];
         $actualResult = $frontendConfigurationManager->_call(
             'getContextSpecificFrameworkConfiguration',

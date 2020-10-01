@@ -60,10 +60,12 @@ class PasswordViewHelperTest extends FormFieldViewHelperBaseTestcase
             ->setMethods(['addAttribute', 'setContent', 'render'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects(self::at(0))->method('addAttribute')->with('type', 'password');
-        $mockTagBuilder->expects(self::at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
+        $mockTagBuilder->expects(self::exactly(3))->method('addAttribute')->withConsecutive(
+            ['type', 'password'],
+            ['name', 'NameOfTextbox'],
+            ['value', 'Current value']
+        );
         $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
-        $mockTagBuilder->expects(self::at(2))->method('addAttribute')->with('value', 'Current value');
         $mockTagBuilder->expects(self::once())->method('render');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 

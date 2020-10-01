@@ -202,14 +202,10 @@ class ImageDimensionTest extends UnitTestCase
         $originalFileMock->expects(self::any())
             ->method('getExtension')
             ->willReturn($fileExtension);
-        $originalFileMock->expects(self::at(0))
+        $originalFileMock->expects(self::exactly(2))
             ->method('getProperty')
-            ->with('width')
-            ->willReturn($originalImageDimension->getWidth());
-        $originalFileMock->expects(self::at(1))
-            ->method('getProperty')
-            ->with('height')
-            ->willReturn($originalImageDimension->getHeight());
+            ->withConsecutive(['width'], ['height'])
+            ->willReturnOnConsecutiveCalls($originalImageDimension->getWidth(), $originalImageDimension->getHeight());
         $processedFileMock = $this->getMockBuilder(ProcessedFile::class)
             ->disableOriginalConstructor()
             ->getMock();

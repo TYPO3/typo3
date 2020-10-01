@@ -64,7 +64,12 @@ class DebuggerUtilityTest extends UnitTestCase
         $testObject = new \stdClass();
         $testObject->foo = 'bar';
         $result = DebuggerUtility::var_dump($testObject, null, 8, true, false, true);
-        self::assertRegExp('/foo.*bar/', $result);
+        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
+        if (method_exists($this, 'assertMatchesRegularExpression')) {
+            self::assertMatchesRegularExpression('/foo.*bar/', $result);
+        } else {
+            self::assertRegExp('/foo.*bar/', $result);
+        }
     }
 
     /**

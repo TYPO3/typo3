@@ -59,10 +59,11 @@ class UriViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['registerArgument'])
             ->getMock();
 
-        $viewHelper->expects(self::at(0))->method('registerArgument')->with('route', 'string', self::anything());
-        $viewHelper->expects(self::at(1))->method('registerArgument')->with('parameters', 'array', self::anything());
-        $viewHelper->expects(self::at(2))->method('registerArgument')
-            ->with('referenceType', 'string', self::anything(), false, UriBuilder::ABSOLUTE_PATH);
+        $viewHelper->expects(self::exactly(3))->method('registerArgument')->withConsecutive(
+            ['route', 'string', self::anything()],
+            ['parameters', 'array', self::anything()],
+            ['referenceType', 'string', self::anything(), false, UriBuilder::ABSOLUTE_PATH]
+        );
         $viewHelper->initializeArguments();
     }
 

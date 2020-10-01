@@ -333,7 +333,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
         $cObject
-            ->expects(self::at(0))
+            ->expects(self::once())
             ->method('stdWrapValue')
             ->with('useColPos', $configuration)
             ->willReturn($colPosFromStdWrapValue);
@@ -342,7 +342,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             ->method('exec_getQuery')
             ->with('tt_content', $queryConfiguration)
             ->willReturn($statementProphet->reveal());
-        $this->subject->_set('parent_cObj', $cObject);
+        $this->subject->parent_cObj = $cObject;
 
         $this->subject->_call('sectionIndex', 'field', 12);
     }
@@ -404,7 +404,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
         $cObjectMock = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
         $cObjectMock
-            ->expects(self::at(0))
+            ->expects(self::once())
             ->method('stdWrapValue')
             ->with('excludeUidList', ['excludeUidList' => $excludeUidList])
             ->willReturn($excludeUidList);

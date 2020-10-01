@@ -496,7 +496,12 @@ class FileBackendTest extends UnitTestCase
         self::assertFileExists($pathAndFilename);
 
         $backend->remove($entryIdentifier);
-        self::assertFileNotExists($pathAndFilename);
+        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
+        if (method_exists($this, 'assertFileDoesNotExist')) {
+            self::assertFileDoesNotExist($pathAndFilename);
+        } else {
+            self::assertFileNotExists($pathAndFilename);
+        }
     }
 
     public function invalidEntryIdentifiers(): array
@@ -849,8 +854,14 @@ class FileBackendTest extends UnitTestCase
 
         $backend->flush();
 
-        self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
-        self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
+        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
+        if (method_exists($this, 'assertFileDoesNotExist')) {
+            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
+        } else {
+            self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+            self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
+        }
     }
 
     /**
@@ -888,9 +899,7 @@ class FileBackendTest extends UnitTestCase
             'bar',
             'baz'
         ]);
-        $backend->expects(self::at(1))->method('remove')->with('foo');
-        $backend->expects(self::at(2))->method('remove')->with('bar');
-        $backend->expects(self::at(3))->method('remove')->with('baz');
+        $backend->expects(self::exactly(3))->method('remove')->withConsecutive(['foo'], ['bar'], ['baz']);
 
         $backend->flushByTag('UnitTestTag%special');
     }
@@ -923,7 +932,14 @@ class FileBackendTest extends UnitTestCase
         self::assertFileExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
 
         $backend->collectGarbage();
-        self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+
+        // @todo remove condition and else branch as soon as phpunit v8 goes out of support
+        if (method_exists($this, 'assertFileDoesNotExist')) {
+            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+        } else {
+            self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+        }
+
         self::assertFileExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
     }
 

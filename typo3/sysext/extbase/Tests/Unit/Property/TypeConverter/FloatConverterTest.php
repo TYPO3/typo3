@@ -77,15 +77,13 @@ class FloatConverterTest extends UnitTestCase
     {
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
-            ->expects(self::at(0))
+            ->expects(self::exactly(2))
             ->method('getConfigurationValue')
-            ->with(FloatConverter::class, FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR)
-            ->willReturn('.');
-        $mockMappingConfiguration
-            ->expects(self::at(1))
-            ->method('getConfigurationValue')
-            ->with(FloatConverter::class, FloatConverter::CONFIGURATION_DECIMAL_POINT)
-            ->willReturn(',');
+            ->withConsecutive(
+                [FloatConverter::class, FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR],
+                [FloatConverter::class, FloatConverter::CONFIGURATION_DECIMAL_POINT]
+            )
+            ->willReturnOnConsecutiveCalls('.', ',');
         self::assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
     }
 

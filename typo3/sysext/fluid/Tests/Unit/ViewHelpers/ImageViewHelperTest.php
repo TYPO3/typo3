@@ -186,14 +186,31 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['addAttribute', 'render'])
             ->getMock();
-        $index = -1;
-        foreach ($expected as $expectedAttribute => $expectedValue) {
-            $tagBuilder->expects(self::at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
-        }
+
+        $tagBuilder->expects(self::exactly(count($expected)))
+                ->method('addAttribute')
+                ->withConsecutive(
+                    ...$this->formatCallParameterExpectations($expected)
+                );
         $tagBuilder->expects(self::once())->method('render');
         $this->viewHelper->setTagBuilder($tagBuilder);
 
         $this->viewHelper->render();
+    }
+
+    /**
+     * Helper method to feed variable expectations to a single assertion
+     *
+     * @param array $expectations
+     * @return array
+     */
+    private function formatCallParameterExpectations(array $expectations): array
+    {
+        $callParameters = [];
+        foreach ($expectations as $expectedAttribute => $expectedValue) {
+            $callParameters[] = [$expectedAttribute, $expectedValue];
+        }
+        return $callParameters;
     }
 
     /**
@@ -283,10 +300,11 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['addAttribute', 'render'])
             ->getMock();
-        $index = -1;
-        foreach ($expected as $expectedAttribute => $expectedValue) {
-            $tagBuilder->expects(self::at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
-        }
+        $tagBuilder->expects(self::exactly(count($expected)))
+            ->method('addAttribute')
+            ->withConsecutive(
+                ...$this->formatCallParameterExpectations($expected)
+            );
         $tagBuilder->expects(self::once())->method('render');
         $this->viewHelper->setTagBuilder($tagBuilder);
 

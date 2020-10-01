@@ -50,15 +50,10 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'pid' => 321
         ];
 
-        $this->subject->expects(self::at(0))
+        $this->subject->expects(self::exactly(2))
             ->method('getDatabaseRow')
-            ->with($input['tableName'], 10)
-            ->willReturn(['pid' => 123]);
-
-        $this->subject->expects(self::at(1))
-            ->method('getDatabaseRow')
-            ->with('pages', 123)
-            ->willReturn($parentPageRow);
+            ->withConsecutive([$input['tableName'], 10], ['pages', 123])
+            ->willReturnOnConsecutiveCalls(['pid' => 123], $parentPageRow);
 
         $result = $this->subject->addData($input);
 
@@ -83,15 +78,10 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'uid' => 123,
             'pid' => 321
         ];
-        $this->subject->expects(self::at(0))
+        $this->subject->expects(self::exactly(2))
             ->method('getDatabaseRow')
-            ->with($input['tableName'], 10)
-            ->willReturn($neighborRow);
-
-        $this->subject->expects(self::at(1))
-            ->method('getDatabaseRow')
-            ->with('pages', 321)
-            ->willReturn($parentPageRow);
+            ->withConsecutive([$input['tableName'], 10], ['pages', 321])
+            ->willReturnOnConsecutiveCalls($neighborRow, $parentPageRow);
 
         $result = $this->subject->addData($input);
 

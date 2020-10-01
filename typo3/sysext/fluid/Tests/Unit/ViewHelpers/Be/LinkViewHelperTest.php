@@ -69,15 +69,21 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['registerTagAttribute', 'registerUniversalTagAttributes', 'registerArgument'])
             ->getMock();
 
-        $viewHelper->expects(self::at(2))->method('registerArgument')->with('route', 'string', self::anything());
-        $viewHelper->expects(self::at(3))->method('registerArgument')->with('parameters', 'array', self::anything());
-        $viewHelper->expects(self::at(4))->method('registerArgument')
-            ->with('referenceType', 'string', self::anything());
+        $viewHelper->expects(self::exactly(5))->method('registerArgument')->withConsecutive(
+            ['additionalAttributes', 'array', self::anything()],
+            ['data', 'array', self::anything()],
+            ['route', 'string', self::anything()],
+            ['parameters', 'array', self::anything()],
+            ['referenceType', 'string', self::anything()]
+        );
 
-        $viewHelper->expects(self::at(5))->method('registerTagAttribute')->with('name', 'string', self::anything());
-        $viewHelper->expects(self::at(6))->method('registerTagAttribute')->with('rel', 'string', self::anything());
-        $viewHelper->expects(self::at(7))->method('registerTagAttribute')->with('rev', 'string', self::anything());
-        $viewHelper->expects(self::at(8))->method('registerTagAttribute')->with('target', 'string', self::anything());
+        $viewHelper->expects(self::exactly(4))->method('registerTagAttribute')->withConsecutive(
+            ['name', 'string', self::anything()],
+            ['rel', 'string', self::anything()],
+            ['rev', 'string', self::anything()],
+            ['target', 'string', self::anything()]
+        );
+
         $viewHelper->expects(self::once())->method('registerUniversalTagAttributes');
         $viewHelper->initializeArguments();
     }

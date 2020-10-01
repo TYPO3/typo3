@@ -34,7 +34,7 @@ class WincacheBackendTest extends UnitTestCase
     public function setThrowsExceptionIfNoFrontEndHasBeenSet()
     {
         $this->expectException(Exception::class);
-        //@todo Add exception code with wincache extension
+        // @todo Add exception code with wincache extension
 
         $backend = new WincacheBackend('Testing');
         $data = 'Some data';

@@ -59,13 +59,17 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['addAttribute', 'setContent', 'render'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects(self::at(0))->method('addAttribute')->with('type', 'file');
-        $mockTagBuilder->expects(self::at(1))->method('addAttribute')->with('name', 'someName');
-        $this->viewHelper->expects(self::at(0))->method('registerFieldNameForFormTokenGeneration')->with('someName[name]');
-        $this->viewHelper->expects(self::at(1))->method('registerFieldNameForFormTokenGeneration')->with('someName[type]');
-        $this->viewHelper->expects(self::at(2))->method('registerFieldNameForFormTokenGeneration')->with('someName[tmp_name]');
-        $this->viewHelper->expects(self::at(3))->method('registerFieldNameForFormTokenGeneration')->with('someName[error]');
-        $this->viewHelper->expects(self::at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
+        $mockTagBuilder->expects(self::exactly(2))->method('addAttribute')->withConsecutive(
+            ['type', 'file'],
+            ['name', 'someName']
+        );
+        $this->viewHelper->expects(self::exactly(5))->method('registerFieldNameForFormTokenGeneration')->withConsecutive(
+            ['someName[name]'],
+            ['someName[type]'],
+            ['someName[tmp_name]'],
+            ['someName[error]'],
+            ['someName[size]']
+        );
         $mockTagBuilder->expects(self::once())->method('render');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
         $arguments = [
