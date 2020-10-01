@@ -69,13 +69,29 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=foo/bar">
  *        Edit record
  *    </a>
  *
  * Link to create a new record then return back to the BE module "web_MyextensionList"::
  *
  *    <be:link.newRecord table="a_table" returnUrl="{f:be.uri(route: 'web_MyextensionList')}" pid="17">
+ *
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=/typo3/index.php?route=/module/web/MyextensionList">
+ *        Edit record
+ *    </a>
+ *
+ * Link to create a new record of a_table on page 17 with a default value::
+ *
+ *    <be:link.newRecord table="a_table" returnUrl="foo/bar" pid="17" defaultValues="{a_table: {a_field: 'value'}}">
+ *
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value">
+ *        Edit record
+ *    </a>
  */
 class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
@@ -92,6 +108,7 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
         $this->registerArgument('table', 'string', 'target database table', true);
         $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
+        $this->registerArgument('defaultValues', 'array', 'default values for fields of the new record', false, []);
     }
 
     /**
@@ -115,6 +132,11 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
             'edit' => [$this->arguments['table'] => [$this->arguments['uid'] ?? $this->arguments['pid'] ?? 0 => 'new']],
             'returnUrl' => $this->arguments['returnUrl']
         ];
+
+        if (is_array($this->arguments['defaultValues']) && $this->arguments['defaultValues'] !== []) {
+            $params['defVals'] = $this->arguments['defaultValues'];
+        }
+
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
         $this->tag->addAttribute('href', $uri);

@@ -61,7 +61,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <be:uri.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
  *
- * ``/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar``
+ * ``/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=foo/bar``
+ *
+ * Uri to create a new record of a_table on page 17 with a default value::
+ *
+ *    <be:uri.newRecord table="a_table" returnUrl="foo/bar" pid="17" defaultValues="{a_table: {a_field: 'value'}}"/>
+ *
+ * ``/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value``
  */
 class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
@@ -73,6 +79,7 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
         $this->registerArgument('table', 'string', 'target database table', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
+        $this->registerArgument('defaultValues', 'array', 'default values for fields of the new record', false, []);
     }
 
     /**
@@ -100,6 +107,11 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
             'edit' => [$arguments['table'] => [$arguments['uid'] ?? $arguments['pid'] ?? 0 => 'new']],
             'returnUrl' => $arguments['returnUrl']
         ];
+
+        if (is_array($arguments['defaultValues']) && $arguments['defaultValues'] !== []) {
+            $params['defVals'] = $arguments['defaultValues'];
+        }
+
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
     }

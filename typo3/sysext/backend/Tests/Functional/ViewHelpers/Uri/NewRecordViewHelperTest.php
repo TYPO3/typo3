@@ -95,6 +95,34 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function renderReturnsValidLinkWithDefaultValue()
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValue.html');
+        $result = urldecode($view->render());
+
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][17]=new', $result);
+        self::assertStringContainsString('defVals[c_table][c_field]=c_value', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderReturnsValidLinkWithDefaultValues()
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValues.html');
+        $result = urldecode($view->render());
+
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][17]=new', $result);
+        self::assertStringContainsString('defVals[c_table][c_field]=c_value&defVals[c_table][c_field2]=c_value2', $result);
+    }
+
+    /**
+     * @test
+     */
     public function renderThrowsExceptionForUidAndPid()
     {
         $this->expectException(\InvalidArgumentException::class);
