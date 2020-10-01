@@ -831,7 +831,6 @@ class ResourceStorageTest extends BaseTestCase
             'foo',
             1489593090
         )), 'bar_01'));
-        //$mockedDriver->expects($this->at(1))->method('renameFile')->will($this->returnValue('bar_01'));
         $mockedDriver->expects(self::any())->method('sanitizeFileName')->will(self::onConsecutiveCalls(
             'bar',
             'bar_01'

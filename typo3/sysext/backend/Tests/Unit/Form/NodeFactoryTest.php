@@ -21,7 +21,11 @@ use TYPO3\CMS\Backend\Form\Element\UnknownElement;
 use TYPO3\CMS\Backend\Form\Exception;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeInterface;
-use TYPO3\CMS\Backend\Form\NodeResolverInterface;
+use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\BarElement;
+use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\FooElement;
+use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\BarResolver;
+use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\FooResolver;
+use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\InvalidNodeResolverClass;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -343,16 +347,12 @@ class NodeFactoryTest extends UnitTestCase
             [
                 'nodeName' => 'foo',
                 'priority' => 20,
-                'class' => \stdClass::class,
+                'class' => FooElement::class,
             ],
         ];
-        $mockNode = $this->createMock(NodeInterface::class);
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::once())->method('instantiate')->with('stdClass')->willReturn($mockNode);
-        $mockSubject->create($data);
+
+        $subject = new NodeFactory();
+        self::assertInstanceOf(FooElement::class, ($subject->create($data)));
     }
 
     /**
@@ -365,21 +365,16 @@ class NodeFactoryTest extends UnitTestCase
             1433089467 => [
                 'nodeName' => 'foo',
                 'priority' => 20,
-                'class' => 'foo1Class',
+                'class' => FooElement::class,
             ],
             1433089468 => [
                 'nodeName' => 'foo',
                 'priority' => 30,
-                'class' => 'foo2Class',
+                'class' => BarElement::class,
             ],
         ];
-        $mockNode = $this->createMock(NodeInterface::class);
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::once())->method('instantiate')->with('foo2Class')->willReturn($mockNode);
-        $mockSubject->create($data);
+        $subject = new NodeFactory();
+        self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 
     /**
@@ -392,21 +387,16 @@ class NodeFactoryTest extends UnitTestCase
             1433089469 => [
                 'nodeName' => 'foo',
                 'priority' => 30,
-                'class' => 'foo2Class',
+                'class' => FooElement::class,
             ],
             1433089470 => [
                 'nodeName' => 'foo',
                 'priority' => 20,
-                'class' => 'foo1Class',
+                'class' => BarElement::class,
             ],
         ];
-        $mockNode = $this->createMock(NodeInterface::class);
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::once())->method('instantiate')->with('foo2Class')->willReturn($mockNode);
-        $mockSubject->create($data);
+        $subject = new NodeFactory();
+        self::assertInstanceOf(FooElement::class, ($subject->create($data)));
     }
 
     /**
@@ -421,17 +411,11 @@ class NodeFactoryTest extends UnitTestCase
             1433156887 => [
                 'nodeName' => 'foo',
                 'priority' => 10,
-                'class' => 'fooClass',
+                'class' => InvalidNodeResolverClass::class,
             ],
         ];
-        $mockResolver = $this->getMockBuilder(\stdClass::class)->getMock();
-
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::at(0))->method('instantiate')->willReturn($mockResolver);
-        $mockSubject->create($data);
+        $subject = new NodeFactory();
+        $subject->create($data);
     }
 
     /**
@@ -444,7 +428,7 @@ class NodeFactoryTest extends UnitTestCase
             [
                 'nodeName' => 'foo',
                 'priority' => 20,
-                'class' => \stdClass::class,
+                'class' => FooElement::class,
             ],
         ];
         $mockNode = $this->createMock(NodeInterface::class);
@@ -453,25 +437,16 @@ class NodeFactoryTest extends UnitTestCase
             1433156887 => [
                 'nodeName' => 'foo',
                 'priority' => 10,
-                'class' => 'foo1Class',
+                'class' => FooResolver::class,
             ],
             1433156888 => [
                 'nodeName' => 'foo',
                 'priority' => 30,
-                'class' => 'foo2Class',
+                'class' => BarResolver::class,
             ],
         ];
-        $mockResolver1 = $this->createMock(NodeResolverInterface::class);
-        $mockResolver2 = $this->createMock(NodeResolverInterface::class);
-
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::at(0))->method('instantiate')->with('foo2Class')->willReturn($mockResolver2);
-        $mockSubject->expects(self::at(1))->method('instantiate')->with('foo1Class')->willReturn($mockResolver1);
-        $mockSubject->expects(self::at(2))->method('instantiate')->willReturn($mockNode);
-        $mockSubject->create($data);
+        $subject = new NodeFactory();
+        self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 
     /**
@@ -484,34 +459,24 @@ class NodeFactoryTest extends UnitTestCase
             [
                 'nodeName' => 'foo',
                 'priority' => 20,
-                'class' => \stdClass::class,
+                'class' => FooElement::class,
             ],
         ];
-        $mockNode = $this->createMock(NodeInterface::class);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433156887 => [
                 'nodeName' => 'foo',
                 'priority' => 30,
-                'class' => 'foo1Class',
+                'class' => BarResolver::class,
             ],
             1433156888 => [
                 'nodeName' => 'foo',
                 'priority' => 10,
-                'class' => 'foo2Class',
+                'class' => FooResolver::class,
             ],
         ];
-        $mockResolver1 = $this->createMock(NodeResolverInterface::class);
-        $mockResolver2 = $this->createMock(NodeResolverInterface::class);
-
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::at(0))->method('instantiate')->with('foo1Class')->willReturn($mockResolver1);
-        $mockSubject->expects(self::at(1))->method('instantiate')->with('foo2Class')->willReturn($mockResolver2);
-        $mockSubject->expects(self::at(2))->method('instantiate')->willReturn($mockNode);
-        $mockSubject->create($data);
+        $subject = new NodeFactory();
+        self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 
     /**
@@ -524,66 +489,18 @@ class NodeFactoryTest extends UnitTestCase
             [
                 'nodeName' => 'foo',
                 'priority' => 20,
-                'class' => \stdClass::class,
+                'class' => FooElement::class,
             ],
         ];
-        $mockNode = $this->createMock(NodeInterface::class);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433156887 => [
                 'nodeName' => 'foo',
                 'priority' => 30,
-                'class' => 'foo1Class',
+                'class' => BarResolver::class,
             ],
         ];
-        $mockResolver1 = $this->createMock(NodeResolverInterface::class);
-        $mockResolver1->expects(self::once())->method('resolve')->willReturn('fooNodeClass');
-
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::at(0))->method('instantiate')->willReturn($mockResolver1);
-        $mockSubject->expects(self::at(1))->method('instantiate')->with('fooNodeClass')->willReturn($mockNode);
-        $mockSubject->create($data);
-    }
-
-    /**
-     * @test
-     */
-    public function createDoesNotCallSecondResolverWithLowerPriorityIfFirstResolverReturnedClassName()
-    {
-        $data = ['renderType' => 'foo'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
-            [
-                'nodeName' => 'foo',
-                'priority' => 20,
-                'class' => \stdClass::class,
-            ],
-        ];
-        $mockNode = $this->createMock(NodeInterface::class);
-
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
-            1433156887 => [
-                'nodeName' => 'foo',
-                'priority' => 30,
-                'class' => 'foo1Class',
-            ],
-            1433156888 => [
-                'nodeName' => 'foo',
-                'priority' => 10,
-                'class' => 'foo2Class',
-            ],
-        ];
-        $mockResolver1 = $this->createMock(NodeResolverInterface::class);
-        $mockResolver1->expects(self::once())->method('resolve')->willReturn('fooNodeClass');
-
-        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
-        $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
-            ->getMock();
-        $mockSubject->expects(self::at(0))->method('instantiate')->with('foo1Class')->willReturn($mockResolver1);
-        $mockSubject->expects(self::at(1))->method('instantiate')->with('fooNodeClass')->willReturn($mockNode);
-        $mockSubject->create($data);
+        $subject = new NodeFactory();
+        self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 }

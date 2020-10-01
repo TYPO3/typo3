@@ -59,12 +59,17 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper = $this->getMockBuilder(FormViewHelper::class)
             ->setMethods(['registerTagAttribute', 'registerUniversalTagAttributes'])
             ->getMock();
-        $viewHelper->expects(self::at(0))->method('registerTagAttribute')->with('enctype', 'string', self::anything());
-        $viewHelper->expects(self::at(1))->method('registerTagAttribute')->with('method', 'string', self::anything());
-        $viewHelper->expects(self::at(2))->method('registerTagAttribute')->with('name', 'string', self::anything());
-        $viewHelper->expects(self::at(3))->method('registerTagAttribute')->with('onreset', 'string', self::anything());
-        $viewHelper->expects(self::at(4))->method('registerTagAttribute')->with('onsubmit', 'string', self::anything());
-        $viewHelper->expects(self::at(6))->method('registerTagAttribute')->with('novalidate', 'bool', self::anything());
+        $viewHelper->expects(self::exactly(7))
+            ->method('registerTagAttribute')
+            ->withConsecutive(
+                ['enctype', 'string', self::anything()],
+                ['method', 'string', self::anything()],
+                ['name', 'string', self::anything()],
+                ['onreset', 'string', self::anything()],
+                ['onsubmit', 'string', self::anything()],
+                ['target', 'string', self::anything()],
+                ['novalidate', 'bool', self::anything()]
+            );
         $viewHelper->expects(self::once())->method('registerUniversalTagAttributes');
         $viewHelper->initializeArguments();
     }

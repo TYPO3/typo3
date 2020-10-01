@@ -506,10 +506,10 @@ class SlugHelperTest extends UnitTestCase
                 $options
             ]
         );
-        $subject->expects(self::at(0))
-            ->method('resolveParentPageRecord')->with(13)->willReturn($parentPage);
-        $subject->expects(self::at(1))
-            ->method('resolveParentPageRecord')->with(10)->willReturn(null);
+        $subject->expects(self::atLeast(2))
+            ->method('resolveParentPageRecord')
+            ->withConsecutive([13], [10])
+            ->willReturn($parentPage, null);
         self::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)

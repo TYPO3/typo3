@@ -524,8 +524,11 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->setMethods(['addOrderBy'])
             ->getMock();
-        $queryBuilder->expects(self::at(0))->method('addOrderBy')->with('tx_myext_tablename.converted_fieldname', 'ASC');
-        $queryBuilder->expects(self::at(1))->method('addOrderBy')->with('tx_myext_tablename.converted_fieldname', 'DESC');
+        $queryBuilder->expects(self::exactly(2))->method('addOrderBy')
+            ->withConsecutive(
+                ['tx_myext_tablename.converted_fieldname', 'ASC'],
+                ['tx_myext_tablename.converted_fieldname', 'DESC']
+            );
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilder);
         $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);

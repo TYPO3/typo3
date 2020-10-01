@@ -73,8 +73,8 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'type' => 'check',
                                     'items' => [
                                         0 => [
-                                            'foo', //@todo a followup patch should refactor towards 'label' => 'foo'
-                                            'bar', //@todo a followup patch should remove this numeric key altogether
+                                            'foo', // @todo a followup patch should refactor towards 'label' => 'foo'
+                                            'bar', // @todo a followup patch should remove this numeric key altogether
                                             'invertStateDisplay' => false
                                         ],
                                     ],

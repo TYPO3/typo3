@@ -78,8 +78,11 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(Request::class)
             ->onlyMethods(['setArgument'])
             ->getMock();
-        $request->expects(self::at(0))->method('setArgument')->with('key1', 'value1');
-        $request->expects(self::at(1))->method('setArgument')->with('key2', 'value2');
+        $request->expects(self::exactly(2))->method('setArgument')
+            ->withConsecutive(
+                ['key1', 'value1'],
+                ['key2', 'value2']
+            );
         $request->setArguments(['key1' => 'value1', 'key2' => 'value2']);
     }
 

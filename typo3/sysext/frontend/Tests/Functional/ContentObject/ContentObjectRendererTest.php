@@ -254,14 +254,10 @@ class ContentObjectRendererTest extends FunctionalTestCase
             'pidInList' => '16, -35'
         ];
 
-        $this->subject->expects(self::at(0))
+        $this->subject->expects(self::exactly(2))
             ->method('getTreeList')
-            ->with(-16, 15)
-            ->willReturn('15,16');
-        $this->subject->expects(self::at(1))
-            ->method('getTreeList')
-            ->with(-35, 15)
-            ->willReturn('15,35');
+            ->withConsecutive([-16, 15], [-35, 15])
+            ->willReturnOnConsecutiveCalls('15,16', '15,35');
 
         $this->subject->getQuery('tt_content', $conf, true);
     }

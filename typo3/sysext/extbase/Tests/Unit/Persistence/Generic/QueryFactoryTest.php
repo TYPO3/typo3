@@ -103,14 +103,11 @@ class QueryFactoryTest extends UnitTestCase
         $this->dataMap->expects(self::any())->method('getRootLevel')->willReturn($rootLevel);
 
         $query = $this->createMock(QueryInterface::class);
-        $this->objectManager->expects(self::at(0))->method('get')
-            ->with(QueryInterface::class)
-            ->willReturn($query);
-
         $querySettings = new Typo3QuerySettings();
-        $this->objectManager->expects(self::at(1))->method('get')
-            ->with(QuerySettingsInterface::class)
-            ->willReturn($querySettings);
+        $this->objectManager->expects(self::exactly(2))->method('get')
+            ->withConsecutive([QueryInterface::class], [QuerySettingsInterface::class])
+            ->willReturnOnConsecutiveCalls($query, $querySettings);
+
         $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
         $this->queryFactory->create($this->className);
 

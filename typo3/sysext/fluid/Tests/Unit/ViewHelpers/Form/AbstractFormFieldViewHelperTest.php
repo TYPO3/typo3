@@ -353,13 +353,9 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
             [$expectedProperty2 => null]
         )->willReturn();
 
-        $formFieldViewHelper->expects(self::at(1))->method('renderHiddenIdentityField')->with(
-            $mockFormObject,
-            $expectedProperty1
-        );
-        $formFieldViewHelper->expects(self::at(2))->method('renderHiddenIdentityField')->with(
-            $mockFormObject,
-            $expectedProperty2
+        $formFieldViewHelper->expects(self::exactly(2))->method('renderHiddenIdentityField')->withConsecutive(
+            [$mockFormObject, $expectedProperty1],
+            [$mockFormObject, $expectedProperty2]
         );
 
         $formFieldViewHelper->_call('addAdditionalIdentityPropertiesIfNeeded');

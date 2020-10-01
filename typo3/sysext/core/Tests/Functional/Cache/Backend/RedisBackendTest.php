@@ -558,7 +558,7 @@ class RedisBackendTest extends FunctionalTestCase
     public function getThrowsExceptionIfIdentifierIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
-        //@todo Add exception code with redis extension
+        // @todo Add exception code with redis extension
 
         $subject = $this->setUpSubject();
         $subject->get([]);
