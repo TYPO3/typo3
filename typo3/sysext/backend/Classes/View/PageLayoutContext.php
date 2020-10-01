@@ -202,6 +202,9 @@ class PageLayoutContext
     public function getLanguagesToShow(): iterable
     {
         $selectedLanguageId = $this->drawingConfiguration->getSelectedLanguageId();
+        if ($selectedLanguageId === -1) {
+            return $this->getSiteLanguages();
+        }
         if ($selectedLanguageId > 0) {
             // A specific language is selected; compose a list of default language plus selected language
             return [
@@ -209,7 +212,7 @@ class PageLayoutContext
                 $this->site->getLanguageById($selectedLanguageId)
             ];
         }
-        return $this->getSiteLanguages();
+        return [$this->site->getDefaultLanguage()];
     }
 
     public function getSiteLanguage(?int $languageId = null): SiteLanguage
