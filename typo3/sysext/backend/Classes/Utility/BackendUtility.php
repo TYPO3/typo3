@@ -294,7 +294,7 @@ class BackendUtility
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace ?? 0));
 
             $queryBuilder->select('*')
                 ->from($table)
@@ -4079,7 +4079,7 @@ class BackendUtility
     }
 
     /**
-     * @return BackendUserAuthentication
+     * @return BackendUserAuthentication|null
      */
     protected static function getBackendUserAuthentication()
     {
