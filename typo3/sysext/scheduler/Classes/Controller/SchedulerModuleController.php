@@ -903,29 +903,36 @@ class SchedulerModuleController
 
                 // Define some default values
                 $lastExecution = '-';
+                $class = '';
                 $isRunning = false;
                 $showAsDisabled = false;
                 // Restore the serialized task and pass it a reference to the scheduler object
                 /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask|ProgressProviderInterface $task */
-                $task = unserialize($schedulerRecord['serialized_task_object']);
-                $class = get_class($task);
-                if ($class === \__PHP_Incomplete_Class::class && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
-                    $class = $matches['classname'];
-                }
-                $tasks[$taskIndex]['tasks'][$recordIndex]['class'] = $class;
-                // Assemble information about last execution
-                if (!empty($schedulerRecord['lastexecution_time'])) {
-                    $lastExecution = date($dateFormat, (int)$schedulerRecord['lastexecution_time']);
-                    if ($schedulerRecord['lastexecution_context'] === 'CLI') {
-                        $context = $this->getLanguageService()->getLL('label.cron');
-                    } else {
-                        $context = $this->getLanguageService()->getLL('label.manual');
-                    }
-                    $lastExecution .= ' (' . $context . ')';
-                }
-                $tasks[$taskIndex]['tasks'][$recordIndex]['lastExecution'] = $lastExecution;
+                $exceptionWithClass = false;
+                $task = null;
+                try {
+                    $task = unserialize($schedulerRecord['serialized_task_object']);
 
-                if (isset($registeredClasses[get_class($task)]) && $this->scheduler->isValidTaskObject($task)) {
+                    $class = get_class($task);
+                    if ($class === \__PHP_Incomplete_Class::class && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
+                        $class = $matches['classname'];
+                    }
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['class'] = $class;
+                    // Assemble information about last execution
+                    if (!empty($schedulerRecord['lastexecution_time'])) {
+                        $lastExecution = date($dateFormat, (int)$schedulerRecord['lastexecution_time']);
+                        if ($schedulerRecord['lastexecution_context'] === 'CLI') {
+                            $context = $this->getLanguageService()->getLL('label.cron');
+                        } else {
+                            $context = $this->getLanguageService()->getLL('label.manual');
+                        }
+                        $lastExecution .= ' (' . $context . ')';
+                    }
+                    $tasks[$taskIndex]['tasks'][$recordIndex]['lastExecution'] = $lastExecution;
+                } catch (\BadMethodCallException $e) {
+                    $exceptionWithClass = true;
+                }
+                if (!$exceptionWithClass && isset($registeredClasses[get_class($task)]) && $this->scheduler->isValidTaskObject($task)) {
                     $tasks[$taskIndex]['tasks'][$recordIndex]['validClass'] = true;
                     // The task object is valid
                     $labels = [];

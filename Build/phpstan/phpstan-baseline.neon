@@ -6451,16 +6451,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
 
 		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between class\\-string\\<TYPO3\\\\CMS\\\\Scheduler\\\\ProgressProviderInterface\\>\\|class\\-string\\<TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\> and '__PHP_Incomplete_Class' will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
 			message: "#^Comparison operation \"\\<\" between int\\<1, max\\> and 1 is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
