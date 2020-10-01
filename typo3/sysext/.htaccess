@@ -1,4 +1,4 @@
-<FilesMatch "\.(gif|png|jpg)$">
+<FilesMatch "\.(gif|png|jpg|jpeg)$">
 	<IfModule mod_expires.c>
 		ExpiresActive on
 		ExpiresDefault "access plus 7 days"
