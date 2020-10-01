@@ -302,7 +302,7 @@ class Indexer implements LoggerAwareInterface
     {
         // since the core desperately needs image sizes in metadata table do this manually
         // prevent doing this for remote storages, remote storages must provide the data with extractors
-        if ($this->storage->getDriverType() === 'Local' && GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? ''), $fileObject->getExtension())) {
+        if ($this->storage->getDriverType() === 'Local' && $fileObject->getSize() > 0 && GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? ''), $fileObject->getExtension())) {
             $rawFileLocation = $fileObject->getForLocalProcessing(false);
             $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $rawFileLocation);
             $metaData = [
