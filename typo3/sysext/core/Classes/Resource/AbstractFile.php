@@ -327,7 +327,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function isImage(): bool
     {
-        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? ''), $this->getExtension());
+        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? ''), $this->getExtension()) && $this->getSize() > 0;
     }
 
     /**
@@ -336,7 +336,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function isMediaFile(): bool
     {
-        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'] ?? ''), $this->getExtension());
+        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'] ?? ''), $this->getExtension()) && $this->getSize() > 0;
     }
 
     /**
