@@ -90,5 +90,6 @@ A few things are noteworthy here:
   then, one had to define a mapping by columns instead of properties, which means, the mapping directions was reversed,
   forcing you to map database table fields on properties. This was quite confusing and the configuration is now eased as
   one can always think in the model to table mapping direction.
+- The mechanism which controls loading order of your configurations is no more the one for typoscript but the one for PHP. In case you have extensions overriding   other extensions, you should specify loading order though setting constraints / dependencies in your ext_emconf.php files using the "suggests" or "depends"       keyword (see docs here: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ExtensionArchitecture/DeclarationFile/Index.html). 
 
 .. index:: TypoScript, NotScanned, ext:extbase
