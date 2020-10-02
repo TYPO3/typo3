@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52f3f27b45bf17950fe59c832b4a66a3",
+    "content-hash": "9463bcc3c693352685e3a2351b69dfb6",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -7768,7 +7768,7 @@
                     "type": "patreon"
                 }
             ],
-            "abandoned": true,
+            "abandoned": "symplify/package-builder",
             "time": "2020-04-09T23:55:34+00:00"
         },
         {
@@ -8305,16 +8305,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.4.3",
+            "version": "6.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "22461bc2b45c408b1ce4f2ae9521117e795f0c65"
+                "reference": "a061ad4c3844b05cdea8f5ced467063d0f0ab851"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/22461bc2b45c408b1ce4f2ae9521117e795f0c65",
-                "reference": "22461bc2b45c408b1ce4f2ae9521117e795f0c65",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a061ad4c3844b05cdea8f5ced467063d0f0ab851",
+                "reference": "a061ad4c3844b05cdea8f5ced467063d0f0ab851",
                 "shasum": ""
             },
             "require": {
@@ -8362,12 +8362,7 @@
                 "tests",
                 "typo3"
             ],
-            "support": {
-                "general": "https://typo3.org/support/",
-                "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.4.3"
-            },
-            "time": "2020-09-30T06:12:51+00:00"
+            "time": "2020-10-02T16:50:10+00:00"
         }
     ],
     "aliases": [],
@@ -8388,5 +8383,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }
