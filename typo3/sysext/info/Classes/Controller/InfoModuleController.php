@@ -380,9 +380,8 @@ class InfoModuleController
         if (is_array($mergeArray)) {
             $backendUser = $this->getBackendUser();
             foreach ($mergeArray as $k => $v) {
-                if (((string)$v['ws'] === '' || $backendUser->workspace === 0 && GeneralUtility::inList($v['ws'], 'online'))
-                    || $backendUser->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline')
-                    || $backendUser->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')
+                if (((string)$v['ws'] === '' || ($backendUser->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')))
+                    || ($backendUser->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom'))
                 ) {
                     $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
                 }

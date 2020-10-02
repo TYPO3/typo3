@@ -284,9 +284,8 @@ class ModuleLoader
         }
         $status = true;
         if (!empty($MCONF['workspaces'])) {
-            $status = $this->BE_USER->workspace === 0 && GeneralUtility::inList($MCONF['workspaces'], 'online')
-                || $this->BE_USER->workspace === -1 && GeneralUtility::inList($MCONF['workspaces'], 'offline')
-                || $this->BE_USER->workspace > 0 && GeneralUtility::inList($MCONF['workspaces'], 'custom');
+            $status = ($this->BE_USER->workspace === 0 && GeneralUtility::inList($MCONF['workspaces'], 'online'))
+                || ($this->BE_USER->workspace > 0 && GeneralUtility::inList($MCONF['workspaces'], 'custom'));
         } elseif ($this->BE_USER->workspace === -99) {
             $status = false;
         }

@@ -666,7 +666,9 @@ page.10.value = HELLO WORLD!
         $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
         if (is_array($mergeArray)) {
             foreach ($mergeArray as $k => $v) {
-                if (((string)$v['ws'] === '' || $this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $this->getBackendUser()->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
+                if (((string)$v['ws'] === '' || ($this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')))
+                    || ($this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom'))
+                ) {
                     $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
                 }
             }

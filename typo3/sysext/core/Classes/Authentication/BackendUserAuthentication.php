@@ -454,7 +454,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             !empty($conf['workspaces'])
             && ExtensionManagementUtility::isLoaded('workspaces')
             && ($this->workspace !== 0 || !GeneralUtility::inList($conf['workspaces'], 'online'))
-            && ($this->workspace !== -1 || !GeneralUtility::inList($conf['workspaces'], 'offline'))
             && ($this->workspace <= 0 || !GeneralUtility::inList($conf['workspaces'], 'custom'))
         ) {
             throw new \RuntimeException('Workspace Error: This module "' . $conf['name'] . '" is not available under the current workspace', 1294586447);
