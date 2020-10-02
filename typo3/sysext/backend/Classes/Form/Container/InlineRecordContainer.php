@@ -445,7 +445,7 @@ class InlineRecordContainer extends AbstractContainer
         $isSysFileReferenceTable = $foreignTable === 'sys_file_reference';
         $enableManualSorting = $tcaTableCtrl['sortby'] || $inlineConfig['MM'] || !$data['isOnSymmetricSide']
             && $inlineConfig['foreign_sortby'] || $data['isOnSymmetricSide'] && $inlineConfig['symmetric_sortby'];
-        $calcPerms = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($rec['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW))));
+        $calcPerms = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess((int)($data['parentPageRow']['uid'] ?? 0), $backendUser->getPagePermsClause(Permission::PAGE_SHOW))));
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = new Permission(Permission::NOTHING);
         if ($isPagesTable) {
