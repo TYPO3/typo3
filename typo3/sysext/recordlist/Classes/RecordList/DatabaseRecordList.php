@@ -3701,7 +3701,9 @@ class DatabaseRecordList
      */
     protected function isLocalized(string $table, array $row): bool
     {
-        return ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] ?? false)
-            && ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?? false);
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
+
+        return ($row[$languageField] ?? false) && ($row[$transOrigPointerField] ?? false);
     }
 }
