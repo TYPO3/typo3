@@ -153,23 +153,11 @@
 			<trans-unit id="list.report.tooManyRedirects" resname="list.report.tooManyRedirects">
 				<source>Too many redirects.</source>
 			</trans-unit>
-			<trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403">
-				<source>Accessing this address is not allowed (403).</source>
-			</trans-unit>
-			<trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404">
-				<source>The requested url was not found (404).</source>
-			</trans-unit>
-			<trans-unit id="list.report.externalerror" resname="list.report.externalerror">
-				<source>External Link returned HTTP error code (%s).</source>
-			</trans-unit>
 			<trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting">
 				<source>File doesn't exist.</source>
 			</trans-unit>
 			<trans-unit id="list.report.timeout" resname="list.report.timeout">
 				<source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
-			</trans-unit>
-			<trans-unit id="list.report.internalerror500" resname="list.report.internalerror500">
-				<source>Internal Server Error (500)</source>
 			</trans-unit>
 			<trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost">
 				<source>Could not resolve host. The given remote host was not resolved.</source>
@@ -185,6 +173,83 @@
 			</trans-unit>
 			<trans-unit id="list.report.networkexception" resname="list.report.networkexception">
 				<source>Network error / invalid domain</source>
+			</trans-unit>
+
+			<!-- HTTP status code error messages -->
+			<trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.pageforbidden403">
+				<source>Multiple Choices (300).</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.pageforbidden403">
+				<source>Use proxy (305).</source>
+			</trans-unit>
+			<trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403">
+				<source>Accessing this address is not allowed (403).</source>
+			</trans-unit>
+			<trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404">
+				<source>The requested url was not found (404).</source>
+			</trans-unit>
+			<trans-unit id="list.report.internalerror500" resname="list.report.internalerror500">
+				<source>Internal Server Error (500)</source>
+			</trans-unit>
+			<trans-unit id="list.report.externalerror" resname="list.report.externalerror">
+				<source>External Link returned HTTP error code (%s).</source>
+			</trans-unit>
+
+			<!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+			<!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+			<trans-unit id="list.report.error.libcurl.1" resname="list.report.networkexception">
+				<source>Unsupported protocol.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.2" resname="list.report.networkexception">
+				<source>Initialization failed.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.3" resname="list.report.networkexception">
+				<source>The URL was not properly formatted.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.4" resname="list.report.networkexception">
+				<source>Feature not supported.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.5" resname="list.report.networkexception">
+				<source>Couldn't resolve proxy.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.6" resname="list.report.networkexception">
+				<source>Couldn't resolve host.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.7" resname="list.report.networkexception">
+				<source>Failed to connect to host or proxy.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.8" resname="list.report.networkexception">
+				<source>The remote server sent data that could not be parsed.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.9" resname="list.report.networkexception">
+				<source>Access denied.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.16" resname="list.report.networkexception">
+				<source>Generic HTTP/2 error.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.18" resname="list.report.networkexception">
+				<source>A file transfer was shorter or larger than expected.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.28" resname="list.report.networkexception">
+				<source>Timeout: The remote server possibly took too long to answer.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.35" resname="list.report.networkexception">
+				<source>Problem with SSl / TLS handshake.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.47" resname="list.report.networkexception">
+				<source>Too many redirects.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.55" resname="list.report.networkexception">
+				<source>General network error. Send failed.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.56" resname="list.report.networkexception">
+				<source>General network error. Receive failed.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.60" resname="list.report.networkexception">
+				<source>The remote server's SSL certificate was deemed not OK.</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.libcurl.63" resname="list.report.networkexception">
+				<source>Maximum file size exceeded.</source>
 			</trans-unit>
 			<trans-unit id="list.msg.ok" resname="list.msg.ok">
 				<source>Ok</source>

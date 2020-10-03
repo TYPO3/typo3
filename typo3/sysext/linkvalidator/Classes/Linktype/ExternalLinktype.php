@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,6 +30,13 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class ExternalLinktype extends AbstractLinktype
 {
+    // HTTP status code was delivered (and can be found in $errorParams['errno'])
+    protected const ERROR_TYPE_HTTP_STATUS_CODE = 'httpStatusCode';
+    // An error occurred in lowlevel handler and a cURL error code can be found in $errorParams['errno']
+    protected const ERROR_TYPE_LOWLEVEL_LIBCURL_ERRNO = 'libcurlErrno';
+    protected const ERROR_TYPE_GENERIC_EXCEPTION = 'exception';
+    protected const ERROR_TYPE_UNKNOWN = 'unknown';
+
     /**
      * Cached list of the URLs, which were already checked for the current processing
      *
@@ -192,27 +201,46 @@ class ExternalLinktype extends AbstractLinktype
             } else {
                 $isValidUrl = true;
             }
+            /* Guzzle Exceptions:
+             * . \RuntimeException
+             * ├── SeekException (implements GuzzleException)
+             * └── TransferException (implements GuzzleException)
+             * └── RequestException
+             * ├── BadResponseException
+             * │   ├── ServerException
+             * │   └── ClientException
+             * ├── ConnectException
+             * └── TooManyRedirectsException
+             */
         } catch (TooManyRedirectsException $e) {
-            // redirect loop or too many redirects
-            // todo: change errorType to 'redirect' (breaking change)
             $this->errorParams['errorType'] = 'tooManyRedirects';
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-        } catch (ClientException $e) {
+        } catch (ClientException | ServerException $e) {
+            // ClientException - A GuzzleHttp\Exception\ClientException is thrown for 400 level errors if the http_errors request option is set to true.
+            // ServerException - A GuzzleHttp\Exception\ServerException is thrown for 500 level errors if the http_errors request option is set to true.
             if ($e->hasResponse()) {
-                $this->errorParams['errorType'] = $e->getResponse()->getStatusCode();
+                $this->errorParams['errorType'] = self::ERROR_TYPE_HTTP_STATUS_CODE;
+                $this->errorParams['errno'] = $e->getResponse()->getStatusCode();
             } else {
-                $this->errorParams['errorType'] = 'unknown';
+                $this->errorParams['errorType'] = self::ERROR_TYPE_UNKNOWN;
             }
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-        } catch (RequestException $e) {
-            $this->errorParams['errorType'] = 'network';
+        } catch (RequestException | ConnectException $e) {
+            // RequestException - In the event of a networking error (connection timeout, DNS errors, etc.), a GuzzleHttp\Exception\RequestException is thrown.
+            // Catching this exception will catch any exception that can be thrown while transferring requests.
+            // ConnectException - A GuzzleHttp\Exception\ConnectException exception is thrown in the event of a networking error.
+            $this->errorParams['errorType'] = self::ERROR_TYPE_LOWLEVEL_LIBCURL_ERRNO;
             $this->errorParams['exception'] = $e->getMessage();
+            $handlerContext = $e->getHandlerContext();
+            if ($handlerContext['errno'] ?? 0) {
+                $this->errorParams['errno'] = (int)($handlerContext['errno']);
+            }
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         } catch (\Exception $e) {
             // Generic catch for anything else that may go wrong
-            $this->errorParams['errorType'] = 'exception';
+            $this->errorParams['errorType'] = self::ERROR_TYPE_GENERIC_EXCEPTION;
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         }
@@ -230,18 +258,44 @@ class ExternalLinktype extends AbstractLinktype
         $lang = $this->getLanguageService();
         $errorType = $errorParams['errorType'];
         switch ($errorType) {
-            case 300:
-                $message = sprintf($lang->getLL('list.report.externalerror'), $errorType);
+            case self::ERROR_TYPE_HTTP_STATUS_CODE:
+                switch ($errorParams['errno'] ?? 0) {
+                    case 403:
+                        $message = $lang->getLL('list.report.pageforbidden403');
+                        break;
+                    case 404:
+                        $message = $lang->getLL('list.report.pagenotfound404');
+                        break;
+                    case 500:
+                        $message = $lang->getLL('list.report.internalerror500');
+                        break;
+                    default:
+                        // fall back to other error messages
+                        $message = $lang->getLL('list.report.error.httpstatuscode.' . $errorParams['errno']);
+                        if (!$message) {
+                            // fall back to generic error message
+                            $message = sprintf($lang->getLL('list.report.externalerror'), $errorType);
+                        }
+                }
                 break;
-            case 403:
-                $message = $lang->getLL('list.report.pageforbidden403');
+
+            case self::ERROR_TYPE_LOWLEVEL_LIBCURL_ERRNO:
+                $message = '';
+                if ($errorParams['errno'] ?? 0) {
+                    // get localized error message
+                    $message = $lang->getLL('list.report.error.libcurl.' . $errorParams['errno']);
+                }
+                if (!$message) {
+                    // fallback to  generic error message and show exception
+                    $message = $lang->getLL('list.report.networkexception');
+                    if (($errorParams['exception'] ?? '') != '') {
+                        $message .= ' ('
+                            . $errorParams['exception']
+                            . ')';
+                    }
+                }
                 break;
-            case 404:
-                $message = $lang->getLL('list.report.pagenotfound404');
-                break;
-            case 500:
-                $message = $lang->getLL('list.report.internalerror500');
-                break;
+
             case 'loop':
                 $message = sprintf(
                     $lang->getLL('list.report.redirectloop'),
@@ -249,22 +303,18 @@ class ExternalLinktype extends AbstractLinktype
                     ''
                 );
                 break;
+
             case 'tooManyRedirects':
                 $message = $lang->getLL('list.report.tooManyRedirects');
                 break;
+
             case 'exception':
                 $message = sprintf($lang->getLL('list.report.httpexception'), $errorParams['exception']);
                 break;
-            case 'network':
-                $message = $lang->getLL('list.report.networkexception');
-                if ($errorParams['exception']) {
-                    $message .= ':' . $errorParams['exception'];
-                }
-                break;
+
             default:
                 $message = sprintf($lang->getLL('list.report.otherhttpcode'), $errorType, $errorParams['exception']);
         }
-
         return $message;
     }
 

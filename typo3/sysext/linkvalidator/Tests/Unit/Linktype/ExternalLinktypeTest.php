@@ -105,9 +105,10 @@ class ExternalLinktypeTest extends UnitTestCase
         $subject = new ExternalLinktype($requestFactoryProphecy->reveal());
 
         $subject->checkLink($url, null, null);
-        $result = $subject->getErrorParams()['errorType'];
+        $errorParams = $subject->getErrorParams();
 
-        self::assertSame(404, $result);
+        self::assertSame($errorParams['errorType'], 'httpStatusCode');
+        self::assertSame($errorParams['errno'], 404);
     }
 
     private function getCookieJarProphecy(): CookieJar
