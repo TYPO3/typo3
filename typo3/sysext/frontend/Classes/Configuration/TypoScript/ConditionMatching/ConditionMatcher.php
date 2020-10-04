@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 
 /**
  * Matching TypoScript conditions for frontend disposal.
@@ -47,11 +48,14 @@ class ConditionMatcher extends AbstractConditionMatcher
 
     protected function updateExpressionLanguageVariables(): void
     {
+        $page = $GLOBALS['TSFE']->page ?? [];
+
         $tree = new \stdClass();
         $tree->level = $this->rootline ? count($this->rootline) - 1 : 0;
         $tree->rootLine = $this->rootline;
         $tree->rootLineIds = array_column($this->rootline, 'uid');
         $tree->rootLineParentIds = array_slice(array_column($this->rootline, 'pid'), 1);
+        $tree->pagelayout = GeneralUtility::makeInstance(PageLayoutResolver::class)->getLayoutForPage($page, $this->rootline);
 
         $frontendUserAspect = $this->context->getAspect('frontend.user');
         $frontend = new \stdClass();
@@ -79,7 +83,7 @@ class ConditionMatcher extends AbstractConditionMatcher
             'frontend' => $frontend,
             'backend' => $backend,
             'workspace' => $workspace,
-            'page' => $GLOBALS['TSFE']->page ?? [],
+            'page' => $page,
         ];
     }
 }

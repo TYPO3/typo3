@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 
 /**
  * Matching TypoScript conditions for backend disposal.
@@ -47,12 +48,15 @@ class ConditionMatcher extends AbstractConditionMatcher
 
     protected function updateExpressionLanguageVariables(): void
     {
+        $page = BackendUtility::getRecord('pages', $this->pageId ?? $this->determinePageId()) ?: [];
+
         $treeLevel = $this->rootline ? count($this->rootline) - 1 : 0;
         $tree = new \stdClass();
         $tree->level = $treeLevel;
         $tree->rootLine = $this->rootline;
         $tree->rootLineIds = array_column($this->rootline, 'uid');
         $tree->rootLineParentIds = array_slice(array_column($this->rootline, 'pid'), 2);
+        $tree->pagelayout = GeneralUtility::makeInstance(PageLayoutResolver::class)->getLayoutForPage($page, $this->rootline);
 
         $backendUserAspect = $this->context->getAspect('backend.user');
         $backend = new \stdClass();
@@ -72,7 +76,7 @@ class ConditionMatcher extends AbstractConditionMatcher
             'tree' => $tree,
             'backend' => $backend,
             'workspace' => $workspace,
-            'page' => BackendUtility::getRecord('pages', $this->pageId ?? $this->determinePageId()) ?: [],
+            'page' => $page,
         ];
     }
 
