@@ -770,9 +770,6 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * @group not-postgres
-     * @group not-mssql
-     * @todo Analyze PostgreSQL issues further, which is a generic issue
      * Test skipped in publish and discard, but exists in PublishAll
      */
     public function changeContentSortingAndCopyDraftPage()
