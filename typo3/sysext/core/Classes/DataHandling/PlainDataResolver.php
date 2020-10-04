@@ -275,16 +275,8 @@ class PlainDataResolver
             return $ids;
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
-
-        // @todo: DeletedRestriction should be added here, too. This however currently makes test
-        // workspaces/Tests/Functional/DataHandling/FAL/Publish/ActionTest::modifyContentAndDeleteFileReference
-        // fail with postgres. Suspected reason: On publish, there seems to be a missing RefenenceIndex->updateRefIndexTable()
-        // call, so sys_refindex still has relations to workspace records that don't exist anymore after publish. If that
-        // is solved and old sys_refindex relations are correctly dropped, the DeletedRestriction should be added here.
-        $queryBuilder->getRestrictions()->removeAll();
-
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder
             ->select('uid')
             ->from($this->tableName)
@@ -301,6 +293,22 @@ class PlainDataResolver
                 $queryBuilder->add('orderBy', $sortingStatement, true);
             }
         }
+        // Always add explicit order by uid to have deterministic rows from dbms like postgres.
+        // Scenario (see workspace FAL/Modify/ActionTest modifyContentAndDeleteFileReference):
+        // A content element with two images - sys_file_reference uid=23 with sorting_foreign=2 (!)
+        // and sys_file_reference uid=42 with sorting_foreign=1. The references have been added
+        // and later changed their sorting that uid 42 is before 23.
+        // Then, in workspaces, image reference 42 is deleted and 23 is changed (eg. title). This
+        // creates two overlays: a 'delete placeholder' t3ver_state=2 with sorting_foreign=1 for 42,
+        // and a 'changed' record t3ver_state=0 with sorting_foreign=1 for 23.
+        // So both overlay records end up with sorting_foreign=1. This is technically ok since the
+        // 'delete placeholder' "does not exist" from a live relation point of view, so the next
+        // "real" record starts with 1 when published.
+        // BUT, this scenario makes the order of returned rows non-deterministic for dbms that
+        // do not implicitly order by uid (mysql does, postgres does not): The usual orderBy
+        // is 'sorting_foreign' but both are 1 now.
+        // We thus add a general explicit order by uid here to force deterministic row returns.
+        $queryBuilder->addOrderBy('uid');
 
         $sortedIds = $queryBuilder->execute()->fetchAll();
 
