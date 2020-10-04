@@ -424,6 +424,9 @@ class ExtensionManagementUtility
      * - $relativeToField = mailform
      * - $relativePosition = after
      *
+     * $item has an optional fourth parameter for the groupId (string), to attach the
+     * new item to. The groupname is defined when a group is added with addTcaSelectItemGroup
+     *
      * @throws \InvalidArgumentException If given parameters are not of correct
      * @throws \RuntimeException If reference to related position fields can not
      * @param string $table Name of TCA table
