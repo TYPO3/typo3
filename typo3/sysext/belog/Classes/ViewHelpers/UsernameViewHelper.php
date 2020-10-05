@@ -15,9 +15,7 @@
 
 namespace TYPO3\CMS\Belog\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -61,12 +59,8 @@ class UsernameViewHelper extends AbstractViewHelper
             return static::$usernameRuntimeCache[$uid];
         }
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $backendUserRepository = $objectManager->get(BackendUserRepository::class);
-        /** @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser $user */
-        $user = $backendUserRepository->findByUid($uid);
-        // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
-        static::$usernameRuntimeCache[$uid] = $user === null ? '' : $user->getUserName();
+        $user = BackendUtility::getRecord('be_users', $uid);
+        static::$usernameRuntimeCache[$uid] = $user['username'] ?? '';
         return static::$usernameRuntimeCache[$uid];
     }
 }

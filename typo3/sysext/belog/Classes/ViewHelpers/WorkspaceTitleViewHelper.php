@@ -15,10 +15,8 @@
 
 namespace TYPO3\CMS\Belog\ViewHelpers;
 
-use TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -77,12 +75,8 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
         } elseif (!ExtensionManagementUtility::isLoaded('workspaces')) {
             static::$workspaceTitleRuntimeCache[$uid] = '';
         } else {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $workspaceRepository = $objectManager->get(WorkspaceRepository::class);
-            /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
-            $workspace = $workspaceRepository->findByUid($uid);
-            // $workspace may be null, force empty string in this case
-            static::$workspaceTitleRuntimeCache[$uid] = $workspace === null ? '' : $workspace->getTitle();
+            $workspace = BackendUtility::getRecord('sys_workspace', $uid);
+            static::$workspaceTitleRuntimeCache[$uid] = $workspace['title'] ?? '';
         }
 
         return static::$workspaceTitleRuntimeCache[$uid];
