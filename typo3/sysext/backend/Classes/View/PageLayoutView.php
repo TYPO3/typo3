@@ -673,7 +673,7 @@ class PageLayoutView implements LoggerAwareInterface
         // Notice that THIS presentation will override the value of $out!
         // But it needs the code above to execute since $languageColumn is filled with content we need!
         if ($this->tt_contentConfig['languageMode']) {
-            return $this->generateLanguageView($languageIds, $defaultLanguageElementsByColumn, $languageColumn);
+            return $this->generateLanguageView($languageIds, $defaultLanguageElementsByColumn, $languageColumn, $defLangBinding);
         }
         return $out;
     }
@@ -683,10 +683,15 @@ class PageLayoutView implements LoggerAwareInterface
      * @param array $languageIds languages to render
      * @param array $defaultLanguageElementsByColumn
      * @param array $languageColumn
+     * @param array $defLangBinding
      * @return string the compiled content
      */
-    protected function generateLanguageView(array $languageIds, array $defaultLanguageElementsByColumn, array $languageColumn): string
-    {
+    protected function generateLanguageView(
+        array $languageIds,
+        array $defaultLanguageElementsByColumn,
+        array $languageColumn,
+        array $defLangBinding
+    ): string {
         // Get language selector:
         $languageSelector = $this->languageSelector($this->id);
         // Reset out - we will make new content here:
