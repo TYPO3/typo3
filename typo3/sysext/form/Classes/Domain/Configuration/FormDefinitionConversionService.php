@@ -56,7 +56,7 @@ class FormDefinitionConversionService implements SingletonInterface
             GeneralUtility::makeInstance(
                 ArrayProcessing::class,
                 'addHmacData',
-                '(^identifier$|renderables\.([\d]+).\identifier$)',
+                '(^identifier$|renderables\.([\d]+)\.identifier$)',
                 GeneralUtility::makeInstance(
                     AddHmacDataConverter::class,
                     $converterDto,
