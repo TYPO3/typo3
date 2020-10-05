@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -824,6 +825,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 if ($brokenLinkAnalysis->isBrokenLink()) {
                     $attributes['data-rte-error'] = $brokenLinkAnalysis->getReason();
                 }
+            } catch (InsufficientFolderAccessPermissionsException $e) {
+                // do nothing if user doesn't have access to the file/folder
             } catch (UnknownLinkHandlerException $e) {
                 $attributes['data-rte-error'] = $e->getMessage();
             }
