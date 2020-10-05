@@ -867,8 +867,8 @@ class PageLayoutView implements LoggerAwareInterface
                     }
                     $out .= '
                         <tr>
-							<td valign="top" class="t3-grid-cell">' . implode('</td>
-							<td valign="top" class="t3-grid-cell">', $cCont) . '</td>
+							<td valign="top" class="t3-grid-cell" data-colpos="' . $cKey . '">' . implode('</td>
+                            <td valign="top" class="t3-grid-cell" data-colpos="' . $cKey . '">', $cCont) . '</td>
 						</tr>';
                 }
             }
