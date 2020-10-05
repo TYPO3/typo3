@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\LinkHandling;
 
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -67,7 +68,7 @@ class FolderLinkHandler implements LinkHandlingInterface
         $combinedIdentifier = ($data['storage'] ?? '0') . ':' . $data['identifier'];
         try {
             $folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
-        } catch (FolderDoesNotExistException $e) {
+        } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
             $folder = null;
         }
         return ['folder' => $folder];
