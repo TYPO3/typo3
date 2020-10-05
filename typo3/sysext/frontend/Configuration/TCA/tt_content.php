@@ -1012,7 +1012,16 @@ return [
                 'allowed' => 'sys_file_collection',
                 'foreign_table' => 'sys_file_collection',
                 'minitems' => 0,
-                'size' => 5
+                'size' => 5,
+                'fieldControl' => [
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:file_mountpoints_add_title',
+                            'setValue' => 'prepend',
+                        ],
+                    ],
+                ],
             ]
         ],
         'media' => [
