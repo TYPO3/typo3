@@ -162,7 +162,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
                     ],
                 ]);
 
-                $transport->send($message);
+                $transport->send($message->getMessage(), $message->getEnvelope());
                 $count++;
 
                 unlink($file . '.sending');
