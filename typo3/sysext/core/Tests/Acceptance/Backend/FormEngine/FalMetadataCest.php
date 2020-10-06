@@ -180,10 +180,10 @@ class FalMetadataCest
         $I->dontSeeCheckboxIsChecked('//input[contains(@name, "[alternative]") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]');
         $I->dontSeeCheckboxIsChecked('//input[contains(@name, "[description]") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]');
 
-        $I->amGoingTo('Assert hidden control field value (default value which is used when checkbox is not checked');
-        $I->seeInField('//input[contains(@name, "[title]") and @type="hidden" and contains(@name, "control[active][sys_file_reference]")]', 0);
-        $I->seeInField('//input[contains(@name, "[alternative]") and @type="hidden" and contains(@name, "control[active][sys_file_reference]")]', 0);
-        $I->seeInField('//input[contains(@name, "[description]") and @type="hidden" and contains(@name, "control[active][sys_file_reference]")]', 0);
+        $I->amGoingTo('Assert hidden control field value (default value which is used when checkbox is not checked)');
+        $I->seeInField('//input[contains(@name, "[title]") and @type="hidden" and contains(@name, "control[active][sys_file_reference]")]', '0');
+        $I->seeInField('//input[contains(@name, "[alternative]") and @type="hidden" and contains(@name, "control[active][sys_file_reference]")]', '0');
+        $I->seeInField('//input[contains(@name, "[description]") and @type="hidden" and contains(@name, "control[active][sys_file_reference]")]', '0');
 
         //when checkbox is unchecked the disabled input is shown
         //<input type="text" class="form-control" disabled="disabled" value="Test title">
