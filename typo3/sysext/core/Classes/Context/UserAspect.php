@@ -44,7 +44,7 @@ class UserAspect implements AspectInterface
     /**
      * Alternative list of groups, usually useful for frontend logins with "magic" groups like "-1" and "-2"
      *
-     * @var int[]
+     * @var int[]|null
      */
     protected $groups;
 
@@ -135,15 +135,16 @@ class UserAspect implements AspectInterface
      */
     public function getGroupIds(): array
     {
-        $groups = [];
-        if ($this->user instanceof BackendUserAuthentication) {
-            $groups = GeneralUtility::intExplode(',', $this->user->groupList, true);
+        // Alternative groups are set
+        if (is_array($this->groups)) {
+            return $this->groups;
         }
+        if ($this->user instanceof BackendUserAuthentication) {
+            return GeneralUtility::intExplode(',', $this->user->groupList, true);
+        }
+        $groups = [];
         if ($this->user instanceof FrontendUserAuthentication) {
-            // Alternative groups are set
-            if (is_array($this->groups)) {
-                $groups = $this->groups;
-            } elseif ($this->isLoggedIn()) {
+            if ($this->isLoggedIn()) {
                 // If a user is logged in, always add "-2"
                 $groups = [0, -2];
                 if (!empty($this->user->groupData['uid'])) {

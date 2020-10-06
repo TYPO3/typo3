@@ -41,6 +41,17 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
+    public function alternativeGroupsAreAlwaysReturned()
+    {
+        $subject = new UserAspect(null, []);
+        self::assertEquals([], $subject->get('groupIds'));
+        $subject = new UserAspect(null, [567]);
+        self::assertEquals([567], $subject->get('groupIds'));
+    }
+
+    /**
+     * @test
+     */
     public function getterReturnsValidUserId()
     {
         $user = new FrontendUserAuthentication();
