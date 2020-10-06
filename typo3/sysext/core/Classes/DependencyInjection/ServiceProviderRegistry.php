@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DependencyInjection;
 
 use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
@@ -113,10 +113,10 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * Returns service provider by id.
      *
      * @param string $packageKey Key of the service provider in the registry
-     * @param PackageInterface $package
+     * @param Package $package
      * @return ServiceProviderInterface
      */
-    private function create(string $packageKey, PackageInterface $package = null): ServiceProviderInterface
+    private function create(string $packageKey, Package $package = null): ServiceProviderInterface
     {
         if ($package === null) {
             if (!$this->packageManager->isPackageActive($packageKey)) {
