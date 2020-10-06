@@ -125,7 +125,7 @@ final class CategoryPermissionsAspect
      * @param TreeNodeCollection $treeNodeCollection
      * @return TreeNode|null
      */
-    private function lookUpCategoryMountPointInTreeNodes($categoryMountPoint, TreeNodeCollection $treeNodeCollection)
+    private function lookUpCategoryMountPointInTreeNodes(int $categoryMountPoint, TreeNodeCollection $treeNodeCollection)
     {
         $result = null;
 
@@ -157,7 +157,7 @@ final class CategoryPermissionsAspect
      * @param int $uid
      * @return array
      */
-    private function findUidsInRootline($uid)
+    private function findUidsInRootline(int $uid)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->categoryTableName);

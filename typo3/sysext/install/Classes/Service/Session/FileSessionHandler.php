@@ -78,7 +78,7 @@ class FileSessionHandler implements \SessionHandlerInterface
      * @param string $id
      * @return string A filename
      */
-    private function getSessionFile($id)
+    private function getSessionFile(string $id)
     {
         $sessionSavePath = $this->getSessionSavePath();
         return $sessionSavePath . '/hash_' . $this->getSessionHash($id);
@@ -242,7 +242,7 @@ class FileSessionHandler implements \SessionHandlerInterface
      * @throws \TYPO3\CMS\Install\Exception
      * @return string the session hash
      */
-    private function getSessionHash($sessionId = '')
+    private function getSessionHash(string $sessionId = '')
     {
         if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
             throw new \TYPO3\CMS\Install\Exception(
@@ -263,7 +263,7 @@ class FileSessionHandler implements \SessionHandlerInterface
      * @param string $sessionSavePath The absolute path to the session files
      * @throws \TYPO3\CMS\Install\Exception
      */
-    private function ensureSessionSavePathExists($sessionSavePath)
+    private function ensureSessionSavePathExists(string $sessionSavePath)
     {
         if (!is_dir($sessionSavePath)) {
             try {
