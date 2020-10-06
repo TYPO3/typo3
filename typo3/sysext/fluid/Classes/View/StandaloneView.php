@@ -15,11 +15,12 @@
 
 namespace TYPO3\CMS\Fluid\View;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
@@ -55,7 +56,9 @@ class StandaloneView extends AbstractTemplateView
         $configurationManager->setContentObject($contentObject);
 
         $baseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        if ($this->objectManager->get(EnvironmentService::class)->isEnvironmentInBackendMode()) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
             $baseUri .= TYPO3_mainDir;
         }
 

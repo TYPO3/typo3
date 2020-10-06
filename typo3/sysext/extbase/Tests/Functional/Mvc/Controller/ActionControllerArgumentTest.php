@@ -21,6 +21,8 @@ use ExtbaseTeam\ActionControllerArgumentTest\Controller\ArgumentTestController;
 use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model;
 use ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
@@ -52,6 +54,8 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         parent::setUp();
         $this->pluginNamespacePrefix = strtolower('tx_' . $this->extensionName . '_' . $this->pluginName);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = self::ENCRYPTION_KEY;
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
     }
 
     protected function tearDown(): void

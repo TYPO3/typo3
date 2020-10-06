@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -85,13 +85,8 @@ class TranslationTest extends FunctionalTestCase
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF, ['off']));
 
-        /** @var MockObject|EnvironmentService $environmentServiceMock */
-        $environmentServiceMock = $this->createMock(EnvironmentService::class);
-        $environmentServiceMock
-            ->expects(self::atLeast(1))
-            ->method('isEnvironmentInFrontendMode')
-            ->willReturn(true);
-        GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentServiceMock);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $pageRepositoryFixture = new PageRepository();
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);

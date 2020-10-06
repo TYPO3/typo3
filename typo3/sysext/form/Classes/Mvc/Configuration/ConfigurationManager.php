@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager as ExtbaseConfigurationManager;
@@ -137,7 +139,9 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
                 $typoScript['yamlSettingsOverrides']
             );
 
-            if ($this->environmentService->isEnvironmentInFrontendMode()) {
+            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            ) {
                 $yamlSettings = $this->objectManager->get(TypoScriptService::class)
                     ->resolvePossibleTypoScriptConfiguration($yamlSettings);
             }

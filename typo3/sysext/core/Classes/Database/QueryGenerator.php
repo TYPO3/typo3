@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class for generating front end for building queries
+ *
+ * @deprecated since v11, will be removed in v12
  */
 class QueryGenerator
 {
@@ -241,7 +243,7 @@ class QueryGenerator
 
     public function __contruct()
     {
-        trigger_error(__CLASS__ . ' will be removed in TYPO3 v11.', E_USER_DEPRECATED);
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
     }
 
     /**

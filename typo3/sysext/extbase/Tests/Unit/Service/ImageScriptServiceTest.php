@@ -17,11 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -41,19 +42,13 @@ class ImageScriptServiceTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var EnvironmentService|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $environmentService;
-
-    /**
      * Initialize ImageService and environment service mock
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->environmentService = $this->createMock(EnvironmentService::class);
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject = new ImageService($this->environmentService, $resourceFactory);
+        $this->subject = new ImageService($resourceFactory);
         $_SERVER['HTTP_HOST'] = 'foo.bar';
     }
 
@@ -91,7 +86,8 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
-        $this->environmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
@@ -119,7 +115,8 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
-        $this->environmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 

@@ -30,7 +30,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
@@ -90,7 +89,6 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->_set('contentObject', $this->mockContentObject);
         $this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->uriBuilder->_set('extensionService', $this->mockExtensionService);
-        $this->uriBuilder->_set('environmentService', $this->createMock(EnvironmentService::class));
         $router = GeneralUtility::makeInstance(Router::class);
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));

@@ -1619,4 +1619,9 @@ return [
             'Breaking-92853-MethodCanProcessRequestHasBeenRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Service\EnvironmentService' => [
+        'restFiles' => [
+            'Deprecation-92494-ExtbaseEnvironmentService.rst'
+        ],
+    ],
 ];

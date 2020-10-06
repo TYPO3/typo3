@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -44,7 +46,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintExcepti
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -67,11 +68,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @var CacheService
      */
     protected $cacheService;
-
-    /**
-     * @var EnvironmentService
-     */
-    protected $environmentService;
 
     /**
      * @var ObjectManagerInterface
@@ -100,14 +96,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     public function injectCacheService(CacheService $cacheService): void
     {
         $this->cacheService = $cacheService;
-    }
-
-    /**
-     * @param EnvironmentService $environmentService
-     */
-    public function injectEnvironmentService(EnvironmentService $environmentService): void
-    {
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -431,7 +419,9 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $dataMap = $dataMapper->getDataMap(get_class($object));
         $tableName = $dataMap->getTableName();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-        if ($this->environmentService->isEnvironmentInFrontendMode()) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         }
         $whereClause = [];

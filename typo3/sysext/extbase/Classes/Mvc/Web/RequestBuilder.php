@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
@@ -90,11 +90,6 @@ class RequestBuilder implements SingletonInterface
     protected $extensionService;
 
     /**
-     * @var EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * @var array
      */
     private $controllerAliasToClassMapping = [];
@@ -123,14 +118,6 @@ class RequestBuilder implements SingletonInterface
     public function injectExtensionService(ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
-    }
-
-    /**
-     * @param EnvironmentService $environmentService
-     */
-    public function injectEnvironmentService(EnvironmentService $environmentService)
-    {
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -197,7 +184,7 @@ class RequestBuilder implements SingletonInterface
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
 
         $baseUri = $normalizedParams->getSiteUrl();
-        if ($this->environmentService->isEnvironmentInBackendMode()) {
+        if (ApplicationType::fromRequest($mainRequest)->isBackend()) {
             $baseUri .= TYPO3_mainDir;
         }
 

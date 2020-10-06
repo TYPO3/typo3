@@ -17,9 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -42,27 +43,19 @@ class ConfigurationManager implements ConfigurationManagerInterface
     protected $concreteConfigurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
-    public function __construct(
-        ObjectManagerInterface $objectManager,
-        EnvironmentService $environmentService
-    ) {
+    public function __construct(ObjectManagerInterface $objectManager)
+    {
         $this->objectManager = $objectManager;
-        $this->environmentService = $environmentService;
-
         $this->initializeConcreteConfigurationManager();
     }
 
     protected function initializeConcreteConfigurationManager(): void
     {
-        if ($this->environmentService->isEnvironmentInFrontendMode()) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
             $this->concreteConfigurationManager = $this->objectManager->get(FrontendConfigurationManager::class);
         } else {
             $this->concreteConfigurationManager = $this->objectManager->get(BackendConfigurationManager::class);

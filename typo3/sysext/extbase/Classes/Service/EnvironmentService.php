@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Service for determining environment params
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ * @deprecated since v11.2, will be removed in v12.0.
  */
 class EnvironmentService implements SingletonInterface
 {
@@ -31,6 +32,11 @@ class EnvironmentService implements SingletonInterface
      * @var bool|null
      */
     protected $isFrontendMode;
+
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12, use the PSR-7 Request and the ApplicationType instead.', E_USER_DEPRECATED);
+    }
 
     /**
      * Detects if frontend application has been called.

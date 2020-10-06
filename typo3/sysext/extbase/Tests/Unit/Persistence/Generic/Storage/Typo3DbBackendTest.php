@@ -19,11 +19,13 @@ use Doctrine\DBAL\Driver\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -32,7 +34,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -106,8 +107,13 @@ class Typo3DbBackendTest extends UnitTestCase
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());
 
-        $environmentServiceProphet = $this->prophesize(EnvironmentService::class);
-        $environmentServiceProphet->isEnvironmentInFrontendMode()->willReturn($isFrontendEnvironment);
+        if ($isFrontendEnvironment) {
+            $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+                ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        } else {
+            $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+                ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        }
 
         if ($isFrontendEnvironment) {
             $queryBuilderProphet->setRestrictions(Argument::type(FrontendRestrictionContainer::class))
@@ -130,7 +136,6 @@ class Typo3DbBackendTest extends UnitTestCase
         $mockTypo3DbBackend->_set('objectManager', $mockObjectManager);
         $mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbBackend->_set('connectionPool', $connectionPoolProphet->reveal());
-        $mockTypo3DbBackend->_set('environmentService', $environmentServiceProphet->reveal());
         $result = $mockTypo3DbBackend->getUidOfAlreadyPersistedValueObject($mockValueObject);
         self::assertSame($expectedUid, $result);
     }
@@ -171,12 +176,11 @@ class Typo3DbBackendTest extends UnitTestCase
         $query = new Query('random');
         $query->setQuerySettings($mockQuerySettings);
         $pageRepositoryMock->expects(self::once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->willReturn($workspaceVersion);
-        $environmentService = new EnvironmentService();
-        $environmentService->setFrontendMode(true);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         GeneralUtility::setSingletonInstance(Context::class, $context);
         GeneralUtility::addInstance(PageRepository::class, $pageRepositoryMock);
         $mockTypo3DbBackend = $this->getAccessibleMock(Typo3DbBackend::class, ['dummy'], [], '', false);
-        $mockTypo3DbBackend->injectEnvironmentService($environmentService);
         self::assertSame([$comparisonRow], $mockTypo3DbBackend->_call('overlayLanguageAndWorkspace', $sourceMock, [$row], $query));
     }
 }

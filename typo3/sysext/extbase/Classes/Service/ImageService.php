@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
@@ -39,19 +41,12 @@ class ImageService implements SingletonInterface
     protected $resourceFactory;
 
     /**
-     * @var EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * ImageService constructor.
      *
-     * @param EnvironmentService|null $environmentService
      * @param ResourceFactory|null $resourceFactory
      */
-    public function __construct(EnvironmentService $environmentService = null, ResourceFactory $resourceFactory = null)
+    public function __construct(ResourceFactory $resourceFactory = null)
     {
-        $this->environmentService = $environmentService ?? GeneralUtility::makeInstance(EnvironmentService::class);
         $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
@@ -99,7 +94,9 @@ class ImageService implements SingletonInterface
         // no prefix in case of an already fully qualified URL
         if (isset($parsedUrl['host'])) {
             $uriPrefix = '';
-        } elseif ($this->environmentService->isEnvironmentInFrontendMode()) {
+        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
             $uriPrefix = $GLOBALS['TSFE']->absRefPrefix;
         } else {
             $uriPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
@@ -155,7 +152,10 @@ class ImageService implements SingletonInterface
      */
     protected function getImageFromSourceString(string $src, bool $treatIdAsReference): object
     {
-        if ($this->environmentService->isEnvironmentInBackendMode() && strpos($src, '../') === 0) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            && strpos($src, '../') === 0
+        ) {
             $src = substr($src, 3);
         }
         if (MathUtility::canBeInterpretedAsInteger($src)) {

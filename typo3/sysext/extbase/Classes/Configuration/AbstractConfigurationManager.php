@@ -17,12 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -81,23 +82,15 @@ abstract class AbstractConfigurationManager implements SingletonInterface
     protected $configurationCache = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        TypoScriptService $typoScriptService,
-        EnvironmentService $environmentService
+        TypoScriptService $typoScriptService
     ) {
         $this->objectManager = $objectManager;
         $this->typoScriptService = $typoScriptService;
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -173,14 +166,16 @@ abstract class AbstractConfigurationManager implements SingletonInterface
         if (!empty($frameworkConfiguration['persistence']['storagePid'])) {
             if (is_array($frameworkConfiguration['persistence']['storagePid'])) {
                 // We simulate the frontend to enable the use of cObjects in
-                // stdWrap. Than we convert the configuration to normal TypoScript
+                // stdWrap. We then convert the configuration to normal TypoScript
                 // and apply the stdWrap to the storagePid
-                if (!$this->environmentService->isEnvironmentInFrontendMode()) {
+                $isBackend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
+                if ($isBackend) {
                     FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
                 }
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
                 $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf ?? []);
-                if (!$this->environmentService->isEnvironmentInFrontendMode()) {
+                if ($isBackend) {
                     FrontendSimulatorUtility::resetFrontendEnvironment();
                 }
             }

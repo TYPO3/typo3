@@ -717,7 +717,8 @@ class RequestBuilderTest extends FunctionalTestCase
 
     protected function prepareServerRequest(string $url, $method = 'GET'): ServerRequestInterface
     {
-        $request = new ServerRequest($url, $method);
+        $request = (new ServerRequest($url, $method))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($request);
         return $request->withAttribute('normalizedParams', $normalizedParams);
     }

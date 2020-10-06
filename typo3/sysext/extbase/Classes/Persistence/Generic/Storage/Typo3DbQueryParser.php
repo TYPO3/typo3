@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -52,7 +54,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
  * QueryParser, converting the qom to string representation
@@ -71,11 +72,6 @@ class Typo3DbQueryParser
      * @var PageRepository
      */
     protected $pageRepository;
-
-    /**
-     * @var EnvironmentService
-     */
-    protected $environmentService;
 
     /**
      * @var ConfigurationManagerInterface
@@ -143,14 +139,6 @@ class Typo3DbQueryParser
     public function initializeObject()
     {
         $this->dataMapper = $this->objectManager->get(DataMapper::class);
-    }
-
-    /**
-     * @param EnvironmentService $environmentService
-     */
-    public function injectEnvironmentService(EnvironmentService $environmentService)
-    {
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -729,7 +717,9 @@ class Typo3DbQueryParser
             $ignoreEnableFields = $querySettings->getIgnoreEnableFields();
             $enableFieldsToBeIgnored = $querySettings->getEnableFieldsToBeIgnored();
             $includeDeleted = $querySettings->getIncludeDeleted();
-            if ($this->environmentService->isEnvironmentInFrontendMode()) {
+            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            ) {
                 $statement .= $this->getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
             } else {
                 // applicationType backend

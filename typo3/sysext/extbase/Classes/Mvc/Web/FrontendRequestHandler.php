@@ -16,12 +16,13 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -31,16 +32,13 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class FrontendRequestHandler implements RequestHandlerInterface
 {
     protected Dispatcher $dispatcher;
-    protected EnvironmentService $environmentService;
     protected ConfigurationManagerInterface $configurationManager;
 
     public function __construct(
         Dispatcher $dispatcher,
-        EnvironmentService $environmentService,
         ConfigurationManagerInterface $configurationManager
     ) {
         $this->dispatcher = $dispatcher;
-        $this->environmentService = $environmentService;
         $this->configurationManager = $configurationManager;
     }
 
@@ -76,7 +74,9 @@ class FrontendRequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(RequestInterface $request)
     {
-        return $this->environmentService->isEnvironmentInFrontendMode();
+        // @todo: Use $request when extbase hands over PSR-7 compatible requests
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 
     protected function isActionCacheable(string $controllerClassName, string $actionName): bool

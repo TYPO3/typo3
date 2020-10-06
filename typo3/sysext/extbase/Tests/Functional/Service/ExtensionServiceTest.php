@@ -18,12 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Service;
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -51,18 +52,12 @@ class ExtensionServiceTest extends FunctionalTestCase
      */
     protected $objectManager;
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|EnvironmentService
-     */
-    protected $environmentService;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->environmentService = $this->prophesize(EnvironmentService::class);
-        $this->environmentService->isEnvironmentInFrontendMode()->willReturn(true);
-        $this->environmentService->isEnvironmentInBackendMode()->willReturn(false);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $this->frontendConfigurationManager = $this->prophesize(FrontendConfigurationManager::class);
         $this->backendConfigurationManager = $this->prophesize(BackendConfigurationManager::class);
@@ -79,10 +74,7 @@ class ExtensionServiceTest extends FunctionalTestCase
     {
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn([]);
         $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager(
-            $this->objectManager->reveal(),
-            $this->environmentService->reveal()
-        );
+        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $pluginName = $this->extensionService->getPluginNameByAction('BlogExample', 'Blog', 'testForm');
@@ -99,10 +91,7 @@ class ExtensionServiceTest extends FunctionalTestCase
 
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
         $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager(
-            $this->objectManager->reveal(),
-            $this->environmentService->reveal()
-        );
+        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $expectedResult = 321;
@@ -117,10 +106,7 @@ class ExtensionServiceTest extends FunctionalTestCase
     {
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
         $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager(
-            $this->objectManager->reveal(),
-            $this->environmentService->reveal()
-        );
+        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $result = $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
@@ -135,10 +121,7 @@ class ExtensionServiceTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_two_plugins.xml');
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
         $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager(
-            $this->objectManager->reveal(),
-            $this->environmentService->reveal()
-        );
+        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $this->expectException(Exception::class);

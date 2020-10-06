@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -30,7 +31,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
@@ -133,11 +133,6 @@ class UriBuilder
     protected $argumentPrefix;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-     */
-    protected $environmentService;
-
-    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -153,15 +148,6 @@ class UriBuilder
     public function injectExtensionService(ExtensionService $extensionService): void
     {
         $this->extensionService = $extensionService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function injectEnvironmentService(EnvironmentService $environmentService): void
-    {
-        $this->environmentService = $environmentService;
     }
 
     /**
@@ -563,16 +549,18 @@ class UriBuilder
         if ($extensionName === null) {
             $extensionName = $this->request->getControllerExtensionName();
         }
-        if ($pluginName === null && $this->environmentService->isEnvironmentInFrontendMode()) {
+        $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        if ($pluginName === null && $isFrontend) {
             $pluginName = $this->extensionService->getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action'] ?? null);
         }
         if ($pluginName === null) {
             $pluginName = $this->request->getPluginName();
         }
-        if ($this->environmentService->isEnvironmentInFrontendMode() && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
+        if ($isFrontend && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
             $controllerArguments = $this->removeDefaultControllerAndAction($controllerArguments, $extensionName, $pluginName);
         }
-        if ($this->targetPageUid === null && $this->environmentService->isEnvironmentInFrontendMode()) {
+        if ($this->targetPageUid === null && $isFrontend) {
             $this->targetPageUid = $this->extensionService->getTargetPidByPlugin($extensionName, $pluginName);
         }
         if ($this->format !== '') {
@@ -624,7 +612,9 @@ class UriBuilder
      */
     public function build(): string
     {
-        if ($this->environmentService->isEnvironmentInBackendMode()) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
             return $this->buildBackendUri();
         }
         return $this->buildFrontendUri();

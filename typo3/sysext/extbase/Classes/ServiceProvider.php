@@ -38,10 +38,12 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Object\Container\Container::class => [ static::class, 'getObjectContainer' ],
             Object\ObjectManager::class => [ static::class, 'getObjectManager' ],
+            // @deprecated since v11, will be removed in v12
             SignalSlot\Dispatcher::class => [ static::class, 'getSignalSlotDispatcher' ],
             Configuration\BackendConfigurationManager::class => [ static::class, 'getBackendConfigurationManager' ],
             Configuration\ConfigurationManager::class => [ static::class, 'getConfigurationManager' ],
             Reflection\ReflectionService::class => [ static::class, 'getReflectionService' ],
+            // @deprecated since v11, will be removed in v12
             Service\EnvironmentService::class => [ static::class, 'getEnvironmentService' ],
             Service\ExtensionService::class => [ static::class, 'getExtensionService' ],
             Security\Cryptography\HashService::class => [ static::class, 'getHashService' ],
@@ -69,7 +71,6 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Configuration\BackendConfigurationManager::class, [
             $container->get(Object\ObjectManager::class),
             $container->get(TypoScriptService::class),
-            $container->get(Service\EnvironmentService::class),
         ]);
     }
 
@@ -77,7 +78,6 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Configuration\ConfigurationManager::class, [
             $container->get(Object\ObjectManager::class),
-            $container->get(Service\EnvironmentService::class),
         ]);
     }
 
@@ -86,6 +86,9 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)]);
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public static function getEnvironmentService(ContainerInterface $container): Service\EnvironmentService
     {
         return self::new($container, Service\EnvironmentService::class);
