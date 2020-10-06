@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9463bcc3c693352685e3a2351b69dfb6",
+    "content-hash": "d0adc0bf235e336c26ee9718988a7414",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -6378,8 +6378,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Utility class for timing",
@@ -7134,8 +7134,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -8305,16 +8305,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.4.4",
+            "version": "6.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "a061ad4c3844b05cdea8f5ced467063d0f0ab851"
+                "reference": "f47889fe08535bae7d467ae6328a34133c048883"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a061ad4c3844b05cdea8f5ced467063d0f0ab851",
-                "reference": "a061ad4c3844b05cdea8f5ced467063d0f0ab851",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/f47889fe08535bae7d467ae6328a34133c048883",
+                "reference": "f47889fe08535bae7d467ae6328a34133c048883",
                 "shasum": ""
             },
             "require": {
@@ -8362,7 +8362,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2020-10-02T16:50:10+00:00"
+            "time": "2020-10-06T17:48:48+00:00"
         }
     ],
     "aliases": [],
