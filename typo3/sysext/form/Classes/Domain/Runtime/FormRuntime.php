@@ -1167,16 +1167,21 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
         }
 
+        $contentObjectData = [];
+        if ($this->configurationManager->getContentObject() instanceof ContentObjectRenderer) {
+            $contentObjectData = $this->configurationManager->getContentObject()->data;
+        }
+
         return GeneralUtility::makeInstance(
             Resolver::class,
             'form',
             [
-                // some shortcuts
                 'formRuntime' => $this,
                 'formValues' => $formValues,
                 'stepIdentifier' => $page->getIdentifier(),
                 'stepType' => $page->getType(),
                 'finisherIdentifier' => $finisherIdentifier,
+                'contentObject' => $contentObjectData,
             ],
             $GLOBALS['TYPO3_REQUEST'] ?? GeneralUtility::makeInstance(ServerRequest::class)
         );
