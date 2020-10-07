@@ -17,7 +17,8 @@
     </div>
     <f:if condition="{allowEditContent} && {item.column.contentEditable} && {item.column.context.allowNewContent}">
         <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-            <a href="{item.newContentAfterUrl}" title="{item.newContentAfterLinkTitle}" data-title="{item.newContentAfterLinkTitle}" class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard disabled">
+            <a href="{item.newContentAfterUrl}" title="{item.newContentAfterLinkTitle}" data-title="{item.newContentAfterLinkTitle}"
+                class="btn btn-default btn-sm {f:if(condition:item.column.context.drawingConfiguration.showNewContentWizard, then: 't3js-toggle-new-content-element-wizard disabled')}">
                 <core:icon identifier="actions-add" />
                 {item.newContentAfterTitle}
             </a>
