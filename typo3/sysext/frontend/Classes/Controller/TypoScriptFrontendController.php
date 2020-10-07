@@ -658,43 +658,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initUserGroups()
     {
-        $userGroups = [0];
-        // no matter if we have an active user we try to fetch matching groups which can be set without an user (simulation for instance!)
-        $this->fe_user->fetchGroupData();
-        $isUserAndGroupSet = is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid']);
-        if ($isUserAndGroupSet) {
-            // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in.
-            // This is used to let elements be shown for all logged in users!
-            $userGroups[] = -2;
-            $groupsFromUserRecord = $this->fe_user->groupData['uid'];
-        } else {
-            // group -1 is not an existing group, but denotes a 'default' group when not logged in.
-            // This is used to let elements be hidden, when a user is logged in!
-            $userGroups[] = -1;
-            if ($this->loginAllowedInBranch) {
-                // For cases where logins are not banned from a branch usergroups can be set based on IP masks so we should add the usergroups uids.
-                $groupsFromUserRecord = $this->fe_user->groupData['uid'];
-            } else {
-                // Set to blank since we will NOT risk any groups being set when no logins are allowed!
-                $groupsFromUserRecord = [];
-            }
-        }
-        // Clean up.
-        // Make unique and sort the groups
-        $groupsFromUserRecord = array_unique($groupsFromUserRecord);
-        if (!empty($groupsFromUserRecord) && !$this->loginAllowedInBranch_mode) {
-            sort($groupsFromUserRecord);
-            $userGroups = array_merge($userGroups, array_map('intval', $groupsFromUserRecord));
-        }
-
-        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
-
-        // For every 60 seconds the is_online timestamp for a logged-in user is updated
-        if ($isUserAndGroupSet) {
-            $this->fe_user->updateOnlineTimestamp();
-        }
-
-        $this->logger->debug('Valid usergroups for TSFE: ' . implode(',', $userGroups));
+        $userAspect = $this->fe_user->createUserAspect((bool)$this->loginAllowedInBranch);
+        $this->context->setAspect('frontend.user', $userAspect);
     }
 
     /**
@@ -777,15 +742,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
         // Logins are not allowed, but there is a login, so will we run this.
         if (!$this->loginAllowedInBranch && $this->isUserOrGroupSet()) {
+            // Clear out user, and the group will be re-set in >initUserGroups() due to
+            // $this->loginAllowedInBranch = false
             if ($this->loginAllowedInBranch_mode === 'all') {
-                // Clear out user and group:
                 $this->fe_user->hideActiveLogin();
-                $userGroups = [0, -1];
-            } else {
-                $userGroups = [0, -2];
             }
-            $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $this->fe_user, $userGroups));
-            // Fetching the id again, now with the preview settings reset.
+            // Fetching the id again, now with the preview settings reset and respecting $this->loginAllowedInBranch = false
             $this->fetch_the_id($request);
         }
         // Final cleaning.

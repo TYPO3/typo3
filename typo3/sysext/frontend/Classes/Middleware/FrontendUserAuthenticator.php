@@ -21,9 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -69,9 +67,13 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         // Authenticate now
         $frontendUser->start();
         $frontendUser->unpack_uc();
+        // no matter if we have an active user we try to fetch matching groups which can
+        // be set without an user (simulation for instance!)
+        $frontendUser->fetchGroupData();
 
-        // Register the frontend user as aspect and within the session
-        $this->setFrontendUserAspect($frontendUser);
+        // Register the frontend user as aspect and within the request
+        $userAspect = $frontendUser->createUserAspect();
+        $this->context->setAspect('frontend.user', $userAspect);
         $request = $request->withAttribute('frontend.user', $frontendUser);
 
         $response = $handler->handle($request);
@@ -119,15 +121,5 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             $frontendUser->dontSetCookie = false;
         }
         return $request;
-    }
-
-    /**
-     * Register the frontend user as aspect
-     *
-     * @param AbstractUserAuthentication $user
-     */
-    protected function setFrontendUserAspect(AbstractUserAuthentication $user)
-    {
-        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
     }
 }

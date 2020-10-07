@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -382,6 +383,49 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         return !empty($this->groupData['uid']) ? count($this->groupData['uid']) : 0;
     }
 
+    /**
+     * Initializes the front-end user groups for the context API,
+     * based on the user groups and the logged-in state.
+     *
+     * @param bool $respectUserGroups used with the $TSFE->loginAllowedInBranch flag to disable the inclusion of the users' groups
+     * @return UserAspect
+     */
+    public function createUserAspect(bool $respectUserGroups = true): UserAspect
+    {
+        $userGroups = [0];
+        $isUserAndGroupSet = is_array($this->user) && !empty($this->groupData['uid']);
+        if ($isUserAndGroupSet) {
+            // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in.
+            // This is used to let elements be shown for all logged in users!
+            $userGroups[] = -2;
+            $groupsFromUserRecord = $this->groupData['uid'];
+        } else {
+            // group -1 is not an existing group, but denotes a 'default' group when not logged in.
+            // This is used to let elements be hidden, when a user is logged in!
+            $userGroups[] = -1;
+            if ($respectUserGroups) {
+                // For cases where logins are not banned from a branch usergroups can be set based on IP masks so we should add the usergroups uids.
+                $groupsFromUserRecord = $this->groupData['uid'];
+            } else {
+                // Set to blank since we will NOT risk any groups being set when no logins are allowed!
+                $groupsFromUserRecord = [];
+            }
+        }
+        // Make unique and sort the groups
+        $groupsFromUserRecord = array_unique($groupsFromUserRecord);
+        if ($respectUserGroups && !empty($groupsFromUserRecord)) {
+            sort($groupsFromUserRecord);
+            $userGroups = array_merge($userGroups, array_map('intval', $groupsFromUserRecord));
+        }
+
+        // For every 60 seconds the is_online timestamp for a logged-in user is updated
+        if ($isUserAndGroupSet) {
+            $this->updateOnlineTimestamp();
+        }
+
+        $this->logger->debug('Valid frontend usergroups: ' . implode(',', $userGroups));
+        return GeneralUtility::makeInstance(UserAspect::class, $this, $userGroups);
+    }
     /**
      * Returns the parsed TSconfig for the fe_user
      * The TSconfig will be cached in $this->userTS.
