@@ -36,7 +36,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Output::
  *
- *    <link href="typo3conf/ext/example_extension/Resources/Resources/Public/css/stylesheet.css" rel="stylesheet" />
+ *    <link href="typo3conf/ext/example_extension/Resources/Public/css/stylesheet.css" rel="stylesheet" />
  *
  * Depending on current extension.
  *
@@ -49,7 +49,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Output::
  *
- *    <link href="typo3conf/ext/another_extension/Resources/Resources/Public/css/stylesheet.css" rel="stylesheet" />
+ *    <link href="typo3conf/ext/another_extension/Resources/Public/css/stylesheet.css" rel="stylesheet" />
  */
 class ResourceViewHelper extends AbstractViewHelper
 {
