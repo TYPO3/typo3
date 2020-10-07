@@ -1235,7 +1235,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $path = $this->getAbsolutePath($folderIdentifier);
         $dirHandle = opendir($path);
         if ($dirHandle === false) {
-            return false;
+            return true;
         }
         while ($entry = readdir($dirHandle)) {
             if ($entry !== '.' && $entry !== '..') {
