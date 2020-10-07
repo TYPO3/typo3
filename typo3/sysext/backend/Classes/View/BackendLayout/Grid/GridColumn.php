@@ -160,17 +160,37 @@ class GridColumn extends AbstractGridObject
 
     public function getNewContentUrl(): string
     {
-        $pageId = $this->context->getPageId();
-        $urlParameters = [
-            'id' => $pageId,
-            'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-            'colPos' => $this->getColumnNumber(),
-            'uid_pid' => $pageId,
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-        ];
-        $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
-            ?? 'new_content_element_wizard';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $pageId = $this->context->getPageId();
+
+        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
+            $urlParameters = [
+                'id' => $pageId,
+                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+                'colPos' => $this->getColumnNumber(),
+                'uid_pid' => $pageId,
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            ];
+            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
+                ?? 'new_content_element_wizard';
+        } else {
+            $urlParameters = [
+                'edit' => [
+                    'tt_content' => [
+                        $pageId => 'new'
+                    ]
+                ],
+                'defVals' => [
+                    'tt_content' => [
+                        'colPos' => $this->getColumnNumber(),
+                        'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId()
+                    ]
+                ],
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            ];
+            $routeName = 'record_edit';
+        }
+
         return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
     }
 

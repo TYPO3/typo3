@@ -262,17 +262,31 @@ class GridColumnItem extends AbstractGridObject
 
     public function getNewContentAfterUrl(): string
     {
-        $pageId = $this->context->getPageId();
-        $urlParameters = [
-            'id' => $pageId,
-            'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-            'colPos' => $this->column->getColumnNumber(),
-            'uid_pid' => -$this->record['uid'],
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-        ];
-        $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
-            ?? 'new_content_element_wizard';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $pageId = $this->context->getPageId();
+
+        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
+            $urlParameters = [
+                'id' => $pageId,
+                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+                'colPos' => $this->column->getColumnNumber(),
+                'uid_pid' => -$this->record['uid'],
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            ];
+            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
+                ?? 'new_content_element_wizard';
+        } else {
+            $urlParameters = [
+                'edit' => [
+                    'tt_content' => [
+                        -$this->record['uid'] => 'new'
+                    ]
+                ],
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            ];
+            $routeName = 'record_edit';
+        }
+
         return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
     }
 
