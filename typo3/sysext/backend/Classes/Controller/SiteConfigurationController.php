@@ -506,6 +506,7 @@ class SiteConfigurationController
                 }
                 if (!in_array((int)$child['errorCode'], $uniqueCriteria, true)) {
                     $uniqueCriteria[] = (int)$child['errorCode'];
+                    $child['errorCode'] = (int)$child['errorCode'];
                     $validChildren[] = $child;
                 } else {
                     $message = sprintf(
@@ -537,6 +538,7 @@ class SiteConfigurationController
             }
             if (!in_array((int)$child['languageId'], $uniqueCriteria, true)) {
                 $uniqueCriteria[] = (int)$child['languageId'];
+                $child['languageId'] = (int)$child['languageId'];
                 $validChildren[] = $child;
             } else {
                 $message = sprintf(
