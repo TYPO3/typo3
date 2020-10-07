@@ -227,4 +227,55 @@ class StringUtilityTest extends UnitTestCase
             StringUtility::multibyteStringPad($string, $length, $pad_string, $pad_type)
         );
     }
+
+    public static function base64urlRoundTripWorksDataProvider(): \Generator
+    {
+        yield ['a'];
+        yield ['aa'];
+        yield ['aaa'];
+        yield ['aaaa'];
+        yield [random_bytes(31)];
+        yield [random_bytes(32)];
+        yield [random_bytes(33)];
+    }
+
+    /**
+     * @test
+     * @dataProvider base64urlRoundTripWorksDataProvider
+     */
+    public function base64urlRoundTripWorks(string $rawValue): void
+    {
+        $encoded = StringUtility::base64urlEncode($rawValue);
+        $decoded = StringUtility::base64urlDecode($encoded);
+        self::assertSame($rawValue, $decoded);
+    }
+
+    public static function base64urlDataProvider(): \Generator
+    {
+        yield ['', ''];
+        yield ['a', 'YQ'];
+        yield ['aa', 'YWE'];
+        yield ['aa>', 'YWE-'];
+        yield ['aa?', 'YWE_'];
+        yield ['aaa', 'YWFh'];
+        yield ['aaaa', 'YWFhYQ'];
+    }
+
+    /**
+     * @test
+     * @dataProvider base64urlDataProvider
+     */
+    public function base64urlEncodeWorks(string $rawValue, string $encodedValue): void
+    {
+        self::assertSame($encodedValue, StringUtility::base64urlEncode($rawValue));
+    }
+
+    /**
+     * @test
+     * @dataProvider base64urlDataProvider
+     */
+    public function base64urlDecodeWorks(string $rawValue, string $encodedValue): void
+    {
+        self::assertSame($rawValue, StringUtility::base64urlDecode($encodedValue));
+    }
 }
