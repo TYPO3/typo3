@@ -209,4 +209,40 @@ class StringUtility
         }
         return $string;
     }
+
+    /**
+     * Returns base64 encoded value with a URL and filename safe alphabet
+     * according to https://tools.ietf.org/html/rfc4648#section-5
+     *
+     * The difference to classic base64 is, that the result
+     * alphabet is adjusted like shown below, padding (`=`)
+     * is stripped completely:
+     *  + position #62: `+` -> `-` (minus)
+     *  + position #63: `/` -> `_` (underscore)
+     *
+     * @param string $value raw value
+     * @return string base64url encoded string
+     */
+    public static function base64urlEncode(string $value): string
+    {
+        return strtr(base64_encode($value), ['+' => '-', '/' => '_', '=' => '']);
+    }
+
+    /**
+     * Returns base64 decoded value with a URL and filename safe alphabet
+     * according to https://tools.ietf.org/html/rfc4648#section-5
+     *
+     * The difference to classic base64 is, that the result
+     * alphabet is adjusted like shown below, padding (`=`)
+     * is stripped completely:
+     *  + position #62: `-` (minus)      -> `+`
+     *  + position #63: `_` (underscore) -> `/`
+     *
+     * @param string $value base64url decoded string
+     * @return string raw value
+     */
+    public static function base64urlDecode(string $value): string
+    {
+        return base64_decode(strtr($value, ['-' => '+', '_' => '/']));
+    }
 }
