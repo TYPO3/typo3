@@ -765,6 +765,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->fetch_the_id($request);
         // Check if backend user has read access to this page. If not, recalculate the id.
         if ($this->isBackendUserLoggedIn() && $isPreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
+            $this->unsetBackendUser();
             // Resetting
             $this->clear_preview();
             $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
@@ -798,6 +799,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+    }
+
+    protected function unsetBackendUser(): void
+    {
+        // Register an empty backend user as aspect
+        unset($GLOBALS['BE_USER']);
+        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class));
+        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class));
     }
 
     /**
