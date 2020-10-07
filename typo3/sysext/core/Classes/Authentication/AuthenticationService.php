@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -199,9 +198,6 @@ class AuthenticationService extends AbstractAuthenticationService
                 $this->logger->debug('Get usergroups with id: ' . implode(',', $groups));
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($this->db_groups['table']);
-                if (!empty($this->authInfo['showHiddenRecords'])) {
-                    $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-                }
 
                 $res = $queryBuilder->select('*')
                     ->from($this->db_groups['table'])
@@ -237,9 +233,6 @@ class AuthenticationService extends AbstractAuthenticationService
     {
         // Fetching records of the groups in $grList:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
-        if (!empty($this->authInfo['showHiddenRecords'])) {
-            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-        }
 
         $res = $queryBuilder
             ->select('uid', 'subgroup')

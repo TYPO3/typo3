@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Adminpanel\Repositories;
 
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -58,10 +57,6 @@ class FrontendGroupsRepository
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('fe_groups');
 
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
         $optionCount = $queryBuilder->count('fe_groups.uid')
             ->from('fe_groups', 'fe_groups')
             ->innerJoin(
@@ -89,10 +84,6 @@ class FrontendGroupsRepository
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('fe_groups');
-
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         return $queryBuilder->select('fe_groups.uid', 'fe_groups.title')
             ->from('fe_groups')

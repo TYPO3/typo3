@@ -658,8 +658,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function initUserGroups()
     {
         $userGroups = [0];
-        // This affects the hidden-flag selecting the fe_groups for the user!
-        $this->fe_user->showHiddenRecords = $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
         // no matter if we have an active user we try to fetch matching groups which can be set without an user (simulation for instance!)
         $this->fe_user->fetchGroupData();
         $isUserAndGroupSet = is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid']);

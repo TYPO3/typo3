@@ -690,4 +690,9 @@ return [
             'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->showHiddenRecords' => [
+        'restFiles' => [
+            'Breaking-92499-AdminPanelDoesNotPreviewHiddenFrontendUserGroups.rst'
+        ],
+    ],
 ];

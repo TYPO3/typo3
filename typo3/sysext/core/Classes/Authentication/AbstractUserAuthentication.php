@@ -115,11 +115,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     ];
 
     /**
-     * @var bool
-     */
-    public $showHiddenRecords = false;
-
-    /**
      * Form field with login-name
      * @var string
      */
@@ -1306,7 +1301,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $authInfo['HTTP_HOST'] = GeneralUtility::getIndpEnv('HTTP_HOST');
         $authInfo['REMOTE_ADDR'] = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $authInfo['REMOTE_HOST'] = GeneralUtility::getIndpEnv('REMOTE_HOST');
-        $authInfo['showHiddenRecords'] = $this->showHiddenRecords;
         // Can be overridden in localconf by SVCONF:
         $authInfo['db_user']['table'] = $this->user_table;
         $authInfo['db_user']['userid_column'] = $this->userid_column;
