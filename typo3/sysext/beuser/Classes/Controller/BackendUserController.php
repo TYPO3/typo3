@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -36,7 +37,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -100,7 +100,7 @@ class BackendUserController extends ActionController
      * Load and persist module data
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function processRequest(RequestInterface $request): ResponseInterface

@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\BlogExample\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -75,7 +75,7 @@ class ContentController extends ActionController
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @param \Psr\Http\Message\ResponseInterface $response
      * @throws \RuntimeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface

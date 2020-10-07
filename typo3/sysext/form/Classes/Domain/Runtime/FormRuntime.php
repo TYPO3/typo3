@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Runtime;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
@@ -35,7 +36,6 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
@@ -115,7 +115,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Response
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -184,9 +184,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * @param FormDefinition $formDefinition
      * @param Request $request
-     * @param Response $response
+     * @param ResponseInterface $response
      */
-    public function __construct(FormDefinition $formDefinition, Request $request, Response $response)
+    public function __construct(FormDefinition $formDefinition, Request $request, ResponseInterface $response)
     {
         $this->formDefinition = $formDefinition;
         $arguments = $request->getArguments();
@@ -639,8 +639,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         );
 
         $output = '';
-        $originalContent = $this->response->getContent();
-        $this->response->setContent(null);
+        $this->response->getBody()->rewind();
+        $originalContent = $this->response->getBody()->getContents();
+        $this->response->getBody()->write('');
         foreach ($this->formDefinition->getFinishers() as $finisher) {
             $this->currentFinisher = $finisher;
             $this->processVariants();
@@ -649,15 +650,17 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             if (is_string($finisherOutput) && !empty($finisherOutput)) {
                 $output .= $finisherOutput;
             } else {
-                $output .= $this->response->getContent();
-                $this->response->setContent(null);
+                $this->response->getBody()->rewind();
+                $output .= $this->response->getBody()->getContents();
+                $this->response->getBody()->write('');
             }
 
             if ($finisherContext->isCancelled()) {
                 break;
             }
         }
-        $this->response->setContent($originalContent);
+        $this->response->getBody()->rewind();
+        $this->response->getBody()->write($originalContent);
 
         return $output;
     }
@@ -689,9 +692,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * This is mostly relevant inside Finishers, where you f.e. want to set response
      * headers or output content.
      *
-     * @return Response the response this object is bound to
+     * @return ResponseInterface the response this object is bound to
      */
-    public function getResponse(): Response
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }
@@ -805,7 +808,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $uriBuilder->setRequest($this->request);
         $controllerContext = $this->objectManager->get(ControllerContext::class);
         $controllerContext->setRequest($this->request);
-        $controllerContext->setResponse($this->response);
         $controllerContext->setArguments($this->objectManager->get(Arguments::class, []));
         $controllerContext->setUriBuilder($uriBuilder);
         return $controllerContext;

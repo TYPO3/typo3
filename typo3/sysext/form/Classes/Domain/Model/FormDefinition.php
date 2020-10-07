@@ -21,9 +21,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Model;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
@@ -651,10 +651,10 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * a new "instance" of the Form.
      *
      * @param Request $request
-     * @param Response $response
+     * @param ResponseInterface $response
      * @return FormRuntime
      */
-    public function bind(Request $request, Response $response): FormRuntime
+    public function bind(Request $request, ResponseInterface $response): FormRuntime
     {
         return $this->objectManager->get(FormRuntime::class, $this, $request, $response);
     }

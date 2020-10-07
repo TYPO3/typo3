@@ -21,12 +21,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
+use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -98,22 +99,19 @@ class RenderViewHelper extends AbstractViewHelper
             $prototypeName = $overrideConfiguration['prototypeName'] ?? 'standard';
         }
 
+        /** @var FormFactoryInterface $factory */
         $factory = $objectManager->get($factoryClass);
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
-        $response = $renderingContext->getControllerContext()->getResponse() ?? $objectManager->get(Response::class);
+        $response = new Response();
         $form = $formDefinition->bind($renderingContext->getControllerContext()->getRequest(), $response);
 
         // If the controller context does not contain a response object, this viewhelper is used in a
         // fluid template rendered by the FluidTemplateContentObject. Handle the StopActionException
         // as there is no extbase dispatcher involved that catches that. */
-        if ($renderingContext->getControllerContext()->getResponse() === null) {
-            try {
-                return $form->render();
-            } catch (StopActionException $exception) {
-                return $response->shutdown();
-            }
+        try {
+            return $form->render();
+        } catch (StopActionException $exception) {
+            return $exception->getResponse()->getBody()->getContents();
         }
-
-        return $form->render();
     }
 }

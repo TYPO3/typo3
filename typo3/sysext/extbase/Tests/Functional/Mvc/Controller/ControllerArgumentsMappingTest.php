@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use ExtbaseTeam\BlogExample\Controller\BlogController;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,6 +36,11 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
+
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
 
     /**
      * @var BlogController
@@ -109,6 +115,6 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
 
         $response = $this->controller->processRequest($this->request);
 
-        self::assertEquals($expectedTitle, $response->getContent());
+        self::assertEquals($expectedTitle, $response->getBody()->getContents());
     }
 }

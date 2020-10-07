@@ -15,10 +15,10 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -44,7 +44,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
      * Handles the web request. The response will automatically be sent to the client.
      *
      * @param RequestInterface $request
-     * @return ResponseInterface
+     * @return ResponseInterface|null
      * @throws InfiniteLoopException
      */
     public function handleRequest(RequestInterface $request)
@@ -56,7 +56,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
             if ($contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER) {
                 $contentObject->convertToUserIntObject();
                 // \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::convertToUserIntObject() will recreate the object, so we have to stop the request here
-                return null;
+                return null; // todo: Instead of returning null, throw an Exception instead and harden the interface.
             }
             $request->setIsCached(false);
         }

@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Extbase\Mvc;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
@@ -96,7 +96,7 @@ class Dispatcher implements SingletonInterface
         if (!isset($response)) {
             // This fallback is no longer needed once the StopActionException is removed and replaced with proper
             // redirect and forward response objects and we always get a response back from the controller.
-            $response = GeneralUtility::makeInstance(Response::class);
+            $response = new \TYPO3\CMS\Core\Http\Response();
         }
 
         $this->eventDispatcher->dispatch(new AfterRequestDispatchedEvent($request, $response));

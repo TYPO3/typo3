@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -45,7 +47,7 @@ class RedirectFinisher extends AbstractFinisher
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Response
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -118,9 +120,15 @@ class RedirectFinisher extends AbstractFinisher
         $uri = $this->addBaseUriIfNecessary($uri);
         $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 
-        $this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
-        $this->response->setStatus($statusCode);
-        $this->response->setHeader('Location', (string)$uri);
+        $body = new Stream('php://temp', 'r+');
+        $body->write('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
+        $body->rewind();
+
+        $this->response = $this->response
+            ->withBody($body)
+            ->withStatus($statusCode)
+            ->withHeader('Location', (string)$uri)
+        ;
         throw new StopActionException('redirectToUri', 1477070964, null, $this->response);
     }
 

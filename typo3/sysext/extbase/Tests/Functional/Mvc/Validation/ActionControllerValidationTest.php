@@ -16,13 +16,13 @@
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 
 use ExtbaseTeam\BlogExample\Controller\BlogController;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -75,7 +75,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 
         $objectManager = $this->getObjectManager();
-        $response = $objectManager->get(Response::class);
+        $response = new Response();
         $request = $objectManager->get(Request::class);
 
         $request->setControllerActionName('testForward');
@@ -107,7 +107,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         foreach ($titleErrors as $titleError) {
             self::assertContains($titleError->getCode(), $expectedErrorCodes);
         }
-        self::assertEquals('testFormAction', $response->getContent());
+        self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
     /**
@@ -166,7 +166,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         self::assertCount(1, $errors['blog.description']);
         self::assertCount(1, $errors['blogPost.title']);
 
-        self::assertEquals('testFormAction', $response->getContent());
+        self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
     /**

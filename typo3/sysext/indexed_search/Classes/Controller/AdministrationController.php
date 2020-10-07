@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\IndexedSearch\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -27,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
@@ -168,7 +168,7 @@ class AdministrationController extends ActionController
      * Override the action name if found in the uc of the user
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface

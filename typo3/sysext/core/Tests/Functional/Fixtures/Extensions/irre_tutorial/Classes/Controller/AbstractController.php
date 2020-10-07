@@ -16,10 +16,10 @@
 namespace OliverHader\IrreTutorial\Controller;
 
 use OliverHader\IrreTutorial\Service\QueueService;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -37,7 +37,7 @@ abstract class AbstractController extends ActionController
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \RuntimeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface

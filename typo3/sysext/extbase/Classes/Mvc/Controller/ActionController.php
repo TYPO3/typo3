@@ -16,6 +16,9 @@
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -30,8 +33,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\Response;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
@@ -123,13 +124,6 @@ class ActionController implements ControllerInterface
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
-
-    /**
-     * The response which will be returned by this action controller
-     *
-     * @var \TYPO3\CMS\Extbase\Mvc\Response
-     */
-    protected $response;
 
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -400,22 +394,16 @@ class ActionController implements ControllerInterface
      * Handles an incoming request and returns a response object
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return ResponseInterface
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
-        $this->response = GeneralUtility::makeInstance(Response::class);
-
         if (!$this->canProcessRequest($request)) {
             throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
         }
 
-        $setRequestCallable = [$this->response, 'setRequest'];
-        if (is_callable($setRequestCallable)) {
-            $setRequestCallable($request);
-        }
         $this->request = $request;
         $this->request->setDispatched(true);
         $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
@@ -439,10 +427,10 @@ class ActionController implements ControllerInterface
         if ($this->view !== null) {
             $this->initializeView($this->view);
         }
-        $this->callActionMethod();
+        $response = $this->callActionMethod($request);
         $this->renderAssetsForRequest($request);
 
-        return $this->response;
+        return $response;
     }
 
     /**
@@ -503,8 +491,11 @@ class ActionController implements ControllerInterface
      * response object. If the action doesn't return anything and a valid
      * view exists, the view is rendered automatically.
      */
-    protected function callActionMethod()
+    protected function callActionMethod(RequestInterface $request): ResponseInterface
     {
+        // incoming request is not needed yet but can be passed into the action in the future like in symfony
+        // todo: support this via method-reflection
+
         $preparedArguments = [];
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
@@ -518,6 +509,12 @@ class ActionController implements ControllerInterface
             $actionResult = $this->{$this->errorMethodName}();
         }
 
+        if ($actionResult instanceof ResponseInterface) {
+            return $actionResult;
+        }
+
+        $response = new \TYPO3\CMS\Core\Http\Response();
+        $body = new Stream('php://temp', 'rw');
         if ($actionResult === null && $this->view instanceof ViewInterface) {
             if ($this->view instanceof JsonView) {
                 // this is just a temporary solution until Extbase uses PSR-7 responses and users are forced to return a
@@ -534,19 +531,22 @@ class ActionController implements ControllerInterface
                         // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
                         // Content-Type headers optionally carry charset information at the same time.
                         // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
-                        $this->response->setHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
+                        $response = $response->withHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
                     }
                 } else {
-                    $this->response->setHeader('Content-Type', 'application/json');
+                    $response = $response->withHeader('Content-Type', 'application/json');
                 }
             }
 
-            $this->response->appendContent($this->view->render());
+            $body->write($this->view->render());
         } elseif (is_string($actionResult) && $actionResult !== '') {
-            $this->response->appendContent($actionResult);
+            $body->write($actionResult);
         } elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
-            $this->response->appendContent((string)$actionResult);
+            $body->write((string)$actionResult);
         }
+
+        $body->rewind();
+        return $response->withBody($body);
     }
 
     /**
@@ -837,7 +837,6 @@ class ActionController implements ControllerInterface
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
         $controllerContext = $this->objectManager->get(ControllerContext::class);
         $controllerContext->setRequest($this->request);
-        $controllerContext->setResponse($this->response);
         if ($this->arguments !== null) {
             $controllerContext->setArguments($this->arguments);
         }
@@ -875,7 +874,7 @@ class ActionController implements ControllerInterface
         if ($arguments !== null) {
             $this->request->setArguments($arguments);
         }
-        throw new StopActionException('forward', 1476045801, null, $this->response);
+        throw new StopActionException('forward', 1476045801);
     }
 
     /**
@@ -928,9 +927,14 @@ class ActionController implements ControllerInterface
 
         $uri = $this->addBaseUriIfNecessary($uri);
         $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
-        $this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
-        $this->response->setStatus($statusCode);
-        $this->response->setHeader('Location', (string)$uri);
+
+        $response = new HtmlResponse(
+            '<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>',
+            $statusCode,
+            [
+                'Location' => (string)$uri
+            ]
+        );
 
         // Avoid caching the plugin when we issue a redirect response
         // This means that even when an action is configured as cachable
@@ -940,7 +944,7 @@ class ActionController implements ControllerInterface
             $contentObject->convertToUserIntObject();
         }
 
-        throw new StopActionException('redirectToUri', 1476045828, null, $this->response);
+        throw new StopActionException('redirectToUri', 1476045828, null, $response);
     }
 
     /**
@@ -966,12 +970,13 @@ class ActionController implements ControllerInterface
      */
     public function throwStatus($statusCode, $statusMessage = null, $content = null)
     {
-        $this->response->setStatus($statusCode, $statusMessage);
         if ($content === null) {
-            $content = $this->response->getStatus();
+            $content = $statusCode . ' ' . $statusMessage;
         }
-        $this->response->setContent($content);
-        throw new StopActionException('throwStatus', 1476045871, null, $this->response);
+
+        $response = new \TYPO3\CMS\Core\Http\Response($content);
+
+        throw new StopActionException('throwStatus', 1476045871, null, $response);
     }
 
     /**

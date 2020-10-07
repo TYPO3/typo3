@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\ArgumentTestController;
@@ -115,7 +115,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         $inputRequest = $this->buildRequest('forward');
         $inputResponse = $this->dispatch($controller, $inputRequest);
 
-        $inputDocument = $this->createDocument($inputResponse->getContent());
+        $inputDocument = $this->createDocument($inputResponse->getBody()->getContents());
         $parsedInputData = $this->parseDataFromResponseDocument($inputDocument);
         self::assertNotEmpty($parsedInputData['form'] ?? null);
         unset($inputRequest, $controller);
@@ -127,7 +127,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         // dispatch request to `validate*` action
         $validateResponse = $this->dispatch($controller, $validateRequest);
 
-        $validateDocument = $this->createDocument($validateResponse->getContent());
+        $validateDocument = $this->createDocument($validateResponse->getBody()->getContents());
         $parsedValidateData = $this->parseDataFromResponseDocument($validateDocument);
         foreach ($expectations ?? [] as $bodyPath => $bodyValue) {
             self::assertSame($bodyValue, ArrayUtility::getValueByPath($parsedValidateData, $bodyPath));

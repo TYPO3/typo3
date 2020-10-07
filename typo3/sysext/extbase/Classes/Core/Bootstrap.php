@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver;
-use TYPO3\CMS\Extbase\Mvc\Response as ExtbaseResponse;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -195,13 +194,17 @@ class Bootstrap
         if ($response === null) {
             $content = '';
         } else {
-            /*
-             * Explicitly cast $content to string here as \TYPO3\CMS\Extbase\Mvc\ResponseInterface::shutdown does not
-             * use strict types yet and response objects possibly return other types than string.
-             *
-             * todo: remove the type cast when \TYPO3\CMS\Extbase\Mvc\ResponseInterface declares strict return types.
-             */
-            $content = (string)$response->shutdown();
+            if (headers_sent() === false) {
+                foreach ($response->getHeaders() as $name => $values) {
+                    foreach ($values as $value) {
+                        header(sprintf('%s: %s', $name, $value));
+                    }
+                }
+            }
+
+            $body = $response->getBody();
+            $body->rewind();
+            $content = $body->getContents();
             $this->resetSingletons();
             $this->cacheService->clearCachesOfRegisteredPageIds();
         }
@@ -231,33 +234,10 @@ class Bootstrap
 
         $extbaseRequest = $this->extbaseRequestBuilder->build();
         $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
-        /** @var ExtbaseResponse $extbaseResponse */
-        $extbaseResponse = $requestHandler->handleRequest($extbaseRequest);
+        $response = $requestHandler->handleRequest($extbaseRequest);
 
-        // Convert to PSR-7 response and hand it back to TYPO3 Core
-        $response = $this->convertExtbaseResponseToPsr7Response($extbaseResponse);
         $this->resetSingletons();
         $this->cacheService->clearCachesOfRegisteredPageIds();
-        return $response;
-    }
-
-    /**
-     * Converts an Extbase response object into a PSR-7 Response
-     *
-     * @param ExtbaseResponse $extbaseResponse
-     * @return ResponseInterface
-     */
-    protected function convertExtbaseResponseToPsr7Response(ExtbaseResponse $extbaseResponse): ResponseInterface
-    {
-        $response = new \TYPO3\CMS\Core\Http\Response(
-            'php://temp',
-            $extbaseResponse->getStatusCode(),
-            $extbaseResponse->getUnpreparedHeaders()
-        );
-        $content = $extbaseResponse->getContent();
-        if ($content !== null) {
-            $response->getBody()->write($content);
-        }
         return $response;
     }
 

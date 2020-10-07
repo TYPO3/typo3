@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Mvc;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * The interface for a request handler
  */

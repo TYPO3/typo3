@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -36,6 +37,11 @@ class ActionControllerTest extends FunctionalTestCase
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
+
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
 
     /**
      * @var \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController

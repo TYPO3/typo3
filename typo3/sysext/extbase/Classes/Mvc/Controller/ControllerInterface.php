@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 
 /**
  * Interface for controllers
@@ -35,7 +35,7 @@ interface ControllerInterface
      * Processes a general request. The result can be returned by altering the given response.
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
      */
     public function processRequest(RequestInterface $request): ResponseInterface;
