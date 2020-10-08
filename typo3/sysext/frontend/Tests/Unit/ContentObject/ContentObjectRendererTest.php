@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
@@ -182,6 +183,8 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $logger = $this->prophesize(Logger::class);
         $this->subject->setLogger($logger->reveal());
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $this->subject->setRequest($request->reveal());
         $this->subject->setContentObjectClassMap($this->contentObjectMap);
         $this->subject->start([], 'tt_content');
     }

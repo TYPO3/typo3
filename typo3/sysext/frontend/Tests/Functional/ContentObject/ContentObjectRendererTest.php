@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -85,6 +86,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $this->typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $this->typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this->typoScriptFrontendController);
+        $this->subject->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
     }
 
     /**
@@ -598,6 +600,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
+        $subject->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
         $subject->setLogger(new NullLogger());
         $input = 'This is a simple inline text, no wrapping configured';
         $result = $subject->parseFunc($input, $this->getLibParseFunc());

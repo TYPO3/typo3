@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -86,7 +87,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRendererProphecy->stdWrapValue(Argument::cetera())->willReturn('');
         $GLOBALS['TSFE']->cObj = $contentObjectRendererProphecy->reveal();
-        $GLOBALS['TSFE']->INTincScript();
+        $GLOBALS['TSFE']->INTincScript($this->prophesize(ServerRequestInterface::class)->reveal());
         self::assertStringContainsString('headerData', $GLOBALS['TSFE']->content);
         self::assertStringContainsString('footerData', $GLOBALS['TSFE']->content);
     }

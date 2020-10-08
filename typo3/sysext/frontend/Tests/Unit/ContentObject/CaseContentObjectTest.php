@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
@@ -51,6 +52,7 @@ class CaseContentObjectTest extends UnitTestCase
             ->getMock();
 
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
+        $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
         $contentObjectRenderer->setContentObjectClassMap([
             'CASE' => CaseContentObject::class,
             'TEXT' => TextContentObject::class,

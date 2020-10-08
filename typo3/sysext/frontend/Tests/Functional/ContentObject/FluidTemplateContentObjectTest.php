@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
@@ -71,6 +72,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
         $expectedResult = 'ABC';
 
         $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
         $contentObjectRenderer->setContentObjectClassMap([
             'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
             'TEXT' => TextContentObject::class,
@@ -119,6 +121,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
         $expectedResult = 'DefaultLayoutLayoutOverride';
 
         $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
         $contentObjectRenderer->setContentObjectClassMap([
             'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
             'TEXT' => TextContentObject::class,

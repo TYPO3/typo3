@@ -174,16 +174,17 @@ class Bootstrap
      * @param array $configuration The TS configuration array
      * @return string $content The processed content
      */
-    public function run(string $content, array $configuration): string
+    public function run(string $content, array $configuration, ?ServerRequestInterface $request = null): string
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
         $this->initialize($configuration);
-        return $this->handleRequest();
+        return $this->handleRequest($request);
     }
 
     /**
      * @return string
      */
-    protected function handleRequest(): string
+    protected function handleRequest(ServerRequestInterface $request): string
     {
         $extbaseRequest = $this->extbaseRequestBuilder->build();
         $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);

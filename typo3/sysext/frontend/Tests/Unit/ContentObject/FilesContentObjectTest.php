@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
 use TYPO3\CMS\Core\Resource\File;
@@ -70,6 +71,7 @@ class FilesContentObjectTest extends UnitTestCase
         $tsfe->tmpl = $templateService;
 
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
+        $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
         $contentObjectRenderer->setContentObjectClassMap([
             'FILES' => FilesContentObject::class,
             'TEXT' => TextContentObject::class,

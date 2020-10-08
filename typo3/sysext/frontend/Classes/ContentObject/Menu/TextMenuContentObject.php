@@ -66,7 +66,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
             $GLOBALS['TSFE']->register['count_MENUOBJ']++;
             // Initialize the cObj with the page record of the menu item
-            $this->WMcObj->start($this->menuArr[$key], 'pages');
+            $this->WMcObj->start($this->menuArr[$key], 'pages', $this->request);
             $this->I = [];
             $this->I['key'] = $key;
             $this->I['val'] = $val;

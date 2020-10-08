@@ -146,7 +146,7 @@ class RequestHandler implements RequestHandlerInterface
                 $controller->preparePageContentGeneration($request);
             }
             $this->timeTracker->push('Non-cached objects');
-            $controller->INTincScript();
+            $controller->INTincScript($request);
             $this->timeTracker->pull();
         }
 

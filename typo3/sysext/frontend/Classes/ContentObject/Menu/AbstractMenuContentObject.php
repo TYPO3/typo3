@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -175,6 +176,8 @@ abstract class AbstractMenuContentObject
      */
     protected $WMcObj;
 
+    protected ?ServerRequestInterface $request = null;
+
     /**
      * Can be set to contain menu item arrays for sub-levels.
      *
@@ -219,15 +222,17 @@ abstract class AbstractMenuContentObject
      * @param array $conf The TypoScript configuration for the HMENU cObject
      * @param int $menuNumber Menu number; 1,2,3. Should probably be 1
      * @param string $objSuffix Submenu Object suffix. This offers submenus a way to use alternative configuration for specific positions in the menu; By default "1 = TMENU" would use "1." for the TMENU configuration, but if this string is set to eg. "a" then "1a." would be used for configuration instead (while "1 = " is still used for the overall object definition of "TMENU")
+     * @param ServerRequestInterface|null $request
      * @return bool Returns TRUE on success
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
      */
-    public function start($tmpl, $sys_page, $id, $conf, $menuNumber, $objSuffix = '')
+    public function start($tmpl, $sys_page, $id, $conf, $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $this->conf = $conf;
         $this->menuNumber = $menuNumber;
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
+        $this->request = $request;
         $this->WMcObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         // Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the PageRepository object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl) && is_object($sys_page)) {

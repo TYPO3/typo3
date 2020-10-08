@@ -88,7 +88,7 @@ class ContentContentObject extends AbstractContentObject
                         $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
                         $frontendController->currentRecord = $conf['table'] . ':' . $row['uid'];
                         $this->cObj->lastChanged($row['tstamp']);
-                        $cObj->start($row, $conf['table']);
+                        $cObj->start($row, $conf['table'], $this->request);
                         $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
                         $cobjValue .= $tmpValue;
                     }

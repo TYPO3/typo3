@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
 
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -58,6 +59,7 @@ class AbstractPluginTest extends UnitTestCase
 
         $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
+        $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
         $contentObjectRenderer->setContentObjectClassMap([
             'TEXT' => TextContentObject::class,
         ]);

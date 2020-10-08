@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,6 +33,8 @@ abstract class AbstractContentObject
      * @var PageRenderer
      */
     protected $pageRenderer;
+
+    protected ?ServerRequestInterface $request = null;
 
     /**
      * Default constructor.
@@ -59,6 +62,11 @@ abstract class AbstractContentObject
     public function getContentObjectRenderer()
     {
         return $this->cObj;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**

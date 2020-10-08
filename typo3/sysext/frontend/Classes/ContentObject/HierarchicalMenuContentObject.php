@@ -46,7 +46,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
             $GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
             $menu->parent_cObj = $this->cObj;
-            $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
+            $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1, '', $this->request);
             $menu->makeMenu();
             $theValue .= $menu->writeMenu();
         } catch (NoSuchMenuTypeException $e) {

@@ -56,6 +56,7 @@ class HrefLangGenerator
             return;
         }
 
+        $this->cObj->setRequest($event->getRequest());
         $languages = $this->languageMenuProcessor->process($this->cObj, [], [], []);
         /** @var SiteLanguage $siteLanguage */
         $siteLanguage = $event->getRequest()->getAttribute('language');

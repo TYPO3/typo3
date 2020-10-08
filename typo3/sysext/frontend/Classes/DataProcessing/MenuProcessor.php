@@ -472,9 +472,10 @@ class MenuProcessor implements DataProcessorInterface
                 $page['children'][$key] = $this->processAdditionalDataProcessors($item, $processorConfiguration);
             }
         }
+        $request = $this->cObj->getRequest();
         /** @var ContentObjectRenderer $recordContentObjectRenderer */
         $recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $recordContentObjectRenderer->start($page['data'], 'pages');
+        $recordContentObjectRenderer->start($page['data'], 'pages', $request);
         $processedPage = $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $page);
         return $processedPage;
     }

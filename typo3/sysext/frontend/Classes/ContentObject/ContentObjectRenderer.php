@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
@@ -428,6 +429,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $typoScriptFrontendController;
 
     /**
+     * Request pointer, if injected. Use getRequest() instead of reading this property directly.
+     *
+     * @var ServerRequestInterface|null
+     */
+    private ?ServerRequestInterface $request = null;
+
+    /**
      * Indicates that object type is USER.
      *
      * @see ContentObjectRender::$userObjectType
@@ -451,6 +459,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $this->container = $container;
     }
 
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     /**
      * Prevent several objects from being serialized.
      * If currentFile is set, it is either a File or a FileReference object. As the object itself can't be serialized,
@@ -461,7 +474,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function __sleep()
     {
         $vars = get_object_vars($this);
-        unset($vars['typoScriptFrontendController'], $vars['logger'], $vars['container']);
+        unset($vars['typoScriptFrontendController'], $vars['logger'], $vars['container'], $vars['request']);
         if ($this->currentFile instanceof FileReference) {
             $this->currentFile = 'FileReference:' . $this->currentFile->getUid();
         } elseif ($this->currentFile instanceof File) {
@@ -496,6 +509,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
         $this->container = GeneralUtility::getContainer();
+
+        // We do not derive $this->request from globals here. The request is expected to be injected
+        // using setRequest() after deserialization or with start().
+        // (A fallback to $GLOBALS['TYPO3_REQUEST'] is available in getRequest() for BC)
     }
 
     /**
@@ -534,9 +551,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $data The record data that is rendered.
      * @param string $table The table that the data record is from.
+     * @param ServerRequestInterface|null $request
      */
-    public function start($data, $table = '')
+    public function start($data, $table = '', ?ServerRequestInterface $request = null)
     {
+        $this->request = $request ?? $this->request;
         $this->data = $data;
         $this->table = $table;
         $this->currentRecord = $table !== ''
@@ -728,6 +747,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!($contentObject instanceof AbstractContentObject)) {
             throw new ContentRenderingException(sprintf('Registered content object class name "%s" must be an instance of AbstractContentObject, but is not!', $fullyQualifiedClassName), 1422564295);
         }
+        $contentObject->setRequest($this->getRequest());
         return $contentObject;
     }
 
@@ -5176,7 +5196,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $classObj->cObj = $this;
                     $content = call_user_func_array($callable, [
                         $content,
-                        $conf
+                        $conf,
+                        $this->getRequest()
                     ]);
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);
@@ -6646,5 +6667,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         return $endingOffset;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        if ($this->request instanceof ServerRequestInterface) {
+            return $this->request;
+        }
+
+        if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            return $GLOBALS['TYPO3_REQUEST'];
+        }
+
+        throw new ContentRenderingException('PSR-7 request is missing in ContentObjectRenderer. Inject with start(), setRequest() or provide via $GLOBALS[\'TYPO3_REQUEST\'].', 1607172972);
     }
 }

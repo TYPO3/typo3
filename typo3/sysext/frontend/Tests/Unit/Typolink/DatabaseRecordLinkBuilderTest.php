@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -168,6 +169,7 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $templateService = $this->prophesize(TemplateService::class);
         $pageRepository = $this->prophesize(PageRepository::class);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj->getRequest()->willReturn($this->prophesize(ServerRequestInterface::class)->reveal());
 
         $GLOBALS['TSFE'] = $tsfe->reveal();
         $tsfe->tmpl = $templateService->reveal();

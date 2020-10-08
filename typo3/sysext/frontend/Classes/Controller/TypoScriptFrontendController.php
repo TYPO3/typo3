@@ -2489,7 +2489,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // Global content object
-        $this->newCObj();
+        $this->newCObj($request);
         $this->getTimeTracker()->pull();
     }
 
@@ -2647,9 +2647,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Processes the INTinclude-scripts
+     *
+     * @param ServerRequestInterface|null $request
      */
-    public function INTincScript()
+    public function INTincScript(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
         $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
         $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
         if (empty($this->config['INTincScript_ext']['pageRenderer'])) {
@@ -2665,7 +2668,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             GeneralUtility::makeInstance(AssetCollector::class)->updateState($assetCollector->getState());
         }
 
-        $this->recursivelyReplaceIntPlaceholdersInContent();
+        $this->recursivelyReplaceIntPlaceholdersInContent($request);
         $this->getTimeTracker()->push('Substitute header section');
         $this->INTincScript_loadJSCode();
         $this->generatePageTitle();
@@ -2682,7 +2685,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
         );
         // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
-        $this->recursivelyReplaceIntPlaceholdersInContent();
+        $this->recursivelyReplaceIntPlaceholdersInContent($request);
         $this->setAbsRefPrefix();
         $this->getTimeTracker()->pull();
     }
@@ -2692,11 +2695,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * In case the replacement adds additional placeholders, it loops
      * until no new placeholders are found any more.
      */
-    protected function recursivelyReplaceIntPlaceholdersInContent()
+    protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request)
     {
         do {
             $nonCacheableData = $this->config['INTincScript'];
-            $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData);
+            $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData, $request);
             // Check if there were new items added to INTincScript during the previous execution:
             // array_diff_assoc throws notices if values are arrays but not strings. We suppress this here.
             $nonCacheableData = @array_diff_assoc($this->config['INTincScript'], $nonCacheableData);
@@ -2713,7 +2716,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $nonCacheableData $GLOBALS['TSFE']->config['INTincScript'] or part of it
      * @see INTincScript()
      */
-    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData)
+    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request)
     {
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('Split content');
@@ -2732,6 +2735,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $nonCacheableContent = '';
                     $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj']);
                     /* @var ContentObjectRenderer $contentObjectRendererForNonCacheable */
+                    $contentObjectRendererForNonCacheable->setRequest($request);
                     switch ($nonCacheableData[$nonCacheableKey]['type']) {
                         case 'COA':
                             $nonCacheableContent = $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableData[$nonCacheableKey]['conf']);
@@ -2903,12 +2907,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Creates an instance of ContentObjectRenderer in $this->cObj
      * This instance is used to start the rendering of the TypoScript template structure
      *
-     * @see RequestHandler
+     * @param ServerRequestInterface|null $request
      */
-    public function newCObj()
+    public function newCObj(ServerRequestInterface $request = null)
     {
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
-        $this->cObj->start($this->page, 'pages');
+        $this->cObj->start($this->page, 'pages', $request);
     }
 
     /**
