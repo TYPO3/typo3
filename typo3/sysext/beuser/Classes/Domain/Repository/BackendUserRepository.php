@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -62,11 +63,14 @@ class BackendUserRepository extends BackendUserGroupRepository
         if ($demand->getUserName() !== '') {
             $searchConstraints = [];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-            foreach (['userName', 'uid', 'realName'] as $field) {
+            foreach (['userName', 'realName'] as $field) {
                 $searchConstraints[] = $query->like(
                     $field,
                     '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
                 );
+            }
+            if (MathUtility::canBeInterpretedAsInteger($demand->getUserName())) {
+                $searchConstraints[] = $query->equals('uid', (int)$demand->getUserName());
             }
             $constraints[] = $query->logicalOr($searchConstraints);
         }
