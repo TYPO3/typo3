@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController;
@@ -39,11 +38,6 @@ class ActionControllerTest extends FunctionalTestCase
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Response
-     */
-    protected $response;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller\TestController
      */
     protected $controller;
@@ -61,8 +55,6 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setMethod('GET');
         $this->request->setFormat('html');
 
-        $this->response = $objectManager->get(Response::class);
-
         $this->controller = $objectManager->get(TestController::class);
     }
 
@@ -76,7 +68,7 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setArgument('barParam', '');
 
         // Test run
-        $this->controller->processRequest($this->request, $this->response);
+        $this->controller->processRequest($this->request);
 
         // Assertions
         $arguments = $this->controller->getControllerContext()->getArguments();
@@ -104,7 +96,7 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setArgument('bazParam', [ 'notEmpty' ]);
 
         // Test run
-        $this->controller->processRequest($this->request, $this->response);
+        $this->controller->processRequest($this->request);
 
         // Assertions
         $arguments = $this->controller->getControllerContext()->getArguments();
@@ -137,7 +129,7 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setControllerActionName('qux');
 
         // Test run
-        $this->controller->processRequest($this->request, $this->response);
+        $this->controller->processRequest($this->request);
 
         // Assertions
         $reflectionMethod = $reflectionClass->getProperty('view');

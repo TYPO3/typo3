@@ -32,9 +32,7 @@ class BackendRequestHandler extends AbstractRequestHandler
     public function handleRequest()
     {
         $request = $this->requestBuilder->build();
-        $response = $this->objectManager->get(Response::class);
-        $this->dispatcher->dispatch($request, $response);
-        return $response;
+        return $this->dispatcher->dispatch($request);
     }
 
     /**

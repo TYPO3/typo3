@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
@@ -74,10 +75,10 @@ class Dispatcher implements SingletonInterface
      * Dispatches a request to a controller and initializes the security framework.
      *
      * @param RequestInterface $request The request to dispatch
-     * @param ResponseInterface $response The response, to be modified by the controller
+     * @return ResponseInterface
      * @throws Exception\InfiniteLoopException
      */
-    public function dispatch(RequestInterface $request, ResponseInterface $response)
+    public function dispatch(RequestInterface $request): ResponseInterface
     {
         $dispatchLoopCount = 0;
         while (!$request->isDispatched()) {
@@ -86,12 +87,20 @@ class Dispatcher implements SingletonInterface
             }
             $controller = $this->resolveController($request);
             try {
-                $controller->processRequest($request, $response);
+                $response = $controller->processRequest($request);
             } catch (StopActionException $ignoredException) {
+                $response = $ignoredException->getResponse();
             }
         }
 
+        if (!isset($response)) {
+            // This fallback is no longer needed once the StopActionException is removed and replaced with proper
+            // redirect and forward response objects and we always get a response back from the controller.
+            $response = GeneralUtility::makeInstance(Response::class);
+        }
+
         $this->eventDispatcher->dispatch(new AfterRequestDispatchedEvent($request, $response));
+        return $response;
     }
 
     /**

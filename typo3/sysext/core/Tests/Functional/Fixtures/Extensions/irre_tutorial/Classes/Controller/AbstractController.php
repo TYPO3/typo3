@@ -37,13 +37,13 @@ abstract class AbstractController extends ActionController
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * @throws \RuntimeException
      */
-    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    public function processRequest(RequestInterface $request): ResponseInterface
     {
         try {
-            parent::processRequest($request, $response);
+            return parent::processRequest($request);
         } catch (Exception $exception) {
             throw new \RuntimeException(
                 $this->getRuntimeIdentifier() . ': ' . $exception->getMessage() . ' (' . $exception->getCode() . ')',

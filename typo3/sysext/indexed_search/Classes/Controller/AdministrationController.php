@@ -168,10 +168,10 @@ class AdministrationController extends ActionController
      * Override the action name if found in the uc of the user
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
-    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    public function processRequest(RequestInterface $request): ResponseInterface
     {
         $vars = GeneralUtility::_GET('tx_indexedsearch_web_indexedsearchisearch');
 
@@ -200,7 +200,7 @@ class AdministrationController extends ActionController
             }
         }
 
-        parent::processRequest($request, $response);
+        return parent::processRequest($request);
     }
 
     /**

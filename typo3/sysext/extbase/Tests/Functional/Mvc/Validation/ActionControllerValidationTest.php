@@ -92,7 +92,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         while (!$request->isDispatched()) {
             try {
                 $blogController = $objectManager->get(BlogController::class);
-                $blogController->processRequest($request, $response);
+                $response = $blogController->processRequest($request);
             } catch (StopActionException $e) {
             }
         }
@@ -123,7 +123,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 
         $objectManager = $this->getObjectManager();
-        $response = $objectManager->get(Response::class);
         $request = $objectManager->get(Request::class);
 
         $request->setControllerActionName('testRelatedObject');
@@ -156,7 +155,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         while (!$request->isDispatched()) {
             try {
                 $blogController = $objectManager->get(BlogController::class);
-                $blogController->processRequest($request, $response);
+                $response = $blogController->processRequest($request);
             } catch (StopActionException $e) {
             }
         }

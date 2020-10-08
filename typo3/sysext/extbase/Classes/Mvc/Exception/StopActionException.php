@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Mvc\Exception;
 
 use TYPO3\CMS\Extbase\Mvc\Exception;
+use TYPO3\CMS\Extbase\Mvc\Response;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 
 /**
  * This exception is thrown by a controller to stop the execution of the current
@@ -29,4 +31,19 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
  */
 class StopActionException extends Exception
 {
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
+
+    public function __construct($message = '', $code = 0, \Throwable $previous = null, ResponseInterface $response = null)
+    {
+        $this->response = $response ?? new Response();
+        parent::__construct($message, $code, $previous);
+    }
+
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
 }

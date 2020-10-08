@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
@@ -394,26 +395,27 @@ class ActionController implements ControllerInterface
     }
 
     /**
-     * Handles a request. The result output is returned by altering the given response.
+     * Handles an incoming request and returns a response object
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
-    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    public function processRequest(RequestInterface $request): ResponseInterface
     {
+        $this->response = GeneralUtility::makeInstance(Response::class);
+
         if (!$this->canProcessRequest($request)) {
             throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
         }
 
-        $setRequestCallable = [$response, 'setRequest'];
+        $setRequestCallable = [$this->response, 'setRequest'];
         if (is_callable($setRequestCallable)) {
             $setRequestCallable($request);
         }
         $this->request = $request;
         $this->request->setDispatched(true);
-        $this->response = $response;
         $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
         $this->uriBuilder->setRequest($request);
         $this->actionMethodName = $this->resolveActionMethodName();
@@ -433,6 +435,8 @@ class ActionController implements ControllerInterface
         }
         $this->callActionMethod();
         $this->renderAssetsForRequest($request);
+
+        return $this->response;
     }
 
     /**
@@ -843,7 +847,7 @@ class ActionController implements ControllerInterface
         if ($arguments !== null) {
             $this->request->setArguments($arguments);
         }
-        throw new StopActionException('forward', 1476045801);
+        throw new StopActionException('forward', 1476045801, null, $this->response);
     }
 
     /**
@@ -908,7 +912,7 @@ class ActionController implements ControllerInterface
             $contentObject->convertToUserIntObject();
         }
 
-        throw new StopActionException('redirectToUri', 1476045828);
+        throw new StopActionException('redirectToUri', 1476045828, null, $this->response);
     }
 
     /**
@@ -939,7 +943,7 @@ class ActionController implements ControllerInterface
             $content = $this->response->getStatus();
         }
         $this->response->setContent($content);
-        throw new StopActionException('throwStatus', 1476045871);
+        throw new StopActionException('throwStatus', 1476045871, null, $this->response);
     }
 
     /**

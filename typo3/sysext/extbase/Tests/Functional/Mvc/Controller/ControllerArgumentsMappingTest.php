@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -36,11 +35,6 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Response
-     */
-    protected $response;
 
     /**
      * @var BlogController
@@ -83,8 +77,6 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->request->setMethod('GET');
         $this->request->setFormat('html');
 
-        $this->response = $objectManager->get(Response::class);
-
         $this->controller = $objectManager->get(BlogController::class);
     }
 
@@ -115,8 +107,8 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->request->setControllerActionName('details');
         $this->request->setArgument('blog', $blogUid);
 
-        $this->controller->processRequest($this->request, $this->response);
+        $response = $this->controller->processRequest($this->request);
 
-        self::assertEquals($expectedTitle, $this->response->getContent());
+        self::assertEquals($expectedTitle, $response->getContent());
     }
 }

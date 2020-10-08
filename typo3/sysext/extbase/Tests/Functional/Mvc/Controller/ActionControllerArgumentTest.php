@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -114,8 +113,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         $controller->declareForwardTargetArguments($forwardTargetArguments);
 
         $inputRequest = $this->buildRequest('forward');
-        $inputResponse = $this->buildResponse();
-        $this->dispatch($controller, $inputRequest, $inputResponse);
+        $inputResponse = $this->dispatch($controller, $inputRequest);
 
         $inputDocument = $this->createDocument($inputResponse->getContent());
         $parsedInputData = $this->parseDataFromResponseDocument($inputDocument);
@@ -125,10 +123,9 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         // trigger `validate*` action with generated arguments from FormViewHelper (see template)
         $controller = $this->buildController();
         $validateRequest = $this->buildRequest($validateAction, $parsedInputData['form']);
-        $validateResponse = $this->buildResponse();
 
         // dispatch request to `validate*` action
-        $this->dispatch($controller, $validateRequest, $validateResponse);
+        $validateResponse = $this->dispatch($controller, $validateRequest);
 
         $validateDocument = $this->createDocument($validateResponse->getContent());
         $parsedValidateData = $this->parseDataFromResponseDocument($validateDocument);
@@ -137,11 +134,11 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         }
     }
 
-    private function dispatch(ArgumentTestController $controller, RequestInterface $request, ResponseInterface $response): void
+    private function dispatch(ArgumentTestController $controller, RequestInterface $request): ResponseInterface
     {
         while (!$request->isDispatched()) {
             try {
-                $controller->processRequest($request, $response);
+                return $controller->processRequest($request);
             } catch (StopActionException $exception) {
                 // simulate Dispatcher::resolveController() using a new controller instance
                 $controller = $this->buildController();
@@ -232,11 +229,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
             $request->setArguments($arguments);
         }
         return $request;
-    }
-
-    private function buildResponse(): Response
-    {
-        return $this->objectManager->get(Response::class);
     }
 
     private function buildController(): ArgumentTestController

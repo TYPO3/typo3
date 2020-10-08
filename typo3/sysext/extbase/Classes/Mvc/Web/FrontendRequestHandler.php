@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -41,7 +40,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
     /**
      * Handles the web request. The response will automatically be sent to the client.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface|null
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      */
     public function handleRequest()
     {
@@ -58,10 +57,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
             $request->setIsCached(false);
         }
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response */
-        $response = $this->objectManager->get(Response::class);
-        $this->dispatcher->dispatch($request, $response);
-        return $response;
+        return $this->dispatcher->dispatch($request);
     }
 
     /**

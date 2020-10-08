@@ -100,16 +100,17 @@ class BackendUserController extends ActionController
      * Load and persist module data
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    public function processRequest(RequestInterface $request): ResponseInterface
     {
         $this->moduleData = $this->moduleDataStorageService->loadModuleData();
         // We "finally" persist the module data.
         try {
-            parent::processRequest($request, $response);
+            $response = parent::processRequest($request);
             $this->moduleDataStorageService->persistModuleData($this->moduleData);
+            return $response;
         } catch (StopActionException $e) {
             $this->moduleDataStorageService->persistModuleData($this->moduleData);
             throw $e;

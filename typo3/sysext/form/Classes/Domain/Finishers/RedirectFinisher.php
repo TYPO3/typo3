@@ -121,7 +121,7 @@ class RedirectFinisher extends AbstractFinisher
         $this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
         $this->response->setStatus($statusCode);
         $this->response->setHeader('Location', (string)$uri);
-        throw new StopActionException('redirectToUri', 1477070964);
+        throw new StopActionException('redirectToUri', 1477070964, null, $this->response);
     }
 
     /**
