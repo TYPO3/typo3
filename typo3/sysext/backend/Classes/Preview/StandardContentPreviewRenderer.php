@@ -136,6 +136,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $tableName = empty($split[0]) ? 'tt_content' : $split[0];
                         $shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
                         if (is_array($shortcutRecord)) {
+                            $shortcutRecord = $this->translateShortcutRecord($record, $shortcutRecord, $tableName, (int)$split[1]);
                             $icon = $this->getIconFactory()->getIconForRecord($tableName, $shortcutRecord, Icon::SIZE_SMALL)->render();
                             $icon = BackendUtility::wrapClickMenuOnIcon(
                                 $icon,
@@ -261,6 +262,28 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             return '<span class="text-muted">' . $content . '</span>';
         }
         return $content;
+    }
+
+    protected function translateShortcutRecord(array $targetRecord, array $shortcutRecord, string $tableName, int $uid): array
+    {
+        $targetLanguage = (int)($targetRecord['sys_language_uid'] ?? 0);
+        if ($targetLanguage === 0 || !BackendUtility::isTableLocalizable($tableName)) {
+            return $shortcutRecord;
+        }
+
+        $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
+        $shortcutLanguage = (int)($shortcutRecord[$languageField] ?? 0);
+        if ($targetLanguage === $shortcutLanguage) {
+            return $shortcutRecord;
+        }
+
+        // record is localized - fetch the shortcut record translation, if available
+        $shortcutRecordLocalization = BackendUtility::getRecordLocalization($tableName, $uid, $targetLanguage);
+        if (is_array($shortcutRecordLocalization) && !empty($shortcutRecordLocalization)) {
+            $shortcutRecord = $shortcutRecordLocalization[0];
+        }
+
+        return $shortcutRecord;
     }
 
     protected function getProcessedValue(GridColumnItem $item, string $fieldList, array &$info): void
