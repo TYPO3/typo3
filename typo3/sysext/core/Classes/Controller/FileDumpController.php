@@ -120,7 +120,11 @@ class FileDumpController
             $file = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
         }
 
-        return $file->getStorage()->streamFile($file);
+        return $file->getStorage()->streamFile(
+            $file,
+            (bool)($parameters['dl'] ?? false),
+            $parameters['fn'] ?? null
+        );
     }
 
     protected function buildParametersFromRequest(ServerRequestInterface $request): array
@@ -154,9 +158,19 @@ class FileDumpController
             $parameters['s'] = $s;
         }
         // File's crop variant
-        $v = (string)($queryParams['cv'] ?? '');
-        if ($v) {
-            $parameters['cv'] = (string)$v;
+        $cv = (string)($queryParams['cv'] ?? '');
+        if ($cv) {
+            $parameters['cv'] = $cv;
+        }
+        // As download
+        $dl = (string)($queryParams['dl'] ?? '');
+        if ($dl) {
+            $parameters['dl'] = (int)$dl;
+        }
+        // Alternative file name
+        $fn = (string)($queryParams['fn'] ?? '');
+        if ($fn) {
+            $parameters['fn'] = $fn;
         }
 
         return $parameters;

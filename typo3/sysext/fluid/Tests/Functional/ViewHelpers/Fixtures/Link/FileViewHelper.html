@@ -1,0 +1,15 @@
+<f:link.file file="{file}" title="uid-{file.uid}"/>
+
+<f:link.file file="{file}" target="_blank" title="uid-{file.uid}">Link file</f:link.file>
+
+<f:link.file file="{file}" filename="alt-name.jpg" title="uid-{file.uid}">Link file - alt-name.jpg</f:link.file>
+
+<f:link.file file="{file}" download="true" title="uid-{file.uid}">Download file</f:link.file>
+
+<f:link.file file="{file}" download="true" filename="../.htpasswd" title="uid-{file.uid}">Download file - alt name not valid</f:link.file>
+
+<f:link.file file="{file}" download="true" filename="alt-name.png" title="uid-{file.uid}">Download file - alt name wrong extension</f:link.file>
+
+<f:link.file file="{file}" download="true" filename="alt-name.jpg" title="uid-{file.uid}">Download file - alt-name.jpg</f:link.file>
+
+<f:link.file file="{file}" download="true" filename="alt-name" title="uid-{file.uid}">Download file - extension is appended</f:link.file>

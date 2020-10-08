@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <sys_file_storage>
+        <uid>1</uid>
+        <pid>0</pid>
+        <name>fileadmin</name>
+        <driver>Local</driver>
+        <configuration><![CDATA[<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+	<data>
+		<sheet index="sDEF">
+			<language index="lDEF">
+				<field index="basePath">
+					<value index="vDEF">fileadmin/</value>
+				</field>
+				<field index="pathType">
+					<value index="vDEF">relative</value>
+				</field>
+				<field index="caseSensitive">
+					<value index="vDEF">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>]]></configuration>
+        <is_browsable>1</is_browsable>
+        <is_public>1</is_public>
+        <is_writable>1</is_writable>
+        <is_online>1</is_online>
+    </sys_file_storage>
+    <sys_file>
+        <uid>1</uid>
+        <pid>0</pid>
+        <storage>1</storage>
+        <type>2</type>
+        <identifier>/user_upload/typo3_image2.jpg</identifier>
+        <identifier_hash>f90bb9a35622f35b5279195e324eddbaec8164b2</identifier_hash>
+        <folder_hash>19669f1e02c2f16705ec7587044c66443be70725</folder_hash>
+        <extension>jpg</extension>
+        <mime_type>image/jpeg</mime_type>
+        <name>typo3_image2.jpg</name>
+        <sha1>da9acdf1e105784a57bbffec9520969578287797</sha1>
+        <size>7958</size>
+        <creation_date>1389878273</creation_date>
+        <modification_date>1389878273</modification_date>
+    </sys_file>
+    <sys_file_reference>
+        <uid>2</uid>
+        <uid_local>1</uid_local>
+        <uid_foreign>1</uid_foreign>
+        <tablenames>tt_content</tablenames>
+        <fieldname>image</fieldname>
+        <table_local>sys_file</table_local>
+    </sys_file_reference>
+    <sys_file_processedfile>
+        <uid>3</uid>
+        <storage>1</storage>
+        <original>1</original>
+        <identifier>/_processed_/csm_typo3_image2_5c2670fd59.jpg</identifier>
+        <name>csm_typo3_image2_5c2670fd59.jpg</name>
+        <configuration>a:0:{}</configuration>
+        <width>300</width>
+        <height>225</height>
+        <task_type>Image.Preview</task_type>
+    </sys_file_processedfile>
+</dataset>
