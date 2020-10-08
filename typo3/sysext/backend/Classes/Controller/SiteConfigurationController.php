@@ -556,6 +556,13 @@ class SiteConfigurationController
         }
         $newSysSiteData['languages'] = $validChildren;
 
+        // cleanup configuration
+        foreach ($newSysSiteData as $identifier => $value) {
+            if (is_array($value) && empty($value)) {
+                unset($newSysSiteData[$identifier]);
+            }
+        }
+
         return $newSysSiteData;
     }
 
