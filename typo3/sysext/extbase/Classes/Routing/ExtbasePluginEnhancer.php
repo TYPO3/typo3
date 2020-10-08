@@ -51,7 +51,11 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         $this->routesOfPlugin = $this->configuration['routes'] ?? [];
         // Only set the namespace if the plugin+extension keys are given. This allows to also use "namespace" property
         // instead from the parent constructor.
-        if (isset($this->configuration['extension']) && isset($this->configuration['plugin'])) {
+        if (
+            $this->namespace === ''
+            && isset($this->configuration['extension'])
+            && isset($this->configuration['plugin'])
+        ) {
             $extensionName = $this->configuration['extension'];
             $pluginName = $this->configuration['plugin'];
             $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
