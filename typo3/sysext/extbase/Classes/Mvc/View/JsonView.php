@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * A JSON view
@@ -42,16 +40,6 @@ class JsonView extends AbstractView
      * See EXPOSE_CLASSNAME_FULL for the meaning of the constant at all.
      */
     const EXPOSE_CLASSNAME_UNQUALIFIED = 2;
-
-    /**
-     * @var ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-     */
-    protected $controllerContext;
 
     /**
      * Only variables whose name is contained in this array will be rendered
@@ -175,15 +163,6 @@ class JsonView extends AbstractView
     }
 
     /**
-     * @param ReflectionService $reflectionService
-     * @internal
-     */
-    public function injectReflectionService(ReflectionService $reflectionService): void
-    {
-        $this->reflectionService = $reflectionService;
-    }
-
-    /**
      * Specifies which variables this JsonView should render
      * By default only the variable 'value' will be rendered
      *
@@ -211,24 +190,6 @@ class JsonView extends AbstractView
      */
     public function render(): string
     {
-        $response = $this->controllerContext->getResponse();
-        // @todo Ticket: #63643 This should be solved differently once request/response model is available for TSFE.
-        if (!empty($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            /** @var TypoScriptFrontendController $typoScriptFrontendController */
-            $typoScriptFrontendController = $GLOBALS['TSFE'];
-            if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
-                // If the charset header is *not* disabled in configuration,
-                // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
-                $typoScriptFrontendController->setContentType('application/json');
-            } else {
-                // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
-                // Content-Type headers optionally carry charset information at the same time.
-                // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
-                $response->setHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
-            }
-        } else {
-            $response->setHeader('Content-Type', 'application/json');
-        }
         $propertiesToRender = $this->renderArray();
         return json_encode($propertiesToRender, JSON_UNESCAPED_UNICODE);
     }

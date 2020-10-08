@@ -18,11 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\View;
 
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -38,16 +35,6 @@ class JsonViewTest extends UnitTestCase
     protected $view;
 
     /**
-     * @var ControllerContext
-     */
-    protected $controllerContext;
-
-    /**
-     * @var Response
-     */
-    protected $response;
-
-    /**
      * Sets up this test case
      */
     protected function setUp(): void
@@ -56,10 +43,6 @@ class JsonViewTest extends UnitTestCase
         $this->view = $this->getMockBuilder(JsonView::class)
             ->setMethods(['loadConfigurationFromYamlFile'])
             ->getMock();
-        $this->controllerContext = $this->createMock(ControllerContext::class);
-        $this->response = $this->createMock(Response::class);
-        $this->controllerContext->expects(self::any())->method('getResponse')->willReturn($this->response);
-        $this->view->setControllerContext($this->controllerContext);
     }
 
     /**
@@ -311,27 +294,10 @@ class JsonViewTest extends UnitTestCase
                 ],
             ],
         ];
-        $reflectionService = $this->getMockBuilder(ReflectionService::class)
-            ->setMethods([ 'getClassNameByObject' ])
-            ->getMock();
-        $reflectionService->expects(self::any())->method('getClassNameByObject')->willReturnCallback(function ($object) {
-            return get_class($object);
-        });
 
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
-        $jsonView->injectReflectionService($reflectionService);
         $actual = $jsonView->_call('transformValue', $object, $configuration);
         self::assertSame($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function renderSetsContentTypeHeader(): void
-    {
-        $this->response->expects(self::once())->method('setHeader')->with('Content-Type', 'application/json');
-
-        $this->view->render();
     }
 
     /**

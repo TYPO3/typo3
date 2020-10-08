@@ -33,6 +33,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -513,6 +515,28 @@ class ActionController implements ControllerInterface
         }
 
         if ($actionResult === null && $this->view instanceof ViewInterface) {
+            if ($this->view instanceof JsonView) {
+                // this is just a temporary solution until Extbase uses PSR-7 responses and users are forced to return a
+                // response object in their controller actions.
+
+                if (!empty($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+                    /** @var TypoScriptFrontendController $typoScriptFrontendController */
+                    $typoScriptFrontendController = $GLOBALS['TSFE'];
+                    if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
+                        // If the charset header is *not* disabled in configuration,
+                        // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
+                        $typoScriptFrontendController->setContentType('application/json');
+                    } else {
+                        // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
+                        // Content-Type headers optionally carry charset information at the same time.
+                        // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
+                        $this->response->setHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
+                    }
+                } else {
+                    $this->response->setHeader('Content-Type', 'application/json');
+                }
+            }
+
             $this->response->appendContent($this->view->render());
         } elseif (is_string($actionResult) && $actionResult !== '') {
             $this->response->appendContent($actionResult);
