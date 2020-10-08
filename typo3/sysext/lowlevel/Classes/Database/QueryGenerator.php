@@ -289,6 +289,14 @@ class QueryGenerator
      */
     protected $fieldName;
 
+    /**
+     * If the current user is an admin and $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']
+     * is set to true, the names of fields and tables are displayed.
+     *
+     * @var bool
+     */
+    protected $showFieldAndTableNames = false;
+
     public function __construct(array $settings, array $menuItems, string $moduleName)
     {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf');
@@ -296,6 +304,8 @@ class QueryGenerator
         $this->settings = $settings;
         $this->menuItems = $menuItems;
         $this->moduleName = $moduleName;
+        $this->showFieldAndTableNames = ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false)
+            && $this->getBackendUserAuthentication()->isAdmin();
     }
 
     /**
@@ -2181,6 +2191,9 @@ class QueryGenerator
         foreach ($this->fields as $key => $value) {
             if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
                 $label = $this->fields[$key]['label'];
+                if ($this->showFieldAndTableNames) {
+                    $label .= ' [' . $key . ']';
+                }
                 $out[] = '<option value="' . htmlspecialchars($prepend . $key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
         }
@@ -2251,6 +2264,9 @@ class QueryGenerator
         foreach ($this->fields as $key => $value) {
             if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
                 $label = $this->fields[$key]['label'];
+                if ($this->showFieldAndTableNames) {
+                    $label .= ' [' . $key . ']';
+                }
                 $out[] = '<option value="' . htmlspecialchars($key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
         }
@@ -2272,7 +2288,11 @@ class QueryGenerator
         $out[] = '<option value=""></option>';
         foreach ($GLOBALS['TCA'] as $tN => $value) {
             if ($this->getBackendUserAuthentication()->check('tables_select', $tN)) {
-                $out[] = '<option value="' . htmlspecialchars($tN) . '"' . ($tN === $cur ? ' selected' : '') . '>' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tN]['ctrl']['title'])) . '</option>';
+                $label = $this->getLanguageService()->sL($GLOBALS['TCA'][$tN]['ctrl']['title']);
+                if ($this->showFieldAndTableNames) {
+                    $label .= ' [' . $tN . ']';
+                }
+                $out[] = '<option value="' . htmlspecialchars($tN) . '"' . ($tN === $cur ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
         }
         $out[] = '</select>';
