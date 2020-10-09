@@ -39,13 +39,6 @@ class DownloadQueue implements SingletonInterface
     protected $extensionInstallStorage = [];
 
     /**
-     * Storage for extensions to be copied
-     *
-     * @var array
-     */
-    protected $extensionCopyStorage = [];
-
-    /**
      * Adds an extension to the download queue.
      * If the extension was already requested in a different version
      * an exception is thrown.
@@ -112,29 +105,6 @@ class DownloadQueue implements SingletonInterface
     }
 
     /**
-     * Adds an extension to the copy queue for later copying
-     *
-     * @param string $extensionKey
-     * @param string $sourceFolder
-     */
-    public function addExtensionToCopyQueue($extensionKey, $sourceFolder)
-    {
-        $this->extensionCopyStorage[$extensionKey] = $sourceFolder;
-    }
-
-    /**
-     * Remove an extension from extension copy storage
-     *
-     * @param string $extensionKey
-     */
-    public function removeExtensionFromCopyQueue($extensionKey)
-    {
-        if (array_key_exists($extensionKey, $this->extensionCopyStorage)) {
-            unset($this->extensionCopyStorage[$extensionKey]);
-        }
-    }
-
-    /**
      * Gets the extension installation queue
      *
      * @return array
@@ -156,16 +126,6 @@ class DownloadQueue implements SingletonInterface
     }
 
     /**
-     * Return whether the copy queue contains extensions or not
-     *
-     * @return bool
-     */
-    public function isCopyQueueEmpty()
-    {
-        return empty($this->extensionCopyStorage);
-    }
-
-    /**
      * Resets the extension queue and returns old extensions
      *
      * @param string|null $stack if null, all stacks are reset
@@ -181,18 +141,6 @@ class DownloadQueue implements SingletonInterface
             $storage = $this->extensionStorage[$stack];
             $this->extensionStorage[$stack] = [];
         }
-
-        return $storage;
-    }
-
-    /**
-     * Resets the copy queue and returns the old extensions
-     * @return array
-     */
-    public function resetExtensionCopyStorage()
-    {
-        $storage = $this->extensionCopyStorage;
-        $this->extensionCopyStorage = [];
 
         return $storage;
     }

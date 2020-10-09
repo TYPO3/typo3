@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -62,11 +61,6 @@ class DependencyUtility implements SingletonInterface
     protected $availableExtensions = [];
 
     /**
-     * @var string
-     */
-    protected $localExtensionStorage = '';
-
-    /**
      * @var array
      */
     protected $dependencyErrors = [];
@@ -106,14 +100,6 @@ class DependencyUtility implements SingletonInterface
     public function injectManagementService(ExtensionManagementService $managementService)
     {
         $this->managementService = $managementService;
-    }
-
-    /**
-     * @param string $localExtensionStorage
-     */
-    public function setLocalExtensionStorage($localExtensionStorage)
-    {
-        $this->localExtensionStorage = $localExtensionStorage;
     }
 
     /**
@@ -282,7 +268,7 @@ class DependencyUtility implements SingletonInterface
             $loadedVersion = $extension->getPackageMetaData()->getVersion();
             if (version_compare($loadedVersion, $dependency->getHighestVersion()) === -1) {
                 try {
-                    $this->getExtensionFromRepository($extensionKey, $dependency);
+                    $this->downloadExtensionFromRemote($extensionKey, $dependency);
                 } catch (UnresolvedDependencyException $e) {
                     throw new MissingVersionDependencyException(
                         'The extension ' . $extensionKey . ' is installed in version ' . $loadedVersion
@@ -310,7 +296,7 @@ class DependencyUtility implements SingletonInterface
                     $availableVersion = $extension->getPackageMetaData()->getVersion();
                     if (version_compare($availableVersion, $dependency->getHighestVersion()) === -1) {
                         try {
-                            $this->getExtensionFromRepository($extensionKey, $dependency);
+                            $this->downloadExtensionFromRemote($extensionKey, $dependency);
                         } catch (MissingExtensionDependencyException $e) {
                             if (!$this->skipDependencyCheck) {
                                 throw new MissingVersionDependencyException(
@@ -334,7 +320,7 @@ class DependencyUtility implements SingletonInterface
                 }
             } else {
                 $unresolvedDependencyErrors = $this->dependencyErrors;
-                $this->getExtensionFromRepository($extensionKey, $dependency);
+                $this->downloadExtensionFromRemote($extensionKey, $dependency);
                 $this->dependencyErrors = array_merge($unresolvedDependencyErrors, $this->dependencyErrors);
             }
         }
@@ -343,52 +329,15 @@ class DependencyUtility implements SingletonInterface
     }
 
     /**
-     * Get an extension from a repository
-     * (might be in the extension itself or the TER)
-     *
-     * @param string $extensionKey
-     * @param Dependency $dependency
-     * @throws Exception\UnresolvedDependencyException
-     */
-    protected function getExtensionFromRepository($extensionKey, Dependency $dependency)
-    {
-        if (!$this->getExtensionFromInExtensionRepository($extensionKey)) {
-            $this->getExtensionFromTer($extensionKey, $dependency);
-        }
-    }
-
-    /**
-     * Gets an extension from the in extension repository
-     * (the local extension storage)
-     *
-     * @param string $extensionKey
-     * @return bool
-     */
-    protected function getExtensionFromInExtensionRepository($extensionKey)
-    {
-        if ($this->localExtensionStorage !== '' && is_dir($this->localExtensionStorage)) {
-            $extList = GeneralUtility::get_dirs($this->localExtensionStorage);
-            $extList = is_array($extList) ? $extList : [];
-            if (in_array($extensionKey, $extList)) {
-                $this->managementService->markExtensionForCopy($extensionKey, $this->localExtensionStorage);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Handles checks to find a compatible extension version from TER to fulfill given dependency
      *
-     * @todo unit tests
      * @param string $extensionKey
      * @param Dependency $dependency
      * @throws Exception\UnresolvedDependencyException
      */
-    protected function getExtensionFromTer($extensionKey, Dependency $dependency)
+    protected function downloadExtensionFromRemote(string $extensionKey, Dependency $dependency)
     {
-        $isExtensionDownloadableFromTer = $this->isExtensionDownloadableFromTer($extensionKey);
-        if (!$isExtensionDownloadableFromTer) {
+        if (!$this->isExtensionDownloadableFromRemote($extensionKey)) {
             if (!$this->skipDependencyCheck) {
                 if ($this->extensionRepository->countAll() > 0) {
                     throw new MissingExtensionDependencyException(
@@ -503,7 +452,7 @@ class DependencyUtility implements SingletonInterface
      * @param string $extensionKey
      * @return bool
      */
-    protected function isExtensionDownloadableFromTer($extensionKey)
+    protected function isExtensionDownloadableFromRemote($extensionKey)
     {
         return $this->extensionRepository->countByExtensionKey($extensionKey) > 0;
     }

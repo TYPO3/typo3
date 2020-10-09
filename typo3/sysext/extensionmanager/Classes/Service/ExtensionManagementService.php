@@ -142,17 +142,6 @@ class ExtensionManagementService implements SingletonInterface
     }
 
     /**
-     * Mark an extension for copy
-     *
-     * @param string $extensionKey
-     * @param string $sourceFolder
-     */
-    public function markExtensionForCopy($extensionKey, $sourceFolder)
-    {
-        $this->downloadQueue->addExtensionToCopyQueue($extensionKey, $sourceFolder);
-    }
-
-    /**
      * Mark an extension for download
      *
      * @param Extension $extension
@@ -204,7 +193,7 @@ class ExtensionManagementService implements SingletonInterface
      */
     public function installExtension(Extension $extension)
     {
-        $this->downloadExtension($extension);
+        $this->downloadMainExtension($extension);
         if (!$this->checkDependencies($extension)) {
             return false;
         }
@@ -217,16 +206,9 @@ class ExtensionManagementService implements SingletonInterface
         // added each time
         // Extensions have to be installed in reverse order. Extensions which were added at last are dependencies of
         // earlier ones and need to be available before
-        while (!$this->downloadQueue->isCopyQueueEmpty()
-            || !$this->downloadQueue->isQueueEmpty('download')
+        while (!$this->downloadQueue->isQueueEmpty('download')
             || !$this->downloadQueue->isQueueEmpty('update')
         ) {
-            // First copy all available extension
-            // This might change other queues again
-            $copyQueue = $this->downloadQueue->resetExtensionCopyStorage();
-            if (!empty($copyQueue)) {
-                $this->copyDependencies($copyQueue);
-            }
             $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
             // Get download and update information
             $queue = $this->downloadQueue->resetExtensionQueue();
@@ -305,17 +287,6 @@ class ExtensionManagementService implements SingletonInterface
     }
 
     /**
-     * Download an extension
-     *
-     * @param Extension $extension
-     */
-    protected function downloadExtension(Extension $extension)
-    {
-        $this->downloadMainExtension($extension);
-        $this->setInExtensionRepository($extension->getExtensionKey());
-    }
-
-    /**
      * Check dependencies for an extension and its required extensions
      *
      * @param Extension $extension
@@ -327,41 +298,6 @@ class ExtensionManagementService implements SingletonInterface
         $this->dependencyUtility->checkDependencies($extension);
 
         return !$this->dependencyUtility->hasDependencyErrors();
-    }
-
-    /**
-     * Sets the path to the repository in an extension
-     * (Initialisation/Extensions) depending on the extension
-     * that is currently installed
-     *
-     * @param string $extensionKey
-     */
-    protected function setInExtensionRepository($extensionKey)
-    {
-        $paths = Extension::returnInstallPaths();
-        $path = $paths[$this->downloadPath] ?? '';
-        if (empty($path)) {
-            return;
-        }
-        $localExtensionStorage = $path . $extensionKey . '/Initialisation/Extensions/';
-        $this->dependencyUtility->setLocalExtensionStorage($localExtensionStorage);
-    }
-
-    /**
-     * Copies locally provided extensions to typo3conf/ext
-     *
-     * @param array $copyQueue
-     */
-    protected function copyDependencies(array $copyQueue)
-    {
-        $installPaths = Extension::returnAllowedInstallPaths();
-        foreach ($copyQueue as $extensionKey => $sourceFolder) {
-            $destination = $installPaths['Local'] . $extensionKey;
-            GeneralUtility::mkdir($destination);
-            GeneralUtility::copyDirectory($sourceFolder . $extensionKey, $destination);
-            $this->markExtensionForInstallation($extensionKey);
-            $this->downloadQueue->removeExtensionFromCopyQueue($extensionKey);
-        }
     }
 
     /**

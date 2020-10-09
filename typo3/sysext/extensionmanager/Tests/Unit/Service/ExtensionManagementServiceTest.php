@@ -100,7 +100,6 @@ class ExtensionManagementServiceTest extends UnitTestCase
     public function installExtensionReturnsFalseIfDependenciesCannotBeResolved(): void
     {
         $extension = new Extension();
-        $this->dependencyUtilityProphecy->setLocalExtensionStorage(Argument::any())->willReturn();
         $this->dependencyUtilityProphecy->setSkipDependencyCheck(false)->willReturn();
         $this->dependencyUtilityProphecy->checkDependencies($extension)->willReturn();
 
@@ -164,16 +163,6 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $result = $this->managementService->installExtension($extension);
 
         self::assertSame(['updated' => ['foo' => $extension], 'installed' => ['foo' => 'foo']], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function markExtensionForCopyAddsExtensionToCopyQueue(): void
-    {
-        $this->managementService->markExtensionForCopy('ext', 'some/folder/');
-
-        self::assertSame(['ext' => 'some/folder/'], $this->downloadQueue->resetExtensionCopyStorage());
     }
 
     /**
