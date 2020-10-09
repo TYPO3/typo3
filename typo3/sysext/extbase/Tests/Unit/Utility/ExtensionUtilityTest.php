@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstCo
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -398,15 +397,6 @@ class ExtensionUtilityTest extends UnitTestCase
                     'controllerName' => 'Foo',
                 ],
                 'TYPO3\\CMS\\Ext\\Controller\\FooController',
-            ],
-            'Vendor TYPO3\CMS, extension, subpackage, controller given' => [
-                [
-                    'vendorName' => 'TYPO3\\CMS',
-                    'extensionName' => 'Fluid',
-                    'subpackageKey' => 'ViewHelpers\\Widget',
-                    'controllerName' => 'Paginate',
-                ],
-                PaginateController::class,
             ],
             'Vendor VENDOR, extension, controller given' => [
                 [

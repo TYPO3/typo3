@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -113,15 +112,6 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
-                ]
-            ],
-            [
-                PaginateController::class,
-                [
-                    'vendorName' => 'TYPO3\\CMS',
-                    'extensionName' => 'Fluid',
-                    'subpackageKey' => 'ViewHelpers\\Widget',
-                    'controllerName' => 'Paginate',
                 ]
             ],
             [

@@ -246,40 +246,6 @@ class TemplatesPathsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function widgetTemplateCanBeOverridden()
-    {
-        $requestArguments = [
-            'id' => '1',
-            'override' => 'base',
-            'mode' => 'controller',
-            'widgetConfig' => 'new',
-        ];
-
-        $content = $this->fetchFrontendResponseBody($requestArguments);
-
-        self::assertStringContainsString('PAGINATE WIDGET', $content);
-    }
-
-    /**
-     * @test
-     */
-    public function widgetTemplateCanBeOverriddenWithLegacyConfig()
-    {
-        $requestArguments = [
-            'id' => '1',
-            'override' => 'base',
-            'mode' => 'controller',
-            'widgetConfig' => 'old',
-        ];
-
-        $content = $this->fetchFrontendResponseBody($requestArguments);
-
-        self::assertStringContainsString('PAGINATE WIDGET', $content);
-    }
-
-    /**
-     * @test
-     */
     public function baseRenderingWorksForControllerAsPluginUsageWithIncompleteConfig()
     {
         $requestArguments = [

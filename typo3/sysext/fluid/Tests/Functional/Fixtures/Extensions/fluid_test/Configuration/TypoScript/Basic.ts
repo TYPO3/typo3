@@ -25,13 +25,6 @@ lib.viewConfig {
     layoutRootPaths {
         1 = EXT:fluid_test/Resources/Private/Base/Layouts/
     }
-
-    widget.TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
-        templateRootPath = EXT:fluid_test/Resources/Private/Base/Templates/
-        templateRootPaths {
-            1 = EXT:fluid_test/Resources/Private/Base/Templates/
-        }
-    }
 }
 
 [request.getQueryParams()['override'] == 'overrideAll' || request.getParsedBody()['override'] == 'overrideAll']
