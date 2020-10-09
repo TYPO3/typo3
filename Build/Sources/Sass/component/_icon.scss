@@ -7,7 +7,7 @@
 // Example Usage
 // -------------
 //
-// <span class="icon icon-size-large icon-provider-svg">
+// <span class="icon icon-size-large">
 //   <span class="icon-markup">
 //     <img src="#" width="16" height="16">
 //   </span>
@@ -20,11 +20,12 @@
 //
 // Variables
 //
-$icon-size-small: 16px;
-$icon-size-default: 32px;
-$icon-size-large: 48px;
-$icon-unify-modifier: 0.86;
-$icon-opacity-disabled: 0.5;
+$icon-size-small: 16px !default;
+$icon-size-default: 32px !default;
+$icon-size-large: 48px !default;
+$icon-size-mega: 64px !default;
+$icon-unify-modifier: 0.86 !default;
+$icon-opacity-disabled: 0.5 !default;
 
 //
 // Component
@@ -34,6 +35,8 @@ $icon-opacity-disabled: 0.5;
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
+    height: 1em;
+    width: 1em;
     vertical-align: -22%;
 
     svg,
@@ -90,8 +93,8 @@ $icon-opacity-disabled: 0.5;
     }
 
     100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -102,8 +105,8 @@ $icon-opacity-disabled: 0.5;
     }
 
     100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -142,41 +145,4 @@ $icon-opacity-disabled: 0.5;
 @include icon-size(small, $icon-size-small);
 @include icon-size(default, $icon-size-default);
 @include icon-size(large, $icon-size-large);
-
-//
-// Special icons
-//
-.icon-actions-edit-copy-release,
-.icon-actions-edit-cut-release,
-.icon-status-status-current,
-.icon-status-dialog-error,
-.icon-status-status-permission-denied {
-    color: $brand-danger;
-}
-
-.icon-status-status-sorting-light-asc,
-.icon-status-status-sorting-light-desc {
-    color: #fff;
-}
-
-.icon-status-status-sorting-asc,
-.icon-status-status-sorting-desc {
-    color: $gray;
-}
-
-.icon-status-dialog-information {
-    color: $brand-info;
-}
-
-.icon-status-dialog-ok,
-.icon-status-status-permission-granted {
-    color: $brand-success;
-}
-
-.icon-status-dialog-notification {
-    color: $brand-notice;
-}
-
-.icon-status-dialog-warning {
-    color: $brand-warning;
-}
+@include icon-size(mega, $icon-size-mega);

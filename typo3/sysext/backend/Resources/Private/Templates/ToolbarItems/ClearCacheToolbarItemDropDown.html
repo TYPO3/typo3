@@ -7,7 +7,7 @@
     <f:for each="{cacheActions}" as="cacheAction">
         <div class="dropdown-table-row">
             <a href="{cacheAction.href}" class="toolbar-cache-flush-action">
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">
+                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon dropdown-table-icon-{cacheAction.iconIdentifier}">
                     <core:icon identifier="{cacheAction.iconIdentifier}" size="small" />
                 </div>
                 <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
