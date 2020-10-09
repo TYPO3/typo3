@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
 /**
@@ -34,12 +35,12 @@ class WidgetRegistry implements SingletonInterface
     protected $container;
 
     /**
-     * @var WidgetInterface[]
+     * @var WidgetConfigurationInterface[]
      */
     private $widgets = [];
 
     /**
-     * @var array
+     * @var array<string, WidgetConfigurationInterface[]>
      */
     private $widgetsPerWidgetGroup = [];
 
@@ -48,11 +49,17 @@ class WidgetRegistry implements SingletonInterface
         $this->container = $container;
     }
 
+    /**
+     * @return WidgetConfigurationInterface[]
+     */
     public function getAvailableWidgets(): array
     {
         return $this->checkPermissionOfWidgets($this->widgets);
     }
 
+    /**
+     * @return WidgetConfigurationInterface[]
+     */
     public function getAllWidgets(): array
     {
         return $this->widgets;
@@ -70,6 +77,10 @@ class WidgetRegistry implements SingletonInterface
         throw new \InvalidArgumentException('Requested widget "' . $identifier . '" does not exist.', 1584777201);
     }
 
+    /**
+     * @param string $widgetGroupIdentifier
+     * @return WidgetConfigurationInterface[]
+     */
     public function getAvailableWidgetsForWidgetGroup(string $widgetGroupIdentifier): array
     {
         if (!array_key_exists($widgetGroupIdentifier, $this->widgetsPerWidgetGroup)) {
@@ -91,6 +102,10 @@ class WidgetRegistry implements SingletonInterface
         }
     }
 
+    /**
+     * @param WidgetConfigurationInterface[] $widgets
+     * @return WidgetConfigurationInterface[]
+     */
     protected function checkPermissionOfWidgets(array $widgets): array
     {
         return array_filter($widgets, function ($identifier) {
