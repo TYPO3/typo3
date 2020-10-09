@@ -70,11 +70,6 @@ class BackendUser extends AbstractEntity
     protected $lastLoginDateAndTime;
 
     /**
-     * @var bool
-     */
-    protected $ipLockIsDisabled = false;
-
-    /**
      * Gets the user name.
      *
      * @return string the user name, will not be empty
@@ -268,26 +263,6 @@ class BackendUser extends AbstractEntity
         }
         $now = new \DateTime('now');
         return $now <= $this->getEndDateAndTime();
-    }
-
-    /**
-     * Sets whether the IP lock for this user is disabled.
-     *
-     * @param bool $disableIpLock whether the IP lock for this user is disabled
-     */
-    public function setIpLockIsDisabled($disableIpLock)
-    {
-        $this->ipLockIsDisabled = $disableIpLock;
-    }
-
-    /**
-     * Checks whether the IP lock for this user is disabled.
-     *
-     * @return bool whether the IP lock for this user is disabled
-     */
-    public function getIpLockIsDisabled()
-    {
-        return $this->ipLockIsDisabled;
     }
 
     /**

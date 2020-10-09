@@ -252,23 +252,6 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIpLockIsDisabledInitiallyReturnsFalse()
-    {
-        self::assertFalse($this->subject->getIpLockIsDisabled());
-    }
-
-    /**
-     * @test
-     */
-    public function setIpLockIsDisabledCanSetIpLockIsDisabledToTrue()
-    {
-        $this->subject->setIpLockIsDisabled(true);
-        self::assertTrue($this->subject->getIpLockIsDisabled());
-    }
-
-    /**
-     * @test
-     */
     public function getLastLoginDateAndTimeInitiallyReturnsNull()
     {
         self::assertNull($this->subject->getLastLoginDateAndTime());

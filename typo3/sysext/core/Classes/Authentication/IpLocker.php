@@ -47,9 +47,9 @@ class IpLocker
         $this->lockIPv6PartCount = $lockIPv6PartCount;
     }
 
-    public function getSessionIpLock(string $ipAddress, bool $enableLocking = true): string
+    public function getSessionIpLock(string $ipAddress): string
     {
-        if (!$enableLocking) {
+        if ($this->lockIPv4PartCount === 0 && $this->lockIPv6PartCount === 0) {
             return static::DISABLED_LOCK_VALUE;
         }
 

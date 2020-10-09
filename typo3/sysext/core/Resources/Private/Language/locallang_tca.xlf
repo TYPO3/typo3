@@ -69,12 +69,6 @@
 			<trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title">
 				<source>List groups</source>
 			</trans-unit>
-			<trans-unit id="be_users.disableIPlock" resname="be_users.disableIPlock">
-				<source>Disable IP lock for user</source>
-			</trans-unit>
-			<trans-unit id="be_users.IPlockState" resname="be_users.IPlockState">
-				<source>IP lock for user</source>
-			</trans-unit>
 			<trans-unit id="be_users.admin" resname="be_users.admin">
 				<source>Admin (!)</source>
 			</trans-unit>

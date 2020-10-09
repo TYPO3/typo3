@@ -7,7 +7,6 @@
         <realName>Editor with no group</realName>
 		<password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
 		<admin>0</admin>
-		<disableIPlock>1</disableIPlock>
 		<lastlogin>1371033743</lastlogin>
 		<workspace_id>0</workspace_id>
 	</be_users>
@@ -21,7 +20,6 @@
         <usergroup>1</usergroup>
         <password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
         <admin>0</admin>
-        <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
         <workspace_id>0</workspace_id>
     </be_users>
@@ -35,7 +33,6 @@
         <usergroup>2</usergroup>
         <password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
         <admin>0</admin>
-        <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
         <workspace_id>0</workspace_id>
     </be_users>
@@ -49,7 +46,6 @@
         <usergroup>3</usergroup>
         <password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
         <admin>0</admin>
-        <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
         <workspace_id>0</workspace_id>
     </be_users>
@@ -63,7 +59,6 @@
         <usergroup>6</usergroup>
         <password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
         <admin>0</admin>
-        <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
         <workspace_id>0</workspace_id>
     </be_users>

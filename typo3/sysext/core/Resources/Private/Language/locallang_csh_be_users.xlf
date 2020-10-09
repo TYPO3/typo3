@@ -77,12 +77,6 @@ The first (top) group in the list is the group which will, by default, be the ow
 be_groups</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="disableIPlock.description" resname="disableIPlock.description">
-				<source>Disable the lock of the backend users session to the remote IP number.</source>
-			</trans-unit>
-			<trans-unit id="disableIPlock.details" resname="disableIPlock.details">
-				<source>You will have to disable this lock if backend users are accessing TYPO3 from ISDN or modem connections which may shutdown and reconnect with a new IP. The same would be true for DHCP assignment of IP numbers where new IP numbers are frequently assigned.</source>
-			</trans-unit>
 			<trans-unit id="db_mountpoints.description" resname="db_mountpoints.description">
 				<source>Assign startpoints for the users page tree.</source>
 			</trans-unit>

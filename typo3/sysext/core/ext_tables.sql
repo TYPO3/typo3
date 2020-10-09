@@ -55,7 +55,6 @@ CREATE TABLE be_users (
 	file_mountpoints text,
 	file_permissions text,
 	workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
-	disableIPlock tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	usergroup_cached_list text,

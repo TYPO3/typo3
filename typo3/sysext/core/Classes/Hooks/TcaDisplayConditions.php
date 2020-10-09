@@ -40,22 +40,4 @@ class TcaDisplayConditions
         }
         return false;
     }
-
-    /**
-     * Check if $GLOBALS['TYPO3_CONF_VARS']['BE']['ipLock'] is active
-     *
-     * @param array $parameters
-     * @return bool
-     */
-    public function isIPLockEnabled(array $parameters): bool
-    {
-        $type = $parameters['conditionParameters'][0] ?? 'backend';
-        if ($type === 'backend') {
-            return (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['ipLock'] > 0 || (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockIPv6'] > 0;
-        }
-        if ($type === 'frontend') {
-            return (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['ipLock'] > 0 || (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lockIPv6'] > 0;
-        }
-        return false;
-    }
 }

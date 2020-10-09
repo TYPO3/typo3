@@ -208,14 +208,6 @@
                         </f:for>
                     </tr>
                 </f:if>
-                <tr>
-                    <th><f:translate key="disableIpLock" /></th>
-                    <f:for each="{compareUserList}" as="compareData">
-                        <td>
-                            <f:render partial="Compare/Information" section="yesno" arguments="{value:compareData.user.disableIPlock}" />
-                        </td>
-                    </f:for>
-                </tr>
             </tbody>
         </table>
     </div>

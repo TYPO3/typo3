@@ -896,7 +896,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getNewSessionRecord($tempuser)
     {
-        $sessionIpLock = $this->ipLocker->getSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), empty($tempuser['disableIPlock']));
+        $sessionIpLock = $this->ipLocker->getSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'));
 
         return [
             'ses_id' => $this->id,

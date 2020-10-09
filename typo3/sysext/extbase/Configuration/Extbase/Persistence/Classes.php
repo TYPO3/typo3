@@ -30,9 +30,6 @@ return [
             'endDateAndTime' => [
                 'fieldName' => 'endtime'
             ],
-            'ipLockIsDisabled' => [
-                'fieldName' => 'disableIPlock'
-            ],
             'lastLoginDateAndTime' => [
                 'fieldName' => 'lastlogin'
             ],

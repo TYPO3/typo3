@@ -6,6 +6,5 @@
         <username>admin</username>
         <deleted>0</deleted>
         <admin>1</admin>
-        <disableIPlock>1</disableIPlock>
     </be_users>
 </dataset>

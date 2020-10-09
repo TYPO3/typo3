@@ -78,9 +78,6 @@
 			<trans-unit id="fileMounts" resname="fileMounts">
 				<source>File mountpoints</source>
 			</trans-unit>
-			<trans-unit id="disableIpLock" resname="disableIpLock">
-				<source>Disable IP lock</source>
-			</trans-unit>
 			<trans-unit id="compareBackendUsers" resname="compareBackendUsers">
 				<source>Compare backend users</source>
 			</trans-unit>

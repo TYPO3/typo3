@@ -176,24 +176,6 @@ return [
                 'default' => 1,
             ]
         ],
-        'disableIPlock' => [
-            'exclude' => 1,
-            'displayCond' => 'USER:TYPO3\CMS\Core\Hooks\TcaDisplayConditions->isIPLockEnabled:backend',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.IPlockState',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxLabeledToggle',
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                        'labelChecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-                        'labelUnchecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disabled',
-                        'invertStateDisplay' => true
-                    ],
-                ],
-            ]
-        ],
         'admin' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.admin',
@@ -370,7 +352,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces,
                 workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
-                disableIPlock, TSconfig,
+                TSconfig,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 --palette--;;timeRestriction,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
@@ -381,7 +363,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                 disable, admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
-                disableIPlock, TSconfig, db_mountpoints, options, file_mountpoints,
+                TSconfig, db_mountpoints, options, file_mountpoints,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 --palette--;;timeRestriction,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
