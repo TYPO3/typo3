@@ -118,6 +118,14 @@ div.dropdown-menu {
 .dropdown-table-icon {
     width: 16px;
     padding-right: 0.5em;
+
+    &-actions-system-cache-clear-impact-low {
+        color: $state-success-text;
+    }
+
+    &-actions-system-cache-clear-impact-high {
+        color: $state-danger-text;
+    }
 }
 
 .dropdown-table-title {

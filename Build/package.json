@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "@claviska/jquery-minicolors": "^2.3.5",
-    "@typo3/icons": "^1.11.1",
+    "@typo3/icons": "^2.0.1",
     "autosize": "^4.0.2",
     "broadcastchannel-polyfill": "^1.0.0",
     "chart.js": "^2.9.3",

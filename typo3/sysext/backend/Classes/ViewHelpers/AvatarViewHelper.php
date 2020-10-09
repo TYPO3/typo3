@@ -39,7 +39,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <span class="avatar">
  *        <span class="avatar-image">
- *            <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/avatar/avatar-default.svg" width="32" height="32" />
+ *            <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/avatar/svgs/avatar-default.svg" width="32" height="32" />
  *        </span>
  *    </span>
  *

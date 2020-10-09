@@ -264,19 +264,17 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= paths.t3icons %>',
-          src: ['**/*.svg', '!install/*', '!module/*'],
-          dest: '<%= paths.sysext %>core/Resources/Public/Icons/T3Icons/',
-          ext: '.svg'
+          src: ['**/*.svg', 'icons.json', '!install/*', '!module/*'],
+          dest: '<%= paths.sysext %>core/Resources/Public/Icons/T3Icons/'
         }]
       },
       install_icons: {
         files: [
           {
             expand: true,
-            cwd: '<%= paths.t3icons %>install/',
+            cwd: '<%= paths.t3icons %>svgs/install/',
             src: ['**/*.svg'],
-            dest: '<%= paths.sysext %>install/Resources/Public/Icons/modules/',
-            ext: '.svg'
+            dest: '<%= paths.sysext %>install/Resources/Public/Icons/modules/'
           }
         ]
       },
@@ -284,127 +282,127 @@ module.exports = function (grunt) {
         files: [
           {
             dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg',
-            src: '<%= paths.t3icons %>module/module-about.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-about.svg'
           },
           {
             dest: '<%= paths.sysext %>adminpanel/Resources/Public/Icons/module-adminpanel.svg',
-            src: '<%= paths.t3icons %>module/module-adminpanel.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-adminpanel.svg'
           },
           {
             dest: '<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg',
-            src: '<%= paths.t3icons %>module/module-belog.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-belog.svg'
           },
           {
             dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-beuser.svg',
-            src: '<%= paths.t3icons %>module/module-beuser.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-beuser.svg'
           },
           {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-cshmanual.svg',
-            src: '<%= paths.t3icons %>module/module-cshmanual.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-cshmanual.svg'
           },
           {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg',
-            src: '<%= paths.t3icons %>module/module-page.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-page.svg'
           },
           {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-sites.svg',
-            src: '<%= paths.t3icons %>module/module-sites.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-sites.svg'
           },
           {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-templates.svg',
-            src: '<%= paths.t3icons %>module/module-templates.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-templates.svg'
           },
           {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-urls.svg',
-            src: '<%= paths.t3icons %>module/module-urls.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-urls.svg'
           },
           {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-contentelements.svg',
-            src: '<%= paths.t3icons %>module/module-contentelements.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-contentelements.svg'
           },
           {
             dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg',
-            src: '<%= paths.t3icons %>module/module-config.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-config.svg'
           },
           {
             dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg',
-            src: '<%= paths.t3icons %>module/module-dbint.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-dbint.svg'
           },
           {
             dest: '<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg',
-            src: '<%= paths.t3icons %>module/module-extensionmanager.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-extensionmanager.svg'
           },
           {
             dest: '<%= paths.sysext %>filelist/Resources/Public/Icons/module-filelist.svg',
-            src: '<%= paths.t3icons %>module/module-filelist.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-filelist.svg'
           },
           {
             dest: '<%= paths.sysext %>form/Resources/Public/Icons/module-form.svg',
-            src: '<%= paths.t3icons %>module/module-form.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-form.svg'
           },
           {
             dest: '<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg',
-            src: '<%= paths.t3icons %>module/module-indexed_search.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-indexed_search.svg'
           },
           {
             dest: '<%= paths.sysext %>info/Resources/Public/Icons/module-info.svg',
-            src: '<%= paths.t3icons %>module/module-info.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-info.svg'
           },
           {
             dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install.svg',
-            src: '<%= paths.t3icons %>module/module-install.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-install.svg'
           },
           {
             dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-environment.svg',
-            src: '<%= paths.t3icons %>module/module-install-environment.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-install-environment.svg'
           },
           {
             dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-maintenance.svg',
-            src: '<%= paths.t3icons %>module/module-install-maintenance.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-install-maintenance.svg'
           },
           {
             dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-settings.svg',
-            src: '<%= paths.t3icons %>module/module-install-settings.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-install-settings.svg'
           },
           {
             dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-upgrade.svg',
-            src: '<%= paths.t3icons %>module/module-install-upgrade.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-install-upgrade.svg'
           },
           {
             dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg',
-            src: '<%= paths.t3icons %>module/module-list.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-list.svg'
           },
           {
             dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-permission.svg',
-            src: '<%= paths.t3icons %>module/module-permission.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-permission.svg'
           },
           {
             dest: '<%= paths.sysext %>recycler/Resources/Public/Icons/module-recycler.svg',
-            src: '<%= paths.t3icons %>module/module-recycler.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-recycler.svg'
           },
           {
             dest: '<%= paths.sysext %>reports/Resources/Public/Icons/module-reports.svg',
-            src: '<%= paths.t3icons %>module/module-reports.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-reports.svg'
           },
           {
             dest: '<%= paths.sysext %>scheduler/Resources/Public/Icons/module-scheduler.svg',
-            src: '<%= paths.t3icons %>module/module-scheduler.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-scheduler.svg'
           },
           {
             dest: '<%= paths.sysext %>setup/Resources/Public/Icons/module-setup.svg',
-            src: '<%= paths.t3icons %>module/module-setup.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-setup.svg'
           },
           {
             dest: '<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg',
-            src: '<%= paths.t3icons %>module/module-tstemplate.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-tstemplate.svg'
           },
           {
             dest: '<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg',
-            src: '<%= paths.t3icons %>module/module-viewpage.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-viewpage.svg'
           },
           {
             dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg',
-            src: '<%= paths.t3icons %>module/module-workspaces.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-workspaces.svg'
           }
         ]
       },
@@ -412,11 +410,11 @@ module.exports = function (grunt) {
         files: [
           {
             dest: '<%= paths.sysext %>form/Resources/Public/Icons/Extension.svg',
-            src: '<%= paths.t3icons %>module/module-form.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-form.svg'
           },
           {
             dest: '<%= paths.sysext %>rte_ckeditor/Resources/Public/Icons/Extension.svg',
-            src: '<%= paths.t3icons %>module/module-rte-ckeditor.svg'
+            src: '<%= paths.t3icons %>svgs/module/module-rte-ckeditor.svg'
           }
         ]
       },

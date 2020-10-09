@@ -1,0 +1,3609 @@
+{
+  "icons": {
+    "actions-accessibility": {
+      "identifier": "actions-accessibility",
+      "category": "actions",
+      "svg": "svgs/actions/actions-accessibility.svg",
+      "sprite": "sprites/actions.svg#actions-accessibility"
+    },
+    "actions-add": {
+      "identifier": "actions-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-add.svg",
+      "sprite": "sprites/actions.svg#actions-add"
+    },
+    "actions-approve": {
+      "identifier": "actions-approve",
+      "category": "actions",
+      "svg": "svgs/actions/actions-approve.svg",
+      "sprite": "sprites/actions.svg#actions-approve"
+    },
+    "actions-archive": {
+      "identifier": "actions-archive",
+      "category": "actions",
+      "svg": "svgs/actions/actions-archive.svg",
+      "sprite": "sprites/actions.svg#actions-archive"
+    },
+    "actions-arrow-down-left": {
+      "identifier": "actions-arrow-down-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-down-left.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-down-left"
+    },
+    "actions-arrow-down-right": {
+      "identifier": "actions-arrow-down-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-down-right.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-down-right"
+    },
+    "actions-arrow-down": {
+      "identifier": "actions-arrow-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-down.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-down"
+    },
+    "actions-arrow-left": {
+      "identifier": "actions-arrow-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-left.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-left"
+    },
+    "actions-arrow-right-down": {
+      "identifier": "actions-arrow-right-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-right-down.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-right-down"
+    },
+    "actions-arrow-right-up": {
+      "identifier": "actions-arrow-right-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-right-up.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-right-up"
+    },
+    "actions-arrow-right": {
+      "identifier": "actions-arrow-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-right.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-right"
+    },
+    "actions-arrow-up": {
+      "identifier": "actions-arrow-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-up.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-up"
+    },
+    "actions-ban": {
+      "identifier": "actions-ban",
+      "category": "actions",
+      "svg": "svgs/actions/actions-ban.svg",
+      "sprite": "sprites/actions.svg#actions-ban"
+    },
+    "actions-bolt": {
+      "identifier": "actions-bolt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-bolt.svg",
+      "sprite": "sprites/actions.svg#actions-bolt"
+    },
+    "actions-building": {
+      "identifier": "actions-building",
+      "category": "actions",
+      "svg": "svgs/actions/actions-building.svg",
+      "sprite": "sprites/actions.svg#actions-building"
+    },
+    "actions-calendar-alternative": {
+      "identifier": "actions-calendar-alternative",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calendar-alternative.svg",
+      "sprite": "sprites/actions.svg#actions-calendar-alternative"
+    },
+    "actions-calendar": {
+      "identifier": "actions-calendar",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calendar.svg",
+      "sprite": "sprites/actions.svg#actions-calendar"
+    },
+    "actions-caret-bar-bottom": {
+      "identifier": "actions-caret-bar-bottom",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-bar-bottom.svg",
+      "sprite": "sprites/actions.svg#actions-caret-bar-bottom"
+    },
+    "actions-caret-bar-left": {
+      "identifier": "actions-caret-bar-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-bar-left.svg",
+      "sprite": "sprites/actions.svg#actions-caret-bar-left"
+    },
+    "actions-caret-bar-right": {
+      "identifier": "actions-caret-bar-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-bar-right.svg",
+      "sprite": "sprites/actions.svg#actions-caret-bar-right"
+    },
+    "actions-caret-bar-top": {
+      "identifier": "actions-caret-bar-top",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-bar-top.svg",
+      "sprite": "sprites/actions.svg#actions-caret-bar-top"
+    },
+    "actions-caret-down": {
+      "identifier": "actions-caret-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-down.svg",
+      "sprite": "sprites/actions.svg#actions-caret-down"
+    },
+    "actions-caret-left": {
+      "identifier": "actions-caret-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-left.svg",
+      "sprite": "sprites/actions.svg#actions-caret-left"
+    },
+    "actions-caret-right": {
+      "identifier": "actions-caret-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-right.svg",
+      "sprite": "sprites/actions.svg#actions-caret-right"
+    },
+    "actions-caret-up": {
+      "identifier": "actions-caret-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-caret-up.svg",
+      "sprite": "sprites/actions.svg#actions-caret-up"
+    },
+    "actions-cart": {
+      "identifier": "actions-cart",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cart.svg",
+      "sprite": "sprites/actions.svg#actions-cart"
+    },
+    "actions-category": {
+      "identifier": "actions-category",
+      "category": "actions",
+      "svg": "svgs/actions/actions-category.svg",
+      "sprite": "sprites/actions.svg#actions-category"
+    },
+    "actions-certificate-alternative": {
+      "identifier": "actions-certificate-alternative",
+      "category": "actions",
+      "svg": "svgs/actions/actions-certificate-alternative.svg",
+      "sprite": "sprites/actions.svg#actions-certificate-alternative"
+    },
+    "actions-certificate": {
+      "identifier": "actions-certificate",
+      "category": "actions",
+      "svg": "svgs/actions/actions-certificate.svg",
+      "sprite": "sprites/actions.svg#actions-certificate"
+    },
+    "actions-chat": {
+      "identifier": "actions-chat",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chat.svg",
+      "sprite": "sprites/actions.svg#actions-chat"
+    },
+    "actions-check-square": {
+      "identifier": "actions-check-square",
+      "category": "actions",
+      "svg": "svgs/actions/actions-check-square.svg",
+      "sprite": "sprites/actions.svg#actions-check-square"
+    },
+    "actions-check": {
+      "identifier": "actions-check",
+      "category": "actions",
+      "svg": "svgs/actions/actions-check.svg",
+      "sprite": "sprites/actions.svg#actions-check"
+    },
+    "actions-chevron-bar-down": {
+      "identifier": "actions-chevron-bar-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-bar-down.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-bar-down"
+    },
+    "actions-chevron-bar-left": {
+      "identifier": "actions-chevron-bar-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-bar-left.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-bar-left"
+    },
+    "actions-chevron-bar-right": {
+      "identifier": "actions-chevron-bar-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-bar-right.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-bar-right"
+    },
+    "actions-chevron-bar-up": {
+      "identifier": "actions-chevron-bar-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-bar-up.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-bar-up"
+    },
+    "actions-chevron-contract": {
+      "identifier": "actions-chevron-contract",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-contract.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-contract"
+    },
+    "actions-chevron-double-left": {
+      "identifier": "actions-chevron-double-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-double-left.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-double-left"
+    },
+    "actions-chevron-double-right": {
+      "identifier": "actions-chevron-double-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-double-right.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-double-right"
+    },
+    "actions-chevron-down": {
+      "identifier": "actions-chevron-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-down.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-down"
+    },
+    "actions-chevron-expand": {
+      "identifier": "actions-chevron-expand",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-expand.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-expand"
+    },
+    "actions-chevron-left": {
+      "identifier": "actions-chevron-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-left.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-left"
+    },
+    "actions-chevron-right": {
+      "identifier": "actions-chevron-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-right.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-right"
+    },
+    "actions-chevron-up": {
+      "identifier": "actions-chevron-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chevron-up.svg",
+      "sprite": "sprites/actions.svg#actions-chevron-up"
+    },
+    "actions-clipboard-close": {
+      "identifier": "actions-clipboard-close",
+      "category": "actions",
+      "svg": "svgs/actions/actions-clipboard-close.svg",
+      "sprite": "sprites/actions.svg#actions-clipboard-close"
+    },
+    "actions-clipboard-paste": {
+      "identifier": "actions-clipboard-paste",
+      "category": "actions",
+      "svg": "svgs/actions/actions-clipboard-paste.svg",
+      "sprite": "sprites/actions.svg#actions-clipboard-paste"
+    },
+    "actions-clipboard": {
+      "identifier": "actions-clipboard",
+      "category": "actions",
+      "svg": "svgs/actions/actions-clipboard.svg",
+      "sprite": "sprites/actions.svg#actions-clipboard"
+    },
+    "actions-clock": {
+      "identifier": "actions-clock",
+      "category": "actions",
+      "svg": "svgs/actions/actions-clock.svg",
+      "sprite": "sprites/actions.svg#actions-clock"
+    },
+    "actions-close": {
+      "identifier": "actions-close",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close.svg",
+      "sprite": "sprites/actions.svg#actions-close"
+    },
+    "actions-cloud-slash": {
+      "identifier": "actions-cloud-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud-slash.svg",
+      "sprite": "sprites/actions.svg#actions-cloud-slash"
+    },
+    "actions-cloud": {
+      "identifier": "actions-cloud",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud.svg",
+      "sprite": "sprites/actions.svg#actions-cloud"
+    },
+    "actions-code-fork": {
+      "identifier": "actions-code-fork",
+      "category": "actions",
+      "svg": "svgs/actions/actions-code-fork.svg",
+      "sprite": "sprites/actions.svg#actions-code-fork"
+    },
+    "actions-code-merge-localization": {
+      "identifier": "actions-code-merge-localization",
+      "category": "actions",
+      "svg": "svgs/actions/actions-code-merge-localization.svg",
+      "sprite": "sprites/actions.svg#actions-code-merge-localization"
+    },
+    "actions-code-merge": {
+      "identifier": "actions-code-merge",
+      "category": "actions",
+      "svg": "svgs/actions/actions-code-merge.svg",
+      "sprite": "sprites/actions.svg#actions-code-merge"
+    },
+    "actions-code": {
+      "identifier": "actions-code",
+      "category": "actions",
+      "svg": "svgs/actions/actions-code.svg",
+      "sprite": "sprites/actions.svg#actions-code"
+    },
+    "actions-cog-alt": {
+      "identifier": "actions-cog-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cog-alt.svg",
+      "sprite": "sprites/actions.svg#actions-cog-alt"
+    },
+    "actions-cog": {
+      "identifier": "actions-cog",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cog.svg",
+      "sprite": "sprites/actions.svg#actions-cog"
+    },
+    "actions-comment": {
+      "identifier": "actions-comment",
+      "category": "actions",
+      "svg": "svgs/actions/actions-comment.svg",
+      "sprite": "sprites/actions.svg#actions-comment"
+    },
+    "actions-credit-card": {
+      "identifier": "actions-credit-card",
+      "category": "actions",
+      "svg": "svgs/actions/actions-credit-card.svg",
+      "sprite": "sprites/actions.svg#actions-credit-card"
+    },
+    "actions-cut-release": {
+      "identifier": "actions-cut-release",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cut-release.svg",
+      "sprite": "sprites/actions.svg#actions-cut-release"
+    },
+    "actions-cut": {
+      "identifier": "actions-cut",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cut.svg",
+      "sprite": "sprites/actions.svg#actions-cut"
+    },
+    "actions-database-export": {
+      "identifier": "actions-database-export",
+      "category": "actions",
+      "svg": "svgs/actions/actions-database-export.svg",
+      "sprite": "sprites/actions.svg#actions-database-export"
+    },
+    "actions-database-import": {
+      "identifier": "actions-database-import",
+      "category": "actions",
+      "svg": "svgs/actions/actions-database-import.svg",
+      "sprite": "sprites/actions.svg#actions-database-import"
+    },
+    "actions-database-reload": {
+      "identifier": "actions-database-reload",
+      "category": "actions",
+      "svg": "svgs/actions/actions-database-reload.svg",
+      "sprite": "sprites/actions.svg#actions-database-reload"
+    },
+    "actions-database": {
+      "identifier": "actions-database",
+      "category": "actions",
+      "svg": "svgs/actions/actions-database.svg",
+      "sprite": "sprites/actions.svg#actions-database"
+    },
+    "actions-debug": {
+      "identifier": "actions-debug",
+      "category": "actions",
+      "svg": "svgs/actions/actions-debug.svg",
+      "sprite": "sprites/actions.svg#actions-debug"
+    },
+    "actions-delete-edit": {
+      "identifier": "actions-delete-edit",
+      "category": "actions",
+      "svg": "svgs/actions/actions-delete-edit.svg",
+      "sprite": "sprites/actions.svg#actions-delete-edit"
+    },
+    "actions-delete-restore": {
+      "identifier": "actions-delete-restore",
+      "category": "actions",
+      "svg": "svgs/actions/actions-delete-restore.svg",
+      "sprite": "sprites/actions.svg#actions-delete-restore"
+    },
+    "actions-delete": {
+      "identifier": "actions-delete",
+      "category": "actions",
+      "svg": "svgs/actions/actions-delete.svg",
+      "sprite": "sprites/actions.svg#actions-delete"
+    },
+    "actions-device-desktop": {
+      "identifier": "actions-device-desktop",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-desktop.svg",
+      "sprite": "sprites/actions.svg#actions-device-desktop"
+    },
+    "actions-device-mobile": {
+      "identifier": "actions-device-mobile",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-mobile.svg",
+      "sprite": "sprites/actions.svg#actions-device-mobile"
+    },
+    "actions-device-orientation-change": {
+      "identifier": "actions-device-orientation-change",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-orientation-change.svg",
+      "sprite": "sprites/actions.svg#actions-device-orientation-change"
+    },
+    "actions-device-tablet": {
+      "identifier": "actions-device-tablet",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-tablet.svg",
+      "sprite": "sprites/actions.svg#actions-device-tablet"
+    },
+    "actions-device-unidentified": {
+      "identifier": "actions-device-unidentified",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-unidentified.svg",
+      "sprite": "sprites/actions.svg#actions-device-unidentified"
+    },
+    "actions-document-add": {
+      "identifier": "actions-document-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-add.svg",
+      "sprite": "sprites/actions.svg#actions-document-add"
+    },
+    "actions-document-edit-access": {
+      "identifier": "actions-document-edit-access",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-edit-access.svg",
+      "sprite": "sprites/actions.svg#actions-document-edit-access"
+    },
+    "actions-document-edit": {
+      "identifier": "actions-document-edit",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-edit.svg",
+      "sprite": "sprites/actions.svg#actions-document-edit"
+    },
+    "actions-document-localize": {
+      "identifier": "actions-document-localize",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-localize.svg",
+      "sprite": "sprites/actions.svg#actions-document-localize"
+    },
+    "actions-document-move": {
+      "identifier": "actions-document-move",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-move.svg",
+      "sprite": "sprites/actions.svg#actions-document-move"
+    },
+    "actions-document-readonly": {
+      "identifier": "actions-document-readonly",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-readonly.svg",
+      "sprite": "sprites/actions.svg#actions-document-readonly"
+    },
+    "actions-document-select": {
+      "identifier": "actions-document-select",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-select.svg",
+      "sprite": "sprites/actions.svg#actions-document-select"
+    },
+    "actions-document-share": {
+      "identifier": "actions-document-share",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-share.svg",
+      "sprite": "sprites/actions.svg#actions-document-share"
+    },
+    "actions-document-synchronize": {
+      "identifier": "actions-document-synchronize",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-synchronize.svg",
+      "sprite": "sprites/actions.svg#actions-document-synchronize"
+    },
+    "actions-document-view": {
+      "identifier": "actions-document-view",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document-view.svg",
+      "sprite": "sprites/actions.svg#actions-document-view"
+    },
+    "actions-document": {
+      "identifier": "actions-document",
+      "category": "actions",
+      "svg": "svgs/actions/actions-document.svg",
+      "sprite": "sprites/actions.svg#actions-document"
+    },
+    "actions-dot": {
+      "identifier": "actions-dot",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dot.svg",
+      "sprite": "sprites/actions.svg#actions-dot"
+    },
+    "actions-download": {
+      "identifier": "actions-download",
+      "category": "actions",
+      "svg": "svgs/actions/actions-download.svg",
+      "sprite": "sprites/actions.svg#actions-download"
+    },
+    "actions-drag": {
+      "identifier": "actions-drag",
+      "category": "actions",
+      "svg": "svgs/actions/actions-drag.svg",
+      "sprite": "sprites/actions.svg#actions-drag"
+    },
+    "actions-duplicate": {
+      "identifier": "actions-duplicate",
+      "category": "actions",
+      "svg": "svgs/actions/actions-duplicate.svg",
+      "sprite": "sprites/actions.svg#actions-duplicate"
+    },
+    "actions-duplicates": {
+      "identifier": "actions-duplicates",
+      "category": "actions",
+      "svg": "svgs/actions/actions-duplicates.svg",
+      "sprite": "sprites/actions.svg#actions-duplicates"
+    },
+    "actions-expand": {
+      "identifier": "actions-expand",
+      "category": "actions",
+      "svg": "svgs/actions/actions-expand.svg",
+      "sprite": "sprites/actions.svg#actions-expand"
+    },
+    "actions-extension-add": {
+      "identifier": "actions-extension-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-extension-add.svg",
+      "sprite": "sprites/actions.svg#actions-extension-add"
+    },
+    "actions-extension-import": {
+      "identifier": "actions-extension-import",
+      "category": "actions",
+      "svg": "svgs/actions/actions-extension-import.svg",
+      "sprite": "sprites/actions.svg#actions-extension-import"
+    },
+    "actions-extension-refresh": {
+      "identifier": "actions-extension-refresh",
+      "category": "actions",
+      "svg": "svgs/actions/actions-extension-refresh.svg",
+      "sprite": "sprites/actions.svg#actions-extension-refresh"
+    },
+    "actions-extension-remove": {
+      "identifier": "actions-extension-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-extension-remove.svg",
+      "sprite": "sprites/actions.svg#actions-extension-remove"
+    },
+    "actions-extension": {
+      "identifier": "actions-extension",
+      "category": "actions",
+      "svg": "svgs/actions/actions-extension.svg",
+      "sprite": "sprites/actions.svg#actions-extension"
+    },
+    "actions-eye-link": {
+      "identifier": "actions-eye-link",
+      "category": "actions",
+      "svg": "svgs/actions/actions-eye-link.svg",
+      "sprite": "sprites/actions.svg#actions-eye-link"
+    },
+    "actions-eye": {
+      "identifier": "actions-eye",
+      "category": "actions",
+      "svg": "svgs/actions/actions-eye.svg",
+      "sprite": "sprites/actions.svg#actions-eye"
+    },
+    "actions-file-add": {
+      "identifier": "actions-file-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-add.svg",
+      "sprite": "sprites/actions.svg#actions-file-add"
+    },
+    "actions-file-csv-download": {
+      "identifier": "actions-file-csv-download",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-csv-download.svg",
+      "sprite": "sprites/actions.svg#actions-file-csv-download"
+    },
+    "actions-file-csv": {
+      "identifier": "actions-file-csv",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-csv.svg",
+      "sprite": "sprites/actions.svg#actions-file-csv"
+    },
+    "actions-file-edit": {
+      "identifier": "actions-file-edit",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-edit.svg",
+      "sprite": "sprites/actions.svg#actions-file-edit"
+    },
+    "actions-file-html": {
+      "identifier": "actions-file-html",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-html.svg",
+      "sprite": "sprites/actions.svg#actions-file-html"
+    },
+    "actions-file-move": {
+      "identifier": "actions-file-move",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-move.svg",
+      "sprite": "sprites/actions.svg#actions-file-move"
+    },
+    "actions-file-openoffice": {
+      "identifier": "actions-file-openoffice",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-openoffice.svg",
+      "sprite": "sprites/actions.svg#actions-file-openoffice"
+    },
+    "actions-file-pdf": {
+      "identifier": "actions-file-pdf",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-pdf.svg",
+      "sprite": "sprites/actions.svg#actions-file-pdf"
+    },
+    "actions-file-search": {
+      "identifier": "actions-file-search",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-search.svg",
+      "sprite": "sprites/actions.svg#actions-file-search"
+    },
+    "actions-file-t3d-download": {
+      "identifier": "actions-file-t3d-download",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-t3d-download.svg",
+      "sprite": "sprites/actions.svg#actions-file-t3d-download"
+    },
+    "actions-file-t3d-upload": {
+      "identifier": "actions-file-t3d-upload",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-t3d-upload.svg",
+      "sprite": "sprites/actions.svg#actions-file-t3d-upload"
+    },
+    "actions-file-t3d": {
+      "identifier": "actions-file-t3d",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-t3d.svg",
+      "sprite": "sprites/actions.svg#actions-file-t3d"
+    },
+    "actions-file-view": {
+      "identifier": "actions-file-view",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-view.svg",
+      "sprite": "sprites/actions.svg#actions-file-view"
+    },
+    "actions-file": {
+      "identifier": "actions-file",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file.svg",
+      "sprite": "sprites/actions.svg#actions-file"
+    },
+    "actions-filter": {
+      "identifier": "actions-filter",
+      "category": "actions",
+      "svg": "svgs/actions/actions-filter.svg",
+      "sprite": "sprites/actions.svg#actions-filter"
+    },
+    "actions-folder-add": {
+      "identifier": "actions-folder-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-folder-add.svg",
+      "sprite": "sprites/actions.svg#actions-folder-add"
+    },
+    "actions-folder": {
+      "identifier": "actions-folder",
+      "category": "actions",
+      "svg": "svgs/actions/actions-folder.svg",
+      "sprite": "sprites/actions.svg#actions-folder"
+    },
+    "actions-form-insert-after": {
+      "identifier": "actions-form-insert-after",
+      "category": "actions",
+      "svg": "svgs/actions/actions-form-insert-after.svg",
+      "sprite": "sprites/actions.svg#actions-form-insert-after"
+    },
+    "actions-form-insert-in": {
+      "identifier": "actions-form-insert-in",
+      "category": "actions",
+      "svg": "svgs/actions/actions-form-insert-in.svg",
+      "sprite": "sprites/actions.svg#actions-form-insert-in"
+    },
+    "actions-fullscreen": {
+      "identifier": "actions-fullscreen",
+      "category": "actions",
+      "svg": "svgs/actions/actions-fullscreen.svg",
+      "sprite": "sprites/actions.svg#actions-fullscreen"
+    },
+    "actions-git": {
+      "identifier": "actions-git",
+      "category": "actions",
+      "svg": "svgs/actions/actions-git.svg",
+      "sprite": "sprites/actions.svg#actions-git"
+    },
+    "actions-globe": {
+      "identifier": "actions-globe",
+      "category": "actions",
+      "svg": "svgs/actions/actions-globe.svg",
+      "sprite": "sprites/actions.svg#actions-globe"
+    },
+    "actions-heart": {
+      "identifier": "actions-heart",
+      "category": "actions",
+      "svg": "svgs/actions/actions-heart.svg",
+      "sprite": "sprites/actions.svg#actions-heart"
+    },
+    "actions-history": {
+      "identifier": "actions-history",
+      "category": "actions",
+      "svg": "svgs/actions/actions-history.svg",
+      "sprite": "sprites/actions.svg#actions-history"
+    },
+    "actions-house": {
+      "identifier": "actions-house",
+      "category": "actions",
+      "svg": "svgs/actions/actions-house.svg",
+      "sprite": "sprites/actions.svg#actions-house"
+    },
+    "actions-image": {
+      "identifier": "actions-image",
+      "category": "actions",
+      "svg": "svgs/actions/actions-image.svg",
+      "sprite": "sprites/actions.svg#actions-image"
+    },
+    "actions-info": {
+      "identifier": "actions-info",
+      "category": "actions",
+      "svg": "svgs/actions/actions-info.svg",
+      "sprite": "sprites/actions.svg#actions-info"
+    },
+    "actions-insert": {
+      "identifier": "actions-insert",
+      "category": "actions",
+      "svg": "svgs/actions/actions-insert.svg",
+      "sprite": "sprites/actions.svg#actions-insert"
+    },
+    "actions-link": {
+      "identifier": "actions-link",
+      "category": "actions",
+      "svg": "svgs/actions/actions-link.svg",
+      "sprite": "sprites/actions.svg#actions-link"
+    },
+    "actions-list-alternative": {
+      "identifier": "actions-list-alternative",
+      "category": "actions",
+      "svg": "svgs/actions/actions-list-alternative.svg",
+      "sprite": "sprites/actions.svg#actions-list-alternative"
+    },
+    "actions-list": {
+      "identifier": "actions-list",
+      "category": "actions",
+      "svg": "svgs/actions/actions-list.svg",
+      "sprite": "sprites/actions.svg#actions-list"
+    },
+    "actions-lock": {
+      "identifier": "actions-lock",
+      "category": "actions",
+      "svg": "svgs/actions/actions-lock.svg",
+      "sprite": "sprites/actions.svg#actions-lock"
+    },
+    "actions-logout": {
+      "identifier": "actions-logout",
+      "category": "actions",
+      "svg": "svgs/actions/actions-logout.svg",
+      "sprite": "sprites/actions.svg#actions-logout"
+    },
+    "actions-marker": {
+      "identifier": "actions-marker",
+      "category": "actions",
+      "svg": "svgs/actions/actions-marker.svg",
+      "sprite": "sprites/actions.svg#actions-marker"
+    },
+    "actions-menu-alternative": {
+      "identifier": "actions-menu-alternative",
+      "category": "actions",
+      "svg": "svgs/actions/actions-menu-alternative.svg",
+      "sprite": "sprites/actions.svg#actions-menu-alternative"
+    },
+    "actions-menu": {
+      "identifier": "actions-menu",
+      "category": "actions",
+      "svg": "svgs/actions/actions-menu.svg",
+      "sprite": "sprites/actions.svg#actions-menu"
+    },
+    "actions-message-add": {
+      "identifier": "actions-message-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-message-add.svg",
+      "sprite": "sprites/actions.svg#actions-message-add"
+    },
+    "actions-message-localize": {
+      "identifier": "actions-message-localize",
+      "category": "actions",
+      "svg": "svgs/actions/actions-message-localize.svg",
+      "sprite": "sprites/actions.svg#actions-message-localize"
+    },
+    "actions-message-remove": {
+      "identifier": "actions-message-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-message-remove.svg",
+      "sprite": "sprites/actions.svg#actions-message-remove"
+    },
+    "actions-message": {
+      "identifier": "actions-message",
+      "category": "actions",
+      "svg": "svgs/actions/actions-message.svg",
+      "sprite": "sprites/actions.svg#actions-message"
+    },
+    "actions-move": {
+      "identifier": "actions-move",
+      "category": "actions",
+      "svg": "svgs/actions/actions-move.svg",
+      "sprite": "sprites/actions.svg#actions-move"
+    },
+    "actions-newspaper": {
+      "identifier": "actions-newspaper",
+      "category": "actions",
+      "svg": "svgs/actions/actions-newspaper.svg",
+      "sprite": "sprites/actions.svg#actions-newspaper"
+    },
+    "actions-notebook-typoscript": {
+      "identifier": "actions-notebook-typoscript",
+      "category": "actions",
+      "svg": "svgs/actions/actions-notebook-typoscript.svg",
+      "sprite": "sprites/actions.svg#actions-notebook-typoscript"
+    },
+    "actions-notebook": {
+      "identifier": "actions-notebook",
+      "category": "actions",
+      "svg": "svgs/actions/actions-notebook.svg",
+      "sprite": "sprites/actions.svg#actions-notebook"
+    },
+    "actions-open": {
+      "identifier": "actions-open",
+      "category": "actions",
+      "svg": "svgs/actions/actions-open.svg",
+      "sprite": "sprites/actions.svg#actions-open"
+    },
+    "actions-options": {
+      "identifier": "actions-options",
+      "category": "actions",
+      "svg": "svgs/actions/actions-options.svg",
+      "sprite": "sprites/actions.svg#actions-options"
+    },
+    "actions-pagetree-mount": {
+      "identifier": "actions-pagetree-mount",
+      "category": "actions",
+      "svg": "svgs/actions/actions-pagetree-mount.svg",
+      "sprite": "sprites/actions.svg#actions-pagetree-mount"
+    },
+    "actions-pagetree": {
+      "identifier": "actions-pagetree",
+      "category": "actions",
+      "svg": "svgs/actions/actions-pagetree.svg",
+      "sprite": "sprites/actions.svg#actions-pagetree"
+    },
+    "actions-paste-after": {
+      "identifier": "actions-paste-after",
+      "category": "actions",
+      "svg": "svgs/actions/actions-paste-after.svg",
+      "sprite": "sprites/actions.svg#actions-paste-after"
+    },
+    "actions-paste-before": {
+      "identifier": "actions-paste-before",
+      "category": "actions",
+      "svg": "svgs/actions/actions-paste-before.svg",
+      "sprite": "sprites/actions.svg#actions-paste-before"
+    },
+    "actions-pause": {
+      "identifier": "actions-pause",
+      "category": "actions",
+      "svg": "svgs/actions/actions-pause.svg",
+      "sprite": "sprites/actions.svg#actions-pause"
+    },
+    "actions-placeholder-add": {
+      "identifier": "actions-placeholder-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-placeholder-add.svg",
+      "sprite": "sprites/actions.svg#actions-placeholder-add"
+    },
+    "actions-placeholder": {
+      "identifier": "actions-placeholder",
+      "category": "actions",
+      "svg": "svgs/actions/actions-placeholder.svg",
+      "sprite": "sprites/actions.svg#actions-placeholder"
+    },
+    "actions-play": {
+      "identifier": "actions-play",
+      "category": "actions",
+      "svg": "svgs/actions/actions-play.svg",
+      "sprite": "sprites/actions.svg#actions-play"
+    },
+    "actions-preview": {
+      "identifier": "actions-preview",
+      "category": "actions",
+      "svg": "svgs/actions/actions-preview.svg",
+      "sprite": "sprites/actions.svg#actions-preview"
+    },
+    "actions-question": {
+      "identifier": "actions-question",
+      "category": "actions",
+      "svg": "svgs/actions/actions-question.svg",
+      "sprite": "sprites/actions.svg#actions-question"
+    },
+    "actions-redo": {
+      "identifier": "actions-redo",
+      "category": "actions",
+      "svg": "svgs/actions/actions-redo.svg",
+      "sprite": "sprites/actions.svg#actions-redo"
+    },
+    "actions-refresh": {
+      "identifier": "actions-refresh",
+      "category": "actions",
+      "svg": "svgs/actions/actions-refresh.svg",
+      "sprite": "sprites/actions.svg#actions-refresh"
+    },
+    "actions-remove": {
+      "identifier": "actions-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-remove.svg",
+      "sprite": "sprites/actions.svg#actions-remove"
+    },
+    "actions-rename": {
+      "identifier": "actions-rename",
+      "category": "actions",
+      "svg": "svgs/actions/actions-rename.svg",
+      "sprite": "sprites/actions.svg#actions-rename"
+    },
+    "actions-replace": {
+      "identifier": "actions-replace",
+      "category": "actions",
+      "svg": "svgs/actions/actions-replace.svg",
+      "sprite": "sprites/actions.svg#actions-replace"
+    },
+    "actions-rocket": {
+      "identifier": "actions-rocket",
+      "category": "actions",
+      "svg": "svgs/actions/actions-rocket.svg",
+      "sprite": "sprites/actions.svg#actions-rocket"
+    },
+    "actions-rss": {
+      "identifier": "actions-rss",
+      "category": "actions",
+      "svg": "svgs/actions/actions-rss.svg",
+      "sprite": "sprites/actions.svg#actions-rss"
+    },
+    "actions-save-add": {
+      "identifier": "actions-save-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-save-add.svg",
+      "sprite": "sprites/actions.svg#actions-save-add"
+    },
+    "actions-save-close": {
+      "identifier": "actions-save-close",
+      "category": "actions",
+      "svg": "svgs/actions/actions-save-close.svg",
+      "sprite": "sprites/actions.svg#actions-save-close"
+    },
+    "actions-save-translation-clearcache": {
+      "identifier": "actions-save-translation-clearcache",
+      "category": "actions",
+      "svg": "svgs/actions/actions-save-translation-clearcache.svg",
+      "sprite": "sprites/actions.svg#actions-save-translation-clearcache"
+    },
+    "actions-save-translation": {
+      "identifier": "actions-save-translation",
+      "category": "actions",
+      "svg": "svgs/actions/actions-save-translation.svg",
+      "sprite": "sprites/actions.svg#actions-save-translation"
+    },
+    "actions-save-view": {
+      "identifier": "actions-save-view",
+      "category": "actions",
+      "svg": "svgs/actions/actions-save-view.svg",
+      "sprite": "sprites/actions.svg#actions-save-view"
+    },
+    "actions-save": {
+      "identifier": "actions-save",
+      "category": "actions",
+      "svg": "svgs/actions/actions-save.svg",
+      "sprite": "sprites/actions.svg#actions-save"
+    },
+    "actions-search": {
+      "identifier": "actions-search",
+      "category": "actions",
+      "svg": "svgs/actions/actions-search.svg",
+      "sprite": "sprites/actions.svg#actions-search"
+    },
+    "actions-server": {
+      "identifier": "actions-server",
+      "category": "actions",
+      "svg": "svgs/actions/actions-server.svg",
+      "sprite": "sprites/actions.svg#actions-server"
+    },
+    "actions-shield": {
+      "identifier": "actions-shield",
+      "category": "actions",
+      "svg": "svgs/actions/actions-shield.svg",
+      "sprite": "sprites/actions.svg#actions-shield"
+    },
+    "actions-sort-amount-down": {
+      "identifier": "actions-sort-amount-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sort-amount-down.svg",
+      "sprite": "sprites/actions.svg#actions-sort-amount-down"
+    },
+    "actions-sort-amount-up": {
+      "identifier": "actions-sort-amount-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sort-amount-up.svg",
+      "sprite": "sprites/actions.svg#actions-sort-amount-up"
+    },
+    "actions-sort-amount": {
+      "identifier": "actions-sort-amount",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sort-amount.svg",
+      "sprite": "sprites/actions.svg#actions-sort-amount"
+    },
+    "actions-square": {
+      "identifier": "actions-square",
+      "category": "actions",
+      "svg": "svgs/actions/actions-square.svg",
+      "sprite": "sprites/actions.svg#actions-square"
+    },
+    "actions-star": {
+      "identifier": "actions-star",
+      "category": "actions",
+      "svg": "svgs/actions/actions-star.svg",
+      "sprite": "sprites/actions.svg#actions-star"
+    },
+    "actions-swap": {
+      "identifier": "actions-swap",
+      "category": "actions",
+      "svg": "svgs/actions/actions-swap.svg",
+      "sprite": "sprites/actions.svg#actions-swap"
+    },
+    "actions-synchronize": {
+      "identifier": "actions-synchronize",
+      "category": "actions",
+      "svg": "svgs/actions/actions-synchronize.svg",
+      "sprite": "sprites/actions.svg#actions-synchronize"
+    },
+    "actions-table": {
+      "identifier": "actions-table",
+      "category": "actions",
+      "svg": "svgs/actions/actions-table.svg",
+      "sprite": "sprites/actions.svg#actions-table"
+    },
+    "actions-tag": {
+      "identifier": "actions-tag",
+      "category": "actions",
+      "svg": "svgs/actions/actions-tag.svg",
+      "sprite": "sprites/actions.svg#actions-tag"
+    },
+    "actions-template-new": {
+      "identifier": "actions-template-new",
+      "category": "actions",
+      "svg": "svgs/actions/actions-template-new.svg",
+      "sprite": "sprites/actions.svg#actions-template-new"
+    },
+    "actions-template": {
+      "identifier": "actions-template",
+      "category": "actions",
+      "svg": "svgs/actions/actions-template.svg",
+      "sprite": "sprites/actions.svg#actions-template"
+    },
+    "actions-toggle-off": {
+      "identifier": "actions-toggle-off",
+      "category": "actions",
+      "svg": "svgs/actions/actions-toggle-off.svg",
+      "sprite": "sprites/actions.svg#actions-toggle-off"
+    },
+    "actions-toggle-on": {
+      "identifier": "actions-toggle-on",
+      "category": "actions",
+      "svg": "svgs/actions/actions-toggle-on.svg",
+      "sprite": "sprites/actions.svg#actions-toggle-on"
+    },
+    "actions-translate": {
+      "identifier": "actions-translate",
+      "category": "actions",
+      "svg": "svgs/actions/actions-translate.svg",
+      "sprite": "sprites/actions.svg#actions-translate"
+    },
+    "actions-typo3": {
+      "identifier": "actions-typo3",
+      "category": "actions",
+      "svg": "svgs/actions/actions-typo3.svg",
+      "sprite": "sprites/actions.svg#actions-typo3"
+    },
+    "actions-undo": {
+      "identifier": "actions-undo",
+      "category": "actions",
+      "svg": "svgs/actions/actions-undo.svg",
+      "sprite": "sprites/actions.svg#actions-undo"
+    },
+    "actions-unlink": {
+      "identifier": "actions-unlink",
+      "category": "actions",
+      "svg": "svgs/actions/actions-unlink.svg",
+      "sprite": "sprites/actions.svg#actions-unlink"
+    },
+    "actions-unlock": {
+      "identifier": "actions-unlock",
+      "category": "actions",
+      "svg": "svgs/actions/actions-unlock.svg",
+      "sprite": "sprites/actions.svg#actions-unlock"
+    },
+    "actions-upload": {
+      "identifier": "actions-upload",
+      "category": "actions",
+      "svg": "svgs/actions/actions-upload.svg",
+      "sprite": "sprites/actions.svg#actions-upload"
+    },
+    "actions-user-emulate": {
+      "identifier": "actions-user-emulate",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-emulate.svg",
+      "sprite": "sprites/actions.svg#actions-user-emulate"
+    },
+    "actions-user-switch": {
+      "identifier": "actions-user-switch",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-switch.svg",
+      "sprite": "sprites/actions.svg#actions-user-switch"
+    },
+    "actions-user": {
+      "identifier": "actions-user",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user.svg",
+      "sprite": "sprites/actions.svg#actions-user"
+    },
+    "actions-variable-add": {
+      "identifier": "actions-variable-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-variable-add.svg",
+      "sprite": "sprites/actions.svg#actions-variable-add"
+    },
+    "actions-variable-remove": {
+      "identifier": "actions-variable-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-variable-remove.svg",
+      "sprite": "sprites/actions.svg#actions-variable-remove"
+    },
+    "actions-variable": {
+      "identifier": "actions-variable",
+      "category": "actions",
+      "svg": "svgs/actions/actions-variable.svg",
+      "sprite": "sprites/actions.svg#actions-variable"
+    },
+    "actions-viewmode-list": {
+      "identifier": "actions-viewmode-list",
+      "category": "actions",
+      "svg": "svgs/actions/actions-viewmode-list.svg",
+      "sprite": "sprites/actions.svg#actions-viewmode-list"
+    },
+    "actions-viewmode-photos": {
+      "identifier": "actions-viewmode-photos",
+      "category": "actions",
+      "svg": "svgs/actions/actions-viewmode-photos.svg",
+      "sprite": "sprites/actions.svg#actions-viewmode-photos"
+    },
+    "actions-viewmode-tiles": {
+      "identifier": "actions-viewmode-tiles",
+      "category": "actions",
+      "svg": "svgs/actions/actions-viewmode-tiles.svg",
+      "sprite": "sprites/actions.svg#actions-viewmode-tiles"
+    },
+    "actions-wallet": {
+      "identifier": "actions-wallet",
+      "category": "actions",
+      "svg": "svgs/actions/actions-wallet.svg",
+      "sprite": "sprites/actions.svg#actions-wallet"
+    },
+    "actions-window-open": {
+      "identifier": "actions-window-open",
+      "category": "actions",
+      "svg": "svgs/actions/actions-window-open.svg",
+      "sprite": "sprites/actions.svg#actions-window-open"
+    },
+    "apps-clipboard-images": {
+      "identifier": "apps-clipboard-images",
+      "category": "apps",
+      "svg": "svgs/apps/apps-clipboard-images.svg",
+      "sprite": "sprites/apps.svg#apps-clipboard-images"
+    },
+    "apps-clipboard-list": {
+      "identifier": "apps-clipboard-list",
+      "category": "apps",
+      "svg": "svgs/apps/apps-clipboard-list.svg",
+      "sprite": "sprites/apps.svg#apps-clipboard-list"
+    },
+    "apps-filetree-folder-add": {
+      "identifier": "apps-filetree-folder-add",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-add.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-add"
+    },
+    "apps-filetree-folder-default": {
+      "identifier": "apps-filetree-folder-default",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-default.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-default"
+    },
+    "apps-filetree-folder-list": {
+      "identifier": "apps-filetree-folder-list",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-list.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-list"
+    },
+    "apps-filetree-folder-locked": {
+      "identifier": "apps-filetree-folder-locked",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-locked.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-locked"
+    },
+    "apps-filetree-folder-media": {
+      "identifier": "apps-filetree-folder-media",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-media.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-media"
+    },
+    "apps-filetree-folder-news": {
+      "identifier": "apps-filetree-folder-news",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-news.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-news"
+    },
+    "apps-filetree-folder-opened": {
+      "identifier": "apps-filetree-folder-opened",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-opened.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-opened"
+    },
+    "apps-filetree-folder-recycler": {
+      "identifier": "apps-filetree-folder-recycler",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-recycler.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-recycler"
+    },
+    "apps-filetree-folder-temp": {
+      "identifier": "apps-filetree-folder-temp",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-temp.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-temp"
+    },
+    "apps-filetree-folder-user": {
+      "identifier": "apps-filetree-folder-user",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder-user.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder-user"
+    },
+    "apps-filetree-folder": {
+      "identifier": "apps-filetree-folder",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-folder.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-folder"
+    },
+    "apps-filetree-mount": {
+      "identifier": "apps-filetree-mount",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-mount.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-mount"
+    },
+    "apps-filetree-root": {
+      "identifier": "apps-filetree-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-filetree-root.svg",
+      "sprite": "sprites/apps.svg#apps-filetree-root"
+    },
+    "apps-irre-collapsed": {
+      "identifier": "apps-irre-collapsed",
+      "category": "apps",
+      "svg": "svgs/apps/apps-irre-collapsed.svg",
+      "sprite": "sprites/apps.svg#apps-irre-collapsed"
+    },
+    "apps-irre-expanded": {
+      "identifier": "apps-irre-expanded",
+      "category": "apps",
+      "svg": "svgs/apps/apps-irre-expanded.svg",
+      "sprite": "sprites/apps.svg#apps-irre-expanded"
+    },
+    "apps-pagetree-backend-user-hideinmenu": {
+      "identifier": "apps-pagetree-backend-user-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-backend-user-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-backend-user-hideinmenu"
+    },
+    "apps-pagetree-backend-user": {
+      "identifier": "apps-pagetree-backend-user",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-backend-user.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-backend-user"
+    },
+    "apps-pagetree-category-collapse-all": {
+      "identifier": "apps-pagetree-category-collapse-all",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-category-collapse-all.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-category-collapse-all"
+    },
+    "apps-pagetree-category-expand-all": {
+      "identifier": "apps-pagetree-category-expand-all",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-category-expand-all.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-category-expand-all"
+    },
+    "apps-pagetree-collapse": {
+      "identifier": "apps-pagetree-collapse",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-collapse.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-collapse"
+    },
+    "apps-pagetree-drag-copy-above": {
+      "identifier": "apps-pagetree-drag-copy-above",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-copy-above.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-copy-above"
+    },
+    "apps-pagetree-drag-copy-below": {
+      "identifier": "apps-pagetree-drag-copy-below",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-copy-below.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-copy-below"
+    },
+    "apps-pagetree-drag-move-above": {
+      "identifier": "apps-pagetree-drag-move-above",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-move-above.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-move-above"
+    },
+    "apps-pagetree-drag-move-below": {
+      "identifier": "apps-pagetree-drag-move-below",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-move-below.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-move-below"
+    },
+    "apps-pagetree-drag-move-between": {
+      "identifier": "apps-pagetree-drag-move-between",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-move-between.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-move-between"
+    },
+    "apps-pagetree-drag-move-into": {
+      "identifier": "apps-pagetree-drag-move-into",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-move-into.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-move-into"
+    },
+    "apps-pagetree-drag-new-between": {
+      "identifier": "apps-pagetree-drag-new-between",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-new-between.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-new-between"
+    },
+    "apps-pagetree-drag-new-inside": {
+      "identifier": "apps-pagetree-drag-new-inside",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-new-inside.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-new-inside"
+    },
+    "apps-pagetree-drag-place-denied": {
+      "identifier": "apps-pagetree-drag-place-denied",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-drag-place-denied.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-drag-place-denied"
+    },
+    "apps-pagetree-expand": {
+      "identifier": "apps-pagetree-expand",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-expand.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-expand"
+    },
+    "apps-pagetree-folder-contains-approve": {
+      "identifier": "apps-pagetree-folder-contains-approve",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-contains-approve.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-contains-approve"
+    },
+    "apps-pagetree-folder-contains-board": {
+      "identifier": "apps-pagetree-folder-contains-board",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-contains-board.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-contains-board"
+    },
+    "apps-pagetree-folder-contains-fe_users": {
+      "identifier": "apps-pagetree-folder-contains-fe_users",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-contains-fe_users.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-contains-fe_users"
+    },
+    "apps-pagetree-folder-contains-news": {
+      "identifier": "apps-pagetree-folder-contains-news",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-contains-news.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-contains-news"
+    },
+    "apps-pagetree-folder-contains-shop": {
+      "identifier": "apps-pagetree-folder-contains-shop",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-contains-shop.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-contains-shop"
+    },
+    "apps-pagetree-folder-contains": {
+      "identifier": "apps-pagetree-folder-contains",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-contains.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-contains"
+    },
+    "apps-pagetree-folder-default": {
+      "identifier": "apps-pagetree-folder-default",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-default.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-default"
+    },
+    "apps-pagetree-folder-hideinmenu": {
+      "identifier": "apps-pagetree-folder-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-hideinmenu"
+    },
+    "apps-pagetree-folder-root": {
+      "identifier": "apps-pagetree-folder-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-folder-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-folder-root"
+    },
+    "apps-pagetree-page-advanced-hideinmenu": {
+      "identifier": "apps-pagetree-page-advanced-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-advanced-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-advanced-hideinmenu"
+    },
+    "apps-pagetree-page-advanced-root": {
+      "identifier": "apps-pagetree-page-advanced-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-advanced-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-advanced-root"
+    },
+    "apps-pagetree-page-advanced": {
+      "identifier": "apps-pagetree-page-advanced",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-advanced.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-advanced"
+    },
+    "apps-pagetree-page-backend-user-hideinmenu": {
+      "identifier": "apps-pagetree-page-backend-user-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-backend-user-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-backend-user-hideinmenu"
+    },
+    "apps-pagetree-page-backend-user-root": {
+      "identifier": "apps-pagetree-page-backend-user-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-backend-user-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-backend-user-root"
+    },
+    "apps-pagetree-page-backend-user": {
+      "identifier": "apps-pagetree-page-backend-user",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-backend-user.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-backend-user"
+    },
+    "apps-pagetree-page-backend-users-hideinmenu": {
+      "identifier": "apps-pagetree-page-backend-users-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-backend-users-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-backend-users-hideinmenu"
+    },
+    "apps-pagetree-page-backend-users-root": {
+      "identifier": "apps-pagetree-page-backend-users-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-backend-users-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-backend-users-root"
+    },
+    "apps-pagetree-page-backend-users": {
+      "identifier": "apps-pagetree-page-backend-users",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-backend-users.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-backend-users"
+    },
+    "apps-pagetree-page-content-from-page-hideinmenu": {
+      "identifier": "apps-pagetree-page-content-from-page-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-content-from-page-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-content-from-page-hideinmenu"
+    },
+    "apps-pagetree-page-content-from-page-root": {
+      "identifier": "apps-pagetree-page-content-from-page-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-content-from-page-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-content-from-page-root"
+    },
+    "apps-pagetree-page-content-from-page": {
+      "identifier": "apps-pagetree-page-content-from-page",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-content-from-page.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-content-from-page"
+    },
+    "apps-pagetree-page-default": {
+      "identifier": "apps-pagetree-page-default",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-default.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-default"
+    },
+    "apps-pagetree-page-domain": {
+      "identifier": "apps-pagetree-page-domain",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-domain.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-domain"
+    },
+    "apps-pagetree-page-frontend-user-hideinmenu": {
+      "identifier": "apps-pagetree-page-frontend-user-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-frontend-user-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-frontend-user-hideinmenu"
+    },
+    "apps-pagetree-page-frontend-user-root": {
+      "identifier": "apps-pagetree-page-frontend-user-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-frontend-user-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-frontend-user-root"
+    },
+    "apps-pagetree-page-frontend-user": {
+      "identifier": "apps-pagetree-page-frontend-user",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-frontend-user.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-frontend-user"
+    },
+    "apps-pagetree-page-frontend-users-hideinmenu": {
+      "identifier": "apps-pagetree-page-frontend-users-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-frontend-users-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-frontend-users-hideinmenu"
+    },
+    "apps-pagetree-page-frontend-users-root": {
+      "identifier": "apps-pagetree-page-frontend-users-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-frontend-users-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-frontend-users-root"
+    },
+    "apps-pagetree-page-frontend-users": {
+      "identifier": "apps-pagetree-page-frontend-users",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-frontend-users.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-frontend-users"
+    },
+    "apps-pagetree-page-hideinmenu": {
+      "identifier": "apps-pagetree-page-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-hideinmenu"
+    },
+    "apps-pagetree-page-mountpoint-hideinmenu": {
+      "identifier": "apps-pagetree-page-mountpoint-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-mountpoint-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-mountpoint-hideinmenu"
+    },
+    "apps-pagetree-page-mountpoint-root": {
+      "identifier": "apps-pagetree-page-mountpoint-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-mountpoint-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-mountpoint-root"
+    },
+    "apps-pagetree-page-mountpoint": {
+      "identifier": "apps-pagetree-page-mountpoint",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-mountpoint.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-mountpoint"
+    },
+    "apps-pagetree-page-recycler-hideinmenu": {
+      "identifier": "apps-pagetree-page-recycler-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-recycler-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-recycler-hideinmenu"
+    },
+    "apps-pagetree-page-recycler": {
+      "identifier": "apps-pagetree-page-recycler",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-recycler.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-recycler"
+    },
+    "apps-pagetree-page-shortcut-external-hideinmenu": {
+      "identifier": "apps-pagetree-page-shortcut-external-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-shortcut-external-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-shortcut-external-hideinmenu"
+    },
+    "apps-pagetree-page-shortcut-external-root": {
+      "identifier": "apps-pagetree-page-shortcut-external-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-shortcut-external-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-shortcut-external-root"
+    },
+    "apps-pagetree-page-shortcut-external": {
+      "identifier": "apps-pagetree-page-shortcut-external",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-shortcut-external.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-shortcut-external"
+    },
+    "apps-pagetree-page-shortcut-hideinmenu": {
+      "identifier": "apps-pagetree-page-shortcut-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-shortcut-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-shortcut-hideinmenu"
+    },
+    "apps-pagetree-page-shortcut-root": {
+      "identifier": "apps-pagetree-page-shortcut-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-shortcut-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-shortcut-root"
+    },
+    "apps-pagetree-page-shortcut": {
+      "identifier": "apps-pagetree-page-shortcut",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page-shortcut.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page-shortcut"
+    },
+    "apps-pagetree-page": {
+      "identifier": "apps-pagetree-page",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-page.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-page"
+    },
+    "apps-pagetree-root": {
+      "identifier": "apps-pagetree-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-root"
+    },
+    "apps-pagetree-spacer-hideinmenu": {
+      "identifier": "apps-pagetree-spacer-hideinmenu",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-spacer-hideinmenu.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-spacer-hideinmenu"
+    },
+    "apps-pagetree-spacer-root": {
+      "identifier": "apps-pagetree-spacer-root",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-spacer-root.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-spacer-root"
+    },
+    "apps-pagetree-spacer": {
+      "identifier": "apps-pagetree-spacer",
+      "category": "apps",
+      "svg": "svgs/apps/apps-pagetree-spacer.svg",
+      "sprite": "sprites/apps.svg#apps-pagetree-spacer"
+    },
+    "apps-toolbar-menu-actions": {
+      "identifier": "apps-toolbar-menu-actions",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-actions.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-actions"
+    },
+    "apps-toolbar-menu-cache": {
+      "identifier": "apps-toolbar-menu-cache",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-cache.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-cache"
+    },
+    "apps-toolbar-menu-help": {
+      "identifier": "apps-toolbar-menu-help",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-help.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-help"
+    },
+    "apps-toolbar-menu-opendocs": {
+      "identifier": "apps-toolbar-menu-opendocs",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-opendocs.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-opendocs"
+    },
+    "apps-toolbar-menu-search": {
+      "identifier": "apps-toolbar-menu-search",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-search.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-search"
+    },
+    "apps-toolbar-menu-shortcut": {
+      "identifier": "apps-toolbar-menu-shortcut",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-shortcut.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-shortcut"
+    },
+    "apps-toolbar-menu-systeminformation": {
+      "identifier": "apps-toolbar-menu-systeminformation",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-systeminformation.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-systeminformation"
+    },
+    "apps-toolbar-menu-workspace": {
+      "identifier": "apps-toolbar-menu-workspace",
+      "category": "apps",
+      "svg": "svgs/apps/apps-toolbar-menu-workspace.svg",
+      "sprite": "sprites/apps.svg#apps-toolbar-menu-workspace"
+    },
+    "avatar-default": {
+      "identifier": "avatar-default",
+      "category": "avatar",
+      "svg": "svgs/avatar/avatar-default.svg",
+      "sprite": "sprites/avatar.svg#avatar-default"
+    },
+    "content-accordion": {
+      "identifier": "content-accordion",
+      "category": "content",
+      "svg": "svgs/content/content-accordion.svg",
+      "sprite": "sprites/content.svg#content-accordion"
+    },
+    "content-audio": {
+      "identifier": "content-audio",
+      "category": "content",
+      "svg": "svgs/content/content-audio.svg",
+      "sprite": "sprites/content.svg#content-audio"
+    },
+    "content-beside-text-img-above-center": {
+      "identifier": "content-beside-text-img-above-center",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-above-center.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-above-center"
+    },
+    "content-beside-text-img-above-left": {
+      "identifier": "content-beside-text-img-above-left",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-above-left.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-above-left"
+    },
+    "content-beside-text-img-above-right": {
+      "identifier": "content-beside-text-img-above-right",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-above-right.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-above-right"
+    },
+    "content-beside-text-img-below-center": {
+      "identifier": "content-beside-text-img-below-center",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-below-center.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-below-center"
+    },
+    "content-beside-text-img-below-left": {
+      "identifier": "content-beside-text-img-below-left",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-below-left.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-below-left"
+    },
+    "content-beside-text-img-below-right": {
+      "identifier": "content-beside-text-img-below-right",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-below-right.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-below-right"
+    },
+    "content-beside-text-img-centered-left": {
+      "identifier": "content-beside-text-img-centered-left",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-centered-left.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-centered-left"
+    },
+    "content-beside-text-img-centered-right": {
+      "identifier": "content-beside-text-img-centered-right",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-centered-right.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-centered-right"
+    },
+    "content-beside-text-img-left": {
+      "identifier": "content-beside-text-img-left",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-left.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-left"
+    },
+    "content-beside-text-img-right": {
+      "identifier": "content-beside-text-img-right",
+      "category": "content",
+      "svg": "svgs/content/content-beside-text-img-right.svg",
+      "sprite": "sprites/content.svg#content-beside-text-img-right"
+    },
+    "content-book": {
+      "identifier": "content-book",
+      "category": "content",
+      "svg": "svgs/content/content-book.svg",
+      "sprite": "sprites/content.svg#content-book"
+    },
+    "content-briefcase": {
+      "identifier": "content-briefcase",
+      "category": "content",
+      "svg": "svgs/content/content-briefcase.svg",
+      "sprite": "sprites/content.svg#content-briefcase"
+    },
+    "content-bullets": {
+      "identifier": "content-bullets",
+      "category": "content",
+      "svg": "svgs/content/content-bullets.svg",
+      "sprite": "sprites/content.svg#content-bullets"
+    },
+    "content-card-group": {
+      "identifier": "content-card-group",
+      "category": "content",
+      "svg": "svgs/content/content-card-group.svg",
+      "sprite": "sprites/content.svg#content-card-group"
+    },
+    "content-card": {
+      "identifier": "content-card",
+      "category": "content",
+      "svg": "svgs/content/content-card.svg",
+      "sprite": "sprites/content.svg#content-card"
+    },
+    "content-carousel-header": {
+      "identifier": "content-carousel-header",
+      "category": "content",
+      "svg": "svgs/content/content-carousel-header.svg",
+      "sprite": "sprites/content.svg#content-carousel-header"
+    },
+    "content-carousel-html": {
+      "identifier": "content-carousel-html",
+      "category": "content",
+      "svg": "svgs/content/content-carousel-html.svg",
+      "sprite": "sprites/content.svg#content-carousel-html"
+    },
+    "content-carousel-image": {
+      "identifier": "content-carousel-image",
+      "category": "content",
+      "svg": "svgs/content/content-carousel-image.svg",
+      "sprite": "sprites/content.svg#content-carousel-image"
+    },
+    "content-carousel-item-calltoaction": {
+      "identifier": "content-carousel-item-calltoaction",
+      "category": "content",
+      "svg": "svgs/content/content-carousel-item-calltoaction.svg",
+      "sprite": "sprites/content.svg#content-carousel-item-calltoaction"
+    },
+    "content-carousel-item-textandimage": {
+      "identifier": "content-carousel-item-textandimage",
+      "category": "content",
+      "svg": "svgs/content/content-carousel-item-textandimage.svg",
+      "sprite": "sprites/content.svg#content-carousel-item-textandimage"
+    },
+    "content-carousel": {
+      "identifier": "content-carousel",
+      "category": "content",
+      "svg": "svgs/content/content-carousel.svg",
+      "sprite": "sprites/content.svg#content-carousel"
+    },
+    "content-clock": {
+      "identifier": "content-clock",
+      "category": "content",
+      "svg": "svgs/content/content-clock.svg",
+      "sprite": "sprites/content.svg#content-clock"
+    },
+    "content-coffee": {
+      "identifier": "content-coffee",
+      "category": "content",
+      "svg": "svgs/content/content-coffee.svg",
+      "sprite": "sprites/content.svg#content-coffee"
+    },
+    "content-csv": {
+      "identifier": "content-csv",
+      "category": "content",
+      "svg": "svgs/content/content-csv.svg",
+      "sprite": "sprites/content.svg#content-csv"
+    },
+    "content-dashboard-empty": {
+      "identifier": "content-dashboard-empty",
+      "category": "content",
+      "svg": "svgs/content/content-dashboard-empty.svg",
+      "sprite": "sprites/content.svg#content-dashboard-empty"
+    },
+    "content-dashboard": {
+      "identifier": "content-dashboard",
+      "category": "content",
+      "svg": "svgs/content/content-dashboard.svg",
+      "sprite": "sprites/content.svg#content-dashboard"
+    },
+    "content-elements-login": {
+      "identifier": "content-elements-login",
+      "category": "content",
+      "svg": "svgs/content/content-elements-login.svg",
+      "sprite": "sprites/content.svg#content-elements-login"
+    },
+    "content-elements-mailform": {
+      "identifier": "content-elements-mailform",
+      "category": "content",
+      "svg": "svgs/content/content-elements-mailform.svg",
+      "sprite": "sprites/content.svg#content-elements-mailform"
+    },
+    "content-elements-searchform": {
+      "identifier": "content-elements-searchform",
+      "category": "content",
+      "svg": "svgs/content/content-elements-searchform.svg",
+      "sprite": "sprites/content.svg#content-elements-searchform"
+    },
+    "content-form": {
+      "identifier": "content-form",
+      "category": "content",
+      "svg": "svgs/content/content-form.svg",
+      "sprite": "sprites/content.svg#content-form"
+    },
+    "content-gallery": {
+      "identifier": "content-gallery",
+      "category": "content",
+      "svg": "svgs/content/content-gallery.svg",
+      "sprite": "sprites/content.svg#content-gallery"
+    },
+    "content-header": {
+      "identifier": "content-header",
+      "category": "content",
+      "svg": "svgs/content/content-header.svg",
+      "sprite": "sprites/content.svg#content-header"
+    },
+    "content-idea": {
+      "identifier": "content-idea",
+      "category": "content",
+      "svg": "svgs/content/content-idea.svg",
+      "sprite": "sprites/content.svg#content-idea"
+    },
+    "content-image": {
+      "identifier": "content-image",
+      "category": "content",
+      "svg": "svgs/content/content-image.svg",
+      "sprite": "sprites/content.svg#content-image"
+    },
+    "content-info": {
+      "identifier": "content-info",
+      "category": "content",
+      "svg": "svgs/content/content-info.svg",
+      "sprite": "sprites/content.svg#content-info"
+    },
+    "content-inside-text-img-left": {
+      "identifier": "content-inside-text-img-left",
+      "category": "content",
+      "svg": "svgs/content/content-inside-text-img-left.svg",
+      "sprite": "sprites/content.svg#content-inside-text-img-left"
+    },
+    "content-inside-text-img-right": {
+      "identifier": "content-inside-text-img-right",
+      "category": "content",
+      "svg": "svgs/content/content-inside-text-img-right.svg",
+      "sprite": "sprites/content.svg#content-inside-text-img-right"
+    },
+    "content-listgroup": {
+      "identifier": "content-listgroup",
+      "category": "content",
+      "svg": "svgs/content/content-listgroup.svg",
+      "sprite": "sprites/content.svg#content-listgroup"
+    },
+    "content-map": {
+      "identifier": "content-map",
+      "category": "content",
+      "svg": "svgs/content/content-map.svg",
+      "sprite": "sprites/content.svg#content-map"
+    },
+    "content-marker": {
+      "identifier": "content-marker",
+      "category": "content",
+      "svg": "svgs/content/content-marker.svg",
+      "sprite": "sprites/content.svg#content-marker"
+    },
+    "content-media": {
+      "identifier": "content-media",
+      "category": "content",
+      "svg": "svgs/content/content-media.svg",
+      "sprite": "sprites/content.svg#content-media"
+    },
+    "content-menu-abstract": {
+      "identifier": "content-menu-abstract",
+      "category": "content",
+      "svg": "svgs/content/content-menu-abstract.svg",
+      "sprite": "sprites/content.svg#content-menu-abstract"
+    },
+    "content-menu-card": {
+      "identifier": "content-menu-card",
+      "category": "content",
+      "svg": "svgs/content/content-menu-card.svg",
+      "sprite": "sprites/content.svg#content-menu-card"
+    },
+    "content-menu-categorized": {
+      "identifier": "content-menu-categorized",
+      "category": "content",
+      "svg": "svgs/content/content-menu-categorized.svg",
+      "sprite": "sprites/content.svg#content-menu-categorized"
+    },
+    "content-menu-pages": {
+      "identifier": "content-menu-pages",
+      "category": "content",
+      "svg": "svgs/content/content-menu-pages.svg",
+      "sprite": "sprites/content.svg#content-menu-pages"
+    },
+    "content-menu-recently-updated": {
+      "identifier": "content-menu-recently-updated",
+      "category": "content",
+      "svg": "svgs/content/content-menu-recently-updated.svg",
+      "sprite": "sprites/content.svg#content-menu-recently-updated"
+    },
+    "content-menu-related": {
+      "identifier": "content-menu-related",
+      "category": "content",
+      "svg": "svgs/content/content-menu-related.svg",
+      "sprite": "sprites/content.svg#content-menu-related"
+    },
+    "content-menu-section": {
+      "identifier": "content-menu-section",
+      "category": "content",
+      "svg": "svgs/content/content-menu-section.svg",
+      "sprite": "sprites/content.svg#content-menu-section"
+    },
+    "content-menu-sitemap-pages": {
+      "identifier": "content-menu-sitemap-pages",
+      "category": "content",
+      "svg": "svgs/content/content-menu-sitemap-pages.svg",
+      "sprite": "sprites/content.svg#content-menu-sitemap-pages"
+    },
+    "content-menu-sitemap": {
+      "identifier": "content-menu-sitemap",
+      "category": "content",
+      "svg": "svgs/content/content-menu-sitemap.svg",
+      "sprite": "sprites/content.svg#content-menu-sitemap"
+    },
+    "content-menu-thumbnail": {
+      "identifier": "content-menu-thumbnail",
+      "category": "content",
+      "svg": "svgs/content/content-menu-thumbnail.svg",
+      "sprite": "sprites/content.svg#content-menu-thumbnail"
+    },
+    "content-news": {
+      "identifier": "content-news",
+      "category": "content",
+      "svg": "svgs/content/content-news.svg",
+      "sprite": "sprites/content.svg#content-news"
+    },
+    "content-panel": {
+      "identifier": "content-panel",
+      "category": "content",
+      "svg": "svgs/content/content-panel.svg",
+      "sprite": "sprites/content.svg#content-panel"
+    },
+    "content-plugin": {
+      "identifier": "content-plugin",
+      "category": "content",
+      "svg": "svgs/content/content-plugin.svg",
+      "sprite": "sprites/content.svg#content-plugin"
+    },
+    "content-quote": {
+      "identifier": "content-quote",
+      "category": "content",
+      "svg": "svgs/content/content-quote.svg",
+      "sprite": "sprites/content.svg#content-quote"
+    },
+    "content-special-div": {
+      "identifier": "content-special-div",
+      "category": "content",
+      "svg": "svgs/content/content-special-div.svg",
+      "sprite": "sprites/content.svg#content-special-div"
+    },
+    "content-special-html": {
+      "identifier": "content-special-html",
+      "category": "content",
+      "svg": "svgs/content/content-special-html.svg",
+      "sprite": "sprites/content.svg#content-special-html"
+    },
+    "content-special-indexed_search": {
+      "identifier": "content-special-indexed_search",
+      "category": "content",
+      "svg": "svgs/content/content-special-indexed_search.svg",
+      "sprite": "sprites/content.svg#content-special-indexed_search"
+    },
+    "content-special-menu": {
+      "identifier": "content-special-menu",
+      "category": "content",
+      "svg": "svgs/content/content-special-menu.svg",
+      "sprite": "sprites/content.svg#content-special-menu"
+    },
+    "content-special-shortcut": {
+      "identifier": "content-special-shortcut",
+      "category": "content",
+      "svg": "svgs/content/content-special-shortcut.svg",
+      "sprite": "sprites/content.svg#content-special-shortcut"
+    },
+    "content-special-uploads": {
+      "identifier": "content-special-uploads",
+      "category": "content",
+      "svg": "svgs/content/content-special-uploads.svg",
+      "sprite": "sprites/content.svg#content-special-uploads"
+    },
+    "content-store": {
+      "identifier": "content-store",
+      "category": "content",
+      "svg": "svgs/content/content-store.svg",
+      "sprite": "sprites/content.svg#content-store"
+    },
+    "content-tab-item": {
+      "identifier": "content-tab-item",
+      "category": "content",
+      "svg": "svgs/content/content-tab-item.svg",
+      "sprite": "sprites/content.svg#content-tab-item"
+    },
+    "content-tab": {
+      "identifier": "content-tab",
+      "category": "content",
+      "svg": "svgs/content/content-tab.svg",
+      "sprite": "sprites/content.svg#content-tab"
+    },
+    "content-table": {
+      "identifier": "content-table",
+      "category": "content",
+      "svg": "svgs/content/content-table.svg",
+      "sprite": "sprites/content.svg#content-table"
+    },
+    "content-target": {
+      "identifier": "content-target",
+      "category": "content",
+      "svg": "svgs/content/content-target.svg",
+      "sprite": "sprites/content.svg#content-target"
+    },
+    "content-text-columns": {
+      "identifier": "content-text-columns",
+      "category": "content",
+      "svg": "svgs/content/content-text-columns.svg",
+      "sprite": "sprites/content.svg#content-text-columns"
+    },
+    "content-text-teaser": {
+      "identifier": "content-text-teaser",
+      "category": "content",
+      "svg": "svgs/content/content-text-teaser.svg",
+      "sprite": "sprites/content.svg#content-text-teaser"
+    },
+    "content-text": {
+      "identifier": "content-text",
+      "category": "content",
+      "svg": "svgs/content/content-text.svg",
+      "sprite": "sprites/content.svg#content-text"
+    },
+    "content-textmedia": {
+      "identifier": "content-textmedia",
+      "category": "content",
+      "svg": "svgs/content/content-textmedia.svg",
+      "sprite": "sprites/content.svg#content-textmedia"
+    },
+    "content-textpic": {
+      "identifier": "content-textpic",
+      "category": "content",
+      "svg": "svgs/content/content-textpic.svg",
+      "sprite": "sprites/content.svg#content-textpic"
+    },
+    "content-timeline-item": {
+      "identifier": "content-timeline-item",
+      "category": "content",
+      "svg": "svgs/content/content-timeline-item.svg",
+      "sprite": "sprites/content.svg#content-timeline-item"
+    },
+    "content-timeline": {
+      "identifier": "content-timeline",
+      "category": "content",
+      "svg": "svgs/content/content-timeline.svg",
+      "sprite": "sprites/content.svg#content-timeline"
+    },
+    "content-widget-calltoaction": {
+      "identifier": "content-widget-calltoaction",
+      "category": "content",
+      "svg": "svgs/content/content-widget-calltoaction.svg",
+      "sprite": "sprites/content.svg#content-widget-calltoaction"
+    },
+    "content-widget-chart-bar": {
+      "identifier": "content-widget-chart-bar",
+      "category": "content",
+      "svg": "svgs/content/content-widget-chart-bar.svg",
+      "sprite": "sprites/content.svg#content-widget-chart-bar"
+    },
+    "content-widget-chart-pie": {
+      "identifier": "content-widget-chart-pie",
+      "category": "content",
+      "svg": "svgs/content/content-widget-chart-pie.svg",
+      "sprite": "sprites/content.svg#content-widget-chart-pie"
+    },
+    "content-widget-chart": {
+      "identifier": "content-widget-chart",
+      "category": "content",
+      "svg": "svgs/content/content-widget-chart.svg",
+      "sprite": "sprites/content.svg#content-widget-chart"
+    },
+    "content-widget-image": {
+      "identifier": "content-widget-image",
+      "category": "content",
+      "svg": "svgs/content/content-widget-image.svg",
+      "sprite": "sprites/content.svg#content-widget-image"
+    },
+    "content-widget-list": {
+      "identifier": "content-widget-list",
+      "category": "content",
+      "svg": "svgs/content/content-widget-list.svg",
+      "sprite": "sprites/content.svg#content-widget-list"
+    },
+    "content-widget-number": {
+      "identifier": "content-widget-number",
+      "category": "content",
+      "svg": "svgs/content/content-widget-number.svg",
+      "sprite": "sprites/content.svg#content-widget-number"
+    },
+    "content-widget-rss": {
+      "identifier": "content-widget-rss",
+      "category": "content",
+      "svg": "svgs/content/content-widget-rss.svg",
+      "sprite": "sprites/content.svg#content-widget-rss"
+    },
+    "content-widget-table": {
+      "identifier": "content-widget-table",
+      "category": "content",
+      "svg": "svgs/content/content-widget-table.svg",
+      "sprite": "sprites/content.svg#content-widget-table"
+    },
+    "content-widget-text": {
+      "identifier": "content-widget-text",
+      "category": "content",
+      "svg": "svgs/content/content-widget-text.svg",
+      "sprite": "sprites/content.svg#content-widget-text"
+    },
+    "content-widget": {
+      "identifier": "content-widget",
+      "category": "content",
+      "svg": "svgs/content/content-widget.svg",
+      "sprite": "sprites/content.svg#content-widget"
+    },
+    "default-not-found": {
+      "identifier": "default-not-found",
+      "category": "default",
+      "svg": "svgs/default/default-not-found.svg",
+      "sprite": "sprites/default.svg#default-not-found"
+    },
+    "files-folder-content": {
+      "identifier": "files-folder-content",
+      "category": "files",
+      "svg": "svgs/files/files-folder-content.svg",
+      "sprite": "sprites/files.svg#files-folder-content"
+    },
+    "files-folder-images": {
+      "identifier": "files-folder-images",
+      "category": "files",
+      "svg": "svgs/files/files-folder-images.svg",
+      "sprite": "sprites/files.svg#files-folder-images"
+    },
+    "files-folder": {
+      "identifier": "files-folder",
+      "category": "files",
+      "svg": "svgs/files/files-folder.svg",
+      "sprite": "sprites/files.svg#files-folder"
+    },
+    "form-advanced-password": {
+      "identifier": "form-advanced-password",
+      "category": "form",
+      "svg": "svgs/form/form-advanced-password.svg",
+      "sprite": "sprites/form.svg#form-advanced-password"
+    },
+    "form-checkbox": {
+      "identifier": "form-checkbox",
+      "category": "form",
+      "svg": "svgs/form/form-checkbox.svg",
+      "sprite": "sprites/form.svg#form-checkbox"
+    },
+    "form-content-element": {
+      "identifier": "form-content-element",
+      "category": "form",
+      "svg": "svgs/form/form-content-element.svg",
+      "sprite": "sprites/form.svg#form-content-element"
+    },
+    "form-date-picker": {
+      "identifier": "form-date-picker",
+      "category": "form",
+      "svg": "svgs/form/form-date-picker.svg",
+      "sprite": "sprites/form.svg#form-date-picker"
+    },
+    "form-email": {
+      "identifier": "form-email",
+      "category": "form",
+      "svg": "svgs/form/form-email.svg",
+      "sprite": "sprites/form.svg#form-email"
+    },
+    "form-fieldset": {
+      "identifier": "form-fieldset",
+      "category": "form",
+      "svg": "svgs/form/form-fieldset.svg",
+      "sprite": "sprites/form.svg#form-fieldset"
+    },
+    "form-file-upload": {
+      "identifier": "form-file-upload",
+      "category": "form",
+      "svg": "svgs/form/form-file-upload.svg",
+      "sprite": "sprites/form.svg#form-file-upload"
+    },
+    "form-finisher": {
+      "identifier": "form-finisher",
+      "category": "form",
+      "svg": "svgs/form/form-finisher.svg",
+      "sprite": "sprites/form.svg#form-finisher"
+    },
+    "form-gridcontainer": {
+      "identifier": "form-gridcontainer",
+      "category": "form",
+      "svg": "svgs/form/form-gridcontainer.svg",
+      "sprite": "sprites/form.svg#form-gridcontainer"
+    },
+    "form-gridrow": {
+      "identifier": "form-gridrow",
+      "category": "form",
+      "svg": "svgs/form/form-gridrow.svg",
+      "sprite": "sprites/form.svg#form-gridrow"
+    },
+    "form-hidden": {
+      "identifier": "form-hidden",
+      "category": "form",
+      "svg": "svgs/form/form-hidden.svg",
+      "sprite": "sprites/form.svg#form-hidden"
+    },
+    "form-image-upload": {
+      "identifier": "form-image-upload",
+      "category": "form",
+      "svg": "svgs/form/form-image-upload.svg",
+      "sprite": "sprites/form.svg#form-image-upload"
+    },
+    "form-multi-checkbox": {
+      "identifier": "form-multi-checkbox",
+      "category": "form",
+      "svg": "svgs/form/form-multi-checkbox.svg",
+      "sprite": "sprites/form.svg#form-multi-checkbox"
+    },
+    "form-multi-select": {
+      "identifier": "form-multi-select",
+      "category": "form",
+      "svg": "svgs/form/form-multi-select.svg",
+      "sprite": "sprites/form.svg#form-multi-select"
+    },
+    "form-number": {
+      "identifier": "form-number",
+      "category": "form",
+      "svg": "svgs/form/form-number.svg",
+      "sprite": "sprites/form.svg#form-number"
+    },
+    "form-page": {
+      "identifier": "form-page",
+      "category": "form",
+      "svg": "svgs/form/form-page.svg",
+      "sprite": "sprites/form.svg#form-page"
+    },
+    "form-password": {
+      "identifier": "form-password",
+      "category": "form",
+      "svg": "svgs/form/form-password.svg",
+      "sprite": "sprites/form.svg#form-password"
+    },
+    "form-radio-button": {
+      "identifier": "form-radio-button",
+      "category": "form",
+      "svg": "svgs/form/form-radio-button.svg",
+      "sprite": "sprites/form.svg#form-radio-button"
+    },
+    "form-single-select": {
+      "identifier": "form-single-select",
+      "category": "form",
+      "svg": "svgs/form/form-single-select.svg",
+      "sprite": "sprites/form.svg#form-single-select"
+    },
+    "form-static-text": {
+      "identifier": "form-static-text",
+      "category": "form",
+      "svg": "svgs/form/form-static-text.svg",
+      "sprite": "sprites/form.svg#form-static-text"
+    },
+    "form-summary-page": {
+      "identifier": "form-summary-page",
+      "category": "form",
+      "svg": "svgs/form/form-summary-page.svg",
+      "sprite": "sprites/form.svg#form-summary-page"
+    },
+    "form-telephone": {
+      "identifier": "form-telephone",
+      "category": "form",
+      "svg": "svgs/form/form-telephone.svg",
+      "sprite": "sprites/form.svg#form-telephone"
+    },
+    "form-text": {
+      "identifier": "form-text",
+      "category": "form",
+      "svg": "svgs/form/form-text.svg",
+      "sprite": "sprites/form.svg#form-text"
+    },
+    "form-textarea": {
+      "identifier": "form-textarea",
+      "category": "form",
+      "svg": "svgs/form/form-textarea.svg",
+      "sprite": "sprites/form.svg#form-textarea"
+    },
+    "form-url": {
+      "identifier": "form-url",
+      "category": "form",
+      "svg": "svgs/form/form-url.svg",
+      "sprite": "sprites/form.svg#form-url"
+    },
+    "form-validator": {
+      "identifier": "form-validator",
+      "category": "form",
+      "svg": "svgs/form/form-validator.svg",
+      "sprite": "sprites/form.svg#form-validator"
+    },
+    "information-os-unknown": {
+      "identifier": "information-os-unknown",
+      "category": "information",
+      "svg": "svgs/information/information-os-unknown.svg",
+      "sprite": "sprites/information.svg#information-os-unknown"
+    },
+    "information-typo3-version": {
+      "identifier": "information-typo3-version",
+      "category": "information",
+      "svg": "svgs/information/information-typo3-version.svg",
+      "sprite": "sprites/information.svg#information-typo3-version"
+    },
+    "install-check-brokenextension": {
+      "identifier": "install-check-brokenextension",
+      "category": "install",
+      "svg": "svgs/install/install-check-brokenextension.svg",
+      "sprite": "sprites/install.svg#install-check-brokenextension"
+    },
+    "install-check-directory": {
+      "identifier": "install-check-directory",
+      "category": "install",
+      "svg": "svgs/install/install-check-directory.svg",
+      "sprite": "sprites/install.svg#install-check-directory"
+    },
+    "install-check-extables": {
+      "identifier": "install-check-extables",
+      "category": "install",
+      "svg": "svgs/install/install-check-extables.svg",
+      "sprite": "sprites/install.svg#install-check-extables"
+    },
+    "install-check-tca": {
+      "identifier": "install-check-tca",
+      "category": "install",
+      "svg": "svgs/install/install-check-tca.svg",
+      "sprite": "sprites/install.svg#install-check-tca"
+    },
+    "install-clear-autoload": {
+      "identifier": "install-clear-autoload",
+      "category": "install",
+      "svg": "svgs/install/install-clear-autoload.svg",
+      "sprite": "sprites/install.svg#install-clear-autoload"
+    },
+    "install-clear-cache": {
+      "identifier": "install-clear-cache",
+      "category": "install",
+      "svg": "svgs/install/install-clear-cache.svg",
+      "sprite": "sprites/install.svg#install-clear-cache"
+    },
+    "install-clear-database": {
+      "identifier": "install-clear-database",
+      "category": "install",
+      "svg": "svgs/install/install-clear-database.svg",
+      "sprite": "sprites/install.svg#install-clear-database"
+    },
+    "install-clear-files": {
+      "identifier": "install-clear-files",
+      "category": "install",
+      "svg": "svgs/install/install-clear-files.svg",
+      "sprite": "sprites/install.svg#install-clear-files"
+    },
+    "install-create-admin": {
+      "identifier": "install-create-admin",
+      "category": "install",
+      "svg": "svgs/install/install-create-admin.svg",
+      "sprite": "sprites/install.svg#install-create-admin"
+    },
+    "install-database-analyze": {
+      "identifier": "install-database-analyze",
+      "category": "install",
+      "svg": "svgs/install/install-database-analyze.svg",
+      "sprite": "sprites/install.svg#install-database-analyze"
+    },
+    "install-documentation": {
+      "identifier": "install-documentation",
+      "category": "install",
+      "svg": "svgs/install/install-documentation.svg",
+      "sprite": "sprites/install.svg#install-documentation"
+    },
+    "install-extension-settings": {
+      "identifier": "install-extension-settings",
+      "category": "install",
+      "svg": "svgs/install/install-extension-settings.svg",
+      "sprite": "sprites/install.svg#install-extension-settings"
+    },
+    "install-manage-features": {
+      "identifier": "install-manage-features",
+      "category": "install",
+      "svg": "svgs/install/install-manage-features.svg",
+      "sprite": "sprites/install.svg#install-manage-features"
+    },
+    "install-manage-language": {
+      "identifier": "install-manage-language",
+      "category": "install",
+      "svg": "svgs/install/install-manage-language.svg",
+      "sprite": "sprites/install.svg#install-manage-language"
+    },
+    "install-manage-maintainer": {
+      "identifier": "install-manage-maintainer",
+      "category": "install",
+      "svg": "svgs/install/install-manage-maintainer.svg",
+      "sprite": "sprites/install.svg#install-manage-maintainer"
+    },
+    "install-manage-presets": {
+      "identifier": "install-manage-presets",
+      "category": "install",
+      "svg": "svgs/install/install-manage-presets.svg",
+      "sprite": "sprites/install.svg#install-manage-presets"
+    },
+    "install-manage-settings": {
+      "identifier": "install-manage-settings",
+      "category": "install",
+      "svg": "svgs/install/install-manage-settings.svg",
+      "sprite": "sprites/install.svg#install-manage-settings"
+    },
+    "install-password": {
+      "identifier": "install-password",
+      "category": "install",
+      "svg": "svgs/install/install-password.svg",
+      "sprite": "sprites/install.svg#install-password"
+    },
+    "install-php-info": {
+      "identifier": "install-php-info",
+      "category": "install",
+      "svg": "svgs/install/install-php-info.svg",
+      "sprite": "sprites/install.svg#install-php-info"
+    },
+    "install-reset-user": {
+      "identifier": "install-reset-user",
+      "category": "install",
+      "svg": "svgs/install/install-reset-user.svg",
+      "sprite": "sprites/install.svg#install-reset-user"
+    },
+    "install-scan-extensions": {
+      "identifier": "install-scan-extensions",
+      "category": "install",
+      "svg": "svgs/install/install-scan-extensions.svg",
+      "sprite": "sprites/install.svg#install-scan-extensions"
+    },
+    "install-show-environment": {
+      "identifier": "install-show-environment",
+      "category": "install",
+      "svg": "svgs/install/install-show-environment.svg",
+      "sprite": "sprites/install.svg#install-show-environment"
+    },
+    "install-test-environment": {
+      "identifier": "install-test-environment",
+      "category": "install",
+      "svg": "svgs/install/install-test-environment.svg",
+      "sprite": "sprites/install.svg#install-test-environment"
+    },
+    "install-test-image": {
+      "identifier": "install-test-image",
+      "category": "install",
+      "svg": "svgs/install/install-test-image.svg",
+      "sprite": "sprites/install.svg#install-test-image"
+    },
+    "install-test-mail": {
+      "identifier": "install-test-mail",
+      "category": "install",
+      "svg": "svgs/install/install-test-mail.svg",
+      "sprite": "sprites/install.svg#install-test-mail"
+    },
+    "install-update": {
+      "identifier": "install-update",
+      "category": "install",
+      "svg": "svgs/install/install-update.svg",
+      "sprite": "sprites/install.svg#install-update"
+    },
+    "install-wizards": {
+      "identifier": "install-wizards",
+      "category": "install",
+      "svg": "svgs/install/install-wizards.svg",
+      "sprite": "sprites/install.svg#install-wizards"
+    },
+    "mimetypes-application": {
+      "identifier": "mimetypes-application",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-application.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-application"
+    },
+    "mimetypes-compressed": {
+      "identifier": "mimetypes-compressed",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-compressed.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-compressed"
+    },
+    "mimetypes-excel": {
+      "identifier": "mimetypes-excel",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-excel.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-excel"
+    },
+    "mimetypes-media-audio": {
+      "identifier": "mimetypes-media-audio",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-audio.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-audio"
+    },
+    "mimetypes-media-flash": {
+      "identifier": "mimetypes-media-flash",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-flash.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-flash"
+    },
+    "mimetypes-media-image": {
+      "identifier": "mimetypes-media-image",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-image.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-image"
+    },
+    "mimetypes-media-video-vimeo": {
+      "identifier": "mimetypes-media-video-vimeo",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-video-vimeo.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-video-vimeo"
+    },
+    "mimetypes-media-video-youtube": {
+      "identifier": "mimetypes-media-video-youtube",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-video-youtube.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-video-youtube"
+    },
+    "mimetypes-media-video": {
+      "identifier": "mimetypes-media-video",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-video.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-video"
+    },
+    "mimetypes-open-document-database": {
+      "identifier": "mimetypes-open-document-database",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-open-document-database.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-open-document-database"
+    },
+    "mimetypes-open-document-drawing": {
+      "identifier": "mimetypes-open-document-drawing",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-open-document-drawing.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-open-document-drawing"
+    },
+    "mimetypes-open-document-formula": {
+      "identifier": "mimetypes-open-document-formula",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-open-document-formula.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-open-document-formula"
+    },
+    "mimetypes-open-document-presentation": {
+      "identifier": "mimetypes-open-document-presentation",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-open-document-presentation.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-open-document-presentation"
+    },
+    "mimetypes-open-document-spreadsheet": {
+      "identifier": "mimetypes-open-document-spreadsheet",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-open-document-spreadsheet.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-open-document-spreadsheet"
+    },
+    "mimetypes-open-document-text": {
+      "identifier": "mimetypes-open-document-text",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-open-document-text.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-open-document-text"
+    },
+    "mimetypes-other-other": {
+      "identifier": "mimetypes-other-other",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-other-other.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-other-other"
+    },
+    "mimetypes-pdf": {
+      "identifier": "mimetypes-pdf",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-pdf.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-pdf"
+    },
+    "mimetypes-powerpoint": {
+      "identifier": "mimetypes-powerpoint",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-powerpoint.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-powerpoint"
+    },
+    "mimetypes-text-css": {
+      "identifier": "mimetypes-text-css",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-css.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-css"
+    },
+    "mimetypes-text-csv": {
+      "identifier": "mimetypes-text-csv",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-csv.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-csv"
+    },
+    "mimetypes-text-html": {
+      "identifier": "mimetypes-text-html",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-html.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-html"
+    },
+    "mimetypes-text-js": {
+      "identifier": "mimetypes-text-js",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-js.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-js"
+    },
+    "mimetypes-text-php": {
+      "identifier": "mimetypes-text-php",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-php.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-php"
+    },
+    "mimetypes-text-text": {
+      "identifier": "mimetypes-text-text",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-text.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-text"
+    },
+    "mimetypes-text-ts": {
+      "identifier": "mimetypes-text-ts",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-ts.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-ts"
+    },
+    "mimetypes-text-typoscript": {
+      "identifier": "mimetypes-text-typoscript",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-typoscript.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-typoscript"
+    },
+    "mimetypes-word": {
+      "identifier": "mimetypes-word",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-word.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-word"
+    },
+    "mimetypes-x-backend_layout": {
+      "identifier": "mimetypes-x-backend_layout",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-backend_layout.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-backend_layout"
+    },
+    "mimetypes-x-content-divider": {
+      "identifier": "mimetypes-x-content-divider",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-divider.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-divider"
+    },
+    "mimetypes-x-content-domain": {
+      "identifier": "mimetypes-x-content-domain",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-domain.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-domain"
+    },
+    "mimetypes-x-content-form-search": {
+      "identifier": "mimetypes-x-content-form-search",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-form-search.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-form-search"
+    },
+    "mimetypes-x-content-form": {
+      "identifier": "mimetypes-x-content-form",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-form.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-form"
+    },
+    "mimetypes-x-content-header": {
+      "identifier": "mimetypes-x-content-header",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-header.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-header"
+    },
+    "mimetypes-x-content-html": {
+      "identifier": "mimetypes-x-content-html",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-html.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-html"
+    },
+    "mimetypes-x-content-image": {
+      "identifier": "mimetypes-x-content-image",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-image.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-image"
+    },
+    "mimetypes-x-content-link": {
+      "identifier": "mimetypes-x-content-link",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-link.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-link"
+    },
+    "mimetypes-x-content-list-bullets": {
+      "identifier": "mimetypes-x-content-list-bullets",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-list-bullets.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-list-bullets"
+    },
+    "mimetypes-x-content-list-files": {
+      "identifier": "mimetypes-x-content-list-files",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-list-files.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-list-files"
+    },
+    "mimetypes-x-content-login": {
+      "identifier": "mimetypes-x-content-login",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-login.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-login"
+    },
+    "mimetypes-x-content-menu": {
+      "identifier": "mimetypes-x-content-menu",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-menu.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-menu"
+    },
+    "mimetypes-x-content-multimedia": {
+      "identifier": "mimetypes-x-content-multimedia",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-multimedia.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-multimedia"
+    },
+    "mimetypes-x-content-page-language-overlay": {
+      "identifier": "mimetypes-x-content-page-language-overlay",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-page-language-overlay.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-page-language-overlay"
+    },
+    "mimetypes-x-content-plugin": {
+      "identifier": "mimetypes-x-content-plugin",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-plugin.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-plugin"
+    },
+    "mimetypes-x-content-script": {
+      "identifier": "mimetypes-x-content-script",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-script.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-script"
+    },
+    "mimetypes-x-content-table": {
+      "identifier": "mimetypes-x-content-table",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-table.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-table"
+    },
+    "mimetypes-x-content-template-extension": {
+      "identifier": "mimetypes-x-content-template-extension",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-template-extension.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-template-extension"
+    },
+    "mimetypes-x-content-template-static": {
+      "identifier": "mimetypes-x-content-template-static",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-template-static.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-template-static"
+    },
+    "mimetypes-x-content-template": {
+      "identifier": "mimetypes-x-content-template",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-template.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-template"
+    },
+    "mimetypes-x-content-text-media": {
+      "identifier": "mimetypes-x-content-text-media",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-text-media.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-text-media"
+    },
+    "mimetypes-x-content-text-picture": {
+      "identifier": "mimetypes-x-content-text-picture",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-text-picture.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-text-picture"
+    },
+    "mimetypes-x-content-text": {
+      "identifier": "mimetypes-x-content-text",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-content-text.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-content-text"
+    },
+    "mimetypes-x-index_config": {
+      "identifier": "mimetypes-x-index_config",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-index_config.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-index_config"
+    },
+    "mimetypes-x-sys_action": {
+      "identifier": "mimetypes-x-sys_action",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_action.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_action"
+    },
+    "mimetypes-x-sys_category": {
+      "identifier": "mimetypes-x-sys_category",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_category.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_category"
+    },
+    "mimetypes-x-sys_file_storage": {
+      "identifier": "mimetypes-x-sys_file_storage",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_file_storage.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_file_storage"
+    },
+    "mimetypes-x-sys_filemounts": {
+      "identifier": "mimetypes-x-sys_filemounts",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_filemounts.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_filemounts"
+    },
+    "mimetypes-x-sys_language": {
+      "identifier": "mimetypes-x-sys_language",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_language.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_language"
+    },
+    "mimetypes-x-sys_news": {
+      "identifier": "mimetypes-x-sys_news",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_news.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_news"
+    },
+    "mimetypes-x-sys_note": {
+      "identifier": "mimetypes-x-sys_note",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_note.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_note"
+    },
+    "mimetypes-x-sys_redirect": {
+      "identifier": "mimetypes-x-sys_redirect",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_redirect.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_redirect"
+    },
+    "mimetypes-x-sys_workspace": {
+      "identifier": "mimetypes-x-sys_workspace",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-sys_workspace.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-sys_workspace"
+    },
+    "mimetypes-x-tx_rtehtmlarea_acronym": {
+      "identifier": "mimetypes-x-tx_rtehtmlarea_acronym",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-tx_rtehtmlarea_acronym.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-tx_rtehtmlarea_acronym"
+    },
+    "mimetypes-x-tx_scheduler_task_group": {
+      "identifier": "mimetypes-x-tx_scheduler_task_group",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-x-tx_scheduler_task_group.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-x-tx_scheduler_task_group"
+    },
+    "miscellaneous-placeholder": {
+      "identifier": "miscellaneous-placeholder",
+      "category": "miscellaneous",
+      "svg": "svgs/miscellaneous/miscellaneous-placeholder.svg",
+      "sprite": "sprites/miscellaneous.svg#miscellaneous-placeholder"
+    },
+    "module-about": {
+      "identifier": "module-about",
+      "category": "module",
+      "svg": "svgs/module/module-about.svg",
+      "sprite": "sprites/module.svg#module-about"
+    },
+    "module-aboutmodules": {
+      "identifier": "module-aboutmodules",
+      "category": "module",
+      "svg": "svgs/module/module-aboutmodules.svg",
+      "sprite": "sprites/module.svg#module-aboutmodules"
+    },
+    "module-adminpanel": {
+      "identifier": "module-adminpanel",
+      "category": "module",
+      "svg": "svgs/module/module-adminpanel.svg",
+      "sprite": "sprites/module.svg#module-adminpanel"
+    },
+    "module-belog": {
+      "identifier": "module-belog",
+      "category": "module",
+      "svg": "svgs/module/module-belog.svg",
+      "sprite": "sprites/module.svg#module-belog"
+    },
+    "module-beuser": {
+      "identifier": "module-beuser",
+      "category": "module",
+      "svg": "svgs/module/module-beuser.svg",
+      "sprite": "sprites/module.svg#module-beuser"
+    },
+    "module-config": {
+      "identifier": "module-config",
+      "category": "module",
+      "svg": "svgs/module/module-config.svg",
+      "sprite": "sprites/module.svg#module-config"
+    },
+    "module-contentelements": {
+      "identifier": "module-contentelements",
+      "category": "module",
+      "svg": "svgs/module/module-contentelements.svg",
+      "sprite": "sprites/module.svg#module-contentelements"
+    },
+    "module-cshmanual": {
+      "identifier": "module-cshmanual",
+      "category": "module",
+      "svg": "svgs/module/module-cshmanual.svg",
+      "sprite": "sprites/module.svg#module-cshmanual"
+    },
+    "module-dashboard": {
+      "identifier": "module-dashboard",
+      "category": "module",
+      "svg": "svgs/module/module-dashboard.svg",
+      "sprite": "sprites/module.svg#module-dashboard"
+    },
+    "module-dbal": {
+      "identifier": "module-dbal",
+      "category": "module",
+      "svg": "svgs/module/module-dbal.svg",
+      "sprite": "sprites/module.svg#module-dbal"
+    },
+    "module-dbint": {
+      "identifier": "module-dbint",
+      "category": "module",
+      "svg": "svgs/module/module-dbint.svg",
+      "sprite": "sprites/module.svg#module-dbint"
+    },
+    "module-documentation": {
+      "identifier": "module-documentation",
+      "category": "module",
+      "svg": "svgs/module/module-documentation.svg",
+      "sprite": "sprites/module.svg#module-documentation"
+    },
+    "module-extensionmanager": {
+      "identifier": "module-extensionmanager",
+      "category": "module",
+      "svg": "svgs/module/module-extensionmanager.svg",
+      "sprite": "sprites/module.svg#module-extensionmanager"
+    },
+    "module-filelist": {
+      "identifier": "module-filelist",
+      "category": "module",
+      "svg": "svgs/module/module-filelist.svg",
+      "sprite": "sprites/module.svg#module-filelist"
+    },
+    "module-form": {
+      "identifier": "module-form",
+      "category": "module",
+      "svg": "svgs/module/module-form.svg",
+      "sprite": "sprites/module.svg#module-form"
+    },
+    "module-func": {
+      "identifier": "module-func",
+      "category": "module",
+      "svg": "svgs/module/module-func.svg",
+      "sprite": "sprites/module.svg#module-func"
+    },
+    "module-help": {
+      "identifier": "module-help",
+      "category": "module",
+      "svg": "svgs/module/module-help.svg",
+      "sprite": "sprites/module.svg#module-help"
+    },
+    "module-indexed_search": {
+      "identifier": "module-indexed_search",
+      "category": "module",
+      "svg": "svgs/module/module-indexed_search.svg",
+      "sprite": "sprites/module.svg#module-indexed_search"
+    },
+    "module-info": {
+      "identifier": "module-info",
+      "category": "module",
+      "svg": "svgs/module/module-info.svg",
+      "sprite": "sprites/module.svg#module-info"
+    },
+    "module-install-environment": {
+      "identifier": "module-install-environment",
+      "category": "module",
+      "svg": "svgs/module/module-install-environment.svg",
+      "sprite": "sprites/module.svg#module-install-environment"
+    },
+    "module-install-maintenance": {
+      "identifier": "module-install-maintenance",
+      "category": "module",
+      "svg": "svgs/module/module-install-maintenance.svg",
+      "sprite": "sprites/module.svg#module-install-maintenance"
+    },
+    "module-install-settings": {
+      "identifier": "module-install-settings",
+      "category": "module",
+      "svg": "svgs/module/module-install-settings.svg",
+      "sprite": "sprites/module.svg#module-install-settings"
+    },
+    "module-install-upgrade": {
+      "identifier": "module-install-upgrade",
+      "category": "module",
+      "svg": "svgs/module/module-install-upgrade.svg",
+      "sprite": "sprites/module.svg#module-install-upgrade"
+    },
+    "module-install": {
+      "identifier": "module-install",
+      "category": "module",
+      "svg": "svgs/module/module-install.svg",
+      "sprite": "sprites/module.svg#module-install"
+    },
+    "module-lang": {
+      "identifier": "module-lang",
+      "category": "module",
+      "svg": "svgs/module/module-lang.svg",
+      "sprite": "sprites/module.svg#module-lang"
+    },
+    "module-list": {
+      "identifier": "module-list",
+      "category": "module",
+      "svg": "svgs/module/module-list.svg",
+      "sprite": "sprites/module.svg#module-list"
+    },
+    "module-page": {
+      "identifier": "module-page",
+      "category": "module",
+      "svg": "svgs/module/module-page.svg",
+      "sprite": "sprites/module.svg#module-page"
+    },
+    "module-permission": {
+      "identifier": "module-permission",
+      "category": "module",
+      "svg": "svgs/module/module-permission.svg",
+      "sprite": "sprites/module.svg#module-permission"
+    },
+    "module-recycler": {
+      "identifier": "module-recycler",
+      "category": "module",
+      "svg": "svgs/module/module-recycler.svg",
+      "sprite": "sprites/module.svg#module-recycler"
+    },
+    "module-redirects": {
+      "identifier": "module-redirects",
+      "category": "module",
+      "svg": "svgs/module/module-redirects.svg",
+      "sprite": "sprites/module.svg#module-redirects"
+    },
+    "module-reports": {
+      "identifier": "module-reports",
+      "category": "module",
+      "svg": "svgs/module/module-reports.svg",
+      "sprite": "sprites/module.svg#module-reports"
+    },
+    "module-rte-ckeditor": {
+      "identifier": "module-rte-ckeditor",
+      "category": "module",
+      "svg": "svgs/module/module-rte-ckeditor.svg",
+      "sprite": "sprites/module.svg#module-rte-ckeditor"
+    },
+    "module-scheduler": {
+      "identifier": "module-scheduler",
+      "category": "module",
+      "svg": "svgs/module/module-scheduler.svg",
+      "sprite": "sprites/module.svg#module-scheduler"
+    },
+    "module-seo": {
+      "identifier": "module-seo",
+      "category": "module",
+      "svg": "svgs/module/module-seo.svg",
+      "sprite": "sprites/module.svg#module-seo"
+    },
+    "module-setup": {
+      "identifier": "module-setup",
+      "category": "module",
+      "svg": "svgs/module/module-setup.svg",
+      "sprite": "sprites/module.svg#module-setup"
+    },
+    "module-sites": {
+      "identifier": "module-sites",
+      "category": "module",
+      "svg": "svgs/module/module-sites.svg",
+      "sprite": "sprites/module.svg#module-sites"
+    },
+    "module-taskcenter": {
+      "identifier": "module-taskcenter",
+      "category": "module",
+      "svg": "svgs/module/module-taskcenter.svg",
+      "sprite": "sprites/module.svg#module-taskcenter"
+    },
+    "module-templates": {
+      "identifier": "module-templates",
+      "category": "module",
+      "svg": "svgs/module/module-templates.svg",
+      "sprite": "sprites/module.svg#module-templates"
+    },
+    "module-tstemplate": {
+      "identifier": "module-tstemplate",
+      "category": "module",
+      "svg": "svgs/module/module-tstemplate.svg",
+      "sprite": "sprites/module.svg#module-tstemplate"
+    },
+    "module-urls": {
+      "identifier": "module-urls",
+      "category": "module",
+      "svg": "svgs/module/module-urls.svg",
+      "sprite": "sprites/module.svg#module-urls"
+    },
+    "module-version": {
+      "identifier": "module-version",
+      "category": "module",
+      "svg": "svgs/module/module-version.svg",
+      "sprite": "sprites/module.svg#module-version"
+    },
+    "module-viewpage": {
+      "identifier": "module-viewpage",
+      "category": "module",
+      "svg": "svgs/module/module-viewpage.svg",
+      "sprite": "sprites/module.svg#module-viewpage"
+    },
+    "module-workspaces": {
+      "identifier": "module-workspaces",
+      "category": "module",
+      "svg": "svgs/module/module-workspaces.svg",
+      "sprite": "sprites/module.svg#module-workspaces"
+    },
+    "modulegroup-file": {
+      "identifier": "modulegroup-file",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-file.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-file"
+    },
+    "modulegroup-help": {
+      "identifier": "modulegroup-help",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-help.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-help"
+    },
+    "modulegroup-site": {
+      "identifier": "modulegroup-site",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-site.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-site"
+    },
+    "modulegroup-system": {
+      "identifier": "modulegroup-system",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-system.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-system"
+    },
+    "modulegroup-tools": {
+      "identifier": "modulegroup-tools",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-tools.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-tools"
+    },
+    "modulegroup-user": {
+      "identifier": "modulegroup-user",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-user.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-user"
+    },
+    "modulegroup-web": {
+      "identifier": "modulegroup-web",
+      "category": "modulegroup",
+      "svg": "svgs/modulegroup/modulegroup-web.svg",
+      "sprite": "sprites/modulegroup.svg#modulegroup-web"
+    },
+    "overlay-advanced": {
+      "identifier": "overlay-advanced",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-advanced.svg",
+      "sprite": "sprites/overlay.svg#overlay-advanced"
+    },
+    "overlay-approved": {
+      "identifier": "overlay-approved",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-approved.svg",
+      "sprite": "sprites/overlay.svg#overlay-approved"
+    },
+    "overlay-backenduser": {
+      "identifier": "overlay-backenduser",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-backenduser.svg",
+      "sprite": "sprites/overlay.svg#overlay-backenduser"
+    },
+    "overlay-backendusers": {
+      "identifier": "overlay-backendusers",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-backendusers.svg",
+      "sprite": "sprites/overlay.svg#overlay-backendusers"
+    },
+    "overlay-deleted": {
+      "identifier": "overlay-deleted",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-deleted.svg",
+      "sprite": "sprites/overlay.svg#overlay-deleted"
+    },
+    "overlay-edit": {
+      "identifier": "overlay-edit",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-edit.svg",
+      "sprite": "sprites/overlay.svg#overlay-edit"
+    },
+    "overlay-endtime": {
+      "identifier": "overlay-endtime",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-endtime.svg",
+      "sprite": "sprites/overlay.svg#overlay-endtime"
+    },
+    "overlay-external-link": {
+      "identifier": "overlay-external-link",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-external-link.svg",
+      "sprite": "sprites/overlay.svg#overlay-external-link"
+    },
+    "overlay-frontenduser": {
+      "identifier": "overlay-frontenduser",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-frontenduser.svg",
+      "sprite": "sprites/overlay.svg#overlay-frontenduser"
+    },
+    "overlay-frontendusers": {
+      "identifier": "overlay-frontendusers",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-frontendusers.svg",
+      "sprite": "sprites/overlay.svg#overlay-frontendusers"
+    },
+    "overlay-hidden": {
+      "identifier": "overlay-hidden",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-hidden.svg",
+      "sprite": "sprites/overlay.svg#overlay-hidden"
+    },
+    "overlay-includes-subpages": {
+      "identifier": "overlay-includes-subpages",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-includes-subpages.svg",
+      "sprite": "sprites/overlay.svg#overlay-includes-subpages"
+    },
+    "overlay-info": {
+      "identifier": "overlay-info",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-info.svg",
+      "sprite": "sprites/overlay.svg#overlay-info"
+    },
+    "overlay-list": {
+      "identifier": "overlay-list",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-list.svg",
+      "sprite": "sprites/overlay.svg#overlay-list"
+    },
+    "overlay-locked": {
+      "identifier": "overlay-locked",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-locked.svg",
+      "sprite": "sprites/overlay.svg#overlay-locked"
+    },
+    "overlay-media": {
+      "identifier": "overlay-media",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-media.svg",
+      "sprite": "sprites/overlay.svg#overlay-media"
+    },
+    "overlay-missing": {
+      "identifier": "overlay-missing",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-missing.svg",
+      "sprite": "sprites/overlay.svg#overlay-missing"
+    },
+    "overlay-mountpoint": {
+      "identifier": "overlay-mountpoint",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-mountpoint.svg",
+      "sprite": "sprites/overlay.svg#overlay-mountpoint"
+    },
+    "overlay-new": {
+      "identifier": "overlay-new",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-new.svg",
+      "sprite": "sprites/overlay.svg#overlay-new"
+    },
+    "overlay-news": {
+      "identifier": "overlay-news",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-news.svg",
+      "sprite": "sprites/overlay.svg#overlay-news"
+    },
+    "overlay-readonly": {
+      "identifier": "overlay-readonly",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-readonly.svg",
+      "sprite": "sprites/overlay.svg#overlay-readonly"
+    },
+    "overlay-restricted": {
+      "identifier": "overlay-restricted",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-restricted.svg",
+      "sprite": "sprites/overlay.svg#overlay-restricted"
+    },
+    "overlay-scheduled": {
+      "identifier": "overlay-scheduled",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-scheduled.svg",
+      "sprite": "sprites/overlay.svg#overlay-scheduled"
+    },
+    "overlay-shop": {
+      "identifier": "overlay-shop",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-shop.svg",
+      "sprite": "sprites/overlay.svg#overlay-shop"
+    },
+    "overlay-shortcut": {
+      "identifier": "overlay-shortcut",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-shortcut.svg",
+      "sprite": "sprites/overlay.svg#overlay-shortcut"
+    },
+    "overlay-translated": {
+      "identifier": "overlay-translated",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-translated.svg",
+      "sprite": "sprites/overlay.svg#overlay-translated"
+    },
+    "overlay-warning": {
+      "identifier": "overlay-warning",
+      "category": "overlay",
+      "svg": "svgs/overlay/overlay-warning.svg",
+      "sprite": "sprites/overlay.svg#overlay-warning"
+    },
+    "spinner-circle-dark": {
+      "identifier": "spinner-circle-dark",
+      "category": "spinner",
+      "svg": "svgs/spinner/spinner-circle-dark.svg",
+      "sprite": "sprites/spinner.svg#spinner-circle-dark"
+    },
+    "spinner-circle-light": {
+      "identifier": "spinner-circle-light",
+      "category": "spinner",
+      "svg": "svgs/spinner/spinner-circle-light.svg",
+      "sprite": "sprites/spinner.svg#spinner-circle-light"
+    },
+    "spinner-circle": {
+      "identifier": "spinner-circle",
+      "category": "spinner",
+      "svg": "svgs/spinner/spinner-circle.svg",
+      "sprite": "sprites/spinner.svg#spinner-circle"
+    },
+    "status-user-admin": {
+      "identifier": "status-user-admin",
+      "category": "status",
+      "svg": "svgs/status/status-user-admin.svg",
+      "sprite": "sprites/status.svg#status-user-admin"
+    },
+    "status-user-backend": {
+      "identifier": "status-user-backend",
+      "category": "status",
+      "svg": "svgs/status/status-user-backend.svg",
+      "sprite": "sprites/status.svg#status-user-backend"
+    },
+    "status-user-frontend": {
+      "identifier": "status-user-frontend",
+      "category": "status",
+      "svg": "svgs/status/status-user-frontend.svg",
+      "sprite": "sprites/status.svg#status-user-frontend"
+    },
+    "status-user-group-backend": {
+      "identifier": "status-user-group-backend",
+      "category": "status",
+      "svg": "svgs/status/status-user-group-backend.svg",
+      "sprite": "sprites/status.svg#status-user-group-backend"
+    },
+    "status-user-group-frontend": {
+      "identifier": "status-user-group-frontend",
+      "category": "status",
+      "svg": "svgs/status/status-user-group-frontend.svg",
+      "sprite": "sprites/status.svg#status-user-group-frontend"
+    }
+  },
+  "aliases": {
+    "actions-view-go-back": "actions-arrow-down-left",
+    "actions-view-go-forward": "actions-arrow-down-right",
+    "actions-version-workspace-sendtoprevstage": "actions-arrow-left",
+    "actions-view-go-down": "actions-arrow-right-down",
+    "actions-view-go-up": "actions-arrow-right-up",
+    "actions-version-workspace-sendtostage": "actions-arrow-right",
+    "actions-system-cache-clear": "actions-bolt",
+    "actions-system-cache-clear-impact-high": "actions-bolt",
+    "actions-system-cache-clear-impact-medium": "actions-bolt",
+    "actions-system-cache-clear-impact-low": "actions-bolt",
+    "actions-system-cache-clear-rte": "actions-bolt",
+    "actions-edit-pick-date": "actions-calendar-alternative",
+    "actions-move-down": "actions-caret-down",
+    "actions-pagetree-expand": "actions-caret-down",
+    "actions-move-left": "actions-caret-left",
+    "actions-move-right": "actions-caret-right",
+    "actions-pagetree-collapse": "actions-caret-right",
+    "actions-move-up": "actions-caret-up",
+    "actions-check-unmarkstate": "actions-check-square",
+    "actions-view-paging-first": "actions-chevron-bar-left",
+    "actions-view-paging-first-disabled": "actions-chevron-bar-left",
+    "actions-view-paging-last": "actions-chevron-bar-right",
+    "actions-view-paging-last-disabled": "actions-chevron-bar-right",
+    "actions-view-paging-previous": "actions-chevron-double-left",
+    "actions-view-paging-previous-disabled": "actions-chevron-double-left",
+    "actions-view-paging-next": "actions-chevron-double-right",
+    "actions-view-paging-next-disabled": "actions-chevron-double-right",
+    "actions-view-list-expand": "actions-chevron-down",
+    "actions-view-table-collapse": "actions-chevron-left",
+    "actions-view-table-expand": "actions-chevron-right",
+    "actions-view-list-collapse": "actions-chevron-up",
+    "actions-edit-copy-release": "actions-clipboard-close",
+    "actions-document-paste-into": "actions-clipboard-paste",
+    "actions-document-paste": "actions-clipboard-paste",
+    "actions-edit-copy": "actions-clipboard",
+    "actions-message-error-close": "actions-close",
+    "actions-message-information-close": "actions-close",
+    "actions-message-notice-close": "actions-close",
+    "actions-message-ok-close": "actions-close",
+    "actions-message-warning-close": "actions-close",
+    "actions-input-clear": "actions-close",
+    "actions-online-media-add": "actions-cloud",
+    "actions-edit-merge-localization": "actions-code-merge-localization",
+    "actions-merge": "actions-code-merge",
+    "actions-system-extension-configure": "actions-cog-alt",
+    "actions-edit-cut-release": "actions-cut-release",
+    "actions-edit-cut": "actions-cut",
+    "actions-system-extension-sqldump": "actions-database-export",
+    "actions-edit-undelete-edit": "actions-delete-edit",
+    "actions-edit-restore": "actions-delete-restore",
+    "actions-edit-delete": "actions-delete",
+    "actions-selection-delete": "actions-delete",
+    "actions-version-document-remove": "actions-delete",
+    "actions-document-new": "actions-document-add",
+    "actions-document-open": "actions-document-edit",
+    "actions-document-open-read-only": "actions-document-readonly",
+    "actions-insert-reference": "actions-document-share",
+    "actions-system-extension-download": "actions-download",
+    "actions-edit-download": "actions-download",
+    "actions-move-move": "actions-drag",
+    "actions-document-duplicates-select": "actions-duplicates",
+    "actions-system-extension-install": "actions-extension-add",
+    "actions-system-extension-import": "actions-extension-import",
+    "actions-system-extension-update": "actions-extension-refresh",
+    "actions-system-extension-update-disable": "actions-extension-refresh",
+    "actions-system-extension-uninstall": "actions-extension-remove",
+    "actions-version-workspaces-preview-link": "actions-eye-link",
+    "actions-version-workspace-preview": "actions-eye",
+    "actions-view": "actions-eye",
+    "actions-page-new": "actions-file-add",
+    "actions-document-export-csv": "actions-file-csv-download",
+    "actions-version-page-open": "actions-file-edit",
+    "actions-page-open": "actions-file-edit",
+    "actions-system-pagemodule-open": "actions-file-search",
+    "actions-document-export-t3d": "actions-file-t3d-download",
+    "actions-document-import-t3d": "actions-file-t3d-upload",
+    "actions-view-page": "actions-file-view",
+    "actions-system-tree-search-open": "actions-filter",
+    "actions-insert-record": "actions-folder",
+    "actions-document-history-open": "actions-history",
+    "actions-document-info": "actions-info",
+    "actions-edit-insert-default": "actions-insert",
+    "actions-wizard-rte": "actions-link",
+    "actions-wizard-link": "actions-link",
+    "actions-system-list-open": "actions-list-alternative",
+    "actions-edit-localize-status-high": "actions-message-add",
+    "actions-localize": "actions-message-localize",
+    "actions-edit-localize-status-low": "actions-message-remove",
+    "actions-system-typoscript-documentation": "actions-notebook-typoscript",
+    "actions-system-typoscript-documentation-open": "actions-notebook-typoscript",
+    "actions-system-extension-documentation": "actions-notebook",
+    "actions-system-options-view": "actions-options",
+    "actions-pagetree-mountroot": "actions-pagetree-mount",
+    "actions-add-placeholder": "actions-placeholder-add",
+    "actions-system-help-open": "actions-question",
+    "actions-edit-redo": "actions-redo",
+    "actions-system-refresh": "actions-refresh",
+    "actions-edit-rename": "actions-rename",
+    "actions-edit-replace": "actions-replace",
+    "actions-document-save-new": "actions-save-add",
+    "actions-document-save-close": "actions-save-close",
+    "actions-document-save-cleartranslationcache": "actions-save-translation-clearcache",
+    "actions-document-save-translation": "actions-save-translation",
+    "actions-document-save-view": "actions-save-view",
+    "actions-document-save": "actions-save",
+    "actions-check-markstate": "actions-square",
+    "actions-system-shortcut-active": "actions-star",
+    "actions-system-shortcut-new": "actions-star",
+    "actions-version-swap-version": "actions-swap",
+    "actions-version-swap-workspace": "actions-swap",
+    "actions-edit-unhide": "actions-toggle-off",
+    "actions-edit-hide": "actions-toggle-on",
+    "actions-edit-undo": "actions-undo",
+    "actions-edit-upload": "actions-upload",
+    "actions-system-backend-user-emulate": "actions-user-emulate",
+    "actions-system-backend-user-switch": "actions-user-switch",
+    "actions-variable-select": "actions-variable-add"
+  }
+}
