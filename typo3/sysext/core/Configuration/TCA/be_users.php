@@ -331,11 +331,6 @@ return [
                 'fixedFont' => true,
             ],
         ],
-        'createdByAction' => [
-            'config' => [
-                'type' => 'passthrough'
-            ]
-        ],
         'lastlogin' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.lastlogin',
             'config' => [

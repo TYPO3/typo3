@@ -18,7 +18,6 @@
 		<deleted>0</deleted>
 		<TSconfig>NULL</TSconfig>
 		<lastlogin>1371033743</lastlogin>
-		<createdByAction>0</createdByAction>
 		<workspace_id>0</workspace_id>
 	</be_users>
 	<be_users>
@@ -39,7 +38,6 @@
 		<deleted>0</deleted>
 		<TSconfig>NULL</TSconfig>
 		<lastlogin>1452944915</lastlogin>
-		<createdByAction>0</createdByAction>
 		<workspace_id>0</workspace_id>
 		<db_mountpoints>1</db_mountpoints>
 		<usergroup>1</usergroup>

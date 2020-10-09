@@ -9,7 +9,6 @@
 		<admin>0</admin>
 		<disableIPlock>1</disableIPlock>
 		<lastlogin>1371033743</lastlogin>
-		<createdByAction>0</createdByAction>
 		<workspace_id>0</workspace_id>
 	</be_users>
 
@@ -24,7 +23,6 @@
         <admin>0</admin>
         <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
-        <createdByAction>0</createdByAction>
         <workspace_id>0</workspace_id>
     </be_users>
 
@@ -39,7 +37,6 @@
         <admin>0</admin>
         <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
-        <createdByAction>0</createdByAction>
         <workspace_id>0</workspace_id>
     </be_users>
 
@@ -54,7 +51,6 @@
         <admin>0</admin>
         <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
-        <createdByAction>0</createdByAction>
         <workspace_id>0</workspace_id>
     </be_users>
 
@@ -69,7 +65,6 @@
         <admin>0</admin>
         <disableIPlock>1</disableIPlock>
         <lastlogin>1371033743</lastlogin>
-        <createdByAction>0</createdByAction>
         <workspace_id>0</workspace_id>
     </be_users>
 </dataset>

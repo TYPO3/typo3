@@ -58,7 +58,6 @@ CREATE TABLE be_users (
 	disableIPlock tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
-	createdByAction int(11) DEFAULT '0' NOT NULL,
 	usergroup_cached_list text,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
 	category_perms text,
