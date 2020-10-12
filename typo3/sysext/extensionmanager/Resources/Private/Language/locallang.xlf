@@ -338,6 +338,18 @@
 			<trans-unit id="extensionList.showAllVersions.readOnline" resname="extensionList.showAllVersions.readOnline">
 				<source>Read online</source>
 			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.depends" resname="extensionList.showAllVersions.depends">
+				<source>Depends</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.conflicts" resname="extensionList.showAllVersions.conflicts">
+				<source>Conflicts</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.suggests" resname="extensionList.showAllVersions.suggests">
+				<source>Suggests</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.notCompatibleVersion" resname="extensionList.showAllVersions.notCompatibleVersion">
+				<source>Not compatible with your version</source>
+			</trans-unit>
 			<trans-unit id="extensionList.remove.message" resname="extensionList.remove.message">
 				<source>Extension "%s" was removed successfully!</source>
 			</trans-unit>

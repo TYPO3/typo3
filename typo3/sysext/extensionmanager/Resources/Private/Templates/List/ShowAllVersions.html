@@ -43,6 +43,20 @@
                 <th><f:translate key="extensionList.showAllVersions.author" /></th>
                 <td>{currentVersion.authorName}</td>
             </tr>
+            <f:for each="{em:constraints(extension: currentVersion)}" key="type" as="constraintGroup">
+                <tr>
+                    <th><f:translate key="extensionList.showAllVersions.{type}" /></th>
+                    <td>
+                        <f:for each="{constraintGroup}" key="identifier" as="constraint">
+                            <span>{identifier} {constraint.version}</span>
+                            <f:if condition="!{constraint.versionCompatible}">
+                                <span class="label label-warning"><f:translate key="extensionList.showAllVersions.notCompatibleVersion" /></span>
+                            </f:if>
+                            <br/>
+                        </f:for>
+                    </td>
+                </tr>
+            </f:for>
         </table>
     </f:if>
     <f:render partial="List/TerShowVersionsTable" arguments="{tableId: 'terVersionTable', extensions: extensions}" />
