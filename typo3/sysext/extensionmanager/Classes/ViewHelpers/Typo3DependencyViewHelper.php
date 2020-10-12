@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,9 +17,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -39,12 +39,7 @@ class Typo3DependencyViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('extension', Extension::class, '', true);
     }
@@ -58,36 +53,20 @@ class Typo3DependencyViewHelper extends AbstractViewHelper
      *
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
-        $extension = $arguments['extension'];
-        /** @var Dependency $dependency */
-        foreach ($extension->getDependencies() as $dependency) {
-            if ($dependency->getIdentifier() === 'typo3') {
-                $lowestVersion = $dependency->getLowestVersion();
-                $highestVersion = $dependency->getHighestVersion();
-                $cssClass = self::isVersionSuitable($lowestVersion, $highestVersion) ? 'success' : 'default';
-                return
-                    '<span class="label label-' . $cssClass . '">'
-                        . htmlspecialchars($lowestVersion) . ' - ' . htmlspecialchars($highestVersion)
-                    . '</span>';
-            }
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): string {
+        $dependency = $arguments['extension']->getTypo3Dependency();
+        if ($dependency === null) {
+            return '';
         }
-        return '';
-    }
-
-    /**
-     * Check if current TYPO3 version is suitable for the extension
-     *
-     * @param string $lowestVersion
-     * @param string $highestVersion
-     * @return bool
-     */
-    protected static function isVersionSuitable($lowestVersion, $highestVersion)
-    {
-        $numericTypo3Version = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
-        $numericLowestVersion = VersionNumberUtility::convertVersionNumberToInteger($lowestVersion);
-        $numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($highestVersion);
-        return MathUtility::isIntegerInRange($numericTypo3Version, $numericLowestVersion, $numericHighestVersion);
+        return sprintf(
+            '<span class="label label-%s">%s - %s</span>',
+            $dependency->isVersionCompatible(VersionNumberUtility::getNumericTypo3Version()) ? 'success' : 'default',
+            htmlspecialchars($dependency->getLowestVersion()),
+            htmlspecialchars($dependency->getHighestVersion())
+        );
     }
 }

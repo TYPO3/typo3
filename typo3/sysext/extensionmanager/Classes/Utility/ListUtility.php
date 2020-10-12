@@ -50,11 +50,6 @@ class ListUtility implements SingletonInterface
     protected $extensionRepository;
 
     /**
-     * @var InstallUtility
-     */
-    protected $installUtility;
-
-    /**
      * @var PackageManager
      */
     protected $packageManager;
@@ -68,6 +63,11 @@ class ListUtility implements SingletonInterface
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
+
+    /**
+     * @var DependencyUtility
+     */
+    protected $dependencyUtility;
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -91,19 +91,19 @@ class ListUtility implements SingletonInterface
     }
 
     /**
-     * @param InstallUtility $installUtility
-     */
-    public function injectInstallUtility(InstallUtility $installUtility)
-    {
-        $this->installUtility = $installUtility;
-    }
-
-    /**
      * @param PackageManager $packageManager
      */
     public function injectPackageManager(PackageManager $packageManager)
     {
         $this->packageManager = $packageManager;
+    }
+
+    /**
+     * @param DependencyUtility $dependencyUtility
+     */
+    public function injectDependencyUtility(DependencyUtility $dependencyUtility)
+    {
+        $this->dependencyUtility = $dependencyUtility;
     }
 
     /**
@@ -215,12 +215,12 @@ class ListUtility implements SingletonInterface
         $extensions = $this->enrichExtensionsWithEmConfInformation($extensions);
         foreach ($extensions as $extensionKey => $properties) {
             $terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version'] ?? '');
-            if ($terObject !== null) {
+            if ($terObject instanceof Extension) {
                 $extensions[$extensionKey]['terObject'] = $terObject;
                 $extensions[$extensionKey]['updateAvailable'] = false;
                 $extensions[$extensionKey]['updateToVersion'] = null;
-                $extensionToUpdate = $this->installUtility->getUpdateableVersion($terObject);
-                if ($extensionToUpdate !== false) {
+                $extensionToUpdate = $this->getUpdateableVersion($terObject);
+                if ($extensionToUpdate instanceof Extension) {
                     $extensions[$extensionKey]['updateAvailable'] = true;
                     $extensions[$extensionKey]['updateToVersion'] = $extensionToUpdate;
                 }
@@ -238,7 +238,7 @@ class ListUtility implements SingletonInterface
      * @param string $version String representation of version number
      * @return Extension|null Extension TER object or NULL if nothing found
      */
-    protected function getExtensionTerData($extensionKey, $version)
+    protected function getExtensionTerData($extensionKey, $version): ?Extension
     {
         $terObject = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);
         if (!$terObject instanceof Extension) {
@@ -272,5 +272,33 @@ class ListUtility implements SingletonInterface
         $availableExtensions = $this->getAvailableExtensions($filter);
         $availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
         return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
+    }
+
+    /**
+     * Returns the updateable version for an extension which also resolves dependencies.
+     *
+     * @param Extension $extensionData
+     * @return Extension|null null if no update available otherwise latest possible update
+     */
+    protected function getUpdateableVersion(Extension $extensionData): ?Extension
+    {
+        // Only check for update for TER extensions
+        $version = $extensionData->getIntegerVersion();
+        $extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
+            $extensionData->getExtensionKey(),
+            $version,
+            0,
+            false
+        );
+        if ($extensionUpdates->count() > 0) {
+            foreach ($extensionUpdates as $extensionUpdate) {
+                /** @var Extension $extensionUpdate */
+                $this->dependencyUtility->checkDependencies($extensionUpdate);
+                if (!$this->dependencyUtility->hasDependencyErrors()) {
+                    return $extensionUpdate;
+                }
+            }
+        }
+        return null;
     }
 }

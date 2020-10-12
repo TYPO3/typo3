@@ -25,8 +25,6 @@ use TYPO3\CMS\Extensionmanager\Exception;
 use TYPO3\CMS\Extensionmanager\Exception\MissingExtensionDependencyException;
 use TYPO3\CMS\Extensionmanager\Exception\MissingVersionDependencyException;
 use TYPO3\CMS\Extensionmanager\Exception\UnresolvedDependencyException;
-use TYPO3\CMS\Extensionmanager\Exception\UnresolvedPhpDependencyException;
-use TYPO3\CMS\Extensionmanager\Exception\UnresolvedTypo3DependencyException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 
 /**
@@ -130,17 +128,20 @@ class DependencyUtility implements SingletonInterface
         $dependencies = $extension->getDependencies();
         foreach ($dependencies as $dependency) {
             /** @var Dependency $dependency */
-            $identifier = strtolower($dependency->getIdentifier());
+            $identifier = $dependency->getIdentifier();
             try {
                 if (in_array($identifier, Dependency::$specialDependencies)) {
-                    if (!$this->skipDependencyCheck) {
-                        $methodName = 'check' . ucfirst($identifier) . 'Dependency';
-                        $this->{$methodName}($dependency);
+                    if ($this->skipDependencyCheck) {
+                        continue;
                     }
-                } else {
-                    if ($dependency->getType() === 'depends') {
-                        $this->checkExtensionDependency($dependency);
+                    if ($identifier === 'typo3') {
+                        $this->checkTypo3Dependency($dependency, VersionNumberUtility::getNumericTypo3Version());
                     }
+                    if ($identifier === 'php') {
+                        $this->checkPhpDependency($dependency, PHP_VERSION);
+                    }
+                } elseif ($dependency->getType() === 'depends') {
+                    $this->checkExtensionDependency($dependency);
                 }
             } catch (UnresolvedDependencyException $e) {
                 if (in_array($identifier, Dependency::$specialDependencies)) {
@@ -174,7 +175,7 @@ class DependencyUtility implements SingletonInterface
      *
      * @return array
      */
-    public function getDependencyErrors()
+    public function getDependencyErrors(): array
     {
         return $this->dependencyErrors;
     }
@@ -183,27 +184,27 @@ class DependencyUtility implements SingletonInterface
      * Returns true if current TYPO3 version fulfills extension requirements
      *
      * @param Dependency $dependency
-     * @throws Exception\UnresolvedTypo3DependencyException
+     * @param string $version
      * @return bool
+     * @throws Exception\UnresolvedTypo3DependencyException
      */
-    protected function checkTypo3Dependency(Dependency $dependency)
+    protected function checkTypo3Dependency(Dependency $dependency, string $version): bool
     {
-        $lowerCaseIdentifier = strtolower($dependency->getIdentifier());
-        if ($lowerCaseIdentifier === 'typo3') {
-            if (!($dependency->getLowestVersion() === '') && version_compare(VersionNumberUtility::getNumericTypo3Version(), $dependency->getLowestVersion()) === -1) {
-                throw new UnresolvedTypo3DependencyException(
+        if ($dependency->getIdentifier() === 'typo3') {
+            if (!($dependency->getLowestVersion() === '') && version_compare($version, $dependency->getLowestVersion()) === -1) {
+                throw new Exception\UnresolvedTypo3DependencyException(
                     'Your TYPO3 version is lower than this extension requires. It requires TYPO3 versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
                     1399144499
                 );
             }
-            if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), VersionNumberUtility::getNumericTypo3Version()) === -1) {
-                throw new UnresolvedTypo3DependencyException(
+            if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), $version) === -1) {
+                throw new Exception\UnresolvedTypo3DependencyException(
                     'Your TYPO3 version is higher than this extension requires. It requires TYPO3 versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
                     1399144521
                 );
             }
         } else {
-            throw new UnresolvedTypo3DependencyException(
+            throw new Exception\UnresolvedTypo3DependencyException(
                 'checkTypo3Dependency can only check TYPO3 dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"',
                 1399144551
             );
@@ -215,27 +216,27 @@ class DependencyUtility implements SingletonInterface
      * Returns true if current php version fulfills extension requirements
      *
      * @param Dependency $dependency
+     * @param string $version
      * @throws Exception\UnresolvedPhpDependencyException
      * @return bool
      */
-    protected function checkPhpDependency(Dependency $dependency)
+    protected function checkPhpDependency(Dependency $dependency, string $version): bool
     {
-        $lowerCaseIdentifier = strtolower($dependency->getIdentifier());
-        if ($lowerCaseIdentifier === 'php') {
-            if (!($dependency->getLowestVersion() === '') && version_compare(PHP_VERSION, $dependency->getLowestVersion()) === -1) {
-                throw new UnresolvedPhpDependencyException(
+        if ($dependency->getIdentifier() === 'php') {
+            if (!($dependency->getLowestVersion() === '') && version_compare($version, $dependency->getLowestVersion()) === -1) {
+                throw new Exception\UnresolvedPhpDependencyException(
                     'Your PHP version is lower than necessary. You need at least PHP version ' . $dependency->getLowestVersion(),
                     1377977857
                 );
             }
-            if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), PHP_VERSION) === -1) {
-                throw new UnresolvedPhpDependencyException(
+            if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), $version) === -1) {
+                throw new Exception\UnresolvedPhpDependencyException(
                     'Your PHP version is higher than allowed. You can use PHP versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
                     1377977856
                 );
             }
         } else {
-            throw new UnresolvedPhpDependencyException(
+            throw new Exception\UnresolvedPhpDependencyException(
                 'checkPhpDependency can only check PHP dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"',
                 1377977858
             );
@@ -260,8 +261,7 @@ class DependencyUtility implements SingletonInterface
         $extensionKey = $dependency->getIdentifier();
         $extensionIsLoaded = $this->isDependentExtensionLoaded($extensionKey);
         if ($extensionIsLoaded === true) {
-            $isLoadedVersionCompatible = $this->isLoadedVersionCompatible($dependency);
-            if ($isLoadedVersionCompatible === true || $this->skipDependencyCheck) {
+            if ($this->skipDependencyCheck || $this->isLoadedVersionCompatible($dependency)) {
                 return true;
             }
             $extension = $this->listUtility->getExtension($extensionKey);
@@ -333,7 +333,7 @@ class DependencyUtility implements SingletonInterface
      *
      * @param string $extensionKey
      * @param Dependency $dependency
-     * @throws Exception\UnresolvedDependencyException
+     * @throws MissingExtensionDependencyException
      */
     protected function downloadExtensionFromRemote(string $extensionKey, Dependency $dependency)
     {
@@ -364,8 +364,8 @@ class DependencyUtility implements SingletonInterface
             return;
         }
 
-        $latestCompatibleExtensionByIntegerVersionDependency = $this->getLatestCompatibleExtensionByIntegerVersionDependency($dependency);
-        if (!$latestCompatibleExtensionByIntegerVersionDependency instanceof Extension) {
+        $latestCompatibleExtensionByDependency = $this->getLatestCompatibleExtensionByDependency($dependency);
+        if (!$latestCompatibleExtensionByDependency instanceof Extension) {
             if (!$this->skipDependencyCheck) {
                 throw new MissingExtensionDependencyException(
                     'Could not resolve dependency for "' . $dependency->getIdentifier() . '"',
@@ -376,9 +376,9 @@ class DependencyUtility implements SingletonInterface
         }
 
         if ($this->isDependentExtensionLoaded($extensionKey)) {
-            $this->managementService->markExtensionForUpdate($latestCompatibleExtensionByIntegerVersionDependency);
+            $this->managementService->markExtensionForUpdate($latestCompatibleExtensionByDependency);
         } else {
-            $this->managementService->markExtensionForDownload($latestCompatibleExtensionByIntegerVersionDependency);
+            $this->managementService->markExtensionForDownload($latestCompatibleExtensionByDependency);
         }
     }
 
@@ -395,26 +395,10 @@ class DependencyUtility implements SingletonInterface
      * @param Dependency $dependency
      * @return bool
      */
-    protected function isLoadedVersionCompatible(Dependency $dependency)
+    protected function isLoadedVersionCompatible(Dependency $dependency): bool
     {
         $extensionVersion = ExtensionManagementUtility::getExtensionVersion($dependency->getIdentifier());
-        return $this->isVersionCompatible($extensionVersion, $dependency);
-    }
-
-    /**
-     * @param string $version
-     * @param Dependency $dependency
-     * @return bool
-     */
-    protected function isVersionCompatible($version, Dependency $dependency)
-    {
-        if (!($dependency->getLowestVersion() === '') && version_compare($version, $dependency->getLowestVersion()) === -1) {
-            return false;
-        }
-        if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), $version) === -1) {
-            return false;
-        }
-        return true;
+        return $dependency->isVersionCompatible($extensionVersion);
     }
 
     /**
@@ -424,7 +408,7 @@ class DependencyUtility implements SingletonInterface
      * @param string $extensionKey
      * @return bool
      */
-    protected function isDependentExtensionAvailable($extensionKey)
+    protected function isDependentExtensionAvailable(string $extensionKey): bool
     {
         $this->setAvailableExtensions();
         return array_key_exists($extensionKey, $this->availableExtensions);
@@ -436,14 +420,14 @@ class DependencyUtility implements SingletonInterface
      * @param Dependency $dependency
      * @return bool
      */
-    protected function isAvailableVersionCompatible(Dependency $dependency)
+    protected function isAvailableVersionCompatible(Dependency $dependency): bool
     {
         $this->setAvailableExtensions();
         $extensionData = $this->emConfUtility->includeEmConf(
             $dependency->getIdentifier(),
             $this->availableExtensions[$dependency->getIdentifier()]
         );
-        return $this->isVersionCompatible($extensionData['version'], $dependency);
+        return $dependency->isVersionCompatible($extensionData['version']);
     }
 
     /**
@@ -452,7 +436,7 @@ class DependencyUtility implements SingletonInterface
      * @param string $extensionKey
      * @return bool
      */
-    protected function isExtensionDownloadableFromRemote($extensionKey)
+    protected function isExtensionDownloadableFromRemote(string $extensionKey): bool
     {
         return $this->extensionRepository->countByExtensionKey($extensionKey) > 0;
     }
@@ -463,13 +447,12 @@ class DependencyUtility implements SingletonInterface
      * @param Dependency $dependency
      * @return bool
      */
-    protected function isDownloadableVersionCompatible(Dependency $dependency)
+    protected function isDownloadableVersionCompatible(Dependency $dependency): bool
     {
-        $versions = $this->getLowestAndHighestIntegerVersions($dependency);
         $count = $this->extensionRepository->countByVersionRangeAndExtensionKey(
             $dependency->getIdentifier(),
-            $versions['lowestIntegerVersion'],
-            $versions['highestIntegerVersion']
+            $dependency->getLowestVersionAsInteger(),
+            $dependency->getHighestVersionAsInteger()
         );
         return !empty($count);
     }
@@ -505,110 +488,15 @@ class DependencyUtility implements SingletonInterface
      * fulfills the given dependency from TER
      *
      * @param Dependency $dependency
-     * @return Extension
+     * @return Extension|null
      */
-    protected function getLatestCompatibleExtensionByIntegerVersionDependency(Dependency $dependency)
+    protected function getLatestCompatibleExtensionByDependency(Dependency $dependency): ?Extension
     {
-        $versions = $this->getLowestAndHighestIntegerVersions($dependency);
         $compatibleDataSets = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $dependency->getIdentifier(),
-            $versions['lowestIntegerVersion'],
-            $versions['highestIntegerVersion']
+            $dependency->getLowestVersionAsInteger(),
+            $dependency->getHighestVersionAsInteger()
         );
         return $this->getCompatibleExtension($compatibleDataSets);
-    }
-
-    /**
-     * Return array of lowest and highest version of dependency as integer
-     *
-     * @param Dependency $dependency
-     * @return array
-     */
-    protected function getLowestAndHighestIntegerVersions(Dependency $dependency)
-    {
-        $lowestVersion = $dependency->getLowestVersion();
-        $lowestVersionInteger = $lowestVersion ? VersionNumberUtility::convertVersionNumberToInteger($lowestVersion) : 0;
-        $highestVersion = $dependency->getHighestVersion();
-        $highestVersionInteger = $highestVersion ? VersionNumberUtility::convertVersionNumberToInteger($highestVersion) : 0;
-        return [
-            'lowestIntegerVersion' => $lowestVersionInteger,
-            'highestIntegerVersion' => $highestVersionInteger
-        ];
-    }
-
-    /**
-     * @param string $extensionKey
-     * @return array
-     */
-    public function findInstalledExtensionsThatDependOnMe($extensionKey)
-    {
-        $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-        $dependentExtensions = [];
-        foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
-            if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === true) {
-                if (is_array($availableAndInstalledExtension['constraints']) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
-                    $dependentExtensions[] = $availableAndInstalledExtensionKey;
-                }
-            }
-        }
-        return $dependentExtensions;
-    }
-
-    /**
-     * Get extensions (out of a given list) that are suitable for the current TYPO3 version
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array $extensions List of extensions to check
-     * @return array List of extensions suitable for current TYPO3 version
-     */
-    public function getExtensionsSuitableForTypo3Version($extensions)
-    {
-        $suitableExtensions = [];
-        /** @var Extension $extension */
-        foreach ($extensions as $extension) {
-            /** @var Dependency $dependency */
-            foreach ($extension->getDependencies() as $dependency) {
-                if ($dependency->getIdentifier() === 'typo3') {
-                    try {
-                        if ($this->checkTypo3Dependency($dependency)) {
-                            $suitableExtensions[] = $extension;
-                        }
-                    } catch (UnresolvedTypo3DependencyException $e) {
-                    }
-                    break;
-                }
-            }
-        }
-        return $suitableExtensions;
-    }
-
-    /**
-     * Gets a list of various extensions in various versions and returns
-     * a filtered list containing the extension-version combination with
-     * the highest version number.
-     *
-     * @param Extension[] $extensions
-     * @param bool $showUnsuitable
-     *
-     * @return Extension[]
-     */
-    public function filterYoungestVersionOfExtensionList(array $extensions, $showUnsuitable)
-    {
-        if (!$showUnsuitable) {
-            $extensions = $this->getExtensionsSuitableForTypo3Version($extensions);
-        }
-        $filteredExtensions = [];
-        foreach ($extensions as $extension) {
-            $extensionKey = $extension->getExtensionKey();
-            if (!array_key_exists($extensionKey, $filteredExtensions)) {
-                $filteredExtensions[$extensionKey] = $extension;
-                continue;
-            }
-            $currentVersion = $filteredExtensions[$extensionKey]->getVersion();
-            $newVersion = $extension->getVersion();
-            if (version_compare($newVersion, $currentVersion, '>')) {
-                $filteredExtensions[$extensionKey] = $extension;
-            }
-        }
-        return $filteredExtensions;
     }
 }

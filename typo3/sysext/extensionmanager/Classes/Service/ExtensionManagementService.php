@@ -26,7 +26,6 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
-use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
@@ -49,11 +48,6 @@ class ExtensionManagementService implements SingletonInterface
      * @var InstallUtility
      */
     protected $installUtility;
-
-    /**
-     * @var ExtensionModelUtility
-     */
-    protected $extensionModelUtility;
 
     /**
      * @var bool
@@ -118,14 +112,6 @@ class ExtensionManagementService implements SingletonInterface
     public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
-    }
-
-    /**
-     * @param ExtensionModelUtility $extensionModelUtility
-     */
-    public function injectExtensionModelUtility(ExtensionModelUtility $extensionModelUtility)
-    {
-        $this->extensionModelUtility = $extensionModelUtility;
     }
 
     /**
@@ -258,7 +244,7 @@ class ExtensionManagementService implements SingletonInterface
      */
     public function getExtension($extensionKey)
     {
-        return $this->extensionModelUtility->mapExtensionArrayToModel(
+        return Extension::createFromExtensionArray(
             $this->installUtility->enrichExtensionWithDetails($extensionKey)
         );
     }

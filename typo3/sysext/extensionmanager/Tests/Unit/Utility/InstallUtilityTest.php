@@ -222,15 +222,6 @@ class InstallUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function uninstallCallsUnloadExtension()
-    {
-        $this->installMock->expects(self::once())->method('unloadExtension');
-        $this->installMock->uninstall($this->extensionKey);
-    }
-
-    /**
      * @return array
      */
     public function importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider(): array

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -242,9 +243,10 @@ class ExtensionRepository extends Repository
     /**
      * Finds all extensions with category "distribution" not published by the TYPO3 CMS Team
      *
-     * @return QueryResultInterface
+     * @param bool $showUnsuitableDistributions
+     * @return Extension[]
      */
-    public function findAllCommunityDistributions()
+    public function findAllCommunityDistributions(bool $showUnsuitableDistributions = false): array
     {
         $query = $this->createQuery();
         $query->matching(
@@ -258,15 +260,16 @@ class ExtensionRepository extends Repository
             'alldownloadcounter' => QueryInterface::ORDER_DESCENDING
         ]);
 
-        return $query->execute();
+        return $this->filterYoungestVersionOfExtensionList($query->execute()->toArray(), $showUnsuitableDistributions);
     }
 
     /**
      * Finds all extensions with category "distribution" that are published by the TYPO3 CMS Team
      *
-     * @return QueryResultInterface
+     * @param bool $showUnsuitableDistributions
+     * @return Extension[]
      */
-    public function findAllOfficialDistributions()
+    public function findAllOfficialDistributions(bool $showUnsuitableDistributions = false): array
     {
         $query = $this->createQuery();
         $query->matching(
@@ -280,7 +283,7 @@ class ExtensionRepository extends Repository
             'alldownloadcounter' => QueryInterface::ORDER_DESCENDING
         ]);
 
-        return $query->execute();
+        return $this->filterYoungestVersionOfExtensionList($query->execute()->toArray(), $showUnsuitableDistributions);
     }
 
     /**
@@ -334,5 +337,53 @@ class ExtensionRepository extends Repository
             ));
         }
         return $query;
+    }
+
+    /**
+     * Get extensions (out of a given list) that are suitable for the current TYPO3 version
+     *
+     * @param Extension[] $extensions List of extensions to check
+     * @return Extension[] List of extensions suitable for current TYPO3 version
+     */
+    protected function getExtensionsSuitableForTypo3Version(array $extensions): array
+    {
+        $suitableExtensions = [];
+        foreach ($extensions as $extension) {
+            $dependency = $extension->getTypo3Dependency();
+            if ($dependency !== null && $dependency->isVersionCompatible(VersionNumberUtility::getNumericTypo3Version())) {
+                $suitableExtensions[] = $extension;
+            }
+        }
+        return $suitableExtensions;
+    }
+
+    /**
+     * Get a list of various extensions in various versions and returns
+     * a filtered list containing the extension-version combination with
+     * the highest version number.
+     *
+     * @param Extension[] $extensions
+     * @param bool $showUnsuitable
+     * @return Extension[]
+     */
+    protected function filterYoungestVersionOfExtensionList(array $extensions, bool $showUnsuitable): array
+    {
+        if (!$showUnsuitable) {
+            $extensions = $this->getExtensionsSuitableForTypo3Version($extensions);
+        }
+        $filteredExtensions = [];
+        foreach ($extensions as $extension) {
+            $extensionKey = $extension->getExtensionKey();
+            if (!array_key_exists($extensionKey, $filteredExtensions)) {
+                $filteredExtensions[$extensionKey] = $extension;
+                continue;
+            }
+            $currentVersion = $filteredExtensions[$extensionKey]->getVersion();
+            $newVersion = $extension->getVersion();
+            if (version_compare($newVersion, $currentVersion, '>')) {
+                $filteredExtensions[$extensionKey] = $extension;
+            }
+        }
+        return $filteredExtensions;
     }
 }

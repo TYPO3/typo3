@@ -36,8 +36,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
@@ -55,11 +53,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
-     */
-    protected $dependencyUtility;
-
-    /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
      */
     protected $fileHandlingUtility;
@@ -68,11 +61,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
      */
     protected $listUtility;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-     */
-    public $extensionRepository;
 
     /**
      * @var \TYPO3\CMS\Core\Package\PackageManager
@@ -105,14 +93,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
-     */
-    public function injectDependencyUtility(DependencyUtility $dependencyUtility)
-    {
-        $this->dependencyUtility = $dependencyUtility;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
      */
     public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
@@ -126,14 +106,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
-        $this->extensionRepository = $extensionRepository;
     }
 
     /**
@@ -229,8 +201,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function uninstall($extensionKey)
     {
-        $dependentExtensions = $this->dependencyUtility->findInstalledExtensionsThatDependOnMe($extensionKey);
-        if (is_array($dependentExtensions) && !empty($dependentExtensions)) {
+        $dependentExtensions = $this->findInstalledExtensionsThatDependOnExtension((string)$extensionKey);
+        if (!empty($dependentExtensions)) {
             throw new ExtensionManagerException(
                 LocalizationUtility::translate(
                     'extensionList.uninstall.dependencyError',
@@ -244,14 +216,25 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Wrapper function to check for loaded extensions
+     * Find installed extensions which depend on the given extension.
+     * This is used at extension uninstall to stop the process if an installed
+     * extension depends on the extension to be uninstalled.
      *
      * @param string $extensionKey
-     * @return bool TRUE if extension is loaded
+     * @return array
      */
-    public function isLoaded($extensionKey)
+    protected function findInstalledExtensionsThatDependOnExtension(string $extensionKey): array
     {
-        return $this->packageManager->isPackageActive($extensionKey);
+        $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+        $dependentExtensions = [];
+        foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
+            if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === true) {
+                if (is_array($availableAndInstalledExtension['constraints']) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
+                    $dependentExtensions[] = $availableAndInstalledExtensionKey;
+                }
+            }
+        }
+        return $dependentExtensions;
     }
 
     /**
@@ -449,39 +432,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         } else {
             throw new ExtensionManagerException('No valid extension path given.', 1342875724);
         }
-    }
-
-    /**
-     * Returns the updateable version for an extension which also resolves dependencies.
-     *
-     * @param Extension $extensionData
-     * @return bool|Extension FALSE if no update available otherwise latest possible update
-     * @internal
-     */
-    public function getUpdateableVersion(Extension $extensionData)
-    {
-        // Only check for update for TER extensions
-        $version = $extensionData->getIntegerVersion();
-
-        $extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
-            $extensionData->getExtensionKey(),
-            $version,
-            0,
-            false
-        );
-        if ($extensionUpdates->count() > 0) {
-            foreach ($extensionUpdates as $extensionUpdate) {
-                /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionUpdate */
-                try {
-                    $this->dependencyUtility->checkDependencies($extensionUpdate);
-                    if (!$this->dependencyUtility->hasDependencyErrors()) {
-                        return $extensionUpdate;
-                    }
-                } catch (ExtensionManagerException $e) {
-                }
-            }
-        }
-        return false;
     }
 
     /**

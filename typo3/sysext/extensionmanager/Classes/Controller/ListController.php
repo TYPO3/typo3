@@ -32,11 +32,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
-use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
@@ -189,8 +189,7 @@ class ListController extends AbstractModuleController
                     $extensionKey => $availableExtensions[$extensionKey]
                 ]
             );
-            $extensionModelUtility = GeneralUtility::makeInstance(ExtensionModelUtility::class);
-            $extension = $extensionModelUtility->mapExtensionArrayToModel($extensionArray[$extensionKey]);
+            $extension = Extension::createFromExtensionArray($extensionArray[$extensionKey]);
         } else {
             throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
         }
@@ -250,11 +249,8 @@ class ListController extends AbstractModuleController
                 $this->addFlashMessage($e->getMessage(), $e->getCode(), FlashMessage::ERROR);
             }
 
-            $officialDistributions = $this->extensionRepository->findAllOfficialDistributions();
-            $communityDistributions = $this->extensionRepository->findAllCommunityDistributions();
-
-            $officialDistributions = $this->dependencyUtility->filterYoungestVersionOfExtensionList($officialDistributions->toArray(), $showUnsuitableDistributions);
-            $communityDistributions = $this->dependencyUtility->filterYoungestVersionOfExtensionList($communityDistributions->toArray(), $showUnsuitableDistributions);
+            $officialDistributions = $this->extensionRepository->findAllOfficialDistributions($showUnsuitableDistributions);
+            $communityDistributions = $this->extensionRepository->findAllCommunityDistributions($showUnsuitableDistributions);
 
             $this->view->assign('officialDistributions', $officialDistributions);
             $this->view->assign('communityDistributions', $communityDistributions);

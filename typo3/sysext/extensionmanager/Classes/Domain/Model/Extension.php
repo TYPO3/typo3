@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 
 /**
  * Main extension model
@@ -523,10 +522,19 @@ class Extension extends AbstractEntity
     public function getDependencies()
     {
         if (!is_object($this->dependencies)) {
-            $extensionModelUtility = GeneralUtility::makeInstance(ExtensionModelUtility::class);
-            $this->setDependencies($extensionModelUtility->convertDependenciesToObjects($this->getSerializedDependencies()));
+            $this->setDependencies($this->convertDependenciesToObjects($this->getSerializedDependencies()));
         }
         return $this->dependencies;
+    }
+
+    public function getTypo3Dependency(): ?Dependency
+    {
+        foreach ($this->getDependencies() as $dependency) {
+            if ($dependency->getIdentifier() === 'typo3') {
+                return $dependency;
+            }
+        }
+        return null;
     }
 
     /**
@@ -620,5 +628,58 @@ class Extension extends AbstractEntity
     public function getRemoteIdentifier(): string
     {
         return $this->remote;
+    }
+
+    /**
+     * Map a legacy extension array to an object
+     *
+     * @param array $extensionArray
+     * @return Extension
+     */
+    public static function createFromExtensionArray(array $extensionArray): self
+    {
+        $extension = GeneralUtility::makeInstance(self::class);
+        $extension->setExtensionKey($extensionArray['key']);
+        if (isset($extensionArray['version'])) {
+            $extension->setVersion($extensionArray['version']);
+        }
+        if (isset($extensionArray['remote'])) {
+            $extension->remote = $extensionArray['remote'];
+        }
+        if (isset($extensionArray['constraints'])) {
+            $extension->setDependencies($extension->convertDependenciesToObjects(is_array($extensionArray['constraints']) ? serialize($extensionArray['constraints']) : $extensionArray['constraints']));
+        }
+        return $extension;
+    }
+
+    /**
+     * Converts string dependencies to an object storage of dependencies
+     *
+     * @param string $dependencies
+     * @return \SplObjectStorage
+     */
+    protected function convertDependenciesToObjects(string $dependencies): \SplObjectStorage
+    {
+        $dependenciesObject = new \SplObjectStorage();
+        $unserializedDependencies = unserialize($dependencies, ['allowed_classes' => false]);
+        if (!is_array($unserializedDependencies)) {
+            return $dependenciesObject;
+        }
+        foreach ($unserializedDependencies as $dependencyType => $dependencyValues) {
+            // Dependencies might be given as empty string, e.g. conflicts => ''
+            if (!is_array($dependencyValues)) {
+                continue;
+            }
+            if (!$dependencyType) {
+                continue;
+            }
+            foreach ($dependencyValues as $dependency => $versionConstraint) {
+                if ($dependency) {
+                    $dependencyObject = Dependency::createFromEmConf($dependency, $versionConstraint, $dependencyType);
+                    $dependenciesObject->attach($dependencyObject);
+                }
+            }
+        }
+        return $dependenciesObject;
     }
 }

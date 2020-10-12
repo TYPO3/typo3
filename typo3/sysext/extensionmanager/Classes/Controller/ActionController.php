@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
-use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
@@ -48,11 +48,6 @@ class ActionController extends AbstractController
     protected $fileHandlingUtility;
 
     /**
-     * @var ExtensionModelUtility
-     */
-    protected $extensionModelUtility;
-
-    /**
      * @var ExtensionManagementService
      */
     protected $managementService;
@@ -71,14 +66,6 @@ class ActionController extends AbstractController
     public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
     {
         $this->fileHandlingUtility = $fileHandlingUtility;
-    }
-
-    /**
-     * @param ExtensionModelUtility $extensionModelUtility
-     */
-    public function injectExtensionModelUtility(ExtensionModelUtility $extensionModelUtility)
-    {
-        $this->extensionModelUtility = $extensionModelUtility;
     }
 
     /**
@@ -103,7 +90,7 @@ class ActionController extends AbstractController
                 $this->installUtility->uninstall($extensionKey);
             } else {
                 // install
-                $extension = $this->extensionModelUtility->mapExtensionArrayToModel(
+                $extension = Extension::createFromExtensionArray(
                     $this->installUtility->enrichExtensionWithDetails($extensionKey, false)
                 );
                 if ($this->managementService->installExtension($extension) === false) {

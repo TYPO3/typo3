@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,14 +17,14 @@
 
 namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
- * Main extension model
+ * Value Object of a single dependency of an extension
  * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
-class Dependency extends AbstractEntity
+class Dependency
 {
     /**
      * @var string
@@ -61,72 +63,97 @@ class Dependency extends AbstractEntity
         'php'
     ];
 
-    /**
-     * @param string $highestVersion
-     */
-    public function setHighestVersion($highestVersion)
+    private function __construct(string $identifier, string $type, string $lowestVersion, string $highestVersion)
     {
+        $this->identifier = $identifier;
+        $this->type = $type;
+        $this->lowestVersion = $lowestVersion;
         $this->highestVersion = $highestVersion;
     }
 
     /**
-     * @return string
+     * Use this factory when building dependencies of an extension, like ["depends"]["news"] => '1.0.0-2.6.9'
+     *
+     * @param string $identifier the extension name or "typo3" or "php" for TYPO3 Core / PHP version constraints
+     * @param string $versionConstraint the actual version number. "1.0.0-2.0.0" or "1.0.0" which means "1.0.0 or higher"
+     * @param string $dependencyType use "depends", "suggests" or "conflicts".
+     * @return static
+     * @throws ExtensionManagerException
      */
-    public function getHighestVersion()
+    public static function createFromEmConf(
+        string $identifier,
+        string $versionConstraint = '',
+        string $dependencyType = 'depends'
+    ): self {
+        $versionNumbers = VersionNumberUtility::convertVersionsStringToVersionNumbers($versionConstraint);
+        $lowest = $versionNumbers[0];
+        if (count($versionNumbers) === 2) {
+            $highest = $versionNumbers[1];
+        } else {
+            $highest = '';
+        }
+        if (!in_array($dependencyType, self::$dependencyTypes, true)) {
+            throw new ExtensionManagerException($dependencyType . ' was not a valid dependency type.', 1476122402);
+        }
+        // dynamically migrate 'cms' dependency to 'core' dependency
+        // see also \TYPO3\CMS\Core\Package\Package::getPackageMetaData
+        $identifier = strtolower($identifier);
+        $identifier = $identifier === 'cms' ? 'core' : $identifier;
+        return new self($identifier, $dependencyType, (string)$lowest, (string)$highest);
+    }
+
+    public function getHighestVersion(): string
     {
         return $this->highestVersion;
     }
 
-    /**
-     * @param string $identifier
-     */
-    public function setIdentifier($identifier)
-    {
-        $this->identifier = $identifier;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @param string $lowestVersion
-     */
-    public function setLowestVersion($lowestVersion)
-    {
-        $this->lowestVersion = $lowestVersion;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLowestVersion()
+    public function getLowestVersion(): string
     {
         return $this->lowestVersion;
     }
 
-    /**
-     * @param string $type
-     * @throws ExtensionManagerException if no valid dependency type was given
-     */
-    public function setType($type)
+    public function getType(): string
     {
-        if (in_array($type, self::$dependencyTypes)) {
-            $this->type = $type;
-        } else {
-            throw new ExtensionManagerException($type . ' was not a valid dependency type.', 1476122402);
-        }
+        return $this->type;
     }
 
     /**
-     * @return string
+     * Compares the given version number against the lowest and highest
+     * possible version number of this dependency (e.g. "typo3") to
+     * determine if the given version is "compatible".
+     *
+     * @param string $version
+     * @return bool TRUE if the version number is compatible
      */
-    public function getType()
+    public function isVersionCompatible(string $version): bool
     {
-        return $this->type;
+        if ($this->lowestVersion !== '' && version_compare($version, $this->lowestVersion) === -1) {
+            return false;
+        }
+        if ($this->highestVersion !== '' && version_compare($this->highestVersion, $version) === -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public function getLowestVersionAsInteger(): int
+    {
+        if ($this->lowestVersion) {
+            return VersionNumberUtility::convertVersionNumberToInteger($this->lowestVersion);
+        }
+        return 0;
+    }
+
+    public function getHighestVersionAsInteger(): int
+    {
+        if ($this->highestVersion) {
+            return VersionNumberUtility::convertVersionNumberToInteger($this->highestVersion);
+        }
+        return 0;
     }
 }

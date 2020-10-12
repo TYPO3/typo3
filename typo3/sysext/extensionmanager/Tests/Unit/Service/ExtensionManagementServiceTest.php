@@ -25,7 +25,6 @@ use TYPO3\CMS\Extensionmanager\Remote\ExtensionDownloaderRemoteInterface;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
-use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -39,7 +38,6 @@ class ExtensionManagementServiceTest extends UnitTestCase
     protected $dependencyUtilityProphecy;
     protected $installUtilityProphecy;
     protected $downloadQueue;
-    protected $extensionModelUtilityProphecy;
     protected $remoteRegistry;
     protected $remote;
     protected $fileHandlingUtility;
@@ -64,12 +62,10 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $this->dependencyUtilityProphecy = $this->prophesize(DependencyUtility::class);
         $this->installUtilityProphecy = $this->prophesize(InstallUtility::class);
         $this->downloadQueue = new DownloadQueue();
-        $this->extensionModelUtilityProphecy = $this->prophesize(ExtensionModelUtility::class);
 
         $this->managementService->injectDependencyUtility($this->dependencyUtilityProphecy->reveal());
         $this->managementService->injectInstallUtility($this->installUtilityProphecy->reveal());
         $this->managementService->injectDownloadQueue($this->downloadQueue);
-        $this->managementService->injectExtensionModelUtility($this->extensionModelUtilityProphecy->reveal());
     }
 
     /**
@@ -132,10 +128,12 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extension->_setProperty('remote', 'ter');
         $downloadQueue->addExtensionToQueue($extension);
         $this->managementService->injectDownloadQueue($downloadQueue);
-        $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([]);
+        $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([
+            'key' => 'foo',
+            'remote' => 'ter'
+        ]);
         $this->installUtilityProphecy->reloadAvailableExtensions()->willReturn();
         $this->installUtilityProphecy->install('foo')->willReturn();
-        $this->extensionModelUtilityProphecy->mapExtensionArrayToModel([])->willReturn($extension);
 
         $result = $this->managementService->installExtension($extension);
         self::assertSame(['downloaded' => ['foo' => $extension], 'installed' => ['foo' => 'foo']], $result);
@@ -152,9 +150,11 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extension->_setProperty('remote', 'ter');
         $downloadQueue->addExtensionToQueue($extension, 'update');
         $this->managementService->injectDownloadQueue($downloadQueue);
-        $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([]);
+        $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([
+            'key' => 'foo',
+            'remote' => 'ter'
+        ]);
         $this->installUtilityProphecy->reloadAvailableExtensions()->willReturn();
-        $this->extensionModelUtilityProphecy->mapExtensionArrayToModel([])->willReturn($extension);
 
         // an extension update will uninstall the extension and install it again
         $this->installUtilityProphecy->uninstall('foo')->shouldBeCalled();
