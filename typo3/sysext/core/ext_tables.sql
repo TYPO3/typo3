@@ -8,7 +8,7 @@ CREATE TABLE be_groups (
 	allowed_languages varchar(255) DEFAULT '' NOT NULL,
 	custom_options text,
 	db_mountpoints text,
-	pagetypes_select varchar(255) DEFAULT '' NOT NULL,
+	pagetypes_select text,
 	tables_select text,
 	tables_modify text,
 	groupMods text,
