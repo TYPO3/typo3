@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ===============================================================================================
-Breaking: #12345 - Support for extension-in-extension installation in Extension Manager removed
+Breaking: #92532 - Support for extension-in-extension installation in Extension Manager removed
 ===============================================================================================
 
 See :issue:`92532`
