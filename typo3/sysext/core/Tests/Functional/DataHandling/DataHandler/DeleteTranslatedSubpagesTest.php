@@ -34,7 +34,6 @@ class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
         parent::setUp();
         $this->importScenarioDataSet('TranslatedSubpages');
         $this->backendUser->workspace = 0;
-        $this->backendUser->uc['recursiveDelete'] = true;
     }
 
     /**

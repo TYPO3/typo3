@@ -151,7 +151,6 @@ class TreeController
     public function fetchConfigurationAction(): ResponseInterface
     {
         $configuration = [
-            'allowRecursiveDelete' => !empty($this->getBackendUser()->uc['recursiveDelete']),
             'allowDragMove' => $this->isDragMoveAllowed(),
             'doktypes' => $this->getDokTypes(),
             'displayDeleteConfirmation' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE),

@@ -37,7 +37,6 @@ define(
       this.settings = {
         showCheckboxes: false,
         showIcons: false,
-        allowRecursiveDelete: false,
         marginTop: 15,
         nodeHeight: 20,
         indentWidth: 16,

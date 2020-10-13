@@ -73,15 +73,6 @@ The default module is "About Modules".</source>
 			<trans-unit id="option_copyLevels.description" resname="option_copyLevels.description">
 				<source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
 			</trans-unit>
-			<trans-unit id="option_recursiveDelete.alttitle" resname="option_recursiveDelete.alttitle">
-				<source>Recursive Delete</source>
-			</trans-unit>
-			<trans-unit id="option_recursiveDelete.description" resname="option_recursiveDelete.description">
-				<source>You cannot delete a page with subpages unless this flag is set. Be careful - setting this option means that TYPO3 will allow a whole tree of pages to be deleted in one go!</source>
-			</trans-unit>
-			<trans-unit id="option_recursiveDelete.details" resname="option_recursiveDelete.details">
-				<source>You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</source>
-			</trans-unit>
 			<trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle">
 				<source>Enable Rich Text Editor</source>
 			</trans-unit>

@@ -45,9 +45,6 @@
 			<trans-unit id="deleteWarning" resname="deleteWarning">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="recursiveDeleteWarning" resname="recursiveDeleteWarning">
-				<source>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</source>
-			</trans-unit>
 			<trans-unit id="pasteIntoColumn" resname="pasteIntoColumn">
 				<source>Paste into this column</source>
 			</trans-unit>

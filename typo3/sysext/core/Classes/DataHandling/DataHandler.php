@@ -134,14 +134,6 @@ class DataHandler implements LoggerAwareInterface
     public $checkStoredRecords_loose = true;
 
     /**
-     * If this is set, then a page is deleted by deleting the whole branch under it (user must have
-     * delete permissions to it all). If not set, then the page is deleted ONLY if it has no branch.
-     *
-     * @var bool
-     */
-    public $deleteTree = false;
-
-    /**
      * If set, then the 'hideAtCopy' flag for tables will be ignored.
      *
      * @var bool
@@ -660,9 +652,6 @@ class DataHandler implements LoggerAwareInterface
         $this->userid = $this->BE_USER->user['uid'] ?? 0;
         $this->username = $this->BE_USER->user['username'] ?? '';
         $this->admin = $this->BE_USER->user['admin'] ?? false;
-        if ($this->BE_USER->uc['recursiveDelete'] ?? false) {
-            $this->deleteTree = 1;
-        }
 
         // set correlation id for each new set of data or commands
         $this->correlationId = CorrelationId::forScope(
@@ -5028,22 +5017,11 @@ class DataHandler implements LoggerAwareInterface
 
         $pageIdsInBranch = $this->doesBranchExist('', $uid, Permission::PAGE_DELETE, true);
 
-        if ($this->deleteTree) {
-            if ($pageIdsInBranch === -1) {
-                return 'Attempt to delete pages in branch without permissions';
-            }
-
-            $pagesInBranch = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
-        } else {
-            if ($pageIdsInBranch === -1) {
-                return 'Attempt to delete page without permissions';
-            }
-            if ($pageIdsInBranch !== '') {
-                return 'Attempt to delete page which has subpages';
-            }
-
-            $pagesInBranch = [$uid];
+        if ($pageIdsInBranch === -1) {
+            return 'Attempt to delete pages in branch without permissions';
         }
+
+        $pagesInBranch = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
 
         if ($disallowedTables = $this->checkForRecordsFromDisallowedTables($pagesInBranch)) {
             return 'Attempt to delete records from disallowed tables (' . implode(', ', $disallowedTables) . ')';

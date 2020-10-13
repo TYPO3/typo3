@@ -97,8 +97,6 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
         // The groups are fetched and ready for permission checking in this initialization.
         $this->fetchGroupData();
         $this->backendSetUC();
-        // activate this functionality for DataHandler
-        $this->uc['recursiveDelete'] = true;
     }
 
     /**

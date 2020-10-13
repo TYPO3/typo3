@@ -99,9 +99,7 @@ define([
 
         _this.dropZoneDelete = null;
 
-        if (node.allowDelete
-          && ((!tree.settings.allowRecursiveDelete && !node.hasChildren) || tree.settings.allowRecursiveDelete)
-        ) {
+        if (node.allowDelete) {
           _this.dropZoneDelete = tree.nodesContainer
             .select('.node[data-state-id="' + node.stateIdentifier + '"]')
             .append('g')

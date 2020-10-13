@@ -297,9 +297,6 @@
 			<trans-unit id="copyLevels" resname="copyLevels">
 				<source>Recursive Copy: Enter the number of page sublevels to include, when a page is copied</source>
 			</trans-unit>
-			<trans-unit id="recursiveDelete" resname="recursiveDelete">
-				<source>Recursive Delete(!): Allow ALL subpages to be deleted when deleting a page</source>
-			</trans-unit>
 			<trans-unit id="activateChanges" resname="activateChanges">
 				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
 			</trans-unit>

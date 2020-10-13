@@ -695,4 +695,9 @@ return [
             'Breaking-92499-AdminPanelDoesNotPreviewHiddenFrontendUserGroups.rst'
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->deleteTree' => [
+        'restFiles' => [
+            'Breaking-92560-BackendEditorsCanAlwaysDeletePagesRecursive.rst'
+        ],
+    ],
 ];

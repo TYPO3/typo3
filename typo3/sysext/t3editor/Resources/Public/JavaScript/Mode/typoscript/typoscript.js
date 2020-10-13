@@ -692,7 +692,6 @@
         'recipient': kw('recipient'),
         'RECORDS': kw('RECORDS'),
         'recursive': kw('recursive'),
-        'recursiveDelete': kw('recursiveDelete'),
         'redirect': kw('redirect'),
         'redirectToURL': kw('redirectToURL'),
         'reduceColors': kw('reduceColors'),

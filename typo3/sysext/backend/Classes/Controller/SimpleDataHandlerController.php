@@ -186,10 +186,6 @@ class SimpleDataHandlerController
         // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
         // Configuring based on user prefs.
-        if ($beUser->uc['recursiveDelete']) {
-            // TRUE if the delete Recursive flag is set.
-            $this->tce->deleteTree = 1;
-        }
         if ($beUser->uc['copyLevels']) {
             // Set to number of page-levels to copy.
             $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
