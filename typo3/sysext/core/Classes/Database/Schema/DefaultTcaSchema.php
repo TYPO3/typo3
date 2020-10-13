@@ -421,22 +421,6 @@ class DefaultTcaSchema
                 );
             }
 
-            // workspaces t3ver_move_id column
-            if (!empty($tableDefinition['ctrl']['versioningWS'])
-                && (bool)$tableDefinition['ctrl']['versioningWS'] === true
-                && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_move_id')
-            ) {
-                $tables[$tablePosition]->addColumn(
-                    $this->quote('t3ver_move_id'),
-                    'integer',
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
-                );
-            }
-
             // workspaces index on t3ver_oid and t3ver_wsid fields
             if (!empty($tableDefinition['ctrl']['versioningWS'])
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
@@ -522,7 +506,6 @@ class DefaultTcaSchema
             $prioritizedFieldNames[] = 't3ver_oid';
             $prioritizedFieldNames[] = 't3ver_state';
             $prioritizedFieldNames[] = 't3ver_stage';
-            $prioritizedFieldNames[] = 't3ver_move_id';
         }
 
         return $prioritizedFieldNames;

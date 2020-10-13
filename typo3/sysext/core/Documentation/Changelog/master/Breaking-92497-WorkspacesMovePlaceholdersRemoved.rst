@@ -74,6 +74,9 @@ Lots of internal functionality regarding move placeholders has been removed.
 The ctrl section `shadowColumnsForMovePlaceholders` is automatically removed
 from any table with a deprecation notice.
 
+The database field :sql:`t3ver_move_id` is obsolete and not created
+automatically for workspace enabled tables anymore.
+
 
 Affected Installations
 ======================
@@ -95,5 +98,9 @@ WorkspaceRestriction and the Versioning Overlay methods.
 
 Remove the setting :php:`$TCA[$table][ctrl][shadowColumnsForMovePlaceholders]`
 which is not evaluated anymore to avoid deprecation notices.
+
+The database analyzer suggests the removal of database field :sql:`t3ver_move_id`
+for various tables. The field can be safely dropped after the upgrade wizard
+has been executed.
 
 .. index:: Database, PHP-API, TCA, FullyScanned, ext:workspaces
