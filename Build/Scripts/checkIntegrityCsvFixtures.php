@@ -192,7 +192,8 @@ class checkIntegrityCsvFixtures
                         // No leading comma if first column and integer payload
                         $carry .= ($carry === null ? '' : ',') . $column;
                     } else {
-                        // No leading comma if first column and string payload
+                        // No leading comma if first column and string payload and quote " to ""
+                        $column = str_replace('"', '""', $column);
                         $carry .= ($carry === null ? '' : ',') . '"' . $column . '"';
                     }
                     return $carry;
