@@ -46,37 +46,37 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'Test with one broken external link (not existing domain)' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv'
                 ],
             'Test with one broken external link in pages:canonical_link' =>
                 [
                     __DIR__ . '/Fixtures/input_page_with_broken_link_external_in_canonical_link.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_with_broken_link_external_in_canonical_link.csv'
                 ],
             'Test with one broken page link (not existing page)' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_page.csv'
                 ],
             'Test with one broken file link (not existing file)' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_file.csv'
                 ],
             'Test with several broken external, page and file links' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_links_several.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_links_several.csv'
                 ],
             'Test with several pages with broken external, page and file links' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_links_several_pages.xml',
-                    '1,2',
+                    [1, 2],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_links_several_pages.csv'
                 ],
         ];
@@ -86,7 +86,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findAllBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindAllBrokenLinks(string $inputFile, string $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindAllBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile)
     {
         $tsConfig = [
             'searchFields' => [
@@ -119,19 +119,19 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'Test with one broken external link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
                 ],
             'Test with one broken page link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
                 ],
             'Test with one broken file link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_file.csv'
                 ],
         ];
@@ -141,7 +141,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findFindOnlyFileBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindOnlyFileBrokenLinks(string $inputFile, string $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindOnlyFileBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile)
     {
         $tsConfig = [
             'searchFields' => [
@@ -174,19 +174,19 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'Test with one broken external link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
                 ],
             'Test with one broken page link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_page.csv'
                 ],
             'Test with one broken file link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
                 ],
         ];
@@ -196,7 +196,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findFindOnlyPageBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindOnlyPageBrokenLinks(string $inputFile, string $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindOnlyPageBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile)
     {
         $tsConfig = [
             'searchFields' => [
@@ -229,19 +229,19 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'Test with one broken external link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv'
                 ],
             'Test with one broken page link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
                 ],
             'Test with one broken file link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
-                    '1',
+                    [1],
                     'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
                 ],
         ];
@@ -251,7 +251,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findFindOnlyExternalBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytext(string $inputFile, string $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytext(string $inputFile, array $pidList, string $expectedOutputFile)
     {
         $tsConfig = [
             'searchFields' => [

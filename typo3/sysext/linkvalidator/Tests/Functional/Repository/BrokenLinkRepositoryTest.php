@@ -226,7 +226,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->prophesize(EventDispatcherInterface::class)->reveal(),
             $this->brokenLinksRepository
         );
-        $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
         $result = $this->brokenLinksRepository->getNumberOfBrokenLinksForRecordsOnPages(
             $pidList,
@@ -352,7 +352,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->prophesize(EventDispatcherInterface::class)->reveal(),
             $this->brokenLinksRepository
         );
-        $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(
@@ -654,7 +654,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->prophesize(EventDispatcherInterface::class)->reveal(),
             $this->brokenLinksRepository
         );
-        $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(
@@ -796,7 +796,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->prophesize(EventDispatcherInterface::class)->reveal(),
             $this->brokenLinksRepository
         );
-        $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(

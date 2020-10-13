@@ -45,7 +45,7 @@ class LinkAnalyzer
     /**
      * List of page uids (rootline downwards)
      *
-     * @var array
+     * @var int[]
      */
     protected $pids = [];
 
@@ -98,13 +98,13 @@ class LinkAnalyzer
      * Store all the needed configuration values in class variables
      *
      * @param array $searchFields List of fields in which to search for links
-     * @param string|array $pidList List of comma separated page uids in which to search for links, can be an array too
+     * @param int[] $pidList List of page uids in which to search for links
      * @param array $tsConfig The currently active TSconfig.
      */
-    public function init(array $searchFields, $pidList, $tsConfig)
+    public function init(array $searchFields, array $pidList, $tsConfig)
     {
         $this->searchFields = $searchFields;
-        $this->pids = is_array($pidList) ? $pidList : GeneralUtility::intExplode(',', $pidList, true);
+        $this->pids = $pidList;
         $this->tsConfig = $tsConfig;
 
         // Hook to handle own checks

@@ -440,7 +440,7 @@ class LinkValidatorReport
      * Generates an array of page uids from current pageUid.
      * List does include pageUid itself.
      *
-     * @return array
+     * @return int[]
      */
     protected function getPageList(): array
     {

@@ -78,6 +78,8 @@ class PagesRepository
      * Generates a list of page uids from $id. List does not include $id itself.
      * The only pages excluded from the list are deleted pages.
      *
+     * Formerly called extGetTreeList
+     *
      * @param int $id Start page id
      * @param int $depth Depth to traverse down the page tree.
      * @param string $permsClause Perms clause
@@ -133,6 +135,8 @@ class PagesRepository
 
     /**
      * Add page translations to list of pages
+     *
+     * Formerly called addPageTranslationsToPageList
      *
      * @param int $currentPage
      * @param string $permsClause

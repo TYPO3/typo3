@@ -60,7 +60,7 @@ class BrokenLinkRepository
      * Returns all broken links found on the page record and all records on a page (or multiple pages)
      * grouped by the link_type.
      *
-     * @param array $pageIds
+     * @param int[] $pageIds
      * @param array $searchFields [ table => [field1, field2, ...], ...]
      * @return array
      */
@@ -153,7 +153,7 @@ class BrokenLinkRepository
     }
 
     /**
-     * @param array $pageIds
+     * @param int[] $pageIds
      * @param array<int,string> $linkTypes
      */
     public function removeAllBrokenLinksOfRecordsOnPageIds(array $pageIds, array $linkTypes): void
