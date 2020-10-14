@@ -51,7 +51,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
      *
      * @var int
      */
-    protected $_retryLimit = 10;
+    protected $retryLimit = 10;
 
     /**
      * The maximum number of messages to send per flush
@@ -86,20 +86,27 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
      */
     protected function doSend(SentMessage $message): void
     {
-        $ser = serialize($message);
-        $fileName = $this->path . '/' . $this->getRandomString(10);
-        for ($i = 0; $i < $this->_retryLimit; ++$i) {
-            // We try an exclusive creation of the file. This is an atomic operation, it avoid locking mechanism
-            $fp = @fopen($fileName . '.message', 'x');
-            if (false !== $fp) {
-                if (false === fwrite($fp, $ser)) {
-                    throw new TransportException('Could not create file for spooling', 1561618885);
-                }
-                fclose($fp);
-            } else {
-                // The file already exists, we try a longer fileName
-                $fileName .= $this->getRandomString(1);
+        $fileName = $this->path . '/' . $this->getRandomString(9);
+        $i = 0;
+
+        // We try an exclusive creation of the file. This is an atomic
+        // operation, it avoids a locking mechanism
+        do {
+            $fileName .= $this->getRandomString(1);
+            $filePointer = @fopen($fileName . '.message', 'x');
+        } while ($filePointer === false && ++$i < $this->retryLimit);
+
+        if ($filePointer === false) {
+            throw new TransportException('Could not create file for spooling', 1602615347);
+        }
+
+        try {
+            $ser = serialize($message);
+            if (fwrite($filePointer, $ser) === false) {
+                throw new TransportException('Could not write file for spooling', 1602615348);
             }
+        } finally {
+            fclose($filePointer);
         }
     }
 
@@ -112,7 +119,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
      */
     public function setRetryLimit(int $limit): void
     {
-        $this->_retryLimit = $limit;
+        $this->retryLimit = $limit;
     }
 
     /**
