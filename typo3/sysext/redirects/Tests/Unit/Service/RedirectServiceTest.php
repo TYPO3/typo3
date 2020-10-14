@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -451,7 +452,7 @@ class RedirectServiceTest extends UnitTestCase
     {
         $this->linkServiceProphecy->resolve(Argument::any())->willThrow(new InvalidPathException('', 1516531195));
 
-        $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], [], new FrontendUserAuthentication(), new Uri(), new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], new ServerRequest(new Uri()));
 
         self::assertNull($result);
     }
@@ -473,7 +474,9 @@ class RedirectServiceTest extends UnitTestCase
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         $uri = new Uri('https://example.com/');
         self::assertEquals($uri, $result);
@@ -498,7 +501,9 @@ class RedirectServiceTest extends UnitTestCase
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         $uri = new Uri('https://example.com/file.txt');
         self::assertEquals($uri, $result);
@@ -524,7 +529,9 @@ class RedirectServiceTest extends UnitTestCase
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/');
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         $uri = new Uri('https://example.com/folder/');
         self::assertEquals($uri, $result);
@@ -547,7 +554,9 @@ class RedirectServiceTest extends UnitTestCase
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         $uri = new Uri('https://example.com');
         self::assertEquals($uri, $result);
@@ -570,7 +579,10 @@ class RedirectServiceTest extends UnitTestCase
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/?bar=2&baz=4&foo=1');
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, ['bar' => 3, 'baz' => 4], new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+        $request = new ServerRequest($source);
+        $request = $request->withQueryParams(['bar' => 3, 'baz' => 4]);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         $uri = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         self::assertEquals($uri, $result);
@@ -612,10 +624,14 @@ class RedirectServiceTest extends UnitTestCase
 
         $frontendUserAuthentication = new FrontendUserAuthentication();
         $site = new Site('dummy', 13, []);
-        $redirectService->expects(self::once())->method('getUriFromCustomLinkDetails')
-            ->with($redirectTargetMatch, $frontendUserAuthentication, $site, $linkDetails, $queryParams)
+        $request = new ServerRequest($uri);
+        $request = $request->withQueryParams($queryParams);
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('frontend.user', $frontendUserAuthentication);
+        $redirectService->expects(self::any())->method('getUriFromCustomLinkDetails')
+            ->with($redirectTargetMatch, $site, $linkDetails, $queryParams, $request)
             ->willReturn($uri);
-        $result = $redirectService->getTargetUrl($redirectTargetMatch, [], $frontendUserAuthentication, $uri, $site);
+        $result = $redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         self::assertEquals($uri, $result);
     }
@@ -639,7 +655,9 @@ class RedirectServiceTest extends UnitTestCase
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/foo/bar');
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
         $uri = new Uri('https://anotherdomain.com/bar');
         self::assertEquals($uri, $result);

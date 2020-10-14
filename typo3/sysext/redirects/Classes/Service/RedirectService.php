@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -33,7 +35,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
@@ -184,8 +185,11 @@ class RedirectService implements LoggerAwareInterface
         return $linkDetails;
     }
 
-    public function getTargetUrl(array $matchedRedirect, array $queryParams, FrontendUserAuthentication $frontendUserAuthentication, UriInterface $uri, ?SiteInterface $site = null): ?UriInterface
+    public function getTargetUrl(array $matchedRedirect, ServerRequestInterface $request): ?UriInterface
     {
+        $site = $request->getAttribute('site');
+        $uri = $request->getUri();
+        $queryParams = $request->getQueryParams();
         $this->logger->debug('Found a redirect to process', $matchedRedirect);
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode((string)$matchedRedirect['target']);
         $redirectTarget = $linkParameterParts['url'];
@@ -212,11 +216,30 @@ class RedirectService implements LoggerAwareInterface
             }
             return $url;
         }
-        if (($site === null || $site instanceof NullSite) && $linkDetails['type'] === 'page') {
-            $site = $this->siteFinder->getSiteByPageId((int)$linkDetails['pageuid']);
-        }
+        $site = $this->resolveSite($linkDetails, $site);
         // If it's a record or page, then boot up TSFE and use typolink
-        return $this->getUriFromCustomLinkDetails($matchedRedirect, $frontendUserAuthentication, $site, $linkDetails, $queryParams);
+        return $this->getUriFromCustomLinkDetails(
+            $matchedRedirect,
+            $site,
+            $linkDetails,
+            $queryParams,
+            $request
+        );
+    }
+
+    /**
+     * If no site is given, try to find a valid site for the target page
+     */
+    protected function resolveSite(array $linkDetails, ?SiteInterface $site): ?SiteInterface
+    {
+        if (($site === null || $site instanceof NullSite) && ($linkDetails['type'] ?? '') === 'page') {
+            try {
+                return $this->siteFinder->getSiteByPageId((int)$linkDetails['pageuid']);
+            } catch (SiteNotFoundException $e) {
+                return new NullSite();
+            }
+        }
+        return $site;
     }
 
     /**
@@ -241,12 +264,15 @@ class RedirectService implements LoggerAwareInterface
     /**
      * Called when TypoScript/TSFE is available, so typolink is used to generate the URL
      */
-    protected function getUriFromCustomLinkDetails(array $redirectRecord, FrontendUserAuthentication $frontendUserAuthentication, ?SiteInterface $site, array $linkDetails, array $queryParams): ?UriInterface
+    protected function getUriFromCustomLinkDetails(array $redirectRecord, ?SiteInterface $site, array $linkDetails, array $queryParams, ServerRequestInterface $originalRequest): ?UriInterface
     {
         if (!isset($linkDetails['type'], $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
             return null;
         }
-        $controller = $this->bootFrontendController($frontendUserAuthentication, $site, $queryParams);
+        if ($site === null || $site instanceof NullSite) {
+            return null;
+        }
+        $controller = $this->bootFrontendController($site, $queryParams, $originalRequest);
         /** @var AbstractTypolinkBuilder $linkBuilder */
         $linkBuilder = GeneralUtility::makeInstance(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
@@ -289,19 +315,17 @@ class RedirectService implements LoggerAwareInterface
      *
      * So a link to a page can be generated.
      */
-    protected function bootFrontendController(FrontendUserAuthentication $frontendUserAuthentication, ?SiteInterface $site, array $queryParams): TypoScriptFrontendController
+    protected function bootFrontendController(SiteInterface $site, array $queryParams, ServerRequestInterface $originalRequest): TypoScriptFrontendController
     {
-        $pageId = $site ? $site->getRootPageId() : ($GLOBALS['TSFE'] ? $GLOBALS['TSFE']->id : 0);
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments((int)$pageId, '0', []),
-            $frontendUserAuthentication
+            new PageArguments($site->getRootPageId(), '0', []),
+            $frontendUserAuthentication = $originalRequest->getAttribute('frontend.user')
         );
-        $controller->fetch_the_id();
-        $controller->settingLanguage();
+        $controller->determineId($originalRequest);
         $controller->calculateLinkVars($queryParams);
         $controller->getConfigArray();
         $controller->newCObj();
