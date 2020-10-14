@@ -1518,13 +1518,6 @@ class PageRepository implements LoggerAwareInterface
         if ($workspaceId !== (int)$this->versioningWorkspaceId) {
             return;
         }
-        // Now set the "pid" properly.
-        // This will only make a difference when handing in moved records but is kept for backwards-compat
-        // however it's always the same for live + versioned record, except for moving, where _ORIG_pid will
-        // be set to the live PID, and pid to the moved location
-        if ($oid) {
-            $rr['_ORIG_pid'] = $rr['pid'];
-        }
         // Changing PID in case there is a move pointer
         // This happens if the $uid is still a live version but the overlay happened (via t3ver_oid) and the t3ver_state was
         // Changed to MOVE_POINTER. This logic happens in versionOL(), where the "pid" of the live version is kept.
@@ -1578,17 +1571,15 @@ class PageRepository implements LoggerAwareInterface
             }
             if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
                 if (is_array($wsAlt)) {
-                    // Always fix PID (like in fixVersioningPid() above). [This is usually not
-                    // the important factor for versioning OL]
-                    // Keep the old (-1) - indicates it was a version...
-                    $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
-                    // Set in the online versions PID.
-                    // Side note: For move pointers, this is set back to the PID of the live record now
-                    // The only place where PID is actually different.
-                    $wsAlt['pid'] = $row['pid'];
-                    // For versions of single elements or page+content, preserve online UID and PID
+                    $rowVersionState = VersionState::cast($wsAlt['t3ver_state'] ?? null);
+                    if ($rowVersionState->equals(VersionState::MOVE_POINTER)) {
+                        // For move pointers, this is set back to the PID of the live record now
+                        // The only place where PID is actually different, however the newly moved PID resides in _ORIG_pid
+                        $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
+                        $wsAlt['pid'] = $row['pid'];
+                    }
+                    // For versions of single elements or page+content, preserve online UID
                     // (this will produce true "overlay" of element _content_, not any references)
-                    // For page+content the "_ORIG_uid" should actually be used as PID for selection.
                     $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
                     $wsAlt['uid'] = $row['uid'];
                     // Changing input record to the workspace version alternative:

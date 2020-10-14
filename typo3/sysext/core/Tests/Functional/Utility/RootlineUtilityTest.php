@@ -148,7 +148,6 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_wsid' => 1,
                 't3ver_state' => -1,
                 'title' => 'EN: A new page in workspace',
-                '_ORIG_pid' => 1000,
                 '_ORIG_uid' => 10002,
             ],
             0 => [
@@ -158,7 +157,6 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_wsid' => 1,
                 't3ver_state' => 0,
                 'title' => 'ACME Global modified in Workspace 1',
-                '_ORIG_pid' => 0,
                 '_ORIG_uid' => 10000,
             ],
         ];
@@ -237,7 +235,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_wsid' => 1,
                 't3ver_state' => 4,
                 'title' => 'EN: Risk',
-                '_ORIG_pid' => 1330, // Pointing to the LIVE pid! WHY? All others point to the same PID!
+                '_ORIG_pid' => 1330, // Pointing to the LIVE pid! WHY? All others point to the same PID! @todo
                 '_ORIG_uid' => 10001,
             ],
             2 => [
@@ -263,7 +261,6 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_wsid' => 1,
                 't3ver_state' => 0,
                 'title' => 'ACME Global modified in Workspace 1',
-                '_ORIG_pid' => 0,
                 '_ORIG_uid' => 10000,
             ],
         ];

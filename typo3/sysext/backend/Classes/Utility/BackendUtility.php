@@ -3360,15 +3360,11 @@ class BackendUtility
 
     /**
      * Find page-tree PID for versionized record
-     * Will look if the "pid" value of the input record is -1 and if the table supports versioning - if so,
-     * it will translate the -1 PID into the PID of the original record
      * Used whenever you are tracking something back, like making the root line.
      * Will only translate if the workspace of the input record matches that of the current user (unless flag set)
      * Principle; Record offline! => Find online?
      *
-     * If the record had its pid corrected to the online versions pid, then "_ORIG_pid" is set
-     * to the original pid value (-1 of course). The field "_ORIG_pid" is used by various other functions
-     * to detect if a record was in fact in a versionized branch.
+     * If the record had its pid corrected to the online versions pid, then "_ORIG_pid" is set for moved records to the PID of the moved location.
      *
      * @param string $table Table name
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid", "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
@@ -3409,18 +3405,6 @@ class BackendUtility
             }
         }
         if ($oid && ($ignoreWorkspaceMatch || (static::getBackendUserAuthentication() instanceof BackendUserAuthentication && $workspaceId === (int)static::getBackendUserAuthentication()->workspace))) {
-            if ($incomingPid === null) {
-                // This can be removed, as this is the same for all versioned records
-                $onlineRecord = self::getRecord($table, $oid, 'pid');
-                if (is_array($onlineRecord)) {
-                    $rr['_ORIG_pid'] = $onlineRecord['pid'];
-                    $rr['pid'] = $onlineRecord['pid'];
-                }
-            } else {
-                // This can be removed, as this is the same for all versioned records (clearly obvious here)
-                $rr['_ORIG_pid'] = $incomingPid;
-                $rr['pid'] = $incomingPid;
-            }
             // Use moved PID in case of move pointer
             if ($versionState === VersionState::MOVE_POINTER) {
                 if ($incomingPid !== null) {
@@ -3451,7 +3435,7 @@ class BackendUtility
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces') || !is_array($row)) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces') || !is_array($row) || !static::isTableWorkspaceEnabled($table)) {
             return;
         }
 
@@ -3484,30 +3468,26 @@ class BackendUtility
 
         // If version was found, swap the default record with that one.
         if (is_array($wsAlt)) {
+            // If t3ver_state is not found, then find it... (but we like best if it is here...)
+            if (!isset($wsAlt['t3ver_state'])) {
+                $stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
+                $versionState = VersionState::cast($stateRec['t3ver_state']);
+            } else {
+                $versionState = VersionState::cast($wsAlt['t3ver_state']);
+            }
             // Check if this is in move-state
-            if (!$movePldSwap && static::isTableWorkspaceEnabled($table) && $unsetMovePointers) {
-                // Only for WS ver 2... (moving)
-                // If t3ver_state is not found, then find it... (but we like best if it is here...)
-                if (!isset($wsAlt['t3ver_state'])) {
-                    $stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
-                    $versionState = VersionState::cast($stateRec['t3ver_state']);
-                } else {
-                    $versionState = VersionState::cast($wsAlt['t3ver_state']);
-                }
-                if ($versionState->equals(VersionState::MOVE_POINTER)) {
-                    // @todo Same problem as frontend in versionOL(). See TODO point there and todo above.
+            if ($versionState->equals(VersionState::MOVE_POINTER)) {
+                // @todo Same problem as frontend in versionOL(). See TODO point there and todo above.
+                if (!$movePldSwap && $unsetMovePointers) {
                     $row = false;
                     return;
                 }
-            }
-            // Always correct PID from -1 to what it should be
-            if (isset($wsAlt['pid'])) {
-                // Keep the old (-1) - indicates it was a version.
+                // Keep the newly moved location of the versioned record as _ORIG_pid
                 $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
-                // Set in the online versions PID.
+                // Set in the online versions PID
                 $wsAlt['pid'] = $row['pid'];
             }
-            // For versions of single elements or page+content, swap UID and PID
+            // Swap UID
             $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
             $wsAlt['uid'] = $row['uid'];
             // Backend css class:

@@ -143,7 +143,6 @@ class Typo3DbBackendTest extends UnitTestCase
         $comparisonRow = [
             'uid' => '42',
             'pid' => '42',
-            '_ORIG_pid' => '42',
             '_ORIG_uid' => '43'
         ];
         $row = [
