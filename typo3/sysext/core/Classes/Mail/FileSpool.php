@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Mail;
 
 use DirectoryIterator;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\DelayedEnvelope;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -29,6 +28,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,15 +36,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is experimental and subject to change!
  */
-class FileSpool extends AbstractTransport implements DelayedTransportInterface, LoggerAwareInterface
+class FileSpool extends AbstractTransport implements DelayedTransportInterface
 {
-    use LoggerAwareTrait;
-
     /**
      * The spool directory
      * @var string
      */
     protected $path;
+
+    /**
+     * The logger instance.
+     *
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * File WriteRetry Limit.
@@ -69,11 +74,18 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
      * Create a new FileSpool.
      *
      * @param string $path
+     * @param EventDispatcherInterface $dispatcher
+     * @param LoggerInterface $logger
      */
-    public function __construct(string $path)
-    {
-        parent::__construct();
+    public function __construct(
+        string $path,
+        EventDispatcherInterface $dispatcher = null,
+        LoggerInterface $logger = null
+    ) {
+        parent::__construct($dispatcher, $logger);
+
         $this->path = $path;
+        $this->logger = $logger;
 
         if (!file_exists($this->path)) {
             GeneralUtility::mkdir_deep($this->path);

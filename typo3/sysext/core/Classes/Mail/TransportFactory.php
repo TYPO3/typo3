@@ -142,7 +142,12 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox".', 1294586645);
                 }
                 // Create our transport
-                $transport = GeneralUtility::makeInstance(MboxTransport::class, $mboxFile);
+                $transport = GeneralUtility::makeInstance(
+                    MboxTransport::class,
+                    $mboxFile,
+                    $this->dispatcher,
+                    $this->logManager->getLogger(MboxTransport::class)
+                );
                 break;
             // Used for testing purposes
             case 'null':
@@ -188,10 +193,19 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 if (empty($path)) {
                     throw new \RuntimeException('The Spool Type filepath must be configured for TYPO3 in order to be used. Be sure that it\'s not accessible via the web.', 1518558797);
                 }
-                $spool = GeneralUtility::makeInstance(FileSpool::class, $path);
+                $spool = GeneralUtility::makeInstance(
+                    FileSpool::class,
+                    $path,
+                    $this->dispatcher,
+                    $this->logManager->getLogger(FileSpool::class)
+                );
                 break;
             case self::SPOOL_MEMORY:
-                $spool = GeneralUtility::makeInstance(MemorySpool::class);
+                $spool = GeneralUtility::makeInstance(
+                    MemorySpool::class,
+                    $this->dispatcher,
+                    $this->logManager->getLogger(MemorySpool::class)
+                );
                 break;
             default:
                 $spool = GeneralUtility::makeInstance($mailSettings['transport_spool_type'], $mailSettings);
