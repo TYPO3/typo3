@@ -28,9 +28,13 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Regular/Discard/DataSet/';
 
     /**
-     * @var bool False as temporary hack
+     * @test
      */
-    protected $assertCleanReferenceIndex = false;
+    public function verifyCleanReferenceIndex()
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
 
     /**
      * @test
@@ -223,6 +227,9 @@ class ActionTest extends AbstractActionTestCase
         // Note the deleted=1 records are NOT discarded. This is ok since deleted=1 means "not seen in backend",
         // so it is also ignored by the discard operation.
         $this->assertAssertionDataSet('changeContentSortingNDeleteLiveRecord');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -324,6 +331,9 @@ class ActionTest extends AbstractActionTestCase
         // Deleted records are not discarded
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**

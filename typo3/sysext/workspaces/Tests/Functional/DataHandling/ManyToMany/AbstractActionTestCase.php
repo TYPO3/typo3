@@ -39,7 +39,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ReferenceIndex');
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 

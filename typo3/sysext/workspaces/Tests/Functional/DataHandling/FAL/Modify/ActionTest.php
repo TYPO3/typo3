@@ -28,9 +28,13 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/FAL/Modify/DataSet/';
 
     /**
-     * @var bool False as temporary hack
+     * @test
      */
-    protected $assertCleanReferenceIndex = false;
+    public function verifyCleanReferenceIndex()
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
 
     /**
      * @test
@@ -224,6 +228,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -238,6 +245,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**

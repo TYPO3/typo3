@@ -28,9 +28,13 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Select/Modify/DataSet/';
 
     /**
-     * @var bool False as temporary hack
+     * @test
      */
-    protected $assertCleanReferenceIndex = false;
+    public function verifyCleanReferenceIndex()
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
 
     /**
      * @test

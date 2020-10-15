@@ -28,9 +28,13 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/Discard/DataSet/';
 
     /**
-     * @var bool False as temporary hack
+     * @test
      */
-    protected $assertCleanReferenceIndex = false;
+    public function verifyCleanReferenceIndex()
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
 
     /**
      * @test
@@ -40,6 +44,9 @@ class ActionTest extends AbstractActionTestCase
         parent::addCategoryRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('addCategoryRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -50,6 +57,9 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteCategoryRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('deleteCategoryRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -60,6 +70,9 @@ class ActionTest extends AbstractActionTestCase
         parent::changeCategoryRelationSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('changeCategoryRelationSorting');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -70,6 +83,9 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndAddRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('createContentNAddRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -152,6 +168,9 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertAssertionDataSet('modifyContentOfRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -165,6 +184,9 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Category => [self::VALUE_CategoryIdFirst],
         ]);
         $this->assertAssertionDataSet('modifyBothsOfRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -175,6 +197,9 @@ class ActionTest extends AbstractActionTestCase
         parent::deleteContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('deleteContentOfRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -195,6 +220,9 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('copyContentOfRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -215,6 +243,9 @@ class ActionTest extends AbstractActionTestCase
         parent::localizeContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertAssertionDataSet('localizeContentOfRelation');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -237,6 +268,9 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentOfRelationToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -249,5 +283,8 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Page => [$this->recordIds['newPageId']],
         ]);
         $this->assertAssertionDataSet('copyPage');
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 }

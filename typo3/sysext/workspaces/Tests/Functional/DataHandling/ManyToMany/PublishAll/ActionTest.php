@@ -28,9 +28,13 @@ class ActionTest extends AbstractActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/PublishAll/DataSet/';
 
     /**
-     * @var bool False as temporary hack
+     * @test
      */
-    protected $assertCleanReferenceIndex = false;
+    public function verifyCleanReferenceIndex()
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
 
     /**
      * @test
@@ -45,6 +49,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category A.A'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -63,6 +70,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -78,6 +88,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -95,6 +108,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -188,6 +204,9 @@ class ActionTest extends AbstractActionTestCase
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -205,6 +224,9 @@ class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -219,6 +241,9 @@ class ActionTest extends AbstractActionTestCase
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -249,6 +274,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -279,6 +307,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -311,6 +342,9 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -333,5 +367,8 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'])->setRecordField('categories')
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+
+        // @todo: reference index not clean after this test. Needs investigation.
+        $this->assertCleanReferenceIndex = false;
     }
 }
