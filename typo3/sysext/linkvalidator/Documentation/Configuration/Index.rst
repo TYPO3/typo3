@@ -75,24 +75,21 @@ searchFields.[key]
 
             Examples for working fields:
 
-                * `pages.canonical_link`
-                * `pages.url`
+            * `pages.canonical_link`
+            * `pages.url`
 
-            Examples for not working fields:
+            Example for not working fields:
 
             * `pages.media`
 
+   Example
+         ::
 
-    Examples
-
-          Only check for `bodytext` in `tt_content`:
-
-          .. code-block:: typoscript
-
-             tt_content = bodytext
+            # Only check for "bodytext" in "tt_content":
+            tt_content = bodytext
 
    Default
-         .. code-block:: typoscript
+         ::
 
             pages = media,url
             tt_content = bodytext,header_link,records
@@ -147,7 +144,7 @@ linktypesConfig.external.httpAgentName
          string
 
    Description
-         Add descriptive name to be used as 'User-Agent' when crawling
+         Add descriptive name to be used as 'User-Agent' header when crawling
          external URLs.
 
    Default
@@ -169,11 +166,11 @@ linktypesConfig.external.httpAgentUrl
          string
 
    Description
-         Add URL to be used in 'User-Agent' when crawling
+         Add URL to be used in 'User-Agent' header when crawling
          external URLs.
 
    Default
-
+         (empty string)
 
 
 linktypesConfig.external.httpAgentEmail
@@ -188,12 +185,11 @@ linktypesConfig.external.httpAgentEmail
          string
 
    Description
-         Add descriptive email used in 'User-Agent' when crawling
-         external URLs. If none is set here,
-         :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']`
-         is used.
+         Add descriptive email used in 'User-Agent' header when crawling
+         external URLs.
 
    Default
+         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
 
 
 
@@ -417,6 +413,7 @@ linktypesConfig.external.headers
          Additional set of HTTP headers to be passed when crawling URLs.
 
    Default
+         (empty array)
 
 
 linktypesConfig.external.method
@@ -472,7 +469,7 @@ linktypesConfig.external.range
 Example
 ^^^^^^^
 
-.. code-block:: typoscript
+::
 
    mod.linkvalidator {
            searchFields {
