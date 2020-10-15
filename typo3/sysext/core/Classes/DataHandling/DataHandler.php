@@ -7099,10 +7099,9 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $id Record ID
-     * @param int $logId Log entry ID, important for linking between log and history views
      * @internal should only be used from within DataHandler
      */
-    public function setHistory($table, $id, $logId)
+    public function setHistory($table, $id)
     {
         if (isset($this->historyRecords[$table . ':' . $id])) {
             $this->getRecordHistoryStore()->modifyRecord(

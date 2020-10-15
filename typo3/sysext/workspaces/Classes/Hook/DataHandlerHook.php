@@ -728,8 +728,8 @@ class DataHandlerHook
             } else {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
-            $theLogId = $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
-            $dataHandler->setHistory($table, $id, $theLogId);
+            $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
+            $dataHandler->setHistory($table, $id);
             // Set log entry for offline record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $curVersion);
             if (($propArr['t3ver_oid'] ?? 0) > 0) {
@@ -737,8 +737,8 @@ class DataHandlerHook
             } else {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
-            $theLogId = $dataHandler->log($table, $swapWith, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $swapWith], $propArr['event_pid']);
-            $dataHandler->setHistory($table, $swapWith, $theLogId);
+            $dataHandler->log($table, $swapWith, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $swapWith], $propArr['event_pid']);
+            $dataHandler->setHistory($table, $swapWith);
 
             $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
             $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
