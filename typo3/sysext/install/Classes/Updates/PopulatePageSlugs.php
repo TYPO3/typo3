@@ -235,7 +235,7 @@ class PopulatePageSlugs implements UpgradeWizardInterface
                     $queryBuilder->expr()->gt('expire', $queryBuilder->createNamedParameter($currentTimestamp))
                 )
             )
-            ->orderBy($identityField, 'DESC')
+            ->orderBy('expire', 'ASC')
             ->execute();
         $suggestedSlugs = [];
         while ($row = $statement->fetch()) {
