@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Mail;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,10 +37,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is experimental and subject to change!
  */
-class MemorySpool extends AbstractTransport implements SingletonInterface, LoggerAwareInterface, DelayedTransportInterface
+class MemorySpool extends AbstractTransport implements SingletonInterface, DelayedTransportInterface
 {
     use BlockSerializationTrait;
-    use LoggerAwareTrait;
+
+    /**
+     * The logger instance.
+     *
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @var SentMessage[]
@@ -53,6 +59,23 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Logge
      * @var int
      */
     protected $retries = 3;
+
+    /**
+     * Create a new MemorySpool
+     *
+     * @param EventDispatcherInterface $dispatcher
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        EventDispatcherInterface $dispatcher = null,
+        LoggerInterface $logger = null
+    ) {
+        parent::__construct($dispatcher, $logger);
+
+        $this->logger = $logger;
+
+        $this->setMaxPerSecond(0);
+    }
 
     /**
      * Sends out the messages in the memory
