@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -57,7 +58,7 @@ class PreviewSimulator implements MiddlewareInterface
         if ((bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
             $simulatingDate = $this->simulateDate($request);
             $simulatingGroup = $this->simulateUserGroup($request);
-            $isPreview = (int)($simulatingDate || $simulatingGroup);
+            $isPreview = (int)($simulatingDate || $simulatingGroup || StateUtility::isActivatedForUser());
             $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
             $this->context->setAspect('frontend.preview', $previewAspect);
         }
@@ -124,7 +125,7 @@ class PreviewSimulator implements MiddlewareInterface
         $frontendUser = $request->getAttribute('frontend.user');
         $frontendUser->user[$frontendUser->usergroup_column] = $simulateUserGroup;
         // let's fake having a user with that group, too
-        $frontendUser->user['uid'] = 1;
+        $frontendUser->user['uid'] = PHP_INT_MAX;
         $this->context->setAspect(
             'frontend.user',
             GeneralUtility::makeInstance(
