@@ -388,9 +388,6 @@ class ActionTest extends AbstractActionTestCase
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
-
-        // Deleting the localized page in workspace should also delete its localized records
-        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
 

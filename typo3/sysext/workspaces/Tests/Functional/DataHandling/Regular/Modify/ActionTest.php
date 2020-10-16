@@ -224,8 +224,6 @@ class ActionTest extends AbstractActionTestCase
      */
     public function localizeContentWithEmptyTcaIntegrityColumns()
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithEmptyTcaIntegrityColumns();
         $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
@@ -474,9 +472,6 @@ class ActionTest extends AbstractActionTestCase
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
-
-        // Deleting the localized page in workspace should also delete its localized records
-        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
 
         $response = $this->executeFrontendRequest(

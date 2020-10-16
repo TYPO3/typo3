@@ -3647,6 +3647,15 @@ class DataHandler implements LoggerAwareInterface
         }
         // Do the copy by internal function
         $theNewSQLID = $this->insertNewCopyVersion($table, $row, $pid);
+
+        // When a record is copied in workspace (eg. to create a delete placeholder record for a live record), records
+        // pointing to that record need a reference index update. This is for instance the case in FAL, if a sys_file_reference
+        // for a eg. tt_content record is marked as deleted. The tt_content record then needs a reference index update.
+        // This scenario seems to currently only show up if in workspaces, so the refindex update is restricted to this for now.
+        if (!empty($workspaceOptions)) {
+            $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$row['uid'], (int)$this->BE_USER->workspace);
+        }
+
         if ($theNewSQLID) {
             $this->dbAnalysisStoreExec();
             $this->dbAnalysisStore = [];
@@ -4787,12 +4796,23 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($versions)) {
             foreach ($versions as $verRec) {
                 if (!$verRec['_CURRENT_VERSION']) {
+                    $currentUserWorkspace = null;
+                    if ((int)$verRec['t3ver_wsid'] !== (int)$this->BE_USER->workspace) {
+                        // If deleting records from 'foreign' / 'other' workspaces, the be user must be put into
+                        // this workspace temporarily so stuff like refindex updating is registered for this workspace
+                        // when deleting records in there.
+                        $currentUserWorkspace = $this->BE_USER->workspace;
+                        $this->BE_USER->workspace = (int)$verRec['t3ver_wsid'];
+                    }
                     if ($table === 'pages') {
                         $this->deletePages($verRec['uid'], true, $forceHardDelete);
                     } else {
                         $this->deleteRecord($table, $verRec['uid'], true, $forceHardDelete);
                     }
-
+                    if ($currentUserWorkspace !== null) {
+                        // Switch back workspace
+                        $this->BE_USER->workspace = $currentUserWorkspace;
+                    }
                     // Delete move-placeholder
                     $versionState = VersionState::cast($verRec['t3ver_state']);
                     if ($versionState->equals(VersionState::MOVE_POINTER)) {
@@ -5054,6 +5074,18 @@ class DataHandler implements LoggerAwareInterface
                         )
                     );
                 }
+
+                $currentUserWorkspace = (int)$this->BE_USER->workspace;
+                if ($currentUserWorkspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+                    // If we are in a workspace, make sure only records of this workspace are deleted.
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($currentUserWorkspace, \PDO::PARAM_INT)
+                        )
+                    );
+                }
+
                 $statement = $queryBuilder->execute();
 
                 while ($row = $statement->fetch()) {

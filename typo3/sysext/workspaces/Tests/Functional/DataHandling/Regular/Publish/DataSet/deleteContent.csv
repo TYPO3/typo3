@@ -10,7 +10,7 @@
 ,310,90,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #10"
 ,311,90,512,0,1,0,310,310,0,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
 ,312,90,768,0,2,0,311,311,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
-,320,89,512,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
+,320,89,512,1,0,0,0,298,2,2,0,298,0,"Regular Element #2"
 "sys_refindex",,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","sorting","deleted","workspace","ref_table","ref_uid",,,,,
 ,"25426f92d44dd2ccf416108462b446e3","sys_workspace",1,"custom_stages",0,0,0,"sys_workspace_stage",1,,,,,
