@@ -21,6 +21,14 @@ tt_content.menu_section {
                         if {
                             isFalse.field = pages
                         }
+
+                        // Currrent page uses content of another page
+                        override {
+                            data = page:content_from_pid
+                            if {
+                                isTrue.data = page:content_from_pid
+                            }
+                        }
                     }
                 }
             }
