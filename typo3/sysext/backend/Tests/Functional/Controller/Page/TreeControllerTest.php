@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -79,8 +78,6 @@ class TreeControllerTest extends FunctionalTestCase
         //regular editor, non admin
         $this->backendUser = $this->setUpBackendUser(9);
         $this->context = GeneralUtility::makeInstance(Context::class);
-        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $this->backendUser));
-
         $this->subject = $this->getAccessibleMock(TreeController::class, ['dummy']);
     }
 
