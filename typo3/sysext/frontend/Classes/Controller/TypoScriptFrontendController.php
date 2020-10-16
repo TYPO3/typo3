@@ -985,11 +985,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function clear_preview()
     {
-        if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview')
-            || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME']
-            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
-            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false)
-        ) {
+        if ($this->isInPreviewMode()) {
             $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
             $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
             $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
@@ -1027,7 +1023,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // If there is a Backend login we are going to check for any preview settings
         $originalFrontendUserGroups = $this->applyPreviewSettings($this->getBackendUser());
         // If the front-end is showing a preview, caching MUST be disabled.
-        $isPreview = $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
+        $isPreview = $this->isInPreviewMode();
         if ($isPreview) {
             $this->disableCache();
         }
@@ -3974,6 +3970,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ];
         }
         return $additionalHeaders;
+    }
+
+    protected function isInPreviewMode(): bool
+    {
+        return $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)
+            || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME']
+            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
+            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
     }
 
     /**
