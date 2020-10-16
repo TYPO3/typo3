@@ -385,7 +385,7 @@ class BackendController
             currentBank: "0"
         };
 
-        top.goToModule = function(modName, cMR_flag, addGetVars) {
+        top.goToModule = function(modName, addGetVars) {
             TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
         }
         ' . $this->setStartupModule($request)

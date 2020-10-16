@@ -57,11 +57,6 @@ class FileSystemNavigationFrameController
     protected $currentSubScript;
 
     /**
-     * @var bool
-     */
-    protected $cMR;
-
-    /**
      * @var array
      */
     protected $scopeData;
@@ -115,7 +110,6 @@ class FileSystemNavigationFrameController
         $queryParams = $request->getQueryParams();
 
         $this->currentSubScript = $parsedBody['currentSubScript'] ?? $queryParams['currentSubScript'] ?? null;
-        $this->cMR = (bool)($parsedBody['cMR'] ?? $queryParams['cMR'] ?? false);
         $scopeData = $parsedBody['scopeData'] ?? $queryParams['scopeData'] ?? '';
         $scopeHash = $parsedBody['scopeHash'] ?? $queryParams['scopeHash'] ?? '';
 
@@ -185,7 +179,7 @@ class FileSystemNavigationFrameController
             if (linkObj) { linkObj.blur(); }
             return false;
         }
-        ' . ($this->cMR ? ' jumpTo(top.fsMod.recentIds[\'file\'],\'\');' : '');
+        ';
 
         $this->moduleTemplate->getPageRenderer()->addJsInlineCode(
             'FileSystemNavigationFrame',

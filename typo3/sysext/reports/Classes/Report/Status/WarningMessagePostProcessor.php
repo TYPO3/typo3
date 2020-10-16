@@ -57,7 +57,7 @@ class WarningMessagePostProcessor
                 ];
                 $warningMessages['tx_reports_status_notification'] = sprintf(
                     $this->getLanguageService()->getLL('status_problemNotification'),
-                    '<a href="javascript:top.goToModule(' . GeneralUtility::quoteJSvalue($reportModuleIdentifier) . ', 1, ' . GeneralUtility::quoteJSvalue('&' . implode('&', $reportModuleParameters)) . ');">',
+                    '<a href="javascript:top.goToModule(' . GeneralUtility::quoteJSvalue($reportModuleIdentifier) . ', ' . GeneralUtility::quoteJSvalue('&' . implode('&', $reportModuleParameters)) . ');">',
                     '</a>'
                 );
             }

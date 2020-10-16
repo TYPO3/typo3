@@ -48,7 +48,7 @@ function loadEditId(id, addGetVars) {	//
     top.nav_frame.refresh_nav();
   }
   if (TYPO3.configuration.pageModule) {
-    top.goToModule(TYPO3.configuration.pageModule, 0, addGetVars ? addGetVars : "");
+    TYPO3.ModuleMenu.App.showModule(TYPO3.configuration.pageModule, addGetVars);
   }
 }
 
