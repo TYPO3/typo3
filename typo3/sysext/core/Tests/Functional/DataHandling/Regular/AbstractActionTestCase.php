@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -191,10 +193,17 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         foreach ($integrityFieldNames as $integrityFieldName) {
             unset($GLOBALS['TCA'][self::TABLE_Content]['columns'][$integrityFieldName]);
         }
+        // After TCA changes, refindex is not ok anymore for imported rows. Update it before performing other actions.
+        $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $referenceIndex->updateIndex(false);
+
         // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
         $GLOBALS['TCA'] = (new TcaMigration())->migrate($GLOBALS['TCA']);
+        // create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         // perform actions to be tested
-        self::localizeContent();
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
     public function localizeContentWithLanguageSynchronization()
@@ -399,6 +408,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        // Deleting the localized page should also delete its localized records
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
     }
 
     public function localizeNestedPagesAndContents()

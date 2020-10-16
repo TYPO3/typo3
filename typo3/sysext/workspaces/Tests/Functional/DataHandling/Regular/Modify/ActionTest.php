@@ -228,17 +228,11 @@ class ActionTest extends AbstractActionTestCase
      */
     public function localizeContentWithEmptyTcaIntegrityColumns()
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithEmptyTcaIntegrityColumns();
         $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
-
-        // Due to the changed TCA columns passthrough vs select, reference index updates are performed
-        // differently for this test. We disable the 'clean refindex' test in tearDown() here.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -326,9 +320,6 @@ class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
         self::assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -485,9 +476,6 @@ class ActionTest extends AbstractActionTestCase
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
-
-        // Deleting the localized page in workspace should also delete its localized records
-        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
 
         $response = $this->executeFrontendRequest(
@@ -495,9 +483,6 @@ class ActionTest extends AbstractActionTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         self::assertEquals(404, $response->getStatusCode());
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**

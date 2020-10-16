@@ -711,11 +711,18 @@ class DataHandlerHook
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
             $this->remappedIds[$table][$swapWith] = $id;
-            // Checking for delete:
-            // Delete only if new/deleted placeholders are there.
-            if (((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER || (int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER)) {
-                // Force delete
+            if ((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER) {
+                // Delete t3ver_state = 1 record as t3ver_state = -1 record is going to be live
                 $dataHandler->deleteEl($table, $id, true);
+            }
+            if ((int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER) {
+                // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
+                // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
+                // we temporarily set backend user workspace to 0 so all operations happen as in live.
+                $currentUserWorkspace = $dataHandler->BE_USER->workspace;
+                $dataHandler->BE_USER->workspace = 0;
+                $dataHandler->deleteEl($table, $id, true);
+                $dataHandler->BE_USER->workspace = $currentUserWorkspace;
             }
             if ($dataHandler->enableLogging) {
                 $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));

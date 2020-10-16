@@ -368,9 +368,6 @@ class ActionTest extends AbstractActionTestCase
             (new InternalRequest())->withPageId(self::VALUE_PageId)
         );
         self::assertEquals(404, $response->getStatusCode());
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -386,9 +383,6 @@ class ActionTest extends AbstractActionTestCase
             (new InternalRequest())->withPageId(self::VALUE_PageId)
         );
         self::assertEquals(404, $response->getStatusCode());
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -398,9 +392,6 @@ class ActionTest extends AbstractActionTestCase
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
-
-        // Deleting the localized page in workspace should also delete its localized records
-        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
 
@@ -409,9 +400,6 @@ class ActionTest extends AbstractActionTestCase
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
         );
         self::assertEquals(404, $response->getStatusCode());
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -642,9 +630,6 @@ class ActionTest extends AbstractActionTestCase
         parent::createPlaceholdersAndDeleteDraftParentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**

@@ -416,9 +416,6 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2'));
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**

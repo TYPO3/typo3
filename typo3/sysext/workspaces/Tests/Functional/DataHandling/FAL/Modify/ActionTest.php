@@ -228,9 +228,6 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD'));
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -245,9 +242,6 @@ class ActionTest extends AbstractActionTestCase
         self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**

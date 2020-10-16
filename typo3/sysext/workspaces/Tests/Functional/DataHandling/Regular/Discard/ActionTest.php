@@ -227,9 +227,6 @@ class ActionTest extends AbstractActionTestCase
         // Note the deleted=1 records are NOT discarded. This is ok since deleted=1 means "not seen in backend",
         // so it is also ignored by the discard operation.
         $this->assertAssertionDataSet('changeContentSortingNDeleteLiveRecord');
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**
@@ -325,15 +322,9 @@ class ActionTest extends AbstractActionTestCase
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
-
-        // Deleting the localized page in workspace should also delete its localized records
-        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         // Deleted records are not discarded
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**

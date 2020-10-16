@@ -218,9 +218,6 @@ class ActionTest extends AbstractActionTestCase
             (new InternalRequest())->withPageId(self::VALUE_PageId)
         );
         self::assertEquals(404, $response->getStatusCode());
-
-        // @todo: reference index not clean after this test. Needs investigation.
-        $this->assertCleanReferenceIndex = false;
     }
 
     /**

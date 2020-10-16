@@ -19,17 +19,11 @@
 # 320 is discarded now since page 89 has been deleted
 ,320,89,512,1,0,0,0,298,2,2,0,298,"Regular Element #2"
 ,321,89,512,1,0,0,0,298,1,2,0,298,"Regular Element #2"
-,322,89,384,1,1,297,297,301,1,2,0,301,"[Translate to Dansk:] Regular Element #1"
-,323,89,448,1,2,297,301,302,1,2,0,302,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-,324,89,1024,1,1,299,299,300,1,2,0,300,"[Translate to Dansk:] Regular Element #3"
 "sys_refindex",,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string"
 ,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,
-,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,
-,"eb360eb09940bbb656509c7f6fda9b05","tt_content",301,"l18n_parent",,,,0,0,0,"tt_content",297,
-,"b6e55a3d99888c9a7007226ad685306c","tt_content",302,"l18n_parent",,,,0,0,0,"tt_content",297,
+,"129f6a7f7dec4293b757c375e7dd7078","tt_content",300,"l18n_parent",,,,0,1,0,"tt_content",299,
+,"083dd2fbf54e1d7279eb503359be31c8","tt_content",301,"l18n_parent",,,,0,1,0,"tt_content",297,
+,"3d925d0a2a0939984e72ed3b10fd886f","tt_content",302,"l18n_parent",,,,0,1,0,"tt_content",297,
 ,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,
 ,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,
-,"0ac1dfb24a17464a1a6b3f984af8aab8","tt_content",322,"l18n_parent",,,,0,1,1,"tt_content",297,
-,"4aa47b8c9d1db85d49e099281dc9eeee","tt_content",323,"l18n_parent",,,,0,1,1,"tt_content",297,
-,"0db2b4ceeb1292a0e29c2bd99d49f9a7","tt_content",324,"l18n_parent",,,,0,1,1,"tt_content",299,
