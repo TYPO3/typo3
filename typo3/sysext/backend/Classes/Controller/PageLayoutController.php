@@ -404,7 +404,7 @@ class PageLayoutController
                     $path = BackendUtility::getRecordPath($targetPage['uid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 1000);
                     $linkedPath = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($path) . '</a>';
                     $message .= sprintf(htmlspecialchars($lang->getLL('pageIsInternalLinkMessage')), $linkedPath);
-                    $message .= ' (' . htmlspecialchars($lang->sL(BackendUtility::getLabelFromItemlist('pages', 'shortcut_mode', $shortcutMode))) . ')';
+                    $message .= ' (' . htmlspecialchars($lang->sL(BackendUtility::getLabelFromItemlist('pages', 'shortcut_mode', (string)$shortcutMode))) . ')';
                     $state = InfoboxViewHelper::STATE_INFO;
                 }
             } else {
@@ -427,8 +427,9 @@ class PageLayoutController
                 ]);
                 $content .= $view->render();
             } else {
-                $externalUrl = htmlspecialchars(GeneralUtility::makeInstance(PageRepository::class)->getExtURL($this->pageinfo));
-                if ($externalUrl !== false) {
+                $externalUrl = GeneralUtility::makeInstance(PageRepository::class)->getExtURL($this->pageinfo);
+                if (is_string($externalUrl)) {
+                    $externalUrl = htmlspecialchars($externalUrl);
                     $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';
                     $view->assignMultiple([
                         'title' => $this->pageinfo['title'],
@@ -441,7 +442,7 @@ class PageLayoutController
         }
         // If content from different pid is displayed
         if ($this->pageinfo['content_from_pid']) {
-            $contentPage = BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
+            $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
             $linkToPid = GeneralUtility::linkThisScript(['id' => $this->pageinfo['content_from_pid']]);
             $title = BackendUtility::getRecordTitle('pages', $contentPage);
             $link = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';

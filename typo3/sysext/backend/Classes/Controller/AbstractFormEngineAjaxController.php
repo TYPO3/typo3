@@ -81,7 +81,7 @@ abstract class AbstractFormEngineAjaxController
     {
         if (strpos($stylesheetFile, 'EXT:') === 0) {
             $stylesheetFile = GeneralUtility::getFileAbsFileName($stylesheetFile);
-            $stylesheetFile = PathUtility::getRelativePathTo($stylesheetFile);
+            $stylesheetFile = PathUtility::getRelativePathTo($stylesheetFile) ?? '';
             $stylesheetFile = rtrim($stylesheetFile, '/');
         } else {
             $stylesheetFile = GeneralUtility::resolveBackPath($stylesheetFile);

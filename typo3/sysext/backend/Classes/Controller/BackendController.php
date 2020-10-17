@@ -306,7 +306,7 @@ class BackendController
 
                 // Add further attributes
                 foreach ($additionalAttributes as $name => $value) {
-                    $liAttributes[$name] = $value;
+                    $liAttributes[(string)$name] = (string)$value;
                 }
 
                 // Create a unique id from class name
@@ -317,7 +317,7 @@ class BackendController
                 $liAttributes['id'] = $className;
 
                 // Create data attribute identifier
-                $shortName = substr($fullyQualifiedClassName, strrpos($fullyQualifiedClassName, '\\') + 1);
+                $shortName = substr($fullyQualifiedClassName, (int)strrpos($fullyQualifiedClassName, '\\') + 1);
                 $dataToolbarIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($shortName);
                 $dataToolbarIdentifier = str_replace('_', '-', $dataToolbarIdentifier);
                 $liAttributes['data-toolbar-identifier'] = $dataToolbarIdentifier;
@@ -404,13 +404,13 @@ class BackendController
         $beUser = $this->getBackendUser();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         // EDIT page
-        $editId = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['edit'] ?? '');
+        $editId = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['edit'] ?? '') ?? '';
         if ($editId) {
             // Looking up the page to edit, checking permissions:
             $where = ' AND (' . $beUser->getPagePermsClause(Permission::PAGE_EDIT) . ' OR ' . $beUser->getPagePermsClause(Permission::CONTENT_EDIT) . ')';
             $editRecord = null;
             if (MathUtility::canBeInterpretedAsInteger($editId)) {
-                $editRecord = BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
+                $editRecord = BackendUtility::getRecordWSOL('pages', (int)$editId, '*', $where);
             }
             // If the page was accessible, then let the user edit it.
             if (is_array($editRecord) && $beUser->isInWebMount($editRecord)) {
@@ -429,7 +429,7 @@ class BackendController
             return '
             // Warning about page editing:
             require(["TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function(Modal, Severity) {
-                Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ', Severity.notice, [{
+                Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), (string)$editId)) . ', Severity.notice, [{
                     text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close')) . ',
                     active: true,
                     btnClass: "btn-info",
@@ -554,7 +554,7 @@ class BackendController
 
     protected function getCollapseStateOfMenu(): bool
     {
-        $uc = json_decode(json_encode($this->getBackendUser()->uc), true);
+        $uc = json_decode((string)json_encode($this->getBackendUser()->uc), true);
         $collapseState = $uc['BackendComponents']['States']['typo3-module-menu']['collapsed'] ?? false;
 
         return $collapseState === true || $collapseState === 'true';

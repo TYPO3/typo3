@@ -75,7 +75,7 @@ class EditDocumentController
     /**
      * An array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit".
      *
-     * @var array
+     * @var array<string,array>
      */
     protected $editconf = [];
 
@@ -621,10 +621,10 @@ class EditDocumentController
             }
             // Find the current table
             reset($this->editconf);
-            $nTable = key($this->editconf);
+            $nTable = (string)key($this->editconf);
             // Finding the first id, getting the records pid+uid
             reset($this->editconf[$nTable]);
-            $nUid = key($this->editconf[$nTable]);
+            $nUid = (int)key($this->editconf[$nTable]);
             $recordFields = 'pid,uid';
             if (BackendUtility::isTableWorkspaceEnabled($nTable)) {
                 $recordFields .= ',t3ver_oid';
@@ -664,7 +664,7 @@ class EditDocumentController
             $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT, $request);
             // Find current table
             reset($this->editconf);
-            $nTable = key($this->editconf);
+            $nTable = (string)key($this->editconf);
             // Find the first id, getting the records pid+uid
             reset($this->editconf[$nTable]);
             $nUid = key($this->editconf[$nTable]);
@@ -1663,15 +1663,15 @@ class EditDocumentController
 
             $referenceCountMessage = BackendUtility::referenceCount(
                 $this->firstEl['table'],
-                (int)$this->firstEl['uid'],
+                (string)(int)$this->firstEl['uid'],
                 $this->getLanguageService()->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'
                 ),
-                $numberOfReferences
+                (string)$numberOfReferences
             );
             $translationCountMessage = BackendUtility::translationCount(
                 $this->firstEl['table'],
-                (int)$this->firstEl['uid'],
+                (string)(int)$this->firstEl['uid'],
                 $this->getLanguageService()->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'
                 )
@@ -2435,7 +2435,7 @@ class EditDocumentController
         // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: used by
         // other scripts, like wizard_add, to know which records was created or so...
         if ($this->returnEditConf && $this->retUrl != (string)$this->uriBuilder->buildUriFromRoute('dummy')) {
-            $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
+            $this->retUrl .= '&returnEditConf=' . rawurlencode((string)json_encode($this->editconf));
         }
         // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
         if ($mode === self::DOCUMENT_CLOSE_MODE_DEFAULT || $mode === self::DOCUMENT_CLOSE_MODE_REDIRECT) {
@@ -2444,7 +2444,7 @@ class EditDocumentController
         if ($this->retUrl === '') {
             return null;
         }
-        $retUrl = $this->returnUrl;
+        $retUrl = (string)$this->returnUrl;
         if (is_array($this->docHandler) && !empty($this->docHandler)) {
             if (!empty($setupArr[2])) {
                 $sParts = parse_url($request->getAttribute('normalizedParams')->getRequestUri());

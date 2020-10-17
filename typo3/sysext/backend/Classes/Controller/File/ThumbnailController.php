@@ -111,7 +111,7 @@ class ThumbnailController
         );
         if ($processedImage->isImage()) {
             return new RedirectResponse(
-                GeneralUtility::locationHeaderUrl($processedImage->getPublicUrl(true))
+                GeneralUtility::locationHeaderUrl($processedImage->getPublicUrl(true) ?? '')
             );
         }
 

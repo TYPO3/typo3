@@ -68,7 +68,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         $queryParameters = $request->getParsedBody() ?? [];
         $values = $queryParameters['values'];
         $mode = $queryParameters['mode'];
-        $tableName = $queryParameters['tableName'];
+        $tableName = (string)($queryParameters['tableName'] ?? '');
         $pid = (int)$queryParameters['pageId'];
         $parentPageId = (int)$queryParameters['parentPageId'];
         $recordId = (int)$queryParameters['recordId'];
@@ -76,7 +76,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         $fieldName = $queryParameters['fieldName'];
 
         $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
-        $row = BackendUtility::getRecord($tableName, $recordId);
+        $row = (array)BackendUtility::getRecord($tableName, $recordId);
         $recordType = BackendUtility::getTCAtypeValue($tableName, $row);
         $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
         if ($columnsOverridesConfigOfField) {
