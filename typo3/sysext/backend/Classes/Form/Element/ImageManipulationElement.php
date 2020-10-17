@@ -335,7 +335,7 @@ class ImageManipulationElement extends AbstractFormElement
             'image' => $image->getUid(),
         ];
         $uriArguments['arguments'] = json_encode($arguments);
-        $uriArguments['signature'] = GeneralUtility::hmac($uriArguments['arguments'], $this->wizardRouteName);
+        $uriArguments['signature'] = GeneralUtility::hmac((string)($uriArguments['arguments'] ?? ''), $this->wizardRouteName);
 
         return $uriArguments;
     }

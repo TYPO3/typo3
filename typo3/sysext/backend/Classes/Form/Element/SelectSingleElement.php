@@ -186,7 +186,7 @@ class SelectSingleElement extends AbstractFormElement
                 foreach ($selectItemGroup['items'] as $item) {
                     $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
                         htmlspecialchars($item['icon']) . '"'
-                        . ($item['selected'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($item['title'], ENT_COMPAT, 'UTF-8', false) . '</option>';
+                        . ($item['selected'] ? ' selected="selected"' : '') . '>' . htmlspecialchars((string)($item['title'] ?? ''), ENT_COMPAT, 'UTF-8', false) . '</option>';
                 }
                 $hasIcons = !empty($item['icon']);
             }
@@ -196,12 +196,12 @@ class SelectSingleElement extends AbstractFormElement
 
         $selectAttributes = [
             'id' => $selectId,
-            'name' => $parameterArray['itemFormElName'],
+            'name' => (string)($parameterArray['itemFormElName'] ?? ''),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'class' => implode(' ', $classList),
         ];
         if ($size) {
-            $selectAttributes['size'] = $size;
+            $selectAttributes['size'] = (string)$size;
         }
         if ($disabled) {
             $selectAttributes['disabled'] = 'disabled';

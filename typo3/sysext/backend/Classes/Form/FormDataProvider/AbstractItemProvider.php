@@ -439,7 +439,7 @@ abstract class AbstractItemProvider
             $recursionLevels = isset($result['processedTca']['columns'][$fieldName]['config']['fileFolder_recursions'])
                 ? MathUtility::forceIntegerInRange($result['processedTca']['columns'][$fieldName]['config']['fileFolder_recursions'], 0, 99)
                 : 99;
-            $fileArray = GeneralUtility::getAllFilesAndFoldersInPath([], $fileFolder, $fileExtensionList, 0, $recursionLevels);
+            $fileArray = GeneralUtility::getAllFilesAndFoldersInPath([], $fileFolder, $fileExtensionList, false, $recursionLevels);
             $fileArray = GeneralUtility::removePrefixPathFromList($fileArray, $fileFolder);
             foreach ($fileArray as $fileReference) {
                 $fileInformation = pathinfo($fileReference);
@@ -770,6 +770,7 @@ abstract class AbstractItemProvider
         foreach ($GLOBALS['TCA'] as $table => $conf) {
             $tableToTranslation[$table] = $languageService->sL($conf['ctrl']['title']);
         }
+        /** @var array<string, string> $tableToTranslation */
         // Sort by translations
         asort($tableToTranslation);
         foreach ($tableToTranslation as $table => $translatedTable) {
@@ -885,6 +886,7 @@ abstract class AbstractItemProvider
             if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] === 'flex') {
                 $flexForms[$tableField] = [];
                 foreach (array_keys($fieldConf['config']['ds']) as $flexFormKey) {
+                    $flexFormKey = (string)$flexFormKey;
                     // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
                     $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
                     $extIdent = $identFields[0];

@@ -90,7 +90,7 @@ class OtherLanguageThumbnails extends AbstractNode
                                 'crop' => $cropVariantCollection->getCropArea($variant)->makeAbsoluteBasedOnFile($file)
                             ]
                         )
-                        ->getPublicUrl(),
+                        ->getPublicUrl() ?? '',
                     $languageRow['title'] ?? $file->getProperty('title') ?? '',
                     $languageRow['alternative'] ?? $file->getProperty('alternative') ?? ''
                 );

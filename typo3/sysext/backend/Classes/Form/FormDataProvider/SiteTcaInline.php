@@ -90,7 +90,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
                 $liveVersionId = BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
                 $pid = $liveVersionId ?? $row['uid'];
             } elseif (($row['pid'] ?? 0) < 0) {
-                $prevRec = BackendUtility::getRecord($table, abs($row['pid']));
+                $prevRec = BackendUtility::getRecord($table, (int)abs($row['pid']));
                 $pid = $prevRec['pid'];
             } else {
                 $pid = $row['pid'] ?? 0;

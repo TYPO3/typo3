@@ -132,7 +132,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =                      ' class="form-control t3js-form-field-slug-input hidden"';
         $mainFieldHtml[] =                      ' placeholder="' . htmlspecialchars($row['slug'] ?? '/') . '"';
         $mainFieldHtml[] =                      ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
-        $mainFieldHtml[] =                      ' data-formengine-input-params="' . htmlspecialchars(json_encode(['field' => $parameterArray['itemFormElName'], 'evalList' => implode(',', $evalList)])) . '"';
+        $mainFieldHtml[] =                      ' data-formengine-input-params="' . htmlspecialchars((string)json_encode(['field' => $parameterArray['itemFormElName'], 'evalList' => implode(',', $evalList)])) . '"';
         $mainFieldHtml[] =                      ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $mainFieldHtml[] =                  ' />';
         $mainFieldHtml[] =                  '<span class="input-group-btn">';

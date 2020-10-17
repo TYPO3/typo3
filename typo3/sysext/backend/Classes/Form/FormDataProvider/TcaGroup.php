@@ -118,7 +118,7 @@ class TcaGroup implements FormDataProviderInterface
                     $clipboardElements = array_keys($clipboard->elFromTable(''));
                     foreach ($clipboardElements as $elementValue) {
                         [$elementTable, $elementUid] = explode('|', $elementValue);
-                        $record = BackendUtility::getRecordWSOL($elementTable, $elementUid);
+                        $record = BackendUtility::getRecordWSOL($elementTable, (int)$elementUid);
                         $sanitizedClipboardElements[] = [
                             'title' => BackendUtility::getRecordTitle($elementTable, $record),
                             'value' => $elementTable . '_' . $elementUid,

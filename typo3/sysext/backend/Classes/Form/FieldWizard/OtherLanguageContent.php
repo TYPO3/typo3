@@ -68,7 +68,7 @@ class OtherLanguageContent extends AbstractNode
             $defaultLanguageRow['uid'],
             true,
             $defaultLanguageRow['pid']
-        );
+        ) ?? '';
         if ($defaultLanguageValue !== '') {
             $iconIdentifier = $this->data['systemLanguageRows'][0]['flagIconIdentifier'] ?: 'flags-multiple';
             $html[] = '<div class="t3-form-original-language">';
@@ -84,7 +84,7 @@ class OtherLanguageContent extends AbstractNode
                 $previewLanguage[$fieldName],
                 0,
                 true
-            );
+            ) ?? '';
             if ($defaultLanguageValue !== '') {
                 $html[] = '<div class="t3-form-original-language">';
                 $html[] =   $iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render();

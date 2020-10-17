@@ -176,7 +176,7 @@ class InlineControlContainer extends AbstractContainer
         $this->inlineData['config'][$nameObject] = [
             'table' => $foreign_table,
         ];
-        $configJson = json_encode($config);
+        $configJson = (string)json_encode($config);
         $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
             'min' => $config['minitems'],
             'max' => $config['maxitems'],
@@ -287,13 +287,13 @@ class InlineControlContainer extends AbstractContainer
         $formGroupAttributes = [
             'class' => 'form-group',
             'id' => $nameObject,
-            'data-uid' => $row['uid'],
-            'data-local-table' => $top['table'],
-            'data-local-field' => $top['field'],
-            'data-foreign-table' => $foreign_table,
+            'data-uid' => (string)$row['uid'],
+            'data-local-table' => (string)$top['table'],
+            'data-local-field' => (string)$top['field'],
+            'data-foreign-table' => (string)$foreign_table,
             'data-object-group' => $nameObject . '-' . $foreign_table,
             'data-form-field' => $nameForm,
-            'data-appearance' => json_encode($config['appearance']),
+            'data-appearance' => (string)json_encode($config['appearance']),
         ];
 
         // Wrap all inline fields of a record with a <div> (like a container)
@@ -549,7 +549,7 @@ class InlineControlContainer extends AbstractContainer
 					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 					data-file-allowed="' . htmlspecialchars($allowed) . '"
 					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
-					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
+					data-max-file-size="' . htmlspecialchars((string)$maxFileSize) . '"
 					>';
                     $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
                     $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));

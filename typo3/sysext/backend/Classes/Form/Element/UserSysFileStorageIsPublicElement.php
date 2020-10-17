@@ -91,7 +91,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($this->initializeResultArray(), $fieldInformationResult, false);
 
-        $checkboxParameters = $this->checkBoxParams($parameterArray['itemFormElName'], $isPublic, 0, 1, implode('', $parameterArray['fieldChangeFunc']));
+        $checkboxParameters = $this->checkBoxParams($parameterArray['itemFormElName'], $isPublic ? 1 : 0, 0, 1, implode('', $parameterArray['fieldChangeFunc']));
         $checkboxId = $parameterArray['itemFormElID'] . '_1';
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';

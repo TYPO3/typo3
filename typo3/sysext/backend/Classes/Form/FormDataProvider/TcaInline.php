@@ -103,7 +103,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 $liveVersionId = BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
                 $pid = $liveVersionId ?? $row['uid'];
             } elseif (($row['pid'] ?? 0) < 0) {
-                $prevRec = BackendUtility::getRecord($table, abs($row['pid']));
+                $prevRec = BackendUtility::getRecord($table, (int)abs($row['pid']));
                 $pid = $prevRec['pid'];
             } else {
                 $pid = $row['pid'] ?? 0;
@@ -445,7 +445,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      *
      * @param array $parentConfig TCA config section of parent
      * @param string $parentTableName Name of parent table
-     * @param string $parentUid Uid of parent record
+     * @param int $parentUid Uid of parent record
      * @param string $parentFieldValue Database value of parent record of this inline field
      * @return array Array with connected uids
      * @todo: Cover with unit tests

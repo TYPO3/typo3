@@ -188,7 +188,7 @@ class SelectSingleBoxElement extends AbstractFormElement
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
         ];
         if ($size) {
-            $attributes['size'] = $size;
+            $attributes['size'] = (string)$size;
         }
         if ($config['readOnly']) {
             $attributes['disabled'] = 'disabled';

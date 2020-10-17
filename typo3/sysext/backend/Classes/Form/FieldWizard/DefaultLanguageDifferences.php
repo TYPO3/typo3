@@ -66,8 +66,8 @@ class DefaultLanguageDifferences extends AbstractNode
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
             $diffUtility->stripTags = false;
             $diffResult = $diffUtility->makeDiffDisplay(
-                BackendUtility::getProcessedValue($table, $fieldName, $defaultLanguageDiffRow[$fieldName], 0, 1),
-                BackendUtility::getProcessedValue($table, $fieldName, $defaultLanguageRow[$fieldName], 0, 1)
+                BackendUtility::getProcessedValue($table, $fieldName, $defaultLanguageDiffRow[$fieldName], 0, true),
+                BackendUtility::getProcessedValue($table, $fieldName, $defaultLanguageRow[$fieldName], 0, true)
             );
             $html[] = '<div class="t3-form-original-language-diff">';
             $html[] =   '<div class="t3-form-original-language-diffheader">';

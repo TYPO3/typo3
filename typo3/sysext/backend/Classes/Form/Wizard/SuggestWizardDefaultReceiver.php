@@ -385,7 +385,7 @@ class SuggestWizardDefaultReceiver
             $path = BackendUtility::getRecordPath($uid, '', $titleLimit);
             // For pages we only want the first (n-1) parts of the path,
             // because the n-th part is the page itself
-            $path = substr($path, 0, strrpos($path, '/', -2)) . '/';
+            $path = substr($path, 0, (int)strrpos($path, '/', -2)) . '/';
         } else {
             $path = BackendUtility::getRecordPath($row['pid'], '', $titleLimit);
         }
