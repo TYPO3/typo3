@@ -106,7 +106,7 @@ class SiteConfigurationController
 
         $this->initializeView($action);
 
-        $result = call_user_func_array([$this, $action . 'Action'], [$request]);
+        $result = $this->{$action . 'Action'}($request);
         if ($result instanceof ResponseInterface) {
             return $result;
         }

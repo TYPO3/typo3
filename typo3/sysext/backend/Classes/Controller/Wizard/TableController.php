@@ -598,7 +598,8 @@ class TableController extends AbstractWizardController
         // Setting number of columns
         // auto...
         if (!$columns && trim($tableLines[0])) {
-            $columns = count(explode($this->tableParsing_delimiter, $tableLines[0]));
+            $exploded = explode($this->tableParsing_delimiter, $tableLines[0]);
+            $columns = is_array($exploded) ? count($exploded) : 0;
         }
         $columns = $columns ?: 4;
         // Traverse the number of table elements:

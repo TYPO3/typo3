@@ -50,7 +50,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $domObjectId = $ajaxArguments[0];
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
-        if (!MathUtility::canBeInterpretedAsInteger($inlineFirstPid) && strpos($inlineFirstPid, 'NEW') !== 0) {
+        if (!MathUtility::canBeInterpretedAsInteger($inlineFirstPid) && strpos((string)$inlineFirstPid, 'NEW') !== 0) {
             throw new \RuntimeException(
                 'inlineFirstPid should either be an integer or a "NEW..." string',
                 1521220491
@@ -675,7 +675,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * Get inlineFirstPid from a given objectId string
      *
      * @param string $domObjectId The id attribute of an element
-     * @return int|null Pid or null
+     * @return int|string|null Pid or null
      */
     protected function getInlineFirstPidFromDomObjectId($domObjectId)
     {

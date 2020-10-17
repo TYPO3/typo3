@@ -369,7 +369,7 @@ class ElementInformationController
             $label = $label ?: $name;
 
             $propertiesForTable['fields'][] = [
-                'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid),
+                'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, false, false, $uid),
                 'fieldLabel' => htmlspecialchars($label)
             ];
         }
@@ -413,6 +413,7 @@ class ElementInformationController
                 // show the metadata of a file as well
                 $table = 'sys_file_metadata';
                 $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
+                /** @var array<string, string> $metaData */
                 $metaData = $metaDataRepository->findByFileUid($this->row['uid']);
                 $allowedFields = $this->getFieldList($table, (int)$metaData['uid']);
 
@@ -431,7 +432,7 @@ class ElementInformationController
                         $label = $label ?: $name;
 
                         $propertiesForTable['fields'][] = [
-                            'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, 0, false, $metaData['uid']),
+                            'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid']),
                             'fieldLabel' => htmlspecialchars($label)
                         ];
                     }
@@ -498,7 +499,7 @@ class ElementInformationController
         } else {
             foreach (['crdate' => 'creationDate', 'tstamp' => 'timestamp', 'cruser_id' => 'creationUserId'] as $field => $label) {
                 if (isset($GLOBALS['TCA'][$this->table]['ctrl'][$field])) {
-                    $extraFields[$GLOBALS['TCA'][$this->table]['ctrl'][$field]] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label));
+                    $extraFields[(string)$GLOBALS['TCA'][$this->table]['ctrl'][$field]] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.' . $label));
                 }
             }
         }
@@ -516,7 +517,7 @@ class ElementInformationController
 
                 // show the backend username who created the issue
                 if ($name === 'cruser_id' && $rowValue) {
-                    $creatorRecord = BackendUtility::getRecord('be_users', $rowValue);
+                    $creatorRecord = BackendUtility::getRecord('be_users', (int)$rowValue);
                     if ($creatorRecord) {
                         /** @var Avatar $avatar */
                         $avatar = GeneralUtility::makeInstance(Avatar::class);
@@ -631,7 +632,7 @@ class ElementInformationController
      * Make reference display
      *
      * @param string $table Table name
-     * @param string|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
+     * @param int|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
      * @param ServerRequestInterface $request
      * @return array
      * @throws RouteNotFoundException
@@ -735,7 +736,7 @@ class ElementInformationController
      * Make reference display (what this elements points to)
      *
      * @param string $table Table name
-     * @param string $ref Filename or uid
+     * @param int $ref Filename or uid
      * @param ServerRequestInterface $request
      * @return array
      */

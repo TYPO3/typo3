@@ -523,6 +523,7 @@ class NewRecordController
             if (is_array($GLOBALS['TCA'])) {
                 $groupName = '';
                 foreach ($GLOBALS['TCA'] as $table => $v) {
+                    /** @var string $table */
                     $rootLevelConfiguration = isset($v['ctrl']['rootLevel']) ? (int)$v['ctrl']['rootLevel'] : 0;
                     if ($table !== 'pages'
                         && $this->isRecordCreationAllowedForTable($table)
@@ -576,7 +577,7 @@ class NewRecordController
                                 $title = (string)($v['ctrl']['title'] ?? '');
                                 if (strpos($title, 'LLL:EXT:') === 0) {
                                     $_EXTKEY = substr($title, 8);
-                                    $_EXTKEY = substr($_EXTKEY, 0, strpos($_EXTKEY, '/'));
+                                    $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
                                     if ($_EXTKEY !== '') {
                                         // First try to get localisation of extension title
                                         $temp = explode(':', substr($title, 9 + strlen($_EXTKEY)));
