@@ -207,10 +207,14 @@ class TreeNode implements ComparableNodeInterface, \Serializable
     {
         $this->setId($data['id']);
         if (isset($data['parentNode']) && $data['parentNode'] !== '') {
-            $this->setParentNode(GeneralUtility::makeInstance($data['parentNode']['serializeClassName'], $data['parentNode']));
+            /** @var TreeNode $parentNode */
+            $parentNode = GeneralUtility::makeInstance($data['parentNode']['serializeClassName'], $data['parentNode']);
+            $this->setParentNode($parentNode);
         }
         if (isset($data['childNodes']) && $data['childNodes'] !== '') {
-            $this->setChildNodes(GeneralUtility::makeInstance($data['childNodes']['serializeClassName'], $data['childNodes']));
+            /** @var TreeNodeCollection $childNodes */
+            $childNodes = GeneralUtility::makeInstance($data['childNodes']['serializeClassName'], $data['childNodes']);
+            $this->setChildNodes($childNodes);
         }
     }
 

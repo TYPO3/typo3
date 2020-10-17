@@ -56,7 +56,7 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     protected function binarySearch(TreeNode $node, $start, $end)
     {
         if (!$start && $end - $start >= 2 || $end - $start > 2) {
-            $divider = ceil(($end - $start) / 2);
+            $divider = (int)ceil(($end - $start) / 2);
             if ($this->offsetGet($divider)->equals($node)) {
                 return $divider;
             }
