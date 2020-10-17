@@ -99,29 +99,11 @@ The default module is "About Modules".</source>
 				<source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="option_resizeTextareas.alttitle" resname="option_resizeTextareas.alttitle">
-				<source>Make Textareas Resizable</source>
-			</trans-unit>
-			<trans-unit id="option_resizeTextareas.description" resname="option_resizeTextareas.description">
-				<source>This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</source>
-			</trans-unit>
-			<trans-unit id="option_resizeTextareas_MaxHeight.alttitle" resname="option_resizeTextareas_MaxHeight.alttitle">
-				<source>Maximal Height of Textarea</source>
-			</trans-unit>
 			<trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" resname="option_flexibleTextareas_MaxHeight.alttitle">
-				<source>Maximal Height of flexible textareas</source>
-			</trans-unit>
-			<trans-unit id="option_resizeTextareas_MaxHeight.description" resname="option_resizeTextareas_MaxHeight.description">
-				<source>Define the maximal height of textarea (in Pixel).</source>
+				<source>Maximum height of text areas</source>
 			</trans-unit>
 			<trans-unit id="option_flexibleTextareas_MaxHeight.description" resname="option_flexibleTextareas_MaxHeight.description">
-				<source>Define the maximal height of flexible textareas (in Pixel).</source>
-			</trans-unit>
-			<trans-unit id="option_resizeTextareas_Flexible.alttitle" resname="option_resizeTextareas_Flexible.alttitle">
-				<source>Make Textareas Flexible</source>
-			</trans-unit>
-			<trans-unit id="option_resizeTextareas_Flexible.description" resname="option_resizeTextareas_Flexible.description">
-				<source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
+				<source>Define the maximum height of text areas in pixels.</source>
 			</trans-unit>
 			<trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description">
 				<source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>

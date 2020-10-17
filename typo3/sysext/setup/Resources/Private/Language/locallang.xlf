@@ -258,17 +258,8 @@
 			<trans-unit id="showHiddenFilesAndFolders" resname="showHiddenFilesAndFolders">
 				<source>Show hidden files and folders in the filelist</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas" resname="resizeTextareas">
-				<source>Make Textareas resizable</source>
-			</trans-unit>
-			<trans-unit id="resizeTextareas_MaxHeight" resname="resizeTextareas_MaxHeight">
-				<source>Maximal Height of resizable Textarea in Pixel</source>
-			</trans-unit>
 			<trans-unit id="flexibleTextareas_MaxHeight" resname="flexibleTextareas_MaxHeight">
-				<source>Maximal Height of flexible Textareas in Pixel</source>
-			</trans-unit>
-			<trans-unit id="resizeTextareas_Flexible" resname="resizeTextareas_Flexible">
-				<source>Make Textareas flexible</source>
+				<source>Maximum height of text areas in pixels</source>
 			</trans-unit>
 			<trans-unit id="editFunctionsTab" resname="editFunctionsTab">
 				<source>Edit and Advanced functions</source>

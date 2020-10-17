@@ -293,9 +293,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         'titleLen' => 50,
         'edit_RTE' => '1',
         'edit_docModuleUpload' => '1',
-        'resizeTextareas' => 1,
         'resizeTextareas_MaxHeight' => 500,
-        'resizeTextareas_Flexible' => 0
     ];
 
     /**

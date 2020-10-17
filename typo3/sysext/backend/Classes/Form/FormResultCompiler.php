@@ -207,13 +207,6 @@ class FormResultCompiler
                 $pageRenderer->loadRequireJsModule($moduleName, $callback);
             }
         }
-        $backendUser = $this->getBackendUserAuthentication();
-
-        // Make textareas resizable and flexible ("autogrow" in height)
-        $textareaSettings = [
-            'autosize'  => (bool)$backendUser->uc['resizeTextareas_Flexible'],
-        ];
-        $pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
 
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         // Needed for FormEngine manipulation (date picker)

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.Resizable=void 0;t.Resizable=class{static enable(t){TYPO3.settings.Textarea&&TYPO3.settings.Textarea.autosize&&e(["autosize"],e=>{e(t)})}}}));
+define(["require","exports"],(function(e,i){"use strict";Object.defineProperty(i,"__esModule",{value:!0}),i.Resizable=void 0;i.Resizable=class{static enable(i){e(["autosize"],e=>{e(i)})}}}));
