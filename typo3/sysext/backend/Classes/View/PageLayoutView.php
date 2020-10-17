@@ -522,7 +522,7 @@ class PageLayoutView implements LoggerAwareInterface
                             }
                         }
                         if (empty($colTitle)) {
-                            $colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $columnId);
+                            $colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', (string)$columnId) ?? '';
                         }
                         $editParam = $this->doEdit && !empty($rowArr)
                             ? '&edit[tt_content][' . $editUidList . ']=edit&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', $this->pageRecord, true))
@@ -651,9 +651,9 @@ class PageLayoutView implements LoggerAwareInterface
         }
         $elFromTable = $this->clipboard->elFromTable('tt_content');
         if (!empty($elFromTable) && $this->isContentEditable()) {
-            $pasteItem = substr(key($elFromTable), 11);
-            $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
-            $pasteTitle = $pasteRecord['header'] ?: $pasteItem;
+            $pasteItem = (int)substr((string)key($elFromTable), 11);
+            $pasteRecord = BackendUtility::getRecord('tt_content', $pasteItem);
+            $pasteTitle = $pasteRecord['header'] ?: (string)$pasteItem;
             $copyMode = $this->clipboard->clipData['normal']['mode'] ? '-' . $this->clipboard->clipData['normal']['mode'] : '';
             $inlineJavaScript = '
                      top.pasteIntoLinkTemplate = '
@@ -724,7 +724,7 @@ class PageLayoutView implements LoggerAwareInterface
             $columnAttributes = [
                 'valign' => 'top',
                 'class' => 't3-page-column t3-page-column-lang-name',
-                'data-language-uid' => $languageId,
+                'data-language-uid' => (string)$languageId,
                 'data-language-title' => $this->siteLanguages[$languageId]->getTitle(),
                 'data-flag-identifier' => $this->siteLanguages[$languageId]->getFlagIdentifier()
             ];
@@ -905,7 +905,9 @@ class PageLayoutView implements LoggerAwareInterface
         );
 
         // Traverse any selected elements and render their display code:
-        $results = $this->getResult($queryBuilder->execute());
+        /** @var Statement $result */
+        $result = $queryBuilder->execute();
+        $results = $this->getResult($result);
         $unused = [];
         $hookArray = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['record_is_used'] ?? [];
         foreach ($results as $record) {
@@ -965,7 +967,7 @@ class PageLayoutView implements LoggerAwareInterface
     protected function tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, $cssClass, $title)
     {
         $pasteIcon = json_encode(
-            ' <a data-content="' . htmlspecialchars($pasteItem) . '"'
+            ' <a data-content="' . htmlspecialchars((string)$pasteItem) . '"'
             . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
             . ' data-severity="warning"'
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
@@ -1077,7 +1079,7 @@ class PageLayoutView implements LoggerAwareInterface
                     'tt_content',
                     $row['uid'],
                     ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
-                    $this->getReferenceCount('tt_content', $row['uid'])
+                    (string)$this->getReferenceCount('tt_content', $row['uid'])
                 ) . BackendUtility::translationCount(
                     'tt_content',
                     $row['uid'],
@@ -1745,7 +1747,7 @@ class PageLayoutView implements LoggerAwareInterface
         foreach ($fieldArr as $field) {
             if ($row[$field]) {
                 $info[] = '<strong>' . htmlspecialchars($this->itemLabels[$field]) . '</strong> '
-                    . htmlspecialchars(BackendUtility::getProcessedValue($table, $field, $row[$field]));
+                    . htmlspecialchars(BackendUtility::getProcessedValue($table, $field, $row[$field]) ?? '');
             }
         }
     }

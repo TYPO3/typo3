@@ -100,7 +100,7 @@ class BackendLayoutView implements SingletonInterface
      */
     public function addBackendLayoutItems(array $parameters)
     {
-        $pageId = $this->determinePageId($parameters['table'], $parameters['row']);
+        $pageId = $this->determinePageId($parameters['table'], $parameters['row']) ?: 0;
         $pageTsConfig = (array)BackendUtility::getPagesTSconfig($pageId);
         $identifiersToBeExcluded = $this->getIdentifiersToBeExcluded($pageTsConfig);
 
@@ -139,7 +139,7 @@ class BackendLayoutView implements SingletonInterface
      *
      * @param string $tableName
      * @param array $data
-     * @return int|bool Returns page id or false on error
+     * @return int|false Returns page id or false on error
      */
     protected function determinePageId($tableName, array $data)
     {

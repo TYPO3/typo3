@@ -70,14 +70,16 @@ class ContentFetcher
      * @param int|null $languageId
      * @return array Associative array for each column (colPos) or for all columns if $columnNumber is null
      */
-    public function getContentRecordsPerColumn(?int $columnNumber = null, ?int $languageId = null): iterable
+    public function getContentRecordsPerColumn(?int $columnNumber = null, ?int $languageId = null): array
     {
         $languageId = $languageId ?? $this->context->getSiteLanguage()->getLanguageId();
 
         if (empty($this->fetchedContentRecords)) {
             $isLanguageMode = $this->context->getDrawingConfiguration()->getLanguageMode();
             $queryBuilder = $this->getQueryBuilder();
-            $records = $this->getResult($queryBuilder->execute());
+            /** @var Statement $result */
+            $result = $queryBuilder->execute();
+            $records = $this->getResult($result);
             foreach ($records as $record) {
                 $recordLanguage = (int)$record['sys_language_uid'];
                 $recordColumnNumber = (int)$record['colPos'];
