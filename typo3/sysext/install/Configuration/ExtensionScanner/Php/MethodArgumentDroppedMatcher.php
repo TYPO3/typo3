@@ -243,4 +243,10 @@ return [
             'Breaking-88758-SelectiveConcatenationOfCSSFilesInResourceCompressorRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility->wrapClickMenuOnIcon' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-92583-DeprecateLastArgumentsOfWrapClickMenuOnIcon.rst',
+        ],
+    ],
 ];

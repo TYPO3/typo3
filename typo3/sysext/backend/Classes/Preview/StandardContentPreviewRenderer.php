@@ -155,9 +155,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                                 $icon,
                                 $tableName,
                                 $shortcutRecord['uid'],
-                                1,
-                                '',
-                                '+copy,info,edit,view'
+                                1
                             );
                             $shortcutContent[] = $icon
                                 . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));

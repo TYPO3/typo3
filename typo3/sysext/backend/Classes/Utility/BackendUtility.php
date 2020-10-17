@@ -2407,12 +2407,12 @@ class BackendUtility
      * @param int|string $uid If icon is for database record this is the UID for the
      * record from $table or identifier for sys_file record
      * @param string $context Set tree if menu is called from tree view
-     * @param string $_addParams NOT IN USE
-     * @param string $_enDisItems NOT IN USE
+     * @param string $_addParams NOT IN USE Deprecated since TYPO3 11, will be removed in TYPO3 12.
+     * @param string $_enDisItems NOT IN USE Deprecated since TYPO3 11, will be removed in TYPO3 12.
      * @param bool $returnTagParameters If set, will return only the onclick
-     * JavaScript, not the whole link.
+     * JavaScript, not the whole link. Deprecated since TYPO3 11, will be removed in TYPO3 12.
      *
-     * @return string The link wrapped input string.
+     * @return string|array The link wrapped input string.
      */
     public static function wrapClickMenuOnIcon(
         $content,
@@ -2423,17 +2423,38 @@ class BackendUtility
         $_enDisItems = '',
         $returnTagParameters = false
     ) {
-        $tagParameters = [
-            'class' => 't3js-contextmenutrigger',
-            'data-table' => $table,
-            'data-uid' => $uid,
-            'data-context' => $context
-        ];
+        $tagParameters = self::getClickMenuOnIconTagParameters((string)$table, $uid, (string)$context);
 
+        if ($_addParams !== '') {
+            trigger_error('Calling BackendUtility::wrapClickMenuOnIcon() with unused 5th parameter is deprecated and will be removed in v12.', E_USER_DEPRECATED);
+        }
+        if ($_enDisItems !== '') {
+            trigger_error('Calling BackendUtility::wrapClickMenuOnIcon() with unused 6th parameter is deprecated and will be removed in v12.', E_USER_DEPRECATED);
+        }
         if ($returnTagParameters) {
+            trigger_error('Calling BackendUtility::wrapClickMenuOnIcon() with 7th parameter set to true is deprecated and will be removed in v12. Please use BackendUtility::getClickMenuOnIconTagParameters() instead.', E_USER_DEPRECATED);
             return $tagParameters;
         }
         return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $content . '</a>';
+    }
+
+    /**
+     * @param string $table Table name/File path. If the icon is for a database
+     * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
+     * the absolute filepath
+     * @param int|string $uid If icon is for database record this is the UID for the
+     * record from $table or identifier for sys_file record
+     * @param string $context Set tree if menu is called from tree view
+     * @return array
+     */
+    public static function getClickMenuOnIconTagParameters(string $table, $uid = 0, string $context = ''): array
+    {
+        return [
+            'class' => 't3js-contextmenutrigger',
+            'data-table' => $table,
+            'data-uid' => (string)$uid,
+            'data-context' => $context
+        ];
     }
 
     /**

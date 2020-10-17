@@ -203,7 +203,7 @@ class FolderTreeView extends AbstractTreeView
         }
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
         $tableName = $this->getTableNameForClickMenu($folderObject);
-        $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', $tableName, $folderObject->getCombinedIdentifier(), 'tree', '', '', true);
+        $clickMenuParts = BackendUtility::getClickMenuOnIconTagParameters($tableName, $folderObject->getCombinedIdentifier(), 'tree');
 
         return '<a href="#" title="' . htmlspecialchars(strip_tags($title)) . '" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
     }
