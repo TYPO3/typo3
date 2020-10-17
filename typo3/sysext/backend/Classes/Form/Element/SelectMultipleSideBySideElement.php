@@ -159,7 +159,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
                 if ($possibleItem[1] == $itemValue) {
                     $title = $possibleItem[0];
                     $listOfSelectedValues[] = $itemValue;
-                    $selectedItemsHtml[] = '<option value="' . htmlspecialchars($itemValue) . '" title="' . htmlspecialchars($title) . '">' . htmlspecialchars($this->appendValueToLabelInDebugMode($title, $itemValue)) . '</option>';
+                    $selectedItemsHtml[] = '<option value="' . htmlspecialchars((string)$itemValue) . '" title="' . htmlspecialchars((string)$title) . '">' . htmlspecialchars($this->appendValueToLabelInDebugMode($title, $itemValue)) . '</option>';
                     break;
                 }
             }

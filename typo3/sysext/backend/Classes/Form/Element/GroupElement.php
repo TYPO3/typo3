@@ -247,8 +247,8 @@ class GroupElement extends AbstractFormElement
             'id' => $fieldId,
             'data-formengine-input-name' => htmlspecialchars($elementName),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-maxitems' => $maxItems,
-            'size' => $size,
+            'data-maxitems' => (string)$maxItems,
+            'size' => (string)$size,
         ];
         $selectorClasses = [
             'form-control',
@@ -289,7 +289,7 @@ class GroupElement extends AbstractFormElement
             $html[] =                   ' data-uid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
             $html[] =                   ' data-pid="' . htmlspecialchars($this->data['parentPageRow']['uid'] ?? 0) . '"';
             $html[] =                   ' data-fieldtype="' . htmlspecialchars($config['type']) . '"';
-            $html[] =                   ' data-minchars="' . htmlspecialchars($suggestMinimumCharacters) . '"';
+            $html[] =                   ' data-minchars="' . htmlspecialchars((string)$suggestMinimumCharacters) . '"';
             $html[] =                   ' data-datastructureidentifier="' . htmlspecialchars($dataStructureIdentifier) . '"';
             $html[] =                   ' data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
             $html[] =                   ' data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';

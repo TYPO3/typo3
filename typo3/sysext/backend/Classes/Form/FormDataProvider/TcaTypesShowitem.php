@@ -178,7 +178,7 @@ class TcaTypesShowitem implements FormDataProviderInterface
      * -> showitem = 'foo,bar'
      *
      * @param array $result Result array
-     * @param string $bitmaskValue subtype value
+     * @param int $bitmaskValue subtype value
      * @param string $recordTypeValue Given record type value
      * @return array Modified result array
      */

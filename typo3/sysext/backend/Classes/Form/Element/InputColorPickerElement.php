@@ -140,7 +140,7 @@ class InputColorPickerElement extends AbstractFormElement
                 'formengine-colorpickerelement',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-params' => json_encode([
+            'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList),
                 'is_in' => trim($config['is_in']),
@@ -149,7 +149,7 @@ class InputColorPickerElement extends AbstractFormElement
         ];
 
         if (isset($config['max']) && (int)$config['max'] > 0) {
-            $attributes['maxlength'] = (int)$config['max'];
+            $attributes['maxlength'] = (string)(int)$config['max'];
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);

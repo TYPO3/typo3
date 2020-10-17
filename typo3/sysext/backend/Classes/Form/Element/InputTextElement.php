@@ -150,17 +150,17 @@ class InputTextElement extends AbstractFormElement
                 'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-params' => json_encode([
+            'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList),
                 'is_in' => trim($config['is_in'])
             ]),
-            'data-formengine-input-name' => $parameterArray['itemFormElName'],
+            'data-formengine-input-name' => (string)$parameterArray['itemFormElName'],
         ];
 
         $maxLength = $config['max'] ?? 0;
         if ((int)$maxLength > 0) {
-            $attributes['maxlength'] = (int)$maxLength;
+            $attributes['maxlength'] = (string)(int)$maxLength;
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
@@ -218,16 +218,16 @@ class InputTextElement extends AbstractFormElement
                 'id' => $id,
                 'type' => 'range',
                 'class' => 'slider',
-                'min' => (int)$min,
-                'max' => (int)$max,
-                'step' => $step,
+                'min' => (string)(int)$min,
+                'max' => (string)(int)$max,
+                'step' => (string)$step,
                 'style' => 'width: ' . (int)$width . 'px',
-                'title' => $itemValue,
-                'value' => $itemValue,
+                'title' => (string)$itemValue,
+                'value' => (string)$itemValue,
                 'data-slider-id' => $id,
                 'data-slider-value-type' => $valueType,
-                'data-slider-item-name' => $parameterArray['itemFormElName'],
-                'data-slider-callback-params' => json_encode($callbackParams),
+                'data-slider-item-name' => (string)($parameterArray['itemFormElName'] ?? ''),
+                'data-slider-callback-params' => (string)json_encode($callbackParams),
             ];
             $valueSliderHtml[] = '<div class="slider-wrapper">';
             $valueSliderHtml[] = '<input ' . GeneralUtility::implodeAttributes($rangeAttributes, true) . '>';
@@ -249,10 +249,10 @@ class InputTextElement extends AbstractFormElement
             $inputType = 'number';
 
             if (isset($config['range']['lower'])) {
-                $attributes['min'] = (int)$config['range']['lower'];
+                $attributes['min'] = (string)(int)$config['range']['lower'];
             }
             if (isset($config['range']['upper'])) {
-                $attributes['max'] = (int)$config['range']['upper'];
+                $attributes['max'] = (string)(int)$config['range']['upper'];
             }
         }
 

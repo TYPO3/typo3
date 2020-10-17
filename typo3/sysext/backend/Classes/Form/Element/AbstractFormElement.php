@@ -199,12 +199,12 @@ abstract class AbstractFormElement extends AbstractNode
                     $option = isset($formatOptions['option']) ? trim($formatOptions['option']) : '';
                     if ($option) {
                         if (isset($formatOptions['strftime']) && $formatOptions['strftime']) {
-                            $value = strftime($option, $itemValue);
+                            $value = strftime($option, (int)$itemValue);
                         } else {
-                            $value = date($option, $itemValue);
+                            $value = date($option, (int)$itemValue);
                         }
                     } else {
-                        $value = date('d-m-Y', $itemValue);
+                        $value = date('d-m-Y', (int)$itemValue);
                     }
                 } else {
                     $value = '';
@@ -377,7 +377,7 @@ abstract class AbstractFormElement extends AbstractNode
      *
      * @param string|int $label The label which can also be an integer
      * @param string|int $value The value which can also be an integer
-     * @return string|int
+     * @return string
      */
     protected function appendValueToLabelInDebugMode($label, $value)
     {
@@ -385,7 +385,7 @@ abstract class AbstractFormElement extends AbstractNode
             return $label . ' [' . $value . ']';
         }
 
-        return $label;
+        return (string)$label;
     }
 
     /**

@@ -157,7 +157,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                       ' data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
         $html[] =                       ' data-flexformcontaineridentifier="' . htmlspecialchars($flexFormContainerIdentifier) . '"';
         $html[] =                       ' data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
-        $html[] =                       ' data-flexformsectioncontainerisnew="' . htmlspecialchars($flexFormSectionContainerIsNew) . '"';
+        $html[] =                       ' data-flexformsectioncontainerisnew="' . htmlspecialchars((string)$flexFormSectionContainerIsNew) . '"';
         $html[] =                       ' data-command="' . htmlspecialchars($this->data['command']) . '"';
         $html[] =                       ' data-read-only="' . $readOnly . '"';
         $html[] =                       ' data-tree-exclusive-keys="' . htmlspecialchars($exclusiveKeys) . '"';

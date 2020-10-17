@@ -283,7 +283,7 @@ class SingleFieldContainer extends AbstractContainer
             // If no type was passed, try to determine
             if (!$type) {
                 reset($searchArray);
-                $type = key($searchArray);
+                $type = (string)key($searchArray);
                 $searchArray = current($searchArray);
             }
             // We use '%AND' and '%OR' in uppercase

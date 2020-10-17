@@ -176,7 +176,7 @@ class InlineControlContainer extends AbstractContainer
         $this->inlineData['config'][$nameObject] = [
             'table' => $foreign_table,
         ];
-        $configJson = json_encode($config);
+        $configJson = (string)json_encode($config);
         $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
             'min' => $config['minitems'],
             'max' => $config['maxitems'],
@@ -285,7 +285,7 @@ class InlineControlContainer extends AbstractContainer
         $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
 
         // Wrap all inline fields of a record with a <div> (like a container)
-        $html = '<div class="form-group" id="' . htmlspecialchars($nameObject) . '" data-uid="' . htmlspecialchars($row['uid']) . '" data-foreign-table="' . htmlspecialchars($foreign_table) . '" data-object-group="' . htmlspecialchars($nameObject) . '-' . htmlspecialchars($foreign_table) . '" data-form-field="' . htmlspecialchars($nameForm) . '" data-appearance="' . htmlspecialchars(json_encode($config['appearance'])) . '">';
+        $html = '<div class="form-group" id="' . htmlspecialchars($nameObject) . '" data-uid="' . htmlspecialchars((string)$row['uid']) . '" data-foreign-table="' . htmlspecialchars($foreign_table) . '" data-object-group="' . htmlspecialchars($nameObject) . '-' . htmlspecialchars((string)$foreign_table) . '" data-form-field="' . htmlspecialchars($nameForm) . '" data-appearance="' . htmlspecialchars((string)json_encode($config['appearance'])) . '">';
 
         $fieldInformationResult = $this->renderFieldInformation();
         $html .= $fieldInformationResult['html'];
@@ -537,7 +537,7 @@ class InlineControlContainer extends AbstractContainer
 					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 					data-file-allowed="' . htmlspecialchars($allowed) . '"
 					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
-					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
+					data-max-file-size="' . htmlspecialchars((string)$maxFileSize) . '"
 					>';
                     $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
                     $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));

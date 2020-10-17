@@ -328,7 +328,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 if (!isset($fieldConfig['disableAgeDisplay']) || (bool)$fieldConfig['disableAgeDisplay'] === false) {
                     $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
                     $calculatedAge = BackendUtility::calcAge(
-                        abs($ageDelta),
+                        (int)abs($ageDelta),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     );
                     $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';

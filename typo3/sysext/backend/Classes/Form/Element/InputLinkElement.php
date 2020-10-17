@@ -161,16 +161,16 @@ class InputLinkElement extends AbstractFormElement
                 'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-params' => json_encode([
+            'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList)
             ]),
-            'data-formengine-input-name' => $parameterArray['itemFormElName'],
+            'data-formengine-input-name' => (string)($parameterArray['itemFormElName'] ?? ''),
         ];
 
         $maxLength = $config['max'] ?? 0;
         if ((int)$maxLength > 0) {
-            $attributes['maxlength'] = (int)$maxLength;
+            $attributes['maxlength'] = (string)(int)$maxLength;
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
@@ -352,7 +352,7 @@ class InputLinkElement extends AbstractFormElement
                         $label = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:params');
                         break;
                     default:
-                        $label = $key;
+                        $label = (string)$key;
                 }
 
                 $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';

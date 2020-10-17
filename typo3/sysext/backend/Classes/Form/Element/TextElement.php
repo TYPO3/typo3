@@ -97,7 +97,7 @@ class TextElement extends AbstractFormElement
         $itemFormElementValueLength = strlen($itemValue);
         if ($itemFormElementValueLength > $this->charactersPerRow * 2) {
             $rows = MathUtility::forceIntegerInRange(
-                round($itemFormElementValueLength / $this->charactersPerRow),
+                (int)round($itemFormElementValueLength / $this->charactersPerRow),
                 count(explode(LF, $itemValue)),
                 20
             );
@@ -154,8 +154,8 @@ class TextElement extends AbstractFormElement
             'name' => htmlspecialchars($parameterArray['itemFormElName']),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
-            'rows' => $rows,
-            'wrap' => $config['wrap'] ?: 'virtual',
+            'rows' => (string)$rows,
+            'wrap' => (string)($config['wrap'] ?: 'virtual'),
             'onChange' => implode('', $parameterArray['fieldChangeFunc']),
         ];
         $classes = [
@@ -176,7 +176,7 @@ class TextElement extends AbstractFormElement
             $attributes['style'] = 'max-height: ' . $maximumHeight . 'px';
         }
         if (isset($config['max']) && (int)$config['max'] > 0) {
-            $attributes['maxlength'] = (int)$config['max'];
+            $attributes['maxlength'] = (string)(int)$config['max'];
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = htmlspecialchars(trim($config['placeholder']));

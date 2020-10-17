@@ -142,7 +142,7 @@ class InputDateTimeElement extends AbstractFormElement
             ]),
             'data-date-type' => $format,
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-params' => json_encode([
+            'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList)
             ]),
@@ -151,7 +151,7 @@ class InputDateTimeElement extends AbstractFormElement
 
         $maxLength = $config['max'] ?? 0;
         if ((int)$maxLength > 0) {
-            $attributes['maxlength'] = (int)$maxLength;
+            $attributes['maxlength'] = (string)(int)$maxLength;
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
@@ -171,10 +171,10 @@ class InputDateTimeElement extends AbstractFormElement
                 $itemValue = gmdate('c', $adjustedValue);
             }
             if (isset($config['range']['lower'])) {
-                $attributes['data-date-min-date'] = (int)$config['range']['lower'] * 1000;
+                $attributes['data-date-min-date'] = (string)((int)$config['range']['lower'] * 1000);
             }
             if (isset($config['range']['upper'])) {
-                $attributes['data-date-max-date'] = (int)$config['range']['upper'] * 1000;
+                $attributes['data-date-max-date'] = (string)((int)$config['range']['upper'] * 1000);
             }
         }
         if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue) && $itemValue != 0) {
