@@ -54,6 +54,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
         'status_message',
         'logout_header',
         'logout_message',
+        'forgot_header',
         'forgot_reset_message'
     ];
 
