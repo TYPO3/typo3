@@ -649,6 +649,9 @@ abstract class AbstractTreeView
     {
         if (is_int($row)) {
             $row = BackendUtility::getRecord($this->table, $row);
+            if ($row === null) {
+                return '';
+            }
         }
         $title = $this->showDefaultTitleAttribute ? htmlspecialchars('UID: ' . $row['uid']) : $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -733,6 +736,7 @@ abstract class AbstractTreeView
         $idH = [];
         // Traverse the records:
         while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
+            /** @var array $row */
             if (!$this->getBackendUser()->isInWebMount($this->table === 'pages' ? $row : $row['pid'])) {
                 // Current record is not within web mount => skip it
                 continue;
@@ -767,11 +771,11 @@ abstract class AbstractTreeView
                     $idH[$row['uid']]['subrow'] = $this->buffer_idH;
                 }
                 // Set "did expand" flag
-                $isOpen = 1;
+                $isOpen = true;
             } else {
                 $nextCount = $this->getCount($newID);
                 // Clear "did expand" flag
-                $isOpen = 0;
+                $isOpen = false;
             }
             // Set HTML-icons, if any:
             if ($this->makeHTML) {

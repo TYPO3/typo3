@@ -75,6 +75,6 @@ class PageMovingPagePositionMap extends PagePositionMap
      */
     public function boldTitle($t_code, $dat, $id)
     {
-        return parent::boldTitle($t_code, $dat, $this->moveUid);
+        return parent::boldTitle($t_code, $dat, (int)$this->moveUid);
     }
 }

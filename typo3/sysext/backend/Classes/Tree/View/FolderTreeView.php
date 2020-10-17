@@ -113,7 +113,7 @@ class FolderTreeView extends AbstractTreeView
     {
         $icon = '';
         if ($nextCount) {
-            $cmd = $this->generateExpandCollapseParameter($this->bank, !$isExpanded, $folderObject);
+            $cmd = $this->generateExpandCollapseParameter((string)$this->bank, !$isExpanded, $folderObject);
             $icon = $this->PMiconATagWrap($icon, $cmd, !$isExpanded);
         }
         return $icon;
@@ -139,7 +139,7 @@ class FolderTreeView extends AbstractTreeView
 
         if ($this->thisScript) {
             // Activates dynamic AJAX based tree
-            $scopeData = json_encode($this->scope);
+            $scopeData = (string)json_encode($this->scope);
             $scopeHash = GeneralUtility::hmac($scopeData);
             $js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
             return '<a class="list-tree-control' . (!$isExpand ? ' list-tree-control-open' : ' list-tree-control-closed') . '" onclick="' . $js . '"><i class="fa"></i></a>';
@@ -203,8 +203,8 @@ class FolderTreeView extends AbstractTreeView
         }
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
         $tableName = $this->getTableNameForClickMenu($folderObject);
+        /** @var array $clickMenuParts */
         $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', $tableName, $folderObject->getCombinedIdentifier(), 'tree', '', '', true);
-
         return '<a href="#" title="' . htmlspecialchars(strip_tags($title)) . '" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
     }
 
@@ -316,7 +316,7 @@ class FolderTreeView extends AbstractTreeView
             $this->bank = $storageHashNumber;
             $isOpen = $this->stored[$storageHashNumber][$folderHashSpecUID] || $this->expandFirst;
             // Set PM icon:
-            $cmd = $this->generateExpandCollapseParameter($this->bank, !$isOpen, $rootLevelFolder);
+            $cmd = $this->generateExpandCollapseParameter((string)$this->bank, !$isOpen, $rootLevelFolder);
             // Only show and link icon if storage is browseable
             if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($rootLevelFolder) === 0) {
                 $firstHtml = '';
@@ -403,11 +403,11 @@ class FolderTreeView extends AbstractTreeView
             if (!$isLocked && $depth > 1 && $this->expandNext($specUID)) {
                 $nextCount = $this->getFolderTree($subFolder, $depth - 1, $type);
                 // Set "did expand" flag
-                $isOpen = 1;
+                $isOpen = true;
             } else {
                 $nextCount = $isLocked ? 0 : $this->getNumberOfSubfolders($subFolder);
                 // Clear "did expand" flag
-                $isOpen = 0;
+                $isOpen = false;
             }
             // Set HTML-icons, if any:
             if ($this->makeHTML) {
@@ -419,7 +419,7 @@ class FolderTreeView extends AbstractTreeView
                     $row['_title'] = '<strong>' . $subFolderName . '</strong>';
                 }
                 $icon = '<span title="' . htmlspecialchars($subFolderName) . '">'
-                    . $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, null, ['folder-open' => (bool)$isOpen])
+                    . $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, null, ['folder-open' => $isOpen])
                     . '</span>';
                 $HTML .= $this->wrapIcon($icon, $subFolder);
             }
@@ -627,12 +627,12 @@ class FolderTreeView extends AbstractTreeView
                 $fileMounts = $storage->getFileMounts();
                 if (!empty($fileMounts)) {
                     foreach ($fileMounts as $fileMount) {
-                        $nkey = hexdec(substr(GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
+                        $nkey = hexdec(substr((string)GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
                         $this->storageHashNumbers[$storageUid . $fileMount['folder']->getCombinedIdentifier()] = $nkey;
                     }
                 } else {
                     $folder = $storage->getRootLevelFolder();
-                    $nkey = hexdec(substr(GeneralUtility::md5int($folder->getCombinedIdentifier()), 0, 4));
+                    $nkey = hexdec(substr((string)GeneralUtility::md5int($folder->getCombinedIdentifier()), 0, 4));
                     $this->storageHashNumbers[$storageUid . $folder->getCombinedIdentifier()] = $nkey;
                 }
             }
