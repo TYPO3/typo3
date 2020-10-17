@@ -229,7 +229,7 @@ class BackendLayoutRenderer
 
         $elFromTable = $this->clipboard->elFromTable('tt_content');
         if (!empty($elFromTable) && $this->isContentEditable()) {
-            $pasteItem = (int)substr(key($elFromTable), 11);
+            $pasteItem = (int)substr((string)key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
             $pasteTitle = (string)($pasteRecord['header'] ?: $pasteItem);
             $copyMode = $this->clipboard->clipData['normal']['mode'] ? '-' . $this->clipboard->clipData['normal']['mode'] : '';

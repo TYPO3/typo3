@@ -128,11 +128,14 @@ class GridColumn extends AbstractGridObject
         return $this->rowSpan;
     }
 
-    public function getAllContainedItemUids(): iterable
+    /**
+     * @return int[]
+     */
+    public function getAllContainedItemUids(): array
     {
         $uids = [];
         foreach ($this->items as $columnItem) {
-            $uids[] = $columnItem->getRecord()['uid'];
+            $uids[] = (int)$columnItem->getRecord()['uid'];
         }
         return $uids;
     }
@@ -174,7 +177,7 @@ class GridColumn extends AbstractGridObject
     public function getTitle(): string
     {
         $columnNumber = $this->getColumnNumber();
-        $colTitle = (string)BackendUtility::getProcessedValue('tt_content', 'colPos', $columnNumber);
+        $colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', (string)$columnNumber) ?? '';
         foreach ($this->context->getBackendLayout()->getUsedColumns() as $colPos => $title) {
             if ($colPos === $columnNumber) {
                 $colTitle = (string)$this->getLanguageService()->sL($title);

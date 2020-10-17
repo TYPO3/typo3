@@ -63,7 +63,7 @@ class DefaultDataProvider implements DataProviderInterface
     /**
      * Gets a backend layout by (regular) identifier.
      *
-     * @param string $identifier
+     * @param string|int $identifier
      * @param int $pageId
      * @return BackendLayout|null
      */
@@ -75,7 +75,7 @@ class DefaultDataProvider implements DataProviderInterface
             return $this->createDefaultBackendLayout();
         }
 
-        $data = BackendUtility::getRecordWSOL($this->tableName, $identifier);
+        $data = BackendUtility::getRecordWSOL($this->tableName, (int)$identifier);
 
         if (is_array($data)) {
             $backendLayout = $this->createBackendLayout($data);
