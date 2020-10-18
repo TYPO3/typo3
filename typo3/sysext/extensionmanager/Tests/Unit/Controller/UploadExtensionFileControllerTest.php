@@ -15,10 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
-use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
-use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -68,32 +65,13 @@ class UploadExtensionFileControllerTest extends UnitTestCase
      * @param string $filename The file name to test
      * @param string $expectedKey The expected extension key
      */
-    public function getExtensionFromZipFileExtractsExtensionKey($filename, $expectedKey)
+    public function getExtensionKeyFromFileNameExtractsExtensionKey(string $filename, string $expectedKey): void
     {
-        /** @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService|MockObject $managementServiceMock */
-        $managementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)
-            ->setMethods(['isAvailable'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $managementServiceMock->expects(self::once())
-            ->method('isAvailable')
-            ->with($expectedKey)
-            ->willReturn(false);
-
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|MockObject $fileHandlingUtilityMock */
-        $fileHandlingUtilityMock = $this->createMock(FileHandlingUtility::class);
-        $fileHandlingUtilityMock->expects(self::once())->method('unzipExtensionFromFile');
-
         $fixture = new UploadExtensionFileController();
-        $fixture->injectManagementService($managementServiceMock);
-        $fixture->injectFileHandlingUtility($fileHandlingUtilityMock);
-
         $reflectionClass = new \ReflectionClass($fixture);
-        $reflectionMethod = $reflectionClass->getMethod('getExtensionFromZipFile');
+        $reflectionMethod = $reflectionClass->getMethod('getExtensionKeyFromFileName');
         $reflectionMethod->setAccessible(true);
-
-        $extensionDetails = $reflectionMethod->invokeArgs($fixture, ['', $filename]);
-
-        self::assertEquals($expectedKey, $extensionDetails['extKey']);
+        $extensionKey = $reflectionMethod->invokeArgs($fixture, [$filename]);
+        self::assertEquals($expectedKey, $extensionKey);
     }
 }

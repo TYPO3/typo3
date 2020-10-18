@@ -21,25 +21,17 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-use TYPO3\CMS\Extensionmanager\Exception\DependencyConfigurationNotFoundException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 
 /**
- * Controller for handling upload of a local extension file
- * Handles .t3x or .zip files
+ * Controller for handling upload of a .zip file which is then placed as an extension
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class UploadExtensionFileController extends AbstractController
 {
     use BlockSerializationTrait;
-
-    /**
-     * @var ExtensionRepository
-     */
-    protected $extensionRepository;
 
     /**
      * @var FileHandlingUtility
@@ -60,14 +52,6 @@ class UploadExtensionFileController extends AbstractController
      * @var bool
      */
     protected $removeFromOriginalPath = false;
-
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
-        $this->extensionRepository = $extensionRepository;
-    }
 
     /**
      * @param FileHandlingUtility $fileHandlingUtility
@@ -133,29 +117,35 @@ class UploadExtensionFileController extends AbstractController
                     1342864339
                 );
             }
-            $extensionData = $this->extractExtensionFromFile($tempFile, $fileName, $overwrite);
+            // Remove version and extension from filename to determine the extension key
+            $extensionKey = $this->getExtensionKeyFromFileName($fileName);
+            if (empty($extensionKey)) {
+                throw new ExtensionManagerException(
+                    'Could not extract extension key from uploaded file name. File name must be something like "my_extension_4.2.2.zip".',
+                    1603087515
+                );
+            }
+            $this->extractExtensionFromZipFile($tempFile, $extensionKey, (bool)$overwrite);
             $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
             if (!$isAutomaticInstallationEnabled) {
                 $this->addFlashMessage(
-                    $this->translate('extensionList.uploadFlashMessage.message', [$extensionData['extKey']]),
+                    $this->translate('extensionList.uploadFlashMessage.message', [$extensionKey]),
                     $this->translate('extensionList.uploadFlashMessage.title'),
                     FlashMessage::OK
                 );
             } else {
-                if ($this->activateExtension($extensionData['extKey'])) {
+                if ($this->activateExtension($extensionKey)) {
                     $this->addFlashMessage(
-                        $this->translate('extensionList.installedFlashMessage.message', [$extensionData['extKey']]),
+                        $this->translate('extensionList.installedFlashMessage.message', [$extensionKey]),
                         '',
                         FlashMessage::OK
                     );
                 } else {
-                    $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionData['extKey']]);
+                    $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
         } catch (StopActionException $exception) {
             throw $exception;
-        } catch (DependencyConfigurationNotFoundException $exception) {
-            $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         } catch (\Exception $exception) {
             $this->removeExtensionAndRestoreFromBackup($fileName);
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
@@ -170,46 +160,24 @@ class UploadExtensionFileController extends AbstractController
      * Validate the filename of an uploaded file
      *
      * @param string $fileName
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     * @throws ExtensionManagerException
      */
-    public function checkFileName($fileName)
+    protected function checkFileName($fileName)
     {
-        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
         if (empty($fileName)) {
             throw new ExtensionManagerException('No file given.', 1342858852);
         }
-        if ($extension !== 't3x' && $extension !== 'zip') {
-            throw new ExtensionManagerException('Wrong file format "' . $extension . '" given. Allowed formats are t3x and zip.', 1342858853);
-        }
-    }
-
-    /**
-     * Extract a given t3x or zip file
-     *
-     * @param string $uploadPath Path to existing extension file
-     * @param string $fileName Filename of the uploaded file
-     * @param bool $overwrite If true, extension will be replaced
-     * @return array Extension data
-     * @throws ExtensionManagerException
-     * @throws DependencyConfigurationNotFoundException
-     */
-    public function extractExtensionFromFile($uploadPath, $fileName, $overwrite)
-    {
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
-        if ($fileExtension === 't3x') {
-            $extensionData = $this->getExtensionFromT3xFile($uploadPath, $overwrite);
-        } else {
-            $extensionData = $this->getExtensionFromZipFile($uploadPath, $fileName, $overwrite);
+        if ($fileExtension !== 'zip') {
+            throw new ExtensionManagerException('Wrong file format "' . $fileExtension . '" given. Only .zip files are allowed.', 1342858853);
         }
-
-        return $extensionData;
     }
 
     /**
      * @param string $extensionKey
      * @return bool
      */
-    public function activateExtension($extensionKey)
+    protected function activateExtension($extensionKey)
     {
         $this->managementService->reloadPackageInformation($extensionKey);
         $extension = $this->managementService->getExtension($extensionKey);
@@ -217,62 +185,16 @@ class UploadExtensionFileController extends AbstractController
     }
 
     /**
-     * Extracts a given t3x file and installs the extension
-     *
-     * @param string $file Path to uploaded file
-     * @param bool $overwrite Overwrite existing extension if TRUE
-     * @throws ExtensionManagerException
-     * @throws DependencyConfigurationNotFoundException
-     * @return array
-     */
-    protected function getExtensionFromT3xFile($file, $overwrite = false)
-    {
-        $fileContent = file_get_contents($file);
-        if (!$fileContent) {
-            throw new ExtensionManagerException('File had no or wrong content.', 1342859339);
-        }
-        $extensionData = $this->decodeExchangeData($fileContent);
-        if (empty($extensionData['extKey'])) {
-            throw new ExtensionManagerException('Decoding the file went wrong. No extension key found', 1342864309);
-        }
-        $isExtensionAvailable = $this->managementService->isAvailable($extensionData['extKey']);
-        if (!$overwrite && $isExtensionAvailable) {
-            throw new ExtensionManagerException($this->translate('extensionList.overwritingDisabled'), 1342864310);
-        }
-        if ($isExtensionAvailable) {
-            $this->copyExtensionFolderToTempFolder($extensionData['extKey']);
-        }
-        $this->removeFromOriginalPath = true;
-        $extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionData['extKey'], $extensionData['EM_CONF']['version']);
-        $this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($extensionData, $extension);
-
-        if (empty($extension)
-            && empty($extensionData['EM_CONF']['constraints'])
-            && !isset($extensionData['FILES']['ext_emconf.php'])
-            && !isset($extensionData['FILES']['/ext_emconf.php'])
-        ) {
-            throw new DependencyConfigurationNotFoundException('Extension cannot be installed automatically because no dependencies could be found! Please check dependencies manually (on typo3.org) before installing the extension.', 1439587168);
-        }
-
-        return $extensionData;
-    }
-
-    /**
      * Extracts a given zip file and installs the extension
-     * As there is no information about the extension key in the zip
-     * we have to use the file name to get that information
-     * filename format is expected to be extensionkey_version.zip
      *
-     * @param string $file Path to uploaded file
-     * @param string $fileName Filename (basename) of uploaded file
+     * @param string $uploadedFile Path to uploaded file
+     * @param string $extensionKey
      * @param bool $overwrite Overwrite existing extension if TRUE
-     * @return array
+     * @return string
      * @throws ExtensionManagerException
      */
-    protected function getExtensionFromZipFile($file, $fileName, $overwrite = false)
+    protected function extractExtensionFromZipFile(string $uploadedFile, string $extensionKey, bool $overwrite = false): string
     {
-        // Remove version and extension from filename to determine the extension key
-        $extensionKey = $this->getExtensionKeyFromFileName($fileName);
         $isExtensionAvailable = $this->managementService->isAvailable($extensionKey);
         if (!$overwrite && $isExtensionAvailable) {
             throw new ExtensionManagerException('Extension is already available and overwriting is disabled.', 1342864311);
@@ -281,12 +203,15 @@ class UploadExtensionFileController extends AbstractController
             $this->copyExtensionFolderToTempFolder($extensionKey);
         }
         $this->removeFromOriginalPath = true;
-        $this->fileHandlingUtility->unzipExtensionFromFile($file, $extensionKey);
-
-        return ['extKey' => $extensionKey];
+        $this->fileHandlingUtility->unzipExtensionFromFile($uploadedFile, $extensionKey);
+        return $extensionKey;
     }
 
     /**
+     * As there is no information about the extension key in the zip
+     * we have to use the file name to get that information
+     * filename format is expected to be extensionkey_version.zip.
+     *
      * Removes version and file extension from filename to determine extension key
      *
      * @param string $fileName
@@ -340,34 +265,5 @@ class UploadExtensionFileController extends AbstractController
             GeneralUtility::rmdir($this->extensionBackupPath, true);
             $this->extensionBackupPath = '';
         }
-    }
-
-    /**
-     * Decodes extension upload array.
-     * This kind of data is when an extension is uploaded to TER
-     *
-     * @param string $stream Data stream
-     * @throws ExtensionManagerException
-     * @return array Array with result on success, otherwise an error string.
-     */
-    protected function decodeExchangeData(string $stream): array
-    {
-        [$expectedHash, $compressionType, $contents] = explode(':', $stream, 3);
-        if ($compressionType === 'gzcompress') {
-            if (function_exists('gzuncompress')) {
-                $contents = (string)gzuncompress($contents);
-            } else {
-                throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() functions are not available!', 1344761814);
-            }
-        }
-        if (hash_equals($expectedHash, md5($contents))) {
-            $output = unserialize($contents, ['allowed_classes' => false]);
-            if (!is_array($output)) {
-                throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
-            }
-        } else {
-            throw new ExtensionManagerException('Error: MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the browser and thereby corrupted!? (Always select "All" filetype when saving extensions)', 1344761991);
-        }
-        return $output;
     }
 }
