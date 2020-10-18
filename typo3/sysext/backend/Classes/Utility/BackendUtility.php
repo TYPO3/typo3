@@ -467,17 +467,10 @@ class BackendUtility
             $statement->closeCursor();
 
             if ($row) {
-                $newLocation = false;
                 if ($workspaceOL) {
                     self::workspaceOL('pages', $row);
-                    if (is_array($row) && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER) {
-                        $newLocation = $row['_ORIG_pid'];
-                    }
                 }
                 if (is_array($row)) {
-                    if ($newLocation !== false) {
-                        $row['pid'] = $newLocation;
-                    }
                     $pageForRootlineCache[$ident] = $row;
                     $runtimeCache->set('backendUtilityPageForRootLine', $pageForRootlineCache);
                 }
@@ -597,7 +590,6 @@ class BackendUtility
                 if ($pageinfo['uid'] && static::getBackendUserAuthentication()->isInWebMount($pageinfo, $perms_clause)) {
                     self::workspaceOL('pages', $pageinfo);
                     if (is_array($pageinfo)) {
-                        self::fixVersioningPid('pages', $pageinfo);
                         [$pageinfo['_thePath'], $pageinfo['_thePathFull']] = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
                         return $pageinfo;
                     }
@@ -2971,7 +2963,6 @@ class BackendUtility
      */
     public static function getTCEFORM_TSconfig($table, $row)
     {
-        self::fixVersioningPid($table, $row);
         $res = [];
         // Get main config for the table
         [$TScID, $cPid] = self::getTSCpid($table, $row['uid'], $row['pid']);
@@ -2999,8 +2990,6 @@ class BackendUtility
     /**
      * Find the real PID of the record (with $uid from $table).
      * This MAY be impossible if the pid is set as a reference to the former record or a page (if two records are created at one time).
-     * NOTICE: Make sure that the input PID is never negative because the record was an offline version!
-     * Therefore, you should always use BackendUtility::fixVersioningPid($table,$row); on the data you input before calling this function!
      *
      * @param string $table Table name
      * @param int $uid Record uid
@@ -3364,16 +3353,19 @@ class BackendUtility
      * Will only translate if the workspace of the input record matches that of the current user (unless flag set)
      * Principle; Record offline! => Find online?
      *
-     * If the record had its pid corrected to the online versions pid, then "_ORIG_pid" is set for moved records to the PID of the moved location.
+     * If the record had its pid corrected to the online versions pid,
+     * then "_ORIG_pid" is set for moved records to the PID of the moved location.
      *
      * @param string $table Table name
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid", "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
      * @param bool $ignoreWorkspaceMatch Ignore workspace match
      * @see PageRepository::fixVersioningPid()
      * @internal should only be used from within TYPO3 Core
+     * @deprecated will be removed in TYPO3 v12, use workspaceOL() or getRecordWSOL() directly to achieve the same result.
      */
     public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
     {
+        trigger_error('BackendUtility::fixVersioningPid() will be removed in TYPO3 v12, use BackendUtility::workspaceOL() or BackendUtility::getRecordWSOL() directly.', E_USER_DEPRECATED);
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return;
         }
@@ -3420,12 +3412,16 @@ class BackendUtility
     }
 
     /**
-     * Workspace Preview Overlay
+     * Workspace Preview Overlay.
+     *
      * Generally ALWAYS used when records are selected based on uid or pid.
      * Principle; Record online! => Find offline?
      * The function MAY set $row to FALSE. This happens if a moved record is given and
      * $unsetMovePointers is set to true. In other words, you should check if the input record
      * is still an array afterwards when using this function.
+     *
+     * If the versioned record is a moved record the "pid" value will then contain the newly moved location
+     * and "ORIG_pid" will contain the live pid.
      *
      * @param string $table Table name
      * @param array $row Record by reference. At least "uid", "pid", "t3ver_oid" and "t3ver_state" must be set. Keys not prefixed with '_' are used as field names in SQL.
@@ -3482,10 +3478,9 @@ class BackendUtility
                     $row = false;
                     return;
                 }
-                // Keep the newly moved location of the versioned record as _ORIG_pid
-                $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
-                // Set in the online versions PID
-                $wsAlt['pid'] = $row['pid'];
+                // When a moved record is found the "PID" value contains the newly moved location
+                // Whereas the _ORIG_pid field contains the PID of the live version
+                $wsAlt['_ORIG_pid'] = $row['pid'];
             }
             // Swap UID
             $wsAlt['_ORIG_uid'] = $wsAlt['uid'];

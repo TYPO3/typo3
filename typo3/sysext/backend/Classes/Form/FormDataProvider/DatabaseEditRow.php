@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Fetch existing database row on edit
@@ -43,9 +42,6 @@ class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormData
                 1437663061
             );
         }
-        // Warning: By reference! In case the record is in a workspace, the -1 in pid will be
-        // changed to the real pid of the life record here.
-        BackendUtility::fixVersioningPid($result['tableName'], $databaseRow);
         $result['databaseRow'] = $databaseRow;
 
         return $result;

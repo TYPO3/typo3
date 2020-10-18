@@ -1472,9 +1472,11 @@ class PageRepository implements LoggerAwareInterface
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! Having "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
      * @see BackendUtility::fixVersioningPid()
      * @see versionOL()
+     * @deprecated will be removed in TYPO3 v12, use versionOL() directly to achieve the same result.
      */
     public function fixVersioningPid($table, &$rr)
     {
+        trigger_error('PageRepository->fixVersioningPid() will be removed in TYPO3 v12, use PageRepository->versionOL() instead.', E_USER_DEPRECATED);
         if ($this->versioningWorkspaceId <= 0) {
             return;
         }
@@ -1571,10 +1573,9 @@ class PageRepository implements LoggerAwareInterface
                 if (is_array($wsAlt)) {
                     $rowVersionState = VersionState::cast($wsAlt['t3ver_state'] ?? null);
                     if ($rowVersionState->equals(VersionState::MOVE_POINTER)) {
-                        // For move pointers, this is set back to the PID of the live record now
-                        // The only place where PID is actually different, however the newly moved PID resides in _ORIG_pid
-                        $wsAlt['_ORIG_pid'] = $wsAlt['pid'];
-                        $wsAlt['pid'] = $row['pid'];
+                        // For move pointers, store the actual live PID in the _ORIG_pid
+                        // The only place where PID is actually different in a workspace
+                        $wsAlt['_ORIG_pid'] = $row['pid'];
                     }
                     // For versions of single elements or page+content, preserve online UID
                     // (this will produce true "overlay" of element _content_, not any references)

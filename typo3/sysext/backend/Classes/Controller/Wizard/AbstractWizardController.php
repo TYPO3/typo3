@@ -35,8 +35,7 @@ class AbstractWizardController
      */
     protected function checkEditAccess($table, $uid)
     {
-        $record = BackendUtility::getRecord($table, $uid);
-        BackendUtility::fixVersioningPid($table, $record);
+        $record = BackendUtility::getRecordWSOL($table, $uid);
         if (is_array($record)) {
             // If pages:
             if ($table === 'pages') {

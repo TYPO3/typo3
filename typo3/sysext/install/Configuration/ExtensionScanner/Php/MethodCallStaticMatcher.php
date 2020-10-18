@@ -1036,4 +1036,11 @@ return [
             'Deprecation-92551-GeneralUtilityMethodsRelatedToPagesl18n_cfgBehavior.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-92598-Workspace-relatedMethodsFixVersioningPid.rst',
+        ],
+    ],
 ];

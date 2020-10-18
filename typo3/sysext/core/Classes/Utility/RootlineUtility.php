@@ -254,7 +254,6 @@ class RootlineUtility
                 throw new PageNotFoundException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
             }
             $this->pageRepository->versionOL('pages', $row, false, true);
-            $this->pageRepository->fixVersioningPid('pages', $row);
             if (is_array($row)) {
                 if ($this->languageUid > 0) {
                     $row = $this->pageRepository->getPageOverlay($row, $this->languageUid);

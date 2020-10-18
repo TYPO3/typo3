@@ -692,9 +692,8 @@ class ElementInformationController
             }
 
             $line = [];
-            $record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
+            $record = BackendUtility::getRecordWSOL($row['tablename'], $row['recuid']);
             if ($record) {
-                BackendUtility::fixVersioningPid($row['tablename'], $record);
                 if (!$this->canAccessPage($row['tablename'], $record)) {
                     continue;
                 }
@@ -778,9 +777,8 @@ class ElementInformationController
         // Compile information for title tag:
         foreach ($rows as $row) {
             $line = [];
-            $record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
+            $record = BackendUtility::getRecordWSOL($row['ref_table'], $row['ref_uid']);
             if ($record) {
-                BackendUtility::fixVersioningPid($row['ref_table'], $record);
                 if (!$this->canAccessPage($row['ref_table'], $record)) {
                     continue;
                 }

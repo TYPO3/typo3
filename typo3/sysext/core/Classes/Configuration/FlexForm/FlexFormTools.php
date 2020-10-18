@@ -326,7 +326,6 @@ class FlexFormTools
                     );
                 }
                 BackendUtility::workspaceOL($tableName, $row);
-                BackendUtility::fixVersioningPid($tableName, $row, true);
                 // New pointer value: This is the "subField" value if given, else the field value
                 // ds_pointerField_searchParent_subField is the "template on next level" structure from templavoila
                 if ($pointerSubFieldName && $row[$pointerSubFieldName]) {

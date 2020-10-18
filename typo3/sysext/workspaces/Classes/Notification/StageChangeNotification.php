@@ -120,8 +120,9 @@ class StageChangeNotification
         if ($elementTable === 'pages') {
             return $elementUid;
         }
-        BackendUtility::fixVersioningPid($elementTable, $elementRecord);
-        return (int)$elementRecord['pid'];
+        $pageId = $elementRecord['pid'];
+        BackendUtility::workspaceOL($elementTable, $elementRecord);
+        return (int)($elementRecord['pid'] ?? $pageId);
     }
 
     /**

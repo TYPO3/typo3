@@ -1357,8 +1357,6 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // We must use the current values as basis for this!
             $currentRecord = ($checkValueRecord = $this->recordInfo($table, $id, '*'));
-            // This is done to make the pid positive for offline versions; Necessary to have diff-view for page translations in workspaces.
-            BackendUtility::fixVersioningPid($table, $currentRecord);
         }
 
         // Get original language record if available:
@@ -6612,7 +6610,8 @@ class DataHandler implements LoggerAwareInterface
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($destinationId, \PDO::PARAM_INT)))
                 ->execute();
             if ($row = $result->fetch()) {
-                BackendUtility::fixVersioningPid('pages', $row);
+                // Ensure that the moved location is used as the PID value
+                BackendUtility::workspaceOL('pages', $row, $this->BE_USER->workspace);
                 if ($row['pid'] == $id) {
                     return false;
                 }
@@ -6802,7 +6801,6 @@ class DataHandler implements LoggerAwareInterface
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
                     ->execute()
                     ->fetch();
-                BackendUtility::fixVersioningPid($table, $output, true);
                 // If record found, check page as well:
                 if (is_array($output)) {
                     // Looking up the page for record:
@@ -6852,14 +6850,12 @@ class DataHandler implements LoggerAwareInterface
     public function getRecordPropertiesFromRow($table, $row)
     {
         if ($GLOBALS['TCA'][$table]) {
-            BackendUtility::fixVersioningPid($table, $row);
             $liveUid = ($row['t3ver_oid'] ?? null) ? $row['t3ver_oid'] : $row['uid'];
             return [
                 'header' => BackendUtility::getRecordTitle($table, $row),
                 'pid' => $row['pid'],
                 'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid']),
-                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? $row['t3ver_state'] : '',
-                '_ORIG_pid' => $row['_ORIG_pid']
+                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? $row['t3ver_state'] : ''
             ];
         }
         return null;

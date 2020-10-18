@@ -4500,4 +4500,11 @@ return [
             'Breaking-92289-DecoupleLogicOfResourceFactoryIntoStorageRepository.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-92598-Workspace-relatedMethodsFixVersioningPid.rst',
+        ],
+    ],
 ];

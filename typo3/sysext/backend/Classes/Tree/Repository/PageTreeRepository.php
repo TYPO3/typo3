@@ -672,7 +672,7 @@ class PageTreeRepository
         foreach ($mountPoints as $mountPoint) {
             if ($mountPoint !== 0) {
                 if (!array_key_exists($mountPoint, $pages)) {
-                    $pages[$mountPoint] = BackendUtility::getRecord('pages', $mountPoint);
+                    $pages[$mountPoint] = BackendUtility::getRecordWSOL('pages', $mountPoint);
                     $pages[$mountPoint]['uid'] = (int)$pages[$mountPoint]['uid'];
                 }
                 $pages[$mountPoint]['pid'] = 0;

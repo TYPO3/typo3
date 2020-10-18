@@ -55,7 +55,7 @@ class RecyclerUtility
         // First, resetting flags.
         $hasAccess = false;
         $calcPRec = $row;
-        BackendUtility::fixVersioningPid($table, $calcPRec);
+        BackendUtility::workspaceOL($table, $calcPRec, $backendUser->workspace);
         if (is_array($calcPRec)) {
             if ($table === 'pages') {
                 $calculatedPermissions = new Permission($backendUser->calcPerms($calcPRec));
@@ -96,14 +96,13 @@ class RecyclerUtility
             $loopCheck--;
 
             $queryBuilder
-                ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid')
+                ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
                 ->from('pages')
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
             $row = $queryBuilder->execute()->fetch();
             if ($row !== false) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {
-                    BackendUtility::fixVersioningPid('pages', $row);
                     $uid = (int)$row['pid'];
                     $output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 1000)) . $output;
                     if ($row['deleted']) {
