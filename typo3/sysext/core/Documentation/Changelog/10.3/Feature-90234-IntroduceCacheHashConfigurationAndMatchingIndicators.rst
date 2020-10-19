@@ -18,9 +18,10 @@ Besides exact matches (*equals*) it is possible to apply partial matches at
 the beginning of a parameter (*startsWith*) or inline occurrences (*contains*).
 
 URL parameter names are prefixed with the following indicators:
-+ :php:`=` (*equals*): exact match, default behavior if not given
-+ :php:`^` (*startsWith*): matching the beginning of a parameter name
-+ :php:`~` (*contains*): matching any inline occurrence in a parameter name
+
+* :php:`=` (*equals*): exact match, default behavior if not given
+* :php:`^` (*startsWith*): matching the beginning of a parameter name
+* :php:`~` (*contains*): matching any inline occurrence in a parameter name
 
 These indicators can be used for all previously existing sub-properties
 :php:`cachedParametersWhiteList`, :php:`excludedParameters`, :php:`excludedParametersIfEmpty`
