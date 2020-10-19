@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Core\Utility;
 
 use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\EmailValidation;
+use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\RFCValidation;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Container\ContainerInterface;
@@ -801,8 +803,14 @@ class GeneralUtility
         if (trim($email) !== $email) {
             return false;
         }
-        $validator = new EmailValidator();
-        return $validator->isValid($email, new RFCValidation());
+        $validators = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['validators'] ?? [RFCValidation::class] as $className) {
+            $validator = new $className();
+            if ($validator instanceof EmailValidation) {
+                $validators[] = $validator;
+            }
+        }
+        return (new EmailValidator())->isValid($email, new MultipleValidationWithAnd($validators));
     }
 
     /**
