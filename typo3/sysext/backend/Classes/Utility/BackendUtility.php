@@ -3423,7 +3423,7 @@ class BackendUtility
      * Workspace Preview Overlay
      * Generally ALWAYS used when records are selected based on uid or pid.
      * Principle; Record online! => Find offline?
-     * The function MAY set $row to FALSE. This happens if a move pointer record is given and
+     * The function MAY set $row to FALSE. This happens if a moved record is given and
      * $unsetMovePointers is set to true. In other words, you should check if the input record
      * is still an array afterwards when using this function.
      *
@@ -3450,13 +3450,13 @@ class BackendUtility
         }
 
         // Check if input record is a moved record
-        $movePldSwap = false;
+        $incomingRecordIsAMoveVersion = false;
         if (isset($row['t3ver_oid'], $row['t3ver_state'])
             && $row['t3ver_oid'] > 0
             && (int)$row['t3ver_state'] === VersionState::MOVE_POINTER
         ) {
             // @todo: This handling needs a review, together with the 4th param $unsetMovePointers
-            $movePldSwap = true;
+            $incomingRecordIsAMoveVersion = true;
         }
 
         $wsAlt = self::getWorkspaceVersionOfRecord(
@@ -3478,7 +3478,7 @@ class BackendUtility
             // Check if this is in move-state
             if ($versionState->equals(VersionState::MOVE_POINTER)) {
                 // @todo Same problem as frontend in versionOL(). See TODO point there and todo above.
-                if (!$movePldSwap && $unsetMovePointers) {
+                if (!$incomingRecordIsAMoveVersion && $unsetMovePointers) {
                     $row = false;
                     return;
                 }

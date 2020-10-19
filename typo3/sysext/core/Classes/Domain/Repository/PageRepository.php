@@ -1469,7 +1469,7 @@ class PageRepository implements LoggerAwareInterface
      * Principle; Record offline! => Find online?
      *
      * @param string $table Table name
-     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid", "t3ver_state" and "t3ver_wsid", "t3ver_state" is nice and will save you a DB query.
+     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! Having "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
      * @see BackendUtility::fixVersioningPid()
      * @see versionOL()
      */
@@ -1488,10 +1488,9 @@ class PageRepository implements LoggerAwareInterface
         $oid = 0;
         $workspaceId = 0;
         $versionState = null;
-        // Check values for t3ver_oid and t3ver_wsid
-        if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid']) && isset($rr['t3ver_state'])) {
-            // If "t3ver_oid" is already a field, just set this:
-            $oid = $rr['t3ver_oid'];
+        // Check values for t3ver_state and t3ver_wsid
+        if (isset($rr['t3ver_wsid']) && isset($rr['t3ver_state'])) {
+            // If "t3ver_state" is already a field, just set the needed values
             $workspaceId = (int)$rr['t3ver_wsid'];
             $versionState = (int)$rr['t3ver_state'];
         } elseif ($uid > 0) {
@@ -1501,14 +1500,13 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $newPidRec = $queryBuilder->select('t3ver_oid', 't3ver_wsid', 't3ver_state')
+            $newPidRec = $queryBuilder->select('t3ver_wsid', 't3ver_state')
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute()
                 ->fetch();
 
             if (is_array($newPidRec)) {
-                $oid = $newPidRec['t3ver_oid'];
                 $workspaceId = (int)$newPidRec['t3ver_wsid'];
                 $versionState = (int)$newPidRec['t3ver_state'];
             }
@@ -1556,8 +1554,8 @@ class PageRepository implements LoggerAwareInterface
             $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
             // will overlay any incoming moved record with the live record, which in turn
             // will be overlaid with its workspace version again to fetch both PID fields.
-            $movePldSwap = (int)($row['t3ver_oid'] ?? 0) > 0 && (int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
-            if ($movePldSwap) {
+            $incomingRecordIsAMoveVersion = (int)($row['t3ver_oid'] ?? 0) > 0 && (int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
+            if ($incomingRecordIsAMoveVersion) {
                 // Fetch the live version again if the given $row is a move pointer, so we know the original PID
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $queryBuilder->getRestrictions()
@@ -1585,7 +1583,6 @@ class PageRepository implements LoggerAwareInterface
                     // Changing input record to the workspace version alternative:
                     $row = $wsAlt;
                     // Check if it is deleted/new
-                    $rowVersionState = VersionState::cast($row['t3ver_state'] ?? null);
                     if (
                         $rowVersionState->equals(VersionState::NEW_PLACEHOLDER)
                         || $rowVersionState->equals(VersionState::DELETE_PLACEHOLDER)
@@ -1597,12 +1594,7 @@ class PageRepository implements LoggerAwareInterface
                     // reason why it appears!):
                     // You have to specifically set $unsetMovePointers in order to clear these
                     // because it is normally a display issue if it should be shown or not.
-                    if (
-                        (
-                            $rowVersionState->equals(VersionState::MOVE_POINTER)
-                            && !$movePldSwap
-                        ) && $unsetMovePointers
-                    ) {
+                    if ($rowVersionState->equals(VersionState::MOVE_POINTER) && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
                         // Unset record if it turned out to be deleted in workspace
                         $row = false;
                     }

@@ -142,7 +142,7 @@ class RootlineUtility
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
         $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
-        $this->workspaceUid = $this->context->getPropertyFromAspect('workspace', 'id', 0);
+        $this->workspaceUid = (int)$this->context->getPropertyFromAspect('workspace', 'id', 0);
         if ($this->mountPointParameter !== '') {
             if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
                 throw new MountPointsDisabledException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
@@ -150,11 +150,7 @@ class RootlineUtility
             $this->parseMountPointParameter();
         }
 
-        $this->pageUid = $this->resolvePageId(
-            (int)$uid,
-            (int)$this->workspaceUid
-        );
-
+        $this->pageUid = $this->resolvePageId((int)$uid);
         if (self::$cache === null) {
             self::$cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
         }
@@ -480,43 +476,32 @@ class RootlineUtility
     }
 
     /**
+     * Fetches the UID of the page, but if the page was moved in a workspace, actually returns the UID
+     * of the moved version in the workspace.
+     *
      * @param int $pageId
-     * @param int $workspaceId
      * @return int
      */
-    protected function resolvePageId(int $pageId, int $workspaceId): int
+    protected function resolvePageId(int $pageId): int
     {
-        if ($pageId === 0 || $workspaceId === 0) {
+        if ($pageId === 0 || $this->workspaceUid === 0) {
             return $pageId;
         }
 
-        $page = $this->resolvePageRecord(
-            $pageId,
-            ['uid', 't3ver_oid', 't3ver_state']
-        );
-        if (!VersionState::cast($page['t3ver_state'])
-            ->equals(VersionState::MOVE_POINTER)) {
+        $page = $this->resolvePageRecord($pageId);
+        if (!VersionState::cast($page['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
             return $pageId;
         }
 
-        $movePlaceholder = $this->resolveMovePlaceHolder(
-            (int)$page['t3ver_oid'],
-            ['uid'],
-            $workspaceId
-        );
-        if (empty($movePlaceholder['uid'])) {
-            return $pageId;
-        }
-
-        return (int)$movePlaceholder['uid'];
+        $movePointerId = $this->resolveMovePointerId((int)$page['t3ver_oid']);
+        return $movePointerId ?: $pageId;
     }
 
     /**
      * @param int $pageId
-     * @param array $fieldNames
      * @return array|null
      */
-    protected function resolvePageRecord(int $pageId, array $fieldNames): ?array
+    protected function resolvePageRecord(int $pageId): ?array
     {
         $queryBuilder = $this->createQueryBuilder('pages');
         $queryBuilder->getRestrictions()->removeAll()
@@ -524,7 +509,7 @@ class RootlineUtility
 
         $statement = $queryBuilder
             ->from('pages')
-            ->select(...$fieldNames)
+            ->select('uid', 't3ver_oid', 't3ver_state')
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
@@ -539,12 +524,12 @@ class RootlineUtility
     }
 
     /**
+     * Fetched the UID of the versioned record if the live record has been moved in a workspace.
+     *
      * @param int $liveId
-     * @param array $fieldNames
-     * @param int $workspaceId
-     * @return array|null
+     * @return int|null
      */
-    protected function resolveMovePlaceHolder(int $liveId, array $fieldNames, int $workspaceId): ?array
+    protected function resolveMovePointerId(int $liveId): ?int
     {
         $queryBuilder = $this->createQueryBuilder('pages');
         $queryBuilder->getRestrictions()->removeAll()
@@ -552,12 +537,12 @@ class RootlineUtility
 
         $statement = $queryBuilder
             ->from('pages')
-            ->select(...$fieldNames)
+            ->select('uid')
             ->setMaxResults(1)
             ->where(
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->workspaceUid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_state',
@@ -570,8 +555,8 @@ class RootlineUtility
             )
             ->execute();
 
-        $record = $statement->fetch(FetchMode::ASSOCIATIVE);
-        return $record ?: null;
+        $movePointerId = $statement->fetchColumn();
+        return $movePointerId ? (int)$movePointerId : null;
     }
 
     /**
