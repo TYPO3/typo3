@@ -177,8 +177,6 @@ class RenderFormValueViewHelper extends AbstractViewHelper
      */
     public static function processObject(FormElementInterface $element, $object): string
     {
-        $properties = $element->getProperties();
-
         if ($element instanceof StringableFormElementInterface) {
             return $element->valueToString($object);
         }

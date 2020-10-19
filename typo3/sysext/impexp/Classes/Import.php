@@ -1414,7 +1414,7 @@ class Import extends ImportExport
      */
     public function processSoftReferences_saveFile($relFileName, $cfg, $table, $uid)
     {
-        if ($fileHeaderInfo = $this->dat['header']['files'][$cfg['file_ID']]) {
+        if ($this->dat['header']['files'][$cfg['file_ID']]) {
             // Initialize; Get directory prefix for file and find possible RTE filename
             $dirPrefix = PathUtility::dirname($relFileName) . '/';
             if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {

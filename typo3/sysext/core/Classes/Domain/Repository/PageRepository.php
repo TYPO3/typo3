@@ -1487,7 +1487,6 @@ class PageRepository implements LoggerAwareInterface
             return;
         }
         $uid = (int)$rr['uid'];
-        $oid = 0;
         $workspaceId = 0;
         $versionState = null;
         // Check values for t3ver_state and t3ver_wsid

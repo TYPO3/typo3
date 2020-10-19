@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -36,7 +35,6 @@ class EditPopup extends AbstractNode
      */
     public function render()
     {
-        $languageService = $this->getLanguageService();
         $options = $this->data['renderData']['fieldControlOptions'];
 
         $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit';
@@ -99,15 +97,5 @@ class EditPopup extends AbstractNode
                 ['TYPO3/CMS/Backend/FormEngine/FieldControl/EditPopup' => 'function(FieldControl) {new FieldControl(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
             ],
         ];
-    }
-
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }

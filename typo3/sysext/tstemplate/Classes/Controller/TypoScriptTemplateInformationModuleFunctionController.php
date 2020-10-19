@@ -157,7 +157,6 @@ class TypoScriptTemplateInformationModuleFunctionController
             $url = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             HttpUtility::redirect($url);
         }
-        $tce = null;
         if ($existTemplate) {
             $lang = $this->getLanguageService();
             $lang->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_info.xlf');

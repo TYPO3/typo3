@@ -74,8 +74,6 @@ class ContainerBuilder
             return new FailsafeContainer($serviceProviderRegistry, $this->defaultServices);
         }
 
-        $container = null;
-
         $cacheIdentifier = $this->getCacheIdentifier($packageManager);
         $containerClassName = $cacheIdentifier;
 

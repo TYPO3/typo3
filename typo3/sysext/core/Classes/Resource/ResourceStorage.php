@@ -2188,10 +2188,8 @@ class ResourceStorage implements ResourceStorageInterface
     public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
         // @todo add tests
-        $originalFolder = $folderToMove->getParentFolder();
         $this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
         $sourceStorage = $folderToMove->getStorage();
-        $returnObject = null;
         $sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToMove->getName());
         // @todo check if folder already exists in $targetParentFolder, handle this conflict then
         $this->eventDispatcher->dispatch(
@@ -2321,7 +2319,6 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $sanitizedNewName = $this->driver->sanitizeFileName($newName);
-        $returnObject = null;
         if ($this->driver->folderExistsInFolder($sanitizedNewName, $folderObject->getIdentifier())) {
             throw new \InvalidArgumentException('The folder ' . $sanitizedNewName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
         }

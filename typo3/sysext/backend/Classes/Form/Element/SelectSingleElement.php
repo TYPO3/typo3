@@ -76,7 +76,6 @@ class SelectSingleElement extends AbstractFormElement
 
         $table = $this->data['tableName'];
         $field = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
 

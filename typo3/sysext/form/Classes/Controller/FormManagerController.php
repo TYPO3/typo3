@@ -460,7 +460,6 @@ class FormManagerController extends AbstractBackendController
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $currentRequest = $this->request;
         $moduleName = $currentRequest->getPluginName();
-        $getVars = $this->request->getArguments();
 
         // Create new
         $addFormButton = $buttonBar->makeLinkButton()

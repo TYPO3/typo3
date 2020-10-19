@@ -118,10 +118,9 @@ class AuthenticationService extends AbstractAuthenticationService
         $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
 
         // Get a hashed password instance for the hash stored in db of this user
-        $invalidPasswordHashException = null;
         try {
             $hashInstance = $saltFactory->get($passwordHashInDatabase, $this->pObj->loginType);
-        } catch (InvalidPasswordHashException $invalidPasswordHashException) {
+        } catch (InvalidPasswordHashException $exception) {
             // Could not find a responsible hash algorithm for given password. This is unusual since other
             // authentication services would usually be called before this one with higher priority. We thus log
             // the failed login but still return '100' to proceed with other services that may follow.

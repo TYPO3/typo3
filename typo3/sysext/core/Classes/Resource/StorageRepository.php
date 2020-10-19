@@ -337,7 +337,6 @@ class StorageRepository implements LoggerAwareInterface
         }
         if (empty($this->storageInstances[$uid])) {
             $storageConfiguration = null;
-            $storageObject = null;
             /** @var BeforeResourceStorageInitializationEvent $event */
             $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
             $recordData = $event->getRecord();

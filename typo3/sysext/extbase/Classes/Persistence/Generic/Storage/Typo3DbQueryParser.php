@@ -769,7 +769,7 @@ class Typo3DbQueryParser
         if ($ignoreEnableFields && !$includeDeleted) {
             if (!empty($enableFieldsToBeIgnored)) {
                 // array_combine() is necessary because of the way \TYPO3\CMS\Core\Domain\Repository\PageRepository::enableFields() is implemented
-                $statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored), true);
+                $statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
             } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
                 $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
             }

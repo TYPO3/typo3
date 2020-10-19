@@ -428,7 +428,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $isSetSessionCookie = $this->isSetSessionCookie();
         $isRefreshTimeBasedCookie = $this->isRefreshTimeBasedCookie();
         if ($isSetSessionCookie || $isRefreshTimeBasedCookie) {
-            $settings = $GLOBALS['TYPO3_CONF_VARS']['SYS'];
             // Get the domain to be used for the cookie (if any):
             $cookieDomain = $this->getCookieDomain();
             // If no cookie domain is set, use the base path:

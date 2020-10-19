@@ -167,13 +167,12 @@ class ElementBrowserPageTreeView extends BrowseTreeView
      *
      * @param string $icon HTML string to wrap, probably an image tag.
      * @param string $cmd Command for 'PM' get var
-     * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
+     * @param string $bMark If set, the link will have a name attribute (=$bMark)
      * @param bool $isOpen
      * @return string Link-wrapped input string
      */
     public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
     {
-        $anchor = $bMark ? '#' . $bMark : '';
         $name = $bMark ? ' name=' . $bMark : '';
         $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
         $urlParameters['PM'] = $cmd;

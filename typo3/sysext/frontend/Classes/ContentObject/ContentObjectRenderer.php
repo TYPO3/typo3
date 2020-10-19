@@ -4547,8 +4547,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function resolveMixedLinkParameter($linkText, $mixedLinkParameter, &$configuration = [])
     {
-        $linkParameter = null;
-
         // Link parameter value = first part
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($mixedLinkParameter);
 
@@ -4560,7 +4558,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // Disallow insecure scheme's like javascript: or data:
             return $linkText;
         }
-        $linkParameter = $linkParameterParts['url'];
 
         // additional parameters that need to be set
         if ($linkParameterParts['additionalParams'] !== '') {
@@ -4570,7 +4567,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         return [
-            'href'   => $linkParameter,
+            'href'   => $linkParameterParts['url'],
             'target' => $linkParameterParts['target'],
             'class'  => $linkParameterParts['class'],
             'title'  => $linkParameterParts['title']

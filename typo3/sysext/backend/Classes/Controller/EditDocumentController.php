@@ -1197,7 +1197,7 @@ class EditDocumentController
                                 $this->errorC++;
                                 // Try to fetch error message from "recordInternals" be user object
                                 // @todo: This construct should be logged and localized and de-uglified
-                                $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $message = $e->getMessage() . ' ' . $e->getCode();
+                                $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
                                 $title = $this->getLanguageService()
                                     ->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
                                 $editForm .= $this->getInfobox($message, $title);
