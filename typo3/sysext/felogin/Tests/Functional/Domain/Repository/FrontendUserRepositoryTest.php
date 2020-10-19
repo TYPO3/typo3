@@ -124,6 +124,10 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
                     'last_name' => '',
                 ]
             ],
+            'non existing user' => [
+                'non-existing@user.com',
+                []
+            ],
         ];
     }
 

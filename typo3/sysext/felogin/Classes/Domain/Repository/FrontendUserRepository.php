@@ -129,7 +129,8 @@ class FrontendUserRepository
     }
 
     /**
-     * Fetches array containing uid, username, email, first_name, middle_name & last_name by email.
+     * Fetches array containing uid, username, email, first_name, middle_name & last_name by email
+     * or empty array if user was not found.
      *
      * @param string $emailAddress
      * @return array
@@ -148,8 +149,11 @@ class FrontendUserRepository
                 )
             )
         ;
-
-        return $query->execute()->fetch(FetchMode::ASSOCIATIVE);
+        $result = $query->execute()->fetch(FetchMode::ASSOCIATIVE);
+        if (!is_array($result)) {
+            $result = [];
+        }
+        return $result;
     }
 
     /**
