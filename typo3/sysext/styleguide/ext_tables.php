@@ -6,12 +6,12 @@ if (TYPO3_MODE === 'BE') {
 
     // Register "Styleguide" backend module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'TYPO3.CMS.styleguide',
+        'styleguide',
         'help',
         'styleguide',
         '',
         [
-            'Styleguide' => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, helpers, icons, tab, modal'
+            \TYPO3\CMS\Styleguide\Controller\StyleguideController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, helpers, icons, tab, modal'
         ],
         [
             'access' => 'user,group',
