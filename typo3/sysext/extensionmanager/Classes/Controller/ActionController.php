@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
-use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -43,11 +42,6 @@ class ActionController extends AbstractController
     protected $installUtility;
 
     /**
-     * @var FileHandlingUtility
-     */
-    protected $fileHandlingUtility;
-
-    /**
      * @var ExtensionManagementService
      */
     protected $managementService;
@@ -58,14 +52,6 @@ class ActionController extends AbstractController
     public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
-    }
-
-    /**
-     * @param FileHandlingUtility $fileHandlingUtility
-     */
-    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
-    {
-        $this->fileHandlingUtility = $fileHandlingUtility;
     }
 
     /**
@@ -157,7 +143,7 @@ class ActionController extends AbstractController
      */
     protected function downloadExtensionZipAction($extension)
     {
-        $fileName = $this->fileHandlingUtility->createZipFileFromExtension($extension);
+        $fileName = $this->createZipFileFromExtension($extension);
         $this->sendZipFileToBrowserAndDelete($fileName);
     }
 
@@ -192,5 +178,67 @@ class ActionController extends AbstractController
         $this->installUtility->processExtensionSetup($extension['key']);
 
         $this->redirect('index', 'List');
+    }
+
+    /**
+     * Create a zip file from an extension
+     *
+     * @param string $extensionKey
+     * @return string Name and path of create zip file
+     */
+    protected function createZipFileFromExtension(string $extensionKey): string
+    {
+        $extensionDetails = $this->installUtility->enrichExtensionWithDetails($extensionKey);
+        $extensionPath = $extensionDetails['packagePath'];
+
+        // Add trailing slash to the extension path, getAllFilesAndFoldersInPath explicitly requires that.
+        $extensionPath = PathUtility::sanitizeTrailingSeparator($extensionPath);
+
+        $version = (string)$extensionDetails['version'];
+        if (empty($version)) {
+            $version = '0.0.0';
+        }
+
+        $temporaryPath = Environment::getVarPath() . '/transient/';
+        if (!@is_dir($temporaryPath)) {
+            GeneralUtility::mkdir($temporaryPath);
+        }
+        $fileName = $temporaryPath . $extensionKey . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
+
+        $zip = new \ZipArchive();
+        $zip->open($fileName, \ZipArchive::CREATE);
+
+        $excludePattern = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
+
+        // Get all the files of the extension, but exclude the ones specified in the excludePattern
+        $files = GeneralUtility::getAllFilesAndFoldersInPath(
+            [], // No files pre-added
+            $extensionPath, // Start from here
+            '', // Do not filter files by extension
+            true, // Include subdirectories
+            PHP_INT_MAX, // Recursion level
+            $excludePattern        // Files and directories to exclude.
+        );
+
+        // Make paths relative to extension root directory.
+        $files = GeneralUtility::removePrefixPathFromList($files, $extensionPath);
+        $files = is_array($files) ? $files : [];
+
+        // Remove the one empty path that is the extension dir itself.
+        $files = array_filter($files);
+
+        foreach ($files as $file) {
+            $fullPath = $extensionPath . $file;
+            // Distinguish between files and directories, as creation of the archive
+            // fails on Windows when trying to add a directory with "addFile".
+            if (is_dir($fullPath)) {
+                $zip->addEmptyDir($file);
+            } else {
+                $zip->addFile($fullPath, $file);
+            }
+        }
+
+        $zip->close();
+        return $fileName;
     }
 }

@@ -272,8 +272,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
             $emConfFileData = $this->emConfUtility->includeEmConf(
                 $extensionData['extKey'],
                 [
-                    'packagePath' => $rootPath,
-                    'siteRelPath' => PathUtility::stripPathSitePrefix($rootPath)
+                    'packagePath' => $rootPath
                 ]
             );
             $emConfFileData = is_array($emConfFileData) ? $emConfFileData : [];
@@ -301,22 +300,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Returns absolute path
-     *
-     * @param string $relativePath
-     * @throws ExtensionManagerException
-     * @return string
-     */
-    protected function getAbsolutePath($relativePath)
-    {
-        $absolutePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/' . $relativePath));
-        if (empty($absolutePath)) {
-            throw new ExtensionManagerException('Illegal relative path given', 1350742864);
-        }
-        return $absolutePath;
-    }
-
-    /**
      * Returns relative path
      *
      * @param string $absolutePath
@@ -325,91 +308,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     protected function getRelativePath(string $absolutePath): string
     {
         return PathUtility::stripPathSitePrefix($absolutePath);
-    }
-
-    /**
-     * Get extension path for an available or installed extension
-     *
-     * @param string $extensionKey
-     * @return string
-     */
-    public function getAbsoluteExtensionPath(string $extensionKey): string
-    {
-        $extension = $this->installUtility->enrichExtensionWithDetails($extensionKey);
-        return $this->getAbsolutePath($extension['siteRelPath']);
-    }
-
-    /**
-     * Get version of an available or installed extension
-     *
-     * @param string $extensionKey
-     * @return string
-     */
-    protected function getExtensionVersion(string $extensionKey): string
-    {
-        $extensionData = $this->installUtility->enrichExtensionWithDetails($extensionKey);
-        return (string)$extensionData['version'];
-    }
-
-    /**
-     * Create a zip file from an extension
-     *
-     * @param string $extensionKey
-     * @return string Name and path of create zip file
-     */
-    public function createZipFileFromExtension($extensionKey): string
-    {
-        $extensionPath = $this->getAbsoluteExtensionPath($extensionKey);
-
-        // Add trailing slash to the extension path, getAllFilesAndFoldersInPath explicitly requires that.
-        $extensionPath = PathUtility::sanitizeTrailingSeparator($extensionPath);
-
-        $version = $this->getExtensionVersion($extensionKey);
-        if (empty($version)) {
-            $version = '0.0.0';
-        }
-
-        $temporaryPath = Environment::getVarPath() . '/transient/';
-        if (!@is_dir($temporaryPath)) {
-            GeneralUtility::mkdir($temporaryPath);
-        }
-        $fileName = $temporaryPath . $extensionKey . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
-
-        $zip = new \ZipArchive();
-        $zip->open($fileName, \ZipArchive::CREATE);
-
-        $excludePattern = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
-
-        // Get all the files of the extension, but exclude the ones specified in the excludePattern
-        $files = GeneralUtility::getAllFilesAndFoldersInPath(
-            [], // No files pre-added
-            $extensionPath, // Start from here
-            '', // Do not filter files by extension
-            true, // Include subdirectories
-            PHP_INT_MAX, // Recursion level
-            $excludePattern        // Files and directories to exclude.
-        );
-
-        // Make paths relative to extension root directory.
-        $files = GeneralUtility::removePrefixPathFromList($files, $extensionPath);
-        $files = is_array($files) ? $files : [];
-
-        // Remove the one empty path that is the extension dir itself.
-        $files = array_filter($files);
-
-        foreach ($files as $file) {
-            $fullPath = $extensionPath . $file;
-            // Distinguish between files and directories, as creation of the archive
-            // fails on Windows when trying to add a directory with "addFile".
-            if (is_dir($fullPath)) {
-                $zip->addEmptyDir($file);
-            } else {
-                $zip->addFile($fullPath, $file);
-            }
-        }
-
-        $zip->close();
-        return $fileName;
     }
 
     /**

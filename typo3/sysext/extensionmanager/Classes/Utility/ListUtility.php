@@ -122,6 +122,7 @@ class ListUtility implements SingletonInterface
                 if ($filter === '' || $filter === $installationType) {
                     $this->availableExtensions[$package->getPackageKey()] = [
                         'siteRelPath' => str_replace(Environment::getPublicPath() . '/', '', $package->getPackagePath()),
+                        'packagePath' => $package->getPackagePath(),
                         'type' => $installationType,
                         'key' => $package->getPackageKey(),
                         'icon' => PathUtility::getAbsoluteWebPath($package->getPackagePath() . ExtensionManagementUtility::getExtensionIcon($package->getPackagePath())),

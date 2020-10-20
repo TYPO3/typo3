@@ -420,7 +420,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function removeExtension($extension)
     {
-        $absolutePath = $this->fileHandlingUtility->getAbsoluteExtensionPath($extension);
+        $absolutePath = $this->enrichExtensionWithDetails($extension)['packagePath'];
         if ($this->fileHandlingUtility->isValidExtensionPath($absolutePath)) {
             if ($this->packageManager->isPackageAvailable($extension)) {
                 // Package manager deletes the extension and removes the entry from PackageStates.php
