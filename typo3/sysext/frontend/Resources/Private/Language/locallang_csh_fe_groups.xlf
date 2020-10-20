@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>This option disables the user group.</source>
+				<source>This option enables the user group.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.

@@ -16,7 +16,7 @@
 				<source>If needed, give it a description or put other important notes in this field.</source>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>Disable the configuration by this checkbox. If disabled, the configuration will be bypassed by the crawlers cron job.</source>
+				<source>Disable the configuration by unchecking this option. If disabled, the configuration will be bypassed by the crawlers cron job.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" resname="hidden.details">
 				<source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>

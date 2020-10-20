@@ -26,7 +26,7 @@ EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</source>
 The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>Hiding the template will deactivate the template record.</source>
+				<source>Unchecking this option will deactivate the template record.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" resname="hidden.details">
 				<source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>

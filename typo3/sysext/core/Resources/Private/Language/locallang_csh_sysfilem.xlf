@@ -56,7 +56,7 @@ EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
 The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>Use this option to temporarily disable the filemount.</source>
+				<source>Unchecking this option temporarily disables the filemount.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" resname="hidden.details">
 				<source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>

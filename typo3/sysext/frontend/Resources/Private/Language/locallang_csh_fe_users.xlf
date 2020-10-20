@@ -43,7 +43,7 @@
 				<source>Insert a photo of the user.</source>
 			</trans-unit>
 			<trans-unit id="disable.description" resname="disable.description">
-				<source>This option will temporarily disable the user from logging in.</source>
+				<source>Unchecking this option will temporarily disable the user from logging in.</source>
 			</trans-unit>
 			<trans-unit id="_disable.seeAlso" resname="_disable.seeAlso">
 				<source>fe_users:starttime,fe_users:endtime</source>
