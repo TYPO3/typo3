@@ -10,7 +10,7 @@
 				<source></source>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+				<source>Unchecking this option results in removing of the storage from any listings in the backend. Existing file relations will still exist.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" resname="hidden.details">
 				<source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>

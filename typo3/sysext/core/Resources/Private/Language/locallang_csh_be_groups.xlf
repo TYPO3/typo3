@@ -198,7 +198,7 @@ Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStarted
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>Disables a user group.</source>
+				<source>Enables a user group.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" resname="hidden.details">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>

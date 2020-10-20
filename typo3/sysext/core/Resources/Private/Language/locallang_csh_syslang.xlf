@@ -7,7 +7,7 @@
 				<source>Enter the name of this additional system language.</source>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>This option will hide the system language from being available in the backend.</source>
+				<source>Unchecking this option will hide the system language from being available in the backend.</source>
 			</trans-unit>
 			<trans-unit id=".description" resname=".description">
 				<source>Defines which languages are alternatively available on each webpage.</source>

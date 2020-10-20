@@ -89,7 +89,7 @@ About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>Check this box if you wish to disable the Content Element and keep it from being displayed on the website.</source>
+				<source>Uncheck this box if you wish to disable the Content Element and keep it from being displayed on the website.</source>
 			</trans-unit>
 			<trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve">
 				<source>tt_content:starttime,

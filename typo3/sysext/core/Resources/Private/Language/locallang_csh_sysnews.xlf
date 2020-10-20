@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="hidden.description" resname="hidden.description">
-				<source>This option will hide the news from showing up at the login screen.</source>
+				<source>Unchecking this option will hide the news from showing up at the login screen.</source>
 			</trans-unit>
 			<trans-unit id="title.description" resname="title.description">
 				<source>Enter the title of the news.</source>
