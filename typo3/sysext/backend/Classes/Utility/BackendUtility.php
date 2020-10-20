@@ -57,6 +57,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -141,7 +142,7 @@ class BackendUtility
         $unsetMovePointers = false
     ) {
         if ($fields !== '*') {
-            $internalFields = GeneralUtility::uniqueList($fields . ',uid,pid');
+            $internalFields = StringUtility::uniqueList($fields . ',uid,pid');
             $row = self::getRecord($table, $uid, $internalFields, $where, $useDeleteClause);
             self::workspaceOL($table, $row, -99, $unsetMovePointers);
             if (is_array($row)) {

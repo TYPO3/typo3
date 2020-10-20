@@ -50,6 +50,7 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -1309,17 +1310,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $this->dataLists['webmount_list'] = '0,' . $this->dataLists['webmount_list'];
             }
             // The lists are cleaned for duplicates
-            $this->groupData['webmounts'] = GeneralUtility::uniqueList($this->dataLists['webmount_list']);
-            $this->groupData['pagetypes_select'] = GeneralUtility::uniqueList($this->dataLists['pagetypes_select']);
-            $this->groupData['tables_select'] = GeneralUtility::uniqueList($this->dataLists['tables_modify'] . ',' . $this->dataLists['tables_select']);
-            $this->groupData['tables_modify'] = GeneralUtility::uniqueList($this->dataLists['tables_modify']);
-            $this->groupData['non_exclude_fields'] = GeneralUtility::uniqueList($this->dataLists['non_exclude_fields']);
-            $this->groupData['explicit_allowdeny'] = GeneralUtility::uniqueList($this->dataLists['explicit_allowdeny']);
-            $this->groupData['allowed_languages'] = GeneralUtility::uniqueList($this->dataLists['allowed_languages']);
-            $this->groupData['custom_options'] = GeneralUtility::uniqueList($this->dataLists['custom_options']);
-            $this->groupData['modules'] = GeneralUtility::uniqueList($this->dataLists['modList']);
-            $this->groupData['available_widgets'] = GeneralUtility::uniqueList($this->dataLists['available_widgets']);
-            $this->groupData['file_permissions'] = GeneralUtility::uniqueList($this->dataLists['file_permissions']);
+            $this->groupData['webmounts'] = StringUtility::uniqueList($this->dataLists['webmount_list'] ?? '');
+            $this->groupData['pagetypes_select'] = StringUtility::uniqueList($this->dataLists['pagetypes_select'] ?? '');
+            $this->groupData['tables_select'] = StringUtility::uniqueList(($this->dataLists['tables_modify'] ?? '') . ',' . ($this->dataLists['tables_select'] ?? ''));
+            $this->groupData['tables_modify'] = StringUtility::uniqueList($this->dataLists['tables_modify'] ?? '');
+            $this->groupData['non_exclude_fields'] = StringUtility::uniqueList($this->dataLists['non_exclude_fields'] ?? '');
+            $this->groupData['explicit_allowdeny'] = StringUtility::uniqueList($this->dataLists['explicit_allowdeny'] ?? '');
+            $this->groupData['allowed_languages'] = StringUtility::uniqueList($this->dataLists['allowed_languages'] ?? '');
+            $this->groupData['custom_options'] = StringUtility::uniqueList($this->dataLists['custom_options'] ?? '');
+            $this->groupData['modules'] = StringUtility::uniqueList($this->dataLists['modList'] ?? '');
+            $this->groupData['available_widgets'] = StringUtility::uniqueList($this->dataLists['available_widgets'] ?? '');
+            $this->groupData['file_permissions'] = StringUtility::uniqueList($this->dataLists['file_permissions'] ?? '');
             $this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
 
             if (!empty(trim($this->groupData['webmounts']))) {
@@ -1988,9 +1989,9 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $this->setWorkspace($this->user['workspace_id']);
         // Limiting the DB mountpoints if there any selected in the workspace record
         $this->initializeDbMountpointsInWorkspace();
-        $allowed_languages = $this->getTSConfig()['options.']['workspaces.']['allowed_languages.'][$this->workspace] ?? '';
-        if (!empty($allowed_languages)) {
-            $this->groupData['allowed_languages'] = GeneralUtility::uniqueList($allowed_languages);
+        $allowed_languages = (string)($this->getTSConfig()['options.']['workspaces.']['allowed_languages.'][$this->workspace] ?? '');
+        if ($allowed_languages !== '') {
+            $this->groupData['allowed_languages'] = StringUtility::uniqueList($allowed_languages);
         }
     }
 

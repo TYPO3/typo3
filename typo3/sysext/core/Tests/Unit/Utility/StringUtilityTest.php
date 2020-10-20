@@ -330,4 +330,35 @@ class StringUtilityTest extends UnitTestCase
             ],
         ];
     }
+
+    /**
+     * Data provider for uniqueListUnifiesCommaSeparatedList
+     *
+     * @return \Generator
+     */
+    public function uniqueListUnifiesCommaSeparatedListDataProvider(): \Generator
+    {
+        yield 'List without duplicates' => ['one,two,three', 'one,two,three'];
+        yield 'List with two consecutive duplicates' => ['one,two,two,three,three', 'one,two,three'];
+        yield 'List with non-consecutive duplicates' => ['one,two,three,two,three', 'one,two,three'];
+        yield 'One item list' => ['one', 'one'];
+        yield 'Empty list' => ['', ''];
+        yield 'No list, just a comma' => [',', ''];
+        yield 'List with leading comma' => [',one,two', 'one,two'];
+        yield 'List with trailing comma' => ['one,two,', 'one,two'];
+        yield 'List with multiple consecutive commas' => ['one,,two', 'one,two'];
+    }
+
+    /**
+     * @test
+     *
+     * @param string $initialList
+     * @param string $unifiedList
+     *
+     * @dataProvider uniqueListUnifiesCommaSeparatedListDataProvider
+     */
+    public function uniqueListUnifiesCommaSeparatedList(string $initialList, string $unifiedList): void
+    {
+        self::assertSame($unifiedList, StringUtility::uniqueList($initialList));
+    }
 }

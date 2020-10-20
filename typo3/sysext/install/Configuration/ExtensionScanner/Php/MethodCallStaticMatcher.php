@@ -1043,4 +1043,11 @@ return [
             'Deprecation-92598-Workspace-relatedMethodsFixVersioningPid.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-92607-DeprecatedGeneralUtilityuniqueList.rst'
+        ],
+    ],
 ];

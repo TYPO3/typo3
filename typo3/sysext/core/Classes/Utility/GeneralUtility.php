@@ -645,9 +645,14 @@ class GeneralUtility
      * @param string $in_list Accept multiple parameters which can be comma-separated lists of values and arrays.
      * @param mixed $secondParameter Dummy field, which if set will show a warning!
      * @return string Returns the list without any duplicates of values, space around values are trimmed
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12. Use StringUtility::uniqueList() instead.
      */
     public static function uniqueList($in_list, $secondParameter = null)
     {
+        trigger_error(
+            'GeneralUtility::uniqueList() is deprecated and will be removed in v12. Use StringUtility::uniqueList() instead.',
+            E_USER_DEPRECATED
+        );
         if (is_array($in_list)) {
             throw new \InvalidArgumentException('TYPO3 Fatal Error: TYPO3\\CMS\\Core\\Utility\\GeneralUtility::uniqueList() does NOT support array arguments anymore! Only string comma lists!', 1270853885);
         }

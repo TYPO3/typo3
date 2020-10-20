@@ -150,4 +150,16 @@ class StringUtility
         }
         return $result;
     }
+
+    /**
+     * Takes a comma-separated list and removes all duplicates.
+     * If a value in the list is trim(empty), the value is ignored.
+     *
+     * @param string $list Accept a comma-separated list of values.
+     * @return string Returns the list without any duplicates of values, space around values are trimmed.
+     */
+    public static function uniqueList(string $list): string
+    {
+        return implode(',', array_unique(GeneralUtility::trimExplode(',', $list, true)));
+    }
 }

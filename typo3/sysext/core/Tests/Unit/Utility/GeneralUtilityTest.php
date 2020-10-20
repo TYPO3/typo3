@@ -622,36 +622,6 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     ///////////////////////////////
-    // Tests concerning uniqueList
-    ///////////////////////////////
-    /**
-     * @test
-     * @param string $initialList
-     * @param string $unifiedList
-     * @dataProvider uniqueListUnifiesCommaSeparatedListDataProvider
-     */
-    public function uniqueListUnifiesCommaSeparatedList($initialList, $unifiedList)
-    {
-        self::assertSame($unifiedList, GeneralUtility::uniqueList($initialList));
-    }
-
-    /**
-     * Data provider for uniqueListUnifiesCommaSeparatedList
-     *
-     * @return array
-     */
-    public function uniqueListUnifiesCommaSeparatedListDataProvider()
-    {
-        return [
-            'List without duplicates' => ['one,two,three', 'one,two,three'],
-            'List with two consecutive duplicates' => ['one,two,two,three,three', 'one,two,three'],
-            'List with non-consecutive duplicates' => ['one,two,three,two,three', 'one,two,three'],
-            'One item list' => ['one', 'one'],
-            'Empty list' => ['', '']
-        ];
-    }
-
-    ///////////////////////////////
     // Tests concerning isFirstPartOfStr
     ///////////////////////////////
     /**
