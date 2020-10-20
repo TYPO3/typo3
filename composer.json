@@ -92,7 +92,7 @@
 		"phpspec/prophecy": "^1.7.5",
 		"phpstan/phpstan": "^0.12.44",
 		"phpunit/phpunit": "^8.5.2",
-		"typo3/cms-styleguide": "~11.0.0",
+		"typo3/cms-styleguide": "~11.0.1",
 		"typo3/testing-framework": "^6.4.6"
 	},
 	"suggest": {

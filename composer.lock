@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "702ec3c38cbe893575b21742b083229a",
+    "content-hash": "8fc5d880626250f7d0c2a5e58d1fe994",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -8091,16 +8091,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.0.0",
+            "version": "11.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "e2d149a079ec2af64105684062dc2fb282cbe0ae"
+                "reference": "175745442bb18de8868f035462c65f1553200508"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/e2d149a079ec2af64105684062dc2fb282cbe0ae",
-                "reference": "e2d149a079ec2af64105684062dc2fb282cbe0ae",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/175745442bb18de8868f035462c65f1553200508",
+                "reference": "175745442bb18de8868f035462c65f1553200508",
                 "shasum": ""
             },
             "require-dev": {
@@ -8151,7 +8151,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2020-08-16T17:36:13+00:00"
+            "time": "2020-10-20T17:29:09+00:00"
         },
         {
             "name": "typo3/testing-framework",
