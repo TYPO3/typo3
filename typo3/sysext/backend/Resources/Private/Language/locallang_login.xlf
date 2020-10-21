@@ -66,6 +66,9 @@
 			<trans-unit id="typo3.cms" resname="typo3.cms">
 				<source>TYPO3 CMS</source>
 			</trans-unit>
+			<trans-unit id="typo3.altText" resname="typo3.altText">
+				<source>TYPO3 CMS logo</source>
+			</trans-unit>
 			<trans-unit id="version.short" resname="version.short">
 				<source>ver.</source>
 			</trans-unit>

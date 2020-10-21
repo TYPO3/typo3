@@ -26,22 +26,25 @@ Have a nice day.</source>
 				<source>Switch to user %s</source>
 			</trans-unit>
 			<trans-unit id="config.loginLogo" resname="config.loginLogo">
-				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png)</source>
+				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png).</source>
+			</trans-unit>
+			<trans-unit id="config.loginLogoAlt" resname="config.loginLogoAlt">
+				<source>Logo Alt-Text: If a custom logo is set, this text will be used as the alt attribute of the img tag.</source>
 			</trans-unit>
 			<trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor">
 				<source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
 			</trans-unit>
 			<trans-unit id="config.loginBackgroundImage" resname="config.loginBackgroundImage">
-				<source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png)</source>
+				<source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png).</source>
 			</trans-unit>
 			<trans-unit id="config.loginFootnote" resname="config.loginFootnote">
-				<source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. © 2017 by Foo Bar) or a descriptive text</source>
+				<source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. background image © 2017 by John Doe) or a descriptive text.</source>
 			</trans-unit>
 			<trans-unit id="config.backendLogo" resname="config.backendLogo">
-				<source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 Backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png)</source>
+				<source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png).</source>
 			</trans-unit>
 			<trans-unit id="config.backendFavicon" resname="config.backendFavicon">
-				<source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico)</source>
+				<source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico).</source>
 			</trans-unit>
 			<trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title">
 				<source>No folders available</source>

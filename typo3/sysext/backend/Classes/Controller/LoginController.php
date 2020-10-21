@@ -399,27 +399,37 @@ class LoginController implements LoggerAwareInterface
         }
 
         // Logo
+        $logo = '';
+        $logoAlt = '';
         if (!empty($extConf['loginLogo'])) {
             if ($this->getUriForFileName($extConf['loginLogo']) === '') {
                 $this->logger->warning(
                     'The configured TYPO3 backend login logo "' . htmlspecialchars($extConf['loginLogo']) .
                     '" can\'t be resolved. Please check if the file exists and the extension is activated.'
                 );
+            } else {
+                $logo = $extConf['loginLogo'];
+                $logoAlt = trim($extConf['loginLogoAlt']);
+                if (empty($logoAlt)) {
+                    trigger_error('Login logo without alt-text is not accessible and will fall back to "TYPO3 CMS logo" in v12. Configure alt-text in the backend extension.', E_USER_DEPRECATED);
+                }
             }
-            $logo = $extConf['loginLogo'];
-        } else {
+        }
+        if (!$logo) {
             // Use TYPO3 logo depending on highlight color
             if (!empty($extConf['loginHighlightColor'])) {
                 $logo = 'EXT:backend/Resources/Public/Images/typo3_black.svg';
             } else {
                 $logo = 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
             }
+            $logoAlt = $this->getLanguageService()->getLL('typo3.altText');
             $this->pageRenderer->addCssInlineBlock('loginLogo', '
 				.typo3-login-logo .typo3-login-image { max-width: 150px; height:100%;}
 			');
         }
         $this->view->assignMultiple([
             'logo' => $this->getUriForFileName($logo),
+            'logoAlt' => $logoAlt,
             'images' => [
                 'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
                 'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
