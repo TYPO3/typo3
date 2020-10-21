@@ -419,9 +419,9 @@ class Modal {
                 // dispatch event at the element having `data-event-name` declared
                 eventNameTarget.dispatchEvent(event);
               }
-              const href = $element.data('href') || $element.attr('href');
-              if (href && href !== '#') {
-                evt.target.ownerDocument.location.href = href;
+              let targetLocation = $element.attr('data-uri') || $element.data('href') || $element.attr('href');
+              if (targetLocation && targetLocation !== '#') {
+                evt.target.ownerDocument.location.href = targetLocation;
               }
             },
           },

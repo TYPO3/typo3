@@ -25,7 +25,7 @@ class ClipboardComponent {
   }
 
   private registerCheckboxTogglers(): void {
-    const selector = 'a.t3js-toggle-all-checkboxes';
+    const selector = '.t3js-toggle-all-checkboxes';
     document.addEventListener('click', (e: Event): void => {
       let target = <HTMLElement>e.target;
       if (!target.matches(selector)) {
@@ -40,11 +40,11 @@ class ClipboardComponent {
       e.preventDefault();
 
       let flagAll: boolean;
-      if (target.getAttribute('rel') === '') {
-        target.setAttribute('rel', 'allChecked');
+      if (!('checked' in target.dataset) || target.dataset.checked === 'none') {
+        target.dataset.checked = 'all';
         flagAll = true;
       } else {
-        target.setAttribute('rel', '');
+        target.dataset.checked = 'none';
         flagAll = false;
       }
 
