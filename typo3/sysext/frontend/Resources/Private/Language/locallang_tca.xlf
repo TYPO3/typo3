@@ -253,7 +253,7 @@
 				<source>Behaviour</source>
 			</trans-unit>
 			<trans-unit id="pages.no_search" resname="pages.no_search">
-				<source>No Search</source>
+				<source>Include in Search</source>
 			</trans-unit>
 			<trans-unit id="pages.no_search_formlabel" resname="pages.no_search_formlabel">
 				<source>Include in Search</source>
