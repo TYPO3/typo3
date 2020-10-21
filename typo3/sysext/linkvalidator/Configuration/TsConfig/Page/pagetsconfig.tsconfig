@@ -24,6 +24,16 @@ mod.linkvalidator {
       method = HEAD
 
       range = 0-4048
+
+      # This is the total timeout of the request in
+      # seconds.
+      # If set, this overrides the timeout in $GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'].
+      # which defaults to 0.
+      #
+      # WARNING:
+      #   A value 0 means no timeout, which may mean that the request never ends
+      #   and can also result in scheduler tasks to run indefinitely.
+      timeout = 20
     }
   }
 
