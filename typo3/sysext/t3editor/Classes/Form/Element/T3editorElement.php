@@ -120,7 +120,6 @@ class T3editorElement extends AbstractFormElement
             'text-monospace enable-tab',
             $parameterArray['itemFormElValue'],
             $attributeString,
-            $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
                 'effectivePid' => $this->data['effectivePid']
@@ -177,7 +176,6 @@ class T3editorElement extends AbstractFormElement
      * @param string $class Class attribute of HTML tag
      * @param string $content Content of the editor
      * @param string $additionalParams Any additional editor parameters
-     * @param string $alt Alt attribute
      * @param array $hiddenfields
      *
      * @return string Generated HTML code for editor
@@ -188,7 +186,6 @@ class T3editorElement extends AbstractFormElement
         string $class = '',
         string $content = '',
         string $additionalParams = '',
-        string $alt = '',
         array $hiddenfields = []
     ): string {
         $code = [];
@@ -197,7 +194,6 @@ class T3editorElement extends AbstractFormElement
         $registeredAddons = AddonRegistry::getInstance()->getForMode($mode->getFormatCode());
 
         $attributes['class'] = $class . ' t3editor';
-        $attributes['alt'] = $alt;
         $attributes['id'] = 't3editor_' . md5($name);
         $attributes['name'] = $name;
 
