@@ -72,8 +72,7 @@ class RedirectModeHandler
         $this->uriBuilder = $uriBuilder;
         $this->redirectUrlValidator = GeneralUtility::makeInstance(
             RedirectUrlValidator::class,
-            GeneralUtility::makeInstance(SiteFinder::class),
-            (int)$GLOBALS['TSFE']->id
+            GeneralUtility::makeInstance(SiteFinder::class)
         );
         $this->serverRequestHandler = $serverRequestHandler;
         $this->userService = $userService;

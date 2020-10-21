@@ -126,8 +126,7 @@ class FrontendLoginController extends AbstractPlugin
         );
         $this->urlValidator = GeneralUtility::makeInstance(
             RedirectUrlValidator::class,
-            GeneralUtility::makeInstance(SiteFinder::class),
-            (int)$this->frontendController->id
+            GeneralUtility::makeInstance(SiteFinder::class)
         );
 
         // Loading TypoScript array into object variable:
