@@ -461,6 +461,38 @@ linktypesConfig.external.range
    Default
          0-4048
 
+linktypesConfig.external.timeout
+""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+        linktypesConfig.external.timeout
+
+   Data type
+        integer
+
+   Description
+        HTTP request option. This is the total timeout of the request in
+        seconds.
+
+        If set, this overrides the timeout in
+        :php:`$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout']`
+        which defaults to 0.
+
+        .. important::
+
+           A value of 0 means no timeout, which may result in the request
+           not terminating in some edge cases and can also result in scheduler
+           tasks to run indefinitely. There is an additional
+           :php:`$GLOBALS['TYPO3_CONF_VARS']['HTTP']['connect_timeout']`
+           which defaults to 10 seconds, but this may not be enough to lead to a request
+           terminating in some edge cases.
+
+   Default
+         20
+
+
 
 .. _configuration-example:
 

@@ -227,6 +227,25 @@ class ExternalLinktypeTest extends UnitTestCase
     }
 
     /**
+     * If the timeout is not set via TSconfig, core $GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] should
+     * be used. Which is the case if timeout is not passed to the request() function.
+     * @test
+     */
+    public function requestWithNoTimeoutIsCalledIfTimeoutNotSetByTsConfig(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig([]);
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
+            if (isset($result['timeout'])) {
+                return false;
+            }
+            return true;
+        }))->shouldBeCalled();
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+    }
+
+    /**
      * @test
      */
     public function setAdditionalConfigOverwritesUserAgent(): void

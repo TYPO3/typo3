@@ -72,6 +72,14 @@ class ExternalLinktype extends AbstractLinktype
     protected $range = '0-4048';
 
     /**
+     *  Total timeout of the request in seconds. Using 0 (which is usually the default) may
+     *  cause the request to take indefinitely, which means the scheduler task never ends.
+     *
+     * @var int
+     */
+    protected int $timeout = 0;
+
+    /**
      * @var RequestFactory
      */
     protected $requestFactory;
@@ -116,6 +124,9 @@ class ExternalLinktype extends AbstractLinktype
         if ($config['range'] ?? false) {
             $this->range = $config['range'];
         }
+        if (isset($config['timeout'])) {
+            $this->timeout = (int)$config['timeout'];
+        }
     }
 
     /**
@@ -140,6 +151,9 @@ class ExternalLinktype extends AbstractLinktype
             'allow_redirects' => ['strict' => true],
             'headers'         => $this->headers
         ];
+        if ($this->timeout > 0) {
+            $options['timeout'] = $this->timeout;
+        }
         $url = $this->preprocessUrl($origUrl);
         if (!empty($url)) {
             if ($this->method === 'HEAD') {
