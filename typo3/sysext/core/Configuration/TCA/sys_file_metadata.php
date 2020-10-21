@@ -59,7 +59,7 @@ return [
                     ['', 0]
                 ],
                 'foreign_table' => 'sys_file_metadata',
-                'foreign_table_where' => 'AND sys_file_metadata.uid=###REC_FIELD_l10n_parent### AND sys_file_metadata.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND sys_file_metadata.pid=###CURRENT_PID### AND sys_file_metadata.sys_language_uid IN (-1,0)',
                 'default' => 0
             ]
         ],
