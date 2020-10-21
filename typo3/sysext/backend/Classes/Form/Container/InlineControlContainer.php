@@ -261,28 +261,28 @@ class InlineControlContainer extends AbstractContainer
             }
         }
 
-        // Render the localization links if needed
-        $localizationLinks = '';
+        // Render the localization buttons if needed
+        $localizationButtons = '';
         if ($numberOfNotYetLocalizedChildren) {
-            // Add the "Localize all records" link before all child records:
+            // Add the "Localize all records" button before all child records:
             if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
-                $localizationLinks = ' ' . $this->getLevelInteractionLink('localize', $nameObject . '-' . $foreign_table, $config);
+                $localizationButtons = ' ' . $this->getLevelInteractionButton('localize', $config);
             }
-            // Add the "Synchronize with default language" link before all child records:
+            // Add the "Synchronize with default language" button before all child records:
             if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
-                $localizationLinks .= ' ' . $this->getLevelInteractionLink('synchronize', $nameObject . '-' . $foreign_table, $config);
+                $localizationButtons .= ' ' . $this->getLevelInteractionButton('synchronize', $config);
             }
         }
 
-        // Define how to show the "Create new record" link - if there are more than maxitems, hide it
+        // Define how to show the "Create new record" button - if there are more than maxitems, hide it
         if ($isReadOnly || $numberOfFullLocalizedChildren >= $config['maxitems'] || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
             $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
             $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
         }
 
-        // Render the level links (create new record):
-        $levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
+        // Render the level buttons (create new record):
+        $levelButtons = $this->getLevelInteractionButton('newRecord', $config);
 
         $formGroupAttributes = [
             'class' => 'form-group',
@@ -303,9 +303,9 @@ class InlineControlContainer extends AbstractContainer
         $html .= $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        // Add the level links before all child records:
+        // Add the level buttons before all child records:
         if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
-            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelLinks . $localizationLinks . '</div>';
+            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelButtons . $localizationButtons . '</div>';
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
@@ -315,7 +315,7 @@ class InlineControlContainer extends AbstractContainer
             } else {
                 $selectorBox = $this->renderPossibleRecordsSelectorTypeGroupDB($config);
             }
-            $html .= $selectorBox . $localizationLinks;
+            $html .= $selectorBox . $localizationButtons;
         }
 
         $title = $languageService->sL(trim($parameterArray['fieldConf']['label']));
@@ -348,9 +348,9 @@ class InlineControlContainer extends AbstractContainer
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
         $html .= $fieldWizardHtml;
 
-        // Add the level links after all child records:
+        // Add the level buttons after all child records:
         if (!$isReadOnly && ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'bottom')) {
-            $html .= $levelLinks . $localizationLinks;
+            $html .= $levelButtons . $localizationButtons;
         }
         if (is_array($config['customControls'])) {
             $html .= '<div id="' . $nameObject . '_customControls">';
@@ -390,15 +390,14 @@ class InlineControlContainer extends AbstractContainer
     }
 
     /**
-     * Creates the HTML code of a general link to be used on a level of inline children.
+     * Creates the HTML code of a general button to be used on a level of inline children.
      * The possible keys for the parameter $type are 'newRecord', 'localize' and 'synchronize'.
      *
-     * @param string $type The link type, values are 'newRecord', 'localize' and 'synchronize'.
-     * @param string $objectPrefix The "path" to the child record to create (e.g. 'data-parentPageId-parentTable-parentUid-parentField-childTable]')
+     * @param string $type The button type, values are 'newRecord', 'localize' and 'synchronize'.
      * @param array $conf TCA configuration of the parent(!) field
-     * @return string The HTML code of the new link, wrapped in a div
+     * @return string The HTML code of the new button, wrapped in a div
      */
-    protected function getLevelInteractionLink($type, $objectPrefix, $conf = [])
+    protected function getLevelInteractionButton(string $type, array $conf = []): string
     {
         $languageService = $this->getLanguageService();
         $attributes = [];
@@ -439,32 +438,30 @@ class InlineControlContainer extends AbstractContainer
                 $icon = '';
                 $className = '';
         }
-        // Create the link:
+        // Create the button:
         $icon = $icon ? $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() : '';
-        $link = $this->wrapWithAnchor($icon . ' ' . $title, '#', $attributes);
-        return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $link . '</div>';
+        $button = $this->wrapWithButton($icon . ' ' . $title, $attributes);
+        return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $button . '</div>';
     }
 
     /**
-     * Wraps a text with an anchor and returns the HTML representation.
+     * Wraps a text with a button and returns the HTML representation.
      *
-     * @param string $text The text to be wrapped by an anchor
-     * @param string $link The link to be used in the anchor
-     * @param array $attributes Array of attributes to be used in the anchor
+     * @param string $text The text to be wrapped by a button
+     * @param array<string, string> $attributes Array of attributes to be used in the anchor
      * @return string The wrapped text as HTML representation
      */
-    protected function wrapWithAnchor($text, $link, $attributes = [])
+    protected function wrapWithButton(string $text, array $attributes = []): string
     {
-        $attributes['href'] = trim($link ?: '#');
-        return '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>' . $text . '</a>';
+        return '<button type="button" ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>' . $text . '</button>';
     }
 
     /**
-     * Generate a link that opens an element browser in a new window.
+     * Generate a button that opens an element browser in a new window.
      * For group/db there is no way to use a "selector" like a <select>|</select>-box.
      *
      * @param array $inlineConfiguration TCA inline configuration of the parent(!) field
-     * @return string A HTML link that opens an element browser in a new window
+     * @return string A HTML button that opens an element browser in a new window
      */
     protected function renderPossibleRecordsSelectorTypeGroupDB(array $inlineConfiguration)
     {
@@ -517,11 +514,11 @@ class InlineControlContainer extends AbstractContainer
         $item = '';
         if ($elementBrowserEnabled) {
             $item .= '
-			<a href="#" class="btn btn-default t3js-element-browser" data-mode="' . htmlspecialchars($mode) . '" data-params="' . htmlspecialchars($browserParams) . '"
+			<button type="button" class="btn btn-default t3js-element-browser" data-mode="' . htmlspecialchars($mode) . '" data-params="' . htmlspecialchars($browserParams) . '"
 				' . $buttonStyle . ' title="' . $createNewRelationText . '">
 				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
 				' . $createNewRelationText . '
-			</a>';
+			</button>';
         }
 
         $isDirectFileUploadEnabled = (bool)$backendUser->uc['edit_docModuleUpload'];
@@ -542,7 +539,7 @@ class InlineControlContainer extends AbstractContainer
             ) {
                 if ($showUpload) {
                     $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-                    $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton"
+                    $item .= ' <button type="button" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton"
 					' . $buttonStyle . '
 					data-dropzone-target="#' . htmlspecialchars(StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix)) . '"
 					data-insert-dropzone-before="1"
@@ -553,7 +550,7 @@ class InlineControlContainer extends AbstractContainer
 					>';
                     $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
                     $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
-                    $item .= '</a>';
+                    $item .= '</button>';
 
                     $this->requireJsModules[] = ['TYPO3/CMS/Backend/DragUploader' => 'function(dragUploader){dragUploader.initialize()}'];
                 }
@@ -568,7 +565,7 @@ class InlineControlContainer extends AbstractContainer
                     $buttonSubmit = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit'));
                     $allowedMediaUrl = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowEmbedSources'));
                     $item .= '
-						<span class="btn btn-default t3js-online-media-add-btn"
+						<button type="button" class="btn btn-default t3js-online-media-add-btn"
 							' . $buttonStyle . '
 							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
@@ -579,7 +576,7 @@ class InlineControlContainer extends AbstractContainer
 							data-placeholder="' . $placeholder . '"
 							>
 							' . $this->iconFactory->getIcon('actions-online-media-add', Icon::SIZE_SMALL)->render() . '
-							' . $buttonText . '</span>';
+							' . $buttonText . '</button>';
                 }
             }
         }
@@ -626,7 +623,7 @@ class InlineControlContainer extends AbstractContainer
             </select>';
 
         if ($size <= 1) {
-            // Add a "Create new relation" link for adding new relations
+            // Add a "Create new relation" button for adding new relations
             // This is necessary, if the size of the selector is "1" or if
             // there is only one record item in the select-box, that is selected by default
             // The selector-box creates a new relation on using an onChange event (see some line above)
@@ -637,9 +634,9 @@ class InlineControlContainer extends AbstractContainer
             }
             $item .= '
             <span class="input-group-btn">
-                <a href="#" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
+                <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
                     ' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
-                </a>
+                </button>
             </span>';
         } else {
             $item .= '
