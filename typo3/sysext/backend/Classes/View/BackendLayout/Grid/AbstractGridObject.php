@@ -49,11 +49,6 @@ abstract class AbstractGridObject
      */
     protected $iconFactory;
 
-    /**
-     * @var string|null
-     */
-    protected $uniqueId;
-
     public function __construct(PageLayoutContext $context)
     {
         $this->context = $context;
@@ -62,7 +57,7 @@ abstract class AbstractGridObject
 
     public function getUniqueId(): string
     {
-        return $this->uniqueId ?? $this->uniqueId = StringUtility::getUniqueId();
+        return StringUtility::getUniqueId();
     }
 
     public function getContext(): PageLayoutContext
