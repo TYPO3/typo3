@@ -91,8 +91,6 @@ class ActionTest extends AbstractActionTestCase
      */
     public function localizeContent()
     {
-        // Create and publish translated page first
-        $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('localizeContent');

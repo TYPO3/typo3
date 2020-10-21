@@ -36,7 +36,7 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
         $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler';
 
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
+        $this->importScenarioDataSet('ImportDefault');
     }
 
     /**
@@ -44,7 +44,7 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
      */
     public function checkBoxValueMustBeDefinedInTcaItems()
     {
-        // pid 88 comes from LiveDefaultPages
+        // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_checkbox' => '1'
         ]);
@@ -60,7 +60,7 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
      */
     public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems()
     {
-        // pid 88 comes from LiveDefaultPages
+        // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_checkbox' => '2'
         ]);

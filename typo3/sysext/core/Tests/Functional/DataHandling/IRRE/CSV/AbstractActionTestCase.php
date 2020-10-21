@@ -51,8 +51,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importScenarioDataSet('ImportDefault');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
@@ -94,12 +93,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * See DataSet/copyParentContentToLanguage.csv
      * Should copy all children as well
      * @todo Test missing in workspaces!
      */
-    public function copyParentContentToLanguage()
+    public function copyParentContentToLanguageWithAllChildren()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }

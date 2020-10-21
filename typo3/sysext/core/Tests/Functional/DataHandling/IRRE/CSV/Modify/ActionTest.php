@@ -114,15 +114,12 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
-     * See DataSet/copyParentContentToLanguage.csv
+     * See DataSet/copyParentContentToLanguageWithAllChildren.csv
      */
     public function copyParentContentToLanguageWithAllChildren()
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-
-        parent::copyParentContentToLanguage();
-        $this->assertAssertionDataSet('copyParentContentToLanguage');
+        parent::copyParentContentToLanguageWithAllChildren();
+        $this->assertAssertionDataSet('copyParentContentToLanguageWithAllChildren');
 
         // Set up "dk" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;

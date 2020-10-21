@@ -1,28 +1,45 @@
-"sys_category",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parent","items"
-,28,0,256,0,0,0,0,0,0,0,"Category A",0,0
-,29,0,512,0,0,0,0,0,0,0,"Category B",0,0
-,30,0,768,0,0,0,0,0,0,0,"Category C",0,0
-,31,0,1024,0,0,0,0,0,0,0,"Category A.A",28,0
-"sys_category_record_mm",,,,,,,,,,,,,
-,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname",,,,,,,
-,28,297,"tt_content",0,1,"categories",,,,,,,
-,29,297,"tt_content",0,2,"categories",,,,,,,
-,29,298,"tt_content",0,1,"categories",,,,,,,
-,30,298,"tt_content",0,2,"categories",,,,,,,
+"pages",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,,,,,,
+,1,0,256,0,0,0,0,0,"FunctionalTest",,,,,,,,
+,88,1,256,0,0,0,0,0,"DataHandlerTest",,,,,,,,
+,89,88,256,0,0,0,0,0,"Relations",,,,,,,,
+,90,88,512,0,0,0,0,0,"Target",,,,,,,,
+"sys_workspace",,,,,,,,,,,,,,,,,
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage",,,,,,,,,,,,,,,,,
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","parenttable","notification_defaults","allow_notificaton_settings",,,,,
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,"sys_workspace",0,0,,,,,
+"sys_language",,,,,,,,,,,,,,,,,
+,"uid","pid","hidden","title","flag",,,,,,,,,,,,
+,1,0,0,"Dansk","dk",,,,,,,,,,,,
+,2,0,0,"Deutsch","de",,,,,,,,,,,,
+"sys_category",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parent","items",,,,
+,28,0,256,0,0,0,0,0,0,0,"Category A",0,0,,,,
+,29,0,512,0,0,0,0,0,0,0,"Category B",0,0,,,,
+,30,0,768,0,0,0,0,0,0,0,"Category C",0,0,,,,
+,31,0,1024,0,0,0,0,0,0,0,"Category A.A",28,0,,,,
+"sys_category_record_mm",,,,,,,,,,,,,,,,,
+,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname",,,,,,,,,,,
+,28,297,"tt_content",0,1,"categories",,,,,,,,,,,
+,29,297,"tt_content",0,2,"categories",,,,,,,,,,,
+,29,298,"tt_content",0,1,"categories",,,,,,,,,,,
+,30,298,"tt_content",0,2,"categories",,,,,,,,,,,
 # @todo: next rows should be gone
-,29,300,"tt_content",0,1,"categories",,,,,,,
-,30,300,"tt_content",0,2,"categories",,,,,,,
-"tt_content",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","categories"
-,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2
-,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2
-"sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string"
-,"58b0861c2821b9aa8c036f51c9992938","sys_category",28,"items",,,,0,0,0,"tt_content",297,
-,"a902304805e24ea0d57feaeb08d5c898","sys_category",29,"items",,,,0,0,0,"tt_content",297,
-,"4cf35307d2ebd8521d82d598a9d6fb37","sys_category",29,"items",,,,1,0,0,"tt_content",298,
-,"a39d4a457c3043438f34193027cdb8dc","sys_category",30,"items",,,,0,0,0,"tt_content",298,
-,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,
-,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,
-,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,
+,29,300,"tt_content",0,1,"categories",,,,,,,,,,,
+,30,300,"tt_content",0,2,"categories",,,,,,,,,,,
+"tt_content",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","categories",,,,
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2,,,,
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2,,,,
+"sys_refindex",,,,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,
+,"58b0861c2821b9aa8c036f51c9992938","sys_category",28,"items",,,,0,0,0,"tt_content",297,,,,,
+,"a902304805e24ea0d57feaeb08d5c898","sys_category",29,"items",,,,0,0,0,"tt_content",297,,,,,
+,"4cf35307d2ebd8521d82d598a9d6fb37","sys_category",29,"items",,,,1,0,0,"tt_content",298,,,,,
+,"a39d4a457c3043438f34193027cdb8dc","sys_category",30,"items",,,,0,0,0,"tt_content",298,,,,,
+,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,,,,,
+,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,,,,,
+,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,,,,,

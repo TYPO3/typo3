@@ -48,8 +48,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importScenarioDataSet('ImportDefault');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);

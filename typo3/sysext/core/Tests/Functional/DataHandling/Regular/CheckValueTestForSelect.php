@@ -36,7 +36,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
         $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler';
 
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
+        $this->importScenarioDataSet('ImportDefault');
     }
 
     /**
@@ -44,7 +44,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
      */
     public function selectValueMustBeDefinedInTcaItems()
     {
-        // pid 88 comes from LiveDefaultPages
+        // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_select_dynamic' => 'predefined value'
         ]);
@@ -60,7 +60,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
      */
     public function selectValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems()
     {
-        // pid 88 comes from LiveDefaultPages
+        // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_select_dynamic' => 'processed value'
         ]);

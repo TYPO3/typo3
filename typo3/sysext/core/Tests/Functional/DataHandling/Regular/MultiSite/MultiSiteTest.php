@@ -15,14 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
+namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\MultiSite;
 
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Functional test for the DataHandler when handling multiple pagetrees
+ * Functional test for the DataHandler when handling multiple page trees
  */
 class MultiSiteTest extends AbstractDataHandlerActionTestCase
 {
@@ -45,8 +45,7 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
 
-        $this->importScenarioDataSet('LiveDefaultMultiSitePages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importScenarioDataSet('ImportDefault');
 
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);

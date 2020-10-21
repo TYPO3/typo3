@@ -1,45 +1,55 @@
-"pages",,,,,,,,,,,,,,
-,"uid","pid","sorting","sys_language_uid","l10n_parent","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug",
-,1,0,256,0,0,0,0,0,0,0,0,"FunctionalTest","/",
-,88,1,256,0,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler",
-,89,88,256,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations",
-,90,88,512,0,0,0,0,0,0,0,0,"Target","/data-handler/target",
-,91,1,256,1,88,0,0,0,0,0,0,"[Translate to Dansk:] DataHandlerTest","/translate-to-dansk-datahandlertest",
-,93,88,256,1,89,0,0,1,1,0,0,"[Translate to Dansk:] Relations","/translate-to-dansk-datahandlertest/translate-to-dansk-relations",
-,94,88,256,1,89,0,0,1,-1,0,93,"[Translate to Dansk:] Relations","/translate-to-dansk-datahandlertest/translate-to-dansk-relations",
-"tt_content",,,,,,,,,,,,,,
-,"uid","pid","sorting","hidden","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header"
-,296,88,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #0"
-,297,89,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #1"
-,298,89,512,0,0,0,0,0,0,0,0,0,0,"Regular Element #2"
-,299,89,768,0,0,0,0,0,0,0,0,0,0,"Regular Element #3"
-,300,89,1024,0,0,1,299,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
-,301,89,384,0,0,1,297,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
-,302,89,448,0,0,2,297,301,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-,310,90,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #10"
-,311,90,512,0,0,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
-,312,90,768,0,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
-,320,89,512,0,0,0,0,0,298,2,2,0,298,"Regular Element #2"
-,321,88,512,0,0,1,296,296,296,1,1,0,0,"[Translate to Dansk:] Regular Element #0"
-,322,88,512,0,0,1,296,296,296,1,-1,0,321,"[Translate to Dansk:] Regular Element #0"
-,323,89,416,0,0,1,298,298,298,1,1,0,0,"[Translate to Dansk:] Regular Element #2"
-,324,89,416,0,0,1,298,298,298,1,-1,0,323,"[Translate to Dansk:] Regular Element #2"
-,325,88,128,0,0,0,0,0,296,1,1,0,0,"Regular Element #0 (copy 1)"
-,326,88,128,0,0,0,0,0,296,1,-1,0,325,"Regular Element #0 (copy 1)"
-,327,88,64,0,0,1,325,325,321,1,1,0,0,"[Translate to Dansk:] Regular Element #0 (copy 1)"
-,328,88,64,0,0,1,325,325,321,1,-1,0,327,"[Translate to Dansk:] Regular Element #0 (copy 1)"
-"sys_refindex",,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",
-,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,,
-,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,,
-,"eb360eb09940bbb656509c7f6fda9b05","tt_content",301,"l18n_parent",,,,0,0,0,"tt_content",297,,
-,"b6e55a3d99888c9a7007226ad685306c","tt_content",302,"l18n_parent",,,,0,0,0,"tt_content",297,,
-,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,,
-,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,,
-,"e78d2066004e03e6cf964764da60883d","tt_content",322,"l18n_parent",,,,0,0,1,"tt_content",296,,
-,"9823310040e082e8e3639372d7bb1cc1","pages",94,"l10n_parent",,,,0,0,1,"pages",89,,
-,"b32e4348f1273a0189cbb760cb660c75","pages",94,"sys_language_uid",,,,0,0,1,"sys_language",1,,
-,"46cc269f8a91db3a7856e3b337bd531c","tt_content",324,"l18n_parent",,,,0,0,1,"tt_content",298,,
-,"76a7a5994fad81bb8f0a972976889969","tt_content",328,"l18n_parent",,,,0,0,1,"tt_content",325,,
-,"7b1c9e846ad6a9df0ee32d5b7cf00074","pages",91,"l10n_parent",,,,0,0,0,"pages",88,,
-,"885fa8b0049daa6a9f6989e7bc55ae11","pages",91,"sys_language_uid",,,,0,0,0,"sys_language",1,,
+"pages",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","sys_language_uid","l10n_parent","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug",,,,
+,1,0,256,0,0,0,0,0,0,0,0,"FunctionalTest","/",,,,
+,88,1,256,0,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler",,,,
+,89,88,256,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations",,,,
+,90,88,512,0,0,0,0,0,0,0,0,"Target","/data-handler/target",,,,
+,91,1,256,1,88,0,0,0,0,0,0,"[Translate to Dansk:] DataHandlerTest","/translate-to-dansk-datahandlertest",,,,
+,93,88,256,1,89,0,0,1,1,0,0,"[Translate to Dansk:] Relations","/translate-to-dansk-datahandlertest/translate-to-dansk-relations",,,,
+,94,88,256,1,89,0,0,1,-1,0,93,"[Translate to Dansk:] Relations","/translate-to-dansk-datahandlertest/translate-to-dansk-relations",,,,
+"sys_workspace",,,,,,,,,,,,,,,,,
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage",,,,,,,,,,,,,,,,,
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","parenttable","notification_defaults","allow_notificaton_settings",,,,,
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,"sys_workspace",0,0,,,,,
+"sys_language",,,,,,,,,,,,,,,,,
+,"uid","pid","hidden","title","flag",,,,,,,,,,,,
+,1,0,0,"Dansk","dk",,,,,,,,,,,,
+,2,0,0,"Deutsch","de",,,,,,,,,,,,
+"tt_content",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","hidden","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header",,,
+,296,88,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #0",,,
+,297,89,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #1",,,
+,298,89,512,0,0,0,0,0,0,0,0,0,0,"Regular Element #2",,,
+,299,89,768,0,0,0,0,0,0,0,0,0,0,"Regular Element #3",,,
+,300,89,1024,0,0,1,299,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3",,,
+,301,89,384,0,0,1,297,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",,,
+,302,89,448,0,0,2,297,301,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,
+,310,90,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #10",,,
+,311,90,512,0,0,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10",,,
+,312,90,768,0,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10",,,
+,320,89,512,0,0,0,0,0,298,2,2,0,298,"Regular Element #2",,,
+,321,88,512,0,0,1,296,296,296,1,1,0,0,"[Translate to Dansk:] Regular Element #0",,,
+,322,88,512,0,0,1,296,296,296,1,-1,0,321,"[Translate to Dansk:] Regular Element #0",,,
+,323,89,416,0,0,1,298,298,298,1,1,0,0,"[Translate to Dansk:] Regular Element #2",,,
+,324,89,416,0,0,1,298,298,298,1,-1,0,323,"[Translate to Dansk:] Regular Element #2",,,
+,325,88,128,0,0,0,0,0,296,1,1,0,0,"Regular Element #0 (copy 1)",,,
+,326,88,128,0,0,0,0,0,296,1,-1,0,325,"Regular Element #0 (copy 1)",,,
+,327,88,64,0,0,1,325,325,321,1,1,0,0,"[Translate to Dansk:] Regular Element #0 (copy 1)",,,
+,328,88,64,0,0,1,325,325,321,1,-1,0,327,"[Translate to Dansk:] Regular Element #0 (copy 1)",,,
+"sys_refindex",,,,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,
+,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,,,,,
+,"eb360eb09940bbb656509c7f6fda9b05","tt_content",301,"l18n_parent",,,,0,0,0,"tt_content",297,,,,,
+,"b6e55a3d99888c9a7007226ad685306c","tt_content",302,"l18n_parent",,,,0,0,0,"tt_content",297,,,,,
+,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,,,,,
+,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,,,,,
+,"e78d2066004e03e6cf964764da60883d","tt_content",322,"l18n_parent",,,,0,0,1,"tt_content",296,,,,,
+,"9823310040e082e8e3639372d7bb1cc1","pages",94,"l10n_parent",,,,0,0,1,"pages",89,,,,,
+,"b32e4348f1273a0189cbb760cb660c75","pages",94,"sys_language_uid",,,,0,0,1,"sys_language",1,,,,,
+,"46cc269f8a91db3a7856e3b337bd531c","tt_content",324,"l18n_parent",,,,0,0,1,"tt_content",298,,,,,
+,"76a7a5994fad81bb8f0a972976889969","tt_content",328,"l18n_parent",,,,0,0,1,"tt_content",325,,,,,
+,"7b1c9e846ad6a9df0ee32d5b7cf00074","pages",91,"l10n_parent",,,,0,0,0,"pages",88,,,,,
+,"885fa8b0049daa6a9f6989e7bc55ae11","pages",91,"sys_language_uid",,,,0,0,0,"sys_language",1,,,,,

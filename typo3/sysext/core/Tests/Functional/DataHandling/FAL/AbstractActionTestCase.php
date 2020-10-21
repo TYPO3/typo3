@@ -53,8 +53,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importScenarioDataSet('ImportDefault');
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
@@ -95,6 +94,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContent()
     {
+        // Create translated page first
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }

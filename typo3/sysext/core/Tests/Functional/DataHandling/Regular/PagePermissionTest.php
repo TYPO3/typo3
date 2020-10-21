@@ -32,7 +32,7 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
+        $this->importScenarioDataSet('ImportDefault');
     }
 
     /**
@@ -87,7 +87,7 @@ TCEMAIN.permissions.everybody = show,delete
      */
     protected function insertPage()
     {
-        // pid 88 comes from LiveDefaultPages
+        // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('pages', 88, [
             'title' => 'Test page'
         ]);

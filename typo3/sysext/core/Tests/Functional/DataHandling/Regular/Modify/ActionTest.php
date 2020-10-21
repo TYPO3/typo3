@@ -636,7 +636,7 @@ class ActionTest extends AbstractActionTestCase
      */
     public function copyPageFreeMode()
     {
-        $this->importScenarioDataSet('LivePageFreeModeElements');
+        $this->importScenarioDataSet('ImportFreeModeElements');
         parent::copyPageFreeMode();
         $this->assertAssertionDataSet('copyPageFreeMode');
 

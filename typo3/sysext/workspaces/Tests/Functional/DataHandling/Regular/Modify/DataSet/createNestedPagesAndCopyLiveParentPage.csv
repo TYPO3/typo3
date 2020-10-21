@@ -1,41 +1,51 @@
-"pages",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,
-,1,0,256,0,0,0,0,0,0,"FunctionalTest",,,
-,88,1,256,0,0,0,0,0,0,"DataHandlerTest",,,
-,89,88,256,0,0,0,0,0,0,"Relations",,,
-,90,88,512,0,0,0,0,0,0,"Target",,,
-,91,89,256,0,0,1,1,0,0,"Testing #1",,,
-,92,89,256,0,0,1,-1,0,91,"Testing #1",,,
-,93,91,256,0,0,1,1,0,0,"Testing #2",,,
-,94,91,256,0,0,1,-1,0,93,"Testing #2",,,
-,95,90,256,0,89,0,0,0,0,"Relations",,,
-"tt_content",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header"
-,296,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0"
-,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1"
-,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2"
-,299,89,768,0,0,0,0,0,0,0,0,0,"Regular Element #3"
-,300,89,1024,0,1,299,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
-,301,89,384,0,1,297,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
-,302,89,448,0,2,297,301,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-,310,90,256,0,0,0,0,0,0,0,0,0,"Regular Element #10"
-,311,90,512,0,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
-,312,90,768,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
-,320,89,512,0,0,0,0,298,2,2,0,298,"Regular Element #2"
-,321,95,256,0,0,0,0,299,0,0,0,0,"Regular Element #3"
-,322,95,128,0,1,321,321,300,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
-,323,95,64,0,0,0,0,298,0,0,0,0,"Regular Element #2"
-,324,95,32,0,0,0,0,297,0,0,0,0,"Regular Element #1"
-,325,95,16,0,1,324,324,301,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
-,326,95,8,0,2,324,325,302,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-"sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string"
-,"8765176f1ce58edcb5efdcabd59ca123","sys_category",31,"parent",,,,0,0,0,"sys_category",28,
-,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,
-,"eb360eb09940bbb656509c7f6fda9b05","tt_content",301,"l18n_parent",,,,0,0,0,"tt_content",297,
-,"b6e55a3d99888c9a7007226ad685306c","tt_content",302,"l18n_parent",,,,0,0,0,"tt_content",297,
-,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,
-,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,
-,"6a74b771a4ee2404e851385e6519d8f2","tt_content",322,"l18n_parent",,,,0,0,0,"tt_content",321,
-,"bf32746115947f8c373dc84b3adaada9","tt_content",325,"l18n_parent",,,,0,0,0,"tt_content",324,
-,"9965c1e8b7c35597b0c47ff014e85fc5","tt_content",326,"l18n_parent",,,,0,0,0,"tt_content",324,
+"pages",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,,,,,
+,1,0,256,0,0,0,0,0,0,"FunctionalTest",,,,,,,
+,88,1,256,0,0,0,0,0,0,"DataHandlerTest",,,,,,,
+,89,88,256,0,0,0,0,0,0,"Relations",,,,,,,
+,90,88,512,0,0,0,0,0,0,"Target",,,,,,,
+,91,89,256,0,0,1,1,0,0,"Testing #1",,,,,,,
+,92,89,256,0,0,1,-1,0,91,"Testing #1",,,,,,,
+,93,91,256,0,0,1,1,0,0,"Testing #2",,,,,,,
+,94,91,256,0,0,1,-1,0,93,"Testing #2",,,,,,,
+,95,90,256,0,89,0,0,0,0,"Relations",,,,,,,
+"sys_workspace",,,,,,,,,,,,,,,,,
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage",,,,,,,,,,,,,,,,,
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","parenttable","notification_defaults","allow_notificaton_settings",,,,,
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,"sys_workspace",0,0,,,,,
+"sys_language",,,,,,,,,,,,,,,,,
+,"uid","pid","hidden","title","flag",,,,,,,,,,,,
+,1,0,0,"Dansk","dk",,,,,,,,,,,,
+,2,0,0,"Deutsch","de",,,,,,,,,,,,
+"tt_content",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header",,,,
+,296,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0",,,,
+,297,89,256,0,0,0,0,0,0,0,0,0,"Regular Element #1",,,,
+,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",,,,
+,299,89,768,0,0,0,0,0,0,0,0,0,"Regular Element #3",,,,
+,300,89,1024,0,1,299,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3",,,,
+,301,89,384,0,1,297,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",,,,
+,302,89,448,0,2,297,301,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,,
+,310,90,256,0,0,0,0,0,0,0,0,0,"Regular Element #10",,,,
+,311,90,512,0,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10",,,,
+,312,90,768,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10",,,,
+,320,89,512,0,0,0,0,298,2,2,0,298,"Regular Element #2",,,,
+,321,95,256,0,0,0,0,299,0,0,0,0,"Regular Element #3",,,,
+,322,95,128,0,1,321,321,300,0,0,0,0,"[Translate to Dansk:] Regular Element #3",,,,
+,323,95,64,0,0,0,0,298,0,0,0,0,"Regular Element #2",,,,
+,324,95,32,0,0,0,0,297,0,0,0,0,"Regular Element #1",,,,
+,325,95,16,0,1,324,324,301,0,0,0,0,"[Translate to Dansk:] Regular Element #1",,,,
+,326,95,8,0,2,324,325,302,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,,
+"sys_refindex",,,,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string",,,,
+,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,,,,,
+,"eb360eb09940bbb656509c7f6fda9b05","tt_content",301,"l18n_parent",,,,0,0,0,"tt_content",297,,,,,
+,"b6e55a3d99888c9a7007226ad685306c","tt_content",302,"l18n_parent",,,,0,0,0,"tt_content",297,,,,,
+,"d05558a22d87f923406b45cc3f369943","sys_workspace",1,"custom_stages",,,,0,0,0,"sys_workspace_stage",1,,,,,
+,"1bbbf7d18b85fd6e70d76947a563e492","sys_workspace_stage",1,"responsible_persons",,,,0,0,0,"be_users",3,,,,,
+,"6a74b771a4ee2404e851385e6519d8f2","tt_content",322,"l18n_parent",,,,0,0,0,"tt_content",321,,,,,
+,"bf32746115947f8c373dc84b3adaada9","tt_content",325,"l18n_parent",,,,0,0,0,"tt_content",324,,,,,
+,"9965c1e8b7c35597b0c47ff014e85fc5","tt_content",326,"l18n_parent",,,,0,0,0,"tt_content",324,,,,,

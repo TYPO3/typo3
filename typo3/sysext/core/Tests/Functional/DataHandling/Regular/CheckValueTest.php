@@ -33,7 +33,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
         $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler';
 
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
+        $this->importScenarioDataSet('ImportDefault');
     }
 
     /**
@@ -71,7 +71,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
      */
     protected function insertRecordWithRadioFieldValue($value)
     {
-        // pid 88 comes from LiveDefaultPages
+        // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
             'tx_testdatahandler_radio' => $value
         ]);

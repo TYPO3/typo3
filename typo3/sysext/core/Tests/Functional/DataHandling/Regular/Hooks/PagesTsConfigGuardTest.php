@@ -49,7 +49,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     {
         parent::setUp();
         Bootstrap::initializeLanguageObject();
-        $this->importScenarioDataSet('LiveDefaultPages');
+        $this->importScenarioDataSet('ImportDefault');
         $this->importDataSet(dirname($this->backendUserFixture) . '/be_groups.xml');
         // define page create permissions for backend user group 9 on page 1
         GeneralUtility::makeInstance(ConnectionPool::class)
