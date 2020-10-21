@@ -43,8 +43,7 @@ class ServerRequestHandler
         $this->request = $GLOBALS['TYPO3_REQUEST'];
         $this->redirectUrlValidator = GeneralUtility::makeInstance(
             RedirectUrlValidator::class,
-            GeneralUtility::makeInstance(SiteFinder::class),
-            (int)$GLOBALS['TSFE']->id
+            GeneralUtility::makeInstance(SiteFinder::class)
         );
     }
 

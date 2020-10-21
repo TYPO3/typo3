@@ -19,7 +19,6 @@ namespace TYPO3\CMS\FrontendLogin\Validation;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,18 +38,11 @@ class RedirectUrlValidator implements LoggerAwareInterface
     protected $siteFinder;
 
     /**
-     * @var int
-     */
-    protected $pageId;
-
-    /**
      * @param SiteFinder|null $siteFinder
-     * @param int $currentPageId
      */
-    public function __construct(?SiteFinder $siteFinder, int $currentPageId)
+    public function __construct(?SiteFinder $siteFinder)
     {
         $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
-        $this->pageId = $currentPageId;
     }
 
     /**
@@ -102,11 +94,10 @@ class RedirectUrlValidator implements LoggerAwareInterface
         $parsedUrl = parse_url($url);
         if ($parsedUrl['scheme'] === 'http' || $parsedUrl['scheme'] === 'https') {
             $host = $parsedUrl['host'];
-            try {
-                $site = $this->siteFinder->getSiteByPageId($this->pageId);
-                return $site->getBase()->getHost() === $host;
-            } catch (SiteNotFoundException $e) {
-                // nothing found
+            foreach ($this->siteFinder->getAllSites() as $site) {
+                if ($site->getBase()->getHost() === $host) {
+                    return true;
+                }
             }
         }
         return false;
@@ -118,7 +109,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
      * @param string $url URL which needs to be checked
      * @return bool Whether the URL is considered to be relative
      */
-    protected function isRelativeUrl($url): bool
+    protected function isRelativeUrl(string $url): bool
     {
         $url = GeneralUtility::sanitizeLocalUrl($url);
         if (!empty($url)) {
