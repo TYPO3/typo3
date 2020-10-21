@@ -72,7 +72,7 @@ class PageModuleCest
      */
     private function renamePage(BackendTester $I, string $oldTitle, string $newTitle)
     {
-        $editLinkSelector = 'a[data-action="edit"]';
+        $editLinkSelector = 'button[data-action="edit"]';
         $inputFieldSelector = 'input[class*="t3js-title-edit-input"]';
 
         $I->canSee($oldTitle, 'h1');

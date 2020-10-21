@@ -73,20 +73,17 @@ class PageActions {
       return;
     }
 
-    const $editActionLink = $('<a class="hidden" href="#" data-action="edit"><span class="t3-icon fa fa-pencil"></span></a>');
-    $editActionLink.on('click', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    const $editActionLink = $(
+      '<button type="button" class="btn btn-link" aria-label="' + TYPO3.lang.editPageTitle + '" data-action="edit">' +
+      '<span class="t3-icon fa fa-pencil"></span>' +
+      '</button>'
+    );
+    $editActionLink.on('click', (): void => {
       this.editPageTitle();
     });
     this.$pageTitle
       .on('dblclick',  (): void => {
         this.editPageTitle();
-      })
-      .on('mouseover', (): void => {
-        $editActionLink.removeClass('hidden');
-      })
-      .on('mouseout', (): void => {
-        $editActionLink.addClass('hidden');
       })
       .append($editActionLink);
   }
@@ -175,7 +172,8 @@ class PageActions {
     $h1.replaceWith($inputFieldWrap);
     $inputField.val($h1.text()).focus();
 
-    $inputField.on('keyup', (e: JQueryEventObject): void => {
+    // Use type 'keydown' instead of 'keyup' which would be triggered directly in case a keyboard is used to start editing.
+    $inputField.on('keydown', (e: JQueryEventObject): void => {
       switch (e.which) {
         case KeyTypesEnum.ENTER:
           $inputFieldWrap.find('[data-action="submit"]').trigger('click');

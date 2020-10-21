@@ -120,6 +120,9 @@
 			<trans-unit id="editPageProperties" resname="editPageProperties">
 				<source>Edit page properties</source>
 			</trans-unit>
+			<trans-unit id="editPageTitle" resname="editPageTitle">
+				<source>Edit the page title</source>
+			</trans-unit>
 			<trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties">
 				<source>Edit page language overlay properties</source>
 			</trans-unit>
