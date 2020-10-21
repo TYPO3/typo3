@@ -2207,7 +2207,7 @@ class BackendUtility
                 $abbrClassAdd = ' help-teaser-icon';
             }
             $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
-            $wrappedText = '<span class="help-link" href="#" data-table="' . $table . '" data-field="' . $field . '"';
+            $wrappedText = '<span class="help-link" data-table="' . $table . '" data-field="' . $field . '"';
             // The overload array may provide a title and a description
             // If either one is defined, add them to the "data" attributes
             if ($hasHelpTextOverload) {
