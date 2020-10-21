@@ -192,7 +192,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
                     value="1"
                     data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
                     ' . $checkboxParameters . '
-                    ' . (!$disabled ?: ' disabled="disabled"') . '
+                    ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="checkbox-label" for="' . $checkboxId . '">
                     <span class="checkbox-label-switch">
