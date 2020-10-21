@@ -48,6 +48,7 @@ class ContextMenu {
   private mousePos: MousePosition = {X: null, Y: null};
   private delayContextMenuHide: boolean = false;
   private record: ActiveRecord = {uid: null, table: null};
+  private eventSources: Element[] = [];
 
   /**
    * @param {MenuItem} item
@@ -61,9 +62,9 @@ class ContextMenu {
       attributesString += ' ' + k + '="' + v + '"';
     }
 
-    return '<a class="list-group-item"'
+    return '<li role="menuitem" class="list-group-item" tabindex="-1"'
       + ' data-callback-action="' + item.callbackAction + '"'
-      + attributesString + '><span class="list-group-item-icon">' + item.icon + '</span> ' + item.label + '</a>';
+      + attributesString + '><span class="list-group-item-icon">' + item.icon + '</span> ' + item.label + '</li>';
   }
 
   /**
@@ -105,7 +106,6 @@ class ContextMenu {
       if ($me.prop('onclick') && e.type === 'click') {
         return;
       }
-
       e.preventDefault();
       this.show(
         $me.data('table'),
@@ -113,6 +113,7 @@ class ContextMenu {
         $me.data('context'),
         $me.data('iteminfo'),
         $me.data('parameters'),
+        e.target
       );
     });
 
@@ -128,9 +129,13 @@ class ContextMenu {
    * @param {string} context Context of the item
    * @param {string} enDisItems Items to disable / enable
    * @param {string} addParams Additional params
+   * @param {Element} eventSource Source Element
    */
-  private show(table: string, uid: number, context: string, enDisItems: string, addParams: string): void {
+  private show(table: string, uid: number, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
     this.record = {table: table, uid: uid};
+    // fix: [tabindex=-1] is not focusable!!!
+    const focusableSource = eventSource.matches('a, button, [tabindex]') ? eventSource : eventSource.closest('a, button, [tabindex]');
+    this.eventSources.push(focusableSource);
 
     let parameters = '';
 
@@ -158,7 +163,7 @@ class ContextMenu {
    * @param {string} parameters Parameters sent to the server
    */
   private fetch(parameters: string): void {
-    let url = TYPO3.settings.ajaxUrls.contextmenu;
+    const url = TYPO3.settings.ajaxUrls.contextmenu;
     (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<any> => {
       const data: MenuItems = await response.resolve();
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
@@ -171,7 +176,7 @@ class ContextMenu {
    * Fills the context menu with content and displays it correctly
    * depending on the mouse position
    *
-   * @param {Array<MenuItem>} items The data that will be put in the menu
+   * @param {MenuItems} items The data that will be put in the menu
    * @param {number} level The depth of the context menu
    */
   private populateData(items: MenuItems, level: number): void {
@@ -181,9 +186,9 @@ class ContextMenu {
 
     if ($obj.length && (level === 0 || $('#contentMenu' + (level - 1)).is(':visible'))) {
       const elements = this.drawMenu(items, level);
-      $obj.html('<div class="list-group">' + elements + '</div>');
+      $obj.html('<ul class="list-group">' + elements + '</ul>');
 
-      $('a.list-group-item', $obj).on('click', (event: JQueryEventObject): void => {
+      $('li.list-group-item', $obj).on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
         const $me = $(event.currentTarget);
 
@@ -205,9 +210,114 @@ class ContextMenu {
         }
         this.hideAll();
       });
-
+      $('li.list-group-item', $obj).on('keydown', (event: JQueryEventObject): void => {
+        const $currentItem = $(event.currentTarget);
+        switch (event.key) {
+          case 'Down': // IE/Edge specific value
+          case 'ArrowDown':
+            this.setFocusToNextItem($currentItem.get(0));
+            break;
+          case 'Up': // IE/Edge specific value
+          case 'ArrowUp':
+            this.setFocusToPreviousItem($currentItem.get(0));
+            break;
+          case 'Right': // IE/Edge specific value
+          case 'ArrowRight':
+            if ($currentItem.hasClass('list-group-item-submenu')) {
+              this.openSubmenu(level, $currentItem);
+            } else {
+              return; // allow default behaviour of right key
+            }
+            break;
+          case 'Home':
+            this.setFocusToFirstItem($currentItem.get(0));
+            break;
+          case 'End':
+            this.setFocusToLastItem($currentItem.get(0));
+            break;
+          case 'Enter':
+          case 'Space':
+            $currentItem.click();
+            break;
+          case 'Esc': // IE/Edge specific value
+          case 'Escape':
+          case 'Left': // IE/Edge specific value
+          case 'ArrowLeft':
+            this.hide('#' + $currentItem.parents('.context-menu').first().attr('id'));
+            break;
+          case 'Tab':
+            this.hideAll();
+            break;
+          default:
+            return; // return to allow default keypress behaviour
+        }
+        // if not returned yet, prevent the default action of the event.
+        event.preventDefault();
+      });
       $obj.css(this.getPosition($obj)).show();
+      // focus the first element on creation to enable keyboard shortcuts
+      $('li.list-group-item[tabindex=-1]', $obj).first().focus();
     }
+  }
+
+  private setFocusToPreviousItem(currentItem: HTMLElement): void {
+    let previousItem = this.getItemBackward(currentItem.previousElementSibling);
+    if (!previousItem) {
+      previousItem = this.getLastItem(currentItem);
+    }
+    previousItem.focus();
+  }
+
+  private setFocusToNextItem(currentItem: HTMLElement): void {
+    let nextItem = this.getItemForward(currentItem.nextElementSibling);
+    if (!nextItem) {
+      nextItem = this.getFirstItem(currentItem);
+    }
+    nextItem.focus();
+  }
+
+  private setFocusToFirstItem(currentItem: HTMLElement): void {
+    let firstItem = this.getFirstItem(currentItem);
+    if (firstItem) {
+      firstItem.focus();
+    }
+  }
+
+  private setFocusToLastItem(currentItem: HTMLElement): void {
+    let lastItem = this.getLastItem(currentItem);
+    if (lastItem) {
+      lastItem.focus();
+    }
+  }
+
+  /**
+   * Returns passed element if it is a menu item, if not checks the previous elements until one is found.
+   */
+  private getItemBackward(element: Element): HTMLElement | null {
+    while (element &&
+      (!element.classList.contains('list-group-item') || (element.getAttribute('tabindex') !== '-1'))) {
+      element = element.previousElementSibling;
+    }
+    return <HTMLElement>element;
+  }
+
+  /**
+   * Returns passed element if it is a menu item, if not checks the previous elements until one is found.
+   */
+  private getItemForward(item: Element): HTMLElement | null {
+    while (item &&
+      (!item.classList.contains('list-group-item') || (item.getAttribute('tabindex') !== '-1'))) {
+      item = item.nextElementSibling;
+    }
+    return <HTMLElement>item;
+  }
+
+  private getFirstItem(item: Element): HTMLElement | null {
+    return this.getItemForward(item.parentElement.firstElementChild);
+  }
+
+  private getLastItem(item: Element): HTMLElement | null {
+    return this.getItemBackward(item.parentElement.lastElementChild);
   }
 
   /**
@@ -215,14 +325,24 @@ class ContextMenu {
    * @param {JQuery} $item
    */
   private openSubmenu(level: number, $item: JQuery): void {
+    this.eventSources.push($item[0]);
     const $obj = $('#contentMenu' + (level + 1)).html('');
     $item.next().find('.list-group').clone(true).appendTo($obj);
     $obj.css(this.getPosition($obj)).show();
+    $('.list-group-item[tabindex=-1]',$obj).first().focus();
   }
 
   private getPosition($obj: JQuery): {[key: string]: string} {
-    let x = this.mousePos.X;
-    let y = this.mousePos.Y;
+    let x = 0, y = 0;
+    let source = this.eventSources[this.eventSources.length - 1]
+    if (source) {
+      const boundingRect = source.getBoundingClientRect();
+      x = boundingRect.right;
+      y = boundingRect.top;
+    } else {
+      x = this.mousePos.X;
+      y = this.mousePos.Y;
+    }
     const dimsWindow = {
       width: $(window).width() - 20, // saving margin for scrollbars
       height: $(window).height(),
@@ -235,8 +355,8 @@ class ContextMenu {
     };
 
     const relative = {
-      X: this.mousePos.X - $(document).scrollLeft(),
-      Y: this.mousePos.Y - $(document).scrollTop(),
+      X: x - $(document).scrollLeft(),
+      Y: y - $(document).scrollTop(),
     };
 
     // adjusting the Y position of the layer to fit it into the window frame
@@ -273,20 +393,20 @@ class ContextMenu {
    */
   private drawMenu(items: MenuItems, level: number): string {
     let elements: string = '';
-    for (let item of Object.values(items)) {
+    for (const item of Object.values(items)) {
       if (item.type === 'item') {
         elements += ContextMenu.drawActionItem(item);
       } else if (item.type === 'divider') {
-        elements += '<a class="list-group-item list-group-item-divider"></a>';
+        elements += '<li role="separator" class="list-group-item list-group-item-divider"></li>';
       } else if (item.type === 'submenu' || item.childItems) {
-        elements += '<a class="list-group-item list-group-item-submenu">'
+        elements += '<li role="menuitem" aria-haspopup="true" class="list-group-item list-group-item-submenu" tabindex="-1">'
           + '<span class="list-group-item-icon">' + item.icon + '</span> '
           + item.label + '&nbsp;&nbsp;<span class="fa fa-caret-right"></span>'
-          + '</a>';
+          + '</li>';
 
         const childElements = this.drawMenu(item.childItems, 1);
         elements += '<div class="context-menu contentMenu' + (level + 1) + '" style="display:none;">'
-          + '<div class="list-group">' + childElements + '</div>'
+          + '<ul role="menu" class="list-group">' + childElements + '</ul>'
           + '</div>';
       }
     }
@@ -331,9 +451,13 @@ class ContextMenu {
       (): void => {
         if (!this.delayContextMenuHide) {
           $(obj).hide();
+          const source = this.eventSources.pop();
+          if (source) {
+            $(source).focus();
+          }
         }
       },
-      500,
+      500
     );
   }
 

@@ -15,6 +15,7 @@ div#contentMenu1 {
         min-width: 150px;
 
         &-item {
+            margin-bottom: 0;
             cursor: pointer;
             padding: 5px;
             border-bottom-color: transparent;
@@ -34,6 +35,18 @@ div#contentMenu1 {
                 margin: 0 0 1px;
                 width: 100%;
                 border-bottom-color: $gray-light;
+            }
+
+            &:hover,
+            &:focus {
+                color: $list-group-link-hover-color;
+                background-color: $list-group-hover-bg;
+            }
+
+            &:focus {
+                outline: 1px auto Highlight;
+                outline: 1px auto -webkit-focus-ring-color;
+                outline-offset: -3px;
             }
         }
 

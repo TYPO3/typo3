@@ -252,7 +252,8 @@ define(['jquery',
           this.identifier,
           $node.data('context'),
           $node.data('iteminfo'),
-          $node.data('parameters')
+          $node.data('parameters'),
+          node
         );
       }
     };
@@ -266,7 +267,8 @@ define(['jquery',
           this.identifier,
           $node.data('context'),
           $node.data('iteminfo'),
-          $node.data('parameters')
+          $node.data('parameters'),
+          node
         );
       }
     };

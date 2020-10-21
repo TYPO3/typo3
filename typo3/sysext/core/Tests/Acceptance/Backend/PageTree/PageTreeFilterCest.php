@@ -115,7 +115,7 @@ class PageTreeFilterCest
         $inlineMnGroupIcon = '#identifier-0_92 > g.node-icon-container';
         $I->click($inlineMnGroupIcon);
         $I->canSeeElement('#contentMenu0');
-        $I->click('Delete', '#contentMenu0');
+        $I->click('[data-callback-action="deleteRecord"]', '#contentMenu0');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
         $modalDialog->canSeeDialog();
