@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
+use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\ThirdController;
@@ -384,64 +385,6 @@ class ExtensionUtilityTest extends UnitTestCase
     }
 
     /**
-     * DataProvider for explodeObjectControllerName
-     *
-     * @return array
-     */
-    public function controllerArgumentsAndExpectedObjectName(): array
-    {
-        return [
-            'Vendor TYPO3\CMS, extension, controller given' => [
-                [
-                    'vendorName' => 'TYPO3\\CMS',
-                    'extensionName' => 'Ext',
-                    'subpackageKey' => '',
-                    'controllerName' => 'Foo',
-                ],
-                'TYPO3\\CMS\\Ext\\Controller\\FooController',
-            ],
-            'Vendor VENDOR, extension, controller given' => [
-                [
-                    'vendorName' => 'VENDOR',
-                    'extensionName' => 'Ext',
-                    'subpackageKey' => '',
-                    'controllerName' => 'Foo',
-                ],
-                'VENDOR\\Ext\\Controller\\FooController',
-            ],
-            'Vendor VENDOR, extension subpackage, controller given' => [
-                [
-                    'vendorName' => 'VENDOR',
-                    'extensionName' => 'Ext',
-                    'subpackageKey' => 'ViewHelpers\\Widget',
-                    'controllerName' => 'Foo',
-                ],
-                'VENDOR\\Ext\\ViewHelpers\\Widget\\Controller\\FooController',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider controllerArgumentsAndExpectedObjectName
-     *
-     * @param array $controllerArguments
-     * @param string $controllerObjectName
-     * @test
-     */
-    public function getControllerObjectNameResolvesControllerObjectNameCorrectly($controllerArguments, $controllerObjectName): void
-    {
-        self::assertEquals(
-            $controllerObjectName,
-            ExtensionUtility::getControllerClassName(
-                $controllerArguments['vendorName'],
-                $controllerArguments['extensionName'],
-                $controllerArguments['subpackageKey'],
-                $controllerArguments['controllerName']
-            )
-        );
-    }
-
-    /**
      * @return array
      */
     public function checkResolveControllerAliasFromControllerClassNameDataProvider(): array
@@ -484,74 +427,13 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @dataProvider checkResolveControllerAliasFromControllerClassNameDataProvider
-     *
-     * @param string $expectedControllerAlias
-     * @param string $controllerClassName
      * @test
      */
     public function checkResolveControllerAliasFromControllerClassName(string $expectedControllerAlias, string $controllerClassName): void
     {
         self::assertEquals(
             $expectedControllerAlias,
-            ExtensionUtility::resolveControllerAliasFromControllerClassName(
-                $controllerClassName
-            )
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function checkResolveVendorFromExtensionAndControllerClassNameDataProvider(): array
-    {
-        return [
-            'Class in root namespace' => [
-                '',
-                'IndexedSearch',
-                'Foo',
-            ],
-            'Namespaced class without extension name as namespace part' => [
-                '',
-                'IndexedSearch',
-                'Foo\\Bar\\Baz\\Qux',
-            ],
-            'Namespaced class without vendor part before extension name part' => [
-                '',
-                'IndexedSearch',
-                'IndexedSearch\\Controller\\SearchController',
-            ],
-            'Namespaced class with single vendor part' => [
-                'Foo',
-                'IndexedSearch',
-                'Foo\\IndexedSearch\\Controller\\SearchController',
-            ],
-            'Namespaced class with multiple vendor parts' => [
-                'TYPO\\CMS',
-                'IndexedSearch',
-                'TYPO\\CMS\\IndexedSearch\\Controller\\SearchController',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider checkResolveVendorFromExtensionAndControllerClassNameDataProvider
-     *
-     * @param string $expectedVendor
-     * @param string $extensionName
-     * @param string $controllerClassName
-     * @test
-     */
-    public function checkResolveVendorFromExtensionAndControllerClassName(
-        string $expectedVendor,
-        string $extensionName,
-        string $controllerClassName
-    ): void {
-        self::assertEquals(
-            $expectedVendor,
-            ExtensionUtility::resolveVendorFromExtensionAndControllerClassName(
-                $extensionName,
-                $controllerClassName
-            )
+            ExtensionUtilityAccessibleProxy::resolveControllerAliasFromControllerClassName($controllerClassName)
         );
     }
 }

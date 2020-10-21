@@ -161,6 +161,8 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit()`
 - :php:`\TYPO3\CMS\Core\Utility\StringUtility::beginsWith()`
 - :php:`\TYPO3\CMS\Core\Utility\StringUtility::endsWith()`
+- :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::getControllerClassName()`
+- :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::resolveVendorFromExtensionAndControllerClassName()`
 - :php:`\TYPO3\CMS\Form\Service\TranslationService::getInstance()`
 - :php:`\TYPO3\CMS\T3editor\Registry\AddonRegistry::getInstance()`
 - :php:`\TYPO3\CMS\T3editor\Registry\ModeRegistry::getInstance()`
@@ -201,7 +203,6 @@ The following PHP class methods changed signature according to previous deprecat
 
 - :php:`TYPO3\CMS\Core\Controller\ErrorPageController->errorAction()` (the third argument :php:`$severity` is removed)
 
-
 The following class properties have been removed:
 
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->breakPointLN`
@@ -228,8 +229,9 @@ The following class properties have been removed:
 
 The following class methods visibility have been changed to protected:
 
-- :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->getTypoLinkParts`
-- :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->setTypoLinkPartsElement`
+- :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->getTypoLinkParts()`
+- :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->setTypoLinkPartsElement()`
+- :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::resolveControllerAliasFromControllerClassName()`
 
 The following class methods visibility have been changed to private:
 
@@ -354,6 +356,10 @@ The following fallbacks have been removed:
 - Usage of the :html:`t3js-toggle-new-content-element-wizard` class to trigger the new content element wizard
 - Usage of the :php:`DataHandler->inlineLocalizeSynchronize()` functionality without an array as input argument
 - The :php:`route` parameter is no longer added to backend urls
+- Extbase no longer accepts :php:`MyVendor.` prefixed :php:`MyExtensionName` as first argument in
+  :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin()`, :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()`
+  and :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` and controller class names must be registered
+  with their fully qualified name.
 
 The following database tables have been removed:
 

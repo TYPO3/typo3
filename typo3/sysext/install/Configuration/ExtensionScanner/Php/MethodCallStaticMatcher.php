@@ -1294,4 +1294,25 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::getControllerClassName' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::resolveVendorFromExtensionAndControllerClassName' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::resolveControllerAliasFromControllerClassName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

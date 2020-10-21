@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException;
 
 /**
  * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
@@ -52,20 +51,6 @@ class ExtensionUtility
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
 
-        // Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
-        $delimiterPosition = strrpos($extensionName, '.');
-        if ($delimiterPosition !== false) {
-            $vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
-            trigger_error(
-                'Calling method ' . __METHOD__ . ' with argument $extensionName ("' . $extensionName . '") containing the vendor name ("' . $vendorName . '") is deprecated and will stop working in TYPO3 11.0.',
-                E_USER_DEPRECATED
-            );
-            $extensionName = substr($extensionName, $delimiterPosition + 1);
-
-            if (!empty($vendorName)) {
-                self::checkVendorNameFormat($vendorName, $extensionName);
-            }
-        }
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
@@ -74,10 +59,6 @@ class ExtensionUtility
         }
         foreach ($controllerActions as $controllerClassName => $actionsList) {
             $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
-            $vendorName = self::resolveVendorFromExtensionAndControllerClassName($extensionName, $controllerClassName);
-            if (!empty($vendorName)) {
-                self::checkVendorNameFormat($vendorName, $extensionName);
-            }
 
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName] = [
                 'className' => $controllerClassName,
@@ -141,15 +122,6 @@ tt_content.' . $pluginSignature . ' {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
 
-        $delimiterPosition = strrpos($extensionName, '.');
-        if ($delimiterPosition !== false) {
-            $vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
-            trigger_error(
-                'Calling method ' . __METHOD__ . ' with argument $extensionName ("' . $extensionName . '") containing the vendor name ("' . $vendorName . '") is deprecated and will stop working in TYPO3 11.0.',
-                E_USER_DEPRECATED
-            );
-            $extensionName = substr($extensionName, $delimiterPosition + 1);
-        }
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
@@ -187,20 +159,6 @@ tt_content.' . $pluginSignature . ' {
     {
         self::checkExtensionNameFormat($extensionName);
 
-        // Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
-        if (false !== $delimiterPosition = strrpos($extensionName, '.')) {
-            trigger_error(
-                'Calling method ' . __METHOD__ . ' with argument $extensionName containing the vendor name is deprecated and will stop working in TYPO3 11.0.',
-                E_USER_DEPRECATED
-            );
-            $vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
-            $extensionName = substr($extensionName, $delimiterPosition + 1);
-
-            if (!empty($vendorName)) {
-                self::checkVendorNameFormat($vendorName, $extensionName);
-            }
-        }
-
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $defaultModuleConfiguration = [
             'access' => 'admin',
@@ -231,10 +189,6 @@ tt_content.' . $pluginSignature . ' {
         }
         foreach ($controllerActions as $controllerClassName => $actionsList) {
             $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
-            $vendorName = self::resolveVendorFromExtensionAndControllerClassName($extensionName, $controllerClassName);
-            if (!empty($vendorName)) {
-                self::checkVendorNameFormat($vendorName, $extensionName);
-            }
 
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerClassName] = [
                 'className' => $controllerClassName,
@@ -246,51 +200,10 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * Returns the object name of the controller defined by the extension name and
-     * controller name
-     *
-     * @param string $vendor
-     * @param string $extensionKey
-     * @param string $subPackageKey
-     * @param string $controllerAlias
-     * @return string The controller's Object Name
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException if the controller does not exist
-     */
-    public static function getControllerClassName(
-        string $vendor,
-        string $extensionKey,
-        string $subPackageKey,
-        string $controllerAlias
-    ): string {
-        $objectName = str_replace(
-            [
-                '@extension',
-                '@subpackage',
-                '@controller',
-                '@vendor',
-                '\\\\',
-            ],
-            [
-                $extensionKey,
-                $subPackageKey,
-                $controllerAlias,
-                $vendor,
-                '\\',
-            ],
-            '@vendor\@extension\@subpackage\Controller\@controllerController'
-        );
-
-        if ($objectName === false) {
-            throw new NoSuchControllerException('The controller object "' . $objectName . '" does not exist.', 1220884009);
-        }
-        return trim($objectName, '\\');
-    }
-
-    /**
      * @param string $controllerClassName
      * @return string
      */
-    public static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string
+    protected static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string
     {
         // This method has been adjusted for TYPO3 10.3 to mitigate the issue that controller aliases
         // could not longer be calculated from controller classes when calling
@@ -332,34 +245,6 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * @param string $extensionName
-     * @param string $controllerClassName
-     * @return string
-     */
-    public static function resolveVendorFromExtensionAndControllerClassName(string $extensionName, string $controllerClassName): string
-    {
-        if (!str_contains($controllerClassName, '\\')) {
-            // Does not work with non namespaced classes
-            return '';
-        }
-
-        if (false === $extensionNamePosition = strpos($controllerClassName, $extensionName)) {
-            // Does not work for classes that do not include the extension name as namespace part
-            return '';
-        }
-
-        if (--$extensionNamePosition < 0) {
-            return '';
-        }
-
-        return substr(
-            $controllerClassName,
-            0,
-            $extensionNamePosition
-        );
-    }
-
-    /**
      * Register a type converter by class name.
      *
      * @param string $typeConverterClassName
@@ -373,20 +258,6 @@ tt_content.' . $pluginSignature . ' {
         }
         if (!in_array($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
-        }
-    }
-
-    /**
-     * Check a given vendor name for CGL compliance.
-     * Log a deprecation message if it is not.
-     *
-     * @param string $vendorName The vendor name to check
-     * @param string $extensionName The extension name that is affected
-     */
-    protected static function checkVendorNameFormat($vendorName, $extensionName)
-    {
-        if (preg_match('/^[A-Z]/', $vendorName) !== 1) {
-            trigger_error('The vendor name from tx_' . $extensionName . ' must begin with a capital letter.', E_USER_DEPRECATED);
         }
     }
 
