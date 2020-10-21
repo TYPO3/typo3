@@ -48,6 +48,9 @@
 			<trans-unit id="noSiteConfiguration" resname="noSiteConfiguration">
 				<source>The requested page is missing a valid site configuration.</source>
 			</trans-unit>
+			<trans-unit id="iframe.title" resname="iframe.title">
+				<source>View selected page in different screen resolutions</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
