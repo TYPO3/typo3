@@ -48,9 +48,9 @@
         <div role="tabpanel" class="tab-pane active workspaces preview-mode-slider" id="visual">
             <div class="t3js-workspace-preview">
                 <f:if condition="{liveUrl}">
-                    <iframe src="{liveUrl}" style="height: 0px;" id="live-view"></iframe>
+                    <iframe src="{liveUrl}" style="height: 0px;" id="live-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.livePreview')}"></iframe>
                 </f:if>
-                <iframe src="{wsUrl}" id="workspace-view"></iframe>
+                <iframe src="{wsUrl}" id="workspace-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.workspacePreview', arguments: {0: activeWorkspace})}"></iframe>
             </div>
         </div>
     </div>

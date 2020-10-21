@@ -341,6 +341,12 @@
 			<trans-unit id="status.error" resname="status.error">
 				<source>Error</source>
 			</trans-unit>
+			<trans-unit id="iframe.livePreview" resname="iframe.livePreview">
+				<source>Preview of the live record</source>
+			</trans-unit>
+			<trans-unit id="iframe.workspacePreview" resname="iframe.workspacePreview">
+				<source>Preview of the record in workspace %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
