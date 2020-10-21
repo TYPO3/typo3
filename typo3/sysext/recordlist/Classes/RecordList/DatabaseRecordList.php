@@ -1721,7 +1721,7 @@ class DatabaseRecordList
             $params['returnUrl'] = $this->listURL();
             $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
             $editAction = '<a class="btn btn-default" href="' . htmlspecialchars($editLink) . '"'
-                . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '</a>';
+                . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $editAction = $this->spaceIcon;
         }
