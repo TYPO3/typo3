@@ -2,6 +2,11 @@
 // Label
 //
 
+.label-success {
+    color: darken($success, 25%);
+    background-color: lighten($success, 40%);
+}
+
 .label-stable {
     @extend .label-success;
 }
