@@ -38,13 +38,16 @@ class ExtractorService
      */
     public function extractMetaData(File $fileObject): array
     {
-        $newMetaData = [];
+        $newMetaData = $extractedMetaData = [];
         // Loop through available extractors and fetch metadata for the given file.
-        foreach ($this->getExtractionServices($fileObject->getStorage()->getDriverType()) as $service) {
-            foreach ($service ?? [] as $extractorService) {
-                if ($this->isFileTypeSupportedByExtractor($fileObject, $extractorService) &&
-                    $extractorService->canProcess($fileObject)) {
-                    $newMetaData[$extractorService->getPriority()] = $extractorService->extractMetaData($fileObject, $newMetaData);
+        foreach ($this->getExtractionServices($fileObject->getStorage()->getDriverType()) as $extractorService) {
+            if ($this->isFileTypeSupportedByExtractor($fileObject, $extractorService)
+                && $extractorService->canProcess($fileObject)
+            ) {
+                $metaDataFromExtractor = $extractorService->extractMetaData($fileObject, $extractedMetaData);
+                if (!empty($metaDataFromExtractor)) {
+                    $extractedMetaData[] = $metaDataFromExtractor;
+                    $newMetaData[$extractorService->getPriority()][] = $metaDataFromExtractor;
                 }
             }
         }
@@ -52,8 +55,10 @@ class ExtractorService
         ksort($newMetaData);
         // Merge the collected metadata.
         $metaData = [[]];
-        foreach ($newMetaData as $data) {
-            $metaData[] = $data;
+        foreach ($newMetaData as $dataFromExtractors) {
+            foreach ($dataFromExtractors as $data) {
+                $metaData[] = $data;
+            }
         }
         return array_filter(array_merge(...$metaData));
     }

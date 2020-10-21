@@ -981,11 +981,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorRegistry\\:\\:getExtractorsWithDriverSupport\\(\\) should return array\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface\\> but returns array\\<int, array\\<int, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface\\>\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Index/ExtractorRegistry.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\Indexer\\:\\:getFileType\\(\\) should return string but returns int\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Index/Indexer.php
@@ -1059,16 +1054,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$folder of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:checkFolderActionPermission\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: "#^Argument of an invalid type TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Service/ExtractorService.php
-
-		-
-			message: "#^Variable \\$service on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Service/ExtractorService.php
 
 		-
 			message: "#^Parameter \\#1 \\$file of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ProcessedFileRepository\\:\\:findOneByOriginalFileAndTaskTypeAndConfiguration\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"

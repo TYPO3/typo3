@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class ExtractorRegistryTest
- */
 class ExtractorRegistryTest extends UnitTestCase
 {
     /**
@@ -77,19 +74,19 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
-        $extractorObject1->method('getPriority')->willReturn(1);
+        $extractorObject1->method('getExecutionPriority')->willReturn(1);
 
         $extractorClass2 = 'ad9195e2487eea33c8a2abd5cf33cba4';
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
-        $extractorObject2->method('getPriority')->willReturn(10);
+        $extractorObject2->method('getExecutionPriority')->willReturn(10);
 
         $extractorClass3 = 'cef9aa4e1cd3aa7ff05dcdccb117156a';
         $extractorObject3 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass3)
             ->getMock();
-        $extractorObject3->method('getPriority')->willReturn(2);
+        $extractorObject3->method('getExecutionPriority')->willReturn(2);
 
         $createdExtractorInstances = [
             [$extractorClass1, $extractorObject1],
@@ -118,13 +115,13 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
-        $extractorObject1->method('getPriority')->willReturn(1);
+        $extractorObject1->method('getExecutionPriority')->willReturn(1);
 
         $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
-        $extractorObject2->method('getPriority')->willReturn(1);
+        $extractorObject2->method('getExecutionPriority')->willReturn(1);
 
         $createdExtractorInstances = [
             [$extractorClass1, $extractorObject1],
@@ -137,6 +134,72 @@ class ExtractorRegistryTest extends UnitTestCase
 
         $extractorInstances = $extractorRegistry->getExtractors();
         self::assertContains($extractorObject1, $extractorInstances);
+        self::assertContains($extractorObject2, $extractorInstances);
+    }
+
+    /**
+     * @test
+     */
+    public function registeredExtractorsCanBeFilteredByDriverTypeButNoTyeREstrictionIsTreatedAsCompatible(): void
+    {
+        $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
+        $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
+            ->setMockClassName($extractorClass1)
+            ->getMock();
+        $extractorObject1->method('getExecutionPriority')->willReturn(1);
+        $extractorObject1->method('getDriverRestrictions')->willReturn([]);
+
+        $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
+        $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
+            ->setMockClassName($extractorClass2)
+            ->getMock();
+        $extractorObject2->method('getExecutionPriority')->willReturn(1);
+        $extractorObject2->method('getDriverRestrictions')->willReturn(['Bla']);
+
+        $createdExtractorInstances = [
+            [$extractorClass1, $extractorObject1],
+            [$extractorClass2, $extractorObject2],
+        ];
+
+        $extractorRegistry = $this->getMockExtractorRegistry($createdExtractorInstances);
+        $extractorRegistry->registerExtractionService($extractorClass1);
+        $extractorRegistry->registerExtractionService($extractorClass2);
+
+        $extractorInstances = $extractorRegistry->getExtractorsWithDriverSupport('Bla');
+        self::assertContains($extractorObject1, $extractorInstances);
+        self::assertContains($extractorObject2, $extractorInstances);
+    }
+
+    /**
+     * @test
+     */
+    public function registeredExtractorsCanBeFilteredByDriverType(): void
+    {
+        $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
+        $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
+            ->setMockClassName($extractorClass1)
+            ->getMock();
+        $extractorObject1->method('getExecutionPriority')->willReturn(1);
+        $extractorObject1->method('getDriverRestrictions')->willReturn(['Foo']);
+
+        $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
+        $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
+            ->setMockClassName($extractorClass2)
+            ->getMock();
+        $extractorObject2->method('getExecutionPriority')->willReturn(1);
+        $extractorObject2->method('getDriverRestrictions')->willReturn(['Bla']);
+
+        $createdExtractorInstances = [
+            [$extractorClass1, $extractorObject1],
+            [$extractorClass2, $extractorObject2],
+        ];
+
+        $extractorRegistry = $this->getMockExtractorRegistry($createdExtractorInstances);
+        $extractorRegistry->registerExtractionService($extractorClass1);
+        $extractorRegistry->registerExtractionService($extractorClass2);
+
+        $extractorInstances = $extractorRegistry->getExtractorsWithDriverSupport('Bla');
+        self::assertNotContains($extractorObject1, $extractorInstances);
         self::assertContains($extractorObject2, $extractorInstances);
     }
 

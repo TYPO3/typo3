@@ -162,4 +162,133 @@ class ExtractorServiceTest extends UnitTestCase
 
         self::assertSame(['width' => 800, 'height' => 600, 'keywords' => 'typo3, cms'], $subject->extractMetaData($fileMock));
     }
+
+    public function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider(): array
+    {
+        return [
+            'Second has higher data priority' => [
+                10,
+                10,
+                20,
+                10,
+                [
+                    'foo' => 'second',
+                    'bar' => 'first',
+                    'baz' => 'second',
+                ],
+            ],
+            'Second has higher execution priority' => [
+                10,
+                10,
+                10,
+                20,
+                [
+                    'foo' => 'first',
+                    'baz' => 'second',
+                    'bar' => 'first',
+                ],
+            ],
+            'Second has higher data and execution priority' => [
+                10,
+                10,
+                20,
+                20,
+                [
+                    'foo' => 'second',
+                    'bar' => 'first',
+                    'baz' => 'second',
+                ],
+            ],
+            'Second has higher execution priority, but first higher data priority' => [
+                20,
+                10,
+                10,
+                20,
+                [
+                    'foo' => 'first',
+                    'baz' => 'second',
+                    'bar' => 'first',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider
+     * @param int $extractorOneDataPriority
+     * @param int $extractorOneExecutionPriority
+     * @param int $extractorTwoDataPriority
+     * @param int $extractorTwoExecutionPriority
+     * @param array $expectedMetaData
+     */
+    public function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPriorities(
+        int $extractorOneDataPriority,
+        int $extractorOneExecutionPriority,
+        int $extractorTwoDataPriority,
+        int $extractorTwoExecutionPriority,
+        array $expectedMetaData
+    ): void {
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getDriverType')->willReturn('Local');
+
+        /** @var ExtractorService|\PHPUnit\Framework\MockObject\MockObject $subject */
+        $subject = $this->getMockBuilder(ExtractorService::class)
+            ->setMethods(['getExtractorRegistry'])
+            ->getMock()
+        ;
+
+        $fileMock = $this->createMock(File::class);
+        $fileMock->expects(self::any())->method('getUid')->willReturn(4711);
+        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_IMAGE);
+        $fileMock->expects(self::any())->method('getStorage')->willReturn($storageMock);
+
+        $extractorClass1 = md5('1');
+        $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
+            ->setMockClassName($extractorClass1)
+            ->getMock();
+
+        $extractorObject1->expects(self::any())->method('getPriority')->willReturn($extractorOneDataPriority);
+        $extractorObject1->expects(self::any())->method('getExecutionPriority')->willReturn($extractorOneExecutionPriority);
+        $extractorObject1->expects(self::any())->method('canProcess')->willReturn(true);
+        $extractorObject1->expects(self::any())->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
+        $extractorObject1->expects(self::any())->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
+        $extractorObject1->expects(self::any())->method('extractMetaData')->with($fileMock)->willReturn([
+            'foo' => 'first',
+            'bar' => 'first',
+        ]);
+
+        $extractorClass2 = md5('2');
+        $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
+            ->setMockClassName($extractorClass2)
+            ->getMock();
+
+        $extractorObject2->expects(self::any())->method('getPriority')->willReturn($extractorTwoDataPriority);
+        $extractorObject2->expects(self::any())->method('getExecutionPriority')->willReturn($extractorTwoExecutionPriority);
+        $extractorObject2->expects(self::any())->method('canProcess')->willReturn(true);
+        $extractorObject2->expects(self::any())->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
+        $extractorObject2->expects(self::any())->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
+        $extractorObject2->expects(self::any())->method('extractMetaData')->with($fileMock)->willReturn([
+            'foo' => 'second',
+            'baz' => 'second',
+        ]);
+
+        /** @var ExtractorRegistry|\PHPUnit\Framework\MockObject\MockObject $extractorRegistryMock */
+        $extractorRegistryMock = $this->getMockBuilder(ExtractorRegistry::class)
+            ->setMethods(['createExtractorInstance'])
+            ->getMock();
+
+        $extractorRegistryMock->expects(self::any())->method('createExtractorInstance')->willReturnMap(
+            [
+                [$extractorClass1, $extractorObject1],
+                [$extractorClass2, $extractorObject2],
+            ]
+        );
+        $extractorRegistryMock->registerExtractionService($extractorClass1);
+        $extractorRegistryMock->registerExtractionService($extractorClass2);
+
+        $subject->expects(self::any())->method('getExtractorRegistry')->willReturn($extractorRegistryMock);
+
+        self::assertSame($expectedMetaData, $subject->extractMetaData($fileMock));
+    }
 }

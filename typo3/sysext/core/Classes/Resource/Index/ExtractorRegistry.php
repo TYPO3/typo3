@@ -62,9 +62,7 @@ class ExtractorRegistry implements SingletonInterface
     {
         if ($this->instances === null) {
             $this->instances = [];
-
-            $extractors = array_reverse($this->extractors);
-            foreach ($extractors as $className) {
+            foreach ($this->extractors as $className) {
                 $object = $this->createExtractorInstance($className);
                 $this->instances[] = $object;
             }
@@ -84,16 +82,13 @@ class ExtractorRegistry implements SingletonInterface
      */
     public function getExtractorsWithDriverSupport($driverType)
     {
-        $allExtractors = $this->getExtractors();
-
-        $filteredExtractors = [];
-        foreach ($allExtractors as $priority => $extractorObject) {
-            if (empty($extractorObject->getDriverRestrictions()) ||
-                in_array($driverType, $extractorObject->getDriverRestrictions(), true)) {
-                $filteredExtractors[$extractorObject->getPriority()][] = $extractorObject;
+        return array_filter(
+            $this->getExtractors(),
+            function (ExtractorInterface $extractor) use ($driverType) {
+                return empty($extractor->getDriverRestrictions())
+                    || in_array($driverType, $extractor->getDriverRestrictions(), true);
             }
-        }
-        return $filteredExtractors;
+        );
     }
 
     /**
@@ -108,7 +103,7 @@ class ExtractorRegistry implements SingletonInterface
      */
     protected function compareExtractorPriority(ExtractorInterface $extractorA, ExtractorInterface $extractorB)
     {
-        return $extractorB->getPriority() - $extractorA->getPriority();
+        return $extractorB->getExecutionPriority() - $extractorA->getExecutionPriority();
     }
 
     /**
