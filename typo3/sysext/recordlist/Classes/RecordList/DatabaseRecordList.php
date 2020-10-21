@@ -860,15 +860,20 @@ class DatabaseRecordList
                 $tableHeader .= BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
             } else {
                 // Render collapse button if in multi table mode
-                $collapseIcon = '';
+                $collapseButton = '';
                 if (!$this->table) {
-                    $title = $tableCollapsed
-                        ? htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable'))
-                        : htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.collapseTable'));
                     $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
-                    $collapseIcon = '<a href="#" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($tableIdentifier) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">' . $icon . '</a>';
+                    $collapseButton = '<button type="button"'
+                        . ' class="btn btn-default btn-sm pull-right t3js-toggle-recordlist"'
+                        . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
+                        . ' aria-label="' . sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle) . '"'
+                        . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
+                        . ' data-toggle="collapse"'
+                        . ' data-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
+                        . $icon
+                        . '</button>';
                 }
-                $tableHeader .= $theData[$titleCol] . $collapseIcon;
+                $tableHeader .= $theData[$titleCol] . $collapseButton;
             }
             // Render table rows only if in multi table view or if in single table view
             $rowOutput = '';

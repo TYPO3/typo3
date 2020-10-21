@@ -57,7 +57,7 @@ class CategoryTreeCest
         // Collapse all tables and expand category again - ensures category fits into window
         $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
         $I->wait(1);
-        $I->executeJS('$(\'a[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
+        $I->executeJS('$(\'button[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
         $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');

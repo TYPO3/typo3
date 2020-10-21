@@ -111,6 +111,9 @@
 			<trans-unit id="expandView" resname="expandView">
 				<source>List only this table</source>
 			</trans-unit>
+			<trans-unit id="collapseExpandTable" resname="collapseExpandTable">
+				<source>Collapse and expand records of table "%s"</source>
+			</trans-unit>
 			<trans-unit id="showClipBoard" resname="showClipBoard">
 				<source>Show clipboard</source>
 			</trans-unit>

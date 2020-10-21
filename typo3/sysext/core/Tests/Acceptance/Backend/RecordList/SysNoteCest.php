@@ -63,7 +63,7 @@ class SysNoteCest
         $I->click('a[title="Close"]');
         $I->wait(1);
         $I->canSee('styleguide TCA demo', 'h1');
-        $I->click('a.t3js-toggle-recordlist[data-table="pages"]');
+        $I->click('button.t3js-toggle-recordlist[data-table="pages"]');
         $I->canSee('Internal notes', 'h2');
         $I->canSee('new sys_note');
         $I->click('.note-list > .note > .note-header > .note-header-bar > .note-actions a:nth-child(1)');

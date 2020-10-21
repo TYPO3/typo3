@@ -119,6 +119,14 @@ $panel-lg-padding: 35px;
     .table-fit {
         margin-bottom: 0;
     }
+
+    .panel-heading {
+        > a,
+        > span {
+            padding: 4px 0;
+            display: inline-block;
+        }
+    }
 }
 
 //
