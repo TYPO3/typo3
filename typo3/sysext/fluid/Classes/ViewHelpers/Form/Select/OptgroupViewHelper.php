@@ -43,7 +43,7 @@ class OptgroupViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
     public function render()
     {
         if ($this->arguments['disabled']) {
-            $this->tag->addAttributes('disabled', 'disabled');
+            $this->tag->addAttribute('disabled', 'disabled');
         } else {
             $this->tag->removeAttribute('disabled');
         }
