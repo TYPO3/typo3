@@ -719,10 +719,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'max' => 4,
                 'eval' => 'int',
                 'range' => [
-                    'upper' => 1999,
                     'lower' => 0,
                 ],
                 'default' => 0
@@ -734,10 +732,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'max' => 4,
                 'eval' => 'int',
                 'range' => [
-                    'upper' => 1999,
                     'lower' => 0,
                 ],
                 'default' => 0
