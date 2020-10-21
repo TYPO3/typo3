@@ -1130,7 +1130,7 @@ class ExtendedTemplateService extends TemplateService
                         $deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render();
                         $deleteIconHTML =
                             '<button type="button" class="btn btn-default t3js-toggle" data-toggle="undo" rel="' . $idName . '">'
-                                . '<span title="' . $deleteTitle . '" alt="' . $deleteTitle . '">'
+                                . '<span title="' . $deleteTitle . '">'
                                     . $deleteIcon
                                 . '</span>'
                             . '</button>';
@@ -1138,7 +1138,7 @@ class ExtendedTemplateService extends TemplateService
                         $editIcon = $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
                         $editIconHTML =
                             '<button type="button" class="btn btn-default t3js-toggle" data-toggle="edit"  rel="' . $idName . '">'
-                                . '<span title="' . $editTitle . '" alt="' . $editTitle . '">'
+                                . '<span title="' . $editTitle . '">'
                                     . $editIcon
                                 . '</span>'
                             . '</button>';
