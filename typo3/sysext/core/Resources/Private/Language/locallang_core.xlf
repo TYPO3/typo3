@@ -535,6 +535,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.dropzonehint.message" resname="file_upload.dropzonehint.message">
 				<source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
 			</trans-unit>
+			<trans-unit id="file_upload.dropzone.close" resname="file_upload.dropzone.close">
+				<source>Close file upload area</source>
+			</trans-unit>
 			<trans-unit id="file_upload.select-and-submit" resname="file_upload.select-and-submit">
 				<source>Select &amp; upload files</source>
 			</trans-unit>

@@ -70,6 +70,7 @@ $dropzone-icon-ok-bg: $brand-success;
     overflow: hidden;
     background-color: $dropzone-close-bg;
     color: $dropzone-close-text;
+    border: 0;
 
     &:hover {
         color: $dropzone-close-hover-text;
@@ -90,13 +91,17 @@ $dropzone-icon-ok-bg: $brand-success;
 //     <span class="dropzone-hint-icon"></span>
 //   </div>
 //   <div class="dropzone-hint-body">
-//     <h3 class="dropzone-hint-title">Title</h3>
+//     <h3 id="dropzone-title" class="dropzone-hint-title">Title</h3>
 //     <p class="dropzone-hint-message">Message</h3>
 //   </div>
 // </div>
 //
 .dropzone-hint {
     display: table;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    padding: 0;
 }
 
 .dropzone-hint-media,
