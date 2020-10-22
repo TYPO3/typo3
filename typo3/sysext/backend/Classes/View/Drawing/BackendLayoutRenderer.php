@@ -262,7 +262,8 @@ class BackendLayoutRenderer
     private function drawPasteIcon(int $pasteItem, string $pasteTitle, string $copyMode, string $cssClass, string $title): string
     {
         $pasteIcon = json_encode(
-            ' <button data-content="' . htmlspecialchars((string)$pasteItem) . '"'
+            ' <button type="button"'
+            . ' data-content="' . htmlspecialchars((string)$pasteItem) . '"'
             . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
             . ' data-severity="warning"'
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'

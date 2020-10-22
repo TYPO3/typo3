@@ -967,7 +967,8 @@ class PageLayoutView implements LoggerAwareInterface
     protected function tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, $cssClass, $title)
     {
         $pasteIcon = json_encode(
-            ' <button data-content="' . htmlspecialchars((string)$pasteItem) . '"'
+            ' <button type="button"'
+            . ' data-content="' . htmlspecialchars((string)$pasteItem) . '"'
             . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
             . ' data-severity="warning"'
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
