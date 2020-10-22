@@ -317,7 +317,13 @@ class SiteConfigurationController
                         break;
 
                     case 'select':
-                        $newSysSiteData[$fieldName] = MathUtility::canBeInterpretedAsInteger($fieldValue) ? (int)$fieldValue : $fieldValue;
+                        if (MathUtility::canBeInterpretedAsInteger($fieldValue)) {
+                            $fieldValue = (int)$fieldValue;
+                        } elseif (is_array($fieldValue)) {
+                            $fieldValue = implode(',', $fieldValue);
+                        }
+
+                        $newSysSiteData[$fieldName] = $fieldValue;
                         break;
 
                     case 'check':
