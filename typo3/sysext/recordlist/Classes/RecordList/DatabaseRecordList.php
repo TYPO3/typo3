@@ -986,7 +986,7 @@ class DatabaseRecordList
                 $out .= $this->renderListHeader($table, $currentIdList);
             }
 
-            $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse in';
+            $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
             $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
 
             // The list of records is added after the header:
@@ -1556,29 +1556,29 @@ class DatabaseRecordList
         if ($currentPage > 1) {
             $labelFirst = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first'));
             $labelPrevious = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:previous'));
-            $first = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1, $iLimit) . '" title="' . $labelFirst . '">'
+            $first = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1, $iLimit) . '" title="' . $labelFirst . '" class="page-link">'
                 . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</a></li>';
-            $previous = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1, $iLimit) . '" title="' . $labelPrevious . '">'
+            $previous = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1, $iLimit) . '" title="' . $labelPrevious . '" class="page-link">'
                 . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</a></li>';
         } else {
-            $first = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</span></li>';
-            $previous = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</span></li>';
+            $first = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL)->render() . '</span></li>';
+            $previous = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL)->render() . '</span></li>';
         }
         if ($currentPage < $totalPages) {
             $labelNext = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:next'));
             $labelLast = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:last'));
-            $next = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1, $iLimit) . '" title="' . $labelNext . '">'
+            $next = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1, $iLimit) . '" title="' . $labelNext . '" class="page-link">'
                 . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</a></li>';
-            $last = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages, $iLimit) . '" title="' . $labelLast . '">'
+            $last = '<li class="page-item"><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages, $iLimit) . '" title="' . $labelLast . '" class="page-link">'
                 . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</a></li>';
         } else {
-            $next = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</span></li>';
-            $last = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</span></li>';
+            $next = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</span></li>';
+            $last = '<li class="page-item disabled"><span class="page-link">' . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</span></li>';
         }
-        $reload = '<li><a href="#" onclick="document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
+        $reload = '<li class="page-item"><a href="#" onclick="document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
             . '&pointer=') . '+calculatePointer(document.getElementById(' . GeneralUtility::quoteJSvalue('jumpPage-' . $renderPart)
             . ').value); document.dblistForm.submit(); return true;" title="'
-            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:reload')) . '">'
+            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:reload')) . '" class="page-link">'
             . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a></li>';
         if ($renderPart === 'top') {
             // Add js to traverse a page select input to a pointer value
@@ -1608,13 +1608,13 @@ class DatabaseRecordList
             $pageNumberInput,
             $totalPages
         );
-        $pageIndicator = '<li><span>' . $pageIndicatorText . '</span></li>';
+        $pageIndicator = '<li class="page-item"><span class="page-link">' . $pageIndicatorText . '</span></li>';
         if ($totalItems > $this->firstElementNumber + $iLimit) {
             $lastElementNumber = $this->firstElementNumber + $iLimit;
         } else {
             $lastElementNumber = $totalItems;
         }
-        $rangeIndicator = '<li><span>' . sprintf(
+        $rangeIndicator = '<li class="page-item"><span class="page-link">' . sprintf(
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator'),
             $this->firstElementNumber + 1,
             $lastElementNumber
@@ -1624,7 +1624,7 @@ class DatabaseRecordList
         $data = [
             $titleColumn => $content . '
 				<nav class="pagination-wrap">
-					<ul class="pagination pagination-block">
+					<ul class="pagination">
 						' . $first . '
 						' . $previous . '
 						' . $rangeIndicator . '

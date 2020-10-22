@@ -88,24 +88,24 @@ class Modal {
   public readonly types: any = Types;
   public currentModal: JQuery = null;
   private instances: Array<JQuery> = [];
-  private readonly $template: JQuery = $(
-    '<div class="t3js-modal modal fade">' +
-    '<div class="modal-dialog">' +
-    '<div class="t3js-modal-content modal-content">' +
-    '<div class="modal-header">' +
-    '<button class="t3js-modal-close close">' +
-    '<span aria-hidden="true">' +
-    '<span class="t3js-modal-icon-placeholder" data-icon="actions-close"></span>' +
-    '</span>' +
-    '<span class="sr-only"></span>' +
-    '</button>' +
-    '<h4 class="t3js-modal-title modal-title"></h4>' +
-    '</div>' +
-    '<div class="t3js-modal-body modal-body"></div>' +
-    '<div class="t3js-modal-footer modal-footer"></div>' +
-    '</div>' +
-    '</div>' +
-    '</div>',
+  private readonly $template: JQuery = $(`
+    <div class="t3js-modal modal fade">
+        <div class="modal-dialog">
+            <div class="t3js-modal-content modal-content">
+                <div class="modal-header">
+                    <h4 class="t3js-modal-title modal-title"></h4>
+                    <button class="t3js-modal-close close">
+                        <span aria-hidden="true">
+                            <span class="t3js-modal-icon-placeholder" data-icon="actions-close"></span>
+                        </span>
+                        <span class="sr-only"></span>
+                    </button>
+                </div>
+                <div class="t3js-modal-body modal-body"></div>
+                <div class="t3js-modal-footer modal-footer"></div>
+            </div>
+        </div>
+    </div>`
   );
 
   private defaultConfiguration: Configuration = {
@@ -456,9 +456,15 @@ class Modal {
       Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
         $loaderTarget.html('<div class="modal-loading">' + icon + '</div>');
         new AjaxRequest(configuration.content as string).get().then(async (response: AjaxResponse): Promise<void> => {
+          const html = await response.raw().text();
+          if (!this.currentModal.parent().length) {
+            // attach modal to DOM, otherwise embedded scripts are not executed by jquery append()
+            this.currentModal.appendTo('body');
+          }
           this.currentModal.find(contentTarget)
             .empty()
-            .append(await response.raw().text());
+            .append(html);
+
           if (configuration.ajaxCallback) {
             configuration.ajaxCallback();
           }

@@ -22,11 +22,11 @@ div#contentMenu1 {
             border-top-color: transparent;
 
             &:first-child {
-                border-top-color: $gray-light;
+                border-top-color: $gray-300;
             }
 
             &:last-child {
-                border-bottom-color: $gray-light;
+                border-bottom-color: $gray-300;
             }
 
             &-divider {
@@ -34,12 +34,14 @@ div#contentMenu1 {
                 padding: 0 0 1px;
                 margin: 0 0 1px;
                 width: 100%;
-                border-bottom-color: $gray-light;
+                border-bottom-color: $gray-300;
             }
 
             &:hover,
             &:focus {
-                color: $list-group-link-hover-color;
+                z-index: 1; // Place hover/focus items above their siblings for proper border styling
+                color: $list-group-action-hover-color;
+                text-decoration: none;
                 background-color: $list-group-hover-bg;
             }
 

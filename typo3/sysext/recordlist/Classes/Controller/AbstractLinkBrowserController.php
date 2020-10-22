@@ -457,13 +457,13 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions['target'] = '
             <!-- Selecting target for link: -->
             <form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
-                <div class="form-group form-group-sm" id="typo3-linkTarget">
-                    <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
-                    <div class="col-xs-3">
+                <div class="row mb-3" id="typo3-linkTarget">
+                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
+                    <div class="col-sm-4">
                         <input type="text" name="ltarget" class="t3js-linkTarget form-control"
                             value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
                     </div>
-                    <div class="col-xs-5">
+                    <div class="col-sm-5">
                         <select name="ltarget_type" class="t3js-targetPreselect form-control">
                             <option value=""></option>
                             <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
@@ -476,9 +476,9 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions['title'] = '
             <!-- Selecting title for link: -->
             <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
-                <div class="form-group form-group-sm" id="typo3-linkTitle">
-                    <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
-                    <div class="col-xs-8">
+                <div class="row mb-3" id="typo3-linkTitle">
+                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
+                    <div class="col-sm-9">
                         <input type="text" name="ltitle" class="form-control"
                             value="' . htmlspecialchars($this->linkAttributeValues['title']) . '" />
                     </div>
@@ -488,9 +488,9 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions['class'] = '
             <!-- Selecting class for link: -->
             <form action="" name="lclassform" id="lclassform" class="t3js-dummyform form-horizontal">
-                <div class="form-group form-group-sm" id="typo3-linkClass">
-                    <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
-                    <div class="col-xs-8">
+                <div class="row mb-3" id="typo3-linkClass">
+                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
+                    <div class="col-sm-9">
                         <input type="text" name="lclass" class="form-control"
                             value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" />
                     </div>
@@ -500,9 +500,9 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions['params'] = '
             <!-- Selecting params for link: -->
             <form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform form-horizontal">
-                <div class="form-group form-group-sm" id="typo3-linkParams">
-                    <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
-                    <div class="col-xs-8">
+                <div class="row mb-3" id="typo3-linkParams">
+                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
+                    <div class="col-sm-9">
                         <input type="text" name="lparams" class="form-control"
                             value="' . htmlspecialchars($this->linkAttributeValues['params']) . '" />
                     </div>

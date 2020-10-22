@@ -281,27 +281,27 @@ class PaletteAndSingleContainer extends AbstractContainer
             $colClass = 'col-md-12';
             $colClear = [];
             if ($colWidth == 6) {
-                $colClass = 'col-sm-6';
+                $colClass = 'col col-sm-6';
                 $colClear = [
-                    2 => 'visible-sm-block visible-md-block visible-lg-block',
+                    2 => 'd-sm-block d-md-none',
                 ];
             } elseif ($colWidth === 4) {
-                $colClass = 'col-sm-4';
+                $colClass = 'col col-sm-4';
                 $colClear = [
-                    3 => 'visible-sm-block visible-md-block visible-lg-block',
+                    3 => 'd-sm-block d-md-none',
                 ];
             } elseif ($colWidth === 3) {
-                $colClass = 'col-sm-6 col-md-3';
+                $colClass = 'col col-sm-6 col-md-3';
                 $colClear = [
-                    2 => 'visible-sm-block',
-                    4 => 'visible-md-block visible-lg-block',
+                    2 => 'd-sm-block d-md-none',
+                    4 => 'd-sm-block d-md-block d-xl-none',
                 ];
             } elseif ($colWidth <= 2) {
-                $colClass = 'checkbox-column col-sm-6 col-md-3 col-lg-2';
+                $colClass = 'checkbox-column col col-sm-6 col-md-3 col-lg-2';
                 $colClear = [
-                    2 => 'visible-sm-block',
-                    4 => 'visible-md-block',
-                    6 => 'visible-lg-block'
+                    2 => 'd-sm-block',
+                    4 => 'd-sm-block d-md-none',
+                    6 => 'd-sm-block d-md-block d-lg-none'
                 ];
             }
 

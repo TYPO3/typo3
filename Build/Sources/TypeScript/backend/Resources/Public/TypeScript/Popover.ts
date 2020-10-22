@@ -11,9 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import 'bootstrap';
-import {PopoverOptions} from 'bootstrap';
 import $ from 'jquery';
+// @todo Importing bootstrap here, to have jQuery.fn.popup applied
+import 'bootstrap';
+import {Popover as BootstrapPopover} from 'bootstrap';
 
 /**
  * Module: TYPO3/CMS/Backend/Popover
@@ -58,8 +59,8 @@ class Popover {
    * @param {JQuery} $element
    * @param {PopoverOptions} options
    */
-  public setOptions($element: JQuery, options?: PopoverOptions): void {
-    options = options || {};
+  public setOptions($element: JQuery, options?: BootstrapPopover.Options): void {
+    options = options || <BootstrapPopover.Options>{};
     const title: string|(() => void) = options.title || $element.data('title') || '';
     const content: string|(() => void) = options.content || $element.data('content') || '';
     $element

@@ -2434,7 +2434,7 @@ class BackendUtility
             // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
             $attributes = GeneralUtility::implodeAttributes([
                 'name' => $elementName,
-                'class' => 'form-control',
+                'class' => 'form-control mb-3',
                 'data-menu-identifier' => $dataMenuIdentifier,
                 'data-global-event' => 'change',
                 'data-action-navigate' => '$data=~s/$value/',

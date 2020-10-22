@@ -87,7 +87,7 @@ class Recordlist {
     const collapseConfig: any = {};
     collapseConfig[table] = isExpanded ? 1 : 0;
 
-    $.extend(true, storedModuleDataList, collapseConfig);
+    $.extend(storedModuleDataList, collapseConfig);
     PersistentStorage.set('moduleData.list', storedModuleDataList).done((): void => {
       $target.data('state', isExpanded ? 'collapsed' : 'expanded');
     });

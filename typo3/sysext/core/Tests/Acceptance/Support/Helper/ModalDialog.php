@@ -26,6 +26,27 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog;
 class ModalDialog extends AbstractModalDialog
 {
     /**
+     * Selector for a visible modal window
+     * Adapted for Boostrap 5
+     *
+     * @var string
+     */
+    public static $openedModalSelector = '.modal.show';
+
+    /**
+     * Selector for the container in the modal where the buttons are located
+     * Adapted for Boostrap 5
+     *
+     * @var string
+     */
+    public static $openedModalButtonContainerSelector = '.modal.show .modal-footer';
+
+    /**
+     * @var AcceptanceTester
+     */
+    protected $tester;
+
+    /**
      * Inject our core AcceptanceTester actor into ModalDialog
      *
      * @param BackendTester $I
@@ -33,5 +54,31 @@ class ModalDialog extends AbstractModalDialog
     public function __construct(BackendTester $I)
     {
         $this->tester = $I;
+    }
+
+    /**
+     * Perform a click on a link or a button, given by a locator.
+     *
+     * @param string $buttonLinkLocator the button title
+     * @see \Codeception\Module\WebDriver::click()
+     */
+    public function clickButtonInDialog(string $buttonLinkLocator)
+    {
+        $I = $this->tester;
+        $this->canSeeDialog();
+        $I->click($buttonLinkLocator, self::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(self::$openedModalSelector);
+    }
+
+    /**
+     * Check if modal dialog is visible in top frame
+     */
+    public function canSeeDialog()
+    {
+        $I = $this->tester;
+        $I->switchToIFrame();
+        $I->waitForElement(self::$openedModalSelector);
+        // I will wait two seconds to prevent failing tests
+        $I->wait(2);
     }
 }

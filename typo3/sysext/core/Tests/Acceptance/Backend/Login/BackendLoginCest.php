@@ -41,13 +41,13 @@ class BackendLoginCest
         // Make sure mouse is not over submit button from a previous test
         $I->moveMouseOver('#t3-username');
         $bs = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
-            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('box-shadow');
+            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('background-color');
         });
 
         $I->moveMouseOver('#t3-login-submit');
         $I->wait(1);
         $bsmo = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
-            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('box-shadow');
+            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('background-color');
         });
         $I->assertFalse($bs === $bsmo);
     }

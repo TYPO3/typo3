@@ -126,13 +126,13 @@ $viewpage-topbar-height: 40px;
         padding-left: 0;
         padding-right: 0;
         border: 0;
-        border-bottom: 1px solid rgba($brand-primary, 0.5);
+        border-bottom: 1px solid rgba($primary, 0.5);
         transition: all 0.5s ease-in-out;
 
         &:focus,
         &:hover {
             outline: 0;
-            border-bottom-color: rgba($brand-primary, 1);
+            border-bottom-color: rgba($primary, 1);
         }
     }
 }

@@ -1,17 +1,17 @@
 @mixin panel-risk-levels($high-color, $medium-color) {
     &.risk-high > .panel-heading {
         background: $high-color;
-        color: $gray-lighter;
+        color: $gray-100;
     }
 
     &.risk-medium > .panel-heading {
         background: $medium-color;
-        color: $gray-darker;
+        color: $gray-900;
     }
 
     &.risk-low > .panel-heading {
         background: white;
-        color: $gray-darker;
+        color: $gray-900;
     }
 }
 
@@ -52,7 +52,7 @@
     .panel-rst,
     .panel-version {
         border: 0;
-        border-left: 2px solid $gray-light;
+        border-left: 2px solid $gray-300;
         border-radius: 0;
         margin: 0;
 
@@ -62,16 +62,16 @@
         }
 
         &.panel-default > .panel-heading {
-            background: $gray-lighter;
+            background: $gray-100;
         }
 
         &.panel-breaking,
         &.panel-danger {
-            @include panel-variant($brand-danger, #fff, $brand-danger, $brand-danger);
-            @include panel-risk-levels($brand-danger, lighten($brand-danger, 40));
+            @include panel-variant($danger, #fff, $danger, $danger);
+            @include panel-risk-levels($danger, lighten($danger, 40));
 
             .panel-progress .panel-progress-bar {
-                background-color: $brand-danger;
+                background-color: $danger;
             }
 
             .label {
@@ -81,11 +81,11 @@
 
         &.panel-deprecation,
         &.panel-warning {
-            @include panel-variant($brand-warning, #fff, $brand-warning, $brand-warning);
-            @include panel-risk-levels($brand-warning, lighten($brand-warning, 30));
+            @include panel-variant($warning, #fff, $warning, $warning);
+            @include panel-risk-levels($warning, lighten($warning, 30));
 
             .panel-progress .panel-progress-bar {
-                background-color: $brand-warning;
+                background-color: $warning;
             }
 
             .label {
@@ -95,11 +95,11 @@
 
         &.panel-feature,
         &.panel-success {
-            @include panel-variant($brand-success, #fff, $brand-success, $brand-success);
-            @include panel-risk-levels($brand-success, lighten($brand-success, 40));
+            @include panel-variant($success, #fff, $success, $success);
+            @include panel-risk-levels($success, lighten($success, 40));
 
             .panel-progress .panel-progress-bar {
-                background-color: $brand-success;
+                background-color: $success;
             }
 
             .label {
@@ -109,11 +109,11 @@
 
         &.panel-important,
         &.panel-info {
-            @include panel-variant($brand-info, #fff, $brand-info, $brand-info);
-            @include panel-risk-levels($brand-info, lighten($brand-info, 30));
+            @include panel-variant($info, #fff, $info, $info);
+            @include panel-risk-levels($info, lighten($info, 30));
 
             .panel-progress .panel-progress-bar {
-                background-color: $brand-info;
+                background-color: $info;
             }
 
             .label {
@@ -162,7 +162,7 @@
             margin: 0;
             border-radius: 0;
             border: 0;
-            border-top: 1px solid $gray-light;
+            border-top: 1px solid $gray-300;
             white-space: pre-wrap;
             word-break: normal;
             word-wrap: normal;

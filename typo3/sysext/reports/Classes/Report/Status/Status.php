@@ -156,8 +156,8 @@ class Status implements RequestAwareReportInterface
         $content = '';
         $template = '
 			<tr>
-				<td class="###CLASS### col-xs-6">###HEADER###</td>
-				<td class="###CLASS### col-xs-6">###STATUS###<br>###CONTENT###</td>
+				<td class="###CLASS### col-6">###HEADER###</td>
+				<td class="###CLASS### col-6">###STATUS###<br>###CONTENT###</td>
 			</tr>
 		';
         $statuses = $this->sortStatusProviders($statusCollection);

@@ -354,30 +354,30 @@ abstract class AbstractFormElement extends AbstractNode
     protected function calculateColumnMarkup(int $cols): array
     {
         $colWidth = (int)floor(12 / $cols);
-        $colClass = 'col-md-12';
+        $colClass = 'col';
         $colClear = [];
         if ($colWidth === 6) {
-            $colClass = 'col-sm-6';
+            $colClass = 'col col-sm-6';
             $colClear = [
-                2 => 'visible-sm-block visible-md-block visible-lg-block',
+                2 => 'd-sm-block',
             ];
         } elseif ($colWidth === 4) {
-            $colClass = 'col-sm-4';
+            $colClass = 'col col-sm-4';
             $colClear = [
-                3 => 'visible-sm-block visible-md-block visible-lg-block',
+                3 => 'd-sm-block',
             ];
         } elseif ($colWidth === 3) {
-            $colClass = 'col-sm-6 col-md-3';
+            $colClass = 'col col-sm-6 col-md-3';
             $colClear = [
-                2 => 'visible-sm-block',
-                4 => 'visible-md-block visible-lg-block',
+                2 => 'd-sm-block d-md-none',
+                4 => 'd-sm-block d-md-block d-lg-none',
             ];
         } elseif ($colWidth <= 2) {
-            $colClass = 'checkbox-column col-sm-6 col-md-3 col-lg-2';
+            $colClass = 'checkbox-column col col-sm-6 col-md-3 col-lg-2';
             $colClear = [
-                2 => 'visible-sm-block',
-                4 => 'visible-md-block',
-                6 => 'visible-lg-block'
+                2 => 'd-sm-block',
+                4 => 'd-sm-block d-md-block d-lg-none',
+                6 => 'd-sm-block d-md-block d-lg-block d-xl-none'
             ];
         }
         return [$colClass, $colClear];

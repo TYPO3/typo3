@@ -26,7 +26,7 @@ export default class NewContentElementWizard {
   }
 
   private static countVisibleContentElements(container: Element): number {
-    return container.querySelectorAll('.media-new-content-element-wizard:not(.hidden)').length;
+    return container.querySelectorAll('.t3js-media-new-content-element-wizard:not(.hidden)').length;
   }
 
   constructor(context: JQuery) {
@@ -78,7 +78,7 @@ export default class NewContentElementWizard {
     const tabContainer = form.querySelector('.t3js-tabs');
     const nothingFoundAlert = form.querySelector('.t3js-filter-noresult');
 
-    form.querySelectorAll('.media.media-new-content-element-wizard').forEach((element: Element): void => {
+    form.querySelectorAll('.t3js-media-new-content-element-wizard').forEach((element: Element): void => {
       // Clean up textContent by trimming and replacing consecutive spaces with a single space
       const textContent = element.textContent.trim().replace(/\s+/g, ' ');
       element.classList.toggle('hidden', inputField.value !== '' && !RegExp(inputField.value, 'i').test(textContent));

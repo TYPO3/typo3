@@ -23,7 +23,7 @@
 //       </a>
 //     </div>
 //   </div>
-//   <div id="panelContentId" class="panel-collapse collapse in" aria-expanded="true">
+//   <div id="panelContentId" class="panel-collapse collapse show" aria-expanded="true">
 //     <div class="panel-body">
 //       ... Content ...
 //     </div>
@@ -115,12 +115,12 @@ $panel-progress-bar: #444;
 .panel-table {
     th:first-child,
     td:first-child {
-        padding-left: $panel-body-padding;
+        padding-left: $card-spacer-x;
     }
 
     th:last-child,
     td:last-child {
-        padding-right: $panel-body-padding;
+        padding-right: $card-spacer-x;
     }
 }
 
@@ -145,4 +145,11 @@ $panel-progress-bar: #444;
 //
 .panel-active {
     @include panel-variant($panel-active-border, $panel-active-text, $panel-active-heading-bg, $panel-active-border);
+}
+
+//
+// Tab
+//
+.panel-body {
+    padding: 0.75rem;
 }

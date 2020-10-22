@@ -77,8 +77,8 @@
             <f:variable name="firstGroupActive" value="false" />
             <f:for each="{widgetGroups}" as="groupConfiguration" iteration="iterator">
                 <f:if condition="{groupConfiguration.widgets}">
-                    <li class="t3js-tabmenu-item {f:if(condition: '{firstGroupActive} == \'false\'', then: 'active')}">
-                        <a id="dashboard-widgetgroup-tab-{groupConfiguration.identifier}" data-toggle="tab" href="#dashboard-widgetgroup-{groupConfiguration.identifier}" role="tab" aria-controls="dashboard-widgetgroup-{groupConfiguration.identifier}" aria-selected="true">{groupConfiguration.title}</a>
+                    <li class="t3js-tabmenu-item nav-item">
+                        <a id="dashboard-widgetgroup-tab-{groupConfiguration.identifier}" class="nav-link {f:if(condition: '{firstGroupActive} == \'false\'', then: 'active')}" data-toggle="tab" href="#dashboard-widgetgroup-{groupConfiguration.identifier}" role="tab" aria-controls="dashboard-widgetgroup-{groupConfiguration.identifier}" aria-selected="true">{groupConfiguration.title}</a>
                     </li>
                     <f:variable name="firstGroupActive" value="true" />
                 </f:if>

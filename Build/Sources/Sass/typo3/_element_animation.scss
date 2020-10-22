@@ -14,8 +14,7 @@
 
     &.collapsing {
         display: inline-block;
+        transition-property: width, visibility;
         width: 0;
-
-        @include transition-property(#{"width, visibility"});
     }
 }

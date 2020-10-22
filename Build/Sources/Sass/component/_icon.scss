@@ -146,3 +146,41 @@ $icon-opacity-disabled: 0.5 !default;
 @include icon-size(default, $icon-size-default);
 @include icon-size(large, $icon-size-large);
 @include icon-size(mega, $icon-size-mega);
+
+//
+// Special icons
+//
+.icon-actions-edit-copy-release,
+.icon-actions-edit-cut-release,
+.icon-status-status-current,
+.icon-status-dialog-error,
+.icon-status-status-permission-denied {
+    color: $danger;
+}
+
+.icon-status-status-sorting-light-asc,
+.icon-status-status-sorting-light-desc {
+    color: #fff;
+}
+
+.icon-status-status-sorting-asc,
+.icon-status-status-sorting-desc {
+    color: $gray-600;
+}
+
+.icon-status-dialog-information {
+    color: $info;
+}
+
+.icon-status-dialog-ok,
+.icon-status-status-permission-granted {
+    color: $success;
+}
+
+.icon-status-dialog-notification {
+    color: $notice;
+}
+
+.icon-status-dialog-warning {
+    color: $warning;
+}

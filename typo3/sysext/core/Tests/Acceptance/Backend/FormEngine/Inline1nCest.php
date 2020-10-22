@@ -61,7 +61,7 @@ class Inline1nCest
         $I->seeInField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'lipsum');
         $I->wantTo('Collapse the inline Element');
         $I->click('div[data-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
-        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["] .panel-collapse');
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["] .panel');
     }
 
     /**

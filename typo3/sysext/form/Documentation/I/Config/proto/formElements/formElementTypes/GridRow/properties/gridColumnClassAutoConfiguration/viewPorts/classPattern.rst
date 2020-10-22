@@ -33,7 +33,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts.[*].classPattern
                gridSize: 12
                viewPorts:
                  xs:
-                   classPattern: 'col-xs-{@numbersOfColumnsToUse}'
+                   classPattern: 'col-{@numbersOfColumnsToUse}'
                  sm:
                    classPattern: 'col-sm-{@numbersOfColumnsToUse}'
                  md:
@@ -46,7 +46,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts.[*].classPattern
 
 :aspect:`Description`
       Defines the CSS class pattern for the CSS grid system.
-      Each viewport `classPattern` will be wrapped around a form element within a grid row. 
+      Each viewport `classPattern` will be wrapped around a form element within a grid row.
       The `{@numbersOfColumnsToUse}` placeholder will be replaced by the number of columns which the respective form element should occupy.
       The number of columns which the respective form element should occupy has to defined within the respective form elements within a GridRow.
       If a form element has no number of columns defined, the ``{@numbersOfColumnsToUse}`` are calculated automatically.

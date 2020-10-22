@@ -417,7 +417,7 @@ class PagePositionMap
         $backendLayout = $backendLayoutProvider->getSelectedBackendLayout($pid);
         if (isset($backendLayout['__config']['backend_layout.'])) {
             $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
-            $table = '<div class="table-fit"><table class="table table-condensed table-bordered table-vertical-top">';
+            $table = '<div class="table-fit"><table class="table table-sm table-bordered table-vertical-top">';
             $colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
             $rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
             $table .= '<colgroup>';
@@ -499,7 +499,7 @@ class PagePositionMap
 				Map of records in columns:
 			-->
 			<div class="table-fit">
-				<table class="table table-condensed table-bordered table-vertical-top">
+				<table class="table table-sm table-bordered table-vertical-top">
 					<tr>' . $row . '</tr>
 				</table>
 			</div>

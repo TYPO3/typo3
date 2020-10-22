@@ -12,7 +12,7 @@ $dropzone-close-width: 26px;
 $dropzone-close-size: 14px;
 $dropzone-close-bg: #eaeaea;
 $dropzone-close-text: $dropzone-text;
-$dropzone-close-hover-bg: $brand-danger;
+$dropzone-close-hover-bg: $danger;
 $dropzone-close-hover-text: #fff;
 $dropzone-icon-size: 16px;
 $dropzone-icon-height: 40px;
@@ -20,7 +20,7 @@ $dropzone-icon-width: 40px;
 $dropzone-icon-radius: 50%;
 $dropzone-icon-bg: #eee;
 $dropzone-icon-ok-text: #fff;
-$dropzone-icon-ok-bg: $brand-success;
+$dropzone-icon-ok-bg: $success;
 
 //
 // Dropzone
@@ -171,9 +171,9 @@ $dropzone-icon-ok-bg: $brand-success;
 // Upload Variables
 //
 $upload-queue-margin: $dropzone-margin;
-$upload-queue-progress-bg: $brand-success;
-$upload-queue-progress-uploading-bg: $brand-info;
-$upload-queue-progress-error-bg: $brand-danger;
+$upload-queue-progress-bg: $success;
+$upload-queue-progress-uploading-bg: $info;
+$upload-queue-progress-error-bg: $danger;
 
 //
 // Upload queue

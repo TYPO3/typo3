@@ -13,11 +13,11 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <td colspan="3">
+                    <th colspan="3">
                         <a href="#" class="t3js-contextmenutrigger" data-table="sys_template" data-uid="{templateRecord.uid}">
                             <core:iconForRecord table="sys_template" row="{templateRecord}"/>
                         </a><strong>{title}</strong>
-                    </td>
+                    </th>
                 </tr>
             </thead>
             <f:for each="{tableRows}" as="line">
@@ -26,7 +26,6 @@
         </table>
     </div>
     <div>
-        <br />
         <a class="btn btn-default" href="{editAllUrl}"><strong><core:icon identifier="actions-document-open" />&nbsp;<f:translate key="{LLPrefix}editTemplateRecord"/></strong></a>
     </div>
 </div>

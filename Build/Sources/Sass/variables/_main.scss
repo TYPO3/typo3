@@ -25,35 +25,61 @@ $fa-font-path: "#{$path-sysext}/backend/Resources/Public/Fonts/FontAwesome";
 //
 
 // Colors
-$gray-darker: rgb(30, 30, 30);
-$gray-dark: rgb(90, 90, 90);
-$gray: rgb(115, 115, 115);
-$gray-light: rgb(215, 215, 215);
-$gray-lighter: rgb(245, 245, 245);
-$brand-primary: #0078e6;
-$brand-success: #79a548;
-$brand-info: #6daae0;
-$brand-warning: #e8a33d;
-$brand-danger: #c83c3c;
-$brand-notice: #333;
+$gray-900: rgb(30, 30, 30);
+$gray-800: rgb(51, 51, 51);
+$gray-700: rgb(90, 90, 90);
+$gray-600: rgb(115, 115, 115);
+$gray-500: rgb(187, 187, 187);
+$gray-400: rgb(204, 204, 204);
+$gray-300: rgb(215, 215, 215);
+$gray-200: rgb(238, 238, 238);
+$gray-100: rgb(245, 245, 245);
+$gray-50: rgb(250, 250, 250);
+$primary: #0078e6;
+$success: #79a548;
+$info: #6daae0;
+$warning: #e8a33d;
+$danger: #c83c3c;
+$notice: #333;
+$light: $gray-200;
+$black: #000;
+
+// scss-docs-start theme-colors-map
+$theme-colors: (
+    "primary": $primary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "default": $light
+);
+// scss-docs-end theme-colors-map
+
+// Options
+$enable-shadows: true;
+$theme-color-interval: 10%;
 
 // Scaffolding
 $body-bg: #fff;
-$text-color: #000;
+$body-color: $black;
+$text-body: $black;
+$text-color: $black;
 $link-color: #212424;
-$link-disabled-color: $gray-light;
+$link-disabled-color: $gray-300;
 $link-hover-color: #000;
+$link-decoration: none;
+$link-hover-decoration: underline;
 
 // Typography
+$font-size-root: 16px;
 $font-family-sans-serif: Verdana, Arial, Helvetica, sans-serif;
 $font-size-base: 12px;
 $font-size-large: ceil(($font-size-base * 1.25)); // ~15px
 $font-size-small: 11px; // ~11px
-$font-size-h1: floor(($font-size-base * 2.3));
-$font-size-h2: floor(($font-size-base * 1.6));
-$font-size-h3: ceil(($font-size-base * 1.35));
-$font-size-h4: ceil(($font-size-base * 1.2));
+$h1-font-size: $font-size-base * 2.25;
+$h2-font-size: $font-size-base * 1.6;
+$h3-font-size: $font-size-base * 1.4;
+$h4-font-size: $font-size-base * 1.25;
+$headings-line-height: 1.1;
 $line-height-base: 1.5;
+
+// Paragraphs
+$paragraph-margin-bottom: 0.5rem;
 
 // Screen Dimensions
 $screen-xs: 480px;
@@ -85,36 +111,41 @@ $padding-xs-vertical: 2px;
 $padding-xs-horizontal: 4px;
 $line-height-large: 1.3333333;
 $line-height-small: 1.5;
-$border-radius-base: 2px;
-$border-radius-large: 2px;
-$border-radius-small: 2px;
+$border-radius: 0.125rem;
+$border-radius-sm: $border-radius;
+$border-radius-lg: $border-radius;
 
 // Tables
-$table-cell-padding: 6px;
-$table-condensed-cell-padding: 4px;
-$table-bg: #fafafa;
+$table-bg: $gray-50;
 $table-bg-accent: darken($table-bg, 1%);
 $table-bg-hover: darken($table-bg, 5%);
 $table-bg-active: $table-bg-hover;
-$table-border-color: #ccc;
+$table-border-color: $gray-400;
+$table-striped-bg-factor: 0.025;
+$table-bg-level: -7;
 
 // Buttons
 $btn-font-weight: normal;
 $btn-default-color: #333;
 $btn-default-bg: #eee;
 $btn-default-border: #bbb;
-$btn-primary-color: #fff !default;
-$btn-primary-bg: $brand-primary !default;
-$btn-primary-border: darken($btn-primary-bg, 5%) !default;
+$btn-primary-color: #fff;
+$btn-primary-bg: $primary;
+$btn-primary-border: darken($btn-primary-bg, 5%);
+
+// Pill
+$rounded-pill: 0.625rem;
 
 // Forms
 $input-bg: #fefefe;
 $input-color: #333;
 $input-border: #bbb;
 $input-border-focus: #aaa;
-$input-color-placeholder: #767676;
-$input-color-disabled: $gray;
+$input-color-placeholder: $gray-300;
+$input-color-disabled: $gray-600;
 $input-height-large: (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 1.6) + 2);
+$input-border-color: $gray-500;
+$form-label-font-weight: 700;
 
 // Navbar
 $navbar-height: 45px;
@@ -136,13 +167,14 @@ $navbar-inverse-link-disabled-bg: darken($navbar-inverse-bg, 20%);
 
 // Navs
 $nav-open-link-hover-color: #fff;
-$nav-link-padding: 6px 12px;
-$nav-disabled-link-hover-color: $gray-dark;
+$nav-link-padding-y: 6px;
+$nav-link-padding-x: 12px;
+$nav-disabled-link-hover-color: $gray-700;
 
 // Tabs
 $nav-tabs-border-color: #ccc;
 $nav-tabs-link-hover-bg: darken(#fafafa, 10%);
-$nav-tabs-link-hover-border-color: $gray-light;
+$nav-tabs-link-hover-border-color: $gray-300;
 $nav-tabs-active-link-bg: #fafafa;
 $nav-tabs-active-link-hover-bg: $body-bg;
 $nav-tabs-active-link-hover-color: #000;
@@ -152,21 +184,26 @@ $nav-tabs-justified-link-border-color: #ccc;
 $nav-tabs-justified-active-link-border-color: $nav-tabs-border-color;
 
 // Form states and alerts
-$state-success-text: $brand-success;
-$state-success-bg: lighten($brand-success, 35%);
-$state-success-border: $brand-success;
-$state-info-text: $brand-info;
-$state-info-bg: lighten($brand-info, 30%);
-$state-info-border: $brand-info;
-$state-warning-text: $brand-warning;
-$state-warning-bg: lighten($brand-warning, 35%);
-$state-warning-border: $brand-warning;
-$state-danger-text: $brand-danger;
-$state-danger-bg: lighten($brand-danger, 35%);
-$state-danger-border: $brand-danger;
+$state-success-text: $success;
+$state-success-bg: lighten($success, 35%);
+$state-success-border: $success;
+$state-info-text: $info;
+$state-info-bg: lighten($info, 30%);
+$state-info-border: $info;
+$state-warning-text: $warning;
+$state-warning-bg: lighten($warning, 35%);
+$state-warning-border: $warning;
+$state-danger-text: $danger;
+$state-danger-bg: lighten($danger, 35%);
+$state-danger-border: $danger;
 $state-notice-text: rgb(160, 160, 160);                          // TYPO3 SPECIFIC
 $state-notice-bg: lighten(rgb(160, 160, 160), 35%);              // TYPO3 SPECIFIC
 $state-notice-border: rgb(160, 160, 160);                        // TYPO3 SPECIFIC
+
+// used to build "bg-*" classes (i.e. "bg-success")
+$theme-colors-state: (
+    "primary": $primary, "success": $state-success-bg, "info": $state-info-bg, "warning": $state-warning-bg, "danger": $state-danger-bg, "notice": $state-notice-bg
+);
 
 // Tooltips
 $tooltip-bg: #333;
@@ -177,21 +214,26 @@ $tooltip-arrow-width: 3px;
 $alert-padding: 11px;
 $alert-border-radius: 2px;
 $alert-link-font-weight: bold;
-$alert-success-bg: $brand-success;
+$alert-success-bg: $success;
 $alert-success-text: #fff;
 $alert-success-border: transparent;
-$alert-info-bg: $brand-info;
+$alert-info-bg: $info;
 $alert-info-text: #fff;
 $alert-info-border: transparent;
-$alert-warning-bg: $brand-warning;
+$alert-warning-bg: $warning;
 $alert-warning-text: #fff;
 $alert-warning-border: transparent;
-$alert-danger-bg: $brand-danger;
+$alert-danger-bg: $danger;
 $alert-danger-text: #fff;
 $alert-danger-border: transparent;
-$alert-notice-bg: $brand-notice;                // TYPO3 SPECIFIC
+$alert-notice-bg: $notice;                // TYPO3 SPECIFIC
 $alert-notice-text: #fff;                         // TYPO3 SPECIFIC
 $alert-notice-border: transparent;                  // TYPO3 SPECIFIC
+$alert-margin-bottom: 1.125rem;
+$alert-padding-y: 0.75rem;
+$alert-padding-x: 0.75rem;
+$alert-color-scale: 0;
+$alert-bg-scale: 0;
 
 // Panels
 $panel-default-border: #ccc;
@@ -202,16 +244,26 @@ $well-bg: #fafafa;
 $well-border: #ccc;
 
 // Badges
-$badge-bg: $gray;
+$badge-bg: $gray-600;
+$badge-border-radius: 0.125rem;
 
 // Type
 $text-muted: lighten($text-color, 45%);
-$headings-small-color: $gray;
+$headings-small-color: $gray-600;
 $dl-horizontal-offset: 90px;
 $hr-border: #7a7a7a;
+$hr-opacity: 1;
 
 // Modal
 $zindex-modal: 5000;
+
+// todo: remove modal media queries?
+$modal-sm: 100vw;
+$modal-md: 100vw;
+$modal-lg: 100vw;
+$modal-xl: 100vw;
+$modal-content-box-shadow-xs: 0 0.375rem 1rem rgba($black, 0.5);
+$modal-content-box-shadow-sm-up: 0 0.375rem 1rem rgba($black, 0.5);
 
 // Dropdown
 $dropdown-bg: #292929;
@@ -224,8 +276,8 @@ $dropdown-link-hover-color: #fff;
 $dropdown-link-hover-bg: #424242;
 $dropdown-link-active-color: #fff;
 $dropdown-link-active-bg: #424242;
-$dropdown-link-disabled-color: $gray-light;
-$dropdown-header-color: $gray-light;
+$dropdown-link-disabled-color: $gray-300;
+$dropdown-header-color: $gray-300;
 $dropdown-caret-color: #000;
 
 // Datetime Picker

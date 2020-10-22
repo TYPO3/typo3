@@ -33,7 +33,7 @@
                 </f:if>
                 <div class="row media-gallery__list">
                     <f:for each="{config.cropVariants}" as="cropVariant">
-                        <div class="col-xs-6 col-sm-4 col-md-3 media-gallery__item">
+                        <div class="col-6 col-sm-4 col-md-3 media-gallery__item">
                             <p>
                                 <b><f:translate id="{cropVariant.title}" default="{cropVariant.title}" /></b><br/>
                                 <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>: <span class="t3js-image-manipulation-selected-ratio" data-crop-variant-id="{cropVariant.id}"><f:translate id="{cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}" default="{cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}" /></span>

@@ -6,9 +6,11 @@
 //
 // Load Variables
 //
-@import "bootstrap/variables";
-@import "bootstrap/mixins/vendor-prefixes";
+@import "functions";
+@import "_variables";
 @import "variables/main";
+@import "cropper/mixins";
+@import "legacy";
 
 //
 // Variables
@@ -18,10 +20,10 @@ $adminPanel-zindex-backdrop: 99991;
 $adminPanel-zindex-bar: 99992;
 $adminPanel-zindex-popup: 99994;
 $adminPanel-prefix: '#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel';
-$adminPanel-bg: $gray-darker;
-$adminPanel-color: $gray-lighter;
+$adminPanel-bg: $gray-900;
+$adminPanel-color: $gray-100;
 $adminPanel-success: #629755;
-$adminPanel-danger: $brand-danger;
+$adminPanel-danger: $danger;
 
 // Message
 $adminPanel-message-bg: #fff;
@@ -1105,13 +1107,13 @@ body.typo3-adminPanel-noscroll {
     }
 
     .typo3-adminPanel-sql-header {
-        color: $gray;
-        border-bottom: 1px solid $gray-light;
+        color: $gray-600;
+        border-bottom: 1px solid $gray-300;
     }
 
     .typo3-adminPanel-sql-queries-header {
-        color: $gray;
-        border-bottom: 1px solid $gray-light;
+        color: $gray-600;
+        border-bottom: 1px solid $gray-300;
     }
 
     .typo3-adminPanel-sql-query-ellipsis {
@@ -1121,10 +1123,10 @@ body.typo3-adminPanel-noscroll {
     }
 
     > .typo3-adminPanel-sql-panel {
-        border-bottom: 1px dashed $gray-light;
+        border-bottom: 1px dashed $gray-300;
 
         &:nth-child(2n+1) {
-            background: $gray-lighter;
+            background: $gray-100;
         }
     }
 
@@ -1137,7 +1139,7 @@ body.typo3-adminPanel-noscroll {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            color: $gray-darker;
+            color: $gray-900;
             text-align: left;
             white-space: nowrap;
             background-color: $adminPanel-bar-color;

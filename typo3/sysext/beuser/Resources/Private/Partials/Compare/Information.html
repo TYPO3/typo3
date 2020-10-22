@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
 
 <f:section name="languages">
-    <table class="table table-condensed table-hover">
+    <table class="table table-sm table-hover">
         <f:for each="{languages}" key="languageUid" as="language">
             <tr>
                 <f:if condition="{languageUid} ==0">
@@ -25,7 +25,7 @@
 
 <f:section name="groups">
     <f:if condition="{groups.all}">
-        <table class="table table-condensed table-bordered table-hover">
+        <table class="table table-sm table-bordered table-hover">
             <thead>
                 <tr>
                     <th></th>
@@ -55,7 +55,7 @@
 
 <f:section name="dbMounts">
     <f:if condition="{dbMounts}">
-        <table class="table table-condensed table-hover">
+        <table class="table table-sm table-hover">
             <f:for each="{dbMounts}" as="item">
                 <tr>
                     <td class="col-icon">
@@ -72,7 +72,7 @@
 
 <f:section name="fileMounts">
     <f:if condition="{fileMounts}">
-        <table class="table table-condensed table-hover">
+        <table class="table table-sm table-hover">
             <f:for each="{fileMounts}" as="item">
                 <tr>
                     <td class="col-icon">
@@ -89,7 +89,7 @@
 
 <f:section name="fileFolderPermissions">
     <f:if condition="{fileFolderPermissions}">
-        <table class="table table-condensed table-hover">
+        <table class="table table-sm table-hover">
             <f:for each="{fileFolderPermissions}" as="item">
                 <tr>
                     <td class="col-icon"><core:icon identifier="{item.2}"/></td>
@@ -102,7 +102,7 @@
 
 <f:section name="categories">
     <f:if condition="{categories}">
-        <table class="table table-condensed table-hover">
+        <table class="table table-sm table-hover">
             <f:for each="{categories}" as="item">
                 <tr>
                     <td class="col-icon">
@@ -131,7 +131,7 @@
 
 <f:section name="pageTypes">
     <f:if condition="{pageTypes}">
-        <table class="table table-condensed table-hover">
+        <table class="table table-sm table-hover">
             <f:for each="{pageTypes}" as="item">
                 <tr>
                     <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
@@ -148,7 +148,7 @@
 
 <f:section name="modules">
     <f:if condition="{modules}">
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-sm">
             <f:if condition="{showHeadline}">
                 <thead>
                 <tr>
@@ -171,7 +171,7 @@
 <f:section name="tables">
     <f:if condition="{tables.all}">
     <div class="table-fit">
-    <table class="table table-bordered table-hover table-condensed">
+    <table class="table table-bordered table-hover table-sm">
         <thead>
         <tr>
             <th><f:if condition="{showHeadline}"><f:translate key="tableModes" /></f:if></th>

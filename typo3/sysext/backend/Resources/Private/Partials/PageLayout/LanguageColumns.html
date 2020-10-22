@@ -1,6 +1,6 @@
 <f:if condition="{context.newLanguageOptions}">
-    <div class="form-inline form-inline-spaced">
-        <div class="form-group">
+    <div class="row-cols-auto row form-inline-spaced">
+        <div class="col">
             <select class="form-control input-sm" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">
                 <f:for each="{context.newLanguageOptions}" as="languageName" key="url">
                     <option value="{url}">{languageName}</option>

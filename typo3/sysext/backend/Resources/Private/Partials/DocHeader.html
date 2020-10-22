@@ -1,15 +1,15 @@
 <div class="module-loading-indicator"></div>
 <div class="module-docheader t3js-module-docheader">
     <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row">
-        <f:variable name="columnCssClass">module-docheader-bar-column-left col-xs-12 text-right</f:variable>
+        <f:variable name="columnCssClass">module-docheader-bar-column-left col-12 text-right</f:variable>
         <f:if condition="{docHeader.menus}">
             <f:if condition="{docHeader.menus -> f:count()} > 1">
                 <f:then>
-                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-xs-12 col-sm-7 col-md-6 col-lg-8 text-right</f:variable>
-                    <div class="module-docheader-bar-column-left col-xs-12 col-sm-5 col-md-6 col-lg-4">
-                        <div class="form-inline row">
+                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-12 col-sm-7 col-md-6 col-lg-8 text-right</f:variable>
+                    <div class="module-docheader-bar-column-left col-12 col-sm-5 col-md-6 col-lg-4">
+                        <div class="row-cols-auto row">
                             <f:for each="{docHeader.menus}" as="menu">
-                                <div class="form-group form-group-sm col-xs-6">
+                                <div class="form-group form-group-sm col">
                                     <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
                                 </div>
                             </f:for>
@@ -17,11 +17,11 @@
                     </div>
                 </f:then>
                 <f:else>
-                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-xs-12 col-sm-9 text-right</f:variable>
-                    <div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
-                        <div class="form-inline">
+                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-12 col-sm-9 text-right</f:variable>
+                    <div class="module-docheader-bar-column-left col">
+                        <div class="row-cols-auto row">
                             <f:for each="{docHeader.menus}" as="menu">
-                                <div class="form-group form-group-sm">
+                                <div class="col">
                                     <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
                                 </div>
                             </f:for>

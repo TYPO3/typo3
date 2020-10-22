@@ -711,15 +711,15 @@ class Backend extends Workspaces {
       return;
     }
 
-    const $ul = $('<ul />', {class: 'pagination pagination-block'});
+    const $ul = $('<ul />', {class: 'pagination'});
     const liElements: Array<JQuery> = [];
-    const $controlFirstPage = $('<li />').append(
-        $('<a />', {'data-action': 'previous'}).append(
+    const $controlFirstPage = $('<li />', {class: 'page-item'}).append(
+        $('<a />', {class: 'page-link', 'data-action': 'previous'}).append(
           $('<span />', {class: 't3-icon fa fa-arrow-left'}),
         ),
       ),
-      $controlLastPage = $('<li />').append(
-        $('<a />', {'data-action': 'next'}).append(
+      $controlLastPage = $('<li />', {class: 'page-item'}).append(
+        $('<a />', {class: 'page-link', 'data-action': 'next'}).append(
           $('<span />', {class: 't3-icon fa fa-arrow-right'}),
         ),
       );
@@ -733,9 +733,9 @@ class Backend extends Workspaces {
     }
 
     for (let i = 1; i <= this.paging.totalPages; i++) {
-      const $li = $('<li />', {class: this.paging.currentPage === i ? 'active' : ''});
+      const $li = $('<li />', {class: 'page-item' + (this.paging.currentPage === i ? ' active' : '')});
       $li.append(
-        $('<a />', {'data-action': 'page', 'data-page': i}).append(
+        $('<a />', {class: 'page-link', 'data-action': 'page', 'data-page': i}).append(
           $('<span />').text(i),
         ),
       );
@@ -1261,7 +1261,7 @@ class Backend extends Workspaces {
  * Changes the markup of a pagination action being disabled
  */
 $.fn.disablePagingAction = function(): void {
-  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />'));
+  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />', {class: 'page-link'}));
 };
 
 export = new Backend();

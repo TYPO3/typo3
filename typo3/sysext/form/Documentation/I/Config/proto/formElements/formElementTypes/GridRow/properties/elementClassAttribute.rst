@@ -33,7 +33,7 @@ properties.elementClassAttribute
                gridSize: 12
                viewPorts:
                  xs:
-                   classPattern: 'col-xs-{@numbersOfColumnsToUse}'
+                   classPattern: 'col-{@numbersOfColumnsToUse}'
                  sm:
                    classPattern: 'col-sm-{@numbersOfColumnsToUse}'
                  md:

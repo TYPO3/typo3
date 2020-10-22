@@ -4,13 +4,13 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-6 col-xs-12">
+                        <div class="col-sm-6 col-12">
                             <label for="search_field">
                                 <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
                             </label>
                             <input class="form-control" type="search" placeholder="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')}" name="search_field" id="search_field" value="{searchString}" />
                         </div>
-                        <div class="col-xs-12 col-sm-3">
+                        <div class="col-12 col-sm-3">
                             <label for="search_levels"><f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels" /></label>
                             <select class="form-control" name="search_levels" title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')}" id="search_levels">
                                 <f:for each="{searchLevelsFromTSconfig}" as="searchLevelFromTsConfig" key="level">
@@ -20,11 +20,11 @@
                                 </f:for>
                             </select>
                         </div>
-                        <div class="col-xs-12 col-sm-3">
+                        <div class="col-12 col-sm-3">
                             <label for="showLimit"><f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit" /></label>
                             <input class="form-control" type="number" min="0" max="10000" placeholder="10" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')}" name="showLimit" id="showLimit" value="{f:if(condition: showLimit, then: '{showLimit}', else: '')}" />
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <div class="form-control-wrap">
                                 <button type="submit" class="btn btn-default" name="search" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
                                     <core:icon identifier="actions-search" />

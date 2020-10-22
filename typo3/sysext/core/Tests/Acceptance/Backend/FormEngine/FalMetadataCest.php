@@ -54,7 +54,7 @@ class FalMetadataCest
         $I->amGoingTo('Create new CE with image');
         $I->click('.t3js-page-new-ce a');
         $I->switchToMainFrame();
-        $I->waitForElement('.t3js-modal.in');
+        $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
         $I->click('Text & Images');
@@ -146,7 +146,7 @@ class FalMetadataCest
         $I->amGoingTo('Create new CE with image with filled metadata');
         $I->click('.t3js-page-new-ce a');
         $I->switchToMainFrame();
-        $I->waitForElement('.t3js-modal.in');
+        $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
         $I->click('Text & Images');

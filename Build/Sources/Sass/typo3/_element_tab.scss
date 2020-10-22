@@ -42,15 +42,15 @@
         // Has error state
         &.has-validation-error {
             > a {
-                background-color: $brand-danger;
-                border-color: darken($brand-danger, 10%);
+                background-color: $danger;
+                border-color: darken($danger, 10%);
                 color: #fff;
 
                 &:focus,
                 &:hover {
                     color: #fff;
-                    background-color: lighten($brand-danger, 5%);
-                    border-color: darken($brand-danger, 5%);
+                    background-color: lighten($danger, 5%);
+                    border-color: darken($danger, 5%);
                 }
 
                 &:before {
@@ -63,7 +63,7 @@
                 background-color: $nav-tabs-active-link-bg;
 
                 &:before {
-                    background-color: $brand-danger;
+                    background-color: $danger;
                     color: #fff;
                 }
             }

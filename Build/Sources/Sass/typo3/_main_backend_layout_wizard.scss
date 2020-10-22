@@ -9,14 +9,14 @@
 
     table.editor {
         border: 0;
-        border-left: 1px $gray-light solid;
-        border-top: 1px $gray-light solid;
+        border-left: 1px $gray-300 solid;
+        border-top: 1px $gray-300 solid;
 
         td {
             vertical-align: middle;
             border: 0;
-            border-bottom: 1px $gray-light solid;
-            border-right: 1px $gray-light solid;
+            border-bottom: 1px $gray-300 solid;
+            border-right: 1px $gray-300 solid;
             text-align: center;
             background-color: white;
             min-height: 100px;

@@ -1,0 +1,36 @@
+//
+.media {
+    display: grid;
+    grid-template-columns: 2rem auto;
+    grid-gap: 1rem;
+
+    .media-body {
+        grid-column: 1 / 3;
+    }
+
+    .media-left + .media-body {
+        grid-column: 2 / 3;
+    }
+}
+
+.alert .close {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.625rem;
+}
+
+// scss-docs-start alert-modifiers
+// Generate contextual modifier classes for colorizing the alert.
+
+@each $state, $value in $theme-colors {
+    $background: scale-color($value, $alert-bg-scale);
+
+    $border: scale-color($value, $alert-border-scale);
+
+    $color: $white;
+
+    .alert-#{$state} {
+        @include alert-variant($background, $border, $color);
+    }
+}
+// scss-docs-end alert-modifiers

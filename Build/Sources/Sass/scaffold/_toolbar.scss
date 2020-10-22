@@ -5,7 +5,7 @@ $toolbar-item-padding-vertical: 9px;
 $toolbar-item-padding-horizontal: 10px;
 $toolbar-color: #ddd;
 $toolbar-height: 45px;
-$toolbar-zindex: $zindex-navbar;
+$toolbar-zindex: $zindex-dropdown;
 $toolbar-bg: $navbar-inverse-bg;
 $toolbar-navigation-color: $toolbar-color;
 $toolbar-navigation-bg: #2f2f2f;
@@ -166,6 +166,10 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     @media (min-width: $scaffold-breakpoint) {
         border: none;
     }
+
+    &.show {
+        background-color: $dropdown-bg;
+    }
 }
 
 .open {
@@ -237,8 +241,15 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     }
 }
 
+.toolbar-item-search {
+    .form-control {
+        color: $white;
+        background-color: $toolbar-navigation-search-bg;
+    }
+}
+
 .toolbar-item-search-field {
-    color: inherit;
+    color: $white;
     background-color: $toolbar-navigation-search-bg;
     margin: 0;
     border-radius: 0;

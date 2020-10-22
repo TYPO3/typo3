@@ -154,4 +154,13 @@ interface JQuery {
   // To be able to use devbridge-autocomplete we have to override the definition of jquerui
   autocomplete(options?: { [key: string]: any }): any;
   disablePagingAction(): void;
+
+  // add bootstrap
+  modal(options?: any): JQuery;
+  collapse(options?: any): JQuery;
+  popover(options?: any): JQuery;
+  tab(options?: any): JQuery;
+  carousel(options?: any): JQuery;
+  alert(options?: any): JQuery;
+  dropdown(options?: any): JQuery;
 }

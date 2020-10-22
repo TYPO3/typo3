@@ -200,15 +200,15 @@ class CheckboxElement extends AbstractFormElement
         $iconUnchecked = $this->iconFactory->getIcon($iconIdentifierUnchecked, Icon::SIZE_SMALL)->render('inline');
 
         return '
-            <div class="checkbox checkbox-type-icon-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="form-check checkbox-type-icon-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
-                    class="checkbox-input"
+                    class="form-check-input"
                     value="1"
                     data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
                     ' . $checkboxParameters . '
                     ' . ($disabled ? ' disabled="disabled"' : '') . '
                     id="' . $checkboxId . '" />
-                <label class="checkbox-label" for="' . $checkboxId . '">
+                <label class="form-check-label" for="' . $checkboxId . '">
                     <span class="checkbox-label-icon">
                         <span class="checkbox-label-icon-checked">' . $iconChecked . '</span>
                         <span class="checkbox-label-icon-unchecked">' . $iconUnchecked . '</span>

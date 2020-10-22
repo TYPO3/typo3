@@ -263,13 +263,13 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $this->linkAttributes[] = 'pageIdSelector';
             $fieldDefinitions['pageIdSelector'] = '
 				<form class="form-horizontal"><div class="form-group form-group-sm">
-					<label class="col-xs-4 control-label">
+					<label class="col-4 control-label">
 						' . htmlspecialchars($this->getLanguageService()->getLL('page_id')) . '
 						</label>
-					<div class="col-xs-2">
+					<div class="col-2">
 						<input type="number" size="6" name="luid" id="luid" class="form-control" />
 					</div>
-					<div class="col-xs-6">
+					<div class="col-6">
 						<input class="btn btn-default t3js-pageLink" type="submit" value="' . htmlspecialchars($this->getLanguageService()->getLL('setLink')) . '" />
 					</div>
 				</div></form>';

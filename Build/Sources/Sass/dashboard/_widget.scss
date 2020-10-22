@@ -24,7 +24,7 @@
 .widget-content-title {
     padding: ($widget-padding / 2) $widget-padding;
     padding-right: $widget-action-size * 2 + $widget-padding;
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid $gray-300;
     font-family: $widget-title-font-family;
     font-size: $widget-title-size;
     font-weight: $widget-title-weight;
@@ -64,7 +64,7 @@
     width: $widget-action-size;
     height: $widget-action-size;
     position: relative;
-    color: $gray;
+    color: $gray-600;
     text-align: center;
 
     &:hover,

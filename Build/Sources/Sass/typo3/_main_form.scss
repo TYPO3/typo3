@@ -62,7 +62,7 @@ span.typo3-moduleHeader img {
 }
 
 .input-group-addon {
-    min-width: 2.5em;
+    min-width: 2.5rem;
 }
 
 //
@@ -148,7 +148,7 @@ fieldset[disabled] .form-control {
         font-size: 12px;
         text-align: center;
         content: $fa-var-exclamation-circle;
-        color: $brand-danger;
+        color: $danger;
         display: inline-block;
     }
 
@@ -166,10 +166,10 @@ fieldset[disabled] .form-control {
 
     .input-group-btn {
         label {
-            border-color: $brand-danger;
+            border-color: $danger;
 
             .t3-icon {
-                color: $brand-danger;
+                color: $danger;
             }
         }
 
@@ -183,6 +183,14 @@ fieldset[disabled] .form-control {
             display: block;
         }
     }
+}
+
+@mixin select-chevron {
+    background-image: url('#{$path-sysext}/core/Resources/Public/Icons/T3Icons/svgs/actions/actions-chevron-down.svg');
+    background-position: right 4px center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding-right: 24px;
 }
 
 //
@@ -202,7 +210,7 @@ select {
         }
 
         &[size="1"],
-        &:not([multiple][size]),
+        &:not([multiple]):not([size]),
         &:not([size]) {
             appearance: none;
 
@@ -211,11 +219,7 @@ select {
             }
 
             &:not(.form-select-no-siblings) {
-                background-image: url('#{$path-sysext}/core/Resources/Public/Icons/T3Icons/svgs/actions/actions-chevron-down.svg');
-                background-position: right 4px center;
-                background-repeat: no-repeat;
-                background-size: 16px 16px;
-                padding-right: 24px;
+                @include select-chevron;
             }
 
             &.input-sm,
@@ -250,38 +254,43 @@ select {
 //
 .form-control-clearable {
     position: relative;
+    border: 0;
+    padding: 0;
+    height: 100%;
 
     .form-control {
         padding-right: 2.3em;
     }
 
     .close {
+        border: none;
+        background-color: transparent;
         position: absolute;
         height: 16px;
         z-index: 3;
         top: 50%;
         right: 0.5em;
         transform: translate(0, -50%);
+        opacity: 0.2;
+
+        &:hover {
+            opacity: 0.5;
+        }
 
         .icon {
             vertical-align: 0;
         }
+    }
+
+    &:focus {
+        box-shadow: none;
+        border-color: inherit;
     }
 }
 
 .form-inline {
     .form-control-clearable {
         display: inline-block;
-    }
-}
-
-.input-group {
-    .form-control-clearable {
-        display: table-cell;
-
-        .form-control {
-            display: block;
-        }
     }
 }
 
@@ -498,6 +507,7 @@ select {
 .checkbox-column {
     margin-bottom: 5px;
 
+    > .form-check-input,
     > .radio,
     > .checkbox {
         margin: 0;
@@ -506,6 +516,7 @@ select {
 
 .radio-inline,
 .checkbox-inline {
+    &.form-check-input,
     &.radio,
     &.checkbox {
         display: block;
@@ -515,6 +526,7 @@ select {
         padding: 0;
 
         @media (max-width: $screen-xs-max) {
+            & + .form-check-in,
             & + .radio,
             & + .checkbox {
                 margin-top: -5px;

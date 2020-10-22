@@ -81,7 +81,9 @@ table {
     }
 
     > thead > tr {
-        background-color: darken($table-bg, 5%);
+        th {
+            background-color: $gray-200;
+        }
 
         th.col-checkbox {
             + th.col-title {
@@ -101,6 +103,10 @@ table {
         }
     }
 
+    > tbody > tr {
+        border-color: $gray-400;
+    }
+
     .btn-group {
         > .btn-group,
         > .btn {
@@ -109,7 +115,9 @@ table {
     }
 
     .btn-default {
-        @include button-variant($btn-default-color, darken($table-bg-accent, 10%), darken($table-bg-accent, 20%));
+        @include button-variant($gray-200, $gray-500, $gray-800, $gray-400, $gray-600);
+
+        padding: 0.375rem;
     }
 
     .pagination {
@@ -307,7 +315,6 @@ table {
             }
 
             &:last-child {
-                th,
                 td {
                     border-bottom: 0;
                 }

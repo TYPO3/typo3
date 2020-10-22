@@ -15,6 +15,7 @@ import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {Popover as BootstrapPopover} from 'bootstrap';
 import Popover = require('./Popover');
 
 interface HelpData {
@@ -78,10 +79,11 @@ class ContextHelp {
       const $me = $(e.currentTarget);
       const description = $me.data('description');
       if (typeof description !== 'undefined' && description !== '') {
-        Popover.setOptions($me, {
+        const options = <BootstrapPopover.Options>{
           title: $me.data('title'),
           content: description,
-        });
+        };
+        Popover.setOptions($me, options);
       } else if ($me.attr('data-loaded') === 'false' && $me.data('table')) {
         this.loadHelp($me);
       }
@@ -90,16 +92,11 @@ class ContextHelp {
       if ($me.closest('.t3js-module-docheader').length) {
         Popover.setOption($me, 'placement', 'bottom');
       }
-    }).on('shown.bs.popover', this.selector, (e: Event): void => {
-      const $popover = $(e.target).data('bs.popover').$tip;
-      if (!$popover.find('.popover-title').is(':visible')) {
-        $popover.addClass('no-title');
-      }
     }).on('click', '.help-has-link', (e: any): void => {
       $('.popover').each((index: number, popover: Element): void => {
         const $popover = $(popover);
         if ($popover.has(e.target).length) {
-          this.showHelpPopup($popover.data('bs.popover').$element);
+          this.showHelpPopup($('[aria-describedby="' + $popover.attr('id') + '"]'));
         }
       });
     }).on('click', 'body', (e: any): void => {
@@ -161,10 +158,11 @@ class ContextHelp {
         const data: HelpData = await response.resolve();
         const title = data.title || '';
         const content = data.content || '<p></p>';
-        Popover.setOptions($trigger, {
+        const options = <BootstrapPopover.Options>{
           title: title,
           content: content,
-        });
+        };
+        Popover.setOptions($trigger, options);
         $trigger
           .attr('data-loaded', 'true')
           .one('hidden.bs.popover', (): void => {

@@ -1,8 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<div class="media media-new-content-element-wizard">
+<div class="t3js-media-new-content-element-wizard media-new-content-element-wizard">
     <f:if condition="{onClickEvent}">
         <f:then>
-            <a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+            <a href="#" class="media" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
                 <f:if condition="{content}">
                     {content -> f:format.raw()}
                 </f:if>
@@ -19,7 +19,7 @@
         <f:else>
             <input type="radio" class="hide" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}"
                         onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
-            <a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}"
+            <a href="#new-content-element-wizard-carousel" class="media" onclick="{aOnClick -> f:format.htmlspecialchars()}"
                 data-slide="next">
                 <f:if condition="{content}">
                     {content -> f:format.raw()}

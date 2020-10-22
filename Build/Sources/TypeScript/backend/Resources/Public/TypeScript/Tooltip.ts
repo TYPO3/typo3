@@ -26,8 +26,9 @@ class Tooltip {
     });
   }
 
-  public initialize(selector: string, options?: object): void {
+  public initialize(selector: string, options?: any): void {
     options = options || {};
+    options.title = options.title || '';
     $(selector).tooltip(options);
   }
 

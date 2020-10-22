@@ -4,98 +4,72 @@
 //
 
 //
-// Bootstrap variables
+// Bootstrap
+// @todo: Only import the necessary parts
 //
-@import "bootstrap/variables";
 
-//
-// Bootstrap mixins
-//
-@import "bootstrap/mixins/hide-text";
-@import "bootstrap/mixins/opacity";
-@import "bootstrap/mixins/image";
-@import "bootstrap/mixins/labels";
-@import "bootstrap/mixins/reset-filter";
-@import "bootstrap/mixins/resize";
-@import "bootstrap/mixins/responsive-visibility";
-@import "bootstrap/mixins/size";
-@import "bootstrap/mixins/tab-focus";
-@import "bootstrap/mixins/reset-text";
-@import "bootstrap/mixins/text-emphasis";
-@import "bootstrap/mixins/text-overflow";
-@import "bootstrap/mixins/vendor-prefixes";
-@import "bootstrap/mixins/alerts";
-@import "bootstrap/mixins/buttons";
-@import "bootstrap/mixins/panels";
-@import "bootstrap/mixins/pagination";
-@import "bootstrap/mixins/list-group";
-@import "bootstrap/mixins/nav-divider";
-@import "bootstrap/mixins/forms";
-@import "bootstrap/mixins/progress-bar";
-@import "bootstrap/mixins/table-row";
-@import "bootstrap/mixins/background-variant";
-@import "bootstrap/mixins/border-radius";
-@import "bootstrap/mixins/gradients";
-@import "bootstrap/mixins/center-block";
-@import "bootstrap/mixins/nav-vertical-align";
-@import "bootstrap/mixins/grid-framework";
-@import "bootstrap/mixins/grid";
+/*!
+ * Bootstrap v5.0.0-beta1 (https://getbootstrap.com/)
+ * Copyright 2011-2020 The Bootstrap Authors
+ * Copyright 2011-2020 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
 
-//
-// Custom mixins
-//
-@import "mixins/clearfix";
+// scss-docs-start import-stack
+// Configuration
+@import "functions";
+@import "variables";
+@import "mixins";
+@import "utilities";
 
-//
-// Reset and dependencies
-//
-@import "bootstrap/normalize";
+// Layout & components
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "containers";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "breadcrumb";
+@import "pagination";
+@import "badge";
+@import "alert";
+@import "progress";
+@import "list-group";
+@import "close";
+@import "toasts";
+@import "modal";
+@import "tooltip";
+@import "popover";
+@import "carousel";
+@import "spinners";
+
+// Helpers
+@import "helpers";
+
+// extend bootstrap 5 utilities
+@import "utilities/utilities";
+
+// Utilities
+@import "utilities/api";
+// scss-docs-end import-stack
+
+// bootstrap v3 legacy
+@import "legacy";
 
 //
 // Fonts
 //
 @import "webfont/sourcesanspro";
 @import "font-awesome";
-
-//
-// Bootstrap Core CSS
-//
-@import "bootstrap/scaffolding";
-@import "bootstrap/type";
-@import "bootstrap/code";
-@import "bootstrap/grid";
-@import "bootstrap/tables";
-@import "bootstrap/forms";
-@import "bootstrap/buttons";
-
-//
-// Bootstrap Components
-//
-@import "bootstrap/component-animations";
-@import "bootstrap/dropdowns";
-@import "bootstrap/button-groups";
-@import "bootstrap/input-groups";
-@import "bootstrap/navs";
-@import "bootstrap/pagination";
-@import "bootstrap/labels";
-@import "bootstrap/badges";
-@import "bootstrap/thumbnails";
-@import "bootstrap/alerts";
-@import "bootstrap/progress-bars";
-@import "bootstrap/media";
-@import "bootstrap/list-group";
-@import "bootstrap/panels";
-@import "bootstrap/responsive-embed";
-@import "bootstrap/wells";
-@import "bootstrap/close";
-
-//
-// Bootstrap Components w/ JavaScript
-//
-@import "bootstrap/modals";
-@import "bootstrap/popovers";
-@import "bootstrap/tooltip";
-@import "bootstrap/carousel";
 
 //
 // Scaffold
@@ -108,7 +82,9 @@
 //
 // Custom Components
 //
+@import "component/alert";
 @import "component/autocomplete";
+@import "component/buttons";
 @import "component/dropdown";
 @import "component/avatar";
 @import "component/callout";
@@ -118,9 +94,3 @@
 @import "component/panel";
 @import "component/checkbox";
 @import "component/simpletable";
-
-//
-// Bootstrap Utility classes
-//
-@import "bootstrap/utilities";
-@import "bootstrap/responsive-utilities";

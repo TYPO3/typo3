@@ -758,7 +758,7 @@ define(['jquery',
               + '<h3>' + TYPO3.lang['formManager.references.headline'].replace('{0}', $(that).data('formName')) + '</h3>'
               + '</div>'
               + '<div class="table-fit">'
-              + '<table id="forms" class="table table-striped table-condensed">'
+              + '<table id="forms" class="table table-striped table-sm">'
               + '<thead>'
               + '<tr>'
               + '<th>' + TYPO3.lang['formManager.page'] + '</th>'

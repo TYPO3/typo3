@@ -2,8 +2,8 @@
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
             <div class="typo3-login-wrap">
-                <div class="panel panel-lg panel-login">
-                    <div class="panel-body">
+                <div class="card card-lg card-login">
+                    <div class="card-body">
                         <div class="typo3-login-logo">
                             <a href="{loginUrl}" id="t3js-login-url" data-referrer-check-enabled="{f:if(condition: '{referrerCheckEnabled}', then: '1', else: '0')}">
                                 <img src="{logo}" class="typo3-login-image" alt="" />
@@ -99,7 +99,7 @@
                         </f:if>
                     </div>
                     <f:render partial="LoginNews" arguments="{_all}" />
-                    <div class="panel-footer">
+                    <div class="card-footer">
                         <div class="typo3-login-copyright-wrap">
                             <a href="#loginCopyright" class="typo3-login-copyright-link collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="loginCopyright">
                                 <span><f:translate key="login.copyrightLink" /></span>

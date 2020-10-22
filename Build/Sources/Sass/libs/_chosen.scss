@@ -180,7 +180,7 @@
         }
 
         &.highlighted {
-            background-color: $brand-warning;
+            background-color: $warning;
             color: #fff;
         }
 
@@ -253,7 +253,7 @@
             margin: 3px 5px 3px 0;
             padding: 4px 20px 4px 5px;
             max-width: 100%;
-            background-color: $brand-warning;
+            background-color: $warning;
             background-clip: padding-box;
             color: #fff;
             line-height: 13px;

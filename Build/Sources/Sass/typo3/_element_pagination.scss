@@ -9,12 +9,6 @@
     .paginator-input {
         display: inline-block;
         width: auto;
-        margin: -6px 0;
+        margin: -7px 0;
     }
-}
-
-.pagination-block {
-    display: block;
-
-    @extend .clearfix;
 }

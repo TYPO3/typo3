@@ -9,7 +9,7 @@
 $scaffold-breakpoint-max: ($screen-md - 1);
 $scaffold-breakpoint: $screen-md;
 $scaffold-overlay-bg: rgba(0, 0, 0, 0.65);
-$scaffold-overlay-zindex: $zindex-modal-background;
+$scaffold-overlay-zindex: $zindex-modal-backdrop;
 $scaffold-bg: #f5f5f5;
 $scaffold-color: #333;
 $scaffold-secondary-bg: #151515;
@@ -17,17 +17,17 @@ $scaffold-secondary-color: #f5f5f5;
 $scaffold-topbar-bg: $scaffold-secondary-bg;
 $scaffold-topbar-color: $scaffold-secondary-color;
 $scaffold-topbar-height: 45px;
-$scaffold-topbar-zindex: $zindex-navbar;
+$scaffold-topbar-zindex: $zindex-dropdown;
 $scaffold-topbar-toolbar-bg: $scaffold-secondary-bg;
 $scaffold-topbar-toolbar-color: $scaffold-secondary-color;
 $scaffold-modulemenu-bg: lighten($scaffold-secondary-bg, 8);
 $scaffold-modulemenu-color: $scaffold-secondary-color;
 $scaffold-modulemenu-snapped-width: 64px;
 $scaffold-modulemenu-expanded-width: 240px;
-$scaffold-modulemenu-zindex: $zindex-navbar;
+$scaffold-modulemenu-zindex: $zindex-dropdown;
 $scaffold-toolbar-bg: lighten($scaffold-secondary-bg, 8);
 $scaffold-toolbar-color: $scaffold-secondary-color;
-$scaffold-toolbar-zindex: $zindex-navbar;
+$scaffold-toolbar-zindex: $zindex-dropdown;
 $scaffold-content-navigation-width: 300px;
 $scaffold-content-toggle-bg: lighten($scaffold-secondary-bg, 12);
 $scaffold-content-toggle-color: $scaffold-secondary-color;
@@ -119,6 +119,10 @@ body {
         &:focus,
         &:hover {
             color: $scaffold-toolbar-color;
+        }
+
+        &:after {
+            display: none;
         }
     }
 

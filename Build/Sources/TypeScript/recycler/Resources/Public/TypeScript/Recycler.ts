@@ -549,15 +549,15 @@ class Recycler {
       return;
     }
 
-    const $ul = $('<ul />', {class: 'pagination pagination-block'}),
+    const $ul = $('<ul />', {class: 'pagination'}),
       liElements = [],
-      $controlFirstPage = $('<li />').append(
-        $('<a />', {'data-action': 'previous'}).append(
+      $controlFirstPage = $('<li />', {class: 'page-item'}).append(
+        $('<a />', {class: 'page-link', 'data-action': 'previous'}).append(
           $('<span />', {class: 't3-icon fa fa-arrow-left'}),
         ),
       ),
-      $controlLastPage = $('<li />').append(
-        $('<a />', {'data-action': 'next'}).append(
+      $controlLastPage = $('<li />', {class: 'page-item'}).append(
+        $('<a />', {class: 'page-link', 'data-action': 'next'}).append(
           $('<span />', {class: 't3-icon fa fa-arrow-right'}),
         ),
       );
@@ -571,9 +571,9 @@ class Recycler {
     }
 
     for (let i = 1; i <= this.paging.totalPages; i++) {
-      const $li = $('<li />', {class: this.paging.currentPage === i ? 'active' : ''});
+      const $li = $('<li />', {class: 'page-item' + (this.paging.currentPage === i ? ' active' : '')});
       $li.append(
-        $('<a />', {'data-action': 'page'}).append(
+        $('<a />', {class: 'page-link', 'data-action': 'page'}).append(
           $('<span />').text(i),
         ),
       );
@@ -589,7 +589,7 @@ class Recycler {
  * Changes the markup of a pagination action being disabled
  */
 $.fn.disablePagingAction = function(): void {
-  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />'));
+  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />', {class: 'page-link'}));
 };
 
 export = new Recycler();

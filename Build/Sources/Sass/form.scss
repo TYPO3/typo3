@@ -20,7 +20,7 @@ $stage-validation-list-width: 100px;
 $stage-breakpoint-max: $screen-lg - 1;
 $stage-validation-transition-time-in: 0.2s;
 $stage-validation-transition-time-out: 0.3s;
-$navigation-bg: $gray-lighter;
+$navigation-bg: $gray-100;
 $tree-indentation: 20px;
 $tree-line-height: 20px;
 
@@ -59,12 +59,12 @@ $tree-line-height: 20px;
         &:hover,
         &:focus,
         &.active {
-            background-color: lighten($brand-info, 30%);
+            background-color: lighten($info, 30%);
         }
 
         .icon {
             svg path {
-                fill: $brand-primary;
+                fill: $primary;
             }
         }
     }
@@ -588,7 +588,7 @@ body {
             }
 
             .t3-form-form-composit-element-selected {
-                outline-color: $brand-primary;
+                outline-color: $primary;
             }
 
             & > .ui-sortable-handle {
@@ -645,7 +645,7 @@ body {
                 .t3-form-element-info .element-content {
                     span,
                     div {
-                        color: $gray-dark;
+                        color: $gray-700;
                     }
                 }
 
@@ -656,7 +656,7 @@ body {
             }
 
             span {
-                color: $gray-dark;
+                color: $gray-700;
             }
         }
 
@@ -758,7 +758,7 @@ body {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                color: $gray-dark;
+                color: $gray-700;
             }
         }
 
@@ -769,22 +769,22 @@ body {
             border: none;
 
             .t3-form-form-element-body {
-                border: 1px solid $brand-primary;
+                border: 1px solid $primary;
             }
 
             .t3-form-icon-container {
-                background-color: $brand-primary;
+                background-color: $primary;
             }
 
             .t3-form-element-info .element-content {
                 span,
                 div {
-                    color: $gray-dark;
+                    color: $gray-700;
                 }
             }
 
             .t3-form-validator-list {
-                $validation-list-background: lighten($brand-info, 30%);
+                $validation-list-background: lighten($info, 30%);
 
                 right: 0;
                 transition: right $stage-validation-transition-time-in;
@@ -810,8 +810,8 @@ body {
                 right: 0;
                 width: 100%;
                 height: $stage-abstract-element-toolbar-height;
-                border: 1px solid $brand-primary;
-                background-color: $brand-primary;
+                border: 1px solid $primary;
+                background-color: $primary;
                 padding-right: 0.7em;
                 padding-top: 0.4em;
 
@@ -823,7 +823,7 @@ body {
                     width: 1px;
                     height: 100%;
                     content: ' ';
-                    background-color: $brand-primary;
+                    background-color: $primary;
                 }
 
                 &:before {
@@ -838,10 +838,10 @@ body {
                     min-width: initial;
                     padding-left: 0;
                     padding-right: 0;
-                    background-color: darken($brand-primary, 10%);
+                    background-color: darken($primary, 10%);
 
                     > li a:hover {
-                        background-color: darken($brand-primary, 5%);
+                        background-color: darken($primary, 5%);
                     }
 
                     .icon {
@@ -852,7 +852,7 @@ body {
                 }
 
                 .caret {
-                    color: $brand-primary;
+                    color: $primary;
                 }
 
                 .t3-form-dropdown-buttons {
@@ -883,11 +883,11 @@ body {
         }
 
         .panel.t3-form-form-stage-selected {
-            border-color: $brand-primary;
+            border-color: $primary;
 
             > .panel-heading {
-                background-color: $brand-primary;
-                border-color: $brand-primary;
+                background-color: $primary;
+                border-color: $primary;
                 color: #fff;
 
                 @include selected-button-style-primary();
@@ -913,7 +913,7 @@ body {
         }
 
         ::placeholder {
-            color: $gray;
+            color: $gray-600;
             font-style: italic;
         }
 
@@ -1006,7 +1006,7 @@ body {
     bottom: 1em;
     left: 5.5em;
     display: none;
-    color: $brand-primary;
+    color: $primary;
     line-height: 1.6;
     font-size: 0.8em;
 
@@ -1021,7 +1021,7 @@ body {
     position: relative;
     background-color: #fff !important;
     border: none !important;
-    outline: 1px dashed lighten($brand-success, 30%) !important;
+    outline: 1px dashed lighten($success, 30%) !important;
     outline-offset: -2px !important;
     visibility: visible !important;
 }
@@ -1041,14 +1041,14 @@ body {
 // Validation Errors
 //
 .t3-form-validation-child-has-error {
-    color: $brand-danger;
+    color: $danger;
 }
 
 .t3-form-validation-errors {
     #t3-form-navigation-component &,
     #t3-form-stage-container & {
         position: relative;
-        color: $brand-danger;
+        color: $danger;
 
         &:before {
             z-index: 1;
@@ -1073,7 +1073,7 @@ body {
             font-size: 10px;
             font-weight: 800;
             content: "\f12a";
-            background-color: $brand-danger;
+            background-color: $danger;
         }
     }
 
@@ -1083,7 +1083,7 @@ body {
     }
 
     #t3-form-stage-container &.ui-sortable-handle {
-        border-color: $brand-danger;
+        border-color: $danger;
 
         &:before {
             left: 4.5em;
@@ -1101,18 +1101,18 @@ body {
         color: #fff;
         font-size: 0.8em;
         font-weight: 700;
-        background-color: $brand-danger;
+        background-color: $danger;
         margin-top: 0.5em;
         padding: 0.1em 0.5em;
         border-radius: 2px;
     }
 
     #t3-form-inspector-panels &.t3-form-collection-element {
-        border-color: $brand-danger;
+        border-color: $danger;
 
         h4 {
-            border-color: $brand-danger;
-            background-color: $brand-danger;
+            border-color: $danger;
+            background-color: $danger;
             color: #fff;
 
             path {
@@ -1125,11 +1125,11 @@ body {
             border-color: transparent;
 
             path {
-                fill: $brand-danger;
+                fill: $danger;
             }
 
             &:hover {
-                background: lighten($brand-danger, 30%);
+                background: lighten($danger, 30%);
             }
         }
     }
@@ -1149,11 +1149,11 @@ body {
     }
 
     span.t3-form-validation-errors {
-        background-color: $brand-danger;
+        background-color: $danger;
     }
 
     .inspector-editor-hint {
-        background-color: $gray-dark;
+        background-color: $gray-700;
     }
 }
 

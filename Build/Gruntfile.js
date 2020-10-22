@@ -89,7 +89,7 @@ module.exports = function (grunt) {
         outputStyle: 'expanded',
         precision: 8,
         includePaths: [
-          'node_modules/bootstrap-sass/assets/stylesheets',
+          'node_modules/bootstrap/scss',
           'node_modules/font-awesome/scss',
           'node_modules/tagsort'
         ]

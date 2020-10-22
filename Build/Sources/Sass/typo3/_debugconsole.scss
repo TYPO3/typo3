@@ -1,7 +1,7 @@
-$console-border-color: darken($gray-light, 15%);
+$console-border-color: darken($gray-300, 15%);
 
 #typo3-debug-console {
-    background-color: $gray-lighter;
+    background-color: $gray-100;
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -11,7 +11,7 @@ $console-border-color: darken($gray-light, 15%);
     .topbar {
         @extend .clearfix;
 
-        background-color: $gray-light;
+        background-color: $gray-300;
         padding: $padding-base-vertical $padding-base-horizontal;
         border-bottom: 1px solid $console-border-color;
 
@@ -21,6 +21,7 @@ $console-border-color: darken($gray-light, 15%);
     }
 
     .messages {
+        background-color: $white;
         padding: $padding-base-vertical $padding-base-horizontal;
         font-family: $font-family-monospace;
         height: 250px;

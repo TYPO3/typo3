@@ -124,24 +124,24 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 }
 
 //
-// Panel
+// card
 //
-.panel-login {
+.card-login {
     border-color: darken($login-bg, 10%);
     border-radius: $login-border-radius;
 
-    .panel-heading {
+    .card-heading {
         padding: 1.5em 2.5em;
         border-top-left-radius: $login-border-radius - 1;
         border-top-right-radius: $login-border-radius - 1;
     }
 
-    .panel-body {
+    .card-body {
         padding: 2.5em;
         border-bottom: 3px solid $login-highlight;
     }
 
-    .panel-footer {
+    .card-footer {
         padding: 1.5em 2.5em;
         border-bottom-left-radius: $login-border-radius - 1;
         border-bottom-right-radius: $login-border-radius - 1;
@@ -175,38 +175,11 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 }
 
 .btn-login {
-    @include button-size($login-input-padding-vertical, $login-input-padding-horizontal, $login-input-font-size, 1em, $login-input-border-radius);
-    @include button-variant($login-btn-text, $login-btn-bg, rgba(0, 0, 0, 0.1));
+    @include button-size($login-input-padding-vertical, $login-input-padding-horizontal, $login-input-font-size, $login-input-border-radius);
+    @include button-variant($login-btn-bg, rgba(0, 0, 0, 0.1), $white, darken($login-btn-bg, 7.5%), rgba(0, 0, 0, 0.1), $white);
 
     line-height: 1.3em;
     white-space: normal;
-
-    &:active,
-    &:active:focus,
-    &:active:hover,
-    &:focus,
-    &:hover,
-    &:visited {
-        background-color: $login-btn-bg;
-    }
-
-    &:active,
-    &:active:focus,
-    &:active:hover,
-    &:hover,
-    &:focus {
-        outline: 1px solid #000;
-        outline-offset: -1px;
-    }
-
-    &:hover {
-        box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.125);
-    }
-
-    &:active:focus,
-    &:active:hover {
-        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    }
 }
 
 //

@@ -17,15 +17,23 @@ h1 {
     font-variant: normal;
     font-weight: 400;
     margin-top: 0;
-    margin-bottom: ceil(($font-size-base * 1.8));
+    margin-bottom: 1.375rem;
 }
 
-h2 {
-    margin: 24px 0 12px;
-}
-
+h2,
 h3 {
-    margin: 24px 0 12px;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    small {
+        font-size: 0.65em;
+        color: $gray-700;
+    }
 }
 
 ul,

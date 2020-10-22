@@ -369,11 +369,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         return '
             <form action="" name="lrelform" id="lrelform" class="t3js-dummyform form-horizontal">
-                 <div class="form-group form-group-sm">
-                    <label class="col-xs-4 control-label">' .
+                 <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">' .
                         htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
                     '</label>
-                    <div class="col-xs-8">
+                    <div class="col-sm-9">
                         <input type="text" name="lrel" class="form-control" value="' . htmlspecialchars($currentRel) . '" />
                     </div>
                 </div>
@@ -408,13 +408,13 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         return '
 				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
-                    <div class="form-group form-group-sm" ' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-                        <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
-						<div class="col-xs-4">
+                    <div class="row mb-3" ' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
+                        <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
+						<div class="col-sm-4">
 							<input type="text" name="ltarget" class="t3js-linkTarget form-control"
 							    value="' . htmlspecialchars($target) . '" />
 						</div>
-						<div class="col-xs-4">
+						<div class="col-sm-5">
 							' . $targetSelector . '
 						</div>
 					</div>
@@ -445,11 +445,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
         return '
                 <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
-                    <div class="form-group form-group-sm">
-                        <label class="col-xs-4 control-label">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">
                             ' . htmlspecialchars($this->getLanguageService()->getLL('title')) . '
                          </label>
-                         <div class="col-xs-8">
+                         <div class="col-sm-9">
                                 <input ' . ($readOnlyTitle ? 'disabled' : '') . ' type="text" name="ltitle" class="form-control t3js-linkTitle"
                                         value="' . htmlspecialchars($title) . '" />
                         </div>
@@ -469,11 +469,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
         if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId]) {
             $selectClass = '
                 <form action="" name="lclassform" id="lclassform" class="t3js-dummyform form-horizontal">
-                    <div class="form-group form-group-sm">
-                        <label class="col-xs-4 control-label">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">
                             ' . htmlspecialchars($this->getLanguageService()->getLL('class')) . '
                         </label>
-                        <div class="col-xs-8">
+                        <div class="col-sm-9">
                             <select name="lclass" class="t3js-class-selector form-control">
                                 ' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
                             </select>

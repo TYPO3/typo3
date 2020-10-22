@@ -8,24 +8,26 @@
 $modal-notice-bg: $btn-default-bg;
 $modal-notice-color: $btn-default-color;
 $modal-notice-border: $btn-default-border;
-$modal-info-bg: $btn-info-bg;
-$modal-info-color: $btn-info-color;
-$modal-info-border: $btn-info-border;
-$modal-success-bg: $btn-success-bg;
-$modal-success-color: $btn-success-color;
-$modal-success-border: $btn-success-border;
-$modal-warning-bg: $btn-warning-bg;
-$modal-warning-color: $btn-warning-color;
-$modal-warning-border: $btn-warning-border;
-$modal-danger-bg: $btn-danger-bg;
-$modal-danger-color: $btn-danger-color;
-$modal-danger-border: $btn-danger-border;
+$modal-info-bg: $info;
+$modal-info-color: $white;
+$modal-info-border: darken($info, 5%);
+$modal-success-bg: $success;
+$modal-success-color: $white;
+$modal-success-border: darken($success, 5%);
+$modal-warning-bg: $warning;
+$modal-warning-color: $white;
+$modal-warning-border: darken($warning, 5%);
+$modal-danger-bg: $danger;
+$modal-danger-color: $white;
+$modal-danger-border: darken($danger, 5%);
 
 //
 // Component
 //
 .modal {
     .close {
+        background: transparent;
+        border: none;
         color: inherit;
         padding: 0;
         margin: 0;
@@ -79,7 +81,7 @@ $modal-danger-border: $btn-danger-border;
 
 .modal-header,
 .modal-footer {
-    padding: 10px 15px;
+    padding: 0.625rem 1rem;
 }
 
 .modal-footer {

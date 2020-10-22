@@ -58,10 +58,15 @@ $contrast-color: rgba(0, 0, 0, 0.1);
     .close {
         @include opacity(0.5);
 
-        padding: 1px;
-        top: -3px;
-        right: -22px;
+        background: none;
+        border: none;
         color: inherit;
+        font-size: 1.125rem;
+        line-height: 1;
+        padding: 0;
+        position: absolute;
+        right: 0.625rem;
+        top: 0.625rem;
 
         &:hover {
             @include opacity(1);
@@ -82,7 +87,7 @@ $contrast-color: rgba(0, 0, 0, 0.1);
         border-bottom: 1px solid $contrast-color;
         flex-basis: 25%;
         flex-grow: 1;
-        font-size: 1.2rem;
+        font-size: 0.75rem;
         font-weight: bold;
         padding: 4px 0;
         text-align: center;

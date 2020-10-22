@@ -2,8 +2,8 @@
     <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{id}" data-store-last-tab="{storeLastActiveTab}">
         <f:for each="{items}" as="item" iteration="iteration">
             <f:if condition="{item.content}">
-                <li role="presentation" class="t3js-tabmenu-item {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}">
-                    <a href="#{id}-{iteration.cycle}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-toggle="tab">
+                <li role="presentation" class="t3js-tabmenu-item nav-item">
+                    <a href="#{id}-{iteration.cycle}" class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-toggle="tab">
                         <f:if condition="{item.icon}">
                             <f:format.raw>{item.icon}</f:format.raw>
                         </f:if>

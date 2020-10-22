@@ -9,12 +9,15 @@ $panel-lg-padding: 35px;
 .panel {
     @include box-shadow(0 2px 0 rgba(0, 0, 0, 0.1));
 
+    margin-bottom: 1.125rem;
+
     &.ui-sortable-helper {
         border-style: dashed;
     }
 
     .panel-heading {
         font-weight: bold;
+        background-color: $gray-300;
     }
 }
 
@@ -22,7 +25,7 @@ $panel-lg-padding: 35px;
 // Panel carousel
 //
 .panel-carousel {
-    padding: $panel-body-padding;
+    padding: $card-spacer-x;
 }
 
 //
@@ -110,7 +113,6 @@ $panel-lg-padding: 35px;
 
     > .table,
     > .table-fit {
-        border: 0;
         margin: 0;
     }
 }
@@ -120,7 +122,11 @@ $panel-lg-padding: 35px;
         margin-bottom: 0;
     }
 
+    // 'panel-heading' is replaced with '.card-header' in twbs4
+    .card-header,
     .panel-heading {
+        padding: 0.625rem 1rem;
+
         > a,
         > span {
             padding: 4px 0;
