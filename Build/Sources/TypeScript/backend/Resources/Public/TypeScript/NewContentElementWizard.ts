@@ -44,7 +44,7 @@ export default class NewContentElementWizard {
   private registerClearable(): void {
     this.searchField.clearable({
       onClear: (input: HTMLInputElement): void => {
-        input.value =  '';
+        input.value = '';
         this.filterElements(input);
       },
     });
@@ -97,6 +97,11 @@ export default class NewContentElementWizard {
     for (let sibling of siblings) {
       const siblingTabIdentifier = NewContentElementWizard.getTabIdentifier(sibling);
       sibling.classList.toggle('disabled', !this.hasTabContent(siblingTabIdentifier));
+      if (sibling.classList.contains('disabled')) {
+        sibling.children[0].setAttribute('tabindex', '-1');
+      } else {
+        sibling.children[0].removeAttribute('tabindex');
+      }
     }
 
     if (!this.hasTabContent(NewContentElementWizard.getTabIdentifier(currentActiveTab))) {
