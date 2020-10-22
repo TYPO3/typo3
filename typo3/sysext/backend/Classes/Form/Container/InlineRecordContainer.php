@@ -479,9 +479,9 @@ class InlineRecordContainer extends AbstractContainer
                 $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
             } else {
                 $cells['info'] = '
-				<a class="btn btn-default" href="#" data-action="infowindow" data-info-table="' . htmlspecialchars($table) . '" data-info-uid="' . htmlspecialchars($uid) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
+				<button type="button" class="btn btn-default" data-action="infowindow" data-info-table="' . htmlspecialchars($table) . '" data-info-uid="' . htmlspecialchars($uid) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
 					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
-				</a>';
+				</button>';
             }
         }
         // If the table is NOT a read-only table, then show these links:
@@ -494,9 +494,9 @@ class InlineRecordContainer extends AbstractContainer
                         $style = ' style="' . $inlineConfig['inline']['inlineNewButtonStyle'] . '"';
                     }
                     $cells['new'] = '
-                        <a class="btn btn-default t3js-create-new-button" href="#" data-record-uid="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record'))) . '" ' . $style . '>
+                        <button type="button" class="btn btn-default t3js-create-new-button" data-record-uid="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record'))) . '" ' . $style . '>
                             ' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page-new' : 'add'), Icon::SIZE_SMALL)->render() . '
-                        </a>';
+                        </button>';
                 }
             }
             // "Up/Down" links
@@ -509,9 +509,9 @@ class InlineRecordContainer extends AbstractContainer
                     $icon = 'empty-empty';
                 }
                 $cells['sort.up'] = '
-                    <a class="btn btn-default' . $class . '" href="#" data-action="sort" data-direction="up" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveUp')) . '">
+                    <button type="button" class="btn btn-default' . $class . '" data-action="sort" data-direction="up" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveUp')) . '">
                         ' . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '
-                    </a>';
+                    </button>';
                 // Down
                 $icon = 'actions-move-down';
                 $class = '';
@@ -521,9 +521,9 @@ class InlineRecordContainer extends AbstractContainer
                 }
 
                 $cells['sort.down'] = '
-                    <a class="btn btn-default' . $class . '" href="#" data-action="sort" data-direction="down" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveDown')) . '">
+                    <button type="button" class="btn btn-default' . $class . '" data-action="sort" data-direction="down" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveDown')) . '">
                         ' . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '
-                    </a>';
+                    </button>';
             }
             // "Edit" link:
             if (($rec['table_local'] === 'sys_file') && !$isNewItem && $backendUser->check('tables_modify', 'sys_file_metadata')) {
@@ -569,7 +569,7 @@ class InlineRecordContainer extends AbstractContainer
             ) {
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
                 $icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                $cells['delete'] = '<a href="#" class="btn btn-default t3js-editform-delete-inline-record" title="' . $title . '">' . $icon . '</a>';
+                $cells['delete'] = '<button type="button" class="btn btn-default t3js-editform-delete-inline-record" title="' . $title . '">' . $icon . '</button>';
             }
 
             // "Hide/Unhide" links:
@@ -578,15 +578,15 @@ class InlineRecordContainer extends AbstractContainer
                 if ($rec[$hiddenField]) {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
-                        <a class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" href="#" title="' . $title . '">
+                        <button type="button" class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '
-                        </a>';
+                        </button>';
                 } else {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
-                        <a class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" href="#" title="' . $title . '">
+                        <button type="button" class="btn btn-default t3js-toggle-visibility-button" data-hidden-field="' . htmlspecialchars($hiddenField) . '" title="' . $title . '">
                             ' . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '
-                        </a>';
+                        </button>';
                 }
             }
             // Drag&Drop Sorting: Sortable handler for script.aculo.us
@@ -599,17 +599,17 @@ class InlineRecordContainer extends AbstractContainer
         } elseif ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] && $isParentExisting) {
             if ($enabledControls['localize'] && $data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $cells['localize'] = '
-                    <a class="btn btn-default t3js-synchronizelocalize-button" href="#" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
+                    <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
                         ' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '
-                    </a>';
+                    </button>';
             }
         }
         // If the record is edit-locked by another user, we will show a little warning sign:
         if ($lockInfo = BackendUtility::isRecordLocked($foreignTable, $rec['uid'])) {
             $cells['locked'] = '
-				<a class="btn btn-default" href="#" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">
+				<button type="button" class="btn btn-default" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">
 					<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>
-				</a>';
+				</button>';
         }
         // Hook: Post-processing of single controls for specific child records:
         foreach ($this->hookObjects as $hookObj) {

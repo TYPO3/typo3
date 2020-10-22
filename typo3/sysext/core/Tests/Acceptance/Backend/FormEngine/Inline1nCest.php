@@ -70,11 +70,11 @@ class Inline1nCest
     public function hideAndUnhideInline1nInlineElement(BackendTester $I)
     {
         $I->wantTo('Can hide a Inline Element');
-        $I->click('a span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
+        $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["] a span[data-identifier="actions-edit-unhide"]');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["] button span[data-identifier="actions-edit-unhide"]');
         $I->wantTo('Can unhide a Inline Element');
-        $I->click('a span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
+        $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden', 2);
     }
 
@@ -112,7 +112,7 @@ class Inline1nCest
     public function checkIfCanSortingInlineElement(BackendTester $I)
     {
         $I->wantTo('Can sort an Inline Element');
-        $I->click('a span[data-identifier="actions-move-down"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
+        $I->click('button span[data-identifier="actions-move-down"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->click('button[name="_savedok"]');
         $I->wait(3);
         $I->click('a[title="Close"]');
@@ -151,14 +151,14 @@ class Inline1nCest
     {
         $inlineElementToDelete = '[data-field-name^="[tx_styleguide_inline_1n_child][1"]';
         $I->wantTo('Cancel the delete dialog');
-        $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
+        $I->click('button span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
         $modalDialog->clickButtonInDialog('button[name="no"]');
         // switch form Dialogbox back to IFrame
         $I->switchToContentFrame();
         $I->seeElement($inlineElementToDelete);
 
         $I->wantTo('Accept the delete dialog');
-        $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
+        $I->click('button span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
         $modalDialog->canSeeDialog();
