@@ -1188,6 +1188,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.search" resname="toolbarItems.search">
 				<source>Search</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.toolbarOpenClose" resname="toolbarItems.toolbarOpenClose">
+				<source>Open/Close toolbar</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.searchbarOpenClose" resname="toolbarItems.searchbarOpenClose">
+				<source>Open/Close searchbar</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.workspace" resname="toolbarItems.workspace">
 				<source>Workspace</source>
 			</trans-unit>

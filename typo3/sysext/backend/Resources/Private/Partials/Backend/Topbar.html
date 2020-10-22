@@ -15,10 +15,10 @@
                     </span>
                 </a>
             </div>
-            <button class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar">
+            <button class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.toolbarOpenClose')}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.toolbarOpenClose')}">
                 <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
             </button>
-            <button class="topbar-button topbar-button-search t3js-topbar-button-search">
+            <button class="topbar-button topbar-button-search t3js-topbar-button-search" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.searchbarOpenClose')}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.searchbarOpenClose')}">
                 <core:icon identifier="actions-search" alternativeMarkupIdentifier="inline" />
             </button>
         </div>
@@ -36,7 +36,7 @@
     <f:variable name="disabled" value="{f:if(condition: '!{enabled}', then: 1, else: 0)}" />
     <f:variable name="disabledAttr" value="{f:if(condition: '{disabled}', then: 'disabled')}" />
 
-    <button {disabledAttr} class="topbar-button {classes}" title="{title}">
+    <button {disabledAttr} class="topbar-button {classes}" title="{title}" aria-label="{title}">
         <f:render section="Icon" arguments="{identifier: icon, disabled: disabled}" />
     </button>
 </f:section>
