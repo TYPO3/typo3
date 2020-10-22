@@ -320,16 +320,27 @@ abstract class AbstractFormElement extends AbstractNode
      * @param int $checkbox Checkbox # (0-9?)
      * @param int $checkboxesCount Total number of checkboxes in the array.
      * @param string $additionalJavaScript Additional JavaScript for the onclick handler.
+     * @param bool $invert Inverts the state of the checkbox (but not of the bit value)
      * @return string The onclick attribute + possibly the checked-option set.
      * @internal
      */
-    protected function checkBoxParams($itemName, $formElementValue, $checkbox, $checkboxesCount, $additionalJavaScript = ''): string
-    {
+    protected function checkBoxParams(
+        $itemName,
+        $formElementValue,
+        $checkbox,
+        $checkboxesCount,
+        $additionalJavaScript = '',
+        $invert = false
+    ): string {
         $elementName = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . ']';
         $checkboxPow = 2 ** $checkbox;
-        $onClick = $elementName . '.value=this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
+        $checked = $formElementValue & $checkboxPow;
+        if ($invert) {
+            $checked = !$checked;
+        }
+        $onClick = $elementName . '.value=' . ($invert ? '!' : '') . 'this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
             . $elementName . '.value&' . ((2 ** $checkboxesCount) - 1 - $checkboxPow) . ');' . $additionalJavaScript;
-        return ' onclick="' . htmlspecialchars($onClick) . '"' . ($formElementValue & $checkboxPow ? ' checked="checked"' : '');
+        return ' onclick="' . htmlspecialchars($onClick) . '"' . ($checked ? ' checked="checked"' : '');
     }
 
     /**

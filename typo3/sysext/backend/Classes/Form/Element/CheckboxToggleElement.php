@@ -181,12 +181,13 @@ class CheckboxToggleElement extends AbstractFormElement
             $formElementValue,
             $itemCounter,
             $numberOfItems,
-            implode('', $additionalInformation['fieldChangeFunc'])
+            implode('', $additionalInformation['fieldChangeFunc']),
+            $invert
         );
         $uniqueId = StringUtility::getUniqueId('_');
         $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
         return '
-            <div class="checkbox checkbox-type-toggle' . ($invert ? ' checkbox-invert' : '') . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="checkbox checkbox-type-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="checkbox-input"
                     value="1"

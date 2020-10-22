@@ -182,7 +182,8 @@ class CheckboxElement extends AbstractFormElement
             $formElementValue,
             $itemCounter,
             $numberOfItems,
-            implode('', $additionalInformation['fieldChangeFunc'])
+            implode('', $additionalInformation['fieldChangeFunc']),
+            $invert
         );
         $uniqueId = StringUtility::getUniqueId('_');
         $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
@@ -199,7 +200,7 @@ class CheckboxElement extends AbstractFormElement
         $iconUnchecked = $this->iconFactory->getIcon($iconIdentifierUnchecked, Icon::SIZE_SMALL)->render('inline');
 
         return '
-            <div class="checkbox checkbox-type-icon-toggle' . ($invert ? ' checkbox-invert' : '') . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="checkbox checkbox-type-icon-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="checkbox-input"
                     value="1"
@@ -209,8 +210,8 @@ class CheckboxElement extends AbstractFormElement
                     id="' . $checkboxId . '" />
                 <label class="checkbox-label" for="' . $checkboxId . '">
                     <span class="checkbox-label-icon">
-                        <span class="checkbox-label-icon-checked">' . ($invert ? $iconUnchecked : $iconChecked) . '</span>
-                        <span class="checkbox-label-icon-unchecked">' . ($invert ? $iconChecked : $iconUnchecked) . '</span>
+                        <span class="checkbox-label-icon-checked">' . $iconChecked . '</span>
+                        <span class="checkbox-label-icon-unchecked">' . $iconUnchecked . '</span>
                     </span>
                     <span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
                 </label>
