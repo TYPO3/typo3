@@ -51,6 +51,7 @@ available from `typo3.org <https://typo3.org/>`_
    :glob:
 
    Introduction/Index
+   Editors/Index
    Administration/Index
    Configuration/Index
    LargeSites/Index
