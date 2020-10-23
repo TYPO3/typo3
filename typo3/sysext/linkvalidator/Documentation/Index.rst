@@ -1,8 +1,3 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
 .. include:: Includes.txt
 
 
@@ -44,12 +39,8 @@ Linkvalidator
 :Rendered:
       |today|
 
-The content of this document is related to TYPO3,
-
-a GNU/GPL CMS/Framework available from `www.typo3.org
-<http://www.typo3.org/>`_
-
-
+The content of this document is related to TYPO3, a GNU/GPL CMS/Framework
+available from `typo3.org <https://typo3.org/>`_
 
 
 **Table of Contents**
