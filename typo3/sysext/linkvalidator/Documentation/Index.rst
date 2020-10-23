@@ -55,6 +55,5 @@ available from `typo3.org <https://typo3.org/>`_
    Administration/Index
    Configuration/Index
    LargeSites/Index
-   Development/Index
    Targets
 
