@@ -10,7 +10,7 @@
     <f:if condition="{modules} && {currentLevel} <= 2">
         <ul
             class="modulemenu-group-container"
-            {f:if(condition: '{parent}', then: 'aria-visible="{f:if(condition: parent.collapsed, then: \'false\', else: \'true\')}"')}
+            {f:if(condition: '{parent} && {currentLevel} == 2', then: 'id="submenu-{parent.name}"')}
             {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, then: \'style="display: none"\')}')}
         >
             <f:for each="{modules}" as="module">
@@ -28,7 +28,7 @@
                         {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
                         {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
                         {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
-                        {f:if(condition: '{module.children} && {currentLevel} == 1', then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
+                        {f:if(condition: '{module.children} && {currentLevel} == 1', then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}" aria-controls="submenu-{module.name}"')}
                     >
                         <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
                         <span class="modulemenu-name">{module.title}</span>

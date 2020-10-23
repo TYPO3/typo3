@@ -243,7 +243,6 @@ class ModuleMenu {
       moduleGroup.classList.toggle('.modulemenu-group-collapsed', ariaExpanded);
       moduleGroup.classList.toggle('.modulemenu-group-expanded', !ariaExpanded);
 
-      moduleGroupContainer.attributes.getNamedItem('aria-visible').value = (!ariaExpanded).toString();
       target.attributes.getNamedItem('aria-expanded').value = (!ariaExpanded).toString();
 
       $(moduleGroupContainer).stop().slideToggle({
