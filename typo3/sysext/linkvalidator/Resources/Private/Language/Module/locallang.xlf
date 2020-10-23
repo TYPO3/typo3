@@ -72,9 +72,6 @@
 			<trans-unit id="hooks.external" resname="hooks.external">
 				<source>External Links</source>
 			</trans-unit>
-			<trans-unit id="hooks.linkhandler" resname="hooks.linkhandler">
-				<source>Linkhandler Links</source>
-			</trans-unit>
 			<trans-unit id="label_refresh" resname="label_refresh">
 				<source>Refresh display</source>
 			</trans-unit>

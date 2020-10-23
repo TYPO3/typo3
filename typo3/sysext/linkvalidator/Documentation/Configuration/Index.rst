@@ -120,8 +120,6 @@ linktypes
 
          external: Check links to external files.
 
-         linkhandler: Check links provided by the extension "linkhandler".
-
          This list may be extended by other extensions providing a linktype
          checker.
 

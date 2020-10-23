@@ -39,5 +39,6 @@ mod.linkvalidator {
     subject = TYPO3 Linkvalidator report
   }
 
+  # @deprecated in TYPO3 11, remove in TYPO3 12
   linkhandler.reportHiddenRecords = 0
 }

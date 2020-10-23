@@ -51,7 +51,6 @@ It includes the following features:
   of links or override how the checking of external, file and page
   links works.
 
-
 .. _screenshots:
 
 Screenshots

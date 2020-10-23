@@ -207,8 +207,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'db' => '1',
             'file' => '1',
             'external' => '1',
-            'linkhandler' => '1'
-
         ];
 
         $tsConfig = [
@@ -216,11 +214,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                 'pages' => 'media,url,canonical_link',
                 'tt_content' => 'bodytext,header_link,records'
             ],
-            'linktypes' => 'db,file,external,linkhandler',
+            'linktypes' => 'db,file,external',
             'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
         ];
 
         $searchFields = $tsConfig['searchFields.'];
@@ -343,8 +338,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'db' => '1',
             'file' => '1',
             'external' => '1',
-            'linkhandler' => '1'
-
         ];
 
         $linkTypes = [
@@ -358,11 +351,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                 'pages' => 'media,url,canonical_link',
                 'tt_content' => 'bodytext,header_link,records'
             ],
-            'linktypes' => 'db,file,external,linkhandler',
+            'linktypes' => 'db,file,external',
             'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
         ];
 
         $searchFields = $tsConfig['searchFields.'];
@@ -661,8 +651,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'db' => '1',
             'file' => '1',
             'external' => '1',
-            'linkhandler' => '1'
-
         ];
 
         $linkTypes = [
@@ -676,11 +664,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                 'pages' => 'media,url,canonical_link',
                 'tt_content' => 'bodytext,header_link,records'
             ],
-            'linktypes' => 'db,file,external,linkhandler',
-            'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
+            'linktypes' => 'db,file,external',
+            'checkhidden' => '0'
         ];
 
         $searchFields = $tsConfig['searchFields.'];

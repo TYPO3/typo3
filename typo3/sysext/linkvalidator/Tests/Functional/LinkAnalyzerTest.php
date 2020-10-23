@@ -91,8 +91,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $config = [
             'db' => '1',
             'file' => '1',
-            'external' => '1',
-            'linkhandler' => '1'
+            'external' => '1'
 
         ];
 
@@ -101,11 +100,8 @@ class LinkAnalyzerTest extends FunctionalTestCase
                 'pages' => ['media', 'url', 'canonical_link'],
                 'tt_content' => ['bodytext', 'header_link', 'records']
             ],
-            'linktypes' => 'db,file,external,linkhandler',
+            'linktypes' => 'db,file,external',
             'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
         ];
 
         $searchFields = $tsConfig['searchFields'];
@@ -156,8 +152,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $config = [
             'db' => '0',
             'file' => '1',
-            'external' => '0',
-            'linkhandler' => '0'
+            'external' => '0'
 
         ];
 
@@ -168,9 +163,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
             ],
             'linktypes' => 'file',
             'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
         ];
 
         $searchFields = $tsConfig['searchFields'];
@@ -221,8 +213,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $config = [
             'db' => '1',
             'file' => '0',
-            'external' => '0',
-            'linkhandler' => '0'
+            'external' => '0'
 
         ];
 
@@ -233,9 +224,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
             ],
             'linktypes' => 'db',
             'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
         ];
 
         $searchFields = $tsConfig['searchFields'];
@@ -286,8 +274,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $config = [
             'db' => '0',
             'file' => '0',
-            'external' => '1',
-            'linkhandler' => '0'
+            'external' => '1'
 
         ];
 
@@ -297,9 +284,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
             ],
             'linktypes' => 'external',
             'checkhidden' => '0',
-            'linkhandler' => [
-                'reportHiddenRecords' => '0'
-            ]
         ];
 
         $searchFields = $tsConfig['searchFields'];
