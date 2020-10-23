@@ -38,7 +38,8 @@ It includes the following features:
   links to pages and content elements, file links to files in the local
   file system and external links to files somewhere else in the web.
 
-- Linkvalidator by default looks into header fields and bodytext fields.
+- Linkvalidator checks a number of fields by default, for example
+  header fields and bodytext fields of content elements.
   It can be configured to check any field you like.
 
 - Linkvalidator offers a just in time check of your website.
@@ -47,8 +48,8 @@ It includes the following features:
   email report, if broken links were found.
 
 - Linkvalidator is extendable. It provides hooks to check special types
-  of links like those from the extension "linkhandler". The possibility
-  to check these already is built in.
+  of links or override how the checking of external, file and page
+  links works.
 
 
 .. _screenshots:
@@ -98,7 +99,6 @@ the linkvalidator task:
 
    Defining the linkvalidator task in the Scheduler
 
-
 - With this task you can run linkvalidator regularly via cron without
   having to manually update the stored information on broken links.
 
@@ -107,9 +107,7 @@ the linkvalidator task:
   be used. If you set values there, the former will be overwritten.
 
 - The linkvalidator task can send you a status report via email. You can
-  create an own email template as needed. The default template is
-  located in typo3/sysext/linkvalidator/res/mailtemplate.html.
-
+  create your own email template as needed.
 
 .. _credits:
 
@@ -128,7 +126,12 @@ Feedback
 ^^^^^^^^
 
 If you find a bug in this manual or in the extension in general,
+<<<<<<< HEAD   (5919fa [BUGFIX] Limit doctrine/dbal to 2.10.x or 2.11.2+)
 please file an issue in the bug tracker of this extension:
 `http://forge.typo3.org/projects/extension-linkvalidator/issues
 <http://forge.typo3.org/projects/extension-linkvalidator/issues>`_
+=======
+please file an issue in the
+`TYPO3 bug tracker <https://forge.typo3.org/projects/typo3cms-core/issues>`__.
+>>>>>>> CHANGE (6bcc14 [DOCS] Update linkvalidator documentation Introduction)
 
