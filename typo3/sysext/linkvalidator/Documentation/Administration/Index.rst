@@ -1,28 +1,23 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
 .. include:: ../Includes.txt
-
-
 
 .. _administration:
 
 Administration
 --------------
 
-Use the extension manager to install linkvalidator. It is not
-installed by default.
+Linkvalidator is a system extension.
 
-Apply the needed changes to the database.
+If you are using Composer, you can install it like any other (core) extension
+requiring the package `typo3/cms-linkvalidator`.
 
-You are advised to use cURL to check for links. Linkvalidator uses the
-HTTP request library shipped with TYPO3. Please have a look in the
-Install Tool at the section "All Configuration" which includes an HTTP
-section at the end.
+If you are not using Composer, you may have to activate Linkvalidator in
+the Extension Manager.
 
-There you may define a default timeout and you may change from using
-sockets to using the cURL library.
+Linkvalidator uses the HTTP request library shipped with TYPO3.
+Please have a look in the :ref:`Global Configuration <t3coreapi:typo3ConfVars>`,
+particularly at the HTTP settings.
+
+There, you may define a default timeout. Generally, it is recommended
+to always specify timeouts when working with Linkvalidator.
 
 
