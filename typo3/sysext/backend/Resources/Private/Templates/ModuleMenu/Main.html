@@ -1,42 +1,69 @@
-<div
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<nav
     class="modulemenu t3js-modulemenu"
-    role="menubar"
     data-role="modulemenu"
     id="modulemenu"
+    aria-label="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:modulemenu.label')}"
 >
-    <f:render section="Navigation" arguments="{modules: modules, currentLevel: 1}" />
-</div>
-<f:section name="Navigation">
-    <f:if condition="{modules} && {currentLevel} <= 2">
-        <ul
-            class="modulemenu-group-container"
-            {f:if(condition: '{parent} && {currentLevel} == 2', then: 'id="submenu-{parent.name}"')}
-            {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, then: \'style="display: none"\')}')}
-        >
-            <f:for each="{modules}" as="module">
-                <li
-                    data-level="{currentLevel}"
-                    {f:if(condition: '{module.children} && {currentLevel} == 1', then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
-                >
-                    <button
-                        title="{module.description}"
-                        class="modulemenu-action t3js-modulemenu-action {f:if(condition: '{module.children} && {currentLevel} == 1', then: 't3js-modulemenu-collapsible')}"
-                        role="menuitem"
-                        id="{module.name}"
-                        data-modulename="{module.name}"
-                        {f:if(condition: module.link, then: 'data-link="{module.link}"')}
-                        {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
-                        {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
-                        {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
-                        {f:if(condition: '{module.children} && {currentLevel} == 1', then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}" aria-controls="submenu-{module.name}"')}
-                    >
-                        <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
-                        <span class="modulemenu-name">{module.title}</span>
-                        <span class="modulemenu-indicator" aria-hidden="true"></span>
-                    </button>
-                    <f:render section="Navigation" arguments="{modules: module.children, parent: module, currentLevel: '{currentLevel + 1}'}" />
-                </li>
-            </f:for>
-        </ul>
+    <f:if condition="{modules}">
+        <f:render section="Menubar" arguments="{modules: modules}" />
     </f:if>
+</nav>
+
+<f:section name="Menubar">
+    <ul
+        role="menubar"
+        aria-orientation="vertical"
+        aria-label="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:modulemenu.label')}"
+        class="modulemenu-group-container"
+    >
+        <f:for each="{modules}" as="module" iteration="iterator">
+            <li
+                role="presentation"
+                data-level="1"
+                {f:if(condition: module.children, then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
+            >
+                <f:render section="Button" arguments="{module: module, showChildren: module.children, tabIndex: '{f:if(condition: iterator.isFirst, then: \'0\', else: \'-1\')}'}" />
+                <f:render section="Menu" arguments="{modules: module.children, parent: module}" />
+            </li>
+        </f:for>
+    </ul>
 </f:section>
+
+<f:section name="Menu">
+    <ul
+        role="menu"
+        aria-orientation="vertical"
+        class="modulemenu-group-container"
+        {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, then: \'style="display: none"\')}')}
+    >
+        <f:for each="{modules}" as="module">
+            <li role="presentation" data-level="2">
+                <f:render section="Button" arguments="{module: module, tabIndex: '-1'}" />
+            </li>
+        </f:for>
+    </ul>
+</f:section>
+
+<f:section name="Button">
+    <button
+        role="menuitem"
+        title="{module.description}"
+        class="modulemenu-action t3js-modulemenu-action {f:if(condition: showChildren, then: 't3js-modulemenu-collapsible')}"
+        tabindex="{tabIndex}"
+        id="{module.name}"
+        data-modulename="{module.name}"
+        {f:if(condition: module.link, then: 'data-link="{module.link}"')}
+        {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
+        {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
+        {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
+        {f:if(condition: showChildren, then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
+    >
+        <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
+        <span class="modulemenu-name">{module.title}</span>
+        <span class="modulemenu-indicator" aria-hidden="true"></span>
+    </button>
+</f:section>
+
+</html>

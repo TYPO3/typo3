@@ -1,29 +1,31 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<h3 class="dropdown-headline">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<h3 class="dropdown-headline" id="help-dropdown-headline">
     {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help') -> f:format.raw()}
 </h3>
 <f:if condition="{modules}">
-    <hr>
-    <ul class="modulemenu-group-container">
-        <f:for each="{modules}" as="module">
-            <li>
-                <button
-                    title="{module.description}"
-                    class="modulemenu-action t3js-modulemenu-action"
-                    role="menuitem"
-                    id="{module.name}"
-                    data-modulename="{module.name}"
-                    {f:if(condition: module.link, then: 'data-link="{module.link}"')}
-                    {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
-                    {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
-                    {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
-                >
-                    <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
-                    <span class="modulemenu-name">{module.title}</span>
-                    <span class="modulemenu-indicator" aria-hidden="true"></span>
-                </button>
-            </li>
-        </f:for>
-    </ul>
+    <hr aria-hidden="true">
+    <nav class="t3js-helpmenu">
+        <ul class="modulemenu-group-container" role="menu" aria-labelledby="help-dropdown-headline">
+            <f:for each="{modules}" as="module">
+                <li role="presentation" data-level="1">
+                    <button
+                        title="{module.description}"
+                        class="modulemenu-action t3js-modulemenu-action"
+                        role="menuitem"
+                        id="{module.name}"
+                        data-modulename="{module.name}"
+                        {f:if(condition: module.link, then: 'data-link="{module.link}"')}
+                        {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
+                        {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
+                        {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
+                    >
+                        <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
+                        <span class="modulemenu-name">{module.title}</span>
+                        <span class="modulemenu-indicator" aria-hidden="true"></span>
+                    </button>
+                </li>
+            </f:for>
+        </ul>
+    </nav>
 </f:if>
 </html>

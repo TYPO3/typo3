@@ -79,8 +79,9 @@
 // Name
 //
 .modulemenu-name {
+    @extend .sr-only;
+
     overflow: hidden;
-    display: none;
     flex-grow: 1;
     margin-left: 1em;
     white-space: nowrap;
@@ -176,6 +177,9 @@ button[aria-expanded="true"]:not(:disabled) {
     }
 
     .modulemenu-name {
-        display: block;
+        position: static;
+        margin: 0 0 0 1em;
+        width: auto;
+        height: auto;
     }
 }

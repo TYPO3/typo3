@@ -30,7 +30,7 @@ export class ImmediateActionElement extends HTMLElement {
     switch (action) {
       case 'TYPO3.ModuleMenu.App.refreshMenu':
         const moduleMenuApp = await import('TYPO3/CMS/Backend/ModuleMenu');
-        return moduleMenuApp.App.refreshMenu.bind(moduleMenuApp);
+        return moduleMenuApp.App.refreshMenu.bind(moduleMenuApp.App);
       case 'TYPO3.Backend.Topbar.refresh':
         const viewportObject = await import('TYPO3/CMS/Backend/Viewport');
         return viewportObject.Topbar.refresh.bind(viewportObject.Topbar);

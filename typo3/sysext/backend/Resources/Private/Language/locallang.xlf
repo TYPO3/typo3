@@ -133,6 +133,9 @@ Have a nice day.</source>
 				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
 				</source>
 			</trans-unit>
+			<trans-unit id="modulemenu.label" resname="modulemenu.label">
+				<source>Module Menu</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

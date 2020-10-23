@@ -37,6 +37,7 @@ interface Module {
 class ModuleMenu {
   private loadedModule: string = null;
   private loadedNavigationComponentId: string = '';
+  private spaceKeyPressedOnCollapsible: boolean = false;
 
   /**
    * Fetches all module menu elements in the local storage that should be collapsed
@@ -129,6 +130,32 @@ class ModuleMenu {
   }
 
   /**
+   * @param {HTMLButtonElement} button
+   */
+  private static toggleModuleGroup(button: HTMLElement): void {
+    const moduleGroup = button.closest('.modulemenu-group');
+    const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
+    const ariaExpanded = button.attributes.getNamedItem('aria-expanded').value === 'true';
+
+    if (ariaExpanded) {
+      ModuleMenu.addCollapsedMainMenuItem(button.id);
+    } else {
+      ModuleMenu.removeCollapseMainMenuItem(button.id);
+    }
+
+    moduleGroup.classList.toggle('modulemenu-group-collapsed', ariaExpanded);
+    moduleGroup.classList.toggle('modulemenu-group-expanded', !ariaExpanded);
+
+    button.attributes.getNamedItem('aria-expanded').value = (!ariaExpanded).toString();
+
+    $(moduleGroupContainer).stop().slideToggle({
+      'complete': function() {
+        Viewport.doLayout();
+      }
+    });
+  }
+
+  /**
    * Gets the module properties from module menu markup (data attributes)
    *
    * @param {string} name
@@ -149,8 +176,53 @@ class ModuleMenu {
    * @param {string} module
    */
   private static highlightModuleMenuItem(module: string): void {
-    $('.modulemenu-action.modulemenu-action-active').removeClass('modulemenu-action-active');
-    $('#' + module).addClass('modulemenu-action-active');
+    $('.modulemenu-action.modulemenu-action-active')
+      .removeClass('modulemenu-action-active')
+      .removeAttr('aria-current');
+    $('#' + module)
+      .addClass('modulemenu-action-active')
+      .attr('aria-current', 'location');
+  }
+
+  private static getPreviousItem(item: HTMLButtonElement): HTMLButtonElement {
+    let previousParent = item.parentElement.previousElementSibling; // previous <li>
+    if (previousParent === null) {
+      return ModuleMenu.getLastItem(item);
+    }
+    return previousParent.firstElementChild as HTMLButtonElement; // the <button>
+  }
+
+  private static getNextItem(item: HTMLButtonElement): HTMLButtonElement {
+    let nextParent = item.parentElement.nextElementSibling; // next <li>
+    if (nextParent === null) {
+      return ModuleMenu.getFirstItem(item);
+    }
+    return nextParent.firstElementChild as HTMLButtonElement; // the <button>
+  }
+
+  private static getFirstItem(item: HTMLButtonElement): HTMLButtonElement {
+    // from <button> up to <ul> and down to <button> of first <li>
+    return item.parentElement.parentElement.firstElementChild.firstElementChild as HTMLButtonElement;
+  }
+
+  private static getLastItem(item: HTMLButtonElement): HTMLButtonElement {
+    // from <button> up to <ul> and down to <button> of first <li>
+    return item.parentElement.parentElement.lastElementChild.firstElementChild as HTMLButtonElement;
+  }
+
+  private static getParentItem(item: HTMLButtonElement): HTMLButtonElement {
+    // from <button> up to <ul> and the <li> above and down down its <button>
+    return item.parentElement.parentElement.parentElement.firstElementChild as HTMLButtonElement;
+  }
+
+  private static getFirstChildItem(item: HTMLButtonElement): HTMLButtonElement {
+    // the first <li> of the <ul> following the <button>, then down down its <button>
+    return item.nextElementSibling.firstElementChild.firstElementChild as HTMLButtonElement;
+  }
+
+  private static getLastChildItem(item: HTMLButtonElement): HTMLButtonElement {
+    // the first <li> of the <ul> following the <button>, then down down its <button>
+    return item.nextElementSibling.lastElementChild.firstElementChild as HTMLButtonElement;
   }
 
   constructor() {
@@ -164,6 +236,7 @@ class ModuleMenu {
     new AjaxRequest(TYPO3.settings.ajaxUrls.modulemenu).get().then(async (response: AjaxResponse): Promise<void> => {
       const result = await response.resolve();
       document.getElementById('modulemenu').outerHTML = result.menu;
+      this.initializeModuleMenuEvents();
       if (top.currentModuleLoaded) {
         ModuleMenu.highlightModuleMenuItem(top.currentModuleLoaded);
       }
@@ -204,7 +277,6 @@ class ModuleMenu {
       return;
     }
 
-    const me = this;
     let deferred = $.Deferred();
     deferred.resolve();
 
@@ -228,40 +300,145 @@ class ModuleMenu {
     }
 
     deferred.then((): void => {
-      me.initializeEvents();
+      this.initializeModuleMenuEvents();
+      this.initializeTopBarEvents();
     });
   }
 
-  private initializeEvents(): void {
-    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
-      const moduleGroup = target.closest('.modulemenu-group');
-      const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
-      const ariaExpanded = target.attributes.getNamedItem('aria-expanded').value === 'true';
+  /**
+   * Implement the complete keyboard navigation of the menus
+   */
+  private keyboardNavigation(e: KeyboardEvent, target: HTMLButtonElement, trackSpaceKey: boolean = false): void {
+    const level = target.parentElement.attributes.getNamedItem('data-level').value;
+    let item = null;
+    if (trackSpaceKey) {
+      this.spaceKeyPressedOnCollapsible = false; // only for tracking t3js-modulemenu!!!
+    }
 
-      if (ariaExpanded) {
-        ModuleMenu.addCollapsedMainMenuItem(target.id);
-      } else {
-        ModuleMenu.removeCollapseMainMenuItem(target.id);
-      }
-
-      moduleGroup.classList.toggle('.modulemenu-group-collapsed', ariaExpanded);
-      moduleGroup.classList.toggle('.modulemenu-group-expanded', !ariaExpanded);
-
-      target.attributes.getNamedItem('aria-expanded').value = (!ariaExpanded).toString();
-
-      $(moduleGroupContainer).stop().slideToggle({
-        'complete': function() {
-          Viewport.doLayout();
+    switch (e.code) {
+      case 'ArrowUp':
+        item = ModuleMenu.getPreviousItem(target);
+        break;
+      case 'ArrowDown':
+        item = ModuleMenu.getNextItem(target);
+        break;
+      case 'ArrowLeft':
+        if (level === '1' && target.classList.contains('t3js-modulemenu-collapsible')) {
+          if (target.attributes.getNamedItem('aria-expanded').value === 'false') {
+            ModuleMenu.toggleModuleGroup(target);
+          }
+          item = ModuleMenu.getLastChildItem(target);
+        } else if (level === '2') {
+          item = ModuleMenu.getPreviousItem(ModuleMenu.getParentItem(target));
         }
-      });
-    }).delegateTo(document, '.t3js-modulemenu .t3js-modulemenu-collapsible');
+        break;
+      case 'ArrowRight':
+        if (level === '1' && target.classList.contains('t3js-modulemenu-collapsible')) {
+          if (target.attributes.getNamedItem('aria-expanded').value === 'false') {
+            ModuleMenu.toggleModuleGroup(target);
+          }
+          item = ModuleMenu.getFirstChildItem(target);
+        } else if (level === '2') {
+          item = ModuleMenu.getNextItem(ModuleMenu.getParentItem(target));
+        }
+        break;
+      case 'Home':
+        if (e.ctrlKey && level === '2') {
+          item = ModuleMenu.getFirstItem(ModuleMenu.getParentItem(target));
+        } else {
+          item = ModuleMenu.getFirstItem(target);
+        }
+        break;
+      case 'End':
+        if (e.ctrlKey && level === '2') {
+          item = ModuleMenu.getLastItem(ModuleMenu.getParentItem(target));
+        } else {
+          item = ModuleMenu.getLastItem(target);
+        }
+        break;
+      case 'Space':
+      case 'Enter':
+        if (level === '1' && target.classList.contains('t3js-modulemenu-collapsible')) {
+          if (e.code === 'Enter') {
+            e.preventDefault(); // we do not want the click handler to run, need to prevent default immediately
+          }
+          ModuleMenu.toggleModuleGroup(target);
+          if (target.attributes.getNamedItem('aria-expanded').value === 'true') {
+            item = ModuleMenu.getFirstChildItem(target);
+            if (e.code === 'Space') {
+              this.spaceKeyPressedOnCollapsible = true; // focus shifts, so keyup will be sent to submodule
+            }
+          }
+        }
+        break;
+      case 'Esc':
+      case 'Escape':
+        if (level === '2') {
+          item = ModuleMenu.getParentItem(target);
+          ModuleMenu.toggleModuleGroup(item);
+        }
+        break;
+      default:
+        item = null;
+    }
+    if (item !== null) {
+      if (!e.defaultPrevented) {
+        e.preventDefault();
+      }
+      item.focus();
+    }
+  }
+
+  private initializeModuleMenuEvents(): void {
+    const moduleMenu = document.querySelector('.t3js-modulemenu');
+
+    const preventSpace = function(this: ModuleMenu, e: KeyboardEvent): void {
+      if (e.code === 'Space') {
+        if (this.spaceKeyPressedOnCollapsible) { // keydown has been sent to module
+          e.preventDefault(); // we do not want the click handler to run
+          this.spaceKeyPressedOnCollapsible = false;
+        }
+      }
+    }.bind(this);
+
+    new RegularEvent('keydown', this.keyboardNavigation).delegateTo(moduleMenu, '.t3js-modulemenu-action');
+
+    moduleMenu.querySelectorAll('[data-level="2"] .t3js-modulemenu-action[data-link]').forEach( (item: Element): void => {
+      item.addEventListener('keyup', preventSpace);
+    });
+
+    new RegularEvent('keyup', (e: KeyboardEvent, target: HTMLButtonElement): void => {
+      if (e.code === 'Space') {
+        e.preventDefault(); // we do not want the click handler to run
+      }
+    }).delegateTo(moduleMenu, '.t3js-modulemenu-collapsible');
 
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
-      if (typeof target.dataset.link !== 'undefined') {
-        e.preventDefault();
-        this.showModule(target.id, '', e);
-      }
-    }).delegateTo(document, '.t3js-modulemenu-action');
+      e.preventDefault();
+      this.showModule(target.id, '', e);
+    }).delegateTo(moduleMenu, '.t3js-modulemenu-action[data-link]');
+
+
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
+      e.preventDefault();
+      ModuleMenu.toggleModuleGroup(target);
+    }).delegateTo(moduleMenu, '.t3js-modulemenu-collapsible');
+  }
+
+  /**
+   * Initialize events for label toggle and help menu
+   */
+  private initializeTopBarEvents(): void {
+    const helpMenu = document.querySelector('.t3js-helpmenu');
+
+    new RegularEvent('keydown', (e: KeyboardEvent, target: HTMLButtonElement) => {
+      this.keyboardNavigation(e, target);
+    }).delegateTo(helpMenu, '.t3js-modulemenu-action');
+
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
+      e.preventDefault();
+      this.showModule(target.id, '', e);
+    }).delegateTo(helpMenu, '.t3js-modulemenu-action[data-link]');
 
     new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
