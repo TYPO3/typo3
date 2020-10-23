@@ -109,16 +109,44 @@ class InlineControlContainer {
 
   /**
    * @param {string} objectId
+   * @return HTMLButtonElement
+   */
+  private static getCollapseButton(objectId: string): HTMLButtonElement {
+    return <HTMLButtonElement>document.querySelector('[aria-controls="' + objectId + '_fields"]');
+  }
+
+  /**
+   * @param {string} objectId
    */
   private static toggleElement(objectId: string): void {
     const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
     if (recordContainer.classList.contains(States.collapsed)) {
-      recordContainer.classList.remove(States.collapsed);
-      recordContainer.classList.add(States.visible);
+      InlineControlContainer.expandElement(recordContainer, objectId);
     } else {
-      recordContainer.classList.remove(States.visible);
-      recordContainer.classList.add(States.collapsed);
+      InlineControlContainer.collapseElement(recordContainer, objectId);
     }
+  }
+
+  /**
+   * @param {HTMLDivElement} recordContainer
+   * @param {string} objectId
+   */
+  private static collapseElement(recordContainer: HTMLDivElement, objectId: string): void {
+    const collapseButton = InlineControlContainer.getCollapseButton(objectId);
+    recordContainer.classList.remove(States.visible);
+    recordContainer.classList.add(States.collapsed);
+    collapseButton.setAttribute('aria-expanded', 'false');
+  }
+
+  /**
+   * @param {HTMLDivElement} recordContainer
+   * @param {string} objectId
+   */
+  private static expandElement(recordContainer: HTMLDivElement, objectId: string): void {
+    const collapseButton = InlineControlContainer.getCollapseButton(objectId);
+    recordContainer.classList.remove(States.collapsed);
+    recordContainer.classList.add(States.visible);
+    collapseButton.setAttribute('aria-expanded', 'true');
   }
 
   /**
@@ -807,8 +835,7 @@ class InlineControlContainer {
         const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
         const recordContainer = InlineControlContainer.getInlineRecordContainer(recordObjectId);
         if (recordContainer.classList.contains(States.visible)) {
-          recordContainer.classList.remove(States.visible);
-          recordContainer.classList.add(States.collapsed);
+          InlineControlContainer.collapseElement(recordContainer, recordObjectId);
 
           if (InlineControlContainer.isNewRecord(recordObjectId)) {
             InlineControlContainer.updateExpandedCollapsedStateLocally(recordObjectId, false);
