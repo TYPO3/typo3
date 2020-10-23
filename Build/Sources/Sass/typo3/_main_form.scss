@@ -131,6 +131,7 @@ fieldset[disabled] .form-control {
     left: 15px;
     transform: translate(0, -50%);
     z-index: 1;
+    pointer-events: none;
 
     + .form-control,
     + .form-control-clearable .form-control {

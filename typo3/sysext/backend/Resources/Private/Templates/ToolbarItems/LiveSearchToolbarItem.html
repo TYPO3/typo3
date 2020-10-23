@@ -7,7 +7,8 @@
             </div>
             <input type="text" class="form-control toolbar-item-search-field t3js-topbar-navigation-search-field"
                         placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.search') -> f:format.htmlspecialchars()}"
-                        id="live-search-box" autocomplete="off">
+                        id="live-search-box" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.searchLabel')}"
+                        autocomplete="off" spellcheck="off" autocapitalize="none"/>
         </div>
     </div>
 </form>
