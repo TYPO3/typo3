@@ -20,7 +20,7 @@ $login-input-height: $input-height-large;
 $login-input-font-size: 12px;
 $login-input-line-height: $line-height-large;
 $login-input-border-radius: 2px;
-$login-input-border-color: #ccc;
+$login-input-border-color: #949494;
 $login-input-padding-vertical: $padding-large-vertical;
 $login-input-padding-horizontal: $padding-large-horizontal;
 
@@ -164,8 +164,13 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 .input-login {
     border-color: $login-input-border-color;
 
+    &:active,
+    &:active:focus,
+    &:active:hover,
+    &:hover,
     &:focus {
-        @include box-shadow(none);
+        outline: 1px solid #000;
+        outline-offset: -1px;
     }
 }
 
