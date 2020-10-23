@@ -189,9 +189,13 @@ $login-input-padding-horizontal: $padding-large-horizontal;
         background-color: $login-btn-bg;
     }
 
+    &:active,
     &:active:focus,
+    &:active:hover,
+    &:hover,
     &:focus {
-        outline: none;
+        outline: 1px solid #000;
+        outline-offset: -1px;
     }
 
     &:hover {
@@ -201,10 +205,6 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     &:active:focus,
     &:active:hover {
         box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    }
-
-    &:focus {
-        @include box-shadow(none);
     }
 }
 
