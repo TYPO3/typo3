@@ -17,9 +17,9 @@ Options Dropped:
 * TCA image_compression
 * TCA image_effects
 * TCA image_noRows
-* TypoScript IMAGE noRows dropped
-* TypoScript IMAGE noCols dropped
-* TypoScript IMAGE noRowsStdWrap dropped
+* TypoScript IMGTEXT noRows dropped
+* TypoScript IMGTEXT noCols dropped
+* TypoScript IMGTEXT noRowsStdWrap dropped
 * TypoScript IMGTEXT captionAlign dropped
 
 
