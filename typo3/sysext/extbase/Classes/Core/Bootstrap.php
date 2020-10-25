@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver;
 use TYPO3\CMS\Extbase\Mvc\Response as ExtbaseResponse;
+use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
@@ -79,18 +80,25 @@ class Bootstrap implements BootstrapInterface
      */
     protected $cacheService;
 
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
+     */
+    protected $extbaseRequestBuilder;
+
     public function __construct(
         ContainerInterface $container,
         ConfigurationManagerInterface $configurationManager,
         PersistenceManagerInterface $persistenceManager,
         RequestHandlerResolver $requestHandlerResolver,
-        CacheService $cacheService
+        CacheService $cacheService,
+        RequestBuilder $extbaseRequestBuilder
     ) {
         $this->container = $container;
         $this->configurationManager = $configurationManager;
         $this->persistenceManager = $persistenceManager;
         $this->requestHandlerResolver = $requestHandlerResolver;
         $this->cacheService = $cacheService;
+        $this->extbaseRequestBuilder = $extbaseRequestBuilder;
     }
 
     /**
@@ -178,9 +186,9 @@ class Bootstrap implements BootstrapInterface
      */
     protected function handleRequest(): string
     {
-        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler();
-
-        $response = $requestHandler->handleRequest();
+        $extbaseRequest = $this->extbaseRequestBuilder->build();
+        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
+        $response = $requestHandler->handleRequest($extbaseRequest);
         // If response is NULL after handling the request we need to stop
         // This happens for instance, when a USER object was converted to a USER_INT
         // @see TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::handleRequest()
@@ -221,9 +229,10 @@ class Bootstrap implements BootstrapInterface
 
         $this->initialize($configuration);
 
-        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler();
+        $extbaseRequest = $this->extbaseRequestBuilder->build();
+        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
         /** @var ExtbaseResponse $extbaseResponse */
-        $extbaseResponse = $requestHandler->handleRequest();
+        $extbaseResponse = $requestHandler->handleRequest($extbaseRequest);
 
         // Convert to PSR-7 response and hand it back to TYPO3 Core
         $response = $this->convertExtbaseResponseToPsr7Response($extbaseResponse);

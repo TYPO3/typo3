@@ -37,11 +37,6 @@ abstract class AbstractRequestHandler implements RequestHandlerInterface
     protected $dispatcher;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
-     */
-    protected $requestBuilder;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
      */
     protected $environmentService;
@@ -52,14 +47,6 @@ abstract class AbstractRequestHandler implements RequestHandlerInterface
     public function injectDispatcher(Dispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder
-     */
-    public function injectRequestBuilder(RequestBuilder $requestBuilder)
-    {
-        $this->requestBuilder = $requestBuilder;
     }
 
     /**
@@ -76,16 +63,6 @@ abstract class AbstractRequestHandler implements RequestHandlerInterface
     public function injectEnvironmentService(EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
-    }
-
-    /**
-     * This request handler can handle any web request.
-     *
-     * @return bool If the request is a web request, TRUE otherwise FALSE
-     */
-    public function canHandleRequest()
-    {
-        return true;
     }
 
     /**

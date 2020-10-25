@@ -50,10 +50,11 @@ class RequestHandlerResolver
      * Analyzes the raw request and tries to find a request handler which can handle
      * it. If none is found, an exception is thrown.
      *
+     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request A request
      * @return \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface A request handler
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception
      */
-    public function resolveRequestHandler()
+    public function resolveRequestHandler(RequestInterface $request)
     {
         $suitableRequestHandlers = [];
         foreach ($this->requestHandlersConfiguration->getRegisteredRequestHandlers() as $requestHandlerClassName) {
@@ -62,7 +63,7 @@ class RequestHandlerResolver
                 ? $this->container->get($requestHandlerClassName)
                 : GeneralUtility::makeInstance($requestHandlerClassName)
             ;
-            if ($requestHandler->canHandleRequest()) {
+            if ($requestHandler->canHandleRequest($request)) {
                 $priority = $requestHandler->getPriority();
                 if (isset($suitableRequestHandlers[$priority])) {
                     throw new Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176475350);

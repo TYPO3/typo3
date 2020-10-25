@@ -16,7 +16,9 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Extbase\Mvc\Response;
+use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 
 /**
  * A request handler which can handle web requests invoked by the backend.
@@ -27,20 +29,22 @@ class BackendRequestHandler extends AbstractRequestHandler
     /**
      * Handles the web request. The response will automatically be sent to the client.
      *
-     * @return Response
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     * @throws InfiniteLoopException
      */
-    public function handleRequest()
+    public function handleRequest(RequestInterface $request)
     {
-        $request = $this->requestBuilder->build();
         return $this->dispatcher->dispatch($request);
     }
 
     /**
      * This request handler can handle a web request invoked by the backend.
      *
+     * @param RequestInterface $request
      * @return bool If we are in backend mode TRUE otherwise FALSE
      */
-    public function canHandleRequest()
+    public function canHandleRequest(RequestInterface $request)
     {
         return $this->environmentService->isEnvironmentInBackendMode() && !Environment::isCli();
     }

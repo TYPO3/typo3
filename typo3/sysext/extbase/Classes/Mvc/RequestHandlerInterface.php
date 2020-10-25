@@ -23,16 +23,18 @@ interface RequestHandlerInterface
     /**
      * Handles a raw request and returns the response.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @param RequestInterface $request
+     * @return ResponseInterface
      */
-    public function handleRequest();
+    public function handleRequest(RequestInterface $request);
 
     /**
      * Checks if the request handler can handle the current request.
      *
+     * @param RequestInterface $request
      * @return bool TRUE if it can handle the request, otherwise FALSE
      */
-    public function canHandleRequest();
+    public function canHandleRequest(RequestInterface $request);
 
     /**
      * Returns the priority - how eager the handler is to actually handle the

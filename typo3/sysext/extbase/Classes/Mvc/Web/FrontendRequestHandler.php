@@ -16,6 +16,9 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -40,11 +43,12 @@ class FrontendRequestHandler extends AbstractRequestHandler
     /**
      * Handles the web request. The response will automatically be sent to the client.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     * @throws InfiniteLoopException
      */
-    public function handleRequest()
+    public function handleRequest(RequestInterface $request)
     {
-        $request = $this->requestBuilder->build();
         if ($this->isActionCacheable($request->getControllerObjectName(), $request->getControllerActionName())) {
             $request->setIsCached(true);
         } else {
@@ -63,9 +67,10 @@ class FrontendRequestHandler extends AbstractRequestHandler
     /**
      * This request handler can handle any web request.
      *
+     * @param RequestInterface $request
      * @return bool If the request is a web request, TRUE otherwise FALSE
      */
-    public function canHandleRequest()
+    public function canHandleRequest(RequestInterface $request)
     {
         return $this->environmentService->isEnvironmentInFrontendMode();
     }
