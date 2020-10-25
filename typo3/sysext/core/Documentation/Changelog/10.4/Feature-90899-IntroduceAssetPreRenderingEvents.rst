@@ -74,7 +74,7 @@ from a CDN.
              tags:
                - name: event.listener
                  identifier: 'myExt/LibraryVersion'
-                 event: TYPO3\CMS\Core\Page\Event\AssetRendererBeforeRenderingEvent
+                 event: TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent
 
 
    2. Implement Listener to enforce a library version or CDN URI
