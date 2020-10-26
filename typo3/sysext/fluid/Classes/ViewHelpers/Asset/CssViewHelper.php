@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * CssViewHelper
@@ -37,6 +38,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 class CssViewHelper extends AbstractTagBasedViewHelper
 {
+    /**
+     * This VH does not produce direct output, thus does not need to be wrapped in an escaping node
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * Rendered children string is passed as CSS code,
+     * there is no point in HTML encoding anything from that.
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
 
     /**
      * @var AssetCollector
@@ -49,6 +64,20 @@ class CssViewHelper extends AbstractTagBasedViewHelper
     public function injectAssetCollector(AssetCollector $assetCollector): void
     {
         $this->assetCollector = $assetCollector;
+    }
+
+    public function initialize()
+    {
+        // Add a tag builder, that does not html encode values, because rendering with encoding happens in AssetRenderer
+        $this->setTagBuilder(
+            new class() extends TagBuilder {
+                public function addAttribute($attributeName, $attributeValue, $escapeSpecialCharacters = false): void
+                {
+                    parent::addAttribute($attributeName, $attributeValue, false);
+                }
+            }
+        );
+        parent::initialize();
     }
 
     /**

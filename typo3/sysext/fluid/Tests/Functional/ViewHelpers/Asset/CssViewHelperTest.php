@@ -18,44 +18,48 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
-use TYPO3\CMS\Fluid\ViewHelpers\Asset\ScriptViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Asset\CssViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ScriptViewHelperTest extends FunctionalTestCase
+class CssViewHelperTest extends FunctionalTestCase
 {
     /**
      * @var bool Speed up this test case, it needs no database
      */
     protected $initializeDatabase = false;
 
+    /**
+     * @return array
+     */
     public function sourceDataProvider(): array
     {
         return [
-            'fileadmin reference' => ['fileadmin/JavaScript/foo.js'],
-            'EXT: reference' => ['EXT:core/Resources/Public/JavaScript/foo.js'],
-            'external reference' => ['https://typo3.com/foo.js'],
-            'external reference with 1 parameter' => ['https://typo3.com/foo.js?foo=bar'],
-            'external reference with 2 parameters' => ['https://typo3.com/foo.js?foo=bar&bar=baz'],
+            'fileadmin reference' => ['fileadmin/StyleSheets/foo.css'],
+            'EXT: reference' => ['EXT:core/Resources/Public/StyleSheets/foo.css'],
+            'external reference' => ['https://typo3.com/foo.css'],
+            'external reference with 1 parameter' => ['https://typo3.com/foo.css?foo=bar'],
+            'external reference with 2 parameters' => ['https://typo3.com/foo.css?foo=bar&bar=baz'],
         ];
     }
 
     /**
+     * @param string $href
      * @test
      * @dataProvider sourceDataProvider
      */
-    public function sourceStringIsNotHtmlEncodedBeforePassedToAssetCollector(string $src): void
+    public function sourceStringIsNotHtmlEncodedBeforePassedToAssetCollector(string $href): void
     {
-        $viewHelper = new ScriptViewHelper();
         $assetCollector = new AssetCollector();
+        $viewHelper = new CssViewHelper();
         $viewHelper->injectAssetCollector($assetCollector);
         $viewHelper->setArguments([
             'identifier' => 'test',
-            'src' => $src,
+            'href' => $href,
             'priority' => false,
         ]);
         $viewHelper->initializeArgumentsAndRender();
-        $collectedJavaScripts = $assetCollector->getJavaScripts();
-        self::assertSame($collectedJavaScripts['test']['source'], $src);
+        $collectedJavaScripts = $assetCollector->getStyleSheets();
+        self::assertSame($collectedJavaScripts['test']['source'], $href);
         self::assertSame($collectedJavaScripts['test']['attributes'], []);
     }
 
@@ -64,20 +68,18 @@ class ScriptViewHelperTest extends FunctionalTestCase
      */
     public function booleanAttributesAreProperlyConverted(): void
     {
-        $viewHelper = new ScriptViewHelper();
         $assetCollector = new AssetCollector();
+        $viewHelper = new CssViewHelper();
         $viewHelper->injectAssetCollector($assetCollector);
         $viewHelper->setArguments([
             'identifier' => 'test',
-            'src' => 'my.js',
-            'async' => true,
-            'defer' => true,
-            'nomodule' => true,
+            'href' => 'my.css',
+            'disabled' => true,
             'priority' => false,
         ]);
         $viewHelper->initializeArgumentsAndRender();
-        $collectedJavaScripts = $assetCollector->getJavaScripts();
-        self::assertSame($collectedJavaScripts['test']['source'], 'my.js');
-        self::assertSame($collectedJavaScripts['test']['attributes'], ['async' => 'async', 'defer' => 'defer', 'nomodule' => 'nomodule']);
+        $collectedJavaScripts = $assetCollector->getStyleSheets();
+        self::assertSame($collectedJavaScripts['test']['source'], 'my.css');
+        self::assertSame($collectedJavaScripts['test']['attributes'], ['disabled' => 'disabled']);
     }
 }
