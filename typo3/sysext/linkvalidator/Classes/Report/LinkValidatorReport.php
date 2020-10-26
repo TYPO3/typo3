@@ -509,7 +509,7 @@ class LinkValidatorReport
             '&last_edited_record_uid=' . $row['record_uid'] .
             '&last_edited_record_table=' . $row['table_name'] .
             '&last_edited_record_field=' . $row['field'] .
-            '&last_edited_record_timestamp=' . $row['timestamp'];
+            '&last_edited_record_timestamp=' . $GLOBALS['EXEC_TIME'];
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
