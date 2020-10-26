@@ -270,7 +270,7 @@ class LinkAnalyzer
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
-        $row = $queryBuilder->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field)
+        $row = $queryBuilder->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field, 'tstamp')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
@@ -286,7 +286,7 @@ class LinkAnalyzer
             $this->brokenLinkRepository->removeBrokenLinksForRecord($table, $recordUid);
             return;
         }
-        if ($timestamp === (int)$row['timestamp']) {
+        if (($row['tstamp'] ?? 0) && $timestamp && ((int)($row['tstamp']) < $timestamp)) {
             // timestamp has not changed: no need to recheck
             return;
         }
