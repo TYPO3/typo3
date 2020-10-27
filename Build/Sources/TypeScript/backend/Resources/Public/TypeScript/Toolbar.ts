@@ -25,11 +25,6 @@ class Toolbar {
   }
 
   private static initializeEvents(): void {
-    $('.t3js-toolbar-item').parent().on('hidden.bs.dropdown', (): void => {
-      $('.scaffold')
-        .removeClass('scaffold-toolbar-expanded')
-        .removeClass('scaffold-search-expanded');
-    });
     $(document).on('click', '.toolbar-item [data-modulename]', (evt: JQueryEventObject): void => {
       evt.preventDefault();
       const moduleName = $(evt.target).closest('[data-modulename]').data('modulename');
