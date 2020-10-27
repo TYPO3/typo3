@@ -242,27 +242,29 @@ class UriBuilderTest extends UnitTestCase
         return [
             'Arguments to be excluded in the beginning' => [
                 [
-                    'route' => '/test/Path',
                     'id' => 'pageId',
-                    'foo' => 'bar'
+                    'myparam' => 'pageId',
+                    'route' => '/test/Path',
+                    'foo' => 'bar',
                 ],
                 [
-                    'route',
+                    'myparam',
                     'id'
                 ],
-                '/typo3/index.php?route=%2F&token=dummyToken&foo=bar'
+                '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&foo=bar'
             ],
             'Arguments to be excluded in the end' => [
                 [
                     'foo' => 'bar',
+                    'route' => '/test/Path',
                     'id' => 'pageId',
-                    'route' => '/test/Path'
+                    'myparam' => 'anyway',
                 ],
                 [
-                    'route',
-                    'id'
+                    'id',
+                    'myparam'
                 ],
-                '/typo3/index.php?route=%2F&token=dummyToken&foo=bar'
+                '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&foo=bar'
             ],
             'Arguments in nested array to be excluded' => [
                 [

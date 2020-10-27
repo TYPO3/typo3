@@ -234,9 +234,8 @@ class ConfigurationController
             $renderArray = $backendUser->uc;
         } elseif ($selectedTreeDetails['type'] === 'routes') {
             $router = GeneralUtility::makeInstance(Router::class);
-            $routes = $router->getRoutes();
             $renderArray = [];
-            foreach ($routes as $identifier => $route) {
+            foreach ($router->getRoutes() as $identifier => $route) {
                 /** @var \TYPO3\CMS\Backend\Routing\Route $route */
                 $renderArray[$identifier] = [
                     'path' => $route->getPath(),

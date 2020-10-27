@@ -20,7 +20,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassInvokeFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassWithoutInvokeFixture;
@@ -52,22 +51,10 @@ class RouteDispatcherTest extends UnitTestCase
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
 
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
+        $route = new Route('not important', ['access' => 'public', 'referrer' => false, 'target' => 42]);
+        $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
-
-        $target = 42;
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
-
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1425381442);
 
@@ -83,26 +70,15 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
-
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
-        $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $containerProphecy->has(Argument::any())->willReturn(false);
-
         $target = [
             new RouteDispatcherClassFixture(),
             'mainAction'
         ];
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getAttribute('route')->willReturn($route);
+        $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->has(Argument::any())->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756142);
@@ -120,24 +96,14 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
 
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
-        $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $containerProphecy->has(Argument::any())->willReturn(false);
-
         $target = static function (ServerRequestInterface $request) {
             throw new \RuntimeException('I have been called. Good!', 1520756466);
         };
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', Argument::type(\Closure::class))->willReturn($requestProphecy->reveal());
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getAttribute('route')->willReturn($route);
+        $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->has(Argument::any())->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756466);
@@ -154,23 +120,13 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
+        $target = RouteDispatcherClassInvokeFixture::class;
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
 
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
+        $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
-
-        $target = RouteDispatcherClassInvokeFixture::class;
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);
@@ -188,20 +144,10 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
 
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
-
         $target = 'routedispatcher.classinvokefixture';
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has($target)->willReturn(true);
         $containerProphecy->get($target)->willReturn(new RouteDispatcherClassInvokeFixture());
@@ -222,22 +168,13 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
 
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
 
         $target = RouteDispatcherClassWithoutInvokeFixture::class;
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getAttribute('route')->willReturn($route);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1442431631);
@@ -255,22 +192,12 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
 
+        $target = RouteDispatcherClassFixture::class . '::mainAction';
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
+        $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
-
-        $target = RouteDispatcherClassFixture::class . '::mainAction';
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756142);
@@ -288,22 +215,12 @@ class RouteDispatcherTest extends UnitTestCase
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
 
+        $target = RouteDispatcherStaticClassFixture::class . '::mainAction';
+        $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $routerProphecy = $this->prophesize(Router::class);
-        GeneralUtility::setSingletonInstance(Router::class, $routerProphecy->reveal());
-        $routeProphecy = $this->prophesize(Route::class);
-        $routerProphecy->matchRequest($requestProphecy->reveal())->willReturn($routeProphecy->reveal());
-        $routeProphecy->getOption('access')->willReturn('public');
-        $routeProphecy->getOption('referrer')->willReturn(false);
-        $routeProphecy->getOption('module')->willReturn(false);
-        $requestProphecy->withAttribute('route', $routeProphecy->reveal())->willReturn($requestProphecy->reveal());
-        $requestProphecy->getAttribute('route')->willReturn($routeProphecy->reveal());
+        $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
-
-        $target = RouteDispatcherStaticClassFixture::class . '::mainAction';
-        $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520757000);

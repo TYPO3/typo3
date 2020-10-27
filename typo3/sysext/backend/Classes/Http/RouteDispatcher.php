@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -35,7 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class RouteDispatcher extends Dispatcher
 {
     /**
-     * Main method to resolve the route and checks the target of the route, and tries to call it.
+     * Main method checks the target of the route, and tries to call it.
      *
      * @param ServerRequestInterface $request the current server request
      * @return ResponseInterface the filled response by the callable / controller/action
@@ -44,20 +43,18 @@ class RouteDispatcher extends Dispatcher
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
-        $router = GeneralUtility::makeInstance(Router::class);
-        $route = $router->matchRequest($request);
-        $request = $request->withAttribute('route', $route);
-        $request = $request->withAttribute('target', $route->getOption('target'));
+        /** @var Route $route */
+        $route = $request->getAttribute('route');
 
-        $enforceReferrerResponse = $this->enforceReferrer($request);
+        $enforceReferrerResponse = $this->enforceReferrer($request, $route);
         if ($enforceReferrerResponse instanceof ResponseInterface) {
             return $enforceReferrerResponse;
         }
-        if (!$this->isValidRequest($request)) {
+        if (!$this->isValidRequest($request, $route)) {
             throw new InvalidRequestTokenException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
         }
 
-        if ($route->getOption('module')) {
+        if ($route->hasOption('module')) {
             $this->addAndValidateModuleConfiguration($request, $route);
         }
         $targetIdentifier = $route->getOption('target');
@@ -82,17 +79,16 @@ class RouteDispatcher extends Dispatcher
      * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
      *
      * @param ServerRequestInterface $request
+     * @param Route $route
      * @return ResponseInterface|null
      */
-    protected function enforceReferrer(ServerRequestInterface $request): ?ResponseInterface
+    protected function enforceReferrer(ServerRequestInterface $request, Route $route): ?ResponseInterface
     {
         /** @var Features $features */
         $features = GeneralUtility::makeInstance(Features::class);
         if (!$features->isFeatureEnabled('security.backend.enforceReferrer')) {
             return null;
         }
-        /** @var Route $route */
-        $route = $request->getAttribute('route');
         $referrerFlags = GeneralUtility::trimExplode(',', $route->getOption('referrer') ?? '', true);
         if (!in_array('required', $referrerFlags, true)) {
             return null;
@@ -111,12 +107,12 @@ class RouteDispatcher extends Dispatcher
      * for the ones that don't require a login.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param Route $route
      * @return bool
      * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
      */
-    protected function isValidRequest($request)
+    protected function isValidRequest(ServerRequestInterface $request, Route $route)
     {
-        $route = $request->getAttribute('route');
         if ($route->getOption('access') === 'public') {
             return true;
         }

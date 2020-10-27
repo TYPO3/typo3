@@ -2054,8 +2054,7 @@ class PageRenderer implements SingletonInterface
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var Router $router */
         $router = GeneralUtility::makeInstance(Router::class);
-        $routes = $router->getRoutes();
-        foreach ($routes as $routeIdentifier => $route) {
+        foreach ($router->getRoutes() as $routeIdentifier => $route) {
             if ($publicRoutesOnly && $route->getOption('access') !== 'public') {
                 continue;
             }

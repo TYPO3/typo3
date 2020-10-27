@@ -20,8 +20,11 @@ namespace TYPO3\CMS\Backend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,7 +64,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $pathToRoute = $request->getAttribute('routePath', '/login');
+        $route = $request->getAttribute('route');
 
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
@@ -69,8 +72,12 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $GLOBALS['BE_USER']->start();
         // Register the backend user as aspect and initializing workspace once for TSconfig conditions
         $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)$GLOBALS['BE_USER']->user['workspace_id']);
-        // @todo: once this logic is in this method, the redirect URL should be handled as response here
-        $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($pathToRoute));
+        if (!$this->isLoggedInBackendUserRequired($route) && !$this->context->getAspect('backend.user')->isLoggedIn()) {
+            $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
+            return new RedirectResponse($uri);
+        }
+        // @todo: Ensure that the runtime exceptions are caught
+        $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($route));
         $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
         // Re-setting the user and take the workspace from the user object now
         $this->setBackendUserAspect($GLOBALS['BE_USER']);
@@ -88,14 +95,14 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     }
 
     /**
-     * Check if the user is required for the request
-     * If we're trying to do a login or an ajax login, don't require a user
+     * Check if the user is required for the request.
+     * If we're trying to do a login or an ajax login, don't require a user.
      *
-     * @param string $routePath the Route path to check against, something like '
+     * @param Route $route the Route path to check against, something like '
      * @return bool whether the request can proceed without a login required
      */
-    protected function isLoggedInBackendUserRequired(string $routePath): bool
+    protected function isLoggedInBackendUserRequired(Route $route): bool
     {
-        return in_array($routePath, $this->publicRoutes, true);
+        return in_array($route->getPath(), $this->publicRoutes, true);
     }
 }

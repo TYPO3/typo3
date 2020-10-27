@@ -21,7 +21,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Loads ext_tables.php from all extensions, as this is the place
@@ -29,14 +34,26 @@ use TYPO3\CMS\Core\Core\Bootstrap;
  * (additionally to those routes which are loaded in dependency
  * injection factories from Configuration/Backend/{,Ajax}Routes.php).
  *
- * The route path is added to the request as attribute "routePath".
+ * The route path is then matched inside the Router and then handed into the request.
+ *
+ * After this middleware, a "Route" object is available as attribute in the Request object.
  *
  * @internal
  */
 class BackendRouteInitialization implements MiddlewareInterface
 {
     /**
-     * Resolve the &route (or &M) GET/POST parameter, and also the Router object.
+     * @var Router
+     */
+    protected $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
+    /**
+     * Resolve the &route (or &M) GET/POST parameter, and also resolves a Route object
      *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -44,16 +61,19 @@ class BackendRouteInitialization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Allow the login page to be displayed if routing is not used and on index.php
-        // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
-        $pathToRoute = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
-
         // Backend Routes from Configuration/Backend/{,Ajax}Routes.php will be implicitly loaded thanks to DI.
         // Load ext_tables.php files to add routes from ExtensionManagementUtility::addModule() calls.
         Bootstrap::loadExtTables();
 
-        // Add the route path to the request
-        $request = $request->withAttribute('routePath', $pathToRoute);
+        try {
+            $route = $this->router->matchRequest($request);
+            $request = $request->withAttribute('route', $route);
+            $request = $request->withAttribute('target', $route->getOption('target'));
+        } catch (ResourceNotFoundException $e) {
+            // Route not found in system
+            $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
+            return new RedirectResponse($uri);
+        }
 
         return $handler->handle($request);
     }

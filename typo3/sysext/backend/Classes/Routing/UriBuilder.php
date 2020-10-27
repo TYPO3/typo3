@@ -79,8 +79,7 @@ class UriBuilder implements SingletonInterface
      */
     public function buildUriFromRoutePath($pathInfo, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
-        $router = GeneralUtility::makeInstance(Router::class);
-        $route = $router->match($pathInfo);
+        $route = $this->router->match($pathInfo);
         return $this->buildUriFromRoute($route->getOption('_identifier'), $parameters, $referenceType);
     }
 
@@ -102,18 +101,19 @@ class UriBuilder implements SingletonInterface
         if (isset($this->generated[$cacheIdentifier])) {
             return $this->generated[$cacheIdentifier];
         }
-        if (!isset($this->router->getRoutes()[$name])) {
+
+        $route = $this->router->getRouteCollection()->get((string)$name);
+        if ($route === null) {
             throw new RouteNotFoundException('Unable to generate a URL for the named route "' . $name . '" because this route was not found.', 1476050190);
         }
 
-        $route = $this->router->getRoutes()[$name];
         $parameters = array_merge(
-            $route->getOptions()['parameters'] ?? [],
+            $route->getOption('parameters') ?? [],
             $parameters
         );
 
         // If the route has the "public" option set, no token is generated.
-        if ($route->getOption('access') !== 'public') {
+        if (!$route->hasOption('access') || $route->getOption('access') !== 'public') {
             $parameters = [
                 'token' => FormProtectionFactory::get('backend')->generateToken('route', $name)
             ] + $parameters;

@@ -16,8 +16,13 @@
 namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route as SymfonyRoute;
+use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Implementation of a class for adding routes, collecting throughout the Bootstrap
@@ -34,11 +39,14 @@ class Router implements SingletonInterface
 {
     /**
      * All routes used in the Backend
-     *
-     * @var Route[]
+     * @var SymfonyRouteCollection
      */
-    protected $routes = [];
+    protected $routeCollection;
 
+    public function __construct()
+    {
+        $this->routeCollection = new SymfonyRouteCollection();
+    }
     /**
      * Adds a new route with the identifiers
      *
@@ -47,7 +55,8 @@ class Router implements SingletonInterface
      */
     public function addRoute($routeIdentifier, $route)
     {
-        $this->routes[$routeIdentifier] = $route;
+        $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
+        $this->routeCollection->add($routeIdentifier, $symfonyRoute);
     }
 
     /**
@@ -55,9 +64,18 @@ class Router implements SingletonInterface
      *
      * @return Route[]
      */
-    public function getRoutes()
+    public function getRoutes(): iterable
     {
-        return $this->routes;
+        return $this->routeCollection->getIterator();
+    }
+
+    /**
+     * @internal only use in Core, this should not be exposed
+     * @return SymfonyRouteCollection
+     */
+    public function getRouteCollection(): SymfonyRouteCollection
+    {
+        return $this->routeCollection;
     }
 
     /**
@@ -69,14 +87,16 @@ class Router implements SingletonInterface
      */
     public function match($pathInfo)
     {
-        foreach ($this->routes as $routeIdentifier => $route) {
+        foreach ($this->routeCollection->getIterator() as $routeIdentifier => $route) {
             // This check is done in a simple way as there are no parameters yet (get parameters only)
             if ($route->getPath() === $pathInfo) {
+                $routeResult = new Route($route->getPath(), $route->getOptions());
                 // Store the name of the Route in the _identifier option so the token can be checked against that
-                $route->setOption('_identifier', $routeIdentifier);
-                return $route;
+                $routeResult->setOption('_identifier', $routeIdentifier);
+                return $routeResult;
             }
         }
+
         throw new ResourceNotFoundException('The requested resource "' . $pathInfo . '" was not found.', 1425389240);
     }
 
@@ -88,6 +108,20 @@ class Router implements SingletonInterface
      */
     public function matchRequest(ServerRequestInterface $request)
     {
-        return $this->match($request->getAttribute('routePath'));
+        // Allow the login page to be displayed if routing is not used and on index.php
+        // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
+        $path = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
+
+        $context = new RequestContext(
+            '',
+            $request->getMethod(),
+            (string)HttpUtility::idn_to_ascii($request->getUri()->getHost()),
+            $request->getUri()->getScheme()
+        );
+        $result = (new UrlMatcher($this->routeCollection, $context))->match($path);
+        $matchedSymfonyRoute = $this->routeCollection->get($result['_route']);
+        $route = new Route($matchedSymfonyRoute->getPath(), $matchedSymfonyRoute->getOptions());
+        $route->setOption('_identifier', $result['_route']);
+        return $route;
     }
 }
