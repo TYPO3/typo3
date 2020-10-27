@@ -406,7 +406,7 @@ class ValidatorTask extends AbstractTask
         $typesTmp = GeneralUtility::trimExplode(',', $this->modTSconfig['linktypes'], true);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $type => $value) {
             if (in_array($type, $typesTmp, true)) {
-                $linkTypes[$type] = 1;
+                $linkTypes[] = (string)$type;
             }
         }
         return $linkTypes;

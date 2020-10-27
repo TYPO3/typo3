@@ -161,7 +161,7 @@ class LinkAnalyzerResult
 
         $this->brokenLinks = $this->brokenLinkRepository->getAllBrokenLinksForPages(
             $pageIds,
-            array_keys($linkTypes),
+            $linkTypes,
             $searchFields,
             $languageIds
         );

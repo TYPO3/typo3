@@ -88,13 +88,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
      */
     public function getLinkStatisticsFindAllBrokenLinks(string $inputFile, string $pidList, string $expectedOutputFile)
     {
-        $config = [
-            'db' => '1',
-            'file' => '1',
-            'external' => '1'
-
-        ];
-
         $tsConfig = [
             'searchFields' => [
                 'pages' => ['media', 'url', 'canonical_link'],
@@ -103,6 +96,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields'];
 
@@ -113,7 +107,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             new BrokenLinkRepository()
         );
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $this->assertCSVDataSet($expectedOutputFile);
     }
@@ -149,13 +143,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
      */
     public function getLinkStatisticsFindOnlyFileBrokenLinks(string $inputFile, string $pidList, string $expectedOutputFile)
     {
-        $config = [
-            'db' => '0',
-            'file' => '1',
-            'external' => '0'
-
-        ];
-
         $tsConfig = [
             'searchFields' => [
                 'pages' => ['media', 'url'],
@@ -164,6 +151,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'linktypes' => 'file',
             'checkhidden' => '0',
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields'];
 
@@ -174,7 +162,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             new BrokenLinkRepository()
         );
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $this->assertCSVDataSet($expectedOutputFile);
     }
@@ -210,13 +198,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
      */
     public function getLinkStatisticsFindOnlyPageBrokenLinks(string $inputFile, string $pidList, string $expectedOutputFile)
     {
-        $config = [
-            'db' => '1',
-            'file' => '0',
-            'external' => '0'
-
-        ];
-
         $tsConfig = [
             'searchFields' => [
                 'pages' => ['media', 'url'],
@@ -225,6 +206,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'linktypes' => 'db',
             'checkhidden' => '0',
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields'];
 
@@ -235,7 +217,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             new BrokenLinkRepository()
         );
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $this->assertCSVDataSet($expectedOutputFile);
     }
@@ -271,13 +253,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
      */
     public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytext(string $inputFile, string $pidList, string $expectedOutputFile)
     {
-        $config = [
-            'db' => '0',
-            'file' => '0',
-            'external' => '1'
-
-        ];
-
         $tsConfig = [
             'searchFields' => [
                 'tt_content' => ['bodytext']
@@ -285,6 +260,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             'linktypes' => 'external',
             'checkhidden' => '0',
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields'];
 
@@ -295,7 +271,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
             new BrokenLinkRepository()
         );
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $this->assertCSVDataSet($expectedOutputFile);
     }

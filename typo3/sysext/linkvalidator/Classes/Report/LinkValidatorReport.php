@@ -386,7 +386,14 @@ class LinkValidatorReport
      */
     protected function updateBrokenLinks()
     {
-        $this->linkAnalyzer->getLinkStatistics($this->checkOpt['check'], $this->modTS['checkhidden']);
+        // convert ['external' => 1, 'db' => 0, ...] into ['external']
+        $linkTypes = [];
+        foreach ($this->checkOpt['check'] as $linkType => $value) {
+            if ($value) {
+                $linkTypes[] = $linkType;
+            }
+        }
+        $this->linkAnalyzer->getLinkStatistics($linkTypes, $this->modTS['checkhidden']);
     }
 
     /**

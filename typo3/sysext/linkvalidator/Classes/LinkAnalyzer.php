@@ -119,19 +119,19 @@ class LinkAnalyzer
     /**
      * Find all supported broken links and store them in tx_linkvalidator_link
      *
-     * @param array $checkOptions List of hook object to activate
+     * @param array<int,string> $linkTypes List of hook object to activate
      * @param bool $considerHidden Defines whether to look into hidden fields
      */
-    public function getLinkStatistics($checkOptions = [], $considerHidden = false)
+    public function getLinkStatistics(array $linkTypes = [], $considerHidden = false)
     {
         $results = [];
-        if (empty($checkOptions) || empty($this->pids)) {
+        if (empty($linkTypes) || empty($this->pids)) {
             return;
         }
 
         $this->brokenLinkRepository->removeAllBrokenLinksOfRecordsOnPageIds(
             $this->pids,
-            array_keys($checkOptions)
+            $linkTypes
         );
 
         // Traverse all configured tables
@@ -176,13 +176,17 @@ class LinkAnalyzer
                 $this->analyzeRecord($results, $table, $fields, $row);
             }
         }
-        $this->checkLinks($results, $checkOptions);
+        $this->checkLinks($results, $linkTypes);
     }
 
-    protected function checkLinks(array $links, array $checkOptions)
+    /**
+     * @param array $links
+     * @param array<int,string> $linkTypes
+     */
+    protected function checkLinks(array $links, array $linkTypes)
     {
         foreach ($this->hookObjectsArr as $key => $hookObj) {
-            if (!is_array($links[$key]) || (!empty($checkOptions) && !$checkOptions[$key])) {
+            if (!is_array($links[$key]) || (!in_array($key, $linkTypes, true))) {
                 continue;
             }
 

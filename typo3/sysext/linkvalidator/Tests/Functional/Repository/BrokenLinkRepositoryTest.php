@@ -203,12 +203,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         array $pidList,
         array $expectedOutput
     ) {
-        $config = [
-            'db' => '1',
-            'file' => '1',
-            'external' => '1',
-        ];
-
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
@@ -217,6 +211,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields.'];
         foreach ($searchFields as $table => $fields) {
@@ -232,7 +227,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->brokenLinksRepository
         );
         $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
         $result = $this->brokenLinksRepository->getNumberOfBrokenLinksForRecordsOnPages(
             $pidList,
             $searchFields
@@ -334,18 +329,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         array $pidList,
         int $expectedCount
     ) {
-        $config = [
-            'db' => '1',
-            'file' => '1',
-            'external' => '1',
-        ];
-
-        $linkTypes = [
-            'db',
-            'file',
-            'external'
-        ];
-
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
@@ -354,6 +337,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields.'];
         foreach ($searchFields as $table => $fields) {
@@ -369,7 +353,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->brokenLinksRepository
         );
         $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(
             $pidList,
@@ -647,18 +631,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         array $pidList,
         array $expectedResult
     ) {
-        $config = [
-            'db' => '1',
-            'file' => '1',
-            'external' => '1',
-        ];
-
-        $linkTypes = [
-            'db',
-            'file',
-            'external'
-        ];
-
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
@@ -667,6 +639,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'linktypes' => 'db,file,external',
             'checkhidden' => '0'
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields.'];
         foreach ($searchFields as $table => $fields) {
@@ -682,7 +655,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->brokenLinksRepository
         );
         $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(
             $pidList,
@@ -802,8 +775,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         array $languages,
         array $expectedResult
     ): void {
-        $config = ['external' => '1'];
-        $linkTypes = ['external'];
         $tsConfig = [
             'searchFields.' => [
                 'tt_content' => 'bodytext'
@@ -811,6 +782,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             'linktypes' => 'external',
             'checkhidden' => '0'
         ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
 
         $searchFields = $tsConfig['searchFields.'];
         foreach ($searchFields as $table => $fields) {
@@ -825,7 +797,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->brokenLinksRepository
         );
         $linkAnalyzer->init($searchFields, implode(',', $pidList), $tsConfig);
-        $linkAnalyzer->getLinkStatistics($config);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
 
         $results = $this->brokenLinksRepository->getAllBrokenLinksForPages(
             $pidList,

@@ -152,6 +152,10 @@ class BrokenLinkRepository
             ->execute();
     }
 
+    /**
+     * @param array $pageIds
+     * @param array<int,string> $linkTypes
+     */
     public function removeAllBrokenLinksOfRecordsOnPageIds(array $pageIds, array $linkTypes): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
