@@ -39,7 +39,6 @@ final class ExtensionRemotePass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds($this->tagName) as $id => $tags) {
             $definition = $container->findDefinition($id);
-            $definition->setPublic(true);
             $configuration = [];
 
             foreach ($tags as $attributes) {
@@ -47,7 +46,7 @@ final class ExtensionRemotePass implements CompilerPassInterface
                 $configuration['enabled'] = (bool)($attributes['enabled'] ?? true);
             }
 
-            $remoteRegistryDefinition->addMethodCall('registerRemote', [$id, $configuration]);
+            $remoteRegistryDefinition->addMethodCall('registerRemote', [$definition, $configuration]);
         }
     }
 }

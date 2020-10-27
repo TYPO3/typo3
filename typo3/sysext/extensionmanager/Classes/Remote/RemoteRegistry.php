@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Remote;
 
-use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-
 /**
  * Registry of remote connectors.
  *
@@ -27,11 +24,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  */
 class RemoteRegistry
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * @var ExtensionDownloaderRemoteInterface[]
      */
@@ -42,22 +34,8 @@ class RemoteRegistry
      */
     protected $defaultRemote;
 
-    public function __construct(ContainerInterface $container)
+    public function registerRemote(ExtensionDownloaderRemoteInterface $remote, array $configuration): void
     {
-        $this->container = $container;
-    }
-
-    public function registerRemote(string $id, array $configuration): void
-    {
-        $remote = $this->container->get($id);
-
-        if (!$remote instanceof ExtensionDownloaderRemoteInterface) {
-            throw new ExtensionManagerException(
-                'Extension remote ' . $id . ' must implement ' . ExtensionDownloaderRemoteInterface::class,
-                1602173538
-            );
-        }
-
         $identifier = $remote->getIdentifier();
 
         $this->remotes[$identifier] = array_merge(
