@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -74,8 +73,6 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
                 ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
             );
         }
-        $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
-
         $frontendUser = $request->getAttribute('frontend.user');
         if (!$frontendUser instanceof FrontendUserAuthentication) {
             throw new \RuntimeException('The PSR-7 Request attribute "frontend.user" needs to be available as FrontendUserAuthentication object (as created by the FrontendUserAuthenticator middleware).', 1590740612);
