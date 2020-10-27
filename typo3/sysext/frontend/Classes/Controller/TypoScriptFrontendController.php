@@ -1670,27 +1670,27 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This hash is unique to the template, the variables ->id, ->type, list of fe user groups, ->MP (Mount Points) and cHash array
      * Used to get and later store the cached data.
      *
-     * @return string MD5 hash of serialized hash base from createHashBase()
+     * @return string MD5 hash of serialized hash base from createHashBase(), prefixed with page id
      * @see getFromCache()
      * @see getLockHash()
      */
     protected function getHash()
     {
-        return md5($this->createHashBase(false));
+        return $this->id . '_' . md5($this->createHashBase(false));
     }
 
     /**
      * Calculates the lock-hash
      * This hash is unique to the above hash, except that it doesn't contain the template information in $this->all.
      *
-     * @return string MD5 hash
+     * @return string MD5 hash prefixed with page id
      * @see getFromCache()
      * @see getHash()
      */
     protected function getLockHash()
     {
         $lockHash = $this->createHashBase(true);
-        return md5($lockHash);
+        return $this->id . '_' . md5($lockHash);
     }
 
     /**
