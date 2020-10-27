@@ -68,7 +68,7 @@ class TranslateLabelSelectViewHelper extends SelectViewHelper
             return '';
         }
         $labelKey = $this->hasArgument('optionLabelPrefix') ? $this->arguments['optionLabelPrefix'] . $label : $label;
-        $translatedLabel = LocalizationUtility::translate($labelKey, $this->renderingContext->getControllerContext()->getRequest()->getControllerExtensionName());
+        $translatedLabel = LocalizationUtility::translate($labelKey, $this->renderingContext->getRequest()->getControllerExtensionName());
         return $translatedLabel ?: $label;
     }
 }

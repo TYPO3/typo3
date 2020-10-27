@@ -16,8 +16,10 @@
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
@@ -124,6 +126,12 @@ class ControllerContext
      */
     public function getUriBuilder()
     {
+        if (!$this->uriBuilder) {
+            $this->uriBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(UriBuilder::class);
+            if ($this->request) {
+                $this->uriBuilder->setRequest($this->request);
+            }
+        }
         return $this->uriBuilder;
     }
 

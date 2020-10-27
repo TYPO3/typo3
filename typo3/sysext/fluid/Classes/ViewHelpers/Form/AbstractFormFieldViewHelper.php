@@ -102,7 +102,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getRequest()
     {
-        return $this->renderingContext->getControllerContext()->getRequest();
+        return $this->renderingContext->getRequest();
     }
 
     /**
@@ -219,7 +219,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function hasMappingErrorOccurred()
     {
-        return $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest() !== null;
+        return $this->renderingContext->getRequest()->getOriginalRequest() !== null;
     }
 
     /**
@@ -232,7 +232,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     {
         $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()) ?? '', '.');
         $value = ObjectAccess::getPropertyPath(
-            $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest()->getArguments(),
+            $this->renderingContext->getRequest()->getOriginalRequest()->getArguments(),
             $propertyPath
         );
         return $value;

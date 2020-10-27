@@ -96,11 +96,10 @@ class ValidationResultsViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $templateVariableContainer = $renderingContext->getVariableProvider();
-        $controllerContext = $renderingContext->getcontrollerContext();
         $for = $arguments['for'];
         $as = $arguments['as'];
 
-        $validationResults = $controllerContext->getRequest()->getOriginalRequestMappingResults();
+        $validationResults = $renderingContext->getRequest()->getOriginalRequestMappingResults();
         if ($validationResults !== null && $for !== '') {
             $validationResults = $validationResults->forProperty($for);
         }

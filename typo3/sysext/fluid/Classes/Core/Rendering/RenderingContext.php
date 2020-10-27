@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
@@ -43,6 +45,11 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext|null
      */
     protected $controllerContext;
+
+    /**
+     * @var Request
+     */
+    protected $request;
 
     /**
      * @var string
@@ -148,7 +155,14 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function getControllerContext()
     {
-        return $this->controllerContext;
+        if ($this->controllerContext) {
+            return $this->controllerContext;
+        }
+        $controllerContext = GeneralUtility::makeInstance(ObjectManager::class)->get(ControllerContext::class);
+        if ($this->request) {
+            $controllerContext->setRequest($this->request);
+        }
+        return $controllerContext;
     }
 
     /**
@@ -161,8 +175,8 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
             $action = substr($action, 0, $dotPosition);
         }
         $this->controllerAction = $action;
-        if ($this->controllerContext) {
-            $this->controllerContext->getRequest()->setControllerActionName(lcfirst($action));
+        if ($this->request) {
+            $this->request->setControllerActionName(lcfirst($action));
         }
     }
 
@@ -173,8 +187,8 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     public function setControllerName($controllerName)
     {
         $this->controllerName = $controllerName;
-        if ($this->controllerContext) {
-            $this->controllerContext->getRequest()->setControllerName($controllerName);
+        if ($this->request instanceof Request) {
+            $this->request->setControllerName($controllerName);
         }
     }
 
@@ -183,7 +197,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function getControllerName()
     {
-        return $this->controllerContext ? $this->controllerContext->getRequest()->getControllerName() : $this->controllerName;
+        return $this->request instanceof Request ? $this->request->getControllerName() : $this->controllerName;
     }
 
     /**
@@ -191,7 +205,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function getControllerAction()
     {
-        return $this->controllerContext ? $this->controllerContext->getRequest()->getControllerActionName() : $this->controllerAction;
+        return $this->request instanceof Request ? $this->request->getControllerActionName() : $this->controllerAction;
     }
 
     /**
@@ -203,6 +217,18 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     {
         $request = $controllerContext->getRequest();
         $this->controllerContext = $controllerContext;
+        $this->setRequest($request);
+    }
+
+    /**
+     * @param Request $request
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @internal this might change to use a PSR-7 compliant request
+     */
+    public function setRequest(Request $request): void
+    {
+        $this->request = $request;
         $this->setControllerAction($request->getControllerActionName());
         // Check if Request is using a sub-package key; in which case we translate this
         // for our RenderingContext as an emulated plain old sub-namespace controller.
@@ -212,5 +238,30 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         } else {
             $this->setControllerName($controllerName);
         }
+        // Also ensure that controller context is filled, if not set yet.
+        if ($this->controllerContext === null) {
+            $this->controllerContext = GeneralUtility::makeInstance(ObjectManager::class)->get(ControllerContext::class);
+            $this->controllerContext->setRequest($request);
+        }
+    }
+
+    /**
+     * @return Request
+     * @internal this might change to use a PSR-7 compliant request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @return UriBuilder
+     * @internal this is subject to change
+     */
+    public function getUriBuilder(): UriBuilder
+    {
+        $uriBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+        return $uriBuilder;
     }
 }

@@ -104,7 +104,7 @@ class CshViewHelper extends AbstractBackendViewHelper
         $label = $arguments['label'];
 
         if ($table === null) {
-            $currentRequest = $renderingContext->getControllerContext()->getRequest();
+            $currentRequest = $renderingContext->getRequest();
             $moduleName = $currentRequest->getPluginName();
             $table = '_MOD_' . $moduleName;
         }

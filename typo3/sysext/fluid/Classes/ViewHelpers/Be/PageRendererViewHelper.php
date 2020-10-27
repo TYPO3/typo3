@@ -101,7 +101,7 @@ class PageRendererViewHelper extends AbstractViewHelper
 
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
-            $extensionKey = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionKey();
+            $extensionKey = $renderingContext->getRequest()->getControllerExtensionKey();
             foreach ($addJsInlineLabels as $key) {
                 $label = LocalizationUtility::translate($key, $extensionKey);
                 $pageRenderer->addInlineLanguageLabel($key, $label);

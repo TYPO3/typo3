@@ -103,7 +103,7 @@ class RenderViewHelper extends AbstractViewHelper
         $factory = $objectManager->get($factoryClass);
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
         $response = new Response();
-        $form = $formDefinition->bind($renderingContext->getControllerContext()->getRequest(), $response);
+        $form = $formDefinition->bind($renderingContext->getRequest(), $response);
 
         // If the controller context does not contain a response object, this viewhelper is used in a
         // fluid template rendered by the FluidTemplateContentObject. Handle the StopActionException

@@ -17,9 +17,7 @@ namespace TYPO3\CMS\Fluid\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
@@ -61,19 +59,11 @@ class StandaloneView extends AbstractTemplateView
             $baseUri .= TYPO3_mainDir;
         }
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
         $request = $this->objectManager->get(Request::class);
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri($baseUri);
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($request);
-        /** @var ControllerContext $controllerContext */
-        $controllerContext = $this->objectManager->get(ControllerContext::class);
-        $controllerContext->setRequest($request);
-        $controllerContext->setUriBuilder($uriBuilder);
         $renderingContext = $this->objectManager->get(RenderingContext::class, $this);
-        $renderingContext->setControllerContext($controllerContext);
+        $renderingContext->setRequest($request);
         parent::__construct($renderingContext);
     }
 
@@ -86,7 +76,7 @@ class StandaloneView extends AbstractTemplateView
     public function setFormat($format)
     {
         if ($this->baseRenderingContext instanceof RenderingContext) {
-            $this->baseRenderingContext->getControllerContext()->getRequest()->setFormat($format);
+            $this->baseRenderingContext->getRequest()->setFormat($format);
             $this->baseRenderingContext->getTemplatePaths()->setFormat($format);
         } else {
             throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251886);
@@ -102,7 +92,7 @@ class StandaloneView extends AbstractTemplateView
     public function getFormat()
     {
         if ($this->baseRenderingContext instanceof RenderingContext) {
-            return $this->baseRenderingContext->getControllerContext()->getRequest()->getFormat();
+            return $this->baseRenderingContext->getRequest()->getFormat();
         }
         throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251887);
     }
@@ -117,7 +107,7 @@ class StandaloneView extends AbstractTemplateView
     public function getRequest()
     {
         if ($this->baseRenderingContext instanceof RenderingContext) {
-            return $this->baseRenderingContext->getControllerContext()->getRequest();
+            return $this->baseRenderingContext->getRequest();
         }
         throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251888);
     }

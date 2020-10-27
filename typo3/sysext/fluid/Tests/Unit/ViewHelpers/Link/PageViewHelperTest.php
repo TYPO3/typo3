@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
@@ -60,19 +59,11 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         $this->uriBuilder->expects(self::any())->method('setNoCache')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setAddQueryStringMethod')->willReturn($this->uriBuilder);
 
-        // reset parent controller context and uri builder @todo: remove once fluid-cleanup is merged in testing framework
-        $this->controllerContext = $this->createMock(ControllerContext::class);
-        $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($this->uriBuilder);
-        $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request->reveal());
-        $this->arguments = [];
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->onlyMethods(['getControllerContext'])
+            ->onlyMethods(['getUriBuilder'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->renderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
-        // until here
-
-        $this->renderingContext->setControllerContext($this->controllerContext);
+        $this->renderingContext->expects(self::any())->method('getUriBuilder')->willReturn($this->uriBuilder);
 
         $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);

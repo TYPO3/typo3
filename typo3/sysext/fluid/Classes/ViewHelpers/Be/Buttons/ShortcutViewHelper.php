@@ -100,7 +100,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
 
         if ($mayMakeShortcut) {
             $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-            $currentRequest = $renderingContext->getControllerContext()->getRequest();
+            $currentRequest = $renderingContext->getRequest();
             $extensionName = $currentRequest->getControllerExtensionName();
             $moduleName = $currentRequest->getPluginName();
             if (count($getVars) === 0) {

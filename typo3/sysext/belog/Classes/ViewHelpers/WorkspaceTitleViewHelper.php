@@ -70,7 +70,7 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper
         if ($uid === 0) {
             static::$workspaceTitleRuntimeCache[$uid] = LocalizationUtility::translate(
                 'live',
-                $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName()
+                $renderingContext->getRequest()->getControllerExtensionName()
             );
         } elseif (!ExtensionManagementUtility::isLoaded('workspaces')) {
             static::$workspaceTitleRuntimeCache[$uid] = '';

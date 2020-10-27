@@ -80,7 +80,7 @@ class ResourceViewHelper extends AbstractViewHelper
         $absolute = $arguments['absolute'];
 
         if ($extensionName === null) {
-            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+            $extensionName = $renderingContext->getRequest()->getControllerExtensionName();
         }
         $uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
         $uri = GeneralUtility::getFileAbsFileName($uri);
@@ -89,7 +89,7 @@ class ResourceViewHelper extends AbstractViewHelper
         }
         if ($absolute === true) {
             $uri = PathUtility::stripPathSitePrefix($uri);
-            $uri = $renderingContext->getControllerContext()->getRequest()->getBaseUri() . $uri;
+            $uri = $renderingContext->getRequest()->getBaseUri() . $uri;
         }
         return $uri;
     }

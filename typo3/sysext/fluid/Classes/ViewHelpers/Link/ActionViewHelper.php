@@ -93,7 +93,7 @@ class ActionViewHelper extends AbstractTagBasedViewHelper
         $addQueryStringMethod = $this->arguments['addQueryStringMethod'];
         $parameters = $this->arguments['arguments'];
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getUriBuilder();
         $uriBuilder
             ->reset()
             ->setTargetPageType($pageType)

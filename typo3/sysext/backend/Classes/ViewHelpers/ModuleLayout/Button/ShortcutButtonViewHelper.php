@@ -58,7 +58,7 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
 
     protected static function createButton(ButtonBar $buttonBar, array $arguments, RenderingContextInterface $renderingContext): ButtonInterface
     {
-        $currentRequest = $renderingContext->getControllerContext()->getRequest();
+        $currentRequest = $renderingContext->getRequest();
         $moduleName = $currentRequest->getPluginName();
         $displayName = $arguments['displayName'];
 

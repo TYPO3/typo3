@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -102,8 +101,7 @@ class ActionViewHelper extends AbstractViewHelper
         /** @var array|null $arguments */
         $arguments = $arguments['arguments'] ?? [];
 
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = $renderingContext->getUriBuilder();
         $uriBuilder->reset();
 
         if ($pageUid > 0) {

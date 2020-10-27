@@ -281,7 +281,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             }
 
             $requestBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(RequestBuilder::class);
-            $this->view->getRenderingContext()->getControllerContext()->setRequest($requestBuilder->build());
+            $this->view->getRenderingContext()->setRequest($requestBuilder->build());
         }
     }
 

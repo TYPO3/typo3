@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -102,8 +101,7 @@ class PageViewHelper extends AbstractViewHelper
         $argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'];
         $addQueryStringMethod = $arguments['addQueryStringMethod'];
 
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = $renderingContext->getUriBuilder();
         $uri = $uriBuilder
             ->reset()
             ->setTargetPageType($pageType)

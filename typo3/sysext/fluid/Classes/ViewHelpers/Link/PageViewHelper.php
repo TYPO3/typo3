@@ -110,7 +110,7 @@ class PageViewHelper extends AbstractTagBasedViewHelper
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
         $addQueryStringMethod = $this->arguments['addQueryStringMethod'] ?? null;
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getUriBuilder();
         $uriBuilder->reset()
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)

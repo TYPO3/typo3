@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
@@ -45,9 +46,15 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $uriBuilderMock->expects(self::any())->method('setTargetPageType')->willReturn($uriBuilderMock);
         $uriBuilderMock->expects(self::any())->method('setNoCache')->willReturn($uriBuilderMock);
         $uriBuilderMock->expects(self::any())->method('setAddQueryStringMethod')->willReturn($uriBuilderMock);
-        $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($uriBuilderMock);
+        $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->setMethods(['getUriBuilder'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->renderingContext->setVariableProvider($this->templateVariableContainer);
+        $this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer->reveal());
         $this->renderingContext->setControllerContext($this->controllerContext);
-
+        $this->renderingContext->expects(self::any())->method('getUriBuilder')->willReturn($uriBuilderMock);
+        $this->renderingContext->setRequest($this->request->reveal());
         $this->tagBuilder = $this->createMock(TagBuilder::class);
     }
 

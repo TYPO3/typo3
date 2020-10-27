@@ -133,7 +133,7 @@ class DownloadExtensionViewHelper extends AbstractFormViewHelper
      */
     protected function getDefaultFieldNamePrefix()
     {
-        $request = $this->renderingContext->getControllerContext()->getRequest();
+        $request = $this->renderingContext->getRequest();
         if ($this->hasArgument('extensionName')) {
             $extensionName = $this->arguments['extensionName'];
         } else {

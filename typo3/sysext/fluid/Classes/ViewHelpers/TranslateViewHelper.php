@@ -142,7 +142,7 @@ class TranslateViewHelper extends AbstractViewHelper
             throw new Exception('An argument "key" or "id" has to be provided', 1351584844);
         }
 
-        $request = $renderingContext->getControllerContext()->getRequest();
+        $request = $renderingContext->getRequest();
         $extensionName = $extensionName ?? $request->getControllerExtensionName();
         try {
             $value = static::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);

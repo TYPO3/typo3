@@ -62,6 +62,6 @@ class BaseViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return '<base href="' . htmlspecialchars($renderingContext->getControllerContext()->getRequest()->getBaseUri()) . '" />';
+        return '<base href="' . htmlspecialchars($renderingContext->getRequest()->getBaseUri()) . '" />';
     }
 }

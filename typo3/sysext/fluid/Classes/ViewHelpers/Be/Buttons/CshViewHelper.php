@@ -102,7 +102,7 @@ class CshViewHelper extends AbstractBackendViewHelper
         $wrap = $arguments['wrap'];
 
         if ($table === null) {
-            $currentRequest = $renderingContext->getControllerContext()->getRequest();
+            $currentRequest = $renderingContext->getRequest();
             $moduleName = $currentRequest->getPluginName();
             $table = '_MOD_' . $moduleName;
         }

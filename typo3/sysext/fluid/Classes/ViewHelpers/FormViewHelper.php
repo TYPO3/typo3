@@ -203,8 +203,7 @@ class FormViewHelper extends AbstractFormViewHelper
         if ($this->hasArgument('actionUri')) {
             $formActionUri = $this->arguments['actionUri'];
         } else {
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+            $uriBuilder = $this->renderingContext->getUriBuilder();
             $uriBuilder
                 ->reset()
                 ->setTargetPageType($this->arguments['pageType'] ?? 0)
@@ -269,7 +268,7 @@ class FormViewHelper extends AbstractFormViewHelper
     protected function renderHiddenReferrerFields()
     {
         /** @var RequestInterface $request */
-        $request = $this->renderingContext->getControllerContext()->getRequest();
+        $request = $this->renderingContext->getRequest();
         $extensionName = $request->getControllerExtensionName();
         $controllerName = $request->getControllerName();
         $actionName = $request->getControllerActionName();
@@ -432,7 +431,7 @@ class FormViewHelper extends AbstractFormViewHelper
      */
     protected function getDefaultFieldNamePrefix()
     {
-        $request = $this->renderingContext->getControllerContext()->getRequest();
+        $request = $this->renderingContext->getRequest();
         if ($this->hasArgument('extensionName')) {
             $extensionName = $this->arguments['extensionName'];
         } else {
