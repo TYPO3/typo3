@@ -58,9 +58,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $subject = new PageRepository();
         $rows = $subject->getMenu(2, 'uid, title');
         $this->assertArrayHasKey(5, $rows);
-        $this->assertArrayHasKey(6, $rows);
         $this->assertArrayHasKey(7, $rows);
-        $this->assertCount(3, $rows);
+        $this->assertCount(2, $rows);
     }
 
     /**
@@ -71,11 +70,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $subject = new PageRepository();
         $rows = $subject->getMenu([2, 3], 'uid, title');
         $this->assertArrayHasKey(5, $rows);
-        $this->assertArrayHasKey(6, $rows);
         $this->assertArrayHasKey(7, $rows);
         $this->assertArrayHasKey(8, $rows);
         $this->assertArrayHasKey(9, $rows);
-        $this->assertCount(5, $rows);
+        $this->assertCount(4, $rows);
     }
 
     /**
@@ -89,11 +87,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $rows = $subject->getMenu([2, 3], 'uid, title');
         $this->assertEquals('Attrappe 1-2-5', $rows[5]['title']);
-        $this->assertEquals('Attrappe 1-2-6', $rows[6]['title']);
         $this->assertEquals('Dummy 1-2-7', $rows[7]['title']);
         $this->assertEquals('Dummy 1-3-8', $rows[8]['title']);
         $this->assertEquals('Attrappe 1-3-9', $rows[9]['title']);
-        $this->assertCount(5, $rows);
+        $this->assertCount(4, $rows);
     }
 
     /**
@@ -239,6 +236,29 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $this->assertEquals('Wurzel 1', $row['title']);
         $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
         $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+    }
+
+    /**
+     * @test
+     */
+    public function groupRestrictedPageCanBeOverlaid()
+    {
+        $subject = new PageRepository();
+        $origRow = $subject->getPage(6, true);
+
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
+        $rows = $subject->getPagesOverlay([$origRow]);
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertArrayHasKey(0, $rows);
+
+        $row = $rows[0];
+        $this->assertOverlayRow($row);
+        self::assertEquals('Attrappe 1-2-6', $row['title']);
+        self::assertEquals('905', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
