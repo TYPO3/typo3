@@ -533,9 +533,8 @@ class PageRepository implements LoggerAwareInterface
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-            if (empty($this->where_groupAccess)) {
-                $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
-            }
+            // Because "fe_group" is an exclude field, so it is synced between overlays, the group restriction is removed for language overlays of pages
+            $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
             $result = $queryBuilder->select('*')
                 ->from('pages')
                 ->where(

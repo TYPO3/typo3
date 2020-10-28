@@ -61,9 +61,8 @@ class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository();
         $rows = $subject->getMenu(2, 'uid, title');
         self::assertArrayHasKey(5, $rows);
-        self::assertArrayHasKey(6, $rows);
         self::assertArrayHasKey(7, $rows);
-        self::assertCount(3, $rows);
+        self::assertCount(2, $rows);
     }
 
     /**
@@ -74,11 +73,10 @@ class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository();
         $rows = $subject->getMenu([2, 3], 'uid, title');
         self::assertArrayHasKey(5, $rows);
-        self::assertArrayHasKey(6, $rows);
         self::assertArrayHasKey(7, $rows);
         self::assertArrayHasKey(8, $rows);
         self::assertArrayHasKey(9, $rows);
-        self::assertCount(5, $rows);
+        self::assertCount(4, $rows);
     }
 
     /**
@@ -92,11 +90,10 @@ class PageRepositoryTest extends FunctionalTestCase
 
         $rows = $subject->getMenu([2, 3], 'uid, title');
         self::assertEquals('Attrappe 1-2-5', $rows[5]['title']);
-        self::assertEquals('Attrappe 1-2-6', $rows[6]['title']);
         self::assertEquals('Dummy 1-2-7', $rows[7]['title']);
         self::assertEquals('Dummy 1-3-8', $rows[8]['title']);
         self::assertEquals('Attrappe 1-3-9', $rows[9]['title']);
-        self::assertCount(5, $rows);
+        self::assertCount(4, $rows);
     }
 
     /**
@@ -241,6 +238,29 @@ class PageRepositoryTest extends FunctionalTestCase
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
         self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+    }
+
+    /**
+     * @test
+     */
+    public function groupRestrictedPageCanBeOverlaid()
+    {
+        $subject = new PageRepository();
+        $origRow = $subject->getPage(6, true);
+
+        $subject = new PageRepository(new Context([
+            'language' => new LanguageAspect(1)
+        ]));
+        $rows = $subject->getPagesOverlay([$origRow]);
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertArrayHasKey(0, $rows);
+
+        $row = $rows[0];
+        $this->assertOverlayRow($row);
+        self::assertEquals('Attrappe 1-2-6', $row['title']);
+        self::assertEquals('905', $row['_PAGES_OVERLAY_UID']);
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
