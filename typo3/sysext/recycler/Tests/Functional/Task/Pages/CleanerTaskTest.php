@@ -54,7 +54,7 @@ class CleanerTaskTest extends FunctionalTestCase
         // we want to set the period in a way that older records get deleted, but not the one created today
         $difference = $creationDate->diff(new \DateTime(), true);
         // let's set the amount of days one higher than the reference date
-        $period = (int)$difference->format('%d') + 1;
+        $period = (int)$difference->format('%a') + 1;
         $subject->setPeriod($period);
         $result = $subject->execute();
         $this->assertCSVDataSet('typo3/sysext/recycler/Tests/Functional/Task/Pages/DataSet/Assertion/pages_deleted_with_period.csv');
