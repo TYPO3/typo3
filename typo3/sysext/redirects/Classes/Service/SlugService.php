@@ -121,7 +121,8 @@ class SlugService implements LoggerAwareInterface
         if ($currentPageRecord === null) {
             return;
         }
-        $this->initializeSettings($pageId);
+        $defaultPageId = (int)$currentPageRecord['sys_language_uid'] > 0 ? (int)$currentPageRecord['l10n_parent'] : $pageId;
+        $this->initializeSettings($defaultPageId);
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {

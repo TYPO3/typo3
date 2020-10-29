@@ -290,6 +290,43 @@ class SlugServiceTest extends FunctionalTestCase
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
     }
 
+    /**
+     * This test should prove, that a renaming of a subtree works as expected
+     * and all slugs of sub pages are renamed and redirects are created.
+     *
+     * We test here that rebuildSlugsForSlugChange works when changing a L>0 siteroot which has pid=0
+     * @test
+     */
+    public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguagesForSiteroot(): void
+    {
+        $this->buildBaseSiteWithLanguages();
+        $this->createSubject();
+        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.xml');
+        $this->subject->rebuildSlugsForSlugChange(5, '/', '/test-new', $this->correlationId);
+
+        // These are the slugs after rebuildSlugsForSlugChange() has run
+        $slugs = [
+            '/',
+            '/dummy-1-2',
+            '/dummy-1-3',
+            '/dummy-1-2/dummy-1-2-3',
+            '/test-new',
+            '/test-new/dummy-1-2',
+            '/test-new/dummy-1-3',
+            '/test-new/dummy-1-2/dummy-1-2-3'
+        ];
+
+        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        $redirects = [
+            ['source_path' => '/de/', 'target' => '/de/test-new'],
+            ['source_path' => '/de/dummy-1-2', 'target' => '/de/test-new/dummy-1-2'],
+            ['source_path' => '/de/dummy-1-3', 'target' => '/de/test-new/dummy-1-3'],
+            ['source_path' => '/de/dummy-1-2/dummy-1-2-3', 'target' => '/de/test-new/dummy-1-2/dummy-1-2-3'],
+        ];
+
+        $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
     protected function buildBaseSite(): void
     {
         $configuration = [
