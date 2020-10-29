@@ -51,7 +51,7 @@ It is possible to use the same API in your custom extension like this:
        ->to('contact@acme.com')
        ->from(new Address('jeremy@acme.com', 'Jeremy'))
        ->subject('TYPO3 loves you - here is why')
-       ->setFormat('html') // only HTML mail
+       ->format('html') // only HTML mail
        ->setTemplate('TipsAndTricks')
        ->assign('mySecretIngredient', 'Tomato and TypoScript');
    GeneralUtility::makeInstance(Mailer::class)->send($email);
