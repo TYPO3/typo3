@@ -47,6 +47,17 @@ class DateTimeAspectTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function getTimestampReturnsInteger(): void
+    {
+        $dateObject = new \DateTimeImmutable('2018-07-15', new \DateTimeZone('Europe/Moscow'));
+        $subject = new DateTimeAspect($dateObject);
+        $timestamp = $subject->get('timestamp');
+        self::assertIsInt($timestamp);
+    }
+
+    /**
      * @return array
      */
     public function dateFormatValuesDataProvider()
@@ -54,7 +65,7 @@ class DateTimeAspectTest extends UnitTestCase
         return [
             'timestamp' => [
                 'timestamp',
-                '1531648805'
+                1531648805
             ],
             'iso' => [
                 'iso',
@@ -68,6 +79,10 @@ class DateTimeAspectTest extends UnitTestCase
                 'full',
                 new \DateTimeImmutable('2018-07-15T13:00:05', new \DateTimeZone('Europe/Moscow'))
             ],
+            'accessTime' => [
+                'accessTime',
+                1531648800
+            ]
         ];
     }
 

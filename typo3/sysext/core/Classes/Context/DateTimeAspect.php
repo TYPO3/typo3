@@ -50,14 +50,14 @@ class DateTimeAspect implements AspectInterface
      * Fetch a property of the date time object or the object itself ("full").
      *
      * @param string $name
-     * @return \DateTimeImmutable|string
+     * @return \DateTimeImmutable|string|int
      * @throws AspectPropertyNotFoundException
      */
     public function get(string $name)
     {
         switch ($name) {
             case 'timestamp':
-                return $this->dateTimeObject->format('U');
+                return $this->dateTimeObject->getTimestamp();
             case 'iso':
                 return $this->dateTimeObject->format('c');
             case 'timezone':
@@ -65,7 +65,7 @@ class DateTimeAspect implements AspectInterface
             case 'full':
                 return $this->dateTimeObject;
             case 'accessTime':
-                return $this->dateTimeObject->format('U') - ($this->dateTimeObject->format('U') % 60);
+                return $this->dateTimeObject->getTimestamp() - ($this->dateTimeObject->getTimestamp() % 60);
         }
         throw new AspectPropertyNotFoundException('Property "' . $name . '" not found in Aspect "' . __CLASS__ . '".', 1527778767);
     }
