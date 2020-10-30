@@ -68,7 +68,7 @@
 		"codeception/module-asserts": "^1.1",
 		"codeception/module-filesystem": "^1.0",
 		"codeception/module-webdriver": "^1.0.1",
-		"friendsofphp/php-cs-fixer": "^2.16.1",
+		"friendsofphp/php-cs-fixer": "^2.16.7",
 		"phpspec/prophecy": "^1.7.5",
 		"phpstan/phpstan": "^0.12.44",
 		"typo3/cms-styleguide": "~11.0.1",

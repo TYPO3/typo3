@@ -1718,7 +1718,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
-                    "composer install --no-progress --no-suggest --no-interaction"
+                    "composer install --no-progress --no-interaction"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
@@ -1740,7 +1740,7 @@ abstract class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
                     "composer config --unset platform.php \n" +
-                    "composer update --no-progress --no-suggest --no-interaction"
+                    "composer update --no-progress --no-interaction"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
@@ -1762,7 +1762,7 @@ abstract class AbstractCoreSpec {
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
                     "composer config platform.php 7.2.0\n" +
-                    "composer update --prefer-lowest --no-progress --no-suggest --no-interaction"
+                    "composer update --prefer-lowest --no-progress --no-interaction"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
     }
