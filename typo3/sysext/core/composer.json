@@ -50,7 +50,7 @@
 	"require-dev": {
 		"codeception/codeception": "^2.5.4",
 		"fiunchinho/phpunit-randomizer": "^4.0",
-		"friendsofphp/php-cs-fixer": "^2.16.1",
+		"friendsofphp/php-cs-fixer": "^2.16.7",
 		"typo3/cms-styleguide": "~9.2.2",
 		"typo3/testing-framework": "^4.15.1"
 	},
