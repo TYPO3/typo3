@@ -153,6 +153,9 @@
 			<trans-unit id="list.report.redirectloop" resname="list.report.redirectloop">
 				<source>A redirect loop occurred. (%s: %s)</source>
 			</trans-unit>
+			<trans-unit id="list.report.tooManyRedirects" resname="list.report.tooManyRedirects">
+				<source>Too many redirects.</source>
+			</trans-unit>
 			<trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403">
 				<source>Accessing this address is not allowed (403).</source>
 			</trans-unit>

@@ -181,7 +181,7 @@ class ExternalLinktype extends AbstractLinktype
         } catch (TooManyRedirectsException $e) {
             // redirect loop or too many redirects
             // todo: change errorType to 'redirect' (breaking change)
-            $this->errorParams['errorType'] = 'loop';
+            $this->errorParams['errorType'] = 'tooManyRedirects';
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         } catch (ClientException $e) {
@@ -234,6 +234,9 @@ class ExternalLinktype extends AbstractLinktype
                     $errorParams['exception'],
                     ''
                 );
+                break;
+            case 'tooManyRedirects':
+                $message = $lang->getLL('list.report.tooManyRedirects');
                 break;
             case 'exception':
                 $message = sprintf($lang->getLL('list.report.httpexception'), $errorParams['exception']);
