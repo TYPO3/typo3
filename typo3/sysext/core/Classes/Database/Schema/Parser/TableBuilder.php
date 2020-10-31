@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
-use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BigIntDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BinaryDataType;
