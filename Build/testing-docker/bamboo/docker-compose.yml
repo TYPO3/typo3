@@ -45,7 +45,7 @@ services:
     networks:
       - test
   web:
-    image: typo3gmbh/php72:latest
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     stop_grace_period: 1s
     networks:
