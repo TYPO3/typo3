@@ -234,7 +234,7 @@ abstract class AbstractCoreSpec {
     /**
      * Job checking CGL of all core php files
      */
-    Job getJobCglCheckFullCore( String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+    Job getJobCglCheckFullCore(String requirementIdentifier, Task composerTask, Boolean isSecurity) {
         return new Job("Integration CGL " , new BambooKey("CGLCHECK"))
             .description("Check coding guidelines of full core")
             .pluginConfigurations(this.getDefaultJobPluginConfiguration())
@@ -282,7 +282,7 @@ abstract class AbstractCoreSpec {
                 this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 composerTask,
-                this.getTaskPrepareAcceptanceTest(),
+                this.getTaskPrepareAcceptanceTest(requirementIdentifier),
                 this.getTaskDockerDependenciesAcceptanceInstallMariadb10(),
                 new ScriptTask()
                     .description("Install TYPO3 on mariadb 10")
@@ -337,7 +337,7 @@ abstract class AbstractCoreSpec {
                 this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 composerTask,
-                this.getTaskPrepareAcceptanceTest(),
+                this.getTaskPrepareAcceptanceTest(requirementIdentifier),
                 this.getTaskDockerDependenciesAcceptancePostgres10(),
                 new ScriptTask()
                     .description("Install TYPO3 on postgresql 10")
@@ -392,7 +392,7 @@ abstract class AbstractCoreSpec {
                 this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 composerTask,
-                this.getTaskPrepareAcceptanceTest(),
+                this.getTaskPrepareAcceptanceTest(requirementIdentifier),
                 this.getTaskDockerDependenciesAcceptanceInstallSqlite(),
                 new ScriptTask()
                     .description("Install TYPO3 on sqlite")
@@ -450,7 +450,7 @@ abstract class AbstractCoreSpec {
                     this.getTaskGitCherryPick(isSecurity),
                     this.getTaskStopDanglingContainers(),
                     composerTask,
-                    this.getTaskPrepareAcceptanceTest(),
+                    this.getTaskPrepareAcceptanceTest(requirementIdentifier),
                     this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
                     new ScriptTask()
                         .description("Split acceptance tests")
@@ -529,7 +529,7 @@ abstract class AbstractCoreSpec {
                 this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 composerTask,
-                this.getTaskPrepareAcceptanceTest(),
+                this.getTaskPrepareAcceptanceTest(requirementIdentifier),
                 this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
                 new ScriptTask()
                     .description("Execute codeception acceptance test for pageTree.")
@@ -586,7 +586,7 @@ abstract class AbstractCoreSpec {
                 this.getTaskGitCherryPick(isSecurity),
                 this.getTaskStopDanglingContainers(),
                 composerTask,
-                this.getTaskPrepareAcceptanceTest(),
+                this.getTaskPrepareAcceptanceTest(requirementIdentifier),
                 this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
                 new ScriptTask()
                     .description("Execute codeception acceptance test for standalone install tool.")
@@ -1770,13 +1770,15 @@ abstract class AbstractCoreSpec {
     /**
      * Task to prepare an acceptance test
      */
-    private Task getTaskPrepareAcceptanceTest() {
+    private Task getTaskPrepareAcceptanceTest(String phpVersion) {
         return new ScriptTask()
             .description("Prepare acceptance test environment")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                    "mkdir -p typo3temp/var/tests/\n"
+                    "mkdir -p typo3temp/var/tests/\n" +
+                    "cd Build/testing-docker/bamboo\n" +
+                    "echo DOCKER_PHP_IMAGE=" + phpVersion.toLowerCase() + " > .env"
             );
     }
 
@@ -1790,7 +1792,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_acceptance_install_mariadb10"
             );
     }
@@ -1805,7 +1807,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_acceptance_install_postgres10"
             );
     }
@@ -1820,7 +1822,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_acceptance_install_sqlite"
             );
     }
@@ -1835,7 +1837,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_acceptance_backend_mariadb10"
             );
     }
@@ -1850,7 +1852,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_functional_mariadb10"
             );
     }
@@ -1865,7 +1867,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_functional_mssql"
             );
     }
@@ -1880,7 +1882,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_functional_postgres10"
             );
     }
@@ -1895,7 +1897,7 @@ abstract class AbstractCoreSpec {
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     "cd Build/testing-docker/bamboo\n" +
-                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib > .env\n" +
+                    "echo COMPOSE_PROJECT_NAME=${BAMBOO_COMPOSE_PROJECT_NAME}sib >> .env\n" +
                     "docker-compose run start_dependencies_functional_sqlite"
             );
     }
