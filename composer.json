@@ -80,6 +80,7 @@
 		"typo3fluid/fluid": "^2.6.8 || ^3"
 	},
 	"require-dev": {
+		"composer-runtime-api": "^2.0",
 		"codeception/codeception": "^4.0",
 		"codeception/lib-asserts": "^1.1",
 		"codeception/module-asserts": "^1.1",
