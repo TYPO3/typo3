@@ -6,6 +6,9 @@
 			<trans-unit id="internal_note" resname="internal_note">
 				<source>Internal notes</source>
 			</trans-unit>
+			<trans-unit id="new_internal_note" resname="new_internal_note">
+				<source>Create internal note for this page</source>
+			</trans-unit>
 			<trans-unit id="author" resname="author">
 				<source>Author</source>
 			</trans-unit>
