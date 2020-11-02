@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -39,11 +40,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ::
  *
- *    <f:format.html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
+ *    <f:format.html>###PROJECT### is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
  *
  * Output::
  *
- *    <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
+ *    <p class="bodytext">TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).</p>
  *
  * Depending on TYPO3 setup.
  *
@@ -52,11 +53,51 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ::
  *
- *    <f:format.html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
+ *    <f:format.html parseFuncTSPath="lib.parseFunc">###PROJECT### is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
  *
  * Output::
  *
- *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
+ *    TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).
+ *
+ * Data argument
+ * --------------
+ *
+ * If you work with TypoScript "field" property, you should add the current record as "data"
+ * to the ViewHelper to allow processing the "field" and "dataWrap" properties correctly.
+ *
+ * ::
+ *
+ *    <f:format.html data="{newsRecord}" parseFuncTSPath="lib.news">News title: </f:format.html>
+ *
+ * After "dataWrap = |<strong>{FIELD:title}</strong>" you may have this Output::
+ *
+ *    News title: <strong>TYPO3, greatest CMS ever</strong>
+ *
+ * Current argument
+ * -----------------
+ *
+ * Use the current argument to set the current value of the content object.
+ *
+ * ::
+ *
+ *    <f:format.html current="{strContent}" parseFuncTSPath="lib.info">I'm gone</f:format.html>
+ *
+ * After "setContentToCurrent = 1" you may have this Output::
+ *
+ *    Thanks Kasper for this great CMS
+ *
+ * CurrentValueKey argument
+ * -------------------------
+ *
+ * Use the currentValueKey argument to define a value of data object as the current value.
+ *
+ * ::
+ *
+ *    <f:format.html data="{contentRecord}" currentValueKey="header" parseFuncTSPath="lib.content">Content: </f:format.html>
+ *
+ * After "dataWrap = |{CURRENT:1}" you may have this Output::
+ *
+ *    Content: How to install TYPO3 in under 2 minutes ;-)
  *
  * Inline notation
  * ---------------
@@ -67,7 +108,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Output::
  *
- *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
+ *    TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).
  *
  * .. _parseFunc: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Parsefunc.html
  */
@@ -91,23 +132,50 @@ final class HtmlViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('parseFuncTSPath', 'string', ' path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
+        $this->registerArgument('parseFuncTSPath', 'string', 'Path to the TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
+        $this->registerArgument('data', 'mixed', 'Initialize the content object with this set of data. Either an array or object.');
+        $this->registerArgument('current', 'string', 'Initialize the content object with this value for current property.');
+        $this->registerArgument('currentValueKey', 'string', 'Define the value key, used to locate the current value for the content object');
+        $this->registerArgument('table', 'string', 'The table name associated with the "data" argument.', false, '');
     }
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
+        $data = $arguments['data'];
+        $current = $arguments['current'];
+        $currentValueKey = $arguments['currentValueKey'];
+        $table = $arguments['table'];
         $isBackendRequest = ApplicationType::fromRequest($renderingContext->getRequest())->isBackend();
+
         if ($isBackendRequest) {
             $tsfeBackup = self::simulateFrontendEnvironment();
         }
+
         $value = $renderChildrenClosure();
+
+        // Prepare data array
+        if (is_object($data)) {
+            $data = ObjectAccess::getGettableProperties($data);
+        } elseif (!is_array($data)) {
+            $data = (array)$data;
+        }
+
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $contentObject->start([]);
+        $contentObject->start($data, $table);
+
+        if ($current !== null) {
+            $contentObject->setCurrentVal($current);
+        } elseif ($currentValueKey !== null && isset($data[$currentValueKey])) {
+            $contentObject->setCurrentVal($data[$currentValueKey]);
+        }
+
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
+
         if ($isBackendRequest) {
             self::resetFrontendEnvironment($tsfeBackup);
         }
+
         return $content;
     }
 
