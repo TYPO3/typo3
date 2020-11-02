@@ -65,6 +65,7 @@
 		"typo3fluid/fluid": "^2.6.8"
 	},
 	"require-dev": {
+		"composer-runtime-api": "^2.0",
 		"codeception/codeception": "^2.5.4",
 		"friendsofphp/php-cs-fixer": "^2.16.7",
 		"typo3/cms-styleguide": "~9.2.2",
