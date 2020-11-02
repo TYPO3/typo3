@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -58,7 +57,8 @@ class PreviewSimulator implements MiddlewareInterface
         if ((bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
             $simulatingDate = $this->simulateDate($request);
             $simulatingGroup = $this->simulateUserGroup($request);
-            $isPreview = (int)($simulatingDate || $simulatingGroup || StateUtility::isActivatedForUser());
+            $showHiddenRecords = ($this->context->hasAspect('visibility') ? $this->context->getAspect('visibility')->includeHidden() : false);
+            $isPreview = (int)($simulatingDate || $simulatingGroup || $showHiddenRecords);
             $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
             $this->context->setAspect('frontend.preview', $previewAspect);
         }
