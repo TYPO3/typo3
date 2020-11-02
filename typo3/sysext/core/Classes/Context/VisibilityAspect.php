@@ -74,6 +74,11 @@ class VisibilityAspect implements AspectInterface
         throw new AspectPropertyNotFoundException('Property "' . $name . '" not found in Aspect "' . __CLASS__ . '".', 1527780439);
     }
 
+    public function includeHidden(): bool
+    {
+        return $this->includeHiddenContent || $this->includeHiddenPages;
+    }
+
     public function includeHiddenPages(): bool
     {
         return $this->includeHiddenPages;
