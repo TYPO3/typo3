@@ -71,7 +71,7 @@ return [
         ],
         'fileinfo' => [
             'config' => [
-                'type' => 'user',
+                'type' => 'none',
                 'renderType' => 'fileInfo',
             ]
         ],
