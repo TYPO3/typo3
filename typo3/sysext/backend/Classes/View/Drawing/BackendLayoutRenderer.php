@@ -162,6 +162,74 @@ class BackendLayoutRenderer
         return $languageColumns;
     }
 
+    protected function getLanguageColumnsWithDefLangBindingForPageLayoutContext(PageLayoutContext $context): iterable
+    {
+        $languageColumns = [];
+
+        // default language
+        $translationInfo = $this->contentFetcher->getTranslationData(
+            $this->contentFetcher->getFlatContentRecords(0),
+            0
+        );
+
+        $defaultLanguageColumnObject = GeneralUtility::makeInstance(
+            LanguageColumn::class,
+            $context,
+            $this->getGridForPageLayoutContext($context),
+            $translationInfo
+        );
+        foreach ($context->getLanguagesToShow() as $siteLanguage) {
+            $localizedLanguageId = $siteLanguage->getLanguageId();
+            if ($localizedLanguageId  <= 0) {
+                continue;
+            }
+
+            $localizedContext = $context->cloneForLanguage($siteLanguage);
+            if (!$localizedContext->getLocalizedPageRecord()) {
+                continue;
+            }
+
+            $translationInfo = $this->contentFetcher->getTranslationData(
+                $this->contentFetcher->getFlatContentRecords($localizedLanguageId),
+                $localizedContext->getSiteLanguage()->getLanguageId()
+            );
+
+            $translatedRows = $this->contentFetcher->getFlatContentRecords($localizedLanguageId);
+
+            $grid = $defaultLanguageColumnObject->getGrid();
+            if ($grid === null) {
+                continue;
+            }
+
+            foreach ($grid->getRows() as $rows) {
+                foreach ($rows->getColumns() as $column) {
+                    if ($translationInfo['mode'] === 'connected') {
+                        foreach ($column->getItems() as $item) {
+                            // check if translation exists
+                            foreach ($translatedRows as $translation) {
+                                if ($translation['l18n_parent'] === $item->getRecord()['uid']) {
+                                    $translatedItem = GeneralUtility::makeInstance(GridColumnItem::class, $this->context, $column, $translation);
+                                    $item->addTranslation($localizedLanguageId, $translatedItem);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $languageColumnObject = GeneralUtility::makeInstance(
+                LanguageColumn::class,
+                $localizedContext,
+                $this->getGridForPageLayoutContext($localizedContext),
+                $translationInfo
+            );
+            $languageColumns[$localizedLanguageId] = $languageColumnObject;
+        }
+        $languageColumns = [$defaultLanguageColumnObject] + $languageColumns;
+
+        return $languageColumns;
+    }
+
     /**
      * @param bool $renderUnused If true, renders the bottom column with unused records
      * @return string
@@ -174,7 +242,11 @@ class BackendLayoutRenderer
         $this->view->assign('allowEditContent', $this->getBackendUser()->check('tables_modify', 'tt_content'));
 
         if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
-            $this->view->assign('languageColumns', $this->getLanguageColumnsForPageLayoutContext($this->context));
+            if ($this->context->getDrawingConfiguration()->getDefaultLanguageBinding()) {
+                $this->view->assign('languageColumns', $this->getLanguageColumnsWithDefLangBindingForPageLayoutContext($this->context));
+            } else {
+                $this->view->assign('languageColumns', $this->getLanguageColumnsForPageLayoutContext($this->context));
+            }
         } else {
             $this->view->assign('grid', $this->getGridForPageLayoutContext($this->context));
         }

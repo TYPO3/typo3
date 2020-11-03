@@ -1,0 +1,33 @@
+<div class="t3-page-column-header">
+    <f:if condition="{column.active}">
+        <f:then>
+            <div class="t3-page-column-header-icons">
+                <f:if condition="{allowEditContent} && {column.editUrl}">
+                    <a href="{column.editUrl}" title="{column.editLinkTitle}"><core:icon identifier="actions-document-open" /></a>
+                </f:if>
+            </div>
+            {column.title}
+        </f:then>
+        <f:else if="{column.unassigned}">
+            {column.title} (<f:format.raw>{column.titleUnassigned}</f:format.raw>)
+        </f:else>
+        <f:else if="!{hideRestrictedColumns}">
+            <f:format.raw>{column.titleInaccessible}</f:format.raw>
+        </f:else>
+        <f:else>
+            <f:format.raw>{column.titleInaccessible}</f:format.raw>
+        </f:else>
+    </f:if>
+</div>
+<f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent}">
+    <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}">
+        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{column.columnNumber}-page-{column.context.pageId}-{column.uniqueId}">
+            <a href="{column.newContentUrl}" title="{newContentTitle}" data-title="{newContentTitle}"
+                class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard disabled">
+                <core:icon identifier="actions-add" />
+                {newContentTitleShort}
+            </a>
+        </div>
+        <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+    </div>
+</f:if>

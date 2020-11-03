@@ -61,16 +61,64 @@
                 </td>
             </f:for>
         </tr>
-        <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
-            <tr>
-                <f:for each="{languageColumns}" as="languageColumn">
-                    <f:if condition="{languageColumn.grid.columns}">
-                        <f:variable name="grid" value="{languageColumn.grid}" />
-                        <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                        <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
-                    </f:if>
+        <f:if condition="{context.drawingConfiguration.defaultLanguageBinding}">
+            <f:then>
+                <f:variable name="grid" value="{languageColumns.0.grid}" />
+                <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
+                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
+                    <tr>
+                        <f:for each="{languageColumns}" as="languageColumn">
+                            <td data-colpos="{column.columnNumber}">
+                                <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+                            </td>
+                        </f:for>
+                    </tr>
+                    <f:for each="{column.items}" as="item" iteration="itemIterator">
+                        <tr>
+                            <td class="t3-grid-cell" data-colpos="{column.columnNumber}">
+                                <f:render partial="PageLayout/Record" arguments="{_all}" />
+                            </td>
+                            <f:for each="{languageColumns}" as="languageColumn">
+                                <f:if condition="{languageColumn.context.siteLanguage.languageId} > 0">
+                                    <td class="t3-grid-cell" data-colpos="{column.columnNumber}">
+                                        <f:variable name="languageId" value="{languageColumn.context.siteLanguage.languageId}" />
+                                        <f:if condition="{languageColumn.translationData.mode} == 'connected'">
+                                            <f:then>
+                                                <f:if condition="{item.translations.{languageId}}">
+                                                    <f:variable name="item" value="{item.translations.{languageId}}" />
+                                                    <f:render partial="PageLayout/Record" arguments="{_all}" />
+                                                </f:if>
+                                            </f:then>
+                                            <f:else>
+                                                <f:if condition="{itemIterator.isFirst}">
+                                                    <f:variable name="languageColumnNonConnected">{languageColumns.{languageId}}</f:variable>
+                                                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumnNonConnected, columnNumber: columnNumber)}" />
+                                                    <f:for each="{column.items}" as="item">
+                                                        <f:render partial="PageLayout/Record" arguments="{_all}" />
+                                                    </f:for>
+                                                </f:if>
+                                            </f:else>
+                                        </f:if>
+                                    </td>
+                                </f:if>
+                            </f:for>
+                        </tr>
+                    </f:for>
                 </f:for>
-            </tr>
-        </f:for>
+            </f:then>
+            <f:else>
+                <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
+                    <tr>
+                        <f:for each="{languageColumns}" as="languageColumn">
+                            <f:if condition="{languageColumn.grid.columns}">
+                                <f:variable name="grid" value="{languageColumn.grid}" />
+                                <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                                <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
+                            </f:if>
+                        </f:for>
+                    </tr>
+                </f:for>
+            </f:else>
+        </f:if>
     </table>
 </div>
