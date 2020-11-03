@@ -41,6 +41,10 @@ enum Identifiers {
   pagination = '#workspace-pagination',
 }
 
+/**
+ * Backend workspace module. Loaded only in Backend context, not in
+ * workspace preview. Contains all JavaScript of the main BE module.
+ */
 class Backend extends Workspaces {
   private elements: { [key: string]: JQuery } = {};
   private settings: { [key: string]: string | number } = {
