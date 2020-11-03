@@ -1286,7 +1286,13 @@ class DataHandlerHook
             $destPid = -$movePlaceHolder['uid'];
         }
         if ($plh = BackendUtility::getMovePlaceholder($table, $uid, 'uid')) {
-            // If already a placeholder exists, move it:
+            // The to-be-moved record is a move pointer, so the record has been moved in workspace at least once already.
+            // First, move the t3ver_state=4 record.
+            $moveOverlay = BackendUtility::getWorkspaceVersionOfRecord((int)$GLOBALS['BE_USER']->workspace, $table, $uid);
+            if (isset($moveOverlay['uid']) && $moveOverlay['uid'] > 0) {
+                $dataHandler->moveRecord_raw($table, $moveOverlay['uid'], $destPid);
+            }
+            // Then move the t3ver_state=3 record.
             $dataHandler->moveRecord_raw($table, $plh['uid'], $destPid);
         } else {
             // First, we create a placeholder record in the Live workspace that

@@ -531,6 +531,56 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function movePageToDifferentPageTwice()
+    {
+        parent::movePageToDifferentPageTwice();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('movePageToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedToDifferentPageTwice();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('movePageLocalizedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedInLiveToDifferentPageTwice()
+    {
+        parent::movePageLocalizedInLiveToDifferentPageTwice();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('movePageLocalizedInLiveToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
     public function movePageToDifferentPageAndChangeSorting()
     {
         parent::movePageToDifferentPageAndChangeSorting();

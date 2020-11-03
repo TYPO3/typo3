@@ -156,6 +156,15 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function moveParentContentToDifferentPageTwice()
+    {
+        parent::moveParentContentToDifferentPageTwice();
+        $this->assertAssertionDataSet('moveParentContentToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
     public function moveParentContentToDifferentPageAndChangeSorting()
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
