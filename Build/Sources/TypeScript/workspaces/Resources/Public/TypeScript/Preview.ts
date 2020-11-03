@@ -33,6 +33,10 @@ enum Identifiers {
   workspacePreview = '.t3js-workspace-preview',
 }
 
+/**
+ * Loaded in "Frontend workspace preview". Contains JS for "Send to stage ..." / "Discard"
+ * buttons, preview mode selector, preview slider and so on.
+ */
 class Preview extends Workspaces {
   private currentSlidePosition: number = 100;
   private elements: { [key: string]: JQuery } = {};
@@ -84,6 +88,14 @@ class Preview extends Workspaces {
     $(document)
       .on('click', Identifiers.discardAction, this.renderDiscardWindow)
       .on('click', Identifiers.sendToStageAction, this.renderSendPageToStageWindow)
+      .on('click', '.t3js-workspace-recipients-selectall', (e: JQueryEventObject): void => {
+        e.preventDefault();
+        $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
+      })
+      .on('click', '.t3js-workspace-recipients-deselectall', (e: JQueryEventObject): void => {
+        e.preventDefault();
+        $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', false);
+      })
     ;
 
     new ThrottleEvent('input', this.updateSlidePosition, 25).bindTo(document.querySelector(Identifiers.stageSlider));
