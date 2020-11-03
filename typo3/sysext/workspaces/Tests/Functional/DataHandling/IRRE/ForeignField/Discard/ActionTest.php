@@ -113,9 +113,19 @@ class ActionTest extends AbstractActionTestCase
      */
     public function moveParentContentToDifferentPage()
     {
-        $newRecordIds = parent::moveParentContentToDifferentPage();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdLast]);
+        parent::moveParentContentToDifferentPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('moveParentContentToDifferentPage');
+    }
+
+    /**
+     * @test
+     */
+    public function moveParentContentToDifferentPageTwice()
+    {
+        parent::moveParentContentToDifferentPageTwice();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertAssertionDataSet('moveParentContentToDifferentPageTwice');
     }
 
     /**

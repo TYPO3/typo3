@@ -772,6 +772,24 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function movePageToDifferentPageTwice()
+    {
+        parent::movePageToDifferentPageTwice();
+        $this->assertAssertionDataSet('movePageToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedToDifferentPageTwice();
+        $this->assertAssertionDataSet('movePageLocalizedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
      * See DataSet/movePageRecordToDifferentPageAndChangeSorting.csv
      */
     public function movePageToDifferentPageAndChangeSorting()

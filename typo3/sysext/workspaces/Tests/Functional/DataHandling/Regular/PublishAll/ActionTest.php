@@ -530,6 +530,56 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function movePageToDifferentPageTwice()
+    {
+        parent::movePageToDifferentPageTwice();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('movePageToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedToDifferentPageTwice();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('movePageLocalizedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedInLiveToDifferentPageTwice()
+    {
+        parent::movePageLocalizedInLiveToDifferentPageTwice();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('movePageLocalizedInLiveToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
+    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice()
+    {
+        parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice');
+    }
+
+    /**
+     * @test
+     */
     public function movePageToDifferentPageAndChangeSorting()
     {
         parent::movePageToDifferentPageAndChangeSorting();

@@ -4097,11 +4097,19 @@ class DataHandler implements LoggerAwareInterface
         // Check if this is a translation of a page, if so then it just needs to be kept "sorting" in sync
         // Usually called from moveL10nOverlayRecords()
         if ($table === 'pages') {
-            $defaultLanguagePageId = $this->getDefaultLanguagePageId((int)$uid);
-            if ($defaultLanguagePageId !== (int)$uid) {
-                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageId, 'pid,' . $sortColumn);
+            $defaultLanguagePageUid = $this->getDefaultLanguagePageId((int)$uid);
+            // In workspaces, the default language page may have been moved to a different pid than the
+            // default language page record of live workspace. In this case, localized pages need to be
+            // moved to the pid of the workspace move record.
+            $defaultLanguagePageWorkspaceOverlay = BackendUtility::getWorkspaceVersionOfRecord((int)$this->BE_USER->workspace, 'pages', $defaultLanguagePageUid, 'uid');
+            if (is_array($defaultLanguagePageWorkspaceOverlay)) {
+                $defaultLanguagePageUid = (int)$defaultLanguagePageWorkspaceOverlay['uid'];
+            }
+            if ($defaultLanguagePageUid !== (int)$uid) {
+                // If the default language page has been moved, localized pages need to be moved to
+                // that pid and sorting, too.
+                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageUid, 'pid,' . $sortColumn);
                 $updateFields[$sortColumn] = $originalTranslationRecord[$sortColumn];
-                // Ensure that the PID is always the same as the default language page
                 $destPid = $originalTranslationRecord['pid'];
             }
         }
@@ -8600,10 +8608,11 @@ class DataHandler implements LoggerAwareInterface
      *****************************/
 
     /**
-     * Find out if the record is a get the original page
+     * Find out if the record is a localization. If so, get the uid of the default language page.
+     * Always returns the uid of the workspace live record: No explicit workspace overlay is applied.
      *
-     * @param int $pageId the page UID (can be the default page record, or a page translation record ID)
-     * @return int the page UID of the default page record
+     * @param int $pageId Page UID, can be the default page record, or a page translation record ID
+     * @return int UID of the default page record in live workspace
      */
     protected function getDefaultLanguagePageId(int $pageId): int
     {

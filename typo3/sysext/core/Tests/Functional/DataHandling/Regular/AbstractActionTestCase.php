@@ -440,6 +440,83 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
     }
 
+    public function movePageToDifferentPageTwice()
+    {
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
+    }
+
+    /**
+     * Create page localization, then move default language page to different pages twice.
+     * Verifies the page localization is moved together with the default language page.
+     * In workspaces, the page localization will be a "new" overlay that is moved around.
+     */
+    public function movePageLocalizedToDifferentPageTwice()
+    {
+        // Localize page first. In workspaces, this localization is created within ws, creating a "new" t3ver_state=-1 record
+        $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
+    }
+
+    /**
+     * Create page localization in live, then move default language page in workspaces to different pages twice.
+     * Verifies the page localization is moved together with the default language page.
+     * This should create "move" a overlay for the localization.
+     *
+     * No ext:core implementation of this test since it is identical with
+     * moveLocalizedPageToDifferentPageTwice() in non-workspace
+     */
+    public function movePageLocalizedInLiveToDifferentPageTwice()
+    {
+        $this->setWorkspaceId(0);
+        $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
+    }
+
+    /**
+     * Create page localization in live, then change the localization in workspace,
+     * then move default language page in workspaces to different pages twice.
+     * Verifies the page localization is moved together with the default language page, and that the
+     * "changed" t3ver_state=0 record is turned into a move placeholder when default language page is moved.
+     *
+     * No ext:core implementation of this test since it is identical with
+     * moveLocalizedPageToDifferentPageTwice() in non-workspace
+     */
+    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice()
+    {
+        $this->setWorkspaceId(0);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['localizedPageId'], ['title' => 'Testing #1']);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
+    }
+
+    /**
+     * Create page localization in live, then delete the localization in workspace,
+     * then move default language page in workspaces to different pages twice.
+     * Verifies the page localization is moved together with the default language page.
+     *
+     * @todo The "deleted" t3ver_state=2 record is turned into a move placeholder so the "marked for delete" information is lost.
+     *
+     * No ext:core implementation of this test since it is identical with
+     * moveLocalizedPageToDifferentPageTwice() in non-workspace
+     */
+    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice()
+    {
+        $this->setWorkspaceId(0);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
+    }
+
     public function movePageToDifferentPageAndChangeSorting()
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
