@@ -51,6 +51,11 @@ class GridColumnItem extends AbstractGridObject
      */
     protected $column;
 
+    /**
+     * @var GridColumnItem[]
+     */
+    protected $translations = [];
+
     public function __construct(PageLayoutContext $context, GridColumn $column, array $record)
     {
         parent::__construct($context);
@@ -192,6 +197,17 @@ class GridColumnItem extends AbstractGridObject
     public function getColumn(): GridColumn
     {
         return $this->column;
+    }
+
+    public function getTranslations(): array
+    {
+        return $this->translations;
+    }
+
+    public function addTranslation(int $languageId, GridColumnItem $translation): GridColumnItem
+    {
+        $this->translations[$languageId] = $translation;
+        return $this;
     }
 
     public function isDisabled(): bool
