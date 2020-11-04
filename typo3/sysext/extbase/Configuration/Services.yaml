@@ -7,9 +7,6 @@ services:
   TYPO3\CMS\Extbase\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Extbase\Core\BootstrapInterface:
-    alias: TYPO3\CMS\Extbase\Core\Bootstrap
-
   TYPO3\CMS\Extbase\Core\Bootstrap:
     public: true
     shared: false

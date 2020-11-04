@@ -40,7 +40,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * This class is the main entry point for extbase extensions.
  */
-class Bootstrap implements BootstrapInterface
+class Bootstrap
 {
     /**
      * @var array
