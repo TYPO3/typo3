@@ -164,8 +164,7 @@ class Typo3DbQueryParser
     /**
      * Whether using a distinct query is suggested.
      * This information is defined during parsing of the current query
-     * for RELATION_HAS_MANY and RELATION_HAS_AND_BELONGS_TO_MANY relations.
-     * Further it is used, if Queries are realized with QueryBuilder and contains a groupBy statement
+     * for RELATION_HAS_MANY & RELATION_HAS_AND_BELONGS_TO_MANY relations.
      *
      * @return bool
      */
@@ -190,13 +189,6 @@ class Typo3DbQueryParser
 
         if ($query->getStatement() && $query->getStatement()->getStatement() instanceof QueryBuilder) {
             $this->queryBuilder = clone $query->getStatement()->getStatement();
-            // Whether using a distinct query is suggested.
-            // This information is defined during parsing of the current query
-            // for RELATION_HAS_MANY and RELATION_HAS_AND_BELONGS_TO_MANY relations.
-            // Further it is used, if Queries are realized with QueryBuilder and contains a groupBy statement
-            if (!empty($this->queryBuilder->getQueryPart('groupBy'))) {
-                $this->suggestDistinctQuery = true;
-            }
             return $this->queryBuilder;
         }
         // Find the right table name
