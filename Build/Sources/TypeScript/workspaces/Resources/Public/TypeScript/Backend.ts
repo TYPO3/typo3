@@ -303,11 +303,9 @@ class Backend extends Workspaces {
 
         $me.empty().append(this.getPreRenderedIcon(iconIdentifier));
       });
-    $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', (): void => {
       $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
-    }).on('click', '.t3js-workspace-recipients-deselectall', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    }).on('click', '.t3js-workspace-recipients-deselectall', (): void => {
       $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', false);
     });
 
