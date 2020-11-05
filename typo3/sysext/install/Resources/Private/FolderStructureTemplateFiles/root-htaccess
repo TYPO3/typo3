@@ -210,11 +210,11 @@
 	AddType image/x-icon                                cur ico
 
 	# Web fonts
-	AddType application/font-woff                       woff
-	AddType application/font-woff2                      woff2
+	AddType font/woff                                   woff
+	AddType font/woff2                                  woff2
 	AddType application/vnd.ms-fontobject               eot
-	AddType application/x-font-ttf                      ttc ttf
-	AddType font/opentype                               otf
+	AddType font/ttf                                    ttc ttf
+	AddType font/otf                                    otf
 
 	# Other
 	AddType application/octet-stream                    safariextz
