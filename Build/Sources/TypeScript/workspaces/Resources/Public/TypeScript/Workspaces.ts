@@ -35,10 +35,10 @@ export default class Workspaces {
       );
       $form.append(
         $('<div />', {class: 'form-group'}).append(
-          $('<a href="#" class="btn btn-default btn-xs t3js-workspace-recipients-selectall" />')
+          $('<button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-selectall" />')
             .text(TYPO3.lang['window.sendToNextStageWindow.selectAll']),
           '&nbsp;',
-          $('<a href="#" class="btn btn-default btn-xs t3js-workspace-recipients-deselectall" />')
+          $('<button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-deselectall" />')
             .text(TYPO3.lang['window.sendToNextStageWindow.deselectAll']),
         ),
       );

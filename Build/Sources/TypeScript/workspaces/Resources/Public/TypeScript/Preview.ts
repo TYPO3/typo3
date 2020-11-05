@@ -88,12 +88,10 @@ class Preview extends Workspaces {
     $(document)
       .on('click', Identifiers.discardAction, this.renderDiscardWindow)
       .on('click', Identifiers.sendToStageAction, this.renderSendPageToStageWindow)
-      .on('click', '.t3js-workspace-recipients-selectall', (e: JQueryEventObject): void => {
-        e.preventDefault();
+      .on('click', '.t3js-workspace-recipients-selectall', (): void => {
         $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
       })
-      .on('click', '.t3js-workspace-recipients-deselectall', (e: JQueryEventObject): void => {
-        e.preventDefault();
+      .on('click', '.t3js-workspace-recipients-deselectall', (): void => {
         $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', false);
       })
     ;
