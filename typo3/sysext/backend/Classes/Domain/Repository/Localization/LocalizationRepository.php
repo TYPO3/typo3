@@ -73,6 +73,10 @@ class LocalizationRepository
                 $queryBuilder->expr()->eq(
                     'tt_content.sys_language_uid',
                     $queryBuilder->createNamedParameter($localizedLanguage, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tt_content_orig.sys_language_uid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
                 )
             )
             ->groupBy('tt_content_orig.sys_language_uid');
