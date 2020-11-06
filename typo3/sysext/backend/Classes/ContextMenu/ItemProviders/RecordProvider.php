@@ -604,7 +604,6 @@ class RecordProvider extends AbstractProvider
     protected function canBeCopied(): bool
     {
         return !$this->isRecordInClipboard('copy')
-            && $this->canBeEdited()
             && !$this->isRecordATranslation();
     }
 
