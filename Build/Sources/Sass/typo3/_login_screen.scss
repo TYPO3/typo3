@@ -179,6 +179,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     @include button-variant($login-btn-text, $login-btn-bg, rgba(0, 0, 0, 0.1));
 
     line-height: 1.3em;
+    white-space: normal;
 
     &:active,
     &:active:focus,
