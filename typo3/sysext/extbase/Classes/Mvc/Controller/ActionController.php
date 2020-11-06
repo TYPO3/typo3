@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -58,6 +59,11 @@ use TYPO3Fluid\Fluid\View\TemplateView;
  */
 abstract class ActionController implements ControllerInterface
 {
+    /**
+     * @var ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
      */
@@ -170,6 +176,11 @@ abstract class ActionController implements ControllerInterface
      * @var PropertyMapper
      */
     private $propertyMapper;
+
+    final public function injectResponseFactory(ResponseFactoryInterface $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+    }
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
@@ -496,6 +507,15 @@ abstract class ActionController implements ControllerInterface
         if ($actionResult instanceof ResponseInterface) {
             return $actionResult;
         }
+
+        trigger_error(
+            sprintf(
+                'Controller action %s does not return an instance of %s which is deprecated.',
+                __CLASS__ . '::' . $this->{$this->actionMethodName},
+                ResponseInterface::class
+            ),
+            E_USER_DEPRECATED
+        );
 
         $response = new \TYPO3\CMS\Core\Http\Response();
         $body = new Stream('php://temp', 'rw');
@@ -992,5 +1012,18 @@ abstract class ActionController implements ControllerInterface
             }
         }
         $argument->getValidationResults()->merge($this->propertyMapper->getMessages());
+    }
+
+    /**
+     * Returns a response object with either the given html string or the current rendered view as content.
+     *
+     * @param string|null $html
+     * @return ResponseInterface
+     */
+    protected function htmlResponse(string $html = null): ResponseInterface
+    {
+        return $this->responseFactory->createHtmlResponse(
+            $html ?? $this->view->render()
+        );
     }
 }

@@ -51,7 +51,7 @@ class ContentController extends ActionController
     /**
      * @return array
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         $content = $this->contentRepository->findAll();
         $value = [];
@@ -71,6 +71,8 @@ class ContentController extends ActionController
             ]
         ]]);
         $this->view->assign('value', $value);
+
+        return $this->responseFactory->createJsonResponse($this->view->render());
     }
 
     /**

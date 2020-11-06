@@ -32,6 +32,7 @@ class JsonResponse extends Response
      * </code>
      *
      * @var int
+     * @internal use {@see \TYPO3\CMS\Core\Http\ResponseFactory::JSON_FLAGS_RFC4627} instead
      */
     const DEFAULT_JSON_FLAGS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES;
 
@@ -51,6 +52,7 @@ class JsonResponse extends Response
      * @param int $status Integer status code for the response; 200 by default.
      * @param array $headers Array of headers to use at initialization.
      * @param int $encodingOptions JSON encoding options to use.
+     * @internal use {@see \TYPO3\CMS\Core\Http\ResponseFactory::createJsonResponseFromData} instead
      */
     public function __construct(
         $data = [],
@@ -78,6 +80,7 @@ class JsonResponse extends Response
      * @param array $data
      * @param int $encodingOptions
      * @return $this
+     * @internal use {@see \TYPO3\CMS\Core\Http\ResponseFactory::createJsonResponseFromData} instead
      */
     public function setPayload(array $data = [], $encodingOptions = self::DEFAULT_JSON_FLAGS): JsonResponse
     {

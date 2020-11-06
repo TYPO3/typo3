@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Filelist\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
@@ -337,7 +338,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         }
     }
 
-    protected function indexAction()
+    protected function indexAction(): ResponseInterface
     {
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->setTitle($this->getLanguageService()->getLL('files'));
@@ -480,6 +481,8 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         } else {
             $this->forward('missingFolder');
         }
+
+        return $this->htmlResponse($this->view->render());
     }
 
     protected function getDefaultAction(): string
@@ -505,12 +508,14 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         return $defaultAction;
     }
 
-    protected function missingFolderAction()
+    protected function missingFolderAction(): ResponseInterface
     {
         if ($this->errorMessage) {
             $this->errorMessage->setSeverity(FlashMessage::ERROR);
             $this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage($this->errorMessage);
         }
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
@@ -518,7 +523,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
      *
      * @param string $searchWord
      */
-    protected function searchAction($searchWord = '')
+    protected function searchAction($searchWord = ''): ResponseInterface
     {
         if (empty($searchWord)) {
             $this->forward('index');
@@ -563,6 +568,8 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         $this->initClipboard();
         $this->buildListOptionCheckboxes($searchWord);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**

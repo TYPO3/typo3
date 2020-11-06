@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Default implementation for the ResponseInterface of the PSR-7 standard.
  *
  * Highly inspired by https://github.com/phly/http/
- *
- * @internal Note that this is not public API yet.
  */
 class Response extends Message implements ResponseInterface
 {

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\IndexedSearch\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -262,7 +263,7 @@ class SearchController extends ActionController
      * @param array $search the search parameters, an associative array
      * @Extbase\IgnoreValidation("search")
      */
-    public function searchAction($search = [])
+    public function searchAction($search = []): ResponseInterface
     {
         $searchData = $this->initialize($search);
         // Find free index uid:
@@ -326,6 +327,8 @@ class SearchController extends ActionController
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
         $this->view->assign('searchWords', $this->searchWords);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /****************************************
@@ -1003,7 +1006,7 @@ class SearchController extends ActionController
      * @param array $search The search data / params
      * @Extbase\IgnoreValidation("search")
      */
-    public function formAction($search = [])
+    public function formAction($search = []): ResponseInterface
     {
         $searchData = $this->initialize($search);
         // Adding search field value
@@ -1013,13 +1016,16 @@ class SearchController extends ActionController
             $this->view->assignMultiple($this->processExtendedSearchParameters());
         }
         $this->view->assign('searchParams', $searchData);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * TypoScript was not loaded
      */
-    public function noTypoScriptAction()
+    public function noTypoScriptAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /****************************************

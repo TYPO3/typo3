@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
@@ -59,7 +60,7 @@ class BackendUserGroupController extends ActionController
      * Displays all BackendUserGroups
      * @param int $currentPage
      */
-    public function indexAction(int $currentPage = 1): void
+    public function indexAction(int $currentPage = 1): ResponseInterface
     {
         /** @var QueryResultInterface<int, BackendUserGroup> $backendUsers */
         $backendUsers = $this->backendUserGroupRepository->findAll();
@@ -81,9 +82,11 @@ class BackendUserGroupController extends ActionController
                 'compareGroupList' => !empty($compareGroupUidList) ? $this->backendUserGroupRepository->findByUidList($compareGroupUidList) : [],
             ]
         );
+
+        return $this->htmlResponse($this->view->render());
     }
 
-    public function compareAction(): void
+    public function compareAction(): ResponseInterface
     {
         $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
 
@@ -104,6 +107,8 @@ class BackendUserGroupController extends ActionController
             'controller' => $this->request->getControllerName(),
             'compareGroupList' => $compareData,
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**

@@ -213,7 +213,7 @@ class AdministrationController extends ActionController
     /**
      * Index action contains the most important statistics
      */
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         $this->view->assignMultiple([
             'records' => $this->administrationRepository->getRecordsNumbers(),
@@ -235,22 +235,28 @@ class AdministrationController extends ActionController
                 'last30days' => $this->administrationRepository->getGeneralSearchStatistic($last30days, $this->pageUid),
             ]);
         }
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Statistics for pages
      */
-    public function pagesAction()
+    public function pagesAction(): ResponseInterface
     {
         $this->view->assign('records', $this->administrationRepository->getPageStatistic());
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Statistics for external documents
      */
-    public function externalDocumentsAction()
+    public function externalDocumentsAction(): ResponseInterface
     {
         $this->view->assign('records', $this->administrationRepository->getExternalDocumentsStatistic());
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
@@ -258,7 +264,7 @@ class AdministrationController extends ActionController
      *
      * @param int $pageHash
      */
-    public function statisticDetailsAction($pageHash = 0)
+    public function statisticDetailsAction($pageHash = 0): ResponseInterface
     {
         $pageHash = (int)$pageHash;
         // Set back button
@@ -428,6 +434,8 @@ class AdministrationController extends ActionController
             'page' => $pageRecord,
             'keywords' => $keywords
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
@@ -458,7 +466,7 @@ class AdministrationController extends ActionController
      * @param int $id
      * @param int $pageHash
      */
-    public function wordDetailAction($id = 0, $pageHash = 0)
+    public function wordDetailAction($id = 0, $pageHash = 0): ResponseInterface
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
         $rows = $queryBuilder
@@ -488,6 +496,8 @@ class AdministrationController extends ActionController
             'rows' => $rows,
             'phash' => $pageHash
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
@@ -496,7 +506,7 @@ class AdministrationController extends ActionController
      * @param int $depth
      * @param string $mode
      */
-    public function statisticAction($depth = 1, $mode = 'overview')
+    public function statisticAction($depth = 1, $mode = 'overview'): ResponseInterface
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
             /** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
@@ -516,6 +526,8 @@ class AdministrationController extends ActionController
             'mode' => $mode,
             'depth' => $depth
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**

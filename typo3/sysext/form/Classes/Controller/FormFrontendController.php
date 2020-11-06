@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -62,7 +63,7 @@ class FormFrontendController extends ActionController
      *
      * @internal
      */
-    public function renderAction()
+    public function renderAction(): ResponseInterface
     {
         $formDefinition = [];
         if (!empty($this->settings['persistenceIdentifier'])) {
@@ -74,6 +75,8 @@ class FormFrontendController extends ActionController
             $formDefinition['identifier'] .= '-' . $this->configurationManager->getContentObject()->data['uid'];
         }
         $this->view->assign('formConfiguration', $formDefinition);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**

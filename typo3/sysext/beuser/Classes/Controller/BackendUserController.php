@@ -141,7 +141,7 @@ class BackendUserController extends ActionController
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
      * @param int $currentPage
      */
-    public function indexAction(Demand $demand = null, int $currentPage = 1)
+    public function indexAction(Demand $demand = null, int $currentPage = 1): ResponseInterface
     {
         if ($demand === null) {
             $demand = $this->moduleData->getDemand();
@@ -170,12 +170,14 @@ class BackendUserController extends ActionController
             'currentUserUid' => $this->getBackendUserAuthentication()->user['uid'],
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Views all currently logged in BackendUsers and their sessions
      */
-    public function onlineAction()
+    public function onlineAction(): ResponseInterface
     {
         $onlineUsersAndSessions = [];
         $onlineUsers = $this->backendUserRepository->findOnline();
@@ -196,24 +198,28 @@ class BackendUserController extends ActionController
             'onlineUsersAndSessions' => $onlineUsersAndSessions,
             'currentSessionId' => $currentSessionId,
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * @param int $uid
      */
-    public function showAction(int $uid = 0): void
+    public function showAction(int $uid = 0): ResponseInterface
     {
         $data = $this->userInformationService->getUserInformation($uid);
         $this->view->assignMultiple([
             'shortcutLabel' => 'showUser',
             'data' => $data
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Compare backend users from demand
      */
-    public function compareAction()
+    public function compareAction(): ResponseInterface
     {
         $compareUserList = $this->moduleData->getCompareUserList();
         if (empty($compareUserList)) {
@@ -232,6 +238,8 @@ class BackendUserController extends ActionController
             'compareUserList' => $compareData,
             'onlineBackendUsers' => $this->getOnlineBackendUsers()
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**

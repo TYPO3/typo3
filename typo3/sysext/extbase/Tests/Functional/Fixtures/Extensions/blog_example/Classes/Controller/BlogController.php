@@ -47,26 +47,25 @@ class BlogController extends ActionController
      */
     public $dataMapFactory;
 
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         $blogs = $this->blogRepository->findAll();
         $value = [];
         $value[$this->getRuntimeIdentifier()] = $this->getStructure($blogs);
 
         $this->view->assign('value', $value);
+
+        return $this->htmlResponse($this->view->render());
     }
 
-    public function detailsAction(Blog $blog=null)
+    public function detailsAction(Blog $blog=null): ResponseInterface
     {
-        return $blog ? $blog->getTitle() : '';
+        return $this->htmlResponse($blog ? $blog->getTitle() : '');
     }
 
-    /**
-     * @return string
-     */
-    public function testFormAction()
+    public function testFormAction(): ResponseInterface
     {
-        return 'testFormAction';
+        return $this->htmlResponse('testFormAction');
     }
 
     /**
@@ -81,21 +80,19 @@ class BlogController extends ActionController
 
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
-     * @return string
      */
-    public function testForwardTargetAction($blogPost)
+    public function testForwardTargetAction($blogPost): ResponseInterface
     {
-        return 'testForwardTargetAction';
+        return $this->htmlResponse('testForwardTargetAction');
     }
 
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
-     * @return string
      */
-    public function testRelatedObjectAction($blog, $blogPost = null)
+    public function testRelatedObjectAction($blog, $blogPost = null): ResponseInterface
     {
-        return 'testRelatedObject';
+        return $this->htmlResponse('testRelatedObject');
     }
 
     /**

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Belog\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
@@ -106,7 +107,7 @@ class BackendLogController extends ActionController
      * @param int $pageId
      * @param string $layout
      */
-    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default')
+    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default'): ResponseInterface
     {
         // Constraint object handling:
         // If there is none from GET, try to get it from BE user data, else create new
@@ -130,6 +131,8 @@ class BackendLogController extends ActionController
             'workspaces' => $this->createWorkspaceListForSelectOptions(),
             'pageDepths' => $this->createPageDepthOptions(),
         ]);
+
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
