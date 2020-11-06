@@ -272,6 +272,24 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function localizeContentAfterMovedContent()
+    {
+        parent::localizeContentAfterMovedContent();
+        $this->assertAssertionDataSet('localizeContentAfterMovedContent');
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentAfterMovedInLiveContent()
+    {
+        parent::localizeContentAfterMovedInLiveContent();
+        $this->assertAssertionDataSet('localizeContentAfterMovedInLiveContent');
+    }
+
+    /**
+     * @test
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
     public function localizeContentWithEmptyTcaIntegrityColumns()

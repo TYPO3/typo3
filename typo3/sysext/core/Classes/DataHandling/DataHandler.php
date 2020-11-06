@@ -7695,9 +7695,9 @@ class DataHandler implements LoggerAwareInterface
                             )
                         );
                 }
-                // If there is an element, find its localized record in specified localization language
+                // If there is an element, find its localized record in specified localization language on this page
                 if ($previousRow = $queryBuilder->execute()->fetch()) {
-                    $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language);
+                    $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language, 'pid=' . (int)$pid);
                     if (is_array($previousLocalizedRecord[0])) {
                         $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
                     }
