@@ -384,6 +384,16 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function localizeContentAfterMovedContent()
+    {
+        $this->importScenarioDataSet('ImportFreeModeElements');
+        parent::localizeContentAfterMovedContent();
+        $this->assertAssertionDataSet('localizeContentAfterMovedContent');
+    }
+
+    /**
+     * @test
      * See DataSet/createLocalizedContent.csv
      */
     public function createLocalizedContent()

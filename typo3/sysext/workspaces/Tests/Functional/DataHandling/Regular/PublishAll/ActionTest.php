@@ -245,6 +245,26 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function localizeContentAfterMovedContent()
+    {
+        parent::localizeContentAfterMovedContent();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizeContentAfterMovedContent');
+    }
+
+    /**
+     * @test
+     */
+    public function localizeContentAfterMovedInLiveContent()
+    {
+        parent::localizeContentAfterMovedInLiveContent();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizeContentAfterMovedInLiveContent');
+    }
+
+    /**
+     * @test
+     */
     public function localizeContentFromNonDefaultLanguage()
     {
         // Create translated page first

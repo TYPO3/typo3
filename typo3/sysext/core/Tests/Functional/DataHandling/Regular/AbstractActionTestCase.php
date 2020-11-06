@@ -35,6 +35,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     const VALUE_ContentIdSecond = 298;
     const VALUE_ContentIdThird = 299;
     const VALUE_ContentIdThirdLocalized = 300;
+    const VALUE_ContentIdFreeMode = 310;
     const VALUE_LanguageId = 1;
     const VALUE_LanguageIdSecond = 2;
 
@@ -242,6 +243,28 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
         $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['l10n_state' => ['header' => 'source']]);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['header' => 'Testing #1']);
+    }
+
+    /**
+     * Note: workspaces has an additional variant of this test "localizeContentAfterMovedInLive" that performs
+     * the localization of the content element after it has been moved in live first.
+     *
+     * @see localizeContentAfterMovedInLiveContent - additional workspace related variant
+     */
+    public function localizeContentAfterMovedContent()
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Default language element 310 on page 90 that has two 'free mode' localizations is moved to page 89.
+        // Note the two localizations are NOT moved along with the default language element, due to free mode.
+        // Note l10n_source of first localization 311 is kept and still points to 310, even though 310 is moved to different page.
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFreeMode, self::VALUE_PageId);
+        // Create new record after (relative to) previously moved one.
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, -self::VALUE_ContentIdFreeMode, ['header' => 'Testing #1']);
+        $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][0];
+        // Localize this new record
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newTableIds[self::TABLE_Content][0], self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$newTableIds[self::TABLE_Content][0]];
     }
 
     public function createLocalizedContent()
