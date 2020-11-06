@@ -25,6 +25,27 @@
 			<trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton">
 				<source>Unlock the Install&amp;#160;Tool</source>
 			</trans-unit>
+			<trans-unit id="cancel" resname="cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="confirm" resname="confirm">
+				<source>Confirm</source>
+			</trans-unit>
+			<trans-unit id="sudoUserPasswordConfirm" resname="sudoUserPasswordConfirm">
+				<source>Confirm with user password</source>
+			</trans-unit>
+			<trans-unit id="sudoInstallToolPasswordConfirm" resname="sudoInstallToolPasswordConfirm">
+				<source>Confirm with Install Tool password</source>
+			</trans-unit>
+			<trans-unit id="sudoPasswordInvalid" resname="sudoPasswordConfirm">
+				<source>Invalid password</source>
+			</trans-unit>
+			<trans-unit id="sudoUserPasswordMode" resname="sudoUserPasswordMode">
+				<source>Use user password instead</source>
+			</trans-unit>
+			<trans-unit id="sudoInstallToolPasswordMode" resname="sudoInstallToolPasswordMode">
+				<source>Use Install Tool password instead</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

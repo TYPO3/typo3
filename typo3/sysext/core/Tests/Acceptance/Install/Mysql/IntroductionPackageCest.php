@@ -42,14 +42,14 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
         $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Select database');
+        $I->waitForText('Select database', 30);
         $I->fillField('#t3-install-step-mysqliManualConfiguration-username', $scenario->current('typo3InstallMysqlDatabaseUsername'));
         $I->fillField('#t3-install-step-mysqliManualConfiguration-password', $scenario->current('typo3InstallMysqlDatabasePassword'));
         $I->fillField('#t3-install-step-mysqliManualConfiguration-host', $scenario->current('typo3InstallMysqlDatabaseHost'));
         $I->click('Continue');
 
         // DatabaseSelect step
-        $I->waitForText('Select a database');
+        $I->waitForText('Select a database', 30);
         $I->click('#t3-install-form-db-select-type-new');
         $I->fillField('#t3-install-step-database-new', $scenario->current('typo3InstallMysqlDatabaseName'));
         $I->click('Continue');
@@ -61,7 +61,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
         $I->click('Continue');
 
         // DefaultConfiguration step - Create empty page
-        $I->waitForText('Installation Complete');
+        $I->waitForText('Installation Complete', 30);
         $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 

@@ -45,6 +45,20 @@ class AbstractIntroductionPackage
         $I->amOnPage('/typo3');
         $I->click('Maintenance');
         $I->switchToContentFrame();
+
+        try {
+            // fill in sudo mode password
+            $I->see('Confirm with user password');
+            $I->fillField('confirmationPassword', 'password');
+            $I->click('Confirm');
+            $I->wait(10);
+            // wait for Maintenance headline being available
+            $I->waitForText('Maintenance');
+            $I->canSee('Maintenance', 'h1');
+        } catch (\Exception $e) {
+            // nothing...
+        }
+
         $I->click('Flush cache');
     }
 
