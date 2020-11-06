@@ -2545,7 +2545,7 @@ class PageLayoutView implements LoggerAwareInterface
         // First, select all languages that are available for the current user
         $availableTranslations = [];
         foreach ($this->siteLanguages as $language) {
-            if ($language->getLanguageId() === 0) {
+            if ($language->getLanguageId() <= 0) {
                 continue;
             }
             $availableTranslations[$language->getLanguageId()] = $language->getTitle();
@@ -4408,7 +4408,7 @@ class PageLayoutView implements LoggerAwareInterface
     protected function resolveSiteLanguages(int $pageId)
     {
         $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId);
-        $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
+        $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), true, $pageId);
     }
 
     /**
