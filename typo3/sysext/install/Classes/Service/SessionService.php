@@ -59,7 +59,7 @@ class SessionService implements SingletonInterface
      *
      * @var int
      */
-    private $expireTimeInMinutes = 60;
+    private $expireTimeInMinutes = 15;
 
     /**
      * time (minutes) to generate a new session id for our current session
@@ -97,7 +97,7 @@ class SessionService implements SingletonInterface
             $sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
             throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587485);
         }
-        if (defined('SID')) {
+        if (session_status() === PHP_SESSION_ACTIVE) {
             $sessionCreationError = 'Session already started by session_start().<br />';
             $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
             throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587486);

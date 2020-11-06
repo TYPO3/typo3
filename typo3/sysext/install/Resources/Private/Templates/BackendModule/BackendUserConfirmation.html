@@ -1,0 +1,78 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<be:moduleLayout>
+    <div class="modal-backdrop in"></div>
+    <div class="modal modal-severity-warning modal-size-small" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <f:if condition="{flagInstallToolPassword}">
+                            <f:then>
+                                <f:translate key="{languageFileReference}:sudoInstallToolPasswordConfirm" />
+                            </f:then>
+                            <f:else>
+                                <f:translate key="{languageFileReference}:sudoUserPasswordConfirm" />
+                            </f:else>
+                        </f:if>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <f:if condition="{flagInvalidPassword} || {isJsonRequest}">
+                            <div class="alert alert-danger" id="invalid-sudo">
+                                <f:translate key="{languageFileReference}:sudoPasswordInvalid" />
+                            </div>
+                        </f:if>
+                        <f:form id="confirm-sudo" class="form" method="post" actionUri="{verifyUri}" absolute="true">
+                            <div class="form-group">
+                                <div class="form-control-holder">
+                                    <label for="confirmationPassword">
+                                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password" />
+                                    </label>
+                                    <f:form.password name="confirmationPassword" id="confirmationPassword" class="form-control"
+                                                    data="{f:if(condition:flagInstallToolPassword, else:'{rsa-encryption: \'confirmationPasswordInternal\'}')}"
+                                                    additionalAttributes="{required: 'required'}" />
+                                    <!-- Internal password field, e.g. used for ext:rsaauth -->
+                                    <f:if condition="{flagInstallToolPassword}">
+                                        <f:else>
+                                            <f:form.hidden name="confirmationPasswordInternal" id="confirmationPasswordInternal" />
+                                        </f:else>
+                                    </f:if>
+                                    <f:form.hidden name="flags" value="{flags}" />
+                                </div>
+                            </div>
+                        </f:form>
+                        <div class="text-right">
+                            <a href="{passwordModeUri}">
+                                <f:if condition="{flagInstallToolPassword}">
+                                    <f:then>
+                                        <f:translate key="{languageFileReference}:sudoUserPasswordMode" />
+                                    </f:then>
+                                    <f:else>
+                                        <f:translate key="{languageFileReference}:sudoInstallToolPasswordMode" />
+                                    </f:else>
+                                </f:if>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <f:if condition="{cancelUri}">
+                        <a href="{cancelUri}" class="btn btn-default" role="button">
+                            <f:translate key="{languageFileReference}:cancel" />
+                        </a>
+                    </f:if>
+                    <button type="submit" form="confirm-sudo" class="btn btn-warning" role="button">
+                        <f:translate key="{languageFileReference}:confirm" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</be:moduleLayout>
+
+</html>
