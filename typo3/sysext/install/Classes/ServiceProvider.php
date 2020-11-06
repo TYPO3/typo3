@@ -86,6 +86,7 @@ class ServiceProvider extends AbstractServiceProvider
     public function getExtensions(): array
     {
         return [
+            'backend.routes' => [ static::class, 'configureBackendRoutes' ],
             CommandRegistry::class => [ static::class, 'configureCommands' ],
         ];
     }
