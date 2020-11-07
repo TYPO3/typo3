@@ -2280,7 +2280,7 @@ class ResourceStorage implements ResourceStorageInterface
         }
         $returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 
-        $this->emitPostFolderRenameSignal($folderObject, $returnObject->getName());
+        $this->emitPostFolderRenameSignal($folderObject, $returnObject->getName(), $returnObject);
 
         return $returnObject;
     }
@@ -2834,10 +2834,11 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $folder
      * @param string $newName
+     * @param Folder $newFolder
      */
-    protected function emitPostFolderRenameSignal(Folder $folder, $newName)
+    protected function emitPostFolderRenameSignal(Folder $folder, $newName, Folder $newFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderRename, [$folder, $newName]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, self::SIGNAL_PostFolderRename, [$folder, $newName, $newFolder]);
     }
 
     /**
