@@ -17,6 +17,9 @@ return [
             ],
         ],
     ],
+    'FE' => [
+        'disableNoCacheParameter' => true,
+    ],
     'SYS' => [
         'sitename' => 'New TYPO3 site',
         'features' => [
