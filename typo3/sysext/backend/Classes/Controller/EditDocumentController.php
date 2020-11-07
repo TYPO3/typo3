@@ -1545,6 +1545,7 @@ class EditDocumentController
                     )
                 )
             )
+            && $this->getTsConfigOption($this->firstEl['table'], 'saveDocNew')
         ) {
             $classNames = 't3js-editform-new';
 
