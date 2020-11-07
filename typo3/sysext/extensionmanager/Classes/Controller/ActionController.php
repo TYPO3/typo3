@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -100,7 +101,7 @@ class ActionController extends AbstractController
     public function installExtensionWithoutSystemDependencyCheckAction($extensionKey)
     {
         $this->managementService->setSkipDependencyCheck(true);
-        $this->forward('toggleExtensionInstallationState', null, null, ['extensionKey' => $extensionKey]);
+        return (new ForwardResponse('toggleExtensionInstallationState'))->withArguments(['extensionKey' => $extensionKey]);
     }
 
     /**

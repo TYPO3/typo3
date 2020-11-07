@@ -18,11 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Event\BeforeRedirectEvent;
 use TYPO3\CMS\FrontendLogin\Event\LoginConfirmedEvent;
@@ -136,7 +137,7 @@ class LoginController extends AbstractLoginFormController
     /**
      * Show login form
      */
-    public function loginAction(): void
+    public function loginAction()
     {
         if ($this->isLogoutSuccessful()) {
             $this->eventDispatcher->dispatch(new LogoutConfirmedEvent($this, $this->view));
@@ -144,7 +145,9 @@ class LoginController extends AbstractLoginFormController
             $this->eventDispatcher->dispatch(new LoginErrorOccurredEvent());
         }
 
-        $this->handleLoginForwards();
+        if (($forwardResponse = $this->handleLoginForwards()) !== null) {
+            return $forwardResponse;
+        }
         $this->handleRedirect();
 
         $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view));
@@ -167,12 +170,11 @@ class LoginController extends AbstractLoginFormController
      * User overview for logged in users
      *
      * @param bool $showLoginMessage
-     * @throws StopActionException
      */
-    public function overviewAction(bool $showLoginMessage = false): void
+    public function overviewAction(bool $showLoginMessage = false)
     {
         if (!$this->userAspect->isLoggedIn()) {
-            $this->forward('login');
+            return new ForwardResponse('login');
         }
 
         $this->eventDispatcher->dispatch(new LoginConfirmedEvent($this, $this->view));
@@ -220,15 +222,17 @@ class LoginController extends AbstractLoginFormController
     /**
      * Handle forwards to overview and logout actions from login action
      */
-    protected function handleLoginForwards(): void
+    protected function handleLoginForwards(): ?ResponseInterface
     {
         if ($this->shouldRedirectToOverview()) {
-            $this->forward('overview', null, null, ['showLoginMessage' => true]);
+            return (new ForwardResponse('overview'))->withArguments(['showLoginMessage' => true]);
         }
 
         if ($this->userAspect->isLoggedIn()) {
-            $this->forward('logout', null, null, ['redirectPageLogout' => $this->settings['redirectPageLogout']]);
+            return (new ForwardResponse('logout'))->withArguments(['redirectPageLogout' => $this->settings['redirectPageLogout']]);
         }
+
+        return null;
     }
 
     /**

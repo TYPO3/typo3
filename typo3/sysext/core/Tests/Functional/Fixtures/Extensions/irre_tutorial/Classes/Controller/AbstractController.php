@@ -18,6 +18,7 @@ namespace OliverHader\IrreTutorial\Controller;
 use OliverHader\IrreTutorial\Service\QueueService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -95,9 +96,10 @@ abstract class AbstractController extends ActionController
     {
         if ($this->getQueueService()->isActive()) {
             $this->getQueueService()->addValue($this->getRuntimeIdentifier(), $value);
-            $this->forward('process', 'Queue');
+            return (new ForwardResponse('process'))->withControllerName('Queue');
         }
         $this->view->assign('value', $value);
+        return $this->view->render();
     }
 
     /**

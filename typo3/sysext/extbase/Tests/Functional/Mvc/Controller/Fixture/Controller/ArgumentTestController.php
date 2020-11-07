@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Domain\Model\Model;
@@ -66,14 +68,9 @@ class ArgumentTestController extends ActionController
         // ignore flash messages
     }
 
-    public function forwardAction(): void
+    public function forwardAction(): ResponseInterface
     {
-        $this->forward(
-            $this->forwardTargetAction,
-            null,
-            null,
-            $this->forwardTargetArguments
-        );
+        return (new ForwardResponse($this->forwardTargetAction))->withArguments($this->forwardTargetArguments);
     }
 
     /**

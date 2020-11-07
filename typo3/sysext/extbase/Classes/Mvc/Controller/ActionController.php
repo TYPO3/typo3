@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
@@ -675,15 +677,17 @@ abstract class ActionController implements ControllerInterface
      * We clear the page cache by default on an error as well, as we need to make sure the
      * data is re-evaluated when the user changes something.
      *
-     * @return string
+     * @return ResponseInterface
      */
     protected function errorAction()
     {
         $this->clearCacheOnError();
         $this->addErrorFlashMessage();
-        $this->forwardToReferringRequest();
+        if (($response = $this->forwardToReferringRequest()) !== null) {
+            return $response;
+        }
 
-        return $this->getFlattenedValidationErrorMessage();
+        return $this->htmlResponse($this->getFlattenedValidationErrorMessage());
     }
 
     /**
@@ -730,9 +734,9 @@ abstract class ActionController implements ControllerInterface
      * to the originating request. This effectively ends processing of the current request, so do not
      * call this method before you have finished the necessary business logic!
      *
-     * @throws StopActionException
+     * @return ResponseInterface|null
      */
-    protected function forwardToReferringRequest()
+    protected function forwardToReferringRequest(): ?ResponseInterface
     {
         $referringRequest = null;
         $referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
@@ -747,21 +751,23 @@ abstract class ActionController implements ControllerInterface
                     base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments']))
                 );
             }
+            // todo: Remove ReferringRequest. It's only used here in this context to trigger the logic of
+            //       \TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest::setArgument() and its parent method which should then
+            //       be extracted from the request class.
             $referringRequest = new ReferringRequest();
             $referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
         }
 
         if ($referringRequest !== null) {
-            $originalRequest = clone $this->request;
-            $this->request->setOriginalRequest($originalRequest);
-            $this->request->setOriginalRequestMappingResults($this->arguments->validate());
-            $this->forward(
-                $referringRequest->getControllerActionName(),
-                $referringRequest->getControllerName(),
-                $referringRequest->getControllerExtensionName(),
-                $referringRequest->getArguments()
-            );
+            return (new ForwardResponse((string)$referringRequest->getControllerActionName()))
+                ->withControllerName((string)$referringRequest->getControllerName())
+                ->withExtensionName((string)$referringRequest->getControllerExtensionName())
+                ->withArguments($referringRequest->getArguments())
+                ->withArgumentsValidationResult($this->arguments->validate())
+            ;
         }
+
+        return null;
     }
 
     /**
@@ -841,9 +847,15 @@ abstract class ActionController implements ControllerInterface
      * @param array|null $arguments Arguments to pass to the target action
      * @throws StopActionException
      * @see redirect()
+     * @deprecated since TYPO3 11.0, will be removed in 12.0
      */
     public function forward($actionName, $controllerName = null, $extensionName = null, array $arguments = null)
     {
+        trigger_error(
+            sprintf('Method %s is deprecated. To forward to another action, return a %s instead.', __METHOD__, ForwardResponse::class),
+            E_USER_DEPRECATED
+        );
+
         $this->request->setDispatched(false);
         $this->request->setControllerActionName($actionName);
 
@@ -877,7 +889,6 @@ abstract class ActionController implements ControllerInterface
      * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @throws StopActionException
-     * @see forward()
      */
     protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $delay = 0, $statusCode = 303)
     {

@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -479,7 +480,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->view->assign('defaultAction', $this->getDefaultAction());
             $this->buildListOptionCheckboxes();
         } else {
-            $this->forward('missingFolder');
+            return new ForwardResponse('missingFolder');
         }
 
         return $this->htmlResponse($this->view->render());
@@ -526,7 +527,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     protected function searchAction($searchWord = ''): ResponseInterface
     {
         if (empty($searchWord)) {
-            $this->forward('index');
+            return new ForwardResponse('index');
         }
         $searchDemand = FileSearchDemand::createForSearchTerm($searchWord)->withRecursive();
         $files = $this->folderObject->searchFiles($searchDemand);

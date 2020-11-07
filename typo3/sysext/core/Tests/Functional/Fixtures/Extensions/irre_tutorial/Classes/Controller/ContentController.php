@@ -39,7 +39,7 @@ class ContentController extends AbstractController
     {
         $contents = $this->contentRepository->findAll();
         $value = $this->getStructure($contents);
-        $this->process($value);
+        return $this->process($value);
     }
 
     /**
@@ -48,7 +48,7 @@ class ContentController extends AbstractController
     public function showAction(Content $content)
     {
         $value = $this->getStructure($content);
-        $this->process($value);
+        return $this->process($value);
     }
 
     /**

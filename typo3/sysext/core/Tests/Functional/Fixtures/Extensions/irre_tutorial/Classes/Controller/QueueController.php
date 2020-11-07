@@ -16,6 +16,7 @@
 namespace OliverHader\IrreTutorial\Controller;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -47,18 +48,27 @@ class QueueController extends AbstractController
             $calls[] = ['Content', 'show', ['content' => (string)$uid]];
         }
         $this->getQueueService()->set($calls);
-        $this->forward('process');
+        return new ForwardResponse('process');
     }
 
     public function processAction()
     {
         $call = $this->getQueueService()->shift();
         if ($call === null) {
-            $this->forward('finish');
+            return new ForwardResponse('finish');
         }
         // Clear these states and fetch fresh entities!
         $this->getPersistenceManager()->clearState();
-        $this->forward($call[1], $call[0], null, $call[2] ?? null);
+
+        $response = (new ForwardResponse($call[1]))
+            ->withControllerName($call[0]);
+
+        $arguments = $call[2] ?? null;
+        if (is_array($arguments)) {
+            $response  = $response->withArguments($arguments);
+        }
+
+        return $response;
     }
 
     public function finishAction()

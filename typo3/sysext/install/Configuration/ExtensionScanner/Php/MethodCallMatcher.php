@@ -4528,4 +4528,12 @@ return [
             'Breaking-92853-MethodCanProcessRequestHasBeenRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forward' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Feature-92815-IntroduceForwardResponseForExtbase.rst',
+            'Deprecation-92815-ActionControllerforwardIsDeprecated.rst',
+        ],
+    ],
 ];

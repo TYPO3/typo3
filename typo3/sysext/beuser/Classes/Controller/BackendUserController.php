@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -247,7 +248,7 @@ class BackendUserController extends ActionController
      *
      * @param int $user
      */
-    public function initiatePasswordResetAction(int $user): void
+    public function initiatePasswordResetAction(int $user): ResponseInterface
     {
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var BackendUser $user */
@@ -271,7 +272,7 @@ class BackendUserController extends ActionController
                 FlashMessage::OK
             );
         }
-        $this->forward('index');
+        return new ForwardResponse('index');
     }
 
     /**
@@ -283,7 +284,7 @@ class BackendUserController extends ActionController
     {
         $this->moduleData->attachUidCompareUser($uid);
         $this->moduleDataStorageService->persistModuleData($this->moduleData);
-        $this->forward('index');
+        return new ForwardResponse('index');
     }
 
     /**
@@ -331,7 +332,7 @@ class BackendUserController extends ActionController
         if ($success) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
         }
-        $this->forward('online');
+        return new ForwardResponse('online');
     }
 
     /**

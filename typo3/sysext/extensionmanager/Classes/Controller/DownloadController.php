@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -184,7 +185,7 @@ class DownloadController extends AbstractController
     public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension)
     {
         $this->managementService->setSkipDependencyCheck(true);
-        $this->forward('installFromTer', null, null, ['extension' => $extension, 'downloadPath' => 'Local']);
+        return (new ForwardResponse('installFromTer'))->withArguments(['extension' => $extension, 'downloadPath' => 'Local']);
     }
 
     /**
@@ -196,7 +197,7 @@ class DownloadController extends AbstractController
     public function installDistributionAction(Extension $extension)
     {
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
-            $this->forward('distributions', 'List');
+            return (new ForwardResponse('distributions'))->withControllerName('List');
         }
         [$result, $errorMessages] = $this->installFromTer($extension);
         if ($errorMessages) {

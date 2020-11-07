@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
@@ -87,7 +88,7 @@ class FormFrontendController extends ActionController
      */
     public function performAction()
     {
-        $this->forward('render');
+        return new ForwardResponse('render');
     }
 
     /**

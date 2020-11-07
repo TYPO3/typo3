@@ -20,7 +20,10 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
+use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -89,16 +92,19 @@ class ActionControllerValidationTest extends FunctionalTestCase
             ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
 
+        $titleMappingResults = new Result();
         while (!$request->isDispatched()) {
             try {
                 $blogController = $objectManager->get(BlogController::class);
                 $response = $blogController->processRequest($request);
+                if ($response instanceof ForwardResponse) {
+                    $titleMappingResults = $response->getArgumentsValidationResult()->forProperty('blogPost.title');
+                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+                }
             } catch (StopActionException $e) {
             }
         }
 
-        /* @var \TYPO3\CMS\Extbase\Error\Error $titleLengthError */
-        $titleMappingResults = $request->getOriginalRequestMappingResults()->forProperty('blogPost.title');
         $titleErrors = $titleMappingResults->getFlattenedErrors();
         self::assertCount(count($expectedErrorCodes), $titleErrors['']);
 
@@ -156,15 +162,21 @@ class ActionControllerValidationTest extends FunctionalTestCase
             try {
                 $blogController = $objectManager->get(BlogController::class);
                 $response = $blogController->processRequest($request);
+                if ($response instanceof ForwardResponse) {
+
+                    /** @var Result $validationResult */
+                    $validationResult = $response->getArgumentsValidationResult();
+
+                    self::assertInstanceOf(ForwardResponse::class, $response);
+                    self::assertCount(1, $validationResult->forProperty('blog.title')->getErrors());
+                    self::assertCount(1, $validationResult->forProperty('blog.description')->getErrors());
+                    self::assertCount(1, $validationResult->forProperty('blogPost.title')->getErrors());
+
+                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+                }
             } catch (StopActionException $e) {
             }
         }
-
-        /* @var \TYPO3\CMS\Extbase\Error\Error $titleLengthError */
-        $errors = $request->getOriginalRequestMappingResults()->getFlattenedErrors();
-        self::assertCount(1, $errors['blog.title']);
-        self::assertCount(1, $errors['blog.description']);
-        self::assertCount(1, $errors['blogPost.title']);
 
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }

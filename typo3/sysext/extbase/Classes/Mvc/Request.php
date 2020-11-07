@@ -91,14 +91,14 @@ class Request implements RequestInterface
     /**
      * If this request is a forward because of an error, the original request gets filled.
      *
-     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     * @var \TYPO3\CMS\Extbase\Mvc\Request|null
      */
     protected $originalRequest;
 
     /**
      * If the request is a forward because of an error, these mapping results get filled here.
      *
-     * @var \TYPO3\CMS\Extbase\Error\Result
+     * @var \TYPO3\CMS\Extbase\Error\Result|null
      */
     protected $originalRequestMappingResults;
 
@@ -449,10 +449,10 @@ class Request implements RequestInterface
     /**
      * Returns the original request. Filled only if a property mapping error occurred.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request the original request.
+     * @return \TYPO3\CMS\Extbase\Mvc\Request|null the original request.
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getOriginalRequest()
+    public function getOriginalRequest(): ?Request
     {
         return $this->originalRequest;
     }
@@ -472,7 +472,7 @@ class Request implements RequestInterface
      * @return \TYPO3\CMS\Extbase\Error\Result
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getOriginalRequestMappingResults()
+    public function getOriginalRequestMappingResults(): Result
     {
         if ($this->originalRequestMappingResults === null) {
             return new Result();

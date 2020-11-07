@@ -19,6 +19,7 @@ use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -75,7 +76,7 @@ class BlogController extends ActionController
      */
     public function testForwardAction($blogPost)
     {
-        $this->forward('testForwardTarget', null, null, ['blogPost' => $blogPost]);
+        return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);
     }
 
     /**

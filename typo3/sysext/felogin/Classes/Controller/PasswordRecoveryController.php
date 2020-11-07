@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -103,7 +105,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * Validate hash and make sure it's not expired. If it is not in the correct format or not set at all, a redirect
      * to recoveryAction() is made, without further information.
      */
-    protected function validateIfHashHasExpired(): void
+    protected function validateIfHashHasExpired()
     {
         $hash = $this->request->hasArgument('hash') ? $this->request->getArgument('hash') : '';
         $hash = is_string($hash) ? $hash : '';
@@ -120,7 +122,11 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $result = $this->request->getOriginalRequestMappingResults();
             $result->addError(new Error($this->getTranslation('change_password_notvalid_message'), 1554994253));
             $this->request->setOriginalRequestMappingResults($result);
-            $this->forward('recovery', 'PasswordRecovery', 'felogin');
+            return (new ForwardResponse('recovery'))
+                ->withControllerName('PasswordRecovery')
+                ->withExtensionName('felogin')
+                ->withArgumentsValidationResult($result)
+            ;
         }
     }
 
@@ -131,9 +137,9 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @throws AspectNotFoundException
      * @throws StopActionException
      */
-    public function initializeShowChangePasswordAction(): void
+    public function initializeShowChangePasswordAction()
     {
-        $this->validateIfHashHasExpired();
+        return $this->validateIfHashHasExpired();
     }
 
     /**
@@ -155,10 +161,12 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @throws NoSuchArgumentException
      * @throws StopActionException
      */
-    public function initializeChangePasswordAction(): void
+    public function initializeChangePasswordAction()
     {
         // Re-validate the lifetime of the hash again (just as showChangePassword action)
-        $this->validateIfHashHasExpired();
+        if (($response = $this->validateIfHashHasExpired()) instanceof ResponseInterface) {
+            return $response;
+        }
 
         // Exit early if newPass or newPassRepeat is not set.
         $originalResult = $this->request->getOriginalRequestMappingResults();
@@ -171,12 +179,10 @@ class PasswordRecoveryController extends AbstractLoginFormController
                 1554971665
             ));
             $this->request->setOriginalRequestMappingResults($originalResult);
-            $this->forward(
-                'showChangePassword',
-                'PasswordRecovery',
-                'felogin',
-                ['hash' => $this->request->getArgument('hash')]
-            );
+            return (new ForwardResponse('showChangePassword'))
+                ->withControllerName('PasswordRecovery')
+                ->withExtensionName('felogin')
+                ->withArguments(['hash' => $this->request->getArgument('hash')]);
         }
 
         $this->validateNewPassword($originalResult);
@@ -184,12 +190,10 @@ class PasswordRecoveryController extends AbstractLoginFormController
         // todo: check if calling $this->errorAction is necessary here
         // if an error exists, forward with all messages to the change password form
         if ($originalResult->hasErrors()) {
-            $this->forward(
-                'showChangePassword',
-                'PasswordRecovery',
-                'felogin',
-                ['hash' => $this->request->getArgument('hash')]
-            );
+            return (new ForwardResponse('showChangePassword'))
+                ->withControllerName('PasswordRecovery')
+                ->withExtensionName('felogin')
+                ->withArguments(['hash' => $this->request->getArgument('hash')]);
         }
     }
 
@@ -203,13 +207,16 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @throws StopActionException
      * @throws AspectNotFoundException
      */
-    public function changePasswordAction(string $newPass, string $hash): void
+    public function changePasswordAction(string $newPass, string $hash)
     {
         $hashedPassword = GeneralUtility::makeInstance(PasswordHashFactory::class)
             ->getDefaultHashInstance('FE')
             ->getHashedPassword($newPass);
 
-        $hashedPassword = $this->notifyPasswordChange($newPass, $hashedPassword, $hash);
+        if (($hashedPassword = $this->notifyPasswordChange($newPass, $hashedPassword, $hash)) instanceof ForwardResponse) {
+            return $hashedPassword;
+        }
+
         $this->userRepository->updatePasswordAndInvalidateHash(GeneralUtility::hmac($hash), $hashedPassword);
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
@@ -273,10 +280,9 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @param string $newPassword Unencrypted new password
      * @param string $hashedPassword New password hash passed as reference
      * @param string $hash Forgot password hash
-     * @return string
-     * @throws StopActionException
+     * @return ForwardResponse|string
      */
-    protected function notifyPasswordChange(string $newPassword, string $hashedPassword, string $hash): string
+    protected function notifyPasswordChange(string $newPassword, string $hashedPassword, string $hash)
     {
         $user = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
         if (is_array($user)) {
@@ -288,24 +294,21 @@ class PasswordRecoveryController extends AbstractLoginFormController
                 $requestResult->addError(new Error($event->getErrorMessage() ?? '', 1562846833));
                 $this->request->setOriginalRequestMappingResults($requestResult);
 
-                $this->forward(
-                    'showChangePassword',
-                    'PasswordRecovery',
-                    'felogin',
-                    ['hash' => $hash]
-                );
+                return (new ForwardResponse('showChangePassword'))
+                    ->withControllerName('PasswordRecovery')
+                    ->withExtensionName('felogin')
+                    ->withArguments(['hash' => $hash]);
             }
         } else {
             // No user found
             $requestResult = $this->request->getOriginalRequestMappingResults();
             $requestResult->addError(new Error('Invalid hash', 1562846832));
             $this->request->setOriginalRequestMappingResults($requestResult);
-            $this->forward(
-                'showChangePassword',
-                'PasswordRecovery',
-                'felogin',
-                ['hash' => $hash]
-            );
+
+            return (new ForwardResponse('showChangePassword'))
+                ->withControllerName('PasswordRecovery')
+                ->withExtensionName('felogin')
+                ->withArguments(['hash' => $hash]);
         }
         return $hashedPassword;
     }

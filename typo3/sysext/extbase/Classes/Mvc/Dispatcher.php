@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
@@ -88,6 +89,9 @@ class Dispatcher implements SingletonInterface
             $controller = $this->resolveController($request);
             try {
                 $response = $controller->processRequest($request);
+                if ($response instanceof ForwardResponse) {
+                    $request = static::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+                }
             } catch (StopActionException $ignoredException) {
                 $response = $ignoredException->getResponse();
             }
@@ -126,5 +130,33 @@ class Dispatcher implements SingletonInterface
             );
         }
         return $controller;
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @todo: make this a private method again as soon as the tests, that fake the dispatching of requests, are refactored.
+     */
+    public static function buildRequestFromCurrentRequestAndForwardResponse(Request $currentRequest, ForwardResponse $forwardResponse): Request
+    {
+        $request = clone $currentRequest;
+        $request->setDispatched(false);
+        $request->setControllerActionName($forwardResponse->getActionName());
+
+        if ($forwardResponse->getControllerName() !== null) {
+            $request->setControllerName($forwardResponse->getControllerName());
+        }
+
+        if ($forwardResponse->getExtensionName() !== null) {
+            $request->setControllerExtensionName($forwardResponse->getExtensionName());
+        }
+
+        if ($forwardResponse->getArguments() !== []) {
+            $request->setArguments($forwardResponse->getArguments());
+        }
+
+        $request->setOriginalRequest($currentRequest);
+        $request->setOriginalRequestMappingResults($forwardResponse->getArgumentsValidationResult());
+
+        return $request;
     }
 }
