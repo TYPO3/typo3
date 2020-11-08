@@ -34,6 +34,7 @@ setUpDockerComposeDotEnv() {
     echo "MARIADB_VERSION=${MARIADB_VERSION}" >> .env
     echo "MYSQL_VERSION=${MYSQL_VERSION}" >> .env
     echo "POSTGRES_VERSION=${POSTGRES_VERSION}" >> .env
+    echo "PHP_VERSION=${PHP_VERSION}" >> .env
     # Set a custom database driver provided by option: -a
     [[ ! -z "$DATABASE_DRIVER" ]] && echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
 }
@@ -84,7 +85,9 @@ Options:
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
             - checkXlf: test .xlf files for integrity
-            - composerInstall: "composer install", handy if host has no PHP, uses composer cache of users home
+            - composerInstall: "composer install"
+            - composerInstallMax: "composer update", with no platform.php config.
+            - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
             - composerValidate: "composer validate"
             - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: functional tests
@@ -463,6 +466,18 @@ case ${TEST_SUITE} in
     composerInstall)
         setUpDockerComposeDotEnv
         docker-compose run composer_install
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    composerInstallMax)
+        setUpDockerComposeDotEnv
+        docker-compose run composer_install_max
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    composerInstallMin)
+        setUpDockerComposeDotEnv
+        docker-compose run composer_install_min
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

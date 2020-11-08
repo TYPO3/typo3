@@ -571,6 +571,44 @@ services:
         composer install;
       "
 
+  composer_install_max:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        composer config --unset platform.php;
+        composer update --no-progress --no-interaction;
+        composer dumpautoload;
+      "
+
+  composer_install_min:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        composer config platform.php ${PHP_VERSION}.0;
+        composer update --prefer-lowest --no-progress --no-interaction;
+        composer dumpautoload;
+      "
+
   composer_validate:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
