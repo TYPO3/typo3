@@ -3,15 +3,15 @@ services:
   chrome:
     image: selenium/standalone-chrome:3.12
 
-  mysql55:
-    image: mysql:5.5
+  mysql:
+    image: mysql:${MYSQL_VERSION}
     environment:
       MYSQL_ROOT_PASSWORD: funcp
     tmpfs:
       - /var/lib/mysql/:rw,noexec,nosuid
 
-  mariadb10:
-    image: mariadb:10.3
+  mariadb:
+    image: mariadb:${MARIADB_VERSION}
     environment:
       MYSQL_ROOT_PASSWORD: funcp
     tmpfs:
@@ -26,8 +26,8 @@ services:
     tmpfs:
       - /var/lib/mssql:rw,noexec,nosuid
 
-  postgres10:
-    image: postgres:10
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
     environment:
       POSTGRES_PASSWORD: funcp
       POSTGRES_USER: ${HOST_USER}
@@ -49,10 +49,10 @@ services:
     image: memcached:1.5-alpine
 
 
-  prepare_acceptance_backend_mariadb10:
+  prepare_acceptance_backend_mariadb:
     image: alpine:3.8
     links:
-      - mariadb10
+      - mariadb
       - chrome
       - web
     command: >
@@ -61,19 +61,19 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mariadb10 3306; do
+        while ! nc -z mariadb 3306; do
           sleep 1;
         done;
         echo Database is up;
       "
-  acceptance_backend_mariadb10:
+  acceptance_backend_mariadb:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     environment:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
-      typo3DatabaseHost: mariadb10
+      typo3DatabaseHost: mariadb
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -89,10 +89,10 @@ services:
           && ./bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --html reports.html
       "
 
-  prepare_acceptance_pagetree_mariadb10:
+  prepare_acceptance_pagetree_mariadb:
     image: alpine:3.8
     links:
-      - mariadb10
+      - mariadb
       - chrome
       - web
     command: >
@@ -101,19 +101,19 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mariadb10 3306; do
+        while ! nc -z mariadb 3306; do
           sleep 1;
         done;
         echo Database is up;
       "
-  acceptance_pagetree_mariadb10:
+  acceptance_pagetree_mariadb:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     environment:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
-      typo3DatabaseHost: mariadb10
+      typo3DatabaseHost: mariadb
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -129,10 +129,10 @@ services:
           && ./bin/codecept run PageTree -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --html reports.html
       "
 
-  prepare_acceptance_installtool_mariadb10:
+  prepare_acceptance_installtool_mariadb:
     image: alpine:3.8
     links:
-      - mariadb10
+      - mariadb
       - chrome
       - web
     command: >
@@ -141,19 +141,19 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mariadb10 3306; do
+        while ! nc -z mariadb 3306; do
           sleep 1;
         done;
         echo Database is up;
       "
-  acceptance_installtool_mariadb10:
+  acceptance_installtool_mariadb:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     environment:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
-      typo3DatabaseHost: mariadb10
+      typo3DatabaseHost: mariadb
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -169,10 +169,10 @@ services:
           && ./bin/codecept run InstallTool -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --html reports.html
       "
 
-  prepare_acceptance_install_mariadb10:
+  prepare_acceptance_install_mariadb:
     image: alpine:3.8
     links:
-      - mariadb10
+      - mariadb
       - chrome
       - web
     command: >
@@ -181,16 +181,16 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mariadb10 3306; do
+        while ! nc -z mariadb 3306; do
           sleep 1;
         done;
         echo Database is up;
       "
-  acceptance_install_mariadb10:
+  acceptance_install_mariadb:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     environment:
-      typo3InstallMysqlDatabaseHost: mariadb10
+      typo3InstallMysqlDatabaseHost: mariadb
       typo3InstallMysqlDatabaseName: func_test
       typo3InstallMysqlDatabaseUsername: root
       typo3InstallMysqlDatabasePassword: funcp
@@ -209,10 +209,10 @@ services:
           && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --html reports.html
       "
 
-  prepare_acceptance_install_postgres10:
+  prepare_acceptance_install_postgres:
     image: alpine:3.8
     links:
-      - postgres10
+      - postgres
       - chrome
       - web
     command: >
@@ -221,16 +221,16 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z postgres10 5432; do
+        while ! nc -z postgres 5432; do
           sleep 1;
         done;
         echo Database is up;
       "
-  acceptance_install_postgres10:
+  acceptance_install_postgres:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     environment:
-      typo3InstallPostgresqlDatabaseHost: postgres10
+      typo3InstallPostgresqlDatabaseHost: postgres
       typo3InstallPostgresqlDatabaseName: ${HOST_USER}
       typo3InstallPostgresqlDatabaseUsername: ${HOST_USER}
       typo3InstallPostgresqlDatabasePassword: funcp
@@ -588,10 +588,10 @@ services:
         composer validate;
       "
 
-  prepare_functional_mariadb10:
+  prepare_functional_mariadb:
     image: alpine:3.8
     links:
-      - mariadb10
+      - mariadb
       - redis4
       - memcached1-5
     command: >
@@ -600,12 +600,12 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mariadb10 3306; do
+        while ! nc -z mariadb 3306; do
           sleep 1;
         done;
         echo Database is up;
       "
-  functional_mariadb10:
+  functional_mariadb:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
@@ -618,7 +618,7 @@ services:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
-      typo3DatabaseHost: mariadb10
+      typo3DatabaseHost: mariadb
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
@@ -638,10 +638,10 @@ services:
         fi
       "
 
-  prepare_functional_mysql55:
+  prepare_functional_mysql:
     image: alpine:3.8
     links:
-      - mysql55
+      - mysql
       - redis4
       - memcached1-5
     command: >
@@ -650,12 +650,12 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mysql55 3306; do
+        while ! nc -z mysql 3306; do
           sleep 1;
         done;
         echo Database is up;
       "
-  functional_mysql55:
+  functional_mysql:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
@@ -668,7 +668,7 @@ services:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
-      typo3DatabaseHost: mysql55
+      typo3DatabaseHost: mysql
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
@@ -741,10 +741,10 @@ services:
         fi
       "
 
-  prepare_functional_postgres10:
+  prepare_functional_postgres:
     image: alpine:3.8
     links:
-      - postgres10
+      - postgres
       - redis4
       - memcached1-5
     command: >
@@ -753,12 +753,12 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z postgres10 5432; do
+        while ! nc -z postgres 5432; do
           sleep 1;
         done;
         echo Database is up;
       "
-  functional_postgres10:
+  functional_postgres:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
@@ -770,7 +770,7 @@ services:
       typo3DatabaseDriver: pdo_pgsql
       typo3DatabaseName: bamboo
       typo3DatabaseUsername: ${HOST_USER}
-      typo3DatabaseHost: postgres10
+      typo3DatabaseHost: postgres
       typo3DatabasePassword: funcp
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5

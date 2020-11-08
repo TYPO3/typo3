@@ -31,6 +31,9 @@ setUpDockerComposeDotEnv() {
     echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}" >> .env
     echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}" >> .env
     echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}" >> .env
+    echo "MARIADB_VERSION=${MARIADB_VERSION}" >> .env
+    echo "MYSQL_VERSION=${MYSQL_VERSION}" >> .env
+    echo "POSTGRES_VERSION=${POSTGRES_VERSION}" >> .env
     # Set a custom database driver provided by option: -a
     [[ ! -z "$DATABASE_DRIVER" ]] && echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
 }
@@ -51,7 +54,7 @@ Options:
     -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
         Only with -s functional
         Specifies to use another driver, following combinations are available:
-            - mysql55
+            - mysql
                 - mysqli (default)
                 - pdo_mysql
             - mariadb
@@ -95,20 +98,47 @@ Options:
             - unitJavascript: JavaScript unit tests
             - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
 
-    -d <mariadb|mysql55|mssql|postgres|sqlite>
+    -d <mariadb|mysql|mssql|postgres|sqlite>
         Only with -s install|functional
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
-            - mysql55: use MySQL 5.5 server
+            - mysql: use MySQL server
             - mssql: use mssql microsoft sql server
             - postgres: use postgres
             - sqlite: use sqlite
 
-    -p <7.2|7.3|7.4>
+    -i <10.1|10.2|10.3|10.4|10.5>
+        Only with -d mariadb
+        Specifies on which version of mariadb tests are performed
+            - 10.1
+            - 10.2
+            - 10.3 (default)
+            - 10.4
+            - 10.5
+
+    -j <5.5|5.6|5.7|8.0>
+        Only with -d mysql
+        Specifies on which version of mysql tests are performed
+            - 5.5 (default)
+            - 5.6
+            - 5.7
+            - 8.0
+
+    -k <9.6|10|11|12|13>
+        Only with -d postgres
+        Specifies on which version of postgres tests are performed
+            - 9.6
+            - 10 (default)
+            - 11
+            - 12
+             -13
+
+    -p <7.2|7.3|7.4|8.0>
         Specifies the PHP minor version to be used
             - 7.2 (default): use PHP 7.2
             - 7.3: use PHP 7.3
             - 7.4: use PHP 7.4
+            - 8.0: use PHP 8.0
 
     -e "<phpunit or codeception options>"
         Only with -s functional|unit|unitDeprecated|unitRandom
@@ -170,6 +200,15 @@ Examples:
     # Run functional tests on postgres with xdebug, php 7.3 and execute a restricted set of tests
     ./Build/Scripts/runTests.sh -x -p 7.3 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
+    # Run functional tests on mariadb 10.5
+    ./Build/Scripts/runTests.sh -d mariadb -i 10.5
+
+    # Run install tests on mysql 8.0
+    .Build/Scripts/runTests.sh -d mysql -j 8.0
+
+    # Run functional tests on postgres 11
+    ./Build/Scripts/runTests.sh -d postgres -k 11
+
     # Run restricted set of backend acceptance tests
     ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Backend/Login/BackendLoginCest.php
 
@@ -203,6 +242,9 @@ SCRIPT_VERBOSE=0
 PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
 DOCKER_JS_IMAGE="js"
+MARIADB_VERSION="10.3"
+MYSQL_VERSION="5.5"
+POSTGRES_VERSION="10"
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
@@ -210,7 +252,7 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=();
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:s:d:p:e:xy:o:nhuv" OPT; do
+while getopts ":a:s:d:i:j:k:p:e:xy:o:nhuv" OPT; do
     case ${OPT} in
         a)
             DATABASE_DRIVER=${OPTARG}
@@ -221,8 +263,29 @@ while getopts ":a:s:d:p:e:xy:o:nhuv" OPT; do
         d)
             DBMS=${OPTARG}
             ;;
+        i)
+            MARIADB_VERSION=${OPTARG}
+            if ! [[ ${MARIADB_VERSION} =~ ^(10.1|10.2|10.3|10.4|10.5)$ ]]; then
+                INVALID_OPTIONS+=(${OPTARG})
+            fi
+            ;;
+        j)
+            MYSQL_VERSION=${OPTARG}
+            if ! [[ ${MYSQL_VERSION} =~ ^(5.5|5.6|5.7|8.0)$ ]]; then
+                INVALID_OPTIONS+=(${OPTARG})
+            fi
+            ;;
+        k)
+            POSTGRES_VERSION=${OPTARG}
+            if ! [[ ${POSTGRES_VERSION} =~ ^(9.6|10|11|12|13)$ ]]; then
+                INVALID_OPTIONS+=(${OPTARG})
+            fi
+            ;;
         p)
             PHP_VERSION=${OPTARG}
+            if ! [[ ${PHP_VERSION} =~ ^(7.2|7.3|7.4|8.0)$ ]]; then
+                INVALID_OPTIONS+=(${OPTARG})
+            fi
             ;;
         e)
             EXTRA_TEST_OPTIONS=${OPTARG}
@@ -265,7 +328,7 @@ if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
         echo "-"${I} >&2
     done
     echo >&2
-    echo "${HELP}" >&2
+    echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"
     exit 1
 fi
 
@@ -284,22 +347,22 @@ fi
 case ${TEST_SUITE} in
     acceptance)
         setUpDockerComposeDotEnv
-        docker-compose run prepare_acceptance_backend_mariadb10
-        docker-compose run acceptance_backend_mariadb10
+        docker-compose run prepare_acceptance_backend_mariadb
+        docker-compose run acceptance_backend_mariadb
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
     acceptancePagetree)
         setUpDockerComposeDotEnv
-        docker-compose run prepare_acceptance_pagetree_mariadb10
-        docker-compose run acceptance_pagetree_mariadb10
+        docker-compose run prepare_acceptance_pagetree_mariadb
+        docker-compose run acceptance_pagetree_mariadb
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
     acceptanceInstallTool)
         setUpDockerComposeDotEnv
-        docker-compose run prepare_acceptance_installtool_mariadb10
-        docker-compose run acceptance_installtool_mariadb10
+        docker-compose run prepare_acceptance_installtool_mariadb
+        docker-compose run acceptance_installtool_mariadb
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
@@ -420,14 +483,14 @@ case ${TEST_SUITE} in
         case ${DBMS} in
             mariadb)
                 [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mariadb10
-                docker-compose run functional_mariadb10
+                docker-compose run prepare_functional_mariadb
+                docker-compose run functional_mariadb
                 SUITE_EXIT_CODE=$?
                 ;;
-            mysql55)
+            mysql)
                 [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mysql55
-                docker-compose run functional_mysql55
+                docker-compose run prepare_functional_mysql
+                docker-compose run functional_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)
@@ -437,8 +500,8 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_functional_postgres10
-                docker-compose run functional_postgres10
+                docker-compose run prepare_functional_postgres
+                docker-compose run functional_postgres
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
@@ -447,9 +510,9 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             *)
-                echo "Invalid -d option argument ${DBMS}" >&2
+                echo "Functional tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
-                echo "${HELP}" >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
                 exit 1
         esac
         docker-compose down
@@ -458,13 +521,13 @@ case ${TEST_SUITE} in
         setUpDockerComposeDotEnv
         case ${DBMS} in
             mariadb)
-                docker-compose run prepare_acceptance_install_mariadb10
-                docker-compose run acceptance_install_mariadb10
+                docker-compose run prepare_acceptance_install_mariadb
+                docker-compose run acceptance_install_mariadb
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_acceptance_install_postgres10
-                docker-compose run acceptance_install_postgres10
+                docker-compose run prepare_acceptance_install_postgres
+                docker-compose run acceptance_install_postgres
                 SUITE_EXIT_CODE=$?
                 ;;
             sqlite)
@@ -473,9 +536,9 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             *)
-                echo "Invalid -d option argument ${DBMS}" >&2
+                echo "Install tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
-                echo "${HELP}" >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
                 exit 1
         esac
         docker-compose down
