@@ -623,4 +623,43 @@ case ${TEST_SUITE} in
         exit 1
 esac
 
+case ${DBMS} in
+    mariadb)
+        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MARIADB_VERSION}  driver ${DATABASE_DRIVER:-mysqli}"
+        ;;
+    mysql)
+        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER:-mysqli}"
+        ;;
+    mssql)
+        DBMS_OUTPUT="DBMS: ${DBMS}  driver ${DATABASE_DRIVER:-sqlsrv}"
+        ;;
+    postgres)
+        DBMS_OUTPUT="DBMS: ${DBMS}  version ${POSTGRES_VERSION}"
+        ;;
+    sqlite)
+        DBMS_OUTPUT="DBMS: ${DBMS}"
+        ;;
+    *)
+        DBMS_OUTPUT="DBMS not recognized: $DBMS"
+        exit 1
+esac
+echo "" >&2
+echo "###########################################################################" >&2
+if [[ ${TEST_SUITE} =~ ^(functional|install|acceptance)$ ]]; then
+    echo "Result of ${TEST_SUITE}" >&2
+    echo "PHP: ${PHP_VERSION}" >&2
+    echo "${DBMS_OUTPUT}" >&2
+else
+    echo "Result of ${TEST_SUITE}" >&2
+    echo "PHP: ${PHP_VERSION}" >&2
+fi
+
+if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
+    echo "SUCCESS" >&2
+else
+    echo "FAILURE" >&2
+fi
+echo "###########################################################################" >&2
+echo "" >&2
+
 exit $SUITE_EXIT_CODE
