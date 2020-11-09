@@ -17,10 +17,8 @@ namespace TYPO3\CMS\Frontend\Authentication;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -512,38 +510,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                     'ses_data' => ''
                 ]);
             }
-        }
-    }
-
-    /**
-     * Removes the current session record, sets the internal ->user array to null,
-     * Thereby the current user (if any) is effectively logged out!
-     * Additionally the cookie is removed, but only if there is no session data.
-     * If session data exists, only the user information is removed and the session
-     * gets converted into an anonymous session if the feature toggle
-     * "security.frontend.keepSessionDataOnLogout" is set to true (default: false).
-     */
-    protected function performLogoff()
-    {
-        $oldSession = [];
-        $sessionData = [];
-        try {
-            // Session might not be loaded at this point, so fetch it
-            $oldSession = $this->getSessionBackend()->get($this->id);
-            $sessionData = unserialize($oldSession['ses_data']);
-        } catch (SessionNotFoundException $e) {
-            // Leave uncaught, will unset cookie later in this method
-        }
-
-        $keepSessionDataOnLogout = GeneralUtility::makeInstance(Features::class)
-            ->isFeatureEnabled('security.frontend.keepSessionDataOnLogout');
-
-        if ($keepSessionDataOnLogout && !empty($sessionData)) {
-            // Regenerate session as anonymous
-            $this->regenerateSessionId($oldSession, true);
-            $this->user = null;
-        } else {
-            parent::performLogoff();
         }
     }
 
