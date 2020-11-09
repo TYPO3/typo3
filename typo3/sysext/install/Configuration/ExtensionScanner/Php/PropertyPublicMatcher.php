@@ -700,4 +700,9 @@ return [
             'Breaking-92560-BackendEditorsCanAlwaysDeletePagesRecursive.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->auth_timeout_field' => [
+        'restFiles' => [
+            'Breaking-92802-DatabaseBasedAuthenticationTimeoutFieldRemoved.rst'
+        ],
+    ],
 ];

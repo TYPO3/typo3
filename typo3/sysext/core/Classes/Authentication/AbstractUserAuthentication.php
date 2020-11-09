@@ -143,13 +143,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $sessionTimeout = 0;
 
     /**
-     * Name for a field to fetch the server session timeout from.
-     * If not empty this is a field name from the user table where the timeout can be found.
-     * @var string
-     */
-    public $auth_timeout_field = '';
-
-    /**
      * Lifetime for the session-cookie (on the client)
      *
      * If >0: permanent cookie with given lifetime
@@ -935,15 +928,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $userRecord['ses_tstamp'] = (int)$userRecord['ses_tstamp'];
             $userRecord['is_online'] = (int)$userRecord['ses_tstamp'];
 
-            if (!empty($this->auth_timeout_field)) {
-                // Get timeout-time from usertable
-                $timeout = (int)$userRecord[$this->auth_timeout_field];
-            } else {
-                $timeout = $this->sessionTimeout;
-            }
-            // If timeout > 0 (TRUE) and current time has not exceeded the latest sessions-time plus the timeout in seconds then accept user
+            // If sessionTimeout > 0 (TRUE) and current time has not exceeded the latest sessions-time plus the timeout in seconds then accept user
             // Use a gracetime-value to avoid updating a session-record too often
-            if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $userRecord['ses_tstamp'] + $timeout) {
+            if ($this->sessionTimeout > 0 && $GLOBALS['EXEC_TIME'] < $userRecord['ses_tstamp'] + $this->sessionTimeout) {
                 $sessionUpdateGracePeriod = 61;
                 if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($userRecord['ses_tstamp'] + $sessionUpdateGracePeriod)) {
                     // Update the session timestamp by writing a dummy update. (Backend will update the timestamp)
