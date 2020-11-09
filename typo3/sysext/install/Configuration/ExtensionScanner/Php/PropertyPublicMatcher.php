@@ -705,4 +705,19 @@ return [
             'Breaking-92802-DatabaseBasedAuthenticationTimeoutFieldRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->warningEmail' => [
+        'restFiles' => [
+            'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->warningPeriod' => [
+        'restFiles' => [
+            'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->warningMax' => [
+        'restFiles' => [
+            'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
+        ],
+    ],
 ];

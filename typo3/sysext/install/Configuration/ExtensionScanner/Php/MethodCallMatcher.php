@@ -4507,4 +4507,18 @@ return [
             'Deprecation-92598-Workspace-relatedMethodsFixVersioningPid.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->checkLogFailures' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkLogFailures' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
+        ],
+    ],
 ];

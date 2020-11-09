@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
-use Doctrine\DBAL\Driver\Statement;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -30,8 +28,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Mail\FluidEmail;
-use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -39,7 +35,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
-use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
@@ -309,7 +304,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function __construct()
     {
         $this->name = self::getCookieName();
-        $this->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
         parent::__construct();
     }
@@ -2297,117 +2291,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         );
 
         return (int)$connection->lastInsertId('sys_log');
-    }
-
-    /**
-     * Sends a warning to $email if there has been a certain amount of failed logins during a period.
-     * If a login fails, this function is called. It will look up the sys_log to see if there
-     * have been more than $max failed logins the last $secondsBack seconds (default 3600).
-     * If so, an email with a warning is sent to $email.
-     *
-     * @param string $email Email address
-     * @param int $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance.
-     * @param int $max Max allowed failures before a warning mail is sent
-     * @internal
-     */
-    public function checkLogFailures($email, $secondsBack = 3600, $max = 3)
-    {
-        if (!GeneralUtility::validEmail($email)) {
-            return;
-        }
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        // Get last flag set in the log for sending
-        $theTimeBack = $GLOBALS['EXEC_TIME'] - $secondsBack;
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');
-        $queryBuilder->select('tstamp')
-            ->from('sys_log')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'type',
-                    $queryBuilder->createNamedParameter(SystemLogType::LOGIN, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'action',
-                    $queryBuilder->createNamedParameter(SystemLogLoginAction::SEND_FAILURE_WARNING_EMAIL, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->gt(
-                    'tstamp',
-                    $queryBuilder->createNamedParameter($theTimeBack, \PDO::PARAM_INT)
-                )
-            )
-            ->orderBy('tstamp', 'DESC')
-            ->setMaxResults(1);
-        if ($testRow = $queryBuilder->execute()->fetch(\PDO::FETCH_ASSOC)) {
-            $theTimeBack = $testRow['tstamp'];
-        }
-
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log');
-        $rowCount = $queryBuilder->count('uid')
-            ->from('sys_log')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'type',
-                    $queryBuilder->createNamedParameter(SystemLogType::LOGIN, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'action',
-                    $queryBuilder->createNamedParameter(SystemLogLoginAction::ATTEMPT, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->neq(
-                    'error',
-                    $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->gt(
-                    'tstamp',
-                    $queryBuilder->createNamedParameter($theTimeBack, \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetchColumn(0);
-
-        // Check for more than $max number of error failures with the last period.
-        if ($rowCount > $max) {
-            $result = $queryBuilder
-                ->select('*')
-                ->orderBy('tstamp')
-                ->execute();
-
-            // OK, so there were more than the max allowed number of login failures - so we will send an email then.
-            $this->sendLoginAttemptEmail($result, $email);
-            // Login failure attempt written to log
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::SEND_FAILURE_WARNING_EMAIL, SystemLogErrorClassification::MESSAGE, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$rowCount, $secondsBack, $email]);
-        }
-    }
-
-    /**
-     * Sends out an email if the number of attempts have exceeded a limit.
-     *
-     * @param Statement $result
-     * @param string $emailAddress
-     */
-    protected function sendLoginAttemptEmail(Statement $result, string $emailAddress): void
-    {
-        $emailData = [];
-        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-            $theData = unserialize($row['log_data'], ['allowed_classes' => false]);
-            $text = @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
-            if ((int)$row['type'] === SystemLogType::LOGIN) {
-                $text = str_replace('###IP###', $row['IP'], $text);
-            }
-            $emailData[] = [
-                'row' => $row,
-                'text' => $text
-            ];
-        }
-        $email = GeneralUtility::makeInstance(FluidEmail::class)
-            ->to($emailAddress)
-            ->setTemplate('Security/LoginAttemptFailedWarning')
-            ->assign('lines', $emailData);
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            $email->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
-        GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 
     /**

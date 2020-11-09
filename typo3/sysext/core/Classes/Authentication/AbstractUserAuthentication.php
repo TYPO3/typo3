@@ -196,23 +196,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $hash_length = 32;
 
     /**
-     * @var string
-     */
-    public $warningEmail = '';
-
-    /**
-     * Time span (in seconds) within the number of failed logins are collected
-     * @var int
-     */
-    public $warningPeriod = 3600;
-
-    /**
-     * The maximum accepted number of warnings before an email to $warningEmail is sent
-     * @var int
-     */
-    public $warningMax = 3;
-
-    /**
      * If set, the user-record must be stored at the page defined by $checkPid_value
      * @var bool
      */
@@ -752,31 +735,22 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
         }
 
-        // If there were a login failure, check to see if a warning email should be sent:
+        // If there were a login failure, check to see if a warning email should be sent
         if ($this->loginFailure && $activeLogin) {
-            $this->logger->debug(
-                'Call checkLogFailures',
-                [
-                    'warningEmail' => $this->warningEmail,
-                    'warningPeriod' => $this->warningPeriod,
-                    'warningMax' => $this->warningMax
-                ]
-            );
-
             // Hook to implement login failure tracking methods
             $_params = [];
             $sleep = true;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $_funcRef) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $hookIdentifier => $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                $sleep = false;
+                // This hack will be removed once this is migrated into PSR-14 Events
+                if ($hookIdentifier !== 'sendEmailOnFailedLoginAttempt') {
+                    $sleep = false;
+                }
             }
-
             if ($sleep) {
                 // No hooks were triggered - default login failure behavior is to sleep 5 seconds
                 sleep(5);
             }
-
-            $this->checkLogFailures($this->warningEmail, $this->warningPeriod, $this->warningMax);
         }
     }
 
@@ -1335,18 +1309,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param int|string $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      */
     public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid)
-    {
-    }
-
-    /**
-     * DUMMY: Check login failures (in some extension classes)
-     *
-     * @param string $email Email address
-     * @param int $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance
-     * @param int $maxFailures Max allowed failures before a warning mail is sent
-     * @ignore
-     */
-    public function checkLogFailures($email, $secondsBack, $maxFailures)
     {
     }
 
