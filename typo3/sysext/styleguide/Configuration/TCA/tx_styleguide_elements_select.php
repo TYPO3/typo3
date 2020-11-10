@@ -376,6 +376,43 @@ return [
                 ],
             ],
         ],
+        'select_checkbox_5' => [
+            'exclude' => 1,
+            'label' => 'select_checkbox_5 dividers, expandAll',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'appearance' => [
+                    'expandAll' => true
+                ],
+                'items' => [
+                    ['div 1', '--div--'],
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['foo 3', 3],
+                    ['div 2', '--div--'],
+                    ['foo 4', 4],
+                    ['foo 5', 5],
+                ],
+            ],
+        ],
+        'select_checkbox_6' => [
+            'exclude' => 1,
+            'label' => 'select_checkbox_5 dividers',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'items' => [
+                    ['div 1', '--div--'],
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['foo 3', 3],
+                    ['div 2', '--div--'],
+                    ['foo 4', 4],
+                    ['foo 5', 5],
+                ],
+            ],
+        ],
 
         'select_multiplesidebyside_1' => [
             'exclude' => 1,
@@ -958,7 +995,7 @@ return [
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,
                 --div--;renderType=selectCheckBox,
-                    select_checkbox_1, select_checkbox_2, select_checkbox_3, select_checkbox_4,
+                    select_checkbox_1, select_checkbox_2, select_checkbox_3, select_checkbox_4, select_checkbox_5, select_checkbox_6,
                 --div--;renderType=selectMultipleSideBySide,
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_5, select_multiplesidebyside_6,
