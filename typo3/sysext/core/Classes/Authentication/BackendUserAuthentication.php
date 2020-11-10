@@ -1324,43 +1324,57 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['file_permissions'] = StringUtility::uniqueList($this->dataLists['file_permissions'] ?? '');
             $this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
 
+            // Check if the user access to all web mounts set
             if (!empty(trim($this->groupData['webmounts']))) {
-                // Checking read access to web mounts if there are mounts points (not empty string, false or 0)
-                $webmounts = explode(',', $this->groupData['webmounts']);
-                // Selecting all web mounts with permission clause for reading
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-                $MProws = $queryBuilder->select('uid')
-                    ->from('pages')
-                    // @todo DOCTRINE: check how to make getPagePermsClause() portable
-                    ->where(
-                        $this->getPagePermsClause(Permission::PAGE_SHOW),
-                        $queryBuilder->expr()->in(
-                            'uid',
-                            $queryBuilder->createNamedParameter(
-                                GeneralUtility::intExplode(',', $this->groupData['webmounts']),
-                                Connection::PARAM_INT_ARRAY
-                            )
-                        )
-                    )
-                    ->execute()
-                    ->fetchAll();
-                $MProws = array_column(($MProws ?: []), 'uid', 'uid');
-                foreach ($webmounts as $idx => $mountPointUid) {
-                    // If the mount ID is NOT found among selected pages, unset it:
-                    if ($mountPointUid > 0 && !isset($MProws[$mountPointUid])) {
-                        unset($webmounts[$idx]);
-                    }
-                }
-                // Implode mounts in the end.
-                $this->groupData['webmounts'] = implode(',', $webmounts);
+                $validWebMounts = $this->filterValidWebMounts($this->groupData['webmounts']);
+                $this->groupData['webmounts'] = implode(',', $validWebMounts);
             }
             // Setting up workspace situation (after webmounts are processed!):
             $this->workspaceInit();
         }
+    }
+
+    /**
+     * Checking read access to web mounts, but keeps "0" or empty strings.
+     * In any case, checks if the list of pages is visible for the backend user but also
+     * if the page is not deleted.
+     *
+     * @param string $listOfWebMounts a comma-separated list of webmounts, could also be empty, or contain "0"
+     * @return array a list of all valid web mounts the user has access to
+     */
+    protected function filterValidWebMounts(string $listOfWebMounts): array
+    {
+        // Checking read access to web mounts if there are mounts points (not empty string, false or 0)
+        $allWebMounts = explode(',', $listOfWebMounts);
+        // Selecting all web mounts with permission clause for reading
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $readablePagesOfWebMounts = $queryBuilder->select('uid')
+            ->from('pages')
+            // @todo DOCTRINE: check how to make getPagePermsClause() portable
+            ->where(
+                $this->getPagePermsClause(Permission::PAGE_SHOW),
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter(
+                        GeneralUtility::intExplode(',', $listOfWebMounts),
+                        Connection::PARAM_INT_ARRAY
+                    )
+                )
+            )
+            ->execute()
+            ->fetchAll();
+        $readablePagesOfWebMounts = array_column(($readablePagesOfWebMounts ?: []), 'uid', 'uid');
+        foreach ($allWebMounts as $key => $mountPointUid) {
+            // If the mount ID is NOT found among selected pages, unset it:
+            if ($mountPointUid > 0 && !isset($readablePagesOfWebMounts[$mountPointUid])) {
+                unset($allWebMounts[$key]);
+            }
+        }
+        return $allWebMounts;
     }
 
     /**
