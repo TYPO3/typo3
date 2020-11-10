@@ -638,17 +638,6 @@ class DatabaseRecordList
             ->setFieldName($fieldName);
         $buttonBar->addButton($cshButton);
         if (isset($this->id)) {
-            // View Exclude doktypes 254,255 Configuration:
-            // mod.web_list.noViewWithDokTypes = 254,255
-            if (isset($modulePageTsConfig['noViewWithDokTypes'])) {
-                $noViewDokTypes = GeneralUtility::trimExplode(',', $modulePageTsConfig['noViewWithDokTypes'], true);
-            } else {
-                //default exclusion: doktype 254 (folder), 255 (recycler)
-                $noViewDokTypes = [
-                    PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_RECYCLER
-                ];
-            }
             // New record on pages that are not locked by editlock
             if (!($modulePageTsConfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
                 $newRecordButton = $buttonBar->makeLinkButton()
@@ -658,7 +647,7 @@ class DatabaseRecordList
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
 
-            if ($this->id !== 0 && !in_array($this->pageRow['doktype'] ?? null, $noViewDokTypes)) {
+            if ($this->id !== 0 && !in_array($this->pageRow['doktype'] ?? null, $this->getNoViewWithDokTypes($modulePageTsConfig))) {
                 $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id));
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
@@ -1857,7 +1846,11 @@ class DatabaseRecordList
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
         // "Show" link (only pages and tt_content elements)
-        if ($table === 'pages' || $table === 'tt_content') {
+        $tsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
+        if (
+            ($table === 'pages' && !in_array($row['doktype'] ?? null, $this->getNoViewWithDokTypes($tsConfig)))
+            || $table === 'tt_content'
+        ) {
             if (!$isDeletePlaceHolder) {
                 $onClick = $this->getOnClickForRow($table, $row);
                 $viewAction = '<a class="btn btn-default" href="#" onclick="'
@@ -1874,6 +1867,8 @@ class DatabaseRecordList
             } else {
                 $this->addActionToCellGroup($cells, $this->spaceIcon, 'view');
             }
+        } else {
+            $this->addActionToCellGroup($cells, $this->spaceIcon, 'view');
         }
 
         // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
@@ -4135,5 +4130,26 @@ class DatabaseRecordList
     {
         $this->languagesAllowedForUser = $languagesAllowedForUser;
         return $this;
+    }
+
+    /**
+     * Returns the configuration of mod.web_list.noViewWithDokTypes or the
+     * default value 254 (Sys Folders) and 255 (Recycler), if not set.
+     *
+     * @param array $tsConfig
+     * @return array
+     */
+    protected function getNoViewWithDokTypes(array $tsConfig): array
+    {
+        if (isset($tsConfig['noViewWithDokTypes'])) {
+            $noViewDokTypes = GeneralUtility::trimExplode(',', $tsConfig['noViewWithDokTypes'], true);
+        } else {
+            $noViewDokTypes = [
+                PageRepository::DOKTYPE_SYSFOLDER,
+                PageRepository::DOKTYPE_RECYCLER
+            ];
+        }
+
+        return $noViewDokTypes;
     }
 }
