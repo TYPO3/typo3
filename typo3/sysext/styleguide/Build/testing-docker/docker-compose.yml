@@ -4,7 +4,8 @@ services:
     image: selenium/standalone-chrome:3.12
 
   mariadb10:
-    image: mariadb:10
+    # not using mariadb:10 for the time being, because 10.5.7 (currently latest) is broken
+    image: mariadb:10.5.6
     environment:
       MYSQL_ROOT_PASSWORD: funcp
     tmpfs:
@@ -110,7 +111,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
-        composer install;
+        composer install --no-progress --no-interaction;
       "
 
   composer_validate:
