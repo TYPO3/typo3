@@ -27,12 +27,12 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_cms_showpic'] = \TYPO3\CMS\Frontend\Controller\ShowImageController::class . '::processRequest';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
-	options.saveDocView = 1
-	options.saveDocNew = 1
-	options.saveDocNew.pages = 0
-	options.saveDocNew.sys_file = 0
-	options.saveDocNew.sys_file_metadata = 0
-	options.disableDelete.sys_file = 1
+  options.saveDocView = 1
+  options.saveDocNew = 1
+  options.saveDocNew.pages = 0
+  options.saveDocNew.sys_file = 0
+  options.saveDocNew.sys_file_metadata = 0
+  options.disableDelete.sys_file = 1
 ');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
@@ -92,9 +92,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
 
 // Include new content elements to modWizards
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    "@import 'EXT:frontend/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
+    "@import 'EXT:frontend/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
 );
 // Include FormEngine adjustments
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    "@import 'EXT:frontend/Configuration/TSconfig/Page/TCEFORM.tsconfig'"
+    "@import 'EXT:frontend/Configuration/TsConfig/Page/TCEFORM.tsconfig'"
 );

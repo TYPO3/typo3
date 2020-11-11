@@ -37,7 +37,7 @@ call_user_func(function () {
 
     // Add new content element wizard entry
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-        "@import 'EXT:form/Configuration/PageTS/modWizards.tsconfig'"
+        "@import 'EXT:form/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
     );
 
     // Add module configuration

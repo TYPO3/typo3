@@ -36,7 +36,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['previewRendererResolver'] = \
 
 // Include base TSconfig setup
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    "@import 'EXT:backend/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
+    "@import 'EXT:backend/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
 );
 
 // Register icons not being part of TYPO3.Icons repository

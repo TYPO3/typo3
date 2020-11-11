@@ -69,16 +69,16 @@ if (isset($extConf['useMysqlFulltext']) && (bool)$extConf['useMysqlFulltext']) {
 // Add search to new content element wizard
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
-    elements.search {
-        iconIdentifier = content-elements-searchform
-        title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title
-        description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description
-        tt_content_defValues {
-            CType = list
-            list_type = indexedsearch_pi2
-        }
+  elements.search {
+    iconIdentifier = content-elements-searchform
+    title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title
+    description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description
+    tt_content_defValues {
+      CType = list
+      list_type = indexedsearch_pi2
     }
-    show :=addToList(search)
+  }
+  show :=addToList(search)
 }
 ');
 
