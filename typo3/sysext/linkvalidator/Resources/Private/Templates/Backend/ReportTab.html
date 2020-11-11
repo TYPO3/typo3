@@ -32,7 +32,7 @@
                         <td>{item.linkmessage -> f:format.raw()}</td>
                         <td>{item.lastcheck -> f:format.raw()}<f:if condition="{item.needsRecheck}"><br /><span class="error"> ({f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:needs-recheck')})</span></f:if>
                         </td>
-                        <td><a href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}"><core:icon identifier="actions-open" size="small" /></a></td>
+                        <td><a class="btn btn-default" href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}"><core:icon identifier="actions-open" size="small" /></a></td>
                     </tr>
                 </f:for>
                 </tbody>
