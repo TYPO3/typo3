@@ -603,6 +603,9 @@ define(['jquery',
               $(this).removeClass('has-error');
               MultiStepWizard.unlockNextStep();
               MultiStepWizard.set('formName', $(this).val());
+              if (e.code === 'Enter') {
+                MultiStepWizard.triggerStepButton('next');
+              }
             } else {
               $(this).addClass('has-error');
               MultiStepWizard.lockNextStep();
@@ -678,6 +681,8 @@ define(['jquery',
             + '</div>';
 
           slide.html(html);
+
+          nextButton.focus();
 
           nextButton.on('click', function(e) {
             Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
