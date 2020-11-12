@@ -1587,6 +1587,35 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
+     * @param string $httpHost
+     * @param string $serverName
+     * @param bool $isAllowed
+     * @param string $serverPort
+     * @param string $ssl
+     *
+     * @test
+     * @dataProvider serverNamePatternDataProvider
+     */
+    public function isAllowedHostHeaderValueWorksCorrectlyWithWithServerNamePatternAndSslProxy($httpHost, $serverName, $isAllowed, $serverPort = '80', $ssl = 'Off')
+    {
+        $backup = ['sys' => $GLOBALS['TYPO3_CONF_VARS']['SYS'], 'server' => $_SERVER];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '10.0.0.1';
+
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
+        $_SERVER['SERVER_NAME'] = $serverName;
+        $_SERVER['SERVER_PORT'] = $serverPort;
+        $_SERVER['HTTPS'] = $ssl;
+
+        self::assertSame($isAllowed, GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS'] = $backup['sys'];
+        $_SERVER = $backup['server'];
+    }
+
+    /**
      * @test
      */
     public function allGetIndpEnvCallsRelatedToHostNamesCallIsAllowedHostHeaderValue()
