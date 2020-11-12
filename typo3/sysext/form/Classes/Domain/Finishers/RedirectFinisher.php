@@ -69,8 +69,7 @@ class RedirectFinisher extends AbstractFinisher
         $this->uriBuilder->setRequest($this->request);
 
         $pageUid = $this->parseOption('pageUid');
-        $pageUid = is_string($pageUid) ? $pageUid : '';
-        $pageUid = (int)str_replace('pages_', '', $pageUid);
+        $pageUid = (int)str_replace('pages_', '', (string)$pageUid);
         $additionalParameters = $this->parseOption('additionalParameters');
         $additionalParameters = is_string($additionalParameters) ? $additionalParameters : '';
         $additionalParameters = '&' . ltrim($additionalParameters, '&');
