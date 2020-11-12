@@ -71,7 +71,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * with the given arguments (“dog” and “fox”) assigned for the specified
  * ``%s`` conversions (:php:`sprintf()`) in the language file::
  *
- *    <trans-unit id="someKey" resname="argumentsKey">
+ *    <trans-unit id="someKey" resname="someKey">
  *        <source>Some text about a %s and a %s.</source>
  *    </trans-unit>
  *
