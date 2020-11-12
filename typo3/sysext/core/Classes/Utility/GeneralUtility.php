@@ -2815,10 +2815,7 @@ class GeneralUtility
                 if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $proxySSL)) {
                     $retVal = true;
                 } else {
-                    // https://secure.php.net/manual/en/reserved.variables.server.php
-                    // "Set to a non-empty value if the script was queried through the HTTPS protocol."
-                    $retVal = !empty($_SERVER['SSL_SESSION_ID'])
-                        || (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off');
+                    $retVal = self::webserverUsesHttps();
                 }
                 break;
             case '_ARRAY':
@@ -2901,15 +2898,21 @@ class GeneralUtility
     public static function hostHeaderValueMatchesTrustedHostsPattern($hostHeaderValue)
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME) {
+            $host = strtolower($hostHeaderValue);
+            // Default port to be verified if HTTP_HOST does not contain explicit port information.
+            // Deriving from raw/local webserver HTTPS information (not taking possible proxy configurations into account)
+            // as we compare against the raw/local server information (SERVER_PORT).
+            $port = self::webserverUsesHttps() ? '443' : '80';
+
+            $parsedHostValue = parse_url('http://' . $host);
+            if (isset($parsedHostValue['port'])) {
+                $host = $parsedHostValue['host'];
+                $port = (string)$parsedHostValue['port'];
+            }
+
             // Allow values that equal the server name
             // Note that this is only secure if name base virtual host are configured correctly in the webserver
-            $defaultPort = self::getIndpEnv('TYPO3_SSL') ? '443' : '80';
-            $parsedHostValue = parse_url('http://' . $hostHeaderValue);
-            if (isset($parsedHostValue['port'])) {
-                $hostMatch = (strtolower($parsedHostValue['host']) === strtolower($_SERVER['SERVER_NAME']) && (string)$parsedHostValue['port'] === $_SERVER['SERVER_PORT']);
-            } else {
-                $hostMatch = (strtolower($hostHeaderValue) === strtolower($_SERVER['SERVER_NAME']) && $defaultPort === $_SERVER['SERVER_PORT']);
-            }
+            $hostMatch = $host === strtolower($_SERVER['SERVER_NAME']) && $port === $_SERVER['SERVER_PORT'];
         } else {
             // In case name based virtual hosts are not possible, we allow setting a trusted host pattern
             // See https://typo3.org/teams/security/security-bulletins/typo3-core/typo3-core-sa-2014-001/ for further details
@@ -2917,6 +2920,27 @@ class GeneralUtility
         }
 
         return $hostMatch;
+    }
+
+    /**
+     * Determine if the webserver uses HTTPS.
+     *
+     * HEADS UP: This does not check if the client performed a
+     * HTTPS request, as possible proxies are not taken into
+     * account. It provides raw information about the current
+     * webservers configuration only.
+     *
+     * @return bool
+     */
+    protected static function webserverUsesHttps()
+    {
+        if (!empty($_SERVER['SSL_SESSION_ID'])) {
+            return true;
+        }
+
+        // https://secure.php.net/manual/en/reserved.variables.server.php
+        // "Set to a non-empty value if the script was queried through the HTTPS protocol."
+        return !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
     }
 
     /**
