@@ -1,0 +1,13 @@
+# This file applies Content-Security-Policy (CSP) HTTP headers
+# to directories containing (user uploaded) resources like
+# /fileadmin/ or /uploads/
+
+<IfModule mod_headers.c>
+    Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';"
+
+    # // comment previous line and use the following two lines instead
+    # // in order to only set the header when it has not be set before
+    # // (known as `setifempty` in Apache v2.4.7 - v2.2 fallback below)
+    # Header append Content-Security-Policy ""
+    # Header edit Content-Security-Policy "^$" "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';"
+</IfModule>

@@ -282,6 +282,12 @@ class DefaultFactory
             'targetPermission' => $directoryPermission,
             'children' => [
                 [
+                    'name' => '.htaccess',
+                    'type' => FileNode::class,
+                    'targetPermission' => $filePermission,
+                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess',
+                ],
+                [
                     'name' => '_temp_',
                     'type' => DirectoryNode::class,
                     'targetPermission' => $directoryPermission,
