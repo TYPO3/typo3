@@ -68,6 +68,11 @@ class FileDeclaration
     protected $unexpectedContent;
 
     /**
+     * @var \Closure
+     */
+    protected $handler;
+
+    /**
      * @var int
      */
     protected $buildFlags = self::FLAG_BUILD_HTML | self::FLAG_BUILD_HTML_DOCUMENT;
@@ -116,6 +121,14 @@ class FileDeclaration
     public function getMismatches(ResponseInterface $response): array
     {
         $mismatches = [];
+        if ($this->handler instanceof \Closure) {
+            $result = $this->handler->call($this, $response);
+            if ($result !== null) {
+                $mismatches[] = $result;
+            }
+            return $mismatches;
+        }
+
         $body = (string)$response->getBody();
         $contentType = $response->getHeaderLine('content-type');
         if ($this->expectedContent !== null && strpos($body, $this->expectedContent) === false) {
@@ -176,6 +189,13 @@ class FileDeclaration
     {
         $target = clone $this;
         $target->unexpectedContent = $content;
+        return $target;
+    }
+
+    public function withHandler(\Closure $handler): self
+    {
+        $target = clone $this;
+        $target->handler = $handler;
         return $target;
     }
 
