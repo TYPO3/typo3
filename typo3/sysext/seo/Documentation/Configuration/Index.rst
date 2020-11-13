@@ -150,7 +150,7 @@ This section will provide you examples on how to configure several behaviours in
 Setting OpenGraph tags
 ----------------------
 
-You can set OpenGrah meta tags in addition to the tags that can be set in the SEO tab on a page's record:
+You can set OpenGrah meta tags to reflect the page record properties set in the SEO tab:
 
 .. code-block:: typoscript
 
@@ -158,12 +158,15 @@ You can set OpenGrah meta tags in addition to the tags that can be set in the SE
      meta {
        og:site_name = YOUR_SITE_NAME
        og:site_name.attribute = property
+
        og:title.field = title
        og:title.attribute = property
+
        description.data = TSFE:page|description
        og:description.data = TSFE:page|description
        og:description.attribute = property
        og:description.ifEmpty = YOUR_FALLBACK_DESCRIPTION
+
        og:locale = en_US
        og:locale.attribute = property
        og:locale:alternate {
