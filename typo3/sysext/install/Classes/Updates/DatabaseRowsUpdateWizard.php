@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
@@ -226,8 +227,10 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                         'table' => $table,
                         'uid' => $rowBefore['uid'],
                     ];
-                    if ($connectionForSysRegistry === $connectionForTable) {
-                        // Target table and sys_registry table are on the same connection, use a transaction
+                    if ($connectionForSysRegistry === $connectionForTable
+                        && !($connectionForSysRegistry->getDatabasePlatform() instanceof SQLServerPlatform)
+                    ) {
+                        // Target table and sys_registry table are on the same connection and not mssql, use a transaction
                         $connectionForTable->beginTransaction();
                         try {
                             $this->updateOrDeleteRow(
@@ -244,8 +247,10 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                             throw $up;
                         }
                     } else {
-                        // Different connections for table and sys_registry -> execute two
-                        // distinct queries and hope for the best.
+                        // Either different connections for table and sys_registry, or mssql.
+                        // SqlServer can not run a transaction for a table if the same table is queried
+                        // currently - our above ->fetch() main loop.
+                        // So, execute two distinct queries and hope for the best.
                         $this->updateOrDeleteRow(
                             $connectionForTable,
                             $connectionForSysRegistry,
@@ -349,6 +354,12 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
             [
                 'entry_namespace' => 'installUpdateRows',
                 'entry_key' => 'rowUpdatePosition',
+            ],
+            [
+                // Needs to be declared LOB, so MSSQL can handle the conversion from string (nvarchar) to blob (varbinary)
+                'entry_value' => \PDO::PARAM_LOB,
+                'entry_namespace' => \PDO::PARAM_STR,
+                'entry_key' => \PDO::PARAM_STR,
             ]
         );
     }
