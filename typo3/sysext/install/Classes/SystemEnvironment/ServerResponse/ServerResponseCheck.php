@@ -54,6 +54,11 @@ class ServerResponseCheck implements CheckInterface
     protected $assetLocation;
 
     /**
+     * @var FileLocation
+     */
+    protected $fileadminLocation;
+
+    /**
      * @var FileDeclaration[]
      */
     protected $fileDeclarations;
@@ -65,6 +70,8 @@ class ServerResponseCheck implements CheckInterface
         $fileName = bin2hex(random_bytes(4));
         $folderName = bin2hex(random_bytes(4));
         $this->assetLocation = new FileLocation(sprintf('/typo3temp/assets/%s.tmp/', $folderName));
+        $fileadminDir = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] ?? 'fileadmin', '/');
+        $this->fileadminLocation = new FileLocation(sprintf('/%s/%s.tmp/', $fileadminDir, $folderName));
         $this->fileDeclarations = $this->initializeFileDeclarations($fileName);
     }
 
@@ -75,17 +82,24 @@ class ServerResponseCheck implements CheckInterface
         foreach ($messageQueue->getAllMessages() as $flashMessage) {
             $messages[] = $flashMessage->getMessage();
         }
+        $detailsLink = sprintf(
+            '<p><a href="%s" rel="noreferrer" target="_blank">%s</a></p>',
+            'https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.5.x/Feature-91354-IntegrateServerResponseSecurityChecks.html',
+            'Please see documentation for further details...'
+        );
         if ($messageQueue->getAllMessages(FlashMessage::ERROR) !== []) {
             $title = 'Potential vulnerabilities';
+            $label = $detailsLink;
             $severity = Status::ERROR;
         } elseif ($messageQueue->getAllMessages(FlashMessage::WARNING) !== []) {
             $title = 'Warnings';
+            $label = $detailsLink;
             $severity = Status::WARNING;
         }
         return new Status(
             'Server Response on static files',
             $title ?? 'OK',
-            $this->wrapList($messages, '', self::WRAP_NESTED),
+            $this->wrapList($messages, $label ?? '', self::WRAP_NESTED),
             $severity ?? Status::OK
         );
     }
@@ -115,6 +129,25 @@ class ServerResponseCheck implements CheckInterface
 
     protected function initializeFileDeclarations(string $fileName): array
     {
+        $cspClosure = function (ResponseInterface $response): ?StatusMessage {
+            $cspHeader = new ContentSecurityPolicyHeader(
+                $response->getHeaderLine('content-security-policy')
+            );
+
+            if ($cspHeader->isEmpty()) {
+                return new StatusMessage(
+                    'missing Content-Security-Policy for this location'
+                );
+            }
+            if (!$cspHeader->mitigatesCrossSiteScripting()) {
+                return new StatusMessage(
+                    'weak Content-Security-Policy for this location "%s"',
+                    $response->getHeaderLine('content-security-policy')
+                );
+            }
+            return null;
+        };
+
         return [
             (new FileDeclaration($this->assetLocation, $fileName . '.html'))
                 ->withExpectedContentType('text/html')
@@ -143,6 +176,12 @@ class ServerResponseCheck implements CheckInterface
             (new FileDeclaration($this->assetLocation, $fileName . '.php.txt', true))
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_PHP | FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
                 ->withUnexpectedContent('PHP content'),
+            (new FileDeclaration($this->fileadminLocation, $fileName . '.html'))
+                ->withBuildFlags(FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
+                ->withHandler($cspClosure),
+            (new FileDeclaration($this->fileadminLocation, $fileName . '.svg'))
+                ->withBuildFlags(FileDeclaration::FLAG_BUILD_SVG | FileDeclaration::FLAG_BUILD_SVG_DOCUMENT)
+                ->withHandler($cspClosure),
         ];
     }
 
@@ -163,6 +202,7 @@ class ServerResponseCheck implements CheckInterface
     protected function purgeFileDeclarations(): void
     {
         GeneralUtility::rmdir($this->assetLocation->getFilePath(), true);
+        GeneralUtility::rmdir($this->fileadminLocation->getFilePath(), true);
     }
 
     protected function processFileDeclarations(FlashMessageQueue $messageQueue): void
