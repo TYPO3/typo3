@@ -150,6 +150,62 @@ TypoScript examples
 
 This section will provide you examples on how to configure several behaviours in the frontend.
 
+Setting missing OpenGraph tags
+------------------------------
+
+Most of the OpenGraph tags are rendered automatically when EXT:seo is installed. If you
+want to add other fields as og:title, og:description and og:image, you can use some
+TypoScript code like this:
+
+.. code-block:: typoscript
+
+   page {
+     meta {
+       og:site_name = YOUR_SITE_NAME
+       og:site_name.attribute = property
+
+       og:locale = en_US
+       og:locale.attribute = property
+       og:locale:alternate {
+         attribute = property
+         value {
+            1 = de_DE
+         }
+       }
+     }
+   }
+
+Setting fallbacks for meta tags
+-------------------------------
+As you can see on :ref:`t3coreapi:metatagapi-configuration` the tags are first
+set by PHP and after that the TypoScript config is handled. As EXT:seo is only
+adding the meta tags for the SEO and Social Media fields if they are filled in
+the page properties, you have some possibilities to add fallbacks.
+
+Because the EXT:seo is handling the tags by PHP, you are able to add those
+fallbacks by TypoScript. You can just add those tags by TypoScript and those will
+only be rendered when EXT:seo will not render it.
+
+An example to set a fallback description and og:description:
+
+.. code-block:: typoscript
+
+   page {
+     meta {
+       description = Your fallback description tag
+       og:description = Your fallback OG:description tag
+     }
+   }
+
+.. hint::
+
+   Having fallbacks for those fields seems to be a good idea, but please consider
+   if you really want those fallbacks. Those meta tags should tell search engines
+   or social networks, what the page is about. Social networks also have their own
+   fallbacks. Setting a fallback for og:description to the description field might
+   not be needed as the social networks have such a fallback as well. So please consider
+   if you want to add those tags if they does not bring additional information.
+
 Setting fallbacks for og:image and twitter:image
 ------------------------------------------------
 
