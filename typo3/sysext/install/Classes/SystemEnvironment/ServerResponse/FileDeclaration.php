@@ -26,15 +26,16 @@ use Psr\Http\Message\ResponseInterface;
  */
 class FileDeclaration
 {
-    public const MISMATCH_EXPECTED_CONTENT_TYPE = 'expectedContentType';
-    public const MISMATCH_UNEXPECTED_CONTENT_TYPE = 'unexpectedContentType';
-    public const MISMATCH_EXPECTED_CONTENT = 'expectedContent';
-    public const MISMATCH_UNEXPECTED_CONTENT = 'unexpectedContent';
     public const FLAG_BUILD_HTML = 1;
     public const FLAG_BUILD_PHP = 2;
     public const FLAG_BUILD_SVG = 4;
     public const FLAG_BUILD_HTML_DOCUMENT = 64;
     public const FLAG_BUILD_SVG_DOCUMENT = 128;
+
+    /**
+     * @var FileLocation
+     */
+    protected $fileLocation;
 
     /**
      * @var string
@@ -71,8 +72,9 @@ class FileDeclaration
      */
     protected $buildFlags = self::FLAG_BUILD_HTML | self::FLAG_BUILD_HTML_DOCUMENT;
 
-    public function __construct(string $fileName, bool $fail = false)
+    public function __construct(FileLocation $fileLocation, string $fileName, bool $fail = false)
     {
+        $this->fileLocation = $fileLocation;
         $this->fileName = $fileName;
         $this->fail = $fail;
     }
@@ -107,24 +109,44 @@ class FileDeclaration
         return $this->getMismatches($response) === [];
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @return StatusMessage[]
+     */
     public function getMismatches(ResponseInterface $response): array
     {
         $mismatches = [];
         $body = (string)$response->getBody();
         $contentType = $response->getHeaderLine('content-type');
         if ($this->expectedContent !== null && strpos($body, $this->expectedContent) === false) {
-            $mismatches[] = self::MISMATCH_EXPECTED_CONTENT;
+            $mismatches[] = new StatusMessage(
+                'content mismatch %s',
+                $this->expectedContent,
+                $body
+            );
         }
         if ($this->unexpectedContent !== null && strpos($body, $this->unexpectedContent) !== false) {
-            $mismatches[] = self::MISMATCH_UNEXPECTED_CONTENT;
+            $mismatches[] = new StatusMessage(
+                'unexpected content %s',
+                $this->unexpectedContent,
+                $body
+            );
         }
         if ($this->expectedContentType !== null
             && strpos($contentType . ';', $this->expectedContentType . ';') !== 0) {
-            $mismatches[] = self::MISMATCH_EXPECTED_CONTENT_TYPE;
+            $mismatches[] = new StatusMessage(
+                'content-type mismatch %s, got %s',
+                $this->expectedContentType,
+                $contentType
+            );
         }
         if ($this->unexpectedContentType !== null
             && strpos($contentType . ';', $this->unexpectedContentType . ';') === 0) {
-            $mismatches[] = self::MISMATCH_UNEXPECTED_CONTENT_TYPE;
+            $mismatches[] = new StatusMessage(
+                'unexpected content-type %s',
+                $this->unexpectedContentType,
+                $contentType
+            );
         }
         return $mismatches;
     }
@@ -165,11 +187,27 @@ class FileDeclaration
     }
 
     /**
+     * @return FileLocation
+     */
+    public function getFileLocation(): FileLocation
+    {
+        return $this->fileLocation;
+    }
+
+    /**
      * @return string
      */
     public function getFileName(): string
     {
         return $this->fileName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->fileLocation->getBaseUrl() . $this->fileName;
     }
 
     /**

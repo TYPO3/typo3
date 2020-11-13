@@ -21,11 +21,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use function GuzzleHttp\Promise\settle;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 use TYPO3\CMS\Reports\Status;
 
@@ -37,6 +35,9 @@ use TYPO3\CMS\Reports\Status;
  */
 class ServerResponseCheck implements CheckInterface
 {
+    protected const WRAP_FLAT = 1;
+    protected const WRAP_NESTED = 2;
+
     /**
      * @var bool
      */
@@ -48,14 +49,9 @@ class ServerResponseCheck implements CheckInterface
     protected $messageQueue;
 
     /**
-     * @var string
+     * @var FileLocation
      */
-    protected $filePath;
-
-    /**
-     * @var string
-     */
-    protected $baseUrl;
+    protected $assetLocation;
 
     /**
      * @var FileDeclaration[]
@@ -68,10 +64,7 @@ class ServerResponseCheck implements CheckInterface
 
         $fileName = bin2hex(random_bytes(4));
         $folderName = bin2hex(random_bytes(4));
-        $this->filePath = Environment::getPublicPath()
-            . sprintf('/typo3temp/assets/%s.tmp/', $folderName);
-        $this->baseUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')
-            . PathUtility::getAbsoluteWebPath($this->filePath);
+        $this->assetLocation = new FileLocation(sprintf('/typo3temp/assets/%s.tmp/', $folderName));
         $this->fileDeclarations = $this->initializeFileDeclarations($fileName);
     }
 
@@ -92,7 +85,7 @@ class ServerResponseCheck implements CheckInterface
         return new Status(
             'Server Response on static files',
             $title ?? 'OK',
-            $this->wrapList($messages),
+            $this->wrapList($messages, '', self::WRAP_NESTED),
             $severity ?? Status::OK
         );
     }
@@ -123,31 +116,31 @@ class ServerResponseCheck implements CheckInterface
     protected function initializeFileDeclarations(string $fileName): array
     {
         return [
-            (new FileDeclaration($fileName . '.html'))
+            (new FileDeclaration($this->assetLocation, $fileName . '.html'))
                 ->withExpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($fileName . '.wrong'))
+            (new FileDeclaration($this->assetLocation, $fileName . '.wrong'))
                 ->withUnexpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($fileName . '.html.wrong'))
+            (new FileDeclaration($this->assetLocation, $fileName . '.html.wrong'))
                 ->withUnexpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($fileName . '.1.svg.wrong'))
+            (new FileDeclaration($this->assetLocation, $fileName . '.1.svg.wrong'))
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_SVG | FileDeclaration::FLAG_BUILD_SVG_DOCUMENT)
                 ->withUnexpectedContentType('image/svg+xml')
                 ->withExpectedContent('SVG content'),
-            (new FileDeclaration($fileName . '.2.svg.wrong'))
+            (new FileDeclaration($this->assetLocation, $fileName . '.2.svg.wrong'))
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_SVG | FileDeclaration::FLAG_BUILD_SVG_DOCUMENT)
                 ->withUnexpectedContentType('image/svg')
                 ->withExpectedContent('SVG content'),
-            (new FileDeclaration($fileName . '.php.wrong', true))
+            (new FileDeclaration($this->assetLocation, $fileName . '.php.wrong', true))
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_PHP | FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
                 ->withUnexpectedContent('PHP content'),
-            (new FileDeclaration($fileName . '.html.txt'))
+            (new FileDeclaration($this->assetLocation, $fileName . '.html.txt'))
                 ->withExpectedContentType('text/plain')
                 ->withUnexpectedContentType('text/html')
                 ->withExpectedContent('HTML content'),
-            (new FileDeclaration($fileName . '.php.txt', true))
+            (new FileDeclaration($this->assetLocation, $fileName . '.php.txt', true))
                 ->withBuildFlags(FileDeclaration::FLAG_BUILD_PHP | FileDeclaration::FLAG_BUILD_HTML_DOCUMENT)
                 ->withUnexpectedContent('PHP content'),
         ];
@@ -155,12 +148,13 @@ class ServerResponseCheck implements CheckInterface
 
     protected function buildFileDeclarations(): void
     {
-        if (!is_dir($this->filePath)) {
-            GeneralUtility::mkdir_deep($this->filePath);
-        }
         foreach ($this->fileDeclarations as $fileDeclaration) {
+            $filePath = $fileDeclaration->getFileLocation()->getFilePath();
+            if (!is_dir($filePath)) {
+                GeneralUtility::mkdir_deep($filePath);
+            }
             file_put_contents(
-                $this->filePath . $fileDeclaration->getFileName(),
+                $filePath . $fileDeclaration->getFileName(),
                 $fileDeclaration->buildContent()
             );
         }
@@ -168,15 +162,15 @@ class ServerResponseCheck implements CheckInterface
 
     protected function purgeFileDeclarations(): void
     {
-        GeneralUtility::rmdir($this->filePath, true);
+        GeneralUtility::rmdir($this->assetLocation->getFilePath(), true);
     }
 
     protected function processFileDeclarations(FlashMessageQueue $messageQueue): void
     {
         $promises = [];
-        $client = new Client(['base_uri' => $this->baseUrl]);
+        $client = new Client(['timeout' => 10]);
         foreach ($this->fileDeclarations as $fileDeclaration) {
-            $promises[] = $client->requestAsync('GET', $fileDeclaration->getFileName());
+            $promises[] = $client->requestAsync('GET', $fileDeclaration->getUrl());
         }
         foreach (settle($promises)->wait() as $index => $response) {
             $fileDeclaration = $this->fileDeclarations[$index];
@@ -224,62 +218,28 @@ class ServerResponseCheck implements CheckInterface
 
     protected function createMismatchMessage(FileDeclaration $fileDeclaration, ResponseInterface $response): string
     {
-        $messageParts = [];
-        $mismatches = $fileDeclaration->getMismatches($response);
-        if (in_array(FileDeclaration::MISMATCH_UNEXPECTED_CONTENT_TYPE, $mismatches, true)) {
-            $messageParts[] = sprintf(
-                'unexpected content-type %s',
-                $this->wrapValue(
-                    $fileDeclaration->getUnexpectedContentType(),
-                    '<code>',
-                    '</code>'
-                )
-            );
-        }
-        if (in_array(FileDeclaration::MISMATCH_EXPECTED_CONTENT_TYPE, $mismatches, true)) {
-            $messageParts[] = sprintf(
-                'content-type mismatch %s, got %s',
-                $this->wrapValue(
-                    $fileDeclaration->getExpectedContent(),
-                    '<code>',
-                    '</code>'
-                ),
-                $this->wrapValue(
-                    $response->getHeaderLine('content-type'),
-                    '<code>',
-                    '</code>'
-                )
-            );
-        }
-        if (in_array(FileDeclaration::MISMATCH_UNEXPECTED_CONTENT, $mismatches, true)) {
-            $messageParts[] = sprintf(
-                'unexpected content %s',
-                $this->wrapValue(
-                    $fileDeclaration->getUnexpectedContent(),
-                    '<code>',
-                    '</code>'
-                )
-            );
-        }
-        if (in_array(FileDeclaration::MISMATCH_EXPECTED_CONTENT, $mismatches, true)) {
-            $messageParts[] = sprintf(
-                'content mismatch %s',
-                $this->wrapValue(
-                    $fileDeclaration->getExpectedContent(),
-                    '<code>',
-                    '</code>'
-                )
-            );
-        }
-        return $this->wrapList(
-            $messageParts,
-            $this->baseUrl . $fileDeclaration->getFileName()
+        $messageParts = array_map(
+            function (StatusMessage $mismatch): string {
+                return vsprintf(
+                    $mismatch->getMessage(),
+                    $this->wrapValues($mismatch->getValues(), '<code>', '</code>')
+                );
+            },
+            $fileDeclaration->getMismatches($response)
         );
+        return $this->wrapList($messageParts, $fileDeclaration->getUrl(), self::WRAP_FLAT);
     }
 
-    protected function wrapList(array $items, string $label = ''): string
+    protected function wrapList(array $items, string $label, int $style): string
     {
-        if ($this->useMarkup) {
+        if (!$this->useMarkup) {
+            return sprintf(
+                '%s%s',
+                $label ? $label . ': ' : '',
+                implode(', ', $items)
+            );
+        }
+        if ($style === self::WRAP_NESTED) {
             return sprintf(
                 '%s<ul>%s</ul>',
                 $label,
@@ -287,9 +247,9 @@ class ServerResponseCheck implements CheckInterface
             );
         }
         return sprintf(
-            '%s%s',
-            $label ? $label . ': ' : '',
-            implode(', ', $items)
+            '<p>%s%s</p>',
+            $label,
+            implode('', $this->wrapItems($items, '<br>', ''))
         );
     }
 
@@ -300,6 +260,16 @@ class ServerResponseCheck implements CheckInterface
                 return $before . $item . $after;
             },
             array_filter($items)
+        );
+    }
+
+    protected function wrapValues(array $values, string $before, string $after): array
+    {
+        return array_map(
+            function (string $value) use ($before, $after): string {
+                return $this->wrapValue($value, $before, $after);
+            },
+            array_filter($values)
         );
     }
 
