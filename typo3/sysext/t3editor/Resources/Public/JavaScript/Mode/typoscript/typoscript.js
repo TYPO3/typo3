@@ -253,7 +253,6 @@
         'direction': kw('direction'),
         'directory': B,
         'directReturn': B,
-        'disableAdvanced': kw('disableAdvanced'),
         'disableAllHeaderCode': kw('disableAllHeaderCode'),
         'disableAltText': kw('disableAltText'),
         'disableBodyTag': kw('disableBodyTag'),

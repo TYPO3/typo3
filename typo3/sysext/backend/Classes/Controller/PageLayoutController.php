@@ -796,15 +796,14 @@ class PageLayoutController
         $this->buttonBar->addButton($shortcutButton);
 
         // Cache
-        if (empty($this->modTSconfig['properties']['disableAdvanced'])) {
-            $clearCacheButton = $this->buttonBar->makeLinkButton()
-                ->setHref('#')
-                ->setDataAttributes(['id' => $this->pageinfo['uid']])
-                ->setClasses('t3js-clear-page-cache')
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
-                ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
-            $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
-        }
+        $clearCacheButton = $this->buttonBar->makeLinkButton()
+            ->setHref('#')
+            ->setDataAttributes(['id' => $this->pageinfo['uid']])
+            ->setClasses('t3js-clear-page-cache')
+            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
+            ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
+        $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+
         if (empty($this->modTSconfig['properties']['disableIconToolbar'])) {
             // Edit page properties and page language overlay icons
             if ($this->isPageEditable(0)) {
