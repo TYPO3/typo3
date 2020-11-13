@@ -714,6 +714,12 @@
       "svg": "svgs/actions/actions-git.svg",
       "sprite": "sprites/actions.svg#actions-git"
     },
+    "actions-globe-alt": {
+      "identifier": "actions-globe-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-globe-alt.svg",
+      "sprite": "sprites/actions.svg#actions-globe-alt"
+    },
     "actions-globe": {
       "identifier": "actions-globe",
       "category": "actions",
@@ -780,11 +786,23 @@
       "svg": "svgs/actions/actions-lock.svg",
       "sprite": "sprites/actions.svg#actions-lock"
     },
+    "actions-login": {
+      "identifier": "actions-login",
+      "category": "actions",
+      "svg": "svgs/actions/actions-login.svg",
+      "sprite": "sprites/actions.svg#actions-login"
+    },
     "actions-logout": {
       "identifier": "actions-logout",
       "category": "actions",
       "svg": "svgs/actions/actions-logout.svg",
       "sprite": "sprites/actions.svg#actions-logout"
+    },
+    "actions-map": {
+      "identifier": "actions-map",
+      "category": "actions",
+      "svg": "svgs/actions/actions-map.svg",
+      "sprite": "sprites/actions.svg#actions-map"
     },
     "actions-marker": {
       "identifier": "actions-marker",
@@ -1020,6 +1038,12 @@
       "svg": "svgs/actions/actions-shield.svg",
       "sprite": "sprites/actions.svg#actions-shield"
     },
+    "actions-slack": {
+      "identifier": "actions-slack",
+      "category": "actions",
+      "svg": "svgs/actions/actions-slack.svg",
+      "sprite": "sprites/actions.svg#actions-slack"
+    },
     "actions-sort-amount-down": {
       "identifier": "actions-sort-amount-down",
       "category": "actions",
@@ -1103,6 +1127,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-translate.svg",
       "sprite": "sprites/actions.svg#actions-translate"
+    },
+    "actions-trophy": {
+      "identifier": "actions-trophy",
+      "category": "actions",
+      "svg": "svgs/actions/actions-trophy.svg",
+      "sprite": "sprites/actions.svg#actions-trophy"
     },
     "actions-typo3": {
       "identifier": "actions-typo3",
@@ -3072,6 +3102,12 @@
       "svg": "svgs/module/module-func.svg",
       "sprite": "sprites/module.svg#module-func"
     },
+    "module-generic": {
+      "identifier": "module-generic",
+      "category": "module",
+      "svg": "svgs/module/module-generic.svg",
+      "sprite": "sprites/module.svg#module-generic"
+    },
     "module-help": {
       "identifier": "module-help",
       "category": "module",
@@ -3488,6 +3524,7 @@
     }
   },
   "aliases": {
+    "actions-plus": "actions-add",
     "actions-view-go-back": "actions-arrow-down-left",
     "actions-view-go-forward": "actions-arrow-down-right",
     "actions-version-workspace-sendtoprevstage": "actions-arrow-left",
@@ -3500,6 +3537,8 @@
     "actions-system-cache-clear-impact-low": "actions-bolt",
     "actions-system-cache-clear-rte": "actions-bolt",
     "actions-edit-pick-date": "actions-calendar-alternative",
+    "actions-move-to-bottom": "actions-caret-bar-bottom",
+    "actions-move-to-top": "actions-caret-bar-top",
     "actions-move-down": "actions-caret-down",
     "actions-pagetree-expand": "actions-caret-down",
     "actions-move-left": "actions-caret-left",
@@ -3561,6 +3600,7 @@
     "actions-document-export-csv": "actions-file-csv-download",
     "actions-version-page-open": "actions-file-edit",
     "actions-page-open": "actions-file-edit",
+    "actions-page-move": "actions-file-move",
     "actions-system-pagemodule-open": "actions-file-search",
     "actions-document-export-t3d": "actions-file-t3d-download",
     "actions-document-import-t3d": "actions-file-t3d-upload",
@@ -3573,18 +3613,23 @@
     "actions-wizard-rte": "actions-link",
     "actions-wizard-link": "actions-link",
     "actions-system-list-open": "actions-list-alternative",
+    "actions-sign-in": "actions-login",
+    "actions-sign-out": "actions-logout",
     "actions-edit-localize-status-high": "actions-message-add",
     "actions-localize": "actions-message-localize",
     "actions-edit-localize-status-low": "actions-message-remove",
     "actions-system-typoscript-documentation": "actions-notebook-typoscript",
     "actions-system-typoscript-documentation-open": "actions-notebook-typoscript",
     "actions-system-extension-documentation": "actions-notebook",
+    "actions-pencil": "actions-open",
     "actions-system-options-view": "actions-options",
     "actions-pagetree-mountroot": "actions-pagetree-mount",
+    "actions-document-paste-after": "actions-paste-after",
     "actions-add-placeholder": "actions-placeholder-add",
     "actions-system-help-open": "actions-question",
     "actions-edit-redo": "actions-redo",
     "actions-system-refresh": "actions-refresh",
+    "actions-minus": "actions-remove",
     "actions-edit-rename": "actions-rename",
     "actions-edit-replace": "actions-replace",
     "actions-document-save-new": "actions-save-add",

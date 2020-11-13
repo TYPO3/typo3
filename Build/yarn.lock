@@ -430,10 +430,10 @@
     "@typescript-eslint/types" "4.2.0"
     eslint-visitor-keys "^2.0.0"
 
-"@typo3/icons@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-2.0.1.tgz#f13c5bc8a87d505e9da2dcdda5cbee61890665d4"
-  integrity sha512-HOYUfjXV1n3Qi043nGdGeaAR4YUbL4F2wQ+SvTbcaJ/KFHf11oZNEPGiVt1zlFl5yVhvfEedeMKz74LjGGtM0Q==
+"@typo3/icons@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-2.0.4.tgz#909e12ed3e89f7b4e07b6996bc3470ff839a28e7"
+  integrity sha512-XLCsGkDtzVFg2J+Kl1F8S4t2PH/ACyPFGaazAvq22YEk6jxWAlN5GZ1q7vJWIE9qHCb1Hm8csfVr03MiGrIBTA==
   dependencies:
     npm "^6.14.5"
 
