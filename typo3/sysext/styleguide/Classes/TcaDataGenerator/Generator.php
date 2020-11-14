@@ -126,6 +126,7 @@ class Generator
 
         // Populate page tree via DataHandler
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
@@ -204,6 +205,7 @@ class Generator
         // Do the thing
         if (!empty($commands)) {
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->enableLogging = false;
             $dataHandler->deleteTree = true;
             $dataHandler->start([], $commands);
             $dataHandler->process_cmdmap();

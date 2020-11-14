@@ -71,8 +71,8 @@ class TypeGroupDbFal extends AbstractFieldGenerator implements FieldGeneratorInt
         }
         if (!empty($recordData)) {
             // Populate page tree via recordDataHandler
-            /** @var DataHandler $dataHandler */
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->enableLogging = false;
             $dataHandler->start($recordData, []);
             $dataHandler->process_datamap();
         }

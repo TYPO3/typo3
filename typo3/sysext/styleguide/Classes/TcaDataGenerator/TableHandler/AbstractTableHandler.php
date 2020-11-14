@@ -99,6 +99,7 @@ class AbstractTableHandler
             ],
         ];
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
         $dataHandler->start([], $commandMap);
         $dataHandler->process_cmdmap();
         return $dataHandler->copyMappingArray;
@@ -122,6 +123,7 @@ class AbstractTableHandler
             ],
         ];
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
         $dataHandler->start([], $commandMap);
         $dataHandler->process_cmdmap();
         return $dataHandler->copyMappingArray;

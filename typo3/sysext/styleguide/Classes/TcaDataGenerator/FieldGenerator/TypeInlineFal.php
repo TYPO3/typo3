@@ -67,8 +67,8 @@ class TypeInlineFal extends AbstractFieldGenerator implements FieldGeneratorInte
         }
         if (!empty($recordData)) {
             // Populate page tree via recordDataHandler
-            /** @var DataHandler $dataHandler */
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->enableLogging = false;
             $dataHandler->start($recordData, []);
             $dataHandler->process_datamap();
         }
