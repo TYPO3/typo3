@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Functional test for the DataHandler when handling multiple pagetrees
@@ -66,7 +68,8 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdSecondSite, self::VALUE_PageIdWebsite);
         $this->assertAssertionDataSet('moveRootPageToDifferentPageTree');
 
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageIdSecondSite)->getResponseSections();
+        $response = $this->executeFrontendRequest((new InternalRequest())->withPageId(self::VALUE_PageIdSecondSite));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Second Root Page'));
     }
