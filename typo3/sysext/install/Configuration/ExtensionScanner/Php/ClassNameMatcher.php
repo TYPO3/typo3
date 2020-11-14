@@ -1599,4 +1599,19 @@ return [
             'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst'
         ],
     ],
+    'TYPO3\CMS\Workspaces\ColumnDataProviderInterface' => [
+        'restFiles' => [
+            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Service\AdditionalColumnService' => [
+        'restFiles' => [
+            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Service\AdditionalResourceService' => [
+        'restFiles' => [
+            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
+        ],
+    ],
 ];

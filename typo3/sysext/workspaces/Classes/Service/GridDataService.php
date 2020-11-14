@@ -229,11 +229,6 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['allowedAction_editVersionedPage'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
                     $versionArray['state_Workspace'] = $recordState;
 
-                    $versionArray = array_merge(
-                        $versionArray,
-                        $this->getAdditionalColumnService()->getData($combinedRecord)
-                    );
-
                     if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
                         $versionIdentifier = $versionArray['id'];
                         $this->dataArray[$versionIdentifier] = $versionArray;
@@ -673,14 +668,6 @@ class GridDataService implements LoggerAwareInterface
     protected function getDependencyCollectionService()
     {
         return GeneralUtility::makeInstance(CollectionService::class);
-    }
-
-    /**
-     * @return AdditionalColumnService
-     */
-    protected function getAdditionalColumnService()
-    {
-        return GeneralUtility::makeInstance(AdditionalColumnService::class);
     }
 
     /**

@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Workspaces\Service\AdditionalColumnService;
-use TYPO3\CMS\Workspaces\Service\AdditionalResourceService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -105,16 +103,11 @@ class ReviewController
         $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 
-        foreach ($this->getAdditionalResourceService()->getLocalizationResources() as $localizationResource) {
-            $this->pageRenderer->addInlineLanguageLabelFile($localizationResource);
-        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
-
-        $this->assignExtensionSettings();
     }
 
     /**
@@ -255,23 +248,6 @@ class ReviewController
     }
 
     /**
-     * Assigns additional Workspace settings to TYPO3.settings.Workspaces.extension
-     */
-    protected function assignExtensionSettings()
-    {
-        $extension = [
-            'AdditionalColumn' => [
-                'Definition' => [],
-                'Handler' => [],
-            ],
-        ];
-
-        $extension['AdditionalColumn']['Definition'] = $this->getAdditionalColumnService()->getDefinition();
-        $extension['AdditionalColumn']['Handler'] = $this->getAdditionalColumnService()->getHandler();
-        $this->pageRenderer->addInlineSetting('Workspaces', 'extension', $extension);
-    }
-
-    /**
      * Determine whether this page for the current
      *
      * @param int $pageUid
@@ -320,22 +296,6 @@ class ReviewController
             }
         }
         return false;
-    }
-
-    /**
-     * @return AdditionalColumnService
-     */
-    protected function getAdditionalColumnService(): AdditionalColumnService
-    {
-        return GeneralUtility::makeInstance(AdditionalColumnService::class);
-    }
-
-    /**
-     * @return AdditionalResourceService
-     */
-    protected function getAdditionalResourceService(): AdditionalResourceService
-    {
-        return GeneralUtility::makeInstance(AdditionalResourceService::class);
     }
 
     /**
