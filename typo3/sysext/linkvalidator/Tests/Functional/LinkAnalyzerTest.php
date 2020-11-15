@@ -38,7 +38,9 @@ final class LinkAnalyzerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
+        $this->importCSVDataSet(__DIR__ . '/../../../core/Tests/Functional/Fixtures/be_users_admin.csv');
+        $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
     }
 
     public static function findAllBrokenLinksDataProvider(): array
@@ -303,6 +305,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -316,6 +319,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">links</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -329,6 +333,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">links</a><a href="http://localhost/iAmInvalid?abc=d">second link</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -342,6 +347,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">links</a><a href="t3://page?uid=1">second link</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -359,6 +365,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a> and also http://localhost/anotherOne',
             ],
             'typolink_tag,email[subst],url',
@@ -417,6 +424,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -434,6 +442,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">link title</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -451,6 +460,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="t3://page?uid=123">page link</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -468,6 +478,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'bodytext',
             [
                 'uid' => 1,
+                'CType' => 'text',
                 'bodytext' => '<a href="http://localhost/iAmInvalid">link title</a><a href="t3://page?uid=123">page link</a>',
             ],
             'typolink_tag,email[subst],url',
@@ -542,4 +553,36 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         }
     }
 
+    public static function checkOnlyEditableFieldsDataProvider(): ?\Generator
+    {
+        yield 'tt_content.bodytext should not be checked for CType div' => [
+            __DIR__ . '/Fixtures/input_content_with_broken_link_in_irrelevant_field.csv',
+            [1],
+            __DIR__ . '/Fixtures/expected_output_content_with_broken_link_in_irrelevant_field.csv',
+        ];
+    }
+
+    #[DataProvider('checkOnlyEditableFieldsDataProvider')]
+    #[Test]
+    public function getLinkStatisticsCheckOnlyEditableFields(string $inputFile, array $pidList, string $expectedOutputFile): void
+    {
+        $tsConfig = [
+            'searchFields' => [
+                'tt_content' => ['bodytext'],
+            ],
+            'linktypes' => 'db',
+            'checkhidden' => '0',
+        ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
+
+        $searchFields = $tsConfig['searchFields'];
+
+        $this->importCSVDataSet($inputFile);
+
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
+
+        $this->assertCSVDataSet($expectedOutputFile);
+    }
 }
