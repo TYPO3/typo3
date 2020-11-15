@@ -1,0 +1,7 @@
+"pages",,,,
+,"uid","pid",,
+,1,0,,
+"tt_content",,,,
+,"uid","pid","bodytext","CType"
+,1,1,"<p><a href=""t3://page?uid=96"">link to not existing page</a></p>","div"
+,2,1,"<p><a href=""t3://page?uid=97"">another broken link</a></p>","text"

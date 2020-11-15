@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
@@ -77,6 +78,7 @@ class LinkAnalyzer
         protected readonly LinktypeRegistry $linktypeRegistry,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ConnectionPool $connectionPool,
+        protected readonly VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
     ) {}
 
     /**
@@ -295,6 +297,10 @@ class LinkAnalyzer
             $selectFields[] = $updatedFieldName;
         }
 
+        if ($schema->supportsSubSchema()) {
+            $selectFields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
+        }
+
         $row = $queryBuilder
             ->select(...$selectFields)
             ->from($table)
@@ -334,27 +340,25 @@ class LinkAnalyzer
      * @param array $fields Array of fields to analyze
      * @param array $record Record to analyze
      */
-    public function analyzeRecord(array &$results, $table, array $fields, array $record)
+    public function analyzeRecord(array &$results, string $table, array $fields, array $record)
     {
         $event = new BeforeRecordIsAnalyzedEvent($table, $record, $fields, $this, $results);
         $this->eventDispatcher->dispatch($event);
         $results = $event->getResults();
         $record = $event->getRecord();
 
-        $schema = $this->tcaSchemaFactory->get($table);
+        // Use VisibleSchemaFieldsCollector to only check fields visible for the record type and current user
+        $visibleFields = $this->visibleSchemaFieldsCollector->getFields($table, $record);
         // Put together content of all relevant fields
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $idRecord = $record['uid'];
         // Get all references
         foreach ($fields as $field) {
-            if (!$schema->hasField($field)) {
+            if (!isset($visibleFields[$field])) {
                 continue;
             }
-            $fieldInformation = $schema->getField($field);
-            $conf = $fieldInformation->getConfiguration();
+            $fieldInformation = $visibleFields[$field];
             $valueField = $record[$field];
-
-            // @todo: check for 'type' => 'file' as well and update in documentation?
 
             // Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
             $softReferenceKeys = $fieldInformation->getSoftReferenceKeys();
