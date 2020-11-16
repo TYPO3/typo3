@@ -30,7 +30,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
@@ -156,15 +155,6 @@ abstract class ActionController implements ControllerInterface
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
      */
     protected $arguments;
-
-    /**
-     * An array of supported request types. By default only web requests are supported.
-     * Modify or replace this array if your specific controller supports certain
-     * (additional) request types.
-     *
-     * @var array
-     */
-    protected $supportedRequestTypes = [Request::class];
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
@@ -395,15 +385,9 @@ abstract class ActionController implements ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @return ResponseInterface
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
-        if (!$this->canProcessRequest($request)) {
-            throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
-        }
-
         $this->request = $request;
         $this->request->setDispatched(true);
         $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
@@ -805,26 +789,6 @@ abstract class ActionController implements ControllerInterface
             $storeInSession
         );
         $this->controllerContext->getFlashMessageQueue()->enqueue($flashMessage);
-    }
-
-    /**
-     * Checks if the current request type is supported by the controller.
-     *
-     * If your controller only supports certain request types, either
-     * replace / modify the supportedRequestTypes property or override this
-     * method.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
-     * @return bool TRUE if this request type is supported, otherwise FALSE
-     */
-    public function canProcessRequest(RequestInterface $request)
-    {
-        foreach ($this->supportedRequestTypes as $supportedRequestType) {
-            if ($request instanceof $supportedRequestType) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

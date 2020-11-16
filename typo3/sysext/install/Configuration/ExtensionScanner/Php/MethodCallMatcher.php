@@ -4521,4 +4521,11 @@ return [
             'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->canProcessRequest' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-92853-MethodCanProcessRequestHasBeenRemoved.rst',
+        ],
+    ],
 ];

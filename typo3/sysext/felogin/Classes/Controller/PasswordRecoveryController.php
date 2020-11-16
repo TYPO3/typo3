@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent;
@@ -71,7 +70,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @param string|null $userIdentifier
      *
      * @throws StopActionException
-     * @throws UnsupportedRequestTypeException
      */
     public function recoveryAction(string $userIdentifier = null): void
     {
@@ -132,7 +130,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
      *
      * @throws AspectNotFoundException
      * @throws StopActionException
-     * @throws UnsupportedRequestTypeException
      */
     public function initializeShowChangePasswordAction(): void
     {
@@ -204,7 +201,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
      *
      * @throws InvalidPasswordHashException
      * @throws StopActionException
-     * @throws UnsupportedRequestTypeException
      * @throws AspectNotFoundException
      */
     public function changePasswordAction(string $newPass, string $hash): void

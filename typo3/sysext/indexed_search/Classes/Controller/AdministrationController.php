@@ -169,7 +169,6 @@ class AdministrationController extends ActionController
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
      * @return ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {

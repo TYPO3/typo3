@@ -1614,4 +1614,9 @@ return [
             'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException' => [
+        'restFiles' => [
+            'Breaking-92853-MethodCanProcessRequestHasBeenRemoved.rst'
+        ],
+    ],
 ];

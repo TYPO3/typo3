@@ -24,19 +24,10 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 interface ControllerInterface
 {
     /**
-     * Checks if the current request type is supported by the controller.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
-     * @return bool TRUE if this request type is supported, otherwise FALSE
-     */
-    public function canProcessRequest(RequestInterface $request);
-
-    /**
      * Processes a general request. The result can be returned by altering the given response.
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @return ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
      */
     public function processRequest(RequestInterface $request): ResponseInterface;
 }
