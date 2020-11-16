@@ -9,7 +9,7 @@ See :issue:`92531`
 Description
 ===========
 
-The method :php`\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail` is used to
+The method :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail()` is used to
 validate a given email address through the core and TYPO3 extensions.
 
 The validation can now be configured by providing the used validators in
