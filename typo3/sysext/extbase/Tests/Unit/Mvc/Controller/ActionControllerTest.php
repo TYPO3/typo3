@@ -77,7 +77,7 @@ class ActionControllerTest extends UnitTestCase
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getControllerActionName')->willReturn('fooBar');
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $mockController = $this->getAccessibleMock(ActionController::class, ['fooBarAction'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['fooBarAction']);
         $mockController->_set('request', $mockRequest);
         self::assertEquals('fooBarAction', $mockController->_call('resolveActionMethodName'));
     }
@@ -92,7 +92,7 @@ class ActionControllerTest extends UnitTestCase
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getControllerActionName')->willReturn('fooBar');
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $mockController = $this->getAccessibleMock(ActionController::class, ['otherBarAction'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['otherBarAction']);
         $mockController->_set('request', $mockRequest);
         $mockController->_call('resolveActionMethodName');
     }
@@ -111,7 +111,7 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments->expects(self::at(0))->method('addNewArgument')->with('stringArgument', 'string', true);
         $mockArguments->expects(self::at(1))->method('addNewArgument')->with('integerArgument', 'integer', true);
         $mockArguments->expects(self::at(2))->method('addNewArgument')->with('objectArgument', 'F3_Foo_Bar', true);
-        $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['fooAction', 'evaluateDontValidateAnnotations']);
 
         $classSchemaMethod = new Method(
             'fooAction',
@@ -179,7 +179,7 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments->expects(self::at(0))->method('addNewArgument')->with('arg1', 'string', true);
         $mockArguments->expects(self::at(1))->method('addNewArgument')->with('arg2', 'array', false, [21]);
         $mockArguments->expects(self::at(2))->method('addNewArgument')->with('arg3', 'string', false, 42);
-        $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['fooAction', 'evaluateDontValidateAnnotations']);
 
         $classSchemaMethod = new Method(
             'fooAction',
@@ -247,7 +247,7 @@ class ActionControllerTest extends UnitTestCase
         $this->expectExceptionCode(1253175643);
         $mockRequest = $this->createMock(Request::class);
         $mockArguments = $this->createMock(Arguments::class);
-        $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['fooAction']);
 
         $classSchemaMethod = new Method(
             'fooAction',
@@ -294,7 +294,7 @@ class ActionControllerTest extends UnitTestCase
     public function setViewConfigurationResolvesTemplateRootPathsForTemplateRootPath($configuration, $expected)
     {
         /** @var ActionController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockController */
-        $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
         /** @var ConfigurationManagerInterface|\PHPUnit\Framework\MockObject\MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
@@ -372,7 +372,7 @@ class ActionControllerTest extends UnitTestCase
     public function setViewConfigurationResolvesLayoutRootPathsForLayoutRootPath($configuration, $expected)
     {
         /** @var ActionController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockController */
-        $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
         /** @var ConfigurationManagerInterface|\PHPUnit\Framework\MockObject\MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
@@ -450,7 +450,7 @@ class ActionControllerTest extends UnitTestCase
     public function setViewConfigurationResolvesPartialRootPathsForPartialRootPath($configuration, $expected)
     {
         /** @var ActionController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockController */
-        $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
         /** @var ConfigurationManagerInterface|\PHPUnit\Framework\MockObject\MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
@@ -540,7 +540,8 @@ class ActionControllerTest extends UnitTestCase
             $pageRenderer->addFooterData(Argument::any())->shouldNotBeCalled();
         }
         $requestMock = $this->getMockBuilder(RequestInterface::class)->getMockForAbstractClass();
-        $subject = new ActionController('');
+        $subject = new class() extends ActionController {
+        };
         $viewProperty = new \ReflectionProperty($subject, 'view');
         $viewProperty->setAccessible(true);
         $viewProperty->setValue($subject, $viewMock);
@@ -664,7 +665,8 @@ class ActionControllerTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1243258395);
-        $controller = new ActionController();
+        $controller = new class() extends ActionController {
+        };
         $controller->addFlashMessage(new \stdClass());
     }
 }

@@ -57,7 +57,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
  */
-class ActionController implements ControllerInterface
+abstract class ActionController implements ControllerInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
