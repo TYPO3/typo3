@@ -50,12 +50,14 @@ The event object is used as parameter for the event listener method (default is 
 The listener needs to be registered in the extension: :file:`EXT:myext/Configuration/Services.yaml`.
 
 Example:
-.. codeblock:: yaml
-    My\Extension\Provider\MyAdditionalContentProvider:
-        tags:
-            - name: event.listener
-              identifier: 'my-additional-content'
-              event: TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent
+
+.. code-block:: yaml
+
+   My\Extension\Provider\MyAdditionalContentProvider:
+      tags:
+         - name: event.listener
+           identifier: 'my-additional-content'
+           event: TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent
 
 
 Please have a look at :php:`TYPO3\CMS\SysNote\Provider\RecordListProvider` as an example for the
