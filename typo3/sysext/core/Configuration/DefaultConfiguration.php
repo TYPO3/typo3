@@ -1151,7 +1151,6 @@ return [
         'IPmaskList' => '',
         'lockSSL' => false,
         'lockSSLPort' => 0,
-        'enabledBeUserIPLock' => true,
         'cookieDomain' => '',
         'cookieName' => 'be_typo_user',
         'cookieSameSite' => 'strict',

@@ -81,10 +81,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
             return false;
         }
-        // Check IP mask based on TSconfig
-        if (!$this->checkLockToIP()) {
-            return false;
-        }
         return $this->isUserAllowedToLogin();
     }
 

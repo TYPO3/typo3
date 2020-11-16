@@ -161,6 +161,8 @@ class SilentConfigurationUpgradeService
         'SYS/cookieSecure',
         // #92940
         'BE/lockBeUserToDBmounts',
+        // #92941
+        'BE/enabledBeUserIPLock',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)

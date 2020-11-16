@@ -2329,26 +2329,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     }
 
     /**
-     * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and
-     * an IP-list is found in the User TSconfig objString "options.lockToIP",
-     * then make an IP comparison with REMOTE_ADDR and check if the IP address matches
-     *
-     * @return bool TRUE, if IP address validates OK (or no check is done at all because no restriction is set)
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function checkLockToIP()
-    {
-        $isValid = true;
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['enabledBeUserIPLock']) {
-            $IPList = trim($this->getTSConfig()['options.']['lockToIP'] ?? '');
-            if (!empty($IPList)) {
-                $isValid = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $IPList);
-            }
-        }
-        return $isValid;
-    }
-
-    /**
      * Check if user is logged in and if so, call ->fetchGroupData() to load group information and
      * access lists of all kind, further check IP, set the ->uc array.
      * If no user is logged in the default behaviour is to exit with an error message.
@@ -2369,31 +2349,27 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $this->fetchGroupData();
             // The groups are fetched and ready for permission checking in this initialization.
             // Tables.php must be read before this because stuff like the modules has impact in this
-            if ($this->checkLockToIP()) {
-                if ($this->isUserAllowedToLogin()) {
-                    // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
-                    $this->backendSetUC();
-                    if ($this->loginSessionStarted) {
-                        // Also, if there is a recovery link set, unset it now
-                        // this will be moved into its own Event at a later stage.
-                        // If a token was set previously, this is now unset, as it was now possible to log-in
-                        if ($this->user['password_reset_token'] ?? '') {
-                            GeneralUtility::makeInstance(ConnectionPool::class)
-                                ->getConnectionForTable($this->user_table)
-                                ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
-                        }
-                        // Process hooks
-                        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
-                        foreach ($hooks ?? [] as $_funcRef) {
-                            $_params = ['user' => $this->user];
-                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                        }
+            if ($this->isUserAllowedToLogin()) {
+                // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
+                $this->backendSetUC();
+                if ($this->loginSessionStarted) {
+                    // Also, if there is a recovery link set, unset it now
+                    // this will be moved into its own Event at a later stage.
+                    // If a token was set previously, this is now unset, as it was now possible to log-in
+                    if ($this->user['password_reset_token'] ?? '') {
+                        GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getConnectionForTable($this->user_table)
+                            ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
                     }
-                } else {
-                    throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
+                    // Process hooks
+                    $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
+                    foreach ($hooks ?? [] as $_funcRef) {
+                        $_params = ['user' => $this->user];
+                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                    }
                 }
             } else {
-                throw new \RuntimeException('Login Error: IP locking prevented you from being authorized. Can\'t proceed, sorry.', 1294585861);
+                throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
             }
         }
     }

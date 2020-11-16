@@ -460,4 +460,9 @@ return [
             'Breaking-92940-GlobalOptionLockBeUserToDBmountsRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'enabledBeUserIPLock\']' => [
+        'restFiles' => [
+            'Breaking-92941-LockToIPUserTsConfigOptionRemoved.rst',
+        ],
+    ],
 ];

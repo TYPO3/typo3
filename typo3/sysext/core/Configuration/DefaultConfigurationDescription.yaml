@@ -297,9 +297,6 @@ BE:
         lockSSLPort:
             type: int
             description: 'Use a non-standard HTTPS port for lockSSL. Set this value if you use lockSSL and the HTTPS port of your webserver is not 443.'
-        enabledBeUserIPLock:
-            type: bool
-            description: 'If set, the User/Group TSconfig option <code>option.lockToIP</code> is enabled.'
         cookieDomain:
             type: text
             description: 'Same as <a href="#SYS-cookieDomain">$TYPO3_CONF_VARS[''SYS''][''cookieDomain'']</a> but only for BE cookies. If empty, $TYPO3_CONF_VARS[''SYS''][''cookieDomain''] value will be used.'
