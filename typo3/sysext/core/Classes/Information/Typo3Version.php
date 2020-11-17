@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Information;
  */
 class Typo3Version
 {
-    protected const VERSION = '9.5.23-dev';
+    protected const VERSION = '9.5.23';
     protected const BRANCH = '9.5';
 
     /**

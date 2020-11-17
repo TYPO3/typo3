@@ -15,7 +15,7 @@
 	"require": {
 		"psr/http-message": "^1.0",
 		"symfony/expression-language": "^4.1",
-		"typo3/cms-core": "9.5.*@dev"
+		"typo3/cms-core": "9.5.23"
 	},
 	"suggest": {
 		"typo3/cms-filelist": "Add context menu item for form files",
