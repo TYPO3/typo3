@@ -29,16 +29,19 @@ class SessionManagerTest extends FunctionalTestCase
      * @var array
      */
     protected $testSessionRecords = [
-        [
-            'ses_id' => 'randomSessionId1',
+        'randomSessionId1' => [
+            // DatabaseSessionBackend::hash('randomSessionId1') with encryption key 12345
+            'ses_id' => 'e1ad65e4bad3c29e12c754c8e9f5927e',
             'ses_userid' => 1,
         ],
-        [
-            'ses_id' => 'randomSessionId2',
+        'randomSessionId2' => [
+            // DatabaseSessionBackend::hash('randomSessionId2') with encryption key 12345
+            'ses_id' => '72b1cf1fccc010ddb760c6db03f668db',
             'ses_userid' => 1,
         ],
-        [
-            'ses_id' => 'randomSessionId3',
+        'randomSessionId3' => [
+            // DatabaseSessionBackend::hash('randomSessionId3') with encryption key 12345
+            'ses_id' => '7ee0836849b95d884108486c4a8973f3',
             'ses_userid' => 2,
         ]
     ];
@@ -49,14 +52,16 @@ class SessionManagerTest extends FunctionalTestCase
     protected function setUp()
     {
         parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+
         $this->subject = new SessionManager();
         $frontendSessionBackend = $this->subject->getSessionBackend('FE');
-        foreach ($this->testSessionRecords as $testSessionRecord) {
-            $frontendSessionBackend->set($testSessionRecord['ses_id'], $testSessionRecord);
+        foreach ($this->testSessionRecords as $sessionId => $testSessionRecord) {
+            $frontendSessionBackend->set($sessionId, $testSessionRecord);
         }
         $backendSessionBackend = $this->subject->getSessionBackend('BE');
-        foreach ($this->testSessionRecords as $testSessionRecord) {
-            $backendSessionBackend->set($testSessionRecord['ses_id'], $testSessionRecord);
+        foreach ($this->testSessionRecords as $sessionId => $testSessionRecord) {
+            $backendSessionBackend->set($sessionId, $testSessionRecord);
         }
     }
 
@@ -71,7 +76,7 @@ class SessionManagerTest extends FunctionalTestCase
         $this->subject->invalidateAllSessionsByUserId($backendSessionBackend, 1);
         $allActiveSessions = $backendSessionBackend->getAll();
         $this->assertCount(1, $allActiveSessions);
-        $this->assertSame('randomSessionId3', $allActiveSessions[0]['ses_id']);
+        $this->assertSame($this->testSessionRecords['randomSessionId3']['ses_id'], $allActiveSessions[0]['ses_id']);
         $this->assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
     }
 
@@ -86,7 +91,7 @@ class SessionManagerTest extends FunctionalTestCase
         $this->subject->invalidateAllSessionsByUserId($frontendSessionBackend, 1);
         $allActiveSessions = $frontendSessionBackend->getAll();
         $this->assertCount(1, $allActiveSessions);
-        $this->assertSame('randomSessionId3', $allActiveSessions[0]['ses_id']);
+        $this->assertSame($this->testSessionRecords['randomSessionId3']['ses_id'], $allActiveSessions[0]['ses_id']);
         $this->assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
     }
 }

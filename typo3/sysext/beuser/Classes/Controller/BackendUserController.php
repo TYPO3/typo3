@@ -243,6 +243,7 @@ class BackendUserController extends ActionController
      */
     protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId)
     {
+        // terminating value of persisted session ID (probably hashed value)
         $sessionBackend = $this->getSessionBackend();
         $success = $sessionBackend->remove($sessionId);
 
@@ -266,8 +267,7 @@ class BackendUserController extends ActionController
             $this->getBackendUserAuthentication()->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUser['uid']);
             $this->getBackendUserAuthentication()->writeUC();
 
-            $sessionBackend = $this->getSessionBackend();
-            $sessionBackend->update(
+            $this->getSessionBackend()->update(
                 $this->getBackendUserAuthentication()->getSessionId(),
                 [
                     'ses_userid' => (int)$targetUser['uid'],

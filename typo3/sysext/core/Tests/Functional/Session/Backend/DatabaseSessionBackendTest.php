@@ -34,7 +34,8 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @var array
      */
     protected $testSessionRecord = [
-        'ses_id' => 'randomSessionId',
+        // DatabaseSessionBackend::hash('randomSessionId') with encryption key 12345
+        'ses_id' => '76898588caa1baee7984f4dc8adfed3b',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',
@@ -46,6 +47,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
     protected function setUp()
     {
         parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $this->subject = new DatabaseSessionBackend();
         $this->subject->initialize('default', [
@@ -200,15 +202,15 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->set('anonymousSession', $anonymousSession);
 
         // Assert that we set authenticated session correctly
-        $this->assertArraySubset(
-            $authenticatedSession,
-            $this->subject->get('authenticatedSession')
+        self::assertSame(
+            $authenticatedSession['ses_data'],
+            $this->subject->get('authenticatedSession')['ses_data']
         );
 
         // assert that we set anonymous session correctly
-        $this->assertArraySubset(
-            $anonymousSession,
-            $this->subject->get('anonymousSession')
+        self::assertSame(
+            $anonymousSession['ses_data'],
+            $this->subject->get('anonymousSession')['ses_data']
         );
 
         // Run the garbage collection
@@ -217,9 +219,9 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->collectGarbage(60, 10);
 
         // Authenticated session should still be there
-        $this->assertArraySubset(
-            $authenticatedSession,
-            $this->subject->get('authenticatedSession')
+        self::assertSame(
+            $authenticatedSession['ses_data'],
+            $this->subject->get('authenticatedSession')['ses_data']
         );
 
         // Non-authenticated session should be removed

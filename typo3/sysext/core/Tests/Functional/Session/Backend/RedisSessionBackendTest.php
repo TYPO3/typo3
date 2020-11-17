@@ -37,7 +37,8 @@ class RedisSessionBackendTest extends FunctionalTestCase
      * @var array
      */
     protected $testSessionRecord = [
-        'ses_id' => 'randomSessionId',
+        // RedisSessionBackend::hash('randomSessionId') with encryption key 12345
+        'ses_id' => '21c0e911565a67315cdc384889c470fd291feafbfa62e31ecf7409430640bc7a',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',
@@ -49,6 +50,7 @@ class RedisSessionBackendTest extends FunctionalTestCase
     protected function setUp()
     {
         parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         if (!getenv('typo3TestingRedisHost')) {
             $this->markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
@@ -235,15 +237,15 @@ class RedisSessionBackendTest extends FunctionalTestCase
         $this->subject->set('anonymousSession', $anonymousSession);
 
         // Assert that we set authenticated session correctly
-        $this->assertArraySubset(
-            $authenticatedSession,
-            $this->subject->get('authenticatedSession')
+        self::assertSame(
+            $authenticatedSession['ses_data'],
+            $this->subject->get('authenticatedSession')['ses_data']
         );
 
         // assert that we set anonymous session correctly
-        $this->assertArraySubset(
-            $anonymousSession,
-            $this->subject->get('anonymousSession')
+        self::assertSame(
+            $anonymousSession['ses_data'],
+            $this->subject->get('anonymousSession')['ses_data']
         );
 
         // Run the garbage collection
@@ -252,9 +254,9 @@ class RedisSessionBackendTest extends FunctionalTestCase
         $this->subject->collectGarbage(60, 10);
 
         // Authenticated session should still be there
-        $this->assertArraySubset(
-            $authenticatedSession,
-            $this->subject->get('authenticatedSession')
+        self::assertSame(
+            $authenticatedSession['ses_data'],
+            $this->subject->get('authenticatedSession')['ses_data']
         );
 
         // Non-authenticated session should be removed

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotUpdatedException;
  * This session backend takes these optional configuration options: 'hostname' (default '127.0.0.1'),
  * 'database' (default 0), 'port' (default 3679) and 'password' (no default value).
  */
-class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterface
+class RedisSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -114,6 +114,13 @@ class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterfa
         }
     }
 
+    public function hash(string $sessionId): string
+    {
+        // The sha1 hash ensures we have good length for the key.
+        $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'core-session-backend');
+        return hash_hmac('sha256', $sessionId, $key);
+    }
+
     /**
      * Read session data
      *
@@ -125,9 +132,16 @@ class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterfa
     {
         $this->initializeConnection();
 
-        $key = $this->getSessionKeyName($sessionId);
-        $rawData = $this->redis->get($key);
-
+        $hashedSessionId = $this->hash($sessionId);
+        $rawData = $this->redis->get($this->getSessionKeyName($hashedSessionId));
+        if ($rawData !== false) {
+            $decodedValue = json_decode($rawData, true);
+            if (is_array($decodedValue)) {
+                return $decodedValue;
+            }
+        }
+        // Fallback to the non-hashed-value, will be removed in TYPO3 v11
+        $rawData = $this->redis->get($this->getSessionKeyName($sessionId));
         if ($rawData !== false) {
             $decodedValue = json_decode($rawData, true);
             if (is_array($decodedValue)) {
@@ -147,8 +161,11 @@ class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterfa
     public function remove(string $sessionId): bool
     {
         $this->initializeConnection();
+        $status = $this->redis->del($this->getSessionKeyName($this->hash($sessionId))) >= 1;
+        // Checking for non-hashed-identifier, will be removed in TYPO3 v11
+        $statusLegacy = $this->redis->del($this->getSessionKeyName($sessionId)) >= 1;
 
-        return $this->redis->del($this->getSessionKeyName($sessionId)) >= 1;
+        return $status || $statusLegacy;
     }
 
     /**
@@ -164,15 +181,15 @@ class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterfa
     public function set(string $sessionId, array $sessionData): array
     {
         $this->initializeConnection();
-        $sessionData['ses_id'] = $sessionId;
-        $sessionData['ses_tstamp'] = $GLOBALS['EXEC_TIME'] ?? time();
 
-        $key = $this->getSessionKeyName($sessionId);
+        $hashedSessionId = $this->hash($sessionId);
+        $sessionData['ses_id'] = $hashedSessionId;
+        $sessionData['ses_tstamp'] = $GLOBALS['EXEC_TIME'] ?? time();
 
         // nx will not allow overwriting existing keys
         $jsonString = json_encode($sessionData);
         $wasSet = is_string($jsonString) && $this->redis->set(
-            $key,
+            $this->getSessionKeyName($hashedSessionId),
             $jsonString,
             ['nx']
         );
@@ -196,15 +213,16 @@ class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterfa
      */
     public function update(string $sessionId, array $sessionData): array
     {
+        $hashedSessionId = $this->hash($sessionId);
         try {
-            $sessionData = array_merge($this->get($sessionId), $sessionData);
+            $sessionData = array_merge($this->get($hashedSessionId), $sessionData);
         } catch (SessionNotFoundException $e) {
             throw new SessionNotUpdatedException('Cannot update non-existing record', 1484389971, $e);
         }
-        $sessionData['ses_id'] = $sessionId;
+        $sessionData['ses_id'] = $hashedSessionId;
         $sessionData['ses_tstamp'] = $GLOBALS['EXEC_TIME'] ?? time();
 
-        $key = $this->getSessionKeyName($sessionId);
+        $key = $this->getSessionKeyName($hashedSessionId);
         $jsonString = json_encode($sessionData);
         $wasSet = is_string($jsonString) && $this->redis->set($key, $jsonString);
 
