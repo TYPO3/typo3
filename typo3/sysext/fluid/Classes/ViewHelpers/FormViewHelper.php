@@ -285,11 +285,11 @@ class FormViewHelper extends AbstractFormViewHelper
         ];
 
         $result = LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@request]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(json_encode($actionRequest))) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@extension]')) . '" value="' . htmlspecialchars($extensionName) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@controller]')) . '" value="' . htmlspecialchars($controllerName) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@action]')) . '" value="' . htmlspecialchars($actionName) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[arguments]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@request]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(json_encode($actionRequest))) . '" />' . LF;
 
         return $result;
     }
@@ -474,6 +474,6 @@ class FormViewHelper extends AbstractFormViewHelper
     {
         $formFieldNames = $this->renderingContext->getViewHelperVariableContainer()->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames');
         $requestHash = $this->mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, $this->getFieldNamePrefix());
-        return '<input type="hidden" name="' . $this->prefixFieldName('__trustedProperties') . '" value="' . htmlspecialchars($requestHash) . '" />';
+        return '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__trustedProperties')) . '" value="' . htmlspecialchars($requestHash) . '" />';
     }
 }

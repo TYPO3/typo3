@@ -96,7 +96,7 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
         $name = $this->prefixFieldName($name) . '[__identity]';
         $this->registerFieldNameForFormTokenGeneration($name);
 
-        return LF . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . LF;
+        return LF . '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($identifier) . '" />' . LF;
     }
 
     /**
