@@ -129,7 +129,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         foreach (range(0, 23) as $hour) {
             $hour = str_pad((string)$hour, 2, '0', STR_PAD_LEFT);
             $selected = $hour === $value ? ' selected="selected"' : '';
-            $options .= '<option value="' . $hour . '"' . $selected . '>' . $hour . '</option>';
+            $options .= '<option value="' . htmlspecialchars($hour) . '" ' . $selected . '>' . htmlspecialchars($hour) . '</option>';
         }
         $hourSelector->setContent($options);
         return $hourSelector->render();
@@ -151,7 +151,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         foreach (range(0, 59) as $minute) {
             $minute = str_pad((string)$minute, 2, '0', STR_PAD_LEFT);
             $selected = $minute === $value ? ' selected="selected"' : '';
-            $options .= '<option value="' . $minute . '"' . $selected . '>' . $minute . '</option>';
+            $options .= '<option value="' . htmlspecialchars($minute) . '"' . $selected . '>' . htmlspecialchars($minute) . '</option>';
         }
         $minuteSelector->setContent($options);
         return $minuteSelector->render();
