@@ -105,7 +105,9 @@ class RssWidget implements WidgetInterface
         if ($rssContent === false) {
             throw new \RuntimeException('RSS URL could not be fetched', 1573385431);
         }
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $rssFeed = simplexml_load_string($rssContent);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         $items = [];
         foreach ($rssFeed->channel->item as $item) {
             $items[] = [
