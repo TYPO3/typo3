@@ -297,6 +297,7 @@ class BackendUserController extends ActionController
      */
     protected function terminateBackendUserSessionAction(BackendUser $backendUser, $sessionId)
     {
+        // terminating value of persisted session ID (probably hashed value)
         $sessionBackend = $this->getSessionBackend();
         $success = $sessionBackend->remove($sessionId);
 
@@ -334,8 +335,7 @@ class BackendUserController extends ActionController
                 ]
             );
 
-            $sessionBackend = $this->getSessionBackend();
-            $sessionBackend->update(
+            $this->getSessionBackend()->update(
                 $this->getBackendUserAuthentication()->getSessionId(),
                 [
                     'ses_userid' => (int)$targetUser['uid'],

@@ -41,6 +41,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FrontendUserAuthenticationTest extends UnitTestCase
 {
+    private const NOT_CHECKED_INDICATOR = '--not-checked--';
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -70,7 +72,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // Main session backend setup
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionRecord = [
-            'ses_id' => $uniqueSessionId,
+            'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
             'ses_data' => serialize(['foo' => 'bar']),
             'ses_anonymous' => true,
             'ses_iplock' => '[DISABLED]',
@@ -111,6 +113,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionManagerProphecy = $this->prophesize(SessionManager::class);
         GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
         $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
+        // @todo Session handling is not used/evaluated at all in this test
 
         // Verify new session id is generated
         $randomProphecy = $this->prophesize(Random::class);
@@ -153,7 +156,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // Main session backend setup
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionRecord = [
-            'ses_id' => $uniqueSessionId,
+            'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
             'ses_data' => serialize(['foo' => 'bar']),
             'ses_anonymous' => true,
             'ses_iplock' => '[DISABLED]',
@@ -277,7 +280,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // a valid session is returned
         $sessionBackendProphecy->get($uniqueSessionId)->shouldBeCalled()->willReturn(
             [
-                'ses_id' => $uniqueSessionId,
+                'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
                 'ses_userid' => 1,
                 'ses_iplock' => '[DISABLED]',
                 'ses_tstamp' => $currentTime,

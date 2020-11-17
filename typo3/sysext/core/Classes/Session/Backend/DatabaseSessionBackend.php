@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This session backend requires the 'table' configuration option. If the backend is used to holds non-authenticated
  * sessions (default if 'TYPO3_MODE' is 'FE'), the 'ses_anonymous' configuration option must be set to true.
  */
-class DatabaseSessionBackend implements SessionBackendInterface
+class DatabaseSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface
 {
     /**
      * @var array
@@ -75,6 +75,14 @@ class DatabaseSessionBackend implements SessionBackendInterface
         return true;
     }
 
+    public function hash(string $sessionId): string
+    {
+        // The sha1 hash ensures we have good length for the key.
+        $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'core-session-backend');
+        // @todo md5 is used as be_sessions.ses_id field only supports 32 characters in stable branches
+        return hash_hmac('md5', $sessionId, $key);
+    }
+
     /**
      * Read session data
      *
@@ -88,15 +96,25 @@ class DatabaseSessionBackend implements SessionBackendInterface
 
         $query->select('*')
             ->from($this->configuration['table'])
-            ->where($query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR)));
+            ->where($query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)));
 
         $result = $query->execute()->fetch();
 
         if (!is_array($result)) {
-            throw new SessionNotFoundException(
-                'The session with identifier ' . $sessionId . ' was not found ',
-                1481885483
-            );
+            // Check for a non-hashed-version, will be removed in TYPO3 v11
+            $query = $this->getQueryBuilder();
+
+            $result = $query->select('*')
+                ->from($this->configuration['table'])
+                ->where($query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR)))
+                ->execute()
+                ->fetch();
+            if (!is_array($result)) {
+                throw new SessionNotFoundException(
+                    'The session with identifier ' . $sessionId . ' was not found ',
+                    1481885483
+                );
+            }
         }
         return $result;
     }
@@ -111,7 +129,12 @@ class DatabaseSessionBackend implements SessionBackendInterface
     {
         $query = $this->getQueryBuilder();
         $query->delete($this->configuration['table'])
-            ->where($query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR)));
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)),
+                    $query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR))
+                )
+            );
 
         return (bool)$query->execute();
     }
@@ -128,6 +151,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
      */
     public function set(string $sessionId, array $sessionData): array
     {
+        $sessionId = $this->hash($sessionId);
         $sessionData['ses_id'] = $sessionId;
         $sessionData['ses_tstamp'] = $GLOBALS['EXEC_TIME'] ?? time();
 
@@ -160,11 +184,19 @@ class DatabaseSessionBackend implements SessionBackendInterface
      */
     public function update(string $sessionId, array $sessionData): array
     {
-        $sessionData['ses_id'] = $sessionId;
+        $hashedSessionId = $this->hash($sessionId);
+        $sessionData['ses_id'] = $hashedSessionId;
         $sessionData['ses_tstamp'] = $GLOBALS['EXEC_TIME'] ?? time();
 
         try {
             // allow 0 records to be affected, happens when no columns where changed
+            $this->getConnection()->update(
+                $this->configuration['table'],
+                $sessionData,
+                ['ses_id' => $hashedSessionId],
+                ['ses_data' => \PDO::PARAM_LOB]
+            );
+            // Migrate old session data as well to remove old entries and promote them to migrated entries
             $this->getConnection()->update(
                 $this->configuration['table'],
                 $sessionData,

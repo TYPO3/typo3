@@ -36,7 +36,8 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @var array
      */
     protected $testSessionRecord = [
-        'ses_id' => 'randomSessionId',
+        // DatabaseSessionBackend::hash('randomSessionId') with encryption key 12345
+        'ses_id' => '76898588caa1baee7984f4dc8adfed3b',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',
@@ -48,6 +49,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $this->subject = new DatabaseSessionBackend();
         $this->subject->initialize('default', [
