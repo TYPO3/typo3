@@ -52,10 +52,10 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
                 '{ft:escapeChildrenEnabledAndEscapeOutputDisabled(content: \'<strong>Bla</strong>\')}',
                 '<strong>Bla</strong>'
             ],
-            'EscapeChildrenEnabledAndEscapeOutputDisabled: Inline syntax with argument in quotes, does encode variable value (encoded before passed to VH)' =>
+            'EscapeChildrenEnabledAndEscapeOutputDisabled: Inline syntax with argument in quotes, does not encode variable value' =>
             [
                 '{ft:escapeChildrenEnabledAndEscapeOutputDisabled(content: \'{settings.test}\')}',
-                '&lt;strong&gt;Bla&lt;/strong&gt;'
+                '<strong>Bla</strong>'
             ],
             'EscapeChildrenEnabledAndEscapeOutputDisabled: Tag syntax with nested inline syntax and children rendering, does not encode variable value' =>
             [
@@ -93,10 +93,10 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
                 '{ft:escapeChildrenDisabledAndEscapeOutputDisabled(content: \'<strong>Bla</strong>\')}',
                 '<strong>Bla</strong>'
             ],
-            'EscapeChildrenDisabledAndEscapeOutputDisabled: Inline syntax with argument in quotes, does encode variable value (encoded before passed to VH)' =>
+            'EscapeChildrenDisabledAndEscapeOutputDisabled: Inline syntax with argument in quotes, does not encode variable value' =>
             [
                 '{ft:escapeChildrenDisabledAndEscapeOutputDisabled(content: \'{settings.test}\')}',
-                '&lt;strong&gt;Bla&lt;/strong&gt;'
+                '<strong>Bla</strong>'
             ],
             'EscapeChildrenDisabledAndEscapeOutputDisabled: Tag syntax with nested inline syntax and children rendering, does not encode variable value' =>
             [
