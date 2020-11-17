@@ -1549,7 +1549,7 @@ class PageRenderer implements SingletonInterface
             unset($this->requireJsConfig['paths'][$baseModuleName]);
         }
         // execute the main module, and load a possible callback function
-        $javaScriptCode = 'require(["' . $mainModuleName . '"]';
+        $javaScriptCode = 'require([' . GeneralUtility::quoteJSvalue($mainModuleName) . ']';
         if ($callBackFunction !== null) {
             $inlineCodeKey .= sha1($callBackFunction);
             $javaScriptCode .= ', ' . $callBackFunction;

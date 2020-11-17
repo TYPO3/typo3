@@ -119,7 +119,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->setErrorClassAttribute();
         $content = '';
         $content .= $this->tag->render();
-        $content .= '<input type="hidden" name="' . $name . '[dateFormat]" value="' . htmlspecialchars($dateFormat) . '" />';
+        $content .= '<input type="hidden" name="' . htmlspecialchars($name) . '[dateFormat]" value="' . htmlspecialchars($dateFormat) . '" />';
 
         return $content;
     }

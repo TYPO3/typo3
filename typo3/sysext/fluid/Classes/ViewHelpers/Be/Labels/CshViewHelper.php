@@ -109,9 +109,10 @@ class CshViewHelper extends AbstractBackendViewHelper
             $table = '_MOD_' . $moduleName;
         }
         if (strpos($label, 'LLL:') === 0) {
-            $label = htmlspecialchars(self::getLanguageService()->sL($label));
+            $label = self::getLanguageService()->sL($label);
         }
-        $label = '<label>' . $label . '</label>';
+        // Double encode can be set to true, once the typo3fluid/fluid fix is released and required
+        $label = '<label>' . htmlspecialchars($label, ENT_QUOTES, null, false) . '</label>';
         return BackendUtility::wrapInHelp($table, $field, $label);
     }
 }

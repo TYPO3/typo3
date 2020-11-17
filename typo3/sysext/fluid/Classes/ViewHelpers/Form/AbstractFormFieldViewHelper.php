@@ -388,7 +388,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         if (substr($fieldName, -2) === '[]') {
             $fieldName = substr($fieldName, 0, -2);
         }
-        if (!in_array($fieldName, $hiddenFieldNames)) {
+        if (!in_array($fieldName, $hiddenFieldNames, true)) {
             $hiddenFieldNames[] = $fieldName;
             $viewHelperVariableContainer->addOrUpdate(
                 FormViewHelper::class,
