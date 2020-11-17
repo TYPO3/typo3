@@ -39,7 +39,8 @@ class RedisSessionBackendTest extends FunctionalTestCase
      * @var array
      */
     protected $testSessionRecord = [
-        'ses_id' => 'randomSessionId',
+        // RedisSessionBackend::hash('randomSessionId') with encryption key 12345
+        'ses_id' => '21c0e911565a67315cdc384889c470fd291feafbfa62e31ecf7409430640bc7a',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',
@@ -51,6 +52,7 @@ class RedisSessionBackendTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         if (!getenv('typo3TestingRedisHost')) {
             self::markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');

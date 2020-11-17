@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
+use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -692,6 +693,17 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     ]);
                 }
             } elseif ($haveSession) {
+                // Validate the session ID and promote it
+                // This check can be removed in TYPO3 v11
+                if ($this->getSessionBackend() instanceof HashableSessionBackendInterface && !empty($authInfo['userSession']['ses_id'] ?? '')) {
+                    // The session is stored in plaintext, promote it
+                    if ($authInfo['userSession']['ses_id'] === $this->id) {
+                        $authInfo['userSession'] = $this->getSessionBackend()->update(
+                            $this->id,
+                            ['ses_data' => $authInfo['userSession']['ses_data']]
+                        );
+                    }
+                }
                 // if we come here the current session is for sure not anonymous as this is a pre-condition for $authenticated = true
                 $this->user = $authInfo['userSession'];
             }
