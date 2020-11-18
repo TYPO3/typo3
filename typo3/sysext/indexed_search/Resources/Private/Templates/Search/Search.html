@@ -11,10 +11,10 @@
             <f:for each="{searchWords}" as="searchWord" key="key">
                 <f:if condition="{key} > 0">
                     <f:then>
-                        <f:translate key="searchFor.{searchWord.oper}" />&nbsp;{searchWord.sword}
+                        <f:translate key="searchFor.{searchWord.oper}" />&nbsp;<span class="tx-indexedsearch-info-sword-word">{searchWord.sword}</span>
                     </f:then>
                     <f:else>
-                        <f:translate key="searchFor" />&nbsp;{searchWord.sword}
+                        <f:translate key="searchFor" />&nbsp;<span class="tx-indexedsearch-info-sword-word">{searchWord.sword}</span>
                     </f:else>
                 </f:if>
             </f:for>
