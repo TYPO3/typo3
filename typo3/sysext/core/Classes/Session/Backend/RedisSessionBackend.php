@@ -215,7 +215,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
     {
         $hashedSessionId = $this->hash($sessionId);
         try {
-            $sessionData = array_merge($this->get($hashedSessionId), $sessionData);
+            $sessionData = array_merge($this->get($sessionId), $sessionData);
         } catch (SessionNotFoundException $e) {
             throw new SessionNotUpdatedException('Cannot update non-existing record', 1484389971, $e);
         }
