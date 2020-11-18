@@ -28,6 +28,7 @@ use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -172,10 +173,15 @@ class BackendUserController extends ActionController
             ];
         }
 
+        $currentSessionId = $this->getBackendUserAuthentication()->getSessionId();
+        $sessionBackend = $this->getSessionBackend();
+        if ($sessionBackend instanceof HashableSessionBackendInterface) {
+            $currentSessionId = $sessionBackend->hash($currentSessionId);
+        }
         $this->view->assignMultiple([
             'shortcutLabel' => 'onlineUsers',
             'onlineUsersAndSessions' => $onlineUsersAndSessions,
-            'currentSessionId' => $this->getBackendUserAuthentication()->user['ses_id'],
+            'currentSessionId' => $currentSessionId,
         ]);
     }
 
