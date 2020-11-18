@@ -41,7 +41,7 @@ class BackendUserSessionRepository extends Repository
         $allSessions = array_map(
             function ($session) {
                 return [
-                    'id' => $session['ses_id'],
+                    'id' => $session['ses_id'], // this is the hashed sessionId
                     'ip' => $session['ses_iplock'],
                     'timestamp' => $session['ses_tstamp'],
                     'ses_userid' => $session['ses_userid']
