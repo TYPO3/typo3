@@ -26,9 +26,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -653,37 +651,25 @@ class PageLayoutController
 
             $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
 
-            if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
-                $pageLayoutDrawer = $this->context->getBackendLayoutRenderer();
+            $pageLayoutDrawer = $this->context->getBackendLayoutRenderer();
 
-                $pageActionsCallback = null;
-                if ($this->context->isPageEditable()) {
-                    $languageOverlayId = 0;
-                    $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
-                    if (is_array($pageLocalizationRecord)) {
-                        $pageLocalizationRecord = reset($pageLocalizationRecord);
-                    }
-                    if (!empty($pageLocalizationRecord['uid'])) {
-                        $languageOverlayId = $pageLocalizationRecord['uid'];
-                    }
-                    $pageActionsCallback = 'function(PageActions) {
-                        PageActions.setPageId(' . (int)$this->id . ');
-                        PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
-                    }';
+            $pageActionsCallback = null;
+            if ($this->context->isPageEditable()) {
+                $languageOverlayId = 0;
+                $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
+                if (is_array($pageLocalizationRecord)) {
+                    $pageLocalizationRecord = reset($pageLocalizationRecord);
                 }
-                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
-                $tableOutput = $pageLayoutDrawer->drawContent();
-            } else {
-                $dbList = PageLayoutView::createFromPageLayoutContext($this->context);
-                // Setting up the tt_content columns to show
-                $colList = array_keys($backendLayout->getUsedColumns());
-                if ($this->colPosList !== '') {
-                    $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
+                if (!empty($pageLocalizationRecord['uid'])) {
+                    $languageOverlayId = $pageLocalizationRecord['uid'];
                 }
-                // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
-                $dbList->tt_contentConfig['cols'] = implode(',', $colList);
-                $tableOutput = $dbList->getTable_tt_content($this->id);
+                $pageActionsCallback = 'function(PageActions) {
+                    PageActions.setPageId(' . (int)$this->id . ');
+                    PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
+                }';
             }
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
+            $tableOutput = $pageLayoutDrawer->drawContent();
         }
 
         if ($this->getBackendUser()->check('tables_select', 'tt_content') && $numberOfHiddenElements > 0) {

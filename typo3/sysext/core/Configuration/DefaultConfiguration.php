@@ -71,7 +71,6 @@ return [
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
         'features' => [
-            'fluidBasedPageModule' => false,
             'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,

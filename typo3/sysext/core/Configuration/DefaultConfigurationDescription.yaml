@@ -198,9 +198,6 @@ SYS:
             type: container
             description: 'New features of TYPO3 that are activated on new installations but upgrading installations can still use the old behaviour'
             items:
-              fluidBasedPageModule:
-                type: bool
-                description: 'Use the rewritten page layout backend module which is based on Fluid. Can be toggled off to use the legacy PageLayoutView on installations which require the hooks etc. which are associated with PageLayoutView'
               form.legacyUploadMimeTypes:
                 type: bool
                 description: 'If on, some mime types are predefined for the "FileUpload" and "ImageUpload" elements of the "form" extension which always allows file uploads of these types, no matter the specific form element definition.'
