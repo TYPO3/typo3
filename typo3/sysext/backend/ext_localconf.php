@@ -39,6 +39,24 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['previewRendererResolver'] = \
     "@import 'EXT:backend/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
 );
 
+// Register icons not being part of TYPO3.Icons repository
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+    'status-edit-read-only',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:backend/Resources/Public/Icons/status-edit-read-only.png']
+);
+$iconRegistry->registerIcon(
+    'warning-in-use',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:backend/Resources/Public/Icons/warning-in-use.png']
+);
+$iconRegistry->registerIcon(
+    'warning-lock',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:backend/Resources/Public/Icons/warning-lock.png']
+);
+
 // Register BackendLayoutDataProvider for PageTs
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets'] = \TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin']['sendEmailOnLogin'] = \TYPO3\CMS\Backend\Security\EmailLoginNotification::class . '->emailAtLogin';
