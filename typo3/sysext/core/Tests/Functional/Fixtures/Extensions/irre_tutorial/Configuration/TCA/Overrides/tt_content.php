@@ -1,10 +1,14 @@
 <?php
 
+defined('TYPO3_MODE') or die();
+
 // Show copied tt_content records in frontend request
 $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
 
 $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForNewPlaceholders'] .= ',tx_irretutorial_1ncsv_hotels';
 $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] .= ',tx_irretutorial_1ncsv_hotels';
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('irre_tutorial', 'Irre', 'IRRE');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
