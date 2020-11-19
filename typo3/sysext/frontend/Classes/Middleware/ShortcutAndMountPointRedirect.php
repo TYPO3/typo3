@@ -49,6 +49,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
         // Check for shortcut page and mount point redirect
         $redirectToUri = $this->getRedirectUri($request);
         if ($redirectToUri !== null && $redirectToUri !== (string)$request->getUri()) {
+            $this->releaseTypoScriptFrontendControllerLocks();
             return new RedirectResponse($redirectToUri, 307);
         }
 
@@ -60,6 +61,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
                 $request->getAttribute('normalizedParams')->getSiteUrl()
             );
             if (!empty($externalUrl)) {
+                $this->releaseTypoScriptFrontendControllerLocks();
                 return new RedirectResponse($externalUrl, 303);
             }
         }
@@ -96,5 +98,17 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
             }
         }
         return $redirectTo;
+    }
+
+    /**
+     * Release TSFE locks. They have been acquired in the earlier middleware PrepareTypoScriptFrontendRendering
+     * by calling tsfe->getFromCache(). TSFE locks are usually released by the RequestHandler 'final' middleware.
+     * However, when this middleware returns early without calling below middlewares, locks need to be released explicitly.
+     *
+     * @todo: It would be better if lock acquiring and releasing would be encapsulated in ONE middleware.
+     */
+    protected function releaseTypoScriptFrontendControllerLocks(): void
+    {
+        $this->controller->releaseLocks();
     }
 }
