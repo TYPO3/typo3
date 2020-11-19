@@ -226,9 +226,9 @@ class ClassLoadingInformation
      * Internal method calling the bootstrap to fetch the composer class loader
      *
      * @return ClassLoader
-     * @throws \TYPO3\CMS\Core\Exception
+     * @internal Currently used in TYPO3 testing. Public visibility is experimental and may vanish without further notice.
      */
-    protected static function getClassLoader()
+    public static function getClassLoader()
     {
         return static::$classLoader;
     }
