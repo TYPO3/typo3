@@ -1119,6 +1119,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 if ($progressListener) {
                     $progressListener->advance();
                 }
+                /** @var ReferenceIndex $refIndexObj */
                 $refIndexObj = GeneralUtility::makeInstance(self::class);
                 if (isset($record['t3ver_wsid'])) {
                     $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
