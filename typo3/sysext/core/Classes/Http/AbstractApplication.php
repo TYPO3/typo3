@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Core\ApplicationInterface;
 /**
  * @internal
  */
-abstract class AbstractApplication implements ApplicationInterface
+abstract class AbstractApplication implements ApplicationInterface, RequestHandlerInterface
 {
     private const MULTI_LINE_HEADERS = [
         'set-cookie',
@@ -80,7 +80,7 @@ abstract class AbstractApplication implements ApplicationInterface
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    protected function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->requestHandler->handle($request);
     }

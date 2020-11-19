@@ -44,7 +44,7 @@ class Application extends AbstractApplication
         $this->context = $context;
     }
 
-    protected function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeContext();
         return parent::handle($request)

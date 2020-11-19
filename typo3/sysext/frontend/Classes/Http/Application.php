@@ -55,7 +55,7 @@ class Application extends AbstractApplication
         $this->context = $context;
     }
 
-    protected function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (!$this->checkIfEssentialConfigurationExists()) {
             return $this->installToolRedirect();
