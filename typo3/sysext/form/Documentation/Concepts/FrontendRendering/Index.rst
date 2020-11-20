@@ -623,8 +623,8 @@ Render through FLUIDTEMPLATE (without controller)
            settings {
                persistenceIdentifier = EXT:my_site_package/Resources/Private/Forms/MyForm.yaml
            }
-           extbase.pluginName = Form
-           extbase.controllerExtensionName = Formframework
+           extbase.pluginName = Formframework
+           extbase.controllerExtensionName = Form
            extbase.controllerName = FormFrontend
            extbase.controllerActionName = perform
        }
