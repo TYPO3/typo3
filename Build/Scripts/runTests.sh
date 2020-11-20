@@ -49,7 +49,7 @@ Successfully tested with docker version 18.06.1-ce and docker-compose 1.21.2.
 
 Usage: $0 [options] [file]
 
-No arguments: Run all unit tests with PHP 7.2
+No arguments: Run all unit tests with PHP 7.4
 
 Options:
     -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
@@ -136,11 +136,9 @@ Options:
             - 12
              -13
 
-    -p <7.2|7.3|7.4|8.0>
+    -p <7.4|8.0>
         Specifies the PHP minor version to be used
-            - 7.2 (default): use PHP 7.2
-            - 7.3: use PHP 7.3
-            - 7.4: use PHP 7.4
+            - 7.4 (default): use PHP 7.4
             - 8.0: use PHP 8.0
 
     -e "<phpunit or codeception options>"
@@ -183,25 +181,25 @@ Options:
         Show this help.
 
 Examples:
-    # Run all core unit tests using PHP 7.2
+    # Run all core unit tests using PHP 7.4
     ./Build/Scripts/runTests.sh
     ./Build/Scripts/runTests.sh -s unit
 
     # Run all core units tests and enable xdebug (have a PhpStorm listening on port 9000!)
     ./Build/Scripts/runTests.sh -x
 
-    # Run unit tests in phpunit verbose mode with xdebug on PHP 7.3 and filter for test canRetrieveValueWithGP
-    ./Build/Scripts/runTests.sh -x -p 7.3 -e "-v --filter canRetrieveValueWithGP"
+    # Run unit tests in phpunit verbose mode with xdebug on PHP 8.0 and filter for test canRetrieveValueWithGP
+    ./Build/Scripts/runTests.sh -x -p 8.0 -e "-v --filter canRetrieveValueWithGP"
 
     # Run functional tests in phpunit with a filtered test method name in a specified file
     # example will currently execute two tests, both of which start with the search term
     ./Build/Scripts/runTests.sh -s functional -e "--filter deleteContent" typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php
 
-    # Run unit tests with PHP 7.3 and have xdebug enabled
-    ./Build/Scripts/runTests.sh -x -p 7.3
+    # Run unit tests with PHP 8.0 and have xdebug enabled
+    ./Build/Scripts/runTests.sh -x -p 8.0
 
-    # Run functional tests on postgres with xdebug, php 7.3 and execute a restricted set of tests
-    ./Build/Scripts/runTests.sh -x -p 7.3 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
+    # Run functional tests on postgres with xdebug, php 8.0 and execute a restricted set of tests
+    ./Build/Scripts/runTests.sh -x -p 8.0 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
     # Run functional tests on mariadb 10.5
     ./Build/Scripts/runTests.sh -d mariadb -i 10.5
@@ -237,7 +235,7 @@ cd ../testing-docker/local || exit 1
 CORE_ROOT="${PWD}/../../../"
 TEST_SUITE="unit"
 DBMS="mariadb"
-PHP_VERSION="7.2"
+PHP_VERSION="7.4"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9000
 EXTRA_TEST_OPTIONS=""
@@ -286,7 +284,7 @@ while getopts ":a:s:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.2|7.3|7.4|8.0)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0)$ ]]; then
                 INVALID_OPTIONS+=(${OPTARG})
             fi
             ;;
@@ -335,7 +333,7 @@ if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
     exit 1
 fi
 
-# Move "7.2" to "php72", the latter is the docker container name
+# Move "7.4" to "php74", the latter is the docker container name
 DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
