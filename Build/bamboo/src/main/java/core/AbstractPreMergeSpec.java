@@ -32,7 +32,7 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
     private static int numberOfFunctionalSqliteJobs = 10;
     private static int numberOfUnitRandomOrderJobs = 1;
 
-    private String[] phpVersions = {"PHP72", "PHP73", "PHP74"};
+    private String[] phpVersions = {"PHP74"};
 
     /**
      * override in concrete class in function createPlan. If not security repo related, set to false
@@ -49,13 +49,13 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
     Stage getMainStage() {
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, phpVersions[2], this.getTaskComposerInstall(phpVersions[2]), isSecurity));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
         jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(0, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, numberOfAcceptanceTestJobs, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsPageTreeMysql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsInstallToolMysql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, numberOfAcceptanceTestJobs, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsPageTreeMysql(0, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsInstallToolMysql(0, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
         jobsMainStage.add(this.getJobIntegrationPhpStan(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
         jobsMainStage.add(this.getJobIntegrationDocBlocks(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
@@ -63,10 +63,9 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobIntegrationVarious(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, numberOfFunctionalMysqlJobs, phpVersions[2], this.getTaskComposerInstall(phpVersions[2]), isSecurity));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, numberOfFunctionalMysqlJobs, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
         // mssql functionals are not executed as pre-merge
-        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, numberOfFunctionalPgsqlJobs, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, numberOfFunctionalPgsqlJobs, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, numberOfFunctionalSqliteJobs, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
         jobsMainStage.add(this.getJobUnitJavaScript("JS", this.getTaskComposerInstall(phpVersions[0]), isSecurity));
