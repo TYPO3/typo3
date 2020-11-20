@@ -72,13 +72,6 @@ class LinkAnalyzer
     protected $hookObjectsArr = [];
 
     /**
-     * Reference to the current element with table:uid, e.g. pages:85
-     *
-     * @var string
-     */
-    protected $recordReference = '';
-
-    /**
      * The currently active TSconfig. Will be passed to the init function.
      *
      * @var array
@@ -216,7 +209,6 @@ class LinkAnalyzer
                 } else {
                     $record['language'] = -1;
                 }
-                $this->recordReference = $entryValue['substr']['recordRef'];
                 if (!empty($entryValue['pageAndAnchor'] ?? '')) {
                     // Page with anchor, e.g. 18#1580
                     $url = $entryValue['pageAndAnchor'];
@@ -316,12 +308,10 @@ class LinkAnalyzer
         $record = $event->getRecord();
 
         // Put together content of all relevant fields
-        $haystack = '';
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $idRecord = $record['uid'];
         // Get all references
         foreach ($fields as $field) {
-            $haystack .= $record[$field] . ' --- ';
             $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
             $valueField = $record[$field];
 
@@ -364,19 +354,6 @@ class LinkAnalyzer
                 }
             }
         }
-    }
-
-    /**
-     * Returns the TSconfig that was passed to the init() method.
-     *
-     * This can be used by link checkers that get a reference of this
-     * object passed to the checkLink() method.
-     *
-     * @return array
-     */
-    public function getTSConfig()
-    {
-        return $this->tsConfig;
     }
 
     /**
