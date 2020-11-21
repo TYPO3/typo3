@@ -1965,8 +1965,11 @@ class DataHandler implements LoggerAwareInterface
 
                 // Convert the date/time into a timestamp for the sake of the checks
                 $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-                // We store UTC timestamps in the database, which is what getTimestamp() returns.
-                $dateTime = new \DateTime($value);
+                // We expect the ISO 8601 $value to contain a UTC timezone specifier.
+                // We explicitly fallback to UTC if no timezone specifier is given (e.g. for copy operations).
+                $dateTime = new \DateTime($value, new \DateTimeZone('UTC'));
+                // The timestamp (UTC) returned by getTimestamp() will be converted to
+                // a local time string by gmdate() later.
                 $value = $value === $emptyValue ? null : $dateTime->getTimestamp();
             }
         }
