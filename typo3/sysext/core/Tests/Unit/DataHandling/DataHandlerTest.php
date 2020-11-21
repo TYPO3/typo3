@@ -365,6 +365,74 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->_call('checkValueForInput', '', $tcaFieldConf, '', 0, 0, '');
     }
 
+    /**
+     * @returns array
+     */
+    public function inputValueCheckDbtypeIsIndependentFromTimezoneDataProvider()
+    {
+        return [
+            // Values of this kind are passed in from the inputDateTime control
+            'time from inputDateTime' => [
+                '1970-01-01T18:54:00Z',
+                'time',
+                '18:54:00',
+            ],
+            'date from inputDateTime' => [
+                '2020-11-25T00:00:00Z',
+                'date',
+                '2020-11-25',
+            ],
+            'datetime from inputDateTime' => [
+                '2020-11-25T18:54:00Z',
+                'datetime',
+                '2020-11-25 18:54:00',
+            ],
+            // Values of this kind are passed in when a data record is copied
+            'time from copying a record' => [
+                '18:54:00',
+                'time',
+                '18:54:00',
+            ],
+            'date from copying a record' => [
+                '2020-11-25',
+                'date',
+                '2020-11-25',
+            ],
+            'datetime from copying a record' => [
+                '2020-11-25 18:54:00',
+                'datetime',
+                '2020-11-25 18:54:00',
+            ],
+        ];
+    }
+
+    /**
+     * Tests whether native dbtype inputs are parsed independent from the server timezone.
+     *
+     * @param $value
+     * @param $dbtype
+     * @param $expectedOutput
+     * @test
+     * @dataProvider inputValueCheckDbtypeIsIndependentFromTimezoneDataProvider
+     */
+    public function inputValueCheckDbtypeIsIndependentFromTimezone($value, $dbtype, $expectedOutput)
+    {
+        $tcaFieldConf = [
+            'input' => [],
+            'dbType' => $dbtype,
+        ];
+
+        $oldTimezone = date_default_timezone_get();
+        date_default_timezone_set('Europe/Berlin');
+
+        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+
+        // set before the assertion is performed, so it is restored even for failing tests
+        date_default_timezone_set($oldTimezone);
+
+        self::assertEquals($expectedOutput, $returnValue['value']);
+    }
+
     ///////////////////////////////////////////
     // Tests concerning checkModifyAccessList
     ///////////////////////////////////////////
