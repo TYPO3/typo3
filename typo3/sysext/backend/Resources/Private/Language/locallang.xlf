@@ -49,6 +49,12 @@ Have a nice day.</source>
 			<trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message">
 				<source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
 			</trans-unit>
+			<trans-unit id="login.header" resname="login.header">
+				<source>Login</source>
+			</trans-unit>
+			<trans-unit id="login.region.footnote" resname="login.region.footnote">
+				<source>Footnote</source>
+			</trans-unit>
 			<trans-unit id="login.link" resname="login.link">
 				<source>Login with username and password</source>
 			</trans-unit>
@@ -64,6 +70,9 @@ Have a nice day.</source>
 			<trans-unit id="login.error.capslock" resname="login.error.capslock">
 				<source>Attention: Caps lock enabled!</source>
 			</trans-unit>
+			<trans-unit id="login.error.capslock" resname="login.error.capslockStatus">
+				<source>Caps lock enabled</source>
+			</trans-unit>
 			<trans-unit id="login.interface" resname="login.interface">
 				<source>Interface</source>
 			</trans-unit>
@@ -72,6 +81,12 @@ Have a nice day.</source>
 			</trans-unit>
 			<trans-unit id="login.news.next" resname="login.news.next">
 				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="login.navigation.loginProvider" resname="login.navigation.loginProvider">
+				<source>Login Provider</source>
+			</trans-unit>
+			<trans-unit id="login.navigation.typo3" resname="login.navigation.typo3">
+				<source>Further information about TYPO3</source>
 			</trans-unit>
 			<trans-unit id="login.error.message" resname="login.error.message">
 				<source>Your login attempt did not succeed</source>

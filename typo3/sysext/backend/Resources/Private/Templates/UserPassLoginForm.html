@@ -1,3 +1,4 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Login" />
 
 <f:section name="loginFormFields">
@@ -5,8 +6,9 @@
         <div class="form-control-wrap">
             <div class="form-control-holder">
                 <input type="text" id="t3-username" name="username" value="{presetUsername}" aria-label="{f:translate(key: 'login.username')}" placeholder="{f:translate(key: 'login.username')}" class="form-control input-login t3js-clearable t3js-login-username-field" autofocus="autofocus" autocomplete="username" required="required" />
-                <div class="form-notice-capslock hidden t3js-login-alert-capslock">
-                    <img role="status" src="{images.capslock}" width="14" height="14" alt="" title="{f:translate(key: 'login.error.capslock')}" />
+                <div role="status" class="form-notice-capslock hidden t3js-login-alert-capslock">
+                    <img aria-hidden="true" src="{images.capslock}" width="14" height="14" alt="" title="{f:translate(key: 'login.error.capslock')}" />
+                    <span class="sr-only"><f:translate key="login.error.capslockStatus" /></span>
                 </div>
             </div>
         </div>
@@ -15,17 +17,20 @@
         <div class="form-control-wrap">
             <div class="form-control-holder">
                 <input type="password" id="t3-password" name="p_field" value="{presetPassword}" aria-label="{f:translate(key: 'login.password')}" placeholder="{f:translate(key: 'login.password')}" class="form-control input-login t3js-clearable t3js-login-password-field" autocomplete="current-password" required="required" data-rsa-encryption="t3-field-userident" />
-                <div class="form-notice-capslock hidden t3js-login-alert-capslock">
-                    <img src="{images.capslock}" width="14" height="14" alt="{f:translate(key: 'login.error.capslock')}" title="{f:translate(key: 'login.error.capslock')}" />
+                <div role="status" class="form-notice-capslock hidden t3js-login-alert-capslock">
+                    <img aria-hidden="true" src="{images.capslock}" width="14" height="14" alt="" title="{f:translate(key: 'login.error.capslock')}" />
+                    <span class="sr-only"><f:translate key="login.error.capslockStatus" /></span>
                 </div>
             </div>
         </div>
     </div>
 </f:section>
+
 <f:section name="ResetPassword">
     <div class="forgot-password">
         <div class="text-right">
-            <f:be.link route="password_forget" parameters="{loginProvider: loginProviderIdentifier}">{f:translate(key: 'login.password_forget')}</f:be.link>
+            <f:be.link route="password_forget" parameters="{loginProvider: loginProviderIdentifier}"><f:translate key="login.password_forget" /></f:be.link>
         </div>
     </div>
 </f:section>
+</html>

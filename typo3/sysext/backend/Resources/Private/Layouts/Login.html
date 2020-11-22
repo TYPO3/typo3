@@ -3,11 +3,14 @@
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
             <div class="typo3-login-wrap">
-                <div class="card card-lg card-login">
-                    <div class="card-body">
+                <div class="card card-login">
+                    <header class="card-heading">
+                        <h1 class="sr-only"><f:translate key="login.header" /></h1>
                         <div class="typo3-login-logo">
                             <img src="{logo}" class="typo3-login-image" alt="" />
                         </div>
+                    </header>
+                    <main class="card-body">
                         <f:if condition="{formType} == 'LoginForm'">
                             <f:then>
                                 <f:if condition="{hasLoginError}">
@@ -34,29 +37,32 @@
                                         <f:form.hidden name="redirect_url" value="{redirectUrl}" />
                                         <f:form.hidden name="loginRefresh" value="{loginRefresh}" />
 
-                                        <f:render partial="Login/InterfaceSelector" arguments="{_all}" />
-
                                         <f:render section="loginFormFields" />
+
+                                        <f:render partial="Login/InterfaceSelector" arguments="{_all}" />
 
                                         <div class="form-group" id="t3-login-submit-section">
                                             <button class="btn btn-block btn-login t3js-login-submit" id="t3-login-submit" type="submit" name="commandLI" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {f:translate(key: 'login.process')}" autocomplete="off">
                                                 <f:translate key="login.submit" />
                                             </button>
                                         </div>
-                                        <ul class="list-unstyled typo3-login-links">
-                                            <f:for each="{loginProviders}" as="provider" key="providerKey">
-                                                <f:if condition="{provider.label}">
-                                                    <f:if condition="{loginProviderIdentifier} != {providerKey}">
-                                                        <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}"><a href="?loginProvider={providerKey}"><i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" /></span></a></li>
-                                                    </f:if>
-                                                </f:if>
-                                            </f:for>
-                                        </ul>
-                                        <f:if condition="{enablePasswordReset}">
-                                            <f:render section="ResetPassword" arguments="{_all}" optional="true" />
-                                        </f:if>
                                     </form>
                                 </div>
+                                <nav aria-label="{f:translate(key: 'login.navigation.loginProvider')}">
+                                    <f:comment>role is for VoiceOver</f:comment>
+                                    <ul class="list-unstyled typo3-login-links" role="list">
+                                        <f:for each="{loginProviders}" as="provider" key="providerKey">
+                                            <f:if condition="{provider.label}">
+                                                <f:if condition="{loginProviderIdentifier} != {providerKey}">
+                                                    <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}"><a href="?loginProvider={providerKey}"><i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" /></span></a></li>
+                                                </f:if>
+                                            </f:if>
+                                        </f:for>
+                                    </ul>
+                                </nav>
+                                <f:if condition="{enablePasswordReset}">
+                                    <f:render section="ResetPassword" arguments="{_all}" optional="true" />
+                                </f:if>
                             </f:then>
                             <f:else if="{enablePasswordReset}">
                                 <f:render section="ResetPassword" arguments="{_all}" />
@@ -96,34 +102,38 @@
                                 </form>
                             </f:else>
                         </f:if>
-                    </div>
+                    </main>
                     <f:render partial="LoginNews" arguments="{_all}" />
-                    <div class="card-footer">
+                    <footer class="card-footer">
                         <div class="typo3-login-copyright-wrap">
-                            <a href="#loginCopyright" class="typo3-login-copyright-link collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="loginCopyright">
+                            <a href="#loginCopyright" class="typo3-login-copyright-link t3js-login-copyright-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="loginCopyright">
                                 <span><f:translate key="login.copyrightLink" /></span>
-                                <img src="{images.typo3}" alt="{f:translate(key: 'login.typo3Logo')}" width="70" height="20" />
+                                <f:comment>the image within the button is only decorative</f:comment>
+                                <img src="{images.typo3}" alt="" width="70" height="20" />
                             </a>
                             <div id="loginCopyright" class="collapse">
                                 <div class="typo3-login-copyright-text">
                                     <p>
                                         <f:format.raw>{copyright}</f:format.raw>
                                     </p>
-                                    <ul class="list-unstyled">
-                                        <li><a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3"><i class="fa fa-external-link"></i> TYPO3.org</a></li>
-                                        <li><a href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate"><i class="fa fa-external-link"></i> <f:translate key="login.donate" /></a></li>
-                                    </ul>
+                                    <nav aria-label="{f:translate(key: 'login.navigation.typo3')}">
+                                        <f:comment>role is for VoiceOver</f:comment>
+                                        <ul class="list-unstyled" role="list">
+                                            <li><a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3"><i class="fa fa-external-link"></i> TYPO3.org</a></li>
+                                            <li><a href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate"><i class="fa fa-external-link"></i> <f:translate key="login.donate" /></a></li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </footer>
                 </div>
             </div>
         </div>
         <f:if condition="{loginFootnote}">
-            <div class="typo3-login-footnote">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
                 <p>{loginFootnote}</p>
-            </div>
+            </aside>
         </f:if>
     </div>
     <f:comment>This link is only used for protection of the backend.</f:comment>

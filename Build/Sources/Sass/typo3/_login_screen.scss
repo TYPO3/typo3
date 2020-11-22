@@ -59,11 +59,11 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 .typo3-login-footnote {
     margin-left: auto;
     margin-right: auto;
-    font-size: 0.9em;
+    font-size: 0.95em;
     text-align: center;
     padding: 1em 1.5em;
     display: block;
-    color: #999;
+    color: #666;
 
     @media (min-width: $screen-sm-min) {
         flex: none;
@@ -114,7 +114,6 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 //
 .typo3-login-logo {
     padding-top: 1em;
-    margin-bottom: 2.5em;
 
     img {
         display: block;
@@ -141,13 +140,13 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     border-radius: $login-border-radius;
 
     .card-heading {
-        padding: 1.5em 2.5em;
+        padding: 2.5em 2.5em 0;
         border-top-left-radius: $login-border-radius - 1;
         border-top-right-radius: $login-border-radius - 1;
     }
 
     .card-body {
-        padding: 2.5em;
+        padding: 1.75em 2.5em 2.5em;
         border-bottom: 3px solid $login-highlight;
     }
 
@@ -254,7 +253,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 }
 
 .typo3-login-copyright-text {
-    font-size: 0.9em;
+    font-size: 0.95em;
     margin-top: $line-height-computed;
     color: $login-copyright-text;
 
