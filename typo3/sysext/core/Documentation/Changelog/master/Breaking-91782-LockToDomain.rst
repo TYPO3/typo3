@@ -30,16 +30,28 @@ Affected Installations
 TYPO3 Installations using this feature in their database records. When in doubt, this can be identified by running SQL SELECT statements to identify users actively using this feature.
 
 Frontend Users:
-* "SELECT uid, pid, username FROM fe_users WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;"
+
+.. code-block:: sql
+
+	SELECT uid, pid, username FROM fe_users WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;
 
 Backend Users:
-* "SELECT uid, pid, username FROM be_users WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;"
+
+.. code-block:: sql
+
+	SELECT uid, pid, username FROM be_users WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;"
 
 Frontend Groups:
-* "SELECT uid, pid, username FROM fe_groups WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;"
+
+.. code-block:: sql
+
+	SELECT uid, pid, username FROM fe_groups WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;
 
 Backend Groups:
-* "SELECT uid, pid, username FROM be_groups WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;"
+
+.. code-block:: sql
+
+	SELECT uid, pid, username FROM be_groups WHERE lockToDomain != '' AND lockToDomain IS NOT NULL;
 
 
 Migration

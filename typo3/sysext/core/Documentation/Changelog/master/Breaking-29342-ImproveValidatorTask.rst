@@ -13,7 +13,7 @@ In TYPO3 version 10 `ext:linkvalidator` has been improved a lot. The
 :php:`\TYPO3\CMS\Linkvalidator\Task\ValidatorTask` - a scheduler task for reporting
 broken links via email has been refactored now.
 
-The old marker templates have been replaced by `FluidEmail`. A Fluid templates is now
+The old marker templates have been replaced by `FluidEmail`. A Fluid template is now
 used for generating the report email. The marker template has been removed completely
 along with corresponding functionality.
 
@@ -28,8 +28,8 @@ The following hooks have been removed and won't be executed anymore:
 
 The following properties of the :php:`ValidatorTask` class have changed their type:
 
-* :php:`$page` is now :php`int`
-* :php:`$depth` is now :php`int`
+* :php:`$page` is now :php:`int`
+* :php:`$depth` is now :php:`int`
 * :php:`$emailOnBrokenLinkOnly` is now :php:`bool`
 * :php:`$configuration` is now :php:`string`
 

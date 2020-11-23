@@ -37,7 +37,7 @@ TYPO3 installations with custom third-party extensions calling this method.
 Migration
 =========
 
-Use the new :php`StringUtility::uniqueList()` method instead and ensure you
+Use the new :php:`StringUtility::uniqueList()` method instead and ensure you
 pass a valid string as first argument and ommit the second argument.
 
 .. index:: PHP-API, FullyScanned, ext:core

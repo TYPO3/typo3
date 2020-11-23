@@ -19,8 +19,8 @@ refactoring and introduction of strict types for both
 
 The task configuration has got the following new fields:
 
-* `languages`: Comma separated list of language uids
-* `emailTemplateName`: Name of the fluid templates
+* `languages` Comma separated list of language uids
+* `emailTemplateName` Name of the fluid templates
 
 With `languages` it's now possible to limit the report to specified system
 languages. This is useful if multiple tasks for different groups of recipients
@@ -95,20 +95,20 @@ An example implementation of the PSR-14 event:
 The :php:`\TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult` contains following
 information by default:
 
-* :php:`$oldBrokenLinkCounts`: Amount of broken links from the last run, separated by type (e.g. all, internal)
-* :php:`$newBrokenLinkCounts`: Amount of broken links from this run, separated by type (e.g. all, internal)
-* :php:`$brokenLinks`: List of broken links with the raw database row
-* :php:`$differentToLastResult`: Whether the broken links count changed
+* :php:`$oldBrokenLinkCounts` Amount of broken links from the last run, separated by type (e.g. all, internal)
+* :php:`$newBrokenLinkCounts` Amount of broken links from this run, separated by type (e.g. all, internal)
+* :php:`$brokenLinks` List of broken links with the raw database row
+* :php:`$differentToLastResult` Whether the broken links count changed
 
 The :php:`brokenLinks` property gets further processed internally to provide additional
 information for the email. Following additional information is provided by default:
 
-* :php:`full_record`: The full record, the broken link was found in (e.g. pages or tt_content)
-* :php:`record_title`: Value of the :php:`full_record` title field
-* :php:`record_type`: The title of the record type (e.g. "Page" or "Page Content")
-* :php:`language_code`: The language code of the broken link
-* :php:`real_pid`: The real page id of the record the broken link was found in
-* :php:`page_record`: The whole page row of records parent page
+* :php:`full_record` The full record, the broken link was found in (e.g. pages or tt_content)
+* :php:`record_title` Value of the :php:`full_record` title field
+* :php:`record_type` The title of the record type (e.g. "Page" or "Page Content")
+* :php:`language_code` The language code of the broken link
+* :php:`real_pid` The real page id of the record the broken link was found in
+* :php:`page_record` The whole page row of records parent page
 
 More can be added using the PSR-14 event.
 
@@ -116,12 +116,12 @@ Additionally to the already existing content the email now includes a list of al
 broken links fetched according to the task configuration. This list consists of
 following columns:
 
-* `Record`: The :php:`record_uid` and :php:`record_title`
-* `Language`: The :php:`language_code` and language id
-* `Page`: The :php:`real_pid` and :php:`page_record.title` of the parent page
-* `Record Type`: The :php:`record_type`
-* `Link Target`: The :php:`target`
-* `Link Type`: Type of the broken link (Either `internal`, `external` or `file`)
+* `Record` The :php:`record_uid` and :php:`record_title`
+* `Language` The :php:`language_code` and language id
+* `Page` The :php:`real_pid` and :php:`page_record.title` of the parent page
+* `Record Type` The :php:`record_type`
+* `Link Target` The :php:`target`
+* `Link Type` Type of the broken link (Either `internal`, `external` or `file`)
 
 
 Impact

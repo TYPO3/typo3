@@ -18,9 +18,11 @@ Content is replaced with the live version, and the current live version is remov
 Content is switched (swapped) with the live version, making the current live version the previously versioned content.
 
 Especially when doing
+
 * partial swapping
 * multiple swapping
 * swapping newly created content
+
 TYPO3 will leave the workspace in an inconsistent state.
 
 The swapping mechanism was therefore removed, leaving "Publishing" the only option to select for editors to push content from a workspace into the live website.
@@ -29,7 +31,7 @@ The swapping mechanism was therefore removed, leaving "Publishing" the only opti
 Impact
 ======
 
-The database field and TCA option "sys_workspace.swap_modes" is removed.
+The database field and TCA option `sys_workspace.swap_modes` is removed.
 
 The Workspace module only shows the "Publish" option anymore,
 as "Swap" is removed.

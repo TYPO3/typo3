@@ -24,6 +24,7 @@ other fields were insignificant. An additional field "t3ver_move_id" contained
 the actual live record ID.
 
 Move Placeholders were identified by having the following field values:
+
 * t3ver_state = 3 - indicating the type Move Placeholder
 * t3ver_wsid = the workspace ID where a record was moved
 * t3ver_oid = 0, in order to fetch them from the database together with live records
@@ -32,6 +33,7 @@ Move Placeholders were identified by having the following field values:
 * t3ver_move_id = the live version which was moved in the workspace
 
 The Move Pointer is indicated like this:
+
 * t3ver_state = 4 - indicating the type Move Pointer
 * t3ver_wsid = the workspace ID where a record was moved
 * t3ver_oid = the live version which was moved in the workspace
@@ -50,6 +52,7 @@ The TCA setting :php:`$TCA[$table][ctrl][shadowColumnsForMovePlaceholders]`
 is not evaluated anymore and removed on TCA building-time.
 
 The main benefits of this change:
+
 * fewer database queries when fetching records within a workspace
 * more consistent handling with versioned records
 * less complexity within TYPO3's internal API

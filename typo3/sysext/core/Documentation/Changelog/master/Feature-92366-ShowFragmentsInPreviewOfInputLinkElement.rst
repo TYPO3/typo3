@@ -9,7 +9,7 @@ See :issue:`92366`
 Description
 ===========
 
-The rendertype `InputLinkElement` renders a preview of the link since #28171.
+The rendertype `InputLinkElement` renders a preview of the link since :issue:`28171`.
 
 If a link to a page contains a fragment, this information has been added to the preview.
 

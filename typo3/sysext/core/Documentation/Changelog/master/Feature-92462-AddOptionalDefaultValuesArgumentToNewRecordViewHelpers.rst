@@ -14,7 +14,7 @@ A new optional argument `defaultValues` is added to the `be:uri.newRecord` and
 fields of the new record. FormEngine automatically fills the given default values
 into the corresponding fields.
 
-The syntax is: :xml:`{tableName: {fieldName: 'value'}}`.
+The syntax is: :html:`{tableName: {fieldName: 'value'}}`.
 
 Please note that the given default values are added to the url as `GET` parameters
 and therefore override default values defined in FormDataProviders or TSconfig.

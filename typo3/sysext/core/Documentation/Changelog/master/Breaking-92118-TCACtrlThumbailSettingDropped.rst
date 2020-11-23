@@ -9,7 +9,7 @@ See :issue:`92118`
 Description
 ===========
 
-The TCA setting :php:`$GLOBALS['TCA'][$aTableName]['ctrl']['thumbnail'] has been dropped.
+The TCA setting :php:`$GLOBALS['TCA'][$aTableName]['ctrl']['thumbnail']` has been dropped.
 
 
 Impact

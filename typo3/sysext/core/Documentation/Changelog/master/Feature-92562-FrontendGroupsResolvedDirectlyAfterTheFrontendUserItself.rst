@@ -15,8 +15,9 @@ request process than the preparation of the Frontend User, which is resolved by
 the session or form credentials.
 
 There are several reasons for the historic behavior:
+
 * Special functionality like "pages.fe_login_mode" which can override groups
-  based on the current root line
+based on the current root line
 * Previewing frontend user groups via the Admin Panel for backend users
 
 However, this historic behavior led to inconsistencies, especially with the

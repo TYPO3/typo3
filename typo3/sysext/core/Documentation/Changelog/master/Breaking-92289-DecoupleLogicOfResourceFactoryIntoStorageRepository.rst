@@ -37,6 +37,7 @@ as internal, and are kept for backwards-compatibility without deprecation:
 * :php:`ResourceFactory->getStorageObjectFromCombinedIdentifier()`
 
 The following method has been removed
+
 * :php:`ResourceFactory->getDriverObject()`
 
 

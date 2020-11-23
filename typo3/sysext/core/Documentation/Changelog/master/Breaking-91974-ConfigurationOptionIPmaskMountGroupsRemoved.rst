@@ -9,7 +9,7 @@ See :issue:`91974`
 Description
 ===========
 
-The global configuration option `$GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] has been removed. It allowed to automatically assign
+The global configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['FE'][IPmaskMountGroups]` has been removed. It allowed to automatically assign
 groups to users visiting the TYPO3 Frontend from specific IP addresses / networks.
 
 This is especially handy to show content only in Intranet/Extranet

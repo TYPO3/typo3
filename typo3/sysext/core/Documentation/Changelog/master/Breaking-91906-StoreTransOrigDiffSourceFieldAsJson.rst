@@ -9,8 +9,8 @@ See :issue:`91906`
 Description
 ===========
 
-The TCA field ['tableName']['ctrl']['transOrigDiffSourceField'] - often set to
-'l18n_diffsource' - stores the state of the source language record a translated
+The TCA field :php:`['tableName']['ctrl']['transOrigDiffSourceField']` - often set to
+php:`l18n_diffsource` - stores the state of the source language record a translated
 record has been created from. This is used if content in the source language
 of a record has been changed to hint editors for a potentially needed update
 of the translated record.

@@ -9,7 +9,7 @@ See :issue:`92132`
 Description
 ===========
 
-The fluid ViewHelper `f:be.buttons.shortcut` has been deprecated.
+The Fluid ViewHelper `f:be.buttons.shortcut` has been deprecated.
 Additionally, the argument `getVars` of `ext:backend` related
 ViewHelper `be:moduleLayout.button.shortcutButton` has been deprecated.
 

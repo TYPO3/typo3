@@ -24,8 +24,8 @@ removed.
 Impact
 ======
 
-The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']
-['getSearchFieldList']` isn't evaluated anymore.
+The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList']`
+isn't evaluated anymore.
 
 
 Affected Installations

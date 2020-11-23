@@ -39,9 +39,9 @@ It is recommended to build the web application in a way that
 the session data is not needed, and instead, a frontend user
 should know that their session data is then lost.
 
-Instead, make sure to bind user-specific data either to the 
+Instead, make sure to bind user-specific data either to the
 frontend user itself, or re-implement this functionality
-yourself by using a logoff() hook for transferring sessions
+yourself by using a :php:`logoff()` hook for transferring sessions
 to anonymous sessions.
 
 .. index:: Frontend, PHP-API, NotScanned, ext:frontend
