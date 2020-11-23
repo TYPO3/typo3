@@ -124,6 +124,10 @@ class PropertyMappingConfiguration
             return false;
         }
 
+        if (strpos($saveToFileMountIdentifier, 'EXT:') === 0) {
+            return false;
+        }
+
         $resourceFactory = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ResourceFactory::class);
 
