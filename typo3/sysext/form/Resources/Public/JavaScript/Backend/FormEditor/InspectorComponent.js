@@ -2535,7 +2535,7 @@ define(['jquery',
               $('a', itemTemplate).on('click', function() {
                 var propertyData;
 
-                propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+                propertyData = getCurrentlySelectedFormElement().get(propertyPath) || '';
 
                 if (propertyData.length === 0) {
                   propertyData = '{' + $(this).attr('data-formelement-identifier') + '}';
