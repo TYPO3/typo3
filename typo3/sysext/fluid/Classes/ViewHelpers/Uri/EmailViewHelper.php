@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -61,7 +63,9 @@ class EmailViewHelper extends AbstractViewHelper
     {
         $email = $arguments['email'];
 
-        if (TYPO3_MODE === 'FE') {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
             $emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
             return reset($emailParts);
         }

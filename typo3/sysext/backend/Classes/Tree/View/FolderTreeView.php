@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -474,7 +475,9 @@ class FolderTreeView extends AbstractTreeView
         $invertedDepthOfAjaxRequestedItem = 0;
         $out = '<ul class="list-tree list-tree-root">';
         // Evaluate AJAX request
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ((int)$GLOBALS['TYPO3_REQUEST']->getAttribute('applicationType') & TYPO3_REQUESTTYPE_AJAX)
+        ) {
             [, $expandCollapseCommand, $expandedFolderHash, ] = $this->evaluateExpandCollapseParameter();
             if ($expandCollapseCommand == 1) {
                 $doExpand = true;

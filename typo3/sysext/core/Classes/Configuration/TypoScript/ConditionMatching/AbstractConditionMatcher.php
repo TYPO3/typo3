@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
@@ -22,6 +23,7 @@ use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptCondition
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Exception\MissingTsfeException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -215,7 +217,8 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
                 'expression' => $expression,
                 'exception' => $exception
             ]);
-            if (TYPO3_MODE === 'FE'
+            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
                 && $exception instanceof Exception
                 && strpos($exception->getMessage(), 'in_array() expects parameter 2 to be array') !== false
             ) {

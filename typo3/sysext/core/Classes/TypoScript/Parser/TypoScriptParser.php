@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Core\TypoScript\Parser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -873,7 +875,9 @@ class TypoScriptParser
 
                     /** @var AbstractConditionMatcher $conditionMatcher */
                     $conditionMatcher = null;
-                    if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) {
+                    if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                        && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+                    ) {
                         $conditionMatcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class);
                     } else {
                         $conditionMatcher = GeneralUtility::makeInstance(BackendConditionMatcher::class);

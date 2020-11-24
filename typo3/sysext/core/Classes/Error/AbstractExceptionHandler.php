@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Error;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -80,8 +82,11 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         // otherwise this will lead into recurring exceptions.
         try {
             if ($this->logger) {
+                // 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
+                $applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
                 $this->logger->critical($logTitle . ': ' . $logMessage, [
-                    'TYPO3_MODE' => TYPO3_MODE,
+                    'TYPO3_MODE' => $applicationType,
                     'exception' => $exception
                 ]);
             }

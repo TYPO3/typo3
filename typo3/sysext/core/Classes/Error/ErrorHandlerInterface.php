@@ -40,8 +40,8 @@ interface ErrorHandlerInterface
      * Handles an error.
      * If the error is registered as exceptionalError it will by converted into an exception, to be handled
      * by the configured exceptionhandler. Additionally the error message is written to the configured logs.
-     * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
-     * is displayed in the admin panel (as TsLog message)
+     * If application is backend, the error message is also added to the flashMessageQueue, in frontend the
+     * error message is displayed in the admin panel (as TsLog message).
      *
      * @param int $errorLevel The error level - one of the E_* constants
      * @param string $errorMessage The error message

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -111,14 +113,16 @@ class HtmlViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
-        if (TYPO3_MODE === 'BE') {
+        $isBackendRequest = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
+        if ($isBackendRequest) {
             self::simulateFrontendEnvironment();
         }
         $value = $renderChildrenClosure();
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObject->start([]);
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
-        if (TYPO3_MODE === 'BE') {
+        if ($isBackendRequest) {
             self::resetFrontendEnvironment();
         }
         return $content;

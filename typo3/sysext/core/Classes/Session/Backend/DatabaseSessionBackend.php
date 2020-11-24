@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class DatabaseSessionBackend
  *
  * This session backend requires the 'table' configuration option. If the backend is used to holds non-authenticated
- * sessions (default if 'TYPO3_MODE' is 'FE'), the 'ses_anonymous' configuration option must be set to true.
+ * sessions (default in frontend application), the 'ses_anonymous' configuration option must be set to true.
  */
 class DatabaseSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface
 {

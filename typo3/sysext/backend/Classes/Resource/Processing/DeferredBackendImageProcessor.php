@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Resource\Processing;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
@@ -33,14 +35,15 @@ class DeferredBackendImageProcessor implements ProcessorInterface
     public function canProcessTask(TaskInterface $task): bool
     {
         $context = GeneralUtility::makeInstance(Context::class);
-        return TYPO3_MODE === 'BE'
-               && $task->getType() === 'Image'
-               && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
-               && (!$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing'))
-               && $task->getSourceFile()->getProperty('width') > 0
-               && $task->getSourceFile()->getProperty('height') > 0
-               // Let the local image processor update the properties in case the target file exists already
-               && !$task->getSourceFile()->getStorage()->getProcessingFolder()->hasFile($task->getTargetFileName());
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            && $task->getType() === 'Image'
+            && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
+            && (!$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing'))
+            && $task->getSourceFile()->getProperty('width') > 0
+            && $task->getSourceFile()->getProperty('height') > 0
+            // Let the local image processor update the properties in case the target file exists already
+            && !$task->getSourceFile()->getStorage()->getProcessingFolder()->hasFile($task->getTargetFileName());
     }
 
     public function processTask(TaskInterface $task): void

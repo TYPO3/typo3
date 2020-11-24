@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\View;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -209,16 +211,18 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     /**
      * @return bool
      */
-    protected function isBackendMode()
+    protected function isBackendMode(): bool
     {
-        return TYPO3_MODE === 'BE';
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
     }
 
     /**
      * @return bool
      */
-    protected function isFrontendMode()
+    protected function isFrontendMode(): bool
     {
-        return TYPO3_MODE === 'FE';
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 }

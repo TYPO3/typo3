@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Core\Utility\File;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -327,19 +329,20 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = FlashMessage::ERROR)
     {
-        if (TYPO3_MODE !== 'BE') {
-            return;
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
+            $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:' . $localizationKey);
+            $message = vsprintf($label, $replaceMarkers);
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $message,
+                '',
+                $severity,
+                true
+            );
+            $this->addFlashMessage($flashMessage);
         }
-        $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:' . $localizationKey);
-        $message = vsprintf($label, $replaceMarkers);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $message,
-            '',
-            $severity,
-            true
-        );
-        $this->addFlashMessage($flashMessage);
     }
 
     /*************************************

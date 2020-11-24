@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Core\Resource;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\FalDumpFileContentsDecoratorStream;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -476,8 +478,10 @@ class ResourceStorage implements ResourceStorageInterface
                 $this->isOnline = false;
             }
             if ($this->isOnline !== false) {
-                // all files are ALWAYS available in the frontend
-                if (TYPO3_MODE === 'FE') {
+                if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+                ) {
+                    // All files are ALWAYS available in the frontend
                     $this->isOnline = true;
                 } else {
                     // check if the storage is disabled temporary for now

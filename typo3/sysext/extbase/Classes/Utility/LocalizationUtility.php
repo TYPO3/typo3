@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -192,7 +193,10 @@ class LocalizationUtility
             'languageKey' => 'default',
             'alternativeLanguageKeys' => [],
         ];
-        if (TYPO3_MODE === 'FE') {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
+            // Frontend application
             $siteLanguage = self::getCurrentSiteLanguage();
 
             // Get values from site language

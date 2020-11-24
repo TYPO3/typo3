@@ -21,11 +21,13 @@ use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\RFCValidation;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -2236,7 +2238,7 @@ class GeneralUtility
      * returned without the timestamp.
      *
      * Behaviour is influenced by the setting
-     * TYPO3_CONF_VARS[TYPO3_MODE][versionNumberInFilename]
+     * TYPO3_CONF_VARS['BE' and 'FE'][versionNumberInFilename]
      * = TRUE (BE) / "embed" (FE) : modify filename
      * = FALSE (BE) / "querystring" (FE) : add timestamp as parameter
      *
@@ -2249,8 +2251,11 @@ class GeneralUtility
         $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $lookupFile[0]);
 
         $doNothing = false;
-        if (TYPO3_MODE === 'FE') {
-            $mode = strtolower($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename']);
+
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
+            $mode = strtolower($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename']);
             if ($mode === 'embed') {
                 $mode = true;
             } else {
@@ -2261,7 +2266,7 @@ class GeneralUtility
                 }
             }
         } else {
-            $mode = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename'];
+            $mode = $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'];
         }
         if ($doNothing || !file_exists($path)) {
             // File not found, return filename unaltered
@@ -2730,7 +2735,10 @@ class GeneralUtility
      */
     protected static function isInternalRequestType()
     {
-        return Environment::isCli() || !defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL);
+        return Environment::isCli()
+            || !isset($GLOBALS['TYPO3_REQUEST'])
+            || !($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface)
+            || (bool)((int)($GLOBALS['TYPO3_REQUEST'])->getAttribute('applicationType') & TYPO3_REQUESTTYPE_INSTALL);
     }
 
     /*************************

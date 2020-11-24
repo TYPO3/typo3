@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -587,9 +588,10 @@ class TranslationService implements SingletonInterface
         $this->languageKey = 'default';
 
         $this->alternativeLanguageKeys = [];
-        if (TYPO3_MODE === 'FE') {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
             $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
-
             if ($this->languageKey !== 'default') {
                 /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
                 $locales = GeneralUtility::makeInstance(Locales::class);

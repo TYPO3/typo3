@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Messaging;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
 use TYPO3\CMS\Core\Messaging\Renderer\ListRenderer;
@@ -86,11 +88,12 @@ class FlashMessageRendererResolver
     protected function resolveContext(): string
     {
         $context = '';
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         if (Environment::isCli()) {
             $context = 'CLI';
-        } elseif (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
+        } elseif ($request instanceof ServerRequest && ApplicationType::fromRequest($request)->isBackend()) {
             $context = 'BE';
-        } elseif (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) {
+        } elseif ($request instanceof ServerRequest && ApplicationType::fromRequest($request)->isFrontend()) {
             $context = 'FE';
         }
         return $context;

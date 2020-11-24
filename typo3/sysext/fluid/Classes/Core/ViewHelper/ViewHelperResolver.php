@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -61,7 +63,10 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
     public function __construct()
     {
         $this->namespaces = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'];
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE && $this->getBackendUser() instanceof BackendUserAuthentication) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            && $this->getBackendUser() instanceof BackendUserAuthentication
+        ) {
             if ($this->getBackendUser()->uc['AdminPanel']['preview_showFluidDebug'] ?? false) {
                 $this->namespaces['f'][] = 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Debug';
             }

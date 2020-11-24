@@ -26,6 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -313,7 +314,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function initializeHoneypotFromRequest()
     {
         $renderingOptions = $this->formDefinition->getRenderingOptions();
-        if (!isset($renderingOptions['honeypot']['enable']) || $renderingOptions['honeypot']['enable'] === false || TYPO3_MODE === 'BE') {
+        if (!isset($renderingOptions['honeypot']['enable'])
+            || $renderingOptions['honeypot']['enable'] === false
+            || (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
+        ) {
             return;
         }
 
@@ -340,7 +345,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function renderHoneypot()
     {
         $renderingOptions = $this->formDefinition->getRenderingOptions();
-        if (!isset($renderingOptions['honeypot']['enable']) || $renderingOptions['honeypot']['enable'] === false || TYPO3_MODE === 'BE') {
+        if (!isset($renderingOptions['honeypot']['enable'])
+            || $renderingOptions['honeypot']['enable'] === false
+            || (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
+        ) {
             return;
         }
 

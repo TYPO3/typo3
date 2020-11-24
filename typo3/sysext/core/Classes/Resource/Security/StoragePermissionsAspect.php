@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -51,7 +53,10 @@ final class StoragePermissionsAspect
     public function addUserPermissionsToStorage(AfterResourceStorageInitializationEvent $event): void
     {
         $storage = $event->getStorage();
-        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin()) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            && !$this->backendUserAuthentication->isAdmin()
+        ) {
             $storage->setEvaluatePermissions(true);
             if ($storage->getUid() > 0) {
                 $storage->setUserPermissions($this->backendUserAuthentication->getFilePermissionsForStorage($storage));

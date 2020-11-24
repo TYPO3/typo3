@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Error;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -96,8 +98,8 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      * Handles an error.
      * If the error is registered as exceptionalError it will by converted into an exception, to be handled
      * by the configured exceptionhandler. Additionally the error message is written to the configured logs.
-     * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
-     * is displayed in the admin panel (as TsLog message)
+     * If application is backend, the error message is also added to the flashMessageQueue, in frontend the
+     * error message is displayed in the admin panel (as TsLog message).
      *
      * @param int $errorLevel The error level - one of the E_* constants
      * @param string $errorMessage The error message
@@ -144,7 +146,11 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 $flashMessageSeverity = FlashMessage::NOTICE;
                 $severity = 0;
         }
-        $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
+
+        // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
+        $applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
+        $logTitle = 'Core: Error handler (' . $applicationType . ')';
         $message = $logTitle . ': ' . $message;
 
         if ($errorLevel === E_USER_DEPRECATED) {

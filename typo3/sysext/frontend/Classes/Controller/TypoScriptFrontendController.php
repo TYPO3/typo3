@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -3517,7 +3518,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return $GLOBALS['TSFE'];
         }
 
-        if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE)) {
+        if (!($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
             // Return null for now (together with shared: false in Services.yaml) as TSFE might not be available in backend context
             // That's not an error then
             return null;

@@ -293,7 +293,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
     }
 
     /**
-     * Function to return the current TYPO3_MODE based on $GLOBALS['TSFE'].
+     * Function to return the current application type based on $GLOBALS['TSFE'].
      * This function can be mocked in unit tests to be able to test frontend behaviour.
      *
      * @return string

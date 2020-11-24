@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -476,7 +478,10 @@ class ResourceFactory implements SingletonInterface
      */
     protected function getFileReferenceData($uid, $raw = false)
     {
-        if (!$raw && TYPO3_MODE === 'BE') {
+        if (!$raw
+            && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
             $fileReferenceData = BackendUtility::getRecordWSOL('sys_file_reference', $uid);
         } elseif (!$raw && is_object($GLOBALS['TSFE'])) {
             $fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\IndexedSearch;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -72,8 +73,8 @@ class FileContentParser
      */
     public function __construct()
     {
-        // Set the language object to be used accordant to current TYPO3_MODE:
-        $this->langObject = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE'] : $GLOBALS['LANG'];
+        // Set the language object to be used accordant to current application type
+        $this->langObject = ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? $GLOBALS['TSFE'] : $GLOBALS['LANG'];
     }
 
     /**

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -101,8 +103,9 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
     /**
      * @return bool
      */
-    protected function isFrontendAvailable()
+    protected function isFrontendAvailable(): bool
     {
-        return TYPO3_MODE === 'FE';
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 }

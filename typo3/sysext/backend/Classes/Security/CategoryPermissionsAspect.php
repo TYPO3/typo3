@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Backend\Security;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -58,7 +60,9 @@ final class CategoryPermissionsAspect
     public function addUserPermissionsToCategoryTreeData(ModifyTreeDataEvent $event): void
     {
         // Only evaluate this in the backend
-        if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE)) {
+        if (!($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            || ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
             return;
         }
 

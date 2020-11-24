@@ -134,7 +134,7 @@ class FileCollectionRepository
     }
 
     /**
-     * Function to return the current TYPO3_MODE (FE/BE) based on $GLOBALS[TSFE].
+     * Function to return the current application (FE/BE) based on $GLOBALS[TSFE].
      * This function can be mocked in unit tests to be able to test frontend behaviour.
      *
      * @return string

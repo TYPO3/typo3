@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
@@ -312,6 +314,9 @@ class PageRendererTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
 
         $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $subject = new PageRenderer();
         $subject->setCharSet('utf-8');

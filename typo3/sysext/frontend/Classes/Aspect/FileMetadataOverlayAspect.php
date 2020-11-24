@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Aspect;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,7 +40,10 @@ final class FileMetadataOverlayAspect
     public function languageAndWorkspaceOverlay(EnrichFileMetaDataEvent $event): void
     {
         // Should only be in Frontend, but not in eID context
-        if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) || isset($_REQUEST['eID'])) {
+        if (!($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            || isset($_REQUEST['eID'])
+        ) {
             return;
         }
         $overlaidMetaData = $event->getRecord();

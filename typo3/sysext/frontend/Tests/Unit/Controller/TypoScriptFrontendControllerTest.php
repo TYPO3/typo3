@@ -22,6 +22,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -559,7 +560,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr-test',
@@ -594,7 +596,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr',

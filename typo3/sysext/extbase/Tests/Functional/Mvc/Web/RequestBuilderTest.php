@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -614,7 +615,9 @@ class RequestBuilderTest extends FunctionalTestCase
     public function resolveActionNameReturnsActionDefinedViaParametersOfServerRequest()
     {
         $serverRequest = new ServerRequest(new Uri(''));
-        $serverRequest = $serverRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']]);
+        $serverRequest = $serverRequest
+            ->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']])
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
         $extensionName = 'blog_example';
@@ -653,7 +656,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => ['action' => 'show']]);
 
         $serverRequest = new ServerRequest(new Uri(''));
-        $serverRequest = $serverRequest->withAttribute('routing', $pageArguments);
+        $serverRequest = $serverRequest
+            ->withAttribute('routing', $pageArguments)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
         $extensionName = 'blog_example';
@@ -690,7 +695,9 @@ class RequestBuilderTest extends FunctionalTestCase
     public function resolveActionNameReturnsActionDefinedViaParsedBodyOfServerRequest()
     {
         $serverRequest = new ServerRequest(new Uri(''));
-        $serverRequest = $serverRequest->withParsedBody(['tx_blog_example_blog' => ['action' => 'show']]);
+        $serverRequest = $serverRequest
+            ->withParsedBody(['tx_blog_example_blog' => ['action' => 'show']])
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
         $extensionName = 'blog_example';

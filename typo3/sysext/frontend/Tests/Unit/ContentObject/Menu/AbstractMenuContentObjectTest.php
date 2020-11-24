@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -59,7 +60,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com', 'GET');
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $site = new Site('test', 1, [
             'base' => 'https://www.example.com',

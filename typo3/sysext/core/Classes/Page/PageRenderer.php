@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -329,6 +331,11 @@ class PageRenderer implements SingletonInterface
     protected $metaTagRegistry;
 
     /**
+     * @var string 'FE' if a frontend request, else 'BE'
+     */
+    protected string $applicationType;
+
+    /**
      * @var FrontendInterface
      */
     protected static $cache = null;
@@ -352,6 +359,10 @@ class PageRenderer implements SingletonInterface
             '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
         ];
 
+        // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
+        // @todo: Usually, the PageRenderer does not make sense if there is no Request object ... restrict this?
+        $this->applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
@@ -1449,7 +1460,7 @@ class PageRenderer implements SingletonInterface
      */
     public function addRequireJsConfiguration(array $configuration)
     {
-        if (TYPO3_MODE === 'BE') {
+        if ($this->applicationType === 'BE') {
             // Load RequireJS in backend context at first. Doing this in FE could break the output
             $this->loadRequireJs();
         }
@@ -1465,20 +1476,21 @@ class PageRenderer implements SingletonInterface
     protected function getRequireJsLoader(): string
     {
         $html = '';
-        $backendRequest = TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE;
         $backendUserLoggedIn = !empty($GLOBALS['BE_USER']->user['uid']);
 
-        // no backend request - basically frontend
-        if (!$backendRequest) {
+        if (!($GLOBALS['TYPO3_REQUEST']) instanceof ServerRequestInterface
+            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
+            // no backend request - basically frontend
             $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
             $requireJsConfig['typo3BaseUrl'] = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . '?eID=requirejs';
-        // backend request, but no backend user logged in
         } elseif (!$backendUserLoggedIn) {
+            // backend request, but no backend user logged in
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
             $requireJsConfig['typo3BaseUrl'] = (string)$uriBuilder->buildUriFromRoute('ajax_core_requirejs');
-        // backend request, having backend user logged in
         } else {
+            // backend request, having backend user logged in
             $requireJsConfig = array_replace_recursive(
                 $this->publicRequireJsConfig,
                 $this->requireJsConfig
@@ -1964,7 +1976,7 @@ class PageRenderer implements SingletonInterface
         }
 
         $this->loadJavaScriptLanguageStrings();
-        if (TYPO3_MODE === 'BE') {
+        if ($this->applicationType === 'BE') {
             $noBackendUserLoggedIn = empty($GLOBALS['BE_USER']->user['uid']);
             $this->addAjaxUrlsToInlineSettings($noBackendUserLoggedIn);
         }
@@ -2388,7 +2400,7 @@ class PageRenderer implements SingletonInterface
     protected function doConcatenateJavaScript()
     {
         if ($this->concatenateJavascript) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler'])) {
+            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsConcatenateHandler'])) {
                 // use external concatenation routine
                 $params = [
                     'jsLibs' => &$this->jsLibs,
@@ -2397,7 +2409,7 @@ class PageRenderer implements SingletonInterface
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
                 ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler'], $params, $this);
+                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsConcatenateHandler'], $params, $this);
             } else {
                 $this->jsLibs = $this->getCompressor()->concatenateJsFiles($this->jsLibs);
                 $this->jsFiles = $this->getCompressor()->concatenateJsFiles($this->jsFiles);
@@ -2412,7 +2424,7 @@ class PageRenderer implements SingletonInterface
     protected function doConcatenateCss()
     {
         if ($this->concatenateCss) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'])) {
+            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['cssConcatenateHandler'])) {
                 // use external concatenation routine
                 $params = [
                     'cssFiles' => &$this->cssFiles,
@@ -2420,7 +2432,7 @@ class PageRenderer implements SingletonInterface
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
                 ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'], $params, $this);
+                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['cssConcatenateHandler'], $params, $this);
             } else {
                 $this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs);
                 $this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles);
@@ -2443,7 +2455,7 @@ class PageRenderer implements SingletonInterface
     protected function doCompressCss()
     {
         if ($this->compressCss) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'])) {
+            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['cssCompressHandler'])) {
                 // Use external compression routine
                 $params = [
                     'cssInline' => &$this->cssInline,
@@ -2452,7 +2464,7 @@ class PageRenderer implements SingletonInterface
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
                 ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
+                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['cssCompressHandler'], $params, $this);
             } else {
                 $this->cssLibs = $this->getCompressor()->compressCssFiles($this->cssLibs);
                 $this->cssFiles = $this->getCompressor()->compressCssFiles($this->cssFiles);
@@ -2466,7 +2478,7 @@ class PageRenderer implements SingletonInterface
     protected function doCompressJavaScript()
     {
         if ($this->compressJavascript) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'])) {
+            if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsCompressHandler'])) {
                 // Use external compression routine
                 $params = [
                     'jsInline' => &$this->jsInline,
@@ -2477,7 +2489,7 @@ class PageRenderer implements SingletonInterface
                     'headerData' => &$this->headerData,
                     'footerData' => &$this->footerData
                 ];
-                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
+                GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsCompressHandler'], $params, $this);
             } else {
                 // Traverse the arrays, compress files
                 if (!empty($this->jsInline)) {
@@ -2524,7 +2536,7 @@ class PageRenderer implements SingletonInterface
         $filename = $this->getStreamlinedFileName($filename, false);
         if ($this->compressJavascript) {
             $filename = $this->getCompressor()->compressJsFile($filename);
-        } elseif (TYPO3_MODE === 'FE') {
+        } elseif ($this->applicationType === 'FE') {
             $filename = GeneralUtility::createVersionNumberedFilename($filename);
         }
         return $this->getAbsoluteWebPath($filename);
@@ -2570,7 +2582,7 @@ class PageRenderer implements SingletonInterface
      */
     protected function getAbsoluteWebPath(string $file): string
     {
-        if (TYPO3_MODE === 'FE') {
+        if ($this->applicationType === 'FE') {
             return $file;
         }
         return PathUtility::getAbsoluteWebPath($file);

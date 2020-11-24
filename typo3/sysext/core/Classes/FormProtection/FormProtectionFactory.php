@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\FormProtection;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -105,6 +106,13 @@ class FormProtectionFactory
                 $GLOBALS['TSFE']->fe_user
             ];
         } elseif (self::isBackendSession() && ($type === 'default' || $type === 'backend')) {
+            $isAjaxCall = false;
+            $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+            if ($request instanceof ServerRequestInterface
+                && (bool)((int)$request->getAttribute('applicationType') & TYPO3_REQUESTTYPE_AJAX)
+            ) {
+                $isAjaxCall = true;
+            }
             $classNameAndConstructorArguments = [
                 BackendFormProtection::class,
                 $GLOBALS['BE_USER'],
@@ -112,7 +120,7 @@ class FormProtectionFactory
                 self::getMessageClosure(
                     $GLOBALS['LANG'],
                     GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier(),
-                    (bool)(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)
+                    $isAjaxCall
                 )
             ];
         } else {
@@ -131,7 +139,14 @@ class FormProtectionFactory
      */
     protected static function isInstallToolSession()
     {
-        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL;
+        $isInstallTool = false;
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request instanceof ServerRequestInterface
+            && (bool)((int)$request->getAttribute('applicationType') & TYPO3_REQUESTTYPE_INSTALL)
+        ) {
+            $isInstallTool = true;
+        }
+        return $isInstallTool;
     }
 
     /**

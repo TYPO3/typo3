@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -38,7 +40,7 @@ class ResourceCompressor
     protected $rootPath = '';
 
     /**
-     * gzipped versions are only created if $TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] is set
+     * gzipped versions are only created if $TYPO3_CONF_VARS['BE' or 'FE']['compressionLevel'] is set
      *
      * @var bool
      */
@@ -77,8 +79,13 @@ class ResourceCompressor
                 GeneralUtility::writeFile($htaccessPath, $this->htaccessTemplate);
             }
         }
+
+        // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
+        // @todo: Usually, the ResourceCompressor similar to PageRenderer does not make sense if there is no request object ... restrict this?
+        $applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
         // decide whether we should create gzipped versions or not
-        $compressionLevel = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel'];
+        $compressionLevel = $GLOBALS['TYPO3_CONF_VARS'][$applicationType]['compressionLevel'];
         // we need zlib for gzencode()
         if (extension_loaded('zlib') && $compressionLevel) {
             $this->createGzipped = true;
@@ -87,7 +94,7 @@ class ResourceCompressor
                 $this->gzipCompressionLevel = (int)$compressionLevel;
             }
         }
-        $this->setRootPath(TYPO3_MODE === 'BE' ? Environment::getBackendPath() . '/' : Environment::getPublicPath() . '/');
+        $this->setRootPath($applicationType === 'BE' ? Environment::getBackendPath() . '/' : Environment::getPublicPath() . '/');
     }
 
     /**
@@ -669,11 +676,11 @@ class ResourceCompressor
      */
     protected function getJavaScriptFileType(): string
     {
-        if (TYPO3_MODE === 'BE' || !isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-            // Backend (or at least no TSFE), always HTML5
-            return '';
-        }
-        if (($GLOBALS['TSFE']->config['config']['doctype'] ?? 'html5') === 'html5') {
+        if (!isset($GLOBALS['TSFE'])
+            || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)
+            || ($GLOBALS['TSFE']->config['config']['doctype'] ?? 'html5') === 'html5'
+        ) {
+            // Backend, no TSFE, or doctype set to html5
             return '';
         }
         return 'text/javascript';

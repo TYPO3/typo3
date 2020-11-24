@@ -732,7 +732,7 @@ class Typo3DbQueryParser
             if ($this->environmentService->isEnvironmentInFrontendMode()) {
                 $statement .= $this->getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
             } else {
-                // TYPO3_MODE === 'BE'
+                // applicationType backend
                 $statement .= $this->getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted);
             }
             if (!empty($statement)) {

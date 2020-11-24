@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -31,7 +33,7 @@ class EnvironmentService implements SingletonInterface
     protected $isFrontendMode;
 
     /**
-     * Detects if TYPO3_MODE is defined and its value is "FE"
+     * Detects if frontend application has been called.
      *
      * @return bool
      */
@@ -41,11 +43,13 @@ class EnvironmentService implements SingletonInterface
         if ($this->isFrontendMode !== null) {
             return $this->isFrontendMode;
         }
-        return (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ?: false;
+        // Frontend mode stays false if backend or cli without request object
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 
     /**
-     * Detects if TYPO3_MODE is defined and its value is "BE"
+     * Detects if backend application has been called.
      *
      * @return bool
      */
@@ -59,13 +63,13 @@ class EnvironmentService implements SingletonInterface
         if ($this->isFrontendMode !== null) {
             return;
         }
-        if (defined('TYPO3_MODE')) {
-            $this->isFrontendMode = TYPO3_MODE === 'FE';
-        }
+        // Frontend mode stays false if backend or cli without request object
+        $this->isFrontendMode = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 
     /**
-     * A helper method for tests to simulate TYPO3_MODE behavior, should only be used within TYPO3 Core
+     * A helper method for tests to simulate application behavior, should only be used within TYPO3 Core
      *
      * @param bool $isFrontendMode
      * @internal only used for testing purposes and can be removed at any time.

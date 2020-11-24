@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -49,7 +51,10 @@ class DebugUtility
             ob_start();
         }
 
-        if (TYPO3_MODE === 'BE' && !Environment::isCli()) {
+        if (!Environment::isCli()
+            && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
             $debug = self::renderDump($var);
             $debugPlain = PHP_EOL . self::renderDump($var, '', true, false);
             $script = '
