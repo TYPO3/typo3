@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // Show copied tt_content records in frontend request
 $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;

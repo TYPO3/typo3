@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 $GLOBALS['SiteConfiguration']['site']['columns']['tx_b_a'] = [
     'label' => 'a',

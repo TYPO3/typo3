@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // Register extension list update task
 if (!(bool)\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433112] = \TYPO3\CMS\Opendocs\Backend\ToolbarItems\OpendocsToolbarItem::class;
 // Register update signal to update the number of open documents

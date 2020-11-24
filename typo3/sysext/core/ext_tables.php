@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 /**
  * $GLOBALS['PAGES_TYPES'] defines the various types of pages (field: doktype) the system

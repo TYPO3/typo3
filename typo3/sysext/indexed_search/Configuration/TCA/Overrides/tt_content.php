@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // Registers FE plugin and hide layout, pages and recursive fields in BE
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(

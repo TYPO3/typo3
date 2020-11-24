@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // You may add PHP code here, which is executed on every request after the configuration is loaded.
 // The code here should only manipulate TYPO3_CONF_VARS for example to set the database configuration

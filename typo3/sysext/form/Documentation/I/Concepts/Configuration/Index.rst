@@ -163,7 +163,7 @@ YAML registration for the backend via addTypoScriptSetup()
 Add the following PHP code to your :file:`ext_localconf.php` of your site
 package::
 
-   defined('TYPO3_MODE') or die();
+   defined('TYPO3') or die();
 
    call_user_func(function () {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(

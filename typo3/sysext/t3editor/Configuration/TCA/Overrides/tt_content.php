@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // Activate t3editor for tt_content type HTML if this type exists
 if (is_array($GLOBALS['TCA']['tt_content']['types']['html'])) {

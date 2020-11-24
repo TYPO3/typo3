@@ -1,5 +1,7 @@
 <?php
 
+defined('TYPO3') or die();
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tx_a_domain_model_a',
     [

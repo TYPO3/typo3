@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // add default notification options to every page
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('

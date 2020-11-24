@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // Activate t3editor for sys_template config
 if (is_array($GLOBALS['TCA']['be_users']['columns']['TSconfig']['config'])) {

@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // register plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

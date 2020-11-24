@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // Populate available languages
 /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
