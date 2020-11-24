@@ -19,6 +19,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
@@ -123,7 +125,6 @@ class LinkAnalyzer
      */
     public function getLinkStatistics(array $linkTypes = [], $considerHidden = false)
     {
-        $results = [];
         if (empty($linkTypes) || empty($this->pids)) {
             return;
         }
@@ -140,14 +141,6 @@ class LinkAnalyzer
             if (!is_array($GLOBALS['TCA'][$table] ?? null)) {
                 continue;
             }
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
-
-            if ($considerHidden) {
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            }
 
             // Re-init selectFields for table
             $selectFields = array_merge(['uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label']], $fields);
@@ -160,22 +153,42 @@ class LinkAnalyzer
                 }
             }
 
-            $result = $queryBuilder->select(...$selectFields)
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->in(
-                        ($table === 'pages' ? 'uid' : 'pid'),
-                        $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
-                    )
-                )
-                ->execute();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
 
-            // @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
-            while ($row = $result->fetchAssociative()) {
-                $this->analyzeRecord($results, $table, $fields, $row);
+            if ($considerHidden) {
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            }
+            $queryBuilder->select(...$selectFields)->from($table);
+
+            // We need to do the work in chunks, as it may be quite huge and would hit the one
+            // or other limit depending on the used dbms - and we also avoid placeholder usage
+            // as they are hard to calculate beforehand because of some magic handling of dbal.
+            $maxChunk = PlatformInformation::getMaxBindParameters(
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($table)
+                    ->getDatabasePlatform()
+            );
+            foreach (array_chunk($this->pids, (int)floor($maxChunk / 2)) as $pageIdsChunk) {
+                $statement = clone $queryBuilder;
+                $statement->where(
+                    $statement->expr()->in(
+                        ($table === 'pages' ? 'uid' : 'pid'),
+                        QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $statement->getConnection())
+                    )
+                );
+                $result = $statement->execute();
+
+                // @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
+                while ($row = $result->fetchAssociative()) {
+                    $results = [];
+                    $this->analyzeRecord($results, $table, $fields, $row);
+                    $this->checkLinks($results, $linkTypes);
+                }
             }
         }
-        $this->checkLinks($results, $linkTypes);
     }
 
     /**
