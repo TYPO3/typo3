@@ -278,6 +278,9 @@ TYPO3:
                           errorCodes:
                             10: 1221565130
                           propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
                 label: formEditor.elements.Telephone.label
                 group: html5
                 groupSorting: 200
