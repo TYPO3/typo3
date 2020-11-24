@@ -22,6 +22,11 @@ use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 
 /**
  * This ViewHelper renders a Pagination of objects.
+ * 
+ * .. warning::
+ *
+ *   Using widgets is deprecated and all fluid widgets will be removed in a future release.
+ *   See :doc:`t3core:Changelog/master/Breaking-92529-AllFluidWidgetFunctionalityRemoved`
  *
  * Examples
  * ========
