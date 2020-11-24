@@ -55,7 +55,7 @@ class EditRecordViewHelper extends AbstractViewHelper
         $this->registerArgument('uid', 'int', 'uid of record to be edited, 0 for creation', true);
         $this->registerArgument('table', 'string', 'target database table', true);
         $this->registerArgument('fields', 'string', 'Edit only these fields (comma separated list)', false);
-        $this->registerArgument('returnUrl', 'string', '', false, '');
+        $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
     }
 
     /**

@@ -72,7 +72,7 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid', false);
         $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
         $this->registerArgument('table', 'string', 'target database table', true);
-        $this->registerArgument('returnUrl', 'string', '', false, '');
+        $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
     }
 
     /**

@@ -70,9 +70,9 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
         // @deprecated useCacheHash
         $this->registerArgument('useCacheHash', 'bool', 'Deprecated: You should not need this.', false);
-        $this->registerArgument('addQueryString', 'bool', '', false, false);
-        $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
-        $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
+        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
+        $this->registerArgument('addQueryStringMethod', 'string', 'Method to use when keeping query parameters (only active if addQueryString is set)', false, 'GET');
+        $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
     }
 

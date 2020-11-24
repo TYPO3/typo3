@@ -64,7 +64,12 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of input tag');
         $this->registerArgument('value', 'mixed', 'Value of input tag');
-        $this->registerArgument('configuration', 'array', '', true);
+        $this->registerArgument(
+            'configuration',
+            'array',
+            'The TypoScript constant configuration, e.g. labels, category, type and value.',
+            true
+        );
         $this->registerUniversalTagAttributes();
     }
 
