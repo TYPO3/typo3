@@ -31,10 +31,6 @@ call_user_func(function () {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser']['formPersistenceIdentifier'] =
         \TYPO3\CMS\Form\Hooks\SoftReferenceParserHook::class;
 
-    // Register for hook to show preview of tt_content element of CType="form_formframework" in page module
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['form_formframework'] =
-        \TYPO3\CMS\Form\Hooks\FormPagePreviewRenderer::class;
-
     // Add new content element wizard entry
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         "@import 'EXT:form/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"

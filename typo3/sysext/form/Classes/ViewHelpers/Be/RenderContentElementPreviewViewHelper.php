@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
+use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -65,8 +68,12 @@ class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         $contentElementUid = $arguments['contentElementUid'];
         $contentRecord = BackendUtility::getRecord('tt_content', $contentElementUid);
         if (!empty($contentRecord)) {
-            $pageLayoutView = GeneralUtility::makeInstance(PageLayoutView::class);
-            $content = $pageLayoutView->tt_content_drawItem($contentRecord);
+            $backendLayout = GeneralUtility::makeInstance(BackendLayout::class, 'dummy', 'dummy', []);
+            $pageRow = BackendUtility::getRecord('pages', $contentRecord['pid']);
+            $pageLayoutContext = GeneralUtility::makeInstance(PageLayoutContext::class, $pageRow, $backendLayout);
+            $gridColumn = GeneralUtility::makeInstance(GridColumn::class, $pageLayoutContext, []);
+            $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $gridColumn, $contentRecord);
+            return $columnItem->getPreview();
         }
         return $content;
     }

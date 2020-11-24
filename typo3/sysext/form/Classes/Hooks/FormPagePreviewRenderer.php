@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Hooks;
 
-use TYPO3\CMS\Backend\View\PageLayoutView;
-use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
+use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
+use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -38,98 +38,79 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  * Contains a preview rendering for the page module of CType="form_formframework"
  * @internal
  */
-class FormPagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
+class FormPagePreviewRenderer extends StandardContentPreviewRenderer
 {
-    /**
-     * Localisation prefix
-     */
-    const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
+    private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
 
-    /**
-     * Preprocesses the preview rendering of the content element "form_formframework".
-     *
-     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-     * @param bool $drawItem Whether to draw the item using the default functionalities
-     * @param string $headerContent Header content
-     * @param string $itemContent Item content
-     * @param array $row Record row of tt_content
-     */
-    public function preProcess(
-        PageLayoutView &$parentObject,
-        &$drawItem,
-        &$headerContent,
-        &$itemContent,
-        array &$row
-    ) {
-        if ($row['CType'] === 'form_formframework') {
-            $contentType = $parentObject->CType_labels[$row['CType']];
-            $itemContent .= $parentObject->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
+    public function renderPageModulePreviewContent(GridColumnItem $item): string
+    {
+        $row = $item->getRecord();
+        $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $row) . '<br />';
 
-            $flexFormData = GeneralUtility::makeInstance(FlexFormService::class)
-                ->convertFlexFormContentToArray($row['pi_flexform']);
+        $flexFormData = GeneralUtility::makeInstance(FlexFormService::class)
+            ->convertFlexFormContentToArray($row['pi_flexform']);
 
-            $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'];
-            if (!empty($persistenceIdentifier)) {
+        $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'];
+        if (!empty($persistenceIdentifier)) {
+            try {
+                $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
+
                 try {
-                    $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
-
-                    try {
-                        if (
-                            StringUtility::endsWith($persistenceIdentifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION)
-                            || strpos($persistenceIdentifier, 'EXT:') === 0
-                        ) {
-                            $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
-                            $formLabel = $formDefinition['label'];
-                        } else {
-                            $formLabel = sprintf(
-                                $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
-                                $persistenceIdentifier
-                            );
-                        }
-                    } catch (ParseErrorException $e) {
-                        $formLabel = sprintf(
-                            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidPersistenceIdentifier'),
-                            $persistenceIdentifier
-                        );
-                    } catch (PersistenceManagerException $e) {
+                    if (
+                        StringUtility::endsWith($persistenceIdentifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION)
+                        || strpos($persistenceIdentifier, 'EXT:') === 0
+                    ) {
+                        $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
+                        $formLabel = $formDefinition['label'];
+                    } else {
                         $formLabel = sprintf(
                             $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                             $persistenceIdentifier
                         );
-                    } catch (Exception $e) {
-                        $formLabel = sprintf(
-                            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
-                            $persistenceIdentifier
-                        );
                     }
-                } catch (NoSuchFileException $e) {
-                    $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                } catch (ParseErrorException $e) {
+                    $formLabel = sprintf(
+                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidPersistenceIdentifier'),
+                        $persistenceIdentifier
+                    );
+                } catch (PersistenceManagerException $e) {
+                    $formLabel = sprintf(
+                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                        $persistenceIdentifier
+                    );
+                } catch (Exception $e) {
                     $formLabel = sprintf(
                         $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
                         $persistenceIdentifier
                     );
-                } catch (ParseErrorException $e) {
-                    $this->addInvalidFrameworkConfigurationFlashMessage($e);
-                    $formLabel = sprintf(
-                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
-                        $persistenceIdentifier
-                    );
-                } catch (\Exception $e) {
-                    // Top level catch - FAL throws top level exceptions on missing files, eg. in getFileInfoByIdentifier() of LocalDriver
-                    $this->addInvalidFrameworkConfigurationFlashMessage($e);
-                    $formLabel = $e->getMessage();
                 }
-            } else {
-                $formLabel = $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
+            } catch (NoSuchFileException $e) {
+                $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                $formLabel = sprintf(
+                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
+                    $persistenceIdentifier
+                );
+            } catch (ParseErrorException $e) {
+                $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                $formLabel = sprintf(
+                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
+                    $persistenceIdentifier
+                );
+            } catch (\Exception $e) {
+                // Top level catch - FAL throws top level exceptions on missing files, eg. in getFileInfoByIdentifier() of LocalDriver
+                $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                $formLabel = $e->getMessage();
             }
-
-            $itemContent .= $parentObject->linkEditContent(
-                $parentObject->renderText($formLabel),
-                $row
-            ) . '<br />';
-
-            $drawItem = false;
+        } else {
+            $formLabel = $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
         }
+
+        $itemContent .= $this->linkEditContent(
+            htmlspecialchars($formLabel),
+            $row
+        ) . '<br />';
+
+        return $itemContent;
     }
 
     /**
