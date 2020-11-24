@@ -640,14 +640,19 @@ abstract class AbstractTreeView
     }
 
     /**
-     * Get icon for the row.
+     * Get the icon markup for the row
      *
-     * @param array|int $row Item row or uid
-     * @return string Image tag.
+     * @param array $row The row to get the icon for
+     * @return string The icon markup, wrapped into a span tag, with the records title as title attribute
      */
-    public function getIcon($row)
+    public function getIcon($row): string
     {
         if (is_int($row)) {
+            trigger_error(
+                'Calling ' . __METHOD__ . ' with argument $row containing the records uid is deprecated and will be removed in v12. Use the full row instead.',
+                E_USER_DEPRECATED
+            );
+
             $row = BackendUtility::getRecord($this->table, $row);
             if ($row === null) {
                 return '';

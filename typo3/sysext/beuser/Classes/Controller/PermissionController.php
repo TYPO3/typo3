@@ -237,7 +237,7 @@ class PermissionController extends ActionController
 
         // Create the tree from $this->id
         if ($this->id) {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getIcon($this->id)];
+            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getIcon($this->pageInfo)];
         } else {
             $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getRootIcon($this->pageInfo)];
         }
