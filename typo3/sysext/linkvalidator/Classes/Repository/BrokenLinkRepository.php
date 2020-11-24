@@ -18,8 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Linkvalidator\Repository;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\QueryRestrictions\EditableRestriction;
 
@@ -66,49 +67,63 @@ class BrokenLinkRepository
      */
     public function getNumberOfBrokenLinksForRecordsOnPages(array $pageIds, array $searchFields): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(static::TABLE);
-        $queryBuilder->getRestrictions()->removeAll();
-        if (!$GLOBALS['BE_USER']->isAdmin()) {
-            $queryBuilder->getRestrictions()
-                ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
-        }
-        $statement = $queryBuilder->select('link_type')
-            ->addSelectLiteral($queryBuilder->expr()->count(static::TABLE . '.uid', 'amount'))
-            ->from(static::TABLE)
-            ->join(
-                static::TABLE,
-                'pages',
-                'pages',
-                $queryBuilder->expr()->eq('record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
-            )
-            ->where(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_uid',
-                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    ),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_pid',
-                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    )
-                )
-            )
-            ->groupBy('link_type')
-            ->execute();
-
         $result = [
             'total' => 0,
         ];
-        while ($row = $statement->fetchAssociative()) {
-            $result[$row['link_type']] = $row['amount'];
-            $result['total']+= $row['amount'];
+
+        // We need to do the work in chunks, as it may be quite huge and would hit the one
+        // or other limit depending on the used dbms - and we also avoid placeholder usage
+        // as they are hard to calculate beforehand because of some magic handling of dbal.
+        $maxChunk = PlatformInformation::getMaxBindParameters(
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable(static::TABLE)
+                ->getDatabasePlatform()
+        );
+        foreach (array_chunk($pageIds, (int)floor($maxChunk / 3)) as $pageIdsChunk) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable(static::TABLE);
+            $queryBuilder->getRestrictions()->removeAll();
+            if (!$GLOBALS['BE_USER']->isAdmin()) {
+                $queryBuilder->getRestrictions()
+                    ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
+            }
+            $statement = $queryBuilder->select('link_type')
+                ->addSelectLiteral($queryBuilder->expr()->count(static::TABLE . '.uid', 'amount'))
+                ->from(static::TABLE)
+                ->join(
+                    static::TABLE,
+                    'pages',
+                    'pages',
+                    $queryBuilder->expr()->eq('record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
+                )
+                ->where(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->in(
+                                'record_uid',
+                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                            ),
+                            $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
+                        ),
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->in(
+                                'record_pid',
+                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                            ),
+                            $queryBuilder->expr()->neq('table_name', $queryBuilder->quote('pages'))
+                        )
+                    )
+                )
+                ->groupBy('link_type')
+                ->execute();
+
+            while ($row = $statement->fetchAssociative()) {
+                if (!isset($result[$row['link_type']])) {
+                    $result[$row['link_type']] = 0;
+                }
+                $result[$row['link_type']] += $row['amount'];
+                $result['total'] += $row['amount'];
+            }
         }
         return $result;
     }
@@ -158,36 +173,46 @@ class BrokenLinkRepository
      */
     public function removeAllBrokenLinksOfRecordsOnPageIds(array $pageIds, array $linkTypes): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(static::TABLE);
+        // We need to do the work in chunks, as it may be quite huge and would hit the one
+        // or other limit depending on the used dbms - and we also avoid placeholder usage
+        // as they are hard to calculate beforehand because of some magic handling of dbal.
+        $maxChunk = PlatformInformation::getMaxBindParameters(
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable(static::TABLE)
+                ->getDatabasePlatform()
+        );
+        foreach (array_chunk($pageIds, (int)floor($maxChunk / 3)) as $pageIdsChunk) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable(static::TABLE);
 
-        $queryBuilder->delete(static::TABLE)
-            ->where(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_uid',
-                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+            $queryBuilder->delete(static::TABLE)
+                ->where(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->in(
+                                'record_uid',
+                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                            ),
+                            $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                         ),
-                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    ),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_pid',
-                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->neq(
-                            'table_name',
-                            $queryBuilder->createNamedParameter('pages')
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->in(
+                                'record_pid',
+                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                            ),
+                            $queryBuilder->expr()->neq(
+                                'table_name',
+                                $queryBuilder->quote('pages')
+                            )
                         )
+                    ),
+                    $queryBuilder->expr()->in(
+                        'link_type',
+                        QueryHelper::implodeToStringQuotedValueList($linkTypes, $queryBuilder->getConnection())
                     )
-                ),
-                $queryBuilder->expr()->in(
-                    'link_type',
-                    $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
                 )
-            )
-            ->execute();
+                ->execute();
+        }
     }
 
     /**
@@ -208,66 +233,82 @@ class BrokenLinkRepository
         array $searchFields = [],
         array $languages = []
     ): array {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE);
-        if (!$GLOBALS['BE_USER']->isAdmin()) {
-            $queryBuilder->getRestrictions()
-                ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
-        }
+        $results = [];
 
-        $constraints = [
-            $queryBuilder->expr()->orX(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->in(
-                        'record_uid',
-                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                    ),
-                    $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
-                ),
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->in(
-                        'record_pid',
-                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                    ),
-                    $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
-                )
-            ),
-            $queryBuilder->expr()->in(
-                'link_type',
-                $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
-            ),
-        ];
-
-        if ($languages !== []) {
-            $constraints[] = $queryBuilder->expr()->in(
-                'language',
-                $queryBuilder->createNamedParameter($languages, Connection::PARAM_INT_ARRAY)
-            );
-        }
-
-        $records = $queryBuilder
-            ->select(self::TABLE . '.*')
-            ->from(self::TABLE)
-            ->join(
-                'tx_linkvalidator_link',
-                'pages',
-                'pages',
-                $queryBuilder->expr()->eq('tx_linkvalidator_link.record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
-            )
-            ->where(...$constraints)
-            ->orderBy('tx_linkvalidator_link.record_uid')
-            ->addOrderBy('tx_linkvalidator_link.uid')
-            ->execute()
-            ->fetchAllAssociative();
-        foreach ($records as &$record) {
-            $response = json_decode($record['url_response'], true);
-            // Fallback mechanism to still support the old serialized data, could be removed in TYPO3 v12 or later
-            if ($response === null) {
-                $response = unserialize($record['url_response'], ['allowed_classes' => false]);
+        // We need to do the work in chunks, as it may be quite huge and would hit the one
+        // or other limit depending on the used dbms - and we also avoid placeholder usage
+        // as they are hard to calculate beforehand because of some magic handling of dbal.
+        $maxChunk = PlatformInformation::getMaxBindParameters(
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable(static::TABLE)
+                ->getDatabasePlatform()
+        );
+        foreach (array_chunk($pageIds, (int)floor($maxChunk / 2)) as $pageIdsChunk) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable(self::TABLE);
+            if (!$GLOBALS['BE_USER']->isAdmin()) {
+                $queryBuilder->getRestrictions()
+                    ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
             }
-            $record['url_response'] = $response;
+
+            $constraints = [
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_uid',
+                            QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                        ),
+                        $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_pid',
+                            QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                        ),
+                        $queryBuilder->expr()->neq('table_name', $queryBuilder->quote('pages'))
+                    )
+                ),
+                $queryBuilder->expr()->in(
+                    'link_type',
+                    QueryHelper::implodeToStringQuotedValueList($linkTypes, $queryBuilder->getConnection())
+                ),
+            ];
+
+            if ($languages !== []) {
+                $constraints[] = $queryBuilder->expr()->in(
+                    'language',
+                    QueryHelper::implodeToIntQuotedValueList($languages, $queryBuilder->getConnection())
+                );
+            }
+
+            $records = $queryBuilder
+                ->select(self::TABLE . '.*')
+                ->from(self::TABLE)
+                ->join(
+                    'tx_linkvalidator_link',
+                    'pages',
+                    'pages',
+                    $queryBuilder->expr()->eq(
+                        'tx_linkvalidator_link.record_pid',
+                        $queryBuilder->quoteIdentifier('pages.uid')
+                    )
+                )
+                ->where(...$constraints)
+                ->orderBy('tx_linkvalidator_link.record_uid')
+                ->addOrderBy('tx_linkvalidator_link.uid')
+                ->execute()
+                ->fetchAllAssociative();
+            foreach ($records as &$record) {
+                $response = json_decode($record['url_response'], true);
+                // Fallback mechanism to still support the old serialized data, could be removed in TYPO3 v12 or later
+                if ($response === null) {
+                    $response = unserialize($record['url_response'], ['allowed_classes' => false]);
+                }
+                $record['url_response'] = $response;
+                $results[] = $record;
+            }
         }
-        return $records;
+        return $results;
     }
 
     public function addBrokenLink($record, bool $isValid, array $errorParams = null): void

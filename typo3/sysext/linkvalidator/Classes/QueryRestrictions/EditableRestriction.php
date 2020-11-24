@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\QueryRestrictions;
 
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -175,7 +174,7 @@ class EditableRestriction implements QueryRestrictionInterface
                     $expressionBuilder->andX(
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.table_name',
-                            $this->queryBuilder->createNamedParameter('pages')
+                            $this->queryBuilder->quote('pages')
                         ),
                         QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_EDIT))
                     ),
@@ -183,7 +182,7 @@ class EditableRestriction implements QueryRestrictionInterface
                     $expressionBuilder->andX(
                         $expressionBuilder->neq(
                             'tx_linkvalidator_link.table_name',
-                            $this->queryBuilder->createNamedParameter('pages')
+                            $this->queryBuilder->quote('pages')
                         ),
                         QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::CONTENT_EDIT))
                     )
@@ -197,11 +196,11 @@ class EditableRestriction implements QueryRestrictionInterface
                     $additionalWhere[] = $expressionBuilder->andX(
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.table_name',
-                            $this->queryBuilder->createNamedParameter($table)
+                            $this->queryBuilder->quote($table)
                         ),
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.field',
-                            $this->queryBuilder->createNamedParameter($field)
+                            $this->queryBuilder->quote($field)
                         )
                     );
                 }
@@ -219,19 +218,16 @@ class EditableRestriction implements QueryRestrictionInterface
             $additionalWhere[] = $expressionBuilder->andX(
                 $expressionBuilder->eq(
                     'tx_linkvalidator_link.table_name',
-                    $this->queryBuilder->createNamedParameter($table)
+                    $this->queryBuilder->quote($table)
                 ),
                 $expressionBuilder->in(
                     'tx_linkvalidator_link.element_type',
-                    $this->queryBuilder->createNamedParameter(
-                        array_unique(current($field)),
-                        Connection::PARAM_STR_ARRAY
-                    )
+                    QueryHelper::implodeToStringQuotedValueList(array_unique(current($field) ?: []), $this->queryBuilder->getConnection())
                 )
             );
             $additionalWhere[] = $expressionBuilder->neq(
                 'tx_linkvalidator_link.table_name',
-                $this->queryBuilder->createNamedParameter($table)
+                $this->queryBuilder->quote($table)
             );
             if ($additionalWhere) {
                 $constraints[] = $expressionBuilder->orX(...$additionalWhere);
@@ -244,11 +240,11 @@ class EditableRestriction implements QueryRestrictionInterface
                 $additionalWhere[] = $expressionBuilder->orX(
                     $expressionBuilder->eq(
                         'tx_linkvalidator_link.language',
-                        $this->queryBuilder->createNamedParameter($langId, \PDO::PARAM_INT)
+                        $this->queryBuilder->quote($langId, \PDO::PARAM_INT)
                     ),
                     $expressionBuilder->eq(
                         'tx_linkvalidator_link.language',
-                        $this->queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        $this->queryBuilder->quote(-1, \PDO::PARAM_INT)
                     )
                 );
             }

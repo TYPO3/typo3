@@ -261,4 +261,44 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->assertCSVDataSet($expectedOutputFile);
     }
+
+    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIdsDataProvider(): array
+    {
+        $lagePageUidList = range(1, 200000, 1);
+        return [
+            // Tests with one broken link
+            'Test with one broken external link' =>
+                [
+                    __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
+                    $lagePageUidList,
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv',
+                ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIdsDataProvider
+     */
+    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIds(string $inputFile, array $pidList, string $expectedOutputFile): void
+    {
+        $tsConfig = [
+            'searchFields' => [
+                'tt_content' => ['bodytext'],
+            ],
+            'linktypes' => 'external',
+            'checkhidden' => '0',
+        ];
+        $linkTypes = explode(',', $tsConfig['linktypes']);
+
+        $searchFields = $tsConfig['searchFields'];
+
+        $this->importDataSet($inputFile);
+
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
+        $linkAnalyzer->getLinkStatistics($linkTypes);
+
+        $this->assertCSVDataSet($expectedOutputFile);
+    }
 }
