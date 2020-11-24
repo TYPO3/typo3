@@ -240,8 +240,7 @@ class TranslationStatusController
                     if (is_array($row)) {
                         $langRecUids[$languageId][] = $row['uid'];
                         $status = $row['_HIDDEN'] ? (GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '') : 'success';
-                        $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render();
-                        $info = $icon . ($showPageId ? ' [' . (int)$row['uid'] . ']' : '') . ' ' . htmlspecialchars(
+                        $info = ($showPageId ? ' [' . (int)$row['uid'] . ']' : '') . ' ' . htmlspecialchars(
                             GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
                         ) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(
                             GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)
@@ -249,6 +248,7 @@ class TranslationStatusController
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_badThingThereAre'
                         ) . '</div>' : '');
                         $tCells[] = '<td class="' . $status . ' col-border-left">' .
+                            BackendUtility::wrapClickMenuOnIcon($tree->getIcon($row), 'pages', (int)$row['uid']) .
                             '<a href="#" onclick="' . htmlspecialchars(
                                 'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=' . $languageId . '"); return false;'
                             ) . '" title="' . $lang->sL(
