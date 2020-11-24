@@ -70,7 +70,7 @@ class ActionMenuViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('defaultController', 'string', 'defaultController');
+        $this->registerArgument('defaultController', 'string', 'The default controller to be used');
     }
 
     /**

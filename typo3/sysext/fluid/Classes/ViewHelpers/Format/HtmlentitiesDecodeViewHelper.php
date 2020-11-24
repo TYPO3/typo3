@@ -73,7 +73,7 @@ class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
         parent::initializeArguments();
         $this->registerArgument('value', 'string', 'string to format');
         $this->registerArgument('keepQuotes', 'bool', 'If TRUE, single and double quotes won\'t be replaced (sets ENT_NOQUOTES flag).', false, false);
-        $this->registerArgument('encoding', 'string', '');
+        $this->registerArgument('encoding', 'string', 'Define the encoding used when converting characters (Default: UTF-8).');
     }
 
     /**

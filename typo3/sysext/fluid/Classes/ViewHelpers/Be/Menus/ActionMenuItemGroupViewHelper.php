@@ -53,7 +53,7 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('label', 'string', 'label', false, '');
+        $this->registerArgument('label', 'string', 'The label of the option group', false, '');
     }
 
     /**

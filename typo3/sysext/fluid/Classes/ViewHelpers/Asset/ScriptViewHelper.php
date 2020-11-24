@@ -56,19 +56,19 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         parent::registerUniversalTagAttributes();
-        $this->registerTagAttribute('async', 'bool', '', false);
-        $this->registerTagAttribute('crossorigin', 'string', '', false);
-        $this->registerTagAttribute('defer', 'bool', '', false);
-        $this->registerTagAttribute('integrity', 'string', '', false);
-        $this->registerTagAttribute('nomodule', 'bool', '', false);
-        $this->registerTagAttribute('nonce', 'string', '', false);
-        $this->registerTagAttribute('referrerpolicy', 'string', '', false);
-        $this->registerTagAttribute('src', 'string', '', false);
-        $this->registerTagAttribute('type', 'string', '', false);
+        $this->registerTagAttribute('async', 'bool', 'Define that the script will be fetched in parallel to parsing and evaluation.', false);
+        $this->registerTagAttribute('crossorigin', 'string', 'Define how to handle crossorigin requests.', false);
+        $this->registerTagAttribute('defer', 'bool', 'Define that the script is meant to be executed after the document has been parsed.', false);
+        $this->registerTagAttribute('integrity', 'string', 'Define base64-encoded cryptographic hash of the resource that allows browsers to verify what they fetch.', false);
+        $this->registerTagAttribute('nomodule', 'bool', 'Define that the script should not be executed in browsers that support ES2015 modules.', false);
+        $this->registerTagAttribute('nonce', 'string', 'Define a cryptographic nonce (number used once) used to whitelist inline styles in a style-src Content-Security-Policy.', false);
+        $this->registerTagAttribute('referrerpolicy', 'string', 'Define which referrer is sent when fetching the resource.', false);
+        $this->registerTagAttribute('src', 'string', 'Define the URI of the external resource.', false);
+        $this->registerTagAttribute('type', 'string', 'Define the MIME type (usually \'text/javascript\').', false);
         $this->registerArgument(
             'identifier',
             'string',
-            'Use this identifier within templates to only inject your JS once, even though it is added multiple times',
+            'Use this identifier within templates to only inject your JS once, even though it is added multiple times.',
             true
         );
         $this->registerArgument(

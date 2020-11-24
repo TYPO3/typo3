@@ -89,15 +89,15 @@ class TypolinkViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
-        $this->registerArgument('target', 'string', '', false, '');
-        $this->registerArgument('class', 'string', '', false, '');
-        $this->registerArgument('title', 'string', '', false, '');
+        $this->registerArgument('target', 'string', 'Define where to display the linked URL', false, '');
+        $this->registerArgument('class', 'string', 'Define classes for the link element', false, '');
+        $this->registerArgument('title', 'string', 'Define the title for the link element', false, '');
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
-        $this->registerArgument('additionalParams', 'string', '', false, '');
-        $this->registerArgument('additionalAttributes', 'array', '', false, []);
-        $this->registerArgument('addQueryString', 'bool', '', false, false);
-        $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
-        $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
+        $this->registerArgument('additionalParams', 'string', 'Additional query parameters to be attached to the resulting URL', false, '');
+        $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes to be added directly to the resulting HTML tag', false, []);
+        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
+        $this->registerArgument('addQueryStringMethod', 'string', 'Method to use when keeping query parameters (only active if addQueryString is set)', false, 'GET');
+        $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
         $this->registerArgument('parts-as', 'string', 'Variable name containing typoLink parts (if any)', false, 'typoLinkParts');
     }
