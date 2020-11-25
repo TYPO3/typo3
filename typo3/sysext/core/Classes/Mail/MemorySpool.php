@@ -113,10 +113,6 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Logge
 
     public function __toString(): string
     {
-        $result = '';
-        foreach ($this->queuedMessages as $sentMessage) {
-            $result .= $sentMessage->toString() . "\n";
-        }
-        return $result;
+        return 'MemorySpool';
     }
 }

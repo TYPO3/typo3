@@ -251,17 +251,6 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
 
     public function __toString(): string
     {
-        $result = '';
-        $directoryIterator = new DirectoryIterator($this->path);
-        foreach ($directoryIterator as $file) {
-            $file = (string)$file->getRealPath();
-
-            if (substr($file, -8) != '.message') {
-                continue;
-            }
-
-            $result .= (string)file_get_contents($file) . "\n";
-        }
-        return $result;
+        return 'FileSpool:' . $this->path;
     }
 }
