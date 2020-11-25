@@ -34,3 +34,10 @@ services:
         identifier: 'form-framework/update-content'
         method: 'onPreFileSetContents'
         event: TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent
+
+  lowlevel.configuration.module.provider.formyamlconfiguration:
+    class: 'TYPO3\CMS\Form\ConfigurationModuleProvider\FormYamlProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'formYamlConfiguration'
+        after: 'eventListeners'

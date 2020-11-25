@@ -52,6 +52,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'sys_note',
             'scheduler',
             'tstemplate',
+            'lowlevel'
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide'

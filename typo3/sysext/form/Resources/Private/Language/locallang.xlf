@@ -118,6 +118,10 @@
             <trans-unit id="upload.error.150530348" resname="upload.error.150530348" xml:space="preserve">
                 <source>Upload failed.</source>
             </trans-unit>
+
+            <trans-unit id="form.configuration.module.provider" resname="form.configuration.module.provider" xml:space="preserve">
+                <source>Form: YAML Configuration</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

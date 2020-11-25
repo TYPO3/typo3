@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Lowlevel;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
 
 /**
  * @internal
@@ -39,6 +40,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getConfigurationController(ContainerInterface $container): Controller\ConfigurationController
     {
-        return self::new($container, Controller\ConfigurationController::class, [$container]);
+        return self::new(
+            $container,
+            Controller\ConfigurationController::class,
+            [$container->get(ProviderRegistry::class)]
+        );
     }
 }
