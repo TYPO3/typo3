@@ -275,7 +275,12 @@ class NewContentElementController
                         $url = $this->uriBuilder->buildUriFromRoute('tce_db', $urlParams);
                         $aOnClick = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . '; return false';
                     }
-                    $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
+
+                    $icon = $this->moduleTemplate->getIconFactory()->getIcon(
+                        ($wInfo['iconIdentifier'] ?? ''),
+                        Icon::SIZE_DEFAULT,
+                        ($wInfo['iconOverlay'] ?? '')
+                    )->render();
 
                     $this->menuItemView->assignMultiple([
                         'onClickEvent' => $onClickEvent,
