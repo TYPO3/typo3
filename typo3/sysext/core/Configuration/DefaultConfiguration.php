@@ -1149,7 +1149,6 @@ return [
         'lockIPv6' => 0,
         'sessionTimeout' => 28800,  // a backend user logged in for 8 hours
         'IPmaskList' => '',
-        'lockBeUserToDBmounts' => true,
         'lockSSL' => false,
         'lockSSLPort' => 0,
         'enabledBeUserIPLock' => true,

@@ -365,8 +365,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * The point is that this will add the security that a user can NEVER touch parts outside his mounted
      * pages in the page tree. This is otherwise possible if the raw page permissions allows for it.
      * So this security check just makes it easier to make safe user configurations.
-     * If the user is admin OR if this feature is disabled
-     * (fx. by setting TYPO3_CONF_VARS['BE']['lockBeUserToDBmounts']=0) then it returns "1" right away
+     * If the user is admin then it returns "1" right away
      * Otherwise the function will return the uid of the webmount which was first found in the rootline of the input page $id
      *
      * @param int|array $idOrRow Page ID or full page record to check
@@ -377,7 +376,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function isInWebMount($idOrRow, $readPerms = '', $exitOnError = 0)
     {
-        if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin()) {
+        if ($this->isAdmin()) {
             return 1;
         }
         $checkRec = [];

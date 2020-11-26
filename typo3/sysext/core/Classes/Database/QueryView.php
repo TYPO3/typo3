@@ -1055,7 +1055,7 @@ class QueryView
                         $queryBuilder->select(...$selectFields)
                             ->from($from_table)
                             ->orderBy('uid');
-                        if (!$this->backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+                        if (!$this->backendUserAuthentication->isAdmin()) {
                             $webMounts = $this->backendUserAuthentication->returnWebmounts();
                             $perms_clause = $this->backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
                             $webMountPageTree = '';

@@ -455,4 +455,9 @@ return [
             'Deprecation-92062-MigrateRecordListControllerHooksToAnPSR-14Event.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'lockBeUserToDBmounts\']' => [
+        'restFiles' => [
+            'Breaking-92940-GlobalOptionLockBeUserToDBmountsRemoved.rst',
+        ],
+    ],
 ];

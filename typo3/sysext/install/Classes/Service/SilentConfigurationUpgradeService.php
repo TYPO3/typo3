@@ -159,6 +159,8 @@ class SilentConfigurationUpgradeService
         'FE/IPmaskMountGroups',
         // #87301
         'SYS/cookieSecure',
+        // #92940
+        'BE/lockBeUserToDBmounts',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)

@@ -1261,7 +1261,7 @@ class QueryGenerator
                         $queryBuilder->select(...$selectFields)
                             ->from($from_table)
                             ->orderBy('uid');
-                        if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+                        if (!$backendUserAuthentication->isAdmin()) {
                             $webMounts = $backendUserAuthentication->returnWebmounts();
                             $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
                             $webMountPageTree = '';
@@ -2050,7 +2050,7 @@ class QueryGenerator
                         $queryBuilder->select(...$selectFields)
                             ->from($from_table)
                             ->orderBy('uid');
-                        if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+                        if (!$backendUserAuthentication->isAdmin()) {
                             $webMounts = $backendUserAuthentication->returnWebmounts();
                             $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
                             $webMountPageTree = '';
@@ -2694,7 +2694,7 @@ class QueryGenerator
             $queryBuilder->setMaxResults((int)$this->extFieldLists['queryLimit']);
         }
 
-        if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+        if (!$backendUserAuthentication->isAdmin()) {
             $webMounts = $backendUserAuthentication->returnWebmounts();
             $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
             $webMountPageTree = '';

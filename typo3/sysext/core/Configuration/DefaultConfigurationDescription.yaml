@@ -291,9 +291,6 @@ BE:
         IPmaskList:
             type: list
             description: 'Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP())</code>'
-        lockBeUserToDBmounts:
-            type: bool
-            description: 'If set, the backend user is allowed to work only within his page-mount. It''s advisable to leave this on because it makes security easy to manage.'
         lockSSL:
             type: bool
             description: 'If set, the backend can only be operated from an SSL-encrypted connection (https). A redirect to the SSL version of a URL will happen when a user tries to access non-https admin-urls'

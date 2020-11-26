@@ -51,7 +51,6 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
      */
     protected function setUp(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] = 1;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName'] = 'be_typo_user';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] = '';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'] = 4;
