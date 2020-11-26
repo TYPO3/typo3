@@ -22,7 +22,7 @@ An example implementation could look like this:
 .. code-block:: php
 
    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class]['makeSearchStringConstraints'][1313131313] =
-      \MyVendor\MySite\Hooks\DatabaseRecordListHook::class . '->makeSearchStringConstraints';
+      '\\MyVendor\\MySite\\Hooks\\DatabaseRecordListHook';
 
 
 :file:`EXT:my_site/Classes/Hooks/DatabaseRecordListHook.php`
