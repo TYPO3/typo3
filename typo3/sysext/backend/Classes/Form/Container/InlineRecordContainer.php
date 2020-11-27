@@ -208,6 +208,7 @@ class InlineRecordContainer extends AbstractContainer
                 'data-object-uid' => $record['uid'],
                 'data-object-id' => $objectId,
                 'data-object-id-hash' => $hashedObjectId,
+                'data-object-parent-group' => $domObjectId . '-' . $foreignTable,
                 'data-field-name' => $appendFormFieldNames,
                 'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
                 'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
