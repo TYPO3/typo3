@@ -67,9 +67,14 @@ class EmailLoginNotification
     public function emailAtLogin(array $parameters, BackendUserAuthentication $currentUser): void
     {
         $user = $parameters['user'];
+        $genericLoginWarning = $this->warningMode > 0 && !empty($this->warningEmailRecipient);
+        $userLoginNotification = ($currentUser->uc['emailMeAtLogin'] ?? null) && GeneralUtility::validEmail($user['email']);
+        if (!$genericLoginWarning && !$userLoginNotification) {
+            return;
+        }
         $this->request = $parameters['request'] ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
 
-        if ($this->warningMode > 0 && !empty($this->warningEmailRecipient)) {
+        if ($genericLoginWarning) {
             $prefix = $currentUser->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
             if ($this->warningMode & 1) {
                 // First bit: Send warning email on any login
@@ -80,7 +85,7 @@ class EmailLoginNotification
             }
         }
         // Trigger an email to the current BE user, if this has been enabled in the user configuration
-        if (($currentUser->uc['emailMeAtLogin'] ?? null) && GeneralUtility::validEmail($user['email'])) {
+        if ($userLoginNotification) {
             $this->sendEmail($user['email'], $currentUser);
         }
     }

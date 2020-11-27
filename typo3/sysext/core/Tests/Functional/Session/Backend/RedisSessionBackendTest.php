@@ -127,9 +127,9 @@ class RedisSessionBackendTest extends FunctionalTestCase
      */
     public function anonymousSessionDataIsStoredProperly()
     {
-        $record = $this->subject->set('randomSessionId', array_merge($this->testSessionRecord, ['ses_anonymous' => 1]));
+        $record = $this->subject->set('randomSessionId', array_merge($this->testSessionRecord, ['ses_userid' => 0]));
 
-        $expected = array_merge($this->testSessionRecord, ['ses_anonymous' => 1, 'ses_tstamp' => $GLOBALS['EXEC_TIME']]);
+        $expected = array_merge($this->testSessionRecord, ['ses_userid' => 0, 'ses_tstamp' => $GLOBALS['EXEC_TIME']]);
 
         self::assertEquals($record, $expected);
         self::assertSame($expected, $this->subject->get('randomSessionId'));
@@ -264,7 +264,7 @@ class RedisSessionBackendTest extends FunctionalTestCase
     {
         $GLOBALS['EXEC_TIME'] = 150;
         $authenticatedSession = array_merge($this->testSessionRecord, ['ses_id' => 'authenticatedSession']);
-        $anonymousSession = array_merge($this->testSessionRecord, ['ses_id' => 'anonymousSession', 'ses_anonymous' => 1]);
+        $anonymousSession = array_merge($this->testSessionRecord, ['ses_id' => 'anonymousSession', 'ses_userid' => 0]);
 
         $this->subject->set('authenticatedSession', $authenticatedSession);
         $this->subject->set('anonymousSession', $anonymousSession);

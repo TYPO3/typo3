@@ -730,4 +730,44 @@ return [
             'Breaking-92990-AbstractUserAuthentication-svConfigRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->id' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->hash_length' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->sessionTimeout' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->gc_time' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->gc_probability' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->newSessionID' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->sesData_change' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->lifetime' => [
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
 ];

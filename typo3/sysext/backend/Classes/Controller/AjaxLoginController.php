@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 
 /**
  * This is the ajax handler for backend login after timeout.
@@ -106,12 +107,10 @@ class AjaxLoginController
         } elseif (!isset($backendUser->user['uid'])) {
             $session['timed_out'] = true;
         } else {
-            $backendUser->fetchUserSession(true);
-            $ses_tstamp = $backendUser->user['ses_tstamp'];
-            $timeout = $backendUser->sessionTimeout;
+            $sessionManager = UserSessionManager::create('BE');
             // If 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
             // 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
-            $session['will_time_out'] = $GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120;
+            $session['will_time_out'] = $sessionManager->willExpire($backendUser->getSession(), 120);
         }
         return new JsonResponse(['login' => $session]);
     }

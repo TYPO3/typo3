@@ -6998,7 +6998,7 @@ class DataHandler implements LoggerAwareInterface
             RecordHistoryStore::class,
             RecordHistoryStore::USER_BACKEND,
             $this->BE_USER->user['uid'],
-            $this->BE_USER->user['ses_backuserid'] ?? null,
+            (int)$this->BE_USER->getOriginalUserIdWhenInSwitchUserMode(),
             $GLOBALS['EXEC_TIME'],
             $this->BE_USER->workspace
         );

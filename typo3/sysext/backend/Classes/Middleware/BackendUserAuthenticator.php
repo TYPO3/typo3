@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -85,6 +86,8 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             // Re-setting the user and take the workspace from the user object now
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
             $response = $handler->handle($request);
+
+            $this->sessionGarbageCollection();
         } catch (ImmediateResponseException $e) {
             $response = $this->enrichResponseWithHeadersAndCookieInformation(
                 $e->getResponse(),
@@ -121,6 +124,14 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // accessing the TYPO3 Backend
         $response = $this->applyHeadersToResponse($response);
         return $response;
+    }
+
+    /**
+     * Garbage collection for be_sessions (with a probability)
+     */
+    protected function sessionGarbageCollection(): void
+    {
+        UserSessionManager::create('BE')->collectGarbage();
     }
 
     /**

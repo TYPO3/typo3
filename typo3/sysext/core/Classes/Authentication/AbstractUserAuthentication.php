@@ -33,9 +33,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
-use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
-use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
-use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Session\UserSession;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -135,16 +134,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $formfield_status = '';
 
     /**
-     * Session timeout (on the server)
-     *
-     * If >0: session-timeout in seconds.
-     * If <=0: Instant logout after login.
-     *
-     * @var int
-     */
-    public $sessionTimeout = 0;
-
-    /**
      * Lifetime for the session-cookie (on the client)
      *
      * If >0: permanent cookie with given lifetime
@@ -153,21 +142,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      * @var int
      */
-    public $lifetime = 0;
-
-    /**
-     * GarbageCollection
-     * Purge all server session data older than $gc_time seconds.
-     * if $this->sessionTimeout > 0, then the session timeout is used instead.
-     * @var int
-     */
-    public $gc_time = 86400;
-
-    /**
-     * Probability for garbage collection to be run (in percent)
-     * @var int
-     */
-    public $gc_probability = 1;
+    protected $lifetime = 0;
 
     /**
      * Decides if the writelog() function is called at login and logout
@@ -188,16 +163,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $sendNoCacheHeaders = true;
 
     /**
-     * The ident-hash is normally 32 characters and should be!
-     * But if you are making sites for WAP-devices or other low-bandwidth stuff,
-     * you may shorten the length.
-     * Never let this value drop below 6!
-     * A length of 6 would give you more than 16 mio possibilities.
-     * @var int
-     */
-    public $hash_length = 32;
-
-    /**
      * If set, the user-record must be stored at the page defined by $checkPid_value
      * @var bool
      */
@@ -210,13 +175,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $checkPid_value = 0;
 
     /**
-     * session_id (MD5-hash)
-     * @var string
-     * @internal
-     */
-    public $id;
-
-    /**
      * Will be set to TRUE if the login session is actually written during auth-check.
      * @var bool
      */
@@ -227,12 +185,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @internal
      */
     public $user;
-
-    /**
-     * Will be set to TRUE if a new session ID was created
-     * @var bool
-     */
-    public $newSessionID = false;
 
     /**
      * Will force the session cookie to be set every time (lifetime must be 0)
@@ -257,23 +209,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public $uc;
 
-    /**
-     * @var IpLocker
-     */
-    protected $ipLocker;
+    protected ?UserSession $userSession;
 
-    /**
-     * @var SessionBackendInterface
-     */
-    protected $sessionBackend;
-
-    /**
-     * Holds deserialized data from session records.
-     * 'Reserved' keys are:
-     *   - 'sys': Reserved for TypoScript standard code.
-     * @var array
-     */
-    protected $sessionData = [];
+    protected UserSessionManager $userSessionManager;
 
     /**
      * If set, this cookie will be set to the response.
@@ -289,20 +227,24 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function __construct()
     {
-        // If there is a custom session timeout, use this instead of the 1d default gc time.
-        if ($this->sessionTimeout > 0) {
-            $this->gc_time = $this->sessionTimeout;
-        }
         // Backend or frontend login - used for auth services
         if (empty($this->loginType)) {
             throw new Exception('No loginType defined, must be set explicitly by subclass', 1476045345);
         }
+        $this->lifetime = (int)($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lifetime'] ?? 0);
+    }
 
-        $this->ipLocker = GeneralUtility::makeInstance(
-            IpLocker::class,
-            $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockIP'],
-            $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockIPv6']
-        );
+    /**
+     * Currently needed for various unit tests, until start() and checkAuthentication() methods
+     * are smaller and extracted from this class.
+     *
+     * @param UserSessionManager|null $userSessionManager
+     * @internal
+     */
+    public function initializeUserSessionManager(?UserSessionManager $userSessionManager = null): void
+    {
+        $this->userSessionManager = $userSessionManager ?? UserSessionManager::create($this->loginType);
+        $this->userSession = $this->userSessionManager->createAnonymousSession();
     }
 
     /**
@@ -317,17 +259,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function start()
     {
         $this->logger->debug('## Beginning of auth logging.');
-        $this->newSessionID = false;
         // Make certain that NO user is set initially
         $this->user = null;
-        // sessionID is set to ses_id if cookie is present. Otherwise a new session will start
-        $this->id = $this->getCookie($this->name);
 
-        // If new session or client tries to fix session...
-        if (!$this->isExistingSessionRecord($this->id)) {
-            $this->id = $this->createSessionId();
-            $this->newSessionID = true;
+        if (!isset($this->userSessionManager)) {
+            $this->initializeUserSessionManager();
         }
+        $this->userSession = $this->userSessionManager->createFromGlobalCookieOrAnonymous($this->name);
 
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
         // the user with the session. $this->user[uid] may be used to write log...
@@ -342,10 +280,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 'pObj' => $this,
             ];
             GeneralUtility::callUserFunction($funcName, $_params, $this);
-        }
-        // If we're lucky we'll get to clean up old sessions
-        if (random_int(0, mt_getrandmax()) % 100 <= $this->gc_probability) {
-            $this->gc();
         }
     }
 
@@ -383,9 +317,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Use the secure option when the current request is served by a secure connection:
             // SameSite "none" needs the secure option (only allowed on HTTPS)
             $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || GeneralUtility::getIndpEnv('TYPO3_SSL');
+            $sessionId = $this->userSession->getIdentifier();
             $this->setCookie = new Cookie(
                 $this->name,
-                $this->id,
+                $sessionId,
                 $cookieExpire,
                 $cookiePath,
                 $cookieDomain,
@@ -396,7 +331,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             );
             $this->logger->debug(
                 ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ')
-                . $this->id . ($cookieDomain ? ', ' . $cookieDomain : '')
+                . $sessionId . ($cookieDomain ? ', ' . $cookieDomain : '')
             );
         }
     }
@@ -450,7 +385,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function isSetSessionCookie()
     {
-        return ($this->newSessionID || $this->forceSetCookie) && $this->lifetime == 0;
+        return ($this->userSession->isNew() || $this->forceSetCookie) && $this->lifetime === 0;
     }
 
     /**
@@ -507,7 +442,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
             }
-            $this->logger->info('User logged out. Id: ' . $this->id);
+            $this->logger->info('User logged out. Id: ' . $this->userSession->getIdentifier());
             $this->logoff();
         }
         // Determine whether we need to skip session update.
@@ -515,13 +450,20 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $skipSessionUpdate = (bool)GeneralUtility::_GP('skipSessionUpdate');
         $haveSession = false;
         $anonymousSession = false;
-        if (!$this->newSessionID) {
-            // Read user session
-            $authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
-            $haveSession = is_array($authInfo['userSession']);
-            if ($haveSession && !empty($authInfo['userSession']['ses_anonymous'])) {
-                $anonymousSession = true;
+        if (!$this->userSession->isNew()) {
+            // Read user data if this is bound to a user
+            // However, if the user data is not valid, or the session has timeed out we'll recreate a new anonymous session
+            if ($this->userSession->getUserId() > 0) {
+                $authInfo['user'] = $this->fetchValidUserFromSessionOrDestroySession($skipSessionUpdate);
+                if (is_array($authInfo['user'])) {
+                    $authInfo['userSession'] = $authInfo['user'];
+                } else {
+                    $authInfo['userSession'] = false;
+                }
             }
+            $authInfo['session'] = $this->userSession;
+            $haveSession = !$this->userSession->isNew();
+            $anonymousSession = $haveSession && $this->userSession->isAnonymous();
         }
 
         // Active login (eg. with login form).
@@ -640,21 +582,21 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // If user is authenticated a valid user is in $tempuser
         if ($authenticated) {
             // Insert session record if needed:
-            if (!$haveSession || $anonymousSession || $tempuser['ses_id'] != $this->id && $tempuser['uid'] != $authInfo['userSession']['ses_userid']) {
-                $sessionData = $this->createUserSession($tempuser);
+            if (!$haveSession
+                || $anonymousSession
+                || $tempuser['uid'] !== $this->userSession->getUserId()
+            ) {
+                $sessionData = $this->userSession->getData();
+                // Create a new session with a fixated user
+                $this->userSession = $this->createUserSession($tempuser);
 
                 // Preserve session data on login
-                if ($anonymousSession) {
-                    $sessionData = $this->getSessionBackend()->update(
-                        $this->id,
-                        ['ses_data' => $authInfo['userSession']['ses_data']]
-                    );
+                if ($anonymousSession || $haveSession) {
+                    $this->userSession->overrideData($sessionData);
                 }
 
-                $this->user = array_merge(
-                    $tempuser,
-                    $sessionData
-                );
+                $this->user = array_merge($this->user ?? [], $tempuser);
+
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 if (is_array($this->user)) {
@@ -664,22 +606,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     ]);
                 }
             } elseif ($haveSession) {
-                // Validate the session ID and promote it
-                // This check can be removed in TYPO3 v11
-                if ($this->getSessionBackend() instanceof HashableSessionBackendInterface && !empty($authInfo['userSession']['ses_id'] ?? '')) {
-                    // The session is stored in plaintext, promote it
-                    if ($authInfo['userSession']['ses_id'] === $this->id) {
-                        $authInfo['userSession'] = $this->getSessionBackend()->update(
-                            $this->id,
-                            ['ses_data' => $authInfo['userSession']['ses_data']]
-                        );
-                    }
-                }
                 // if we come here the current session is for sure not anonymous as this is a pre-condition for $authenticated = true
                 $this->user = $authInfo['userSession'];
             }
 
-            if ($activeLogin && !$this->newSessionID) {
+            if ($activeLogin && !$this->userSession->isNew()) {
                 $this->regenerateSessionId();
             }
 
@@ -693,11 +624,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->logger->debug('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR'));
             }
         } else {
-            // User was not authenticated, so we should reuse the existing anonymous session
-            if ($anonymousSession) {
-                $this->user = $authInfo['userSession'];
-            }
-
             // Mark the current login attempt as failed
             if (empty($tempuserArr) && $activeLogin) {
                 $this->logger->debug('Login failed', [
@@ -741,10 +667,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Creates a new session ID.
      *
      * @return string The new session ID
+     * @deprecated since TYPO3 v11.0, will be removed in TYPO3 v12, is kept because it is used in Testing Framework
      */
     public function createSessionId()
     {
-        return GeneralUtility::makeInstance(Random::class)->generateRandomHexString($this->hash_length);
+        return GeneralUtility::makeInstance(Random::class)->generateRandomHexString(32);
     }
 
     /**
@@ -772,25 +699,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Regenerate the session ID and transfer the session to new ID
      * Call this method whenever a user proceeds to a higher authorization level
      * e.g. when an anonymous session is now authenticated.
-     *
-     * @param array $existingSessionRecord If given, this session record will be used instead of fetching again
-     * @param bool $anonymous If true session will be regenerated as anonymous session
      */
-    protected function regenerateSessionId(array $existingSessionRecord = [], bool $anonymous = false)
+    protected function regenerateSessionId()
     {
-        if (empty($existingSessionRecord)) {
-            $existingSessionRecord = $this->getSessionBackend()->get($this->id);
-        }
-
-        // Update session record with new ID
-        $oldSessionId = $this->id;
-        $this->id = $this->createSessionId();
-        $updatedSession = $this->getSessionBackend()->set($this->id, $existingSessionRecord);
-        $this->sessionData = unserialize($updatedSession['ses_data']);
-        // Merge new session data into user/session array
-        $this->user = array_merge($this->user ?? [], $updatedSession);
-        $this->getSessionBackend()->remove($oldSessionId);
-        $this->newSessionID = true;
+        $this->userSession = $this->userSessionManager->regenerateSession($this->userSession->getIdentifier());
     }
 
     /*************************
@@ -803,20 +715,19 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Creates a user session record and returns its values.
      *
      * @param array $tempuser User data array
-     *
-     * @return array The session data for the newly created session.
+     * @return UserSession The session data for the newly created session.
      */
-    public function createUserSession($tempuser)
+    public function createUserSession(array $tempuser): UserSession
     {
-        $this->logger->debug('Create session ses_id = ' . $this->id);
-        // Delete any session entry first
-        $this->getSessionBackend()->remove($this->id);
-        // Re-create session entry
-        $sessionRecord = $this->getNewSessionRecord($tempuser);
-        $sessionRecord = $this->getSessionBackend()->set($this->id, $sessionRecord);
+        // Needed for testing framework
+        if (!isset($this->userSessionManager)) {
+            $this->initializeUserSessionManager();
+        }
+        $tempUserId = (int)($tempuser[$this->userid_column] ?? 0);
+        $session = $this->userSessionManager->elevateToFixatedUserSession($this->userSession, $tempUserId);
         // Updating lastLogin_column carrying information about last login.
-        $this->updateLoginTimestamp($tempuser[$this->userid_column]);
-        return $sessionRecord;
+        $this->updateLoginTimestamp($tempUserId);
+        return $session;
     }
 
     /**
@@ -833,74 +744,67 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 [$this->lastLogin_column => $GLOBALS['EXEC_TIME']],
                 [$this->userid_column => $userId]
             );
+            $this->user[$this->lastLogin_column] = $GLOBALS['EXEC_TIME'];
         }
-    }
-
-    /**
-     * Returns a new session record for the current user for insertion into the DB.
-     * This function is mainly there as a wrapper for inheriting classes to override it.
-     *
-     * @param array $tempuser
-     * @return array User session record
-     */
-    public function getNewSessionRecord($tempuser)
-    {
-        $sessionIpLock = $this->ipLocker->getSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'));
-
-        return [
-            'ses_id' => $this->id,
-            'ses_iplock' => $sessionIpLock,
-            'ses_userid' => $tempuser[$this->userid_column] ?? 0,
-            'ses_tstamp' => $GLOBALS['EXEC_TIME'],
-            'ses_data' => '',
-        ];
     }
 
     /**
      * Read the user session from db.
      *
      * @param bool $skipSessionUpdate
-     * @return array|bool User session data, false if $this->id does not represent valid session
+     * @return array|bool User session data, false if $userSession->getIdentifier() does not represent valid session
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.
      */
     public function fetchUserSession($skipSessionUpdate = false)
     {
-        $this->logger->debug('Fetch session ses_id = ' . $this->id);
         try {
-            $sessionRecord = $this->getSessionBackend()->get($this->id);
+            $session = $this->userSessionManager->createSessionFromStorage($this->userSession->getIdentifier());
         } catch (SessionNotFoundException $e) {
             return false;
         }
-
-        $this->sessionData = unserialize($sessionRecord['ses_data']);
+        $this->userSession = $session;
         // Session is anonymous so no need to fetch user
-        if (!empty($sessionRecord['ses_anonymous'])) {
-            return $sessionRecord;
+        if ($session->isAnonymous()) {
+            return $session->toArray();
         }
 
         // Fetch the user from the DB
-        $userRecord = $this->getRawUserByUid((int)$sessionRecord['ses_userid']);
-        if ($userRecord) {
-            $userRecord = array_merge($sessionRecord, $userRecord);
-            // A user was found
-            $userRecord['ses_tstamp'] = (int)$userRecord['ses_tstamp'];
-            $userRecord['is_online'] = (int)$userRecord['ses_tstamp'];
+        $userRecord = $this->fetchValidUserFromSessionOrDestroySession($skipSessionUpdate);
+        return is_array($userRecord) ? $userRecord : false;
+    }
 
-            // If sessionTimeout > 0 (TRUE) and current time has not exceeded the latest sessions-time plus the timeout in seconds then accept user
-            // Use a gracetime-value to avoid updating a session-record too often
-            if ($this->sessionTimeout > 0 && $GLOBALS['EXEC_TIME'] < $userRecord['ses_tstamp'] + $this->sessionTimeout) {
-                $sessionUpdateGracePeriod = 61;
-                if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($userRecord['ses_tstamp'] + $sessionUpdateGracePeriod)) {
-                    // Update the session timestamp by writing a dummy update. (Backend will update the timestamp)
-                    $updatesSession = $this->getSessionBackend()->update($this->id, []);
-                    $userRecord = array_merge($userRecord, $updatesSession);
+    /**
+     * If the session is bound to a user, this method fetches the user record, and returns it.
+     * If the session has a timeout, the session date is extended if needed. Also the ìs_online
+     * flag is updated for the user.
+     *
+     * However, if the session has expired the session is removed and the request is treated as an anonymous session.
+     *
+     * @param bool $skipSessionUpdate
+     * @return array|null
+     */
+    protected function fetchValidUserFromSessionOrDestroySession(bool $skipSessionUpdate = false): ?array
+    {
+        if ($this->userSession->isAnonymous()) {
+            return null;
+        }
+        // Fetch the user from the DB
+        $userRecord = $this->getRawUserByUid($this->userSession->getUserId());
+        if ($userRecord) {
+            // A user was found
+            $userRecord['is_online'] = $this->userSession->getLastUpdated();
+            if (!$this->userSessionManager->hasExpired($this->userSession)) {
+                if (!$skipSessionUpdate) {
+                    $this->userSessionManager->updateSessionTimestamp($this->userSession);
                 }
             } else {
                 // Delete any user set...
                 $this->logoff();
                 $userRecord = false;
+                $this->userSession = $this->userSessionManager->createAnonymousSession();
             }
         }
-        return $userRecord;
+        return is_array($userRecord) ? $userRecord : null;
     }
 
     /**
@@ -921,7 +825,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function logoff()
     {
-        $this->logger->debug('logoff: ses_id = ' . $this->id);
+        $this->logger->debug('logoff: ses_id = ' . $this->userSession->getIdentifier());
 
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? [] as $_funcRef) {
@@ -945,10 +849,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function performLogoff()
     {
-        if ($this->id) {
-            $this->getSessionBackend()->remove($this->id);
+        if ($this->userSession) {
+            $this->userSessionManager->removeSession($this->userSession);
         }
-        $this->sessionData = [];
+        $this->userSession = $this->userSessionManager->createAnonymousSession();
         $this->user = null;
         if ($this->isCookieSet()) {
             $this->removeCookie($this->name);
@@ -973,31 +877,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $cookiePath,
             $cookieDomain
         );
-    }
-
-    /**
-     * Determine whether there's an according session record to a given session_id.
-     * Don't care if session record is still valid or not.
-     *
-     * @param string $id Claimed Session ID
-     * @return bool Returns TRUE if a corresponding session was found in the database
-     */
-    public function isExistingSessionRecord($id)
-    {
-        if (empty($id)) {
-            return false;
-        }
-        try {
-            $sessionRecord = $this->getSessionBackend()->get($id);
-            if (empty($sessionRecord)) {
-                return false;
-            }
-            // If the session does not match the current IP lock, it should be treated as invalid
-            // and a new session should be created.
-            return $this->ipLocker->validateRemoteAddressAgainstSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), $sessionRecord['ses_iplock']);
-        } catch (SessionNotFoundException $e) {
-            return false;
-        }
     }
 
     /**
@@ -1107,7 +986,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function pushModuleData($module, $data, $noSave = 0)
     {
         $this->uc['moduleData'][$module] = $data;
-        $this->uc['moduleSessionID'][$module] = $this->id;
+        $this->uc['moduleSessionID'][$module] = $this->userSession->getIdentifier();
         if (!$noSave) {
             $this->writeUC();
         }
@@ -1122,7 +1001,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getModuleData($module, $type = '')
     {
-        if ($type !== 'ses' || (isset($this->uc['moduleSessionID'][$module]) && $this->uc['moduleSessionID'][$module] == $this->id)) {
+        if ($type !== 'ses' || (isset($this->uc['moduleSessionID'][$module]) && $this->uc['moduleSessionID'][$module] == $this->userSession->getIdentifier())) {
             return $this->uc['moduleData'][$module];
         }
         return null;
@@ -1137,7 +1016,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getSessionData($key)
     {
-        return $this->sessionData[$key] ?? null;
+        return $this->userSession->get($key);
     }
 
     /**
@@ -1149,10 +1028,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function setSessionData($key, $data)
     {
-        if (empty($key)) {
-            throw new \InvalidArgumentException('Argument key must not be empty', 1484311516);
-        }
-        $this->sessionData[$key] = $data;
+        $this->userSession->set($key, $data);
     }
 
     /**
@@ -1164,14 +1040,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function setAndSaveSessionData($key, $data)
     {
-        $this->sessionData[$key] = $data;
-        $this->user['ses_data'] = serialize($this->sessionData);
-        $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->id);
-        $updatedSession = $this->getSessionBackend()->update(
-            $this->id,
-            ['ses_data' => $this->user['ses_data']]
-        );
-        $this->user = array_merge($this->user ?? [], $updatedSession);
+        $this->userSession->set($key, $data);
+        $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->userSession->getIdentifier());
+        $this->userSessionManager->updateSession($this->userSession);
     }
 
     /*************************
@@ -1276,16 +1147,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Garbage collector, removing old expired sessions.
-     *
-     * @internal
-     */
-    public function gc()
-    {
-        $this->getSessionBackend()->collectGarbage($this->gc_time);
-    }
-
-    /**
      * DUMMY: Writes to log database table (in some extension classes)
      *
      * @param int $type denotes which module that has submitted the entry. This is the current list:  1=tce_db; 2=tce_file; 3=system (eg. sys_history save); 4=modules; 254=Personal settings changed; 255=login / out action: 1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
@@ -1368,33 +1229,54 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * @internal
-     * @return string
+     * @return UserSession
      */
-    public function getSessionId(): string
+    public function getSession(): UserSession
     {
-        return $this->id;
+        return $this->userSession;
     }
 
-    /**
-     * @internal
-     * @return string
-     */
-    public function getLoginType(): string
+    public function __isset(string $propertyName): bool
     {
-        return $this->loginType;
-    }
-
-    /**
-     * Returns initialized session backend. Returns same session backend if called multiple times
-     *
-     * @return SessionBackendInterface
-     */
-    protected function getSessionBackend()
-    {
-        if (!isset($this->sessionBackend)) {
-            $this->sessionBackend = GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($this->loginType);
+        switch ($propertyName) {
+            case 'id':
+                trigger_error('Property id is removed in v11.', E_USER_DEPRECATED);
+                return isset($this->userSession);
         }
-        return $this->sessionBackend;
+        return isset($this->propertyName);
+    }
+
+    public function __set(string $propertyName, $propertyValue)
+    {
+        switch ($propertyName) {
+            case 'id':
+                if (!isset($this->userSessionManager)) {
+                    $this->initializeUserSessionManager();
+                }
+                $this->userSession = UserSession::createNonFixated($propertyValue);
+                // No deprecation due to adaptions in testing framework to remove ->id = ...
+                break;
+        }
+        $this->$propertyName = $propertyValue;
+    }
+
+    public function __get(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'id':
+                trigger_error('Property id is marked as protected now. Use ->getSession()->getIdentifier().', E_USER_DEPRECATED);
+                return $this->getSession()->getIdentifier();
+        }
+        return $this->$propertyName;
+    }
+
+    public function __unset(string $propertyName): void
+    {
+        switch ($propertyName) {
+            case 'id':
+                trigger_error('Property id is marked as protected now. Use ->getSession()->getIdentifier().', E_USER_DEPRECATED);
+                return;
+        }
+        unset($this->$propertyName);
     }
 }

@@ -15,13 +15,16 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
+use Prophecy\Argument;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -308,14 +311,15 @@ class PageRendererTest extends FunctionalTestCase
      */
     public function pageRendererMergesRequireJsPackagesOnConsecutiveCalls(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['session']['BE'] = [
-            'backend'  => DatabaseSessionBackend::class,
-            'options' => [
-                'table' => 'be_sessions',
-            ],
-        ];
+        $sessionBackend = $this->prophesize(SessionBackendInterface::class);
+        $sessionBackend->update(Argument::cetera())->willReturn([]);
+        $userSessionManager = new UserSessionManager(
+            $sessionBackend->reveal(),
+            86400,
+            $this->prophesize(IpLocker::class)->reveal()
+        );
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['BE_USER']->id = md5('abc');
+        $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);
         $GLOBALS['BE_USER']->user = ['uid' => 1];
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
 

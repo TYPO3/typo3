@@ -19,19 +19,22 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
-use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
-use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Session\UserSession;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -74,22 +77,25 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionRecord = [
             'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
             'ses_data' => serialize(['foo' => 'bar']),
-            'ses_anonymous' => true,
+            'ses_tstamp' => time(),
+            'ses_userid' => 0,
             'ses_iplock' => '[DISABLED]',
         ];
         $sessionBackendProphecy->get($uniqueSessionId)->shouldBeCalled()->willReturn($sessionRecord);
-        $sessionManagerProphecy = $this->prophesize(SessionManager::class);
-        GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
-        $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
 
+        $userSessionManager = new UserSessionManager(
+            $sessionBackendProphecy->reveal(),
+            86400,
+            new IpLocker(0, 0)
+        );
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());
-        $subject->gc_probability = -1;
+        $subject->initializeUserSessionManager($userSessionManager);
         $subject->start();
 
-        self::assertArrayNotHasKey('uid', $subject->user);
+        self::assertIsNotArray($subject->user);
         self::assertEquals('bar', $subject->getSessionData('foo'));
-        self::assertEquals($uniqueSessionId, $subject->id);
+        self::assertEquals($uniqueSessionId, $subject->getSession()->getIdentifier());
     }
 
     /**
@@ -108,25 +114,17 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
-        // Main session backend setup
-        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
-        $sessionManagerProphecy = $this->prophesize(SessionManager::class);
-        GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
-        $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
-        // @todo Session handling is not used/evaluated at all in this test
-
+        $userSessionManager = $this->prophesize(UserSessionManager::class);
+        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn(UserSession::createNonFixated('newSessionId'));
         // Verify new session id is generated
-        $randomProphecy = $this->prophesize(Random::class);
-        $randomProphecy->generateRandomHexString(32)->shouldBeCalled()->willReturn('newSessionId');
-        GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
-
+        $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('newSessionId'));
         // set() and update() shouldn't be called since no session cookie is set
-        $sessionBackendProphecy->set(Argument::cetera())->shouldNotBeCalled();
-        $sessionBackendProphecy->update(Argument::cetera())->shouldNotBeCalled();
+        $userSessionManager->elevateToFixatedUserSession(Argument::cetera())->shouldNotBeCalled();
+        $userSessionManager->updateSession(Argument::cetera())->shouldNotBeCalled();
 
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());
-        $subject->gc_probability = -1;
+        $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->start();
         $subject->storeSessionData();
     }
@@ -140,7 +138,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function canSetAndUnsetSessionKey()
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
-        $_COOKIE['fe_typo_user'] = $uniqueSessionId;
 
         // This setup fakes the "getAuthInfoArray() db call
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
@@ -153,28 +150,32 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
-        // Main session backend setup
-        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionRecord = [
             'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
             'ses_data' => serialize(['foo' => 'bar']),
-            'ses_anonymous' => true,
+            'ses_userid' => 0,
             'ses_iplock' => '[DISABLED]',
         ];
-        $sessionBackendProphecy->get($uniqueSessionId)->shouldBeCalled()->willReturn($sessionRecord);
-        $sessionManagerProphecy = $this->prophesize(SessionManager::class);
-        GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
-        $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
+        $userSession = UserSession::createFromRecord($sessionRecord['ses_id'], $sessionRecord);
+
+        // Main session backend setup
+        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
+        $userSessionManager = $this->prophesize(UserSessionManager::class);
+        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        // Verify new session id is generated
+        $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('newSessionId'));
+        // set() and update() shouldn't be called since no session cookie is set
+        // remove() should be called with given session id
+        $userSessionManager->isSessionPersisted(Argument::cetera())->shouldBeCalled()->willReturn(true);
+        $userSessionManager->removeSession(Argument::cetera())->shouldBeCalled();
 
         // set() and update() shouldn't be called since no session cookie is set
-        $sessionBackendProphecy->set(Argument::cetera())->shouldNotBeCalled();
-        $sessionBackendProphecy->update(Argument::cetera())->shouldNotBeCalled();
-        // remove() should be called with given session id
-        $sessionBackendProphecy->remove($uniqueSessionId)->shouldBeCalled();
+        $userSessionManager->elevateToFixatedUserSession(Argument::cetera())->shouldNotBeCalled();
+        $userSessionManager->updateSession(Argument::cetera())->shouldNotBeCalled();
 
         $subject = new FrontendUserAuthentication();
+        $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->setLogger(new NullLogger());
-        $subject->gc_probability = -1;
         $subject->start();
         $subject->setSessionData('foo', 'bar');
         $subject->removeSessionData();
@@ -189,8 +190,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function canSetSessionDataForAnonymousUser()
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
-        $_COOKIE['fe_typo_user'] = $uniqueSessionId;
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
         $currentTime = $GLOBALS['EXEC_TIME'];
 
         // This setup fakes the "getAuthInfoArray() db call
@@ -205,38 +204,37 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
-        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
-        $sessionBackendProphecy->get($uniqueSessionId)->shouldBeCalled()->willThrow(new SessionNotFoundException('testing', 1486676313));
-        $sessionManagerProphecy = $this->prophesize(SessionManager::class);
-        GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
-        $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
-
+        $userSession = UserSession::createNonFixated($uniqueSessionId);
+        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
+        $userSessionManager = $this->prophesize(UserSessionManager::class);
+        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->createAnonymousSession(Argument::cetera())->willReturn($userSession);
         // Verify new session id is generated
-        $randomProphecy = $this->prophesize(Random::class);
-        $randomProphecy->generateRandomHexString(32)->shouldBeCalled()->willReturn('newSessionId');
-        GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
+        // set() and update() shouldn't be called since no session cookie is set
+        // remove() should be called with given session id
+        $userSessionManager->isSessionPersisted(Argument::cetera())->shouldBeCalled()->willReturn(true);
+        $userSessionManager->removeSession(Argument::cetera())->shouldNotBeCalled();
 
         // set() and update() shouldn't be called since no session cookie is set
-        $sessionBackendProphecy->update(Argument::cetera())->shouldNotBeCalled();
-        $sessionBackendProphecy->get('newSessionId')->shouldBeCalled()->willThrow(new SessionNotFoundException('testing', 1486676314));
+        $userSessionManager->elevateToFixatedUserSession(Argument::cetera())->shouldNotBeCalled();
+        $userSessionManager->updateSession(Argument::cetera())->shouldBeCalled();
 
         // new session should be written
-        $sessionBackendProphecy->set(
-            'newSessionId',
-            [
-                'ses_id' => 'newSessionId',
-                'ses_iplock' => '[DISABLED]',
-                'ses_userid' => 0,
-                'ses_tstamp' => $currentTime,
-                'ses_data' => serialize(['foo' => 'bar']),
-                'ses_permanent' => 0,
-                'ses_anonymous' => 1 // sic!
-            ]
-        )->shouldBeCalled();
+        $sessionRecord = [
+            'ses_id' => 'newSessionId',
+            'ses_iplock' => '',
+            'ses_userid' => 0,
+            'ses_tstamp' => $currentTime,
+            'ses_data' => serialize(['foo' => 'bar']),
+            'ses_permanent' => 0
+        ];
+        $userSessionToBePersisted = UserSession::createFromRecord($uniqueSessionId, $sessionRecord, true);
+        $userSessionToBePersisted->set('foo', 'bar');
+        $userSessionManager->updateSession($userSessionToBePersisted)->shouldBeCalled();
 
         $subject = new FrontendUserAuthentication();
+        $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->setLogger(new NullLogger());
-        $subject->gc_probability = -1;
         $subject->start();
         self::assertEmpty($subject->getSessionData($uniqueSessionId));
         self::assertEmpty($subject->user);
@@ -250,7 +248,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     }
 
     /**
-     * Session data should be loaded when a session cookie is available and user user is authenticated
+     * Session data should be loaded when a session cookie is available and a user is authenticated
      *
      * @test
      */
@@ -272,23 +270,21 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
-        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
-        $sessionManagerProphecy = $this->prophesize(SessionManager::class);
-        GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
-        $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
-
-        // a valid session is returned
-        $sessionBackendProphecy->get($uniqueSessionId)->shouldBeCalled()->willReturn(
-            [
-                'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
-                'ses_userid' => 1,
-                'ses_iplock' => '[DISABLED]',
-                'ses_tstamp' => $currentTime,
-                'ses_data' => serialize(['foo' => 'bar']),
-                'ses_permanent' => 0,
-                'ses_anonymous' => 0 // sic!
-            ]
-        );
+        $sessionRecord = [
+            'ses_id' => $uniqueSessionId . self::NOT_CHECKED_INDICATOR,
+            'ses_userid' => 1,
+            'ses_iplock' => '[DISABLED]',
+            'ses_tstamp' => $currentTime,
+            'ses_data' => serialize(['foo' => 'bar']),
+            'ses_permanent' => 0
+        ];
+        $userSession = UserSession::createFromRecord($uniqueSessionId, $sessionRecord);
+        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
+        $userSessionManager = $this->prophesize(UserSessionManager::class);
+        $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
+        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->hasExpired($userSession)->willReturn(false);
+        $userSessionManager->updateSessionTimestamp($userSession)->shouldBeCalled();
 
         // Mock call to fe_users table and let it return a valid user row
         $connectionPoolFeUserProphecy = $this->prophesize(ConnectionPool::class);
@@ -317,8 +313,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         );
 
         $subject = new FrontendUserAuthentication();
+        $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->setLogger(new NullLogger());
-        $subject->gc_probability = -1;
         $subject->start();
 
         self::assertNotNull($subject->user);
@@ -343,32 +339,28 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
-        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
-        $sessionManagerProphecy = $this->prophesize(SessionManager::class);
-        GeneralUtility::setSingletonInstance(SessionManager::class, $sessionManagerProphecy->reveal());
-        $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
-
-        // no session exists, yet
-        $sessionBackendProphecy->get('newSessionId')->willThrow(new SessionNotFoundException('testing', 1486676358));
-        $sessionBackendProphecy->remove('newSessionId')->shouldBeCalled();
-
-        // Verify new session id is generated
-        $randomProphecy = $this->prophesize(Random::class);
-        $randomProphecy->generateRandomHexString(32)->shouldBeCalled()->willReturn('newSessionId');
-        GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
+        $userSession = UserSession::createNonFixated('newSessionId');
+        $elevatedUserSession = UserSession::createFromRecord('newSessionId', ['ses_userid' => 1], true);
+        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
+        $userSessionManager = $this->prophesize(UserSessionManager::class);
+        $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
+        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->removeSession($userSession)->shouldBeCalled();
+        $userSessionManager->elevateToFixatedUserSession(Argument::cetera())->shouldBeCalled()->willReturn($elevatedUserSession);
 
         // Mock the login data and auth services here since fully prophesize this is a lot of hassle
+        /** @var AccessibleObjectInterface|FrontendUserAuthentication $subject */
         $subject = $this->getAccessibleMock(
             FrontendUserAuthentication::class,
             [
                 'getLoginFormData',
                 'getAuthServices',
-                'createUserSession',
-                'getCookie',
+                'updateLoginTimestamp',
+                'setSessionCookie'
             ]
         );
         $subject->setLogger(new NullLogger());
-        $subject->gc_probability = -1;
+        $subject->initializeUserSessionManager($userSessionManager->reveal());
 
         // Mock a login attempt
         $subject->method('getLoginFormData')->willReturn([
@@ -386,13 +378,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $authServiceMock->method('authUser')->willReturn(200);
         // We need to wrap the array to something thats is \Traversable, in PHP 7.1 we can use traversable pseudo type instead
         $subject->method('getAuthServices')->willReturn(new \ArrayIterator([$authServiceMock]));
-
-        $subject->method('createUserSession')->willReturn([
-            'ses_id' => 'newSessionId'
-        ]);
-
-        $subject->method('getCookie')->willReturn(null);
-
         $subject->start();
         self::assertEquals('existingUserName', $subject->user['username']);
     }
@@ -411,7 +396,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $oldSessionRecord = [
             'ses_id' => 'oldSessionId',
             'ses_data' => serialize(['foo' => 'bar']),
-            'ses_anonymous' => 1,
+            'ses_userid' => 0,
             'ses_iplock' => 0,
         ];
 
@@ -422,7 +407,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             $oldSessionRecord,
             [
                 //ses_id is overwritten by the session backend
-                'ses_anonymous' => 0
+                'ses_userid' => 0
             ]
         );
 
@@ -460,10 +445,10 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // New session should be stored with with old values
         $this->subject->start();
 
-        self::assertEquals('newSessionId', $this->subject->id);
+        self::assertEquals('newSessionId', $this->subject->getSessionId());
         self::assertEquals($expectedUserId, $this->subject->user['uid']);
         $this->subject->setSessionData('foobar', 'baz');
-        self::assertArraySubset(['foo' => 'bar'], $this->subject->_get('sessionData'));
+        self::assertArraySubset(['foo' => 'bar'], $this->subject->getSession()->getData());
         self::assertTrue($this->subject->sesData_change);
     }
 
@@ -512,7 +497,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->subject->method('createSessionId')->willReturn('newSessionId');
 
         $expectedSessionRecord = [
-            'ses_anonymous' => 1,
+            'ses_userid' => 0,
             'ses_data' => serialize(['foo' => 'bar'])
         ];
 
@@ -521,7 +506,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionBackend->expects(self::at(2))->method('get')->willReturn(
             [
                 'ses_id' => 'newSessionId',
-                'ses_anonymous' => 1
+                'ses_userid' => 0
             ]
         );
 
@@ -530,7 +515,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             ->with('newSessionId', new \PHPUnit_Framework_Constraint_ArraySubset($expectedSessionRecord))
             ->willReturn([
                 'ses_id' => 'newSessionId',
-                'ses_anonymous' => 1,
+                'ses_userid' => 0,
                 'ses_data' => serialize(['foo' => 'bar']),
             ]);
 
@@ -592,7 +577,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->subject->start();
         // asset that session data is there
         self::assertNotEmpty($this->subject->user);
-        self::assertEquals(1, (int)$this->subject->user['ses_anonymous']);
+        self::assertEquals(0, (int)$this->subject->user['ses_userid']);
         self::assertEquals(['foo' => 'bar'], $this->subject->_get('sessionData'));
 
         self::assertEquals('newSessionId', $this->subject->id);

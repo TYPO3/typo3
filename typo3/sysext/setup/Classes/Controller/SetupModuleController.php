@@ -847,9 +847,7 @@ class SetupModuleController
 
         $backendUser = $this->getBackendUser();
         $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
-        $isCurrentUserInSystemMaintainerList = in_array((int)$backendUser->user['uid'], $systemMaintainers, true);
-        $isInSimulateUserMode = (int)$backendUser->user['ses_backuserid'] !== 0;
-        if ($isInSimulateUserMode && $isCurrentUserInSystemMaintainerList) {
+        if ($backendUser->getOriginalUserIdWhenInSwitchUserMode() && in_array((int)$backendUser->user['uid'], $systemMaintainers, true)) {
             // DataHandler denies changing password of system maintainer users in switch user mode.
             // Do not show the password fields is this case.
             $key = array_search('password', $allowedFields);

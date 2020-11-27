@@ -22,6 +22,7 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -29,6 +30,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,12 +64,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
         'deleteFolder' => false,
         'recursivedeleteFolder' => false
     ];
-
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'] = 4;
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIPv6'] = 8;
-    }
 
     /**
      * Tear down
@@ -104,12 +101,20 @@ class BackendUserAuthenticationTest extends UnitTestCase
             $formProtection->reveal()
         );
 
+        $sessionBackend = $this->prophesize(SessionBackendInterface::class);
+        $sessionBackend->remove(Argument::cetera())->willReturn(true);
+        $userSessionManager = new UserSessionManager(
+            $sessionBackend->reveal(),
+            86400,
+            new IpLocker(0, 0)
+        );
+
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $GLOBALS['BE_USER']->user = [
             'uid' => 4711,
-            'ses_backuserid' => 0,
         ];
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
+        $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);
 
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -118,6 +123,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject->setLogger(new NullLogger());
+        $subject->initializeUserSessionManager($userSessionManager);
         $subject->logoff();
     }
 

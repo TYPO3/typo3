@@ -61,6 +61,6 @@ class SwitchBackUserHook
         return ($authentication instanceof BackendUserAuthentication)
             && is_array($authentication->user)
             && (int)$authentication->user['uid'] > 0
-            && (int)$authentication->user['ses_backuserid'] > 0;
+            && $authentication->getOriginalUserIdWhenInSwitchUserMode();
     }
 }

@@ -7,7 +7,6 @@
 		<ses_userid>1</ses_userid>
 		<ses_tstamp>1777777777</ses_tstamp>
 		<ses_data></ses_data>
-		<ses_backuserid>0</ses_backuserid>
 	</be_sessions>
 	<be_sessions>
         <!-- hash_hmac('md5', 'ff83dfd81e20b34c27d3e97771a4525a', sha1('iAmInvalid' . 'core-session-backend')) -->
@@ -16,6 +15,5 @@
 		<ses_userid>2</ses_userid>
 		<ses_tstamp>1777777777</ses_tstamp>
 		<ses_data></ses_data>
-		<ses_backuserid>0</ses_backuserid>
 	</be_sessions>
 </dataset>

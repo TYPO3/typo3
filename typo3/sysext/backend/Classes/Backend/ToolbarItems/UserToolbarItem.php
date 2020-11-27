@@ -52,7 +52,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $view = $this->getFluidTemplateObject('UserToolbarItem.html');
         $view->assignMultiple([
             'currentUser' => $backendUser->user,
-            'switchUserMode' => $backendUser->user['ses_backuserid'],
+            'switchUserMode' => (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
         ]);
         return $view->render();
     }
@@ -73,7 +73,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $mostRecentUsers = [];
         if (ExtensionManagementUtility::isLoaded('beuser')
             && $backendUser->isAdmin()
-            && (int)$backendUser->user['ses_backuserid'] === 0
+            && !$backendUser->getOriginalUserIdWhenInSwitchUserMode()
             && isset($backendUser->uc['recentSwitchedToUsers'])
             && is_array($backendUser->uc['recentSwitchedToUsers'])
         ) {
@@ -115,7 +115,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $view->assignMultiple([
             'modules' => $backendModuleRepository->findByModuleName('user')->getChildren(),
             'logoutUrl' => (string)$uriBuilder->buildUriFromRoute('logout'),
-            'switchUserMode' => $this->getBackendUser()->user['ses_backuserid'],
+            'switchUserMode' => (int)$this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode(),
             'recentUsers' => $mostRecentUsers,
         ]);
         return $view->render();
@@ -131,7 +131,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $result = [
             'class' => 'toolbar-item-user'
         ];
-        if ($this->getBackendUser()->user['ses_backuserid']) {
+        if ($this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode()) {
             $result['class'] .= ' su-user';
         }
         return $result;

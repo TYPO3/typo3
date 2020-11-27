@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -79,9 +80,21 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             if ($frontendUser->sendNoCacheHeaders) {
                 $response = $this->applyHeadersToResponse($response);
             }
+            // Collect garbage in Frontend requests, which aren't fully cacheable (e.g. with cookies)
+            if ($response->hasHeader('Set-Cookie')) {
+                $this->sessionGarbageCollection();
+            }
         }
 
         return $response;
+    }
+
+    /**
+     * Garbage collection for fe_sessions (with a probability)
+     */
+    protected function sessionGarbageCollection(): void
+    {
+        UserSessionManager::create('FE')->collectGarbage();
     }
 
     /**

@@ -249,18 +249,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $writeAttemptLog = true;
 
     /**
-     * Session timeout (on the server), defaults to 8 hours for backend user
-     *
-     * If >0: session-timeout in seconds.
-     * If <=0: Instant logout after login.
-     * The value must be at least 180 to avoid side effects.
-     *
-     * @var int
-     * @internal should only be used from within TYPO3 Core
-     */
-    public $sessionTimeout = 28800;
-
-    /**
      * @var int
      * @internal should only be used from within TYPO3 Core
      */
@@ -306,7 +294,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function __construct()
     {
         $this->name = self::getCookieName();
-        $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
         parent::__construct();
     }
 
@@ -484,7 +471,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return false;
         }
 
-        if ((int)$GLOBALS['BE_USER']->user['ses_backuserid'] !== 0) {
+        if ($GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()) {
             return false;
         }
         if (Environment::getContext()->isDevelopment()) {
@@ -2265,11 +2252,11 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $userId = $this->user['uid'];
         }
 
-        if (!empty($this->user['ses_backuserid'])) {
+        if ($backuserid = $this->getOriginalUserIdWhenInSwitchUserMode()) {
             if (empty($data)) {
                 $data = [];
             }
-            $data['originalUser'] = $this->user['ses_backuserid'];
+            $data['originalUser'] = $backuserid;
         }
 
         $fields = [
@@ -2465,15 +2452,14 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         // Backend user is allowed if adminOnly is not set or user is an admin:
         if (!$adminOnlyMode || $this->isAdmin()) {
             $isUserAllowedToLogin = true;
-        } elseif ($this->user['ses_backuserid']) {
-            $backendUserId = (int)$this->user['ses_backuserid'];
+        } elseif ($backUserId = $this->getOriginalUserIdWhenInSwitchUserMode()) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             $isUserAllowedToLogin = (bool)$queryBuilder->count('uid')
                 ->from('be_users')
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($backendUserId, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($backUserId, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
                 )
@@ -2519,5 +2505,18 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     ['userid' => $userId]
                 );
         }
+    }
+
+    /**
+     * Returns the uid of the backend user to return to.
+     * This is set when the current session is a "switch-user" session.
+     *
+     * @return int|null The user id
+     * @internal should only be used from within TYPO3 Core
+     */
+    public function getOriginalUserIdWhenInSwitchUserMode(): ?int
+    {
+        $originalUserId = $this->getSessionData('backuserid');
+        return $originalUserId ? (int)$originalUserId : null;
     }
 }

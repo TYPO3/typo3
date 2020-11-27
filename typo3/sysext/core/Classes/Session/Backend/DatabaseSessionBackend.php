@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class DatabaseSessionBackend
  *
  * This session backend requires the 'table' configuration option. If the backend is used to holds non-authenticated
- * sessions (default in frontend application), the 'ses_anonymous' configuration option must be set to true.
+ * sessions (default in frontend application), the 'ses_userid' configuration option must be set to `0`.
  */
 class DatabaseSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface
 {
@@ -40,7 +40,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
     protected $configuration = [];
 
     /**
-     * @var bool Indicates whether the sessions table has the ses_anonymous column
+     * @var bool Indicates whether the ses_userid is set to `0` in the sessions table
      */
     protected $hasAnonymousSessions = false;
 
@@ -225,14 +225,14 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
 
         $query->delete($this->configuration['table'])
             ->where($query->expr()->lt('ses_tstamp', (int)($GLOBALS['EXEC_TIME'] - (int)$maximumLifetime)))
-            ->andWhere($this->hasAnonymousSessions ? $query->expr()->eq('ses_anonymous', 0) : ' 1 = 1');
+            ->andWhere($this->hasAnonymousSessions ? $query->expr()->neq('ses_userid', 0) : ' 1 = 1');
         $query->execute();
 
         if ($maximumAnonymousLifetime > 0 && $this->hasAnonymousSessions) {
             $query = $this->getQueryBuilder();
             $query->delete($this->configuration['table'])
                 ->where($query->expr()->lt('ses_tstamp', (int)($GLOBALS['EXEC_TIME'] - (int)$maximumAnonymousLifetime)))
-                ->andWhere($query->expr()->eq('ses_anonymous', 1));
+                ->andWhere($query->expr()->eq('ses_userid', 0));
             $query->execute();
         }
     }

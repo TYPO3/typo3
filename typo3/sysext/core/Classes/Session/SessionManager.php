@@ -79,7 +79,7 @@ class SessionManager implements SingletonInterface
         $hashedSessionToRenew = '';
         // Prevent destroying the session of the current user session, but renew session id
         if ($userAuthentication !== null && (int)$userAuthentication->user['uid'] === $userId) {
-            $sessionToRenew = $userAuthentication->getSessionId();
+            $sessionToRenew = $userAuthentication->getSession()->getIdentifier();
         }
         if ($sessionToRenew !== '' && $backend instanceof HashableSessionBackendInterface) {
             $hashedSessionToRenew = $backend->hash($sessionToRenew);

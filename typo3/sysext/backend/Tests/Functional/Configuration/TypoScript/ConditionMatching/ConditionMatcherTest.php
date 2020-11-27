@@ -105,7 +105,6 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function loginUserConditionDoesNotMatchSingleLoggedInUser(): void
     {
-        $GLOBALS['BE_USER']->user['uid'] = 13;
         $subject = $this->getConditionMatcher();
         self::assertFalse($subject->match('[loginUser(999)]'));
         self::assertFalse($subject->match('[loginUser("999")]'));

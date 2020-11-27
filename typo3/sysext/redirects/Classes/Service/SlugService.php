@@ -314,7 +314,7 @@ class SlugService implements LoggerAwareInterface
             RecordHistoryStore::class,
             RecordHistoryStore::USER_BACKEND,
             $backendUser->user['uid'],
-            $backendUser->user['ses_backuserid'] ?? null,
+            (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
             $this->context->getPropertyFromAspect('date', 'timestamp'),
             $backendUser->workspace ?? 0
         );

@@ -4606,4 +4606,39 @@ return [
             'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getNewSessionRecord' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getSessionId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isExistingSessionRecord' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->createSessionId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserSession' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-93023-ReworkedSessionHandling.rst',
+        ],
+    ],
 ];

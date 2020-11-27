@@ -360,7 +360,7 @@ class BackendUserController extends ActionController
             $this->backendUserSessionRepository->switchToUser($this->getBackendUserAuthentication(), (int)$targetUser['uid']);
 
             $event = new SwitchUserEvent(
-                $this->getBackendUserAuthentication()->getSessionId(),
+                $this->getBackendUserAuthentication()->getSession()->getIdentifier(),
                 $targetUser,
                 (array)$this->getBackendUserAuthentication()->user
             );

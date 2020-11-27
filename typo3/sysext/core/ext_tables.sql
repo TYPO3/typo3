@@ -30,7 +30,6 @@ CREATE TABLE be_sessions (
 	ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_data longblob,
-	ses_backuserid int(11) NOT NULL default '0',
 	PRIMARY KEY (ses_id),
 	KEY ses_tstamp (ses_tstamp)
 );

@@ -39,7 +39,7 @@ class BlankPageCest
         $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Select database');
+        $I->waitForText('Select database', 30);
         $I->selectOption('#t3js-connect-database-driver', 'Manually configured SQLite connection');
         $I->click('Continue');
 
@@ -50,12 +50,12 @@ class BlankPageCest
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
-        $I->waitForText('Installation Complete');
+        $I->waitForText('Installation Complete', 30);
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
 
         // Verify backend login successful
-        $I->waitForElement('#t3-username');
+        $I->waitForElement('#t3-username', 30);
         $I->fillField('#t3-username', 'admin');
         $I->fillField('#t3-password', 'password');
         $I->click('#t3-login-submit-section > button');
