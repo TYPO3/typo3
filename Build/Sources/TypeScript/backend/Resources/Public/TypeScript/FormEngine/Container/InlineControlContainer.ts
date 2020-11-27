@@ -746,7 +746,8 @@ class InlineControlContainer {
     }
 
     const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
-    const records = Array.from(recordListContainer.querySelectorAll('[data-placeholder-record="0"]')).map((child: HTMLElement) => child.dataset.objectUid);
+    const records = Array.from(recordListContainer.querySelectorAll('[data-object-parent-group="' + this.container.dataset.objectGroup + '"][data-placeholder-record="0"]'))
+      .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
     (<HTMLInputElement>formField).classList.add('has-change');
