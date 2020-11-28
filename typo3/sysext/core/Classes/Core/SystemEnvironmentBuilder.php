@@ -104,6 +104,12 @@ class SystemEnvironmentBuilder
         defined('CR') ?: define('CR', chr(13));
         defined('CRLF') ?: define('CRLF', CR . LF);
 
+        // A generic constant to state we are in TYPO3 scope. This is especially used in script files
+        // like ext_localconf.php that run in global scope without class encapsulation: "defined('TYPO3') or die();"
+        // This is a security measure to prevent script output if those files are located within document root and
+        // called directly without bootstrap and error handling setup.
+        defined('TYPO3') ?: define('TYPO3', true);
+
         // Relative path from document root to typo3/ directory, hardcoded to "typo3/"
         if (!defined('TYPO3_mainDir')) {
             define('TYPO3_mainDir', 'typo3/');
