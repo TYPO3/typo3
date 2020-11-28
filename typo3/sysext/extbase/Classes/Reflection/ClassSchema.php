@@ -359,7 +359,7 @@ class ClassSchema
                 $this->methods[$methodName]['params'][$parameterName] = [];
                 $this->methods[$methodName]['params'][$parameterName]['position'] = $parameterPosition; // compat
                 $this->methods[$methodName]['params'][$parameterName]['byReference'] = $reflectionParameter->isPassedByReference(); // compat
-                $this->methods[$methodName]['params'][$parameterName]['array'] = $reflectionParameter->isArray(); // compat
+                $this->methods[$methodName]['params'][$parameterName]['array'] = false; // compat
                 $this->methods[$methodName]['params'][$parameterName]['optional'] = $reflectionParameter->isOptional();
                 $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionParameter->allowsNull();
                 $this->methods[$methodName]['params'][$parameterName]['class'] = null; // compat
@@ -374,14 +374,23 @@ class ClassSchema
                     $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = $reflectionParameter->getDefaultValue();
                 }
 
-                if (($reflectionType = $reflectionParameter->getType()) instanceof \ReflectionNamedType) {
+                $reflectionType = $reflectionParameter->getType();
+                if ($reflectionType instanceof \ReflectionNamedType) {
                     $this->methods[$methodName]['params'][$parameterName]['type'] = $reflectionType->getName();
                     $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionType->allowsNull();
-                }
 
-                if (($parameterClass = $reflectionParameter->getClass()) instanceof \ReflectionClass) {
-                    $this->methods[$methodName]['params'][$parameterName]['class'] = $parameterClass->getName();
-                    $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($parameterClass->getName(), '\\');
+                    if ($reflectionType->getName() === 'array') {
+                        $this->methods[$methodName]['params'][$parameterName]['array'] = true;
+                    }
+
+                    if (!$reflectionType->isBuiltin()) {
+                        $parameterTypeName = $reflectionType->getName();
+                        if (!class_exists($parameterTypeName) && !interface_exists($parameterTypeName)) {
+                            throw new \ReflectionException(sprintf('Class %s does not exist', $parameterTypeName), 1606575969);
+                        }
+                        $this->methods[$methodName]['params'][$parameterName]['class'] = $parameterTypeName;
+                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($parameterTypeName, '\\');
+                    }
                 }
 
                 if ($docComment !== '' && $this->methods[$methodName]['params'][$parameterName]['type'] === null) {
@@ -408,10 +417,10 @@ class ClassSchema
                 }
 
                 // Extbase DI
-                if ($reflectionParameter->getClass() instanceof \ReflectionClass
+                if ($reflectionType instanceof \ReflectionNamedType && !$reflectionType->isBuiltin()
                     && ($reflectionMethod->isConstructor() || $this->hasInjectMethodName($reflectionMethod))
                 ) {
-                    $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionParameter->getClass()->getName();
+                    $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionType->getName();
                 }
 
                 // Extbase Validation
