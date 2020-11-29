@@ -53,10 +53,12 @@ public class NightlySpec extends AbstractCoreSpec {
      * Run main to publish plan on Bamboo
      */
     public static void main(final String[] args) throws Exception {
+        phpMinVersions.put("PHP74", "7.4.1");
         // By default credentials are read from the '.credentials' file.
         BambooServer bambooServer = new BambooServer(bambooServerName);
         bambooServer.publish(new NightlySpec().createPlan());
         bambooServer.publish(new NightlySpec().getDefaultPlanPermissions(projectKey, planKey));
+
     }
 
     /**

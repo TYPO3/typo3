@@ -34,6 +34,8 @@ import com.atlassian.bamboo.specs.util.MapBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract class with common methods of pre-merge and nightly plan
@@ -56,6 +58,8 @@ abstract class AbstractCoreSpec {
     public static final int COMPOSER_MAX = 1;
     // will execute `composer update --prefer-lowest`
     public static final int COMPOSER_MIN = 2;
+
+    static Map<String, String> phpMinVersions = new HashMap<String, String>();
 
     /**
      * Default permissions on core plans
@@ -1752,18 +1756,18 @@ abstract class AbstractCoreSpec {
      * This will update all dependencies to current possible minimum version.
      * Used in nightly to see if we are compatible with lowest possible dependency versions.
      * <p>
-     * We update in 2 steps: First composer install as usual, then update. This
-     * way it is easy to see which packages are updated in comparison to what is
-     * currently defined in composer.lock.
+     * We set the php platform requirement to the lowest for the given PHP version.
+     * In reality we use PHP 7.4.1 or 7.2.1, depending on the currently handled PHP version.
      */
     Task getTaskComposerUpdateMin(String requirementIdentifier) {
+        String phpVersion = phpMinVersions.get(requirementIdentifier);
         return new ScriptTask()
             .description("composer update --prefer-lowest")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                     this.getScriptTaskComposer(requirementIdentifier) +
-                    "composer config platform.php 7.4.1\n" +
+                    "composer config platform.php " + phpVersion + "\n" +
                     "composer update --prefer-lowest --no-progress --no-interaction"
             )
             .environmentVariables(this.composerRootVersionEnvironment);
