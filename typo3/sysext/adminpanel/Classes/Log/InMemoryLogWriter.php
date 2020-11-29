@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Log;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Utility\MemoryUtility;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\AbstractWriter;
@@ -48,8 +51,12 @@ class InMemoryLogWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record): self
     {
-        // Guard: Locked Writer
-        if (self::$memoryLock === true) {
+        // Do not log if CLI, if not frontend, or memory limit has been reached.
+        if (Environment::isCli()
+            || !(($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof  ServerRequestInterface)
+            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            || self::$memoryLock === true
+        ) {
             return $this;
         }
 
