@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 
 /**
@@ -47,6 +48,7 @@ class Application extends AbstractApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeContext();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_INSTALL);
         return parent::handle($request)
             ->withHeader('X-Frame-Options', 'SAMEORIGIN');
     }
