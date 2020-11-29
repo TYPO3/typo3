@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 
@@ -58,6 +59,14 @@ class Application extends AbstractApplication
         if (!$this->checkIfEssentialConfigurationExists()) {
             return $this->installToolRedirect();
         }
+
+        // Add applicationType attribute to request: This is backend and maybe backend ajax.
+        $applicationType = SystemEnvironmentBuilder::REQUESTTYPE_BE;
+        if (strpos($request->getQueryParams()['route'] ?? '', '/ajax/') === 0) {
+            $applicationType |= SystemEnvironmentBuilder::REQUESTTYPE_AJAX;
+        }
+        $request = $request->withAttribute('applicationType', $applicationType);
+
         // Set up the initial context
         $this->initializeContext();
         return parent::handle($request);
