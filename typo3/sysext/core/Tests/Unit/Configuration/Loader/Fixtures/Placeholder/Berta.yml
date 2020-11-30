@@ -1,0 +1,5 @@
+imports:
+  - { resource: '%settings.dynamicOption%.yml' }
+
+settings:
+  dynamicOption: 'Foo'
