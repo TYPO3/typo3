@@ -180,9 +180,7 @@ class FileDumpController
         if (isset($parameters['f'])) {
             try {
                 $file = $this->resourceFactory->getFileObject($parameters['f']);
-                if ($file->isDeleted() || $file->isMissing()) {
-                    $file = null;
-                } elseif (!$this->isFileValid($file)) {
+                if ($file->isDeleted() || $file->isMissing() || !$this->isFileValid($file)) {
                     $file = null;
                 }
             } catch (\Exception $e) {
@@ -191,10 +189,7 @@ class FileDumpController
         } elseif (isset($parameters['r'])) {
             try {
                 $file = $this->resourceFactory->getFileReferenceObject($parameters['r']);
-                if ($file->isMissing()) {
-                    $file = null;
-                }
-                if (!$this->isFileValid($file->getOriginalFile())) {
+                if ($file->isMissing() || !$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }
             } catch (\Exception $e) {
@@ -205,10 +200,7 @@ class FileDumpController
                 $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
                 /** @var ProcessedFile|null $file */
                 $file = $processedFileRepository->findByUid($parameters['p']);
-                if (!$file || $file->isDeleted()) {
-                    $file = null;
-                }
-                if (!$this->isFileValid($file->getOriginalFile())) {
+                if (!$file || $file->isDeleted() || !$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }
             } catch (\Exception $e) {
