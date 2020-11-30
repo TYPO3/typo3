@@ -160,7 +160,7 @@ class YamlFileLoader implements LoggerAwareInterface
             }
             foreach ($content['imports'] as $import) {
                 try {
-                    $import = $this->processPlaceholders($import, $import);
+                    $import = $this->processPlaceholders($import, $content);
                     $importedContent = $this->loadAndParse($import['resource'], $fileName);
                     // override the imported content with the one from the current file
                     $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);

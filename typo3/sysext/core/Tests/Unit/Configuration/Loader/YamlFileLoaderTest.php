@@ -290,6 +290,25 @@ betterthanbefore: \'%env(foo)%\'
         self::assertSame($expected, $output);
     }
 
+    /**
+     * Method checking for imports with placeholder values in the file name
+     * @test
+     */
+    public function loadWithImportAndPlaceholderInFileName(): void
+    {
+        $loader = new YamlFileLoader();
+        $output = $loader->load(__DIR__ . '/Fixtures/Placeholder/Berta.yml');
+
+        $expected = [
+            'loadedWithPlaceholder' => 1,
+            'settings' => [
+                'dynamicOption' => 'Foo',
+            ],
+        ];
+
+        self::assertSame($expected, $output);
+    }
+
     public function loadWithEnvVarDataProvider(): array
     {
         return [
