@@ -63,10 +63,13 @@ class TestTask extends AbstractTask
                 FluidEmail::class,
                 GeneralUtility::makeInstance(TemplatePaths::class, $templateConfiguration)
             );
+            $fromAddress = !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
+                ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+                : $this->email;
             $email
                 ->to($this->email)
                 ->subject('SCHEDULER TEST-TASK')
-                ->from(new Address($this->email, 'SCHEDULER TEST-TASK'))
+                ->from(new Address($fromAddress, 'SCHEDULER TEST-TASK'))
                 ->setTemplate('TestTask')
                 ->assignMultiple(
                     [
