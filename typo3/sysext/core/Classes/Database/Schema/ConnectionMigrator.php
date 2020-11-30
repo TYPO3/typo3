@@ -213,6 +213,35 @@ class ConnectionMigrator
      */
     protected function buildSchemaDiff(bool $renameUnused = true): SchemaDiff
     {
+        // Unmapped tables in a non-default connection are ignored by TYPO3
+        $tablesForConnection = [];
+        if ($this->connectionName !== ConnectionPool::DEFAULT_CONNECTION_NAME) {
+            // If there are no mapped tables return a SchemaDiff without any changes
+            // to avoid update suggestions for tables not related to TYPO3.
+            if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'] ?? null)) {
+                return new SchemaDiff();
+            }
+
+            // Collect the table names that have been mapped to this connection.
+            $connectionName = $this->connectionName;
+            /** @var string[] $tablesForConnection */
+            $tablesForConnection = array_keys(
+                array_filter(
+                    $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'],
+                    static function ($tableConnectionName) use ($connectionName) {
+                        return $tableConnectionName === $connectionName;
+                    }
+                )
+            );
+
+            // Ignore all tables without mapping if not in the default connection
+            $this->connection->getConfiguration()->setSchemaAssetsFilter(
+                static function ($assetName) use ($tablesForConnection) {
+                    return in_array($assetName, $tablesForConnection, true);
+                }
+            );
+        }
+
         // Build the schema definitions
         $fromSchema = $this->connection->createSchemaManager()->createSchema();
         $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
@@ -243,24 +272,6 @@ class ConnectionMigrator
         if ($this->connectionName === ConnectionPool::DEFAULT_CONNECTION_NAME) {
             return $schemaDiff;
         }
-
-        // If there are no mapped tables return a SchemaDiff without any changes
-        // to avoid update suggestions for tables not related to TYPO3.
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'] ?? null)) {
-            return new SchemaDiff([], [], [], $fromSchema);
-        }
-
-        // Collect the table names that have been mapped to this connection.
-        $connectionName = $this->connectionName;
-        /** @var string[] $tablesForConnection */
-        $tablesForConnection = array_keys(
-            array_filter(
-                $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'],
-                static function ($tableConnectionName) use ($connectionName) {
-                    return $tableConnectionName === $connectionName;
-                }
-            )
-        );
 
         // Remove all tables that are not assigned to this connection from the diff
         $schemaDiff->newTables = $this->removeUnrelatedTables($schemaDiff->newTables, $tablesForConnection);
