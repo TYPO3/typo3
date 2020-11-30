@@ -345,6 +345,8 @@ class SystemEnvironmentBuilder
     /**
      * Define TYPO3_REQUESTTYPE* constants that can be used for developers to see if any context has been hit
      * also see setRequestType(). Is done at the very beginning so these parameters are always available.
+     *
+     * @deprecated since v11, method can be removed in v12
      */
     protected static function defineTypo3RequestTypes()
     {
@@ -353,10 +355,15 @@ class SystemEnvironmentBuilder
         if (defined('TYPO3_REQUESTTYPE_FE')) {
             return;
         }
+        /** @deprecated since v11, will be removed in v12. */
         define('TYPO3_REQUESTTYPE_FE', self::REQUESTTYPE_FE);
+        /** @deprecated since v11, will be removed in v12. */
         define('TYPO3_REQUESTTYPE_BE', self::REQUESTTYPE_BE);
+        /** @deprecated since v11, will be removed in v12. */
         define('TYPO3_REQUESTTYPE_CLI', self::REQUESTTYPE_CLI);
+        /** @deprecated since v11, will be removed in v12. */
         define('TYPO3_REQUESTTYPE_AJAX', self::REQUESTTYPE_AJAX);
+        /** @deprecated since v11, will be removed in v12. */
         define('TYPO3_REQUESTTYPE_INSTALL', self::REQUESTTYPE_INSTALL);
     }
 
@@ -364,6 +371,7 @@ class SystemEnvironmentBuilder
      * Defines the TYPO3_REQUESTTYPE constant so the environment knows which context the request is running.
      *
      * @param int $requestType
+     * @deprecated since v11, method can be removed in v12
      */
     protected static function setRequestType(int $requestType)
     {
@@ -372,6 +380,7 @@ class SystemEnvironmentBuilder
         if (defined('TYPO3_REQUESTTYPE')) {
             return;
         }
+        /** @deprecated since v11, will be removed in v12. Use Core\Http\ApplicationType API or $request->getAttribute('applicationType') instead */
         define('TYPO3_REQUESTTYPE', $requestType);
     }
 
@@ -379,6 +388,7 @@ class SystemEnvironmentBuilder
      * Define constants and variables
      *
      * @param string $mode
+     * @deprecated since v11, method can be removed in v12
      */
     protected static function defineLegacyConstants(string $mode)
     {
@@ -387,6 +397,7 @@ class SystemEnvironmentBuilder
         if (defined('TYPO3_MODE')) {
             return;
         }
+        /** @deprecated since v11, will be removed in v12. Use Core\Http\ApplicationType API instead */
         define('TYPO3_MODE', $mode);
     }
 
