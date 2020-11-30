@@ -61,10 +61,7 @@ class FileDumpController
             if (isset($parameters['f'])) {
                 try {
                     $file = ResourceFactory::getInstance()->getFileObject($parameters['f']);
-                    if ($file->isDeleted() || $file->isMissing()) {
-                        $file = null;
-                    }
-                    if (!$this->isFileValid($file)) {
+                    if ($file->isDeleted() || $file->isMissing() || !$this->isFileValid($file)) {
                         $file = null;
                     }
                 } catch (\Exception $e) {
@@ -72,10 +69,7 @@ class FileDumpController
                 }
             } else {
                 $file = GeneralUtility::makeInstance(ProcessedFileRepository::class)->findByUid($parameters['p']);
-                if (!$file || $file->isDeleted()) {
-                    $file = null;
-                }
-                if (!$this->isFileValid($file->getOriginalFile())) {
+                if (!$file || $file->isDeleted() || !$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }
             }
