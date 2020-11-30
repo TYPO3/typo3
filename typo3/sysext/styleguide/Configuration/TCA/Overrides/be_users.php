@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 call_user_func(function () {
     // Add a field to be_users table to identify a user as styleguide demo user
