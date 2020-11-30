@@ -163,7 +163,7 @@ and per-type basis:
    RTE.config.tt_content.bodytext.preset = minimal
 
    # per-type
-   RTE.config.tt_content.types.bullets.bodytext.preset = bullets
+   RTE.config.tt_content.bodytext.types.bullets.preset = bullets
 
 line #2
    This sets the "minimal" preset for all bodytext fields of content elements.
