@@ -359,13 +359,15 @@ class FrontendLoginController extends AbstractPlugin
             $user = $this->pi_getRecord('fe_users', (int)$uid);
             $userHash = $user['felogin_forgotHash'];
             $compareHash = explode('|', $userHash);
-            if (strlen($compareHash[1]) === 40) {
+            if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() || !hash_equals($compareHash[0], $hash[0])) {
+                $hashEquals = false;
+            } elseif (strlen($compareHash[1]) === 40) {
                 $hashEquals = hash_equals($compareHash[1], GeneralUtility::hmac((string)$hash[1]));
             } else {
                 // backward-compatibility for previous MD5 hashes
                 $hashEquals = hash_equals($compareHash[1], md5($hash[1]));
             }
-            if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() || !hash_equals($compareHash[0], $hash[0]) || !$hashEquals) {
+            if (!$hashEquals) {
                 $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
                     'change_password_notvalid_message',
                     $this->conf['changePasswordNotValidMessage_stdWrap.']
