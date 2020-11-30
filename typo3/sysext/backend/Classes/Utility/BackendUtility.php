@@ -2015,7 +2015,7 @@ class BackendUtility
                     } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'time')) {
                         // Handle native time field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
-                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value);
+                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
                         } else {
                             $value = (int)$value;
                         }
@@ -2025,7 +2025,7 @@ class BackendUtility
                     } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'timesec')) {
                         // Handle native time field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
-                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value);
+                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
                         } else {
                             $value = (int)$value;
                         }
