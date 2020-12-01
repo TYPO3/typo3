@@ -58,4 +58,34 @@ class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
         $expected['isOnSymmetricSide'] = true;
         self::assertEquals($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataSetsIsOnSymmetricSideToTrueWhenSymmetricFieldArrayIsDetailed()
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'theSymmetricField' => [
+                    [
+                        'table' => 'theSymmetricTable',
+                        'uid' => 23,
+                        'title' => 'The title',
+                        'row' => [
+                            'uid' => 23,
+                        ],
+                    ],
+                ],
+            ],
+            'isInlineChild' => true,
+            'inlineParentUid' => 23,
+            'inlineParentConfig' => [
+                'symmetric_field' => 'theSymmetricField',
+            ],
+        ];
+        $expected = $input;
+        $expected['isOnSymmetricSide'] = true;
+        self::assertEquals($expected, $this->subject->addData($input));
+    }
 }
