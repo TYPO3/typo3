@@ -43,3 +43,6 @@ jobs:
 
       - name: Functional Tests with sqlite
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d sqlite -s functional
+
+      - name: Acceptance Tests
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance
