@@ -1016,11 +1016,15 @@ class EditDocumentController
         }
         // Setting up the buttons and markers for doc header
         $this->getButtons($request);
-        $this->languageSwitch(
-            (string)($this->firstEl['table'] ?? ''),
-            (int)($this->firstEl['uid'] ?? 0),
-            isset($this->firstEl['pid']) ? (int)$this->firstEl['pid'] : null
-        );
+
+        // Create language switch options if the record is already persisted
+        if ($this->isSavedRecord) {
+            $this->languageSwitch(
+                (string)($this->firstEl['table'] ?? ''),
+                (int)($this->firstEl['uid'] ?? 0),
+                isset($this->firstEl['pid']) ? (int)$this->firstEl['pid'] : null
+            );
+        }
         $this->moduleTemplate->setContent($body);
     }
 
