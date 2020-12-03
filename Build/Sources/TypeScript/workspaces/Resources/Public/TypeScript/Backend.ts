@@ -1262,4 +1262,11 @@ class Backend extends Workspaces {
   }
 }
 
+/**
+ * Changes the markup of a pagination action being disabled
+ */
+$.fn.disablePagingAction = function(): void {
+  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />'));
+};
+
 export = new Backend();
