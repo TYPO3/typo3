@@ -25,6 +25,7 @@
                 <select name="pages" class="form-control"></select>
             </div>
         </form>
+        <f:render section="buttons" arguments="{allowDelete: allowDelete}"/>
         <div class="table-fit">
             <table class="table table-hover" id="itemsInRecycler">
                 <thead>
@@ -44,23 +45,27 @@
                 </tbody>
             </table>
         </div>
-        <div>
-            <button class="btn btn-default disabled" data-action="massundo" disabled>
-                <core:icon identifier="actions-edit-undo" />
-                <span class="text">
-                    <f:translate key="button.undo" />
-                </span>
-            </button>
-            <f:if condition="{allowDelete}">
-                <button class="btn btn-default disabled" data-action="massdelete" disabled>
-                    <core:icon identifier="actions-edit-delete" />
-                    <span class="text">
-                        <f:translate key="button.delete" />
-                    </span>
-                </button>
-            </f:if>
-        </div>
+        <f:render section="buttons" arguments="{allowDelete: allowDelete}"/>
         <nav>
         </nav>
+    </div>
+</f:section>
+
+<f:section name="buttons">
+    <div class="form-group">
+        <button class="btn btn-default disabled" data-action="massundo" disabled>
+            <core:icon identifier="actions-edit-undo" />
+            <span class="text">
+                <f:translate key="button.undo" />
+            </span>
+        </button>
+        <f:if condition="{allowDelete}">
+            <button class="btn btn-default disabled" data-action="massdelete" disabled>
+                <core:icon identifier="actions-edit-delete" />
+                <span class="text">
+                    <f:translate key="button.delete" />
+                </span>
+            </button>
+        </f:if>
     </div>
 </f:section>
