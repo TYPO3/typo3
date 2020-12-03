@@ -237,7 +237,7 @@ If you want to get more detailed information, use the --verbose option.')
         // Select DB relations from reference table
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $rowIterator = $queryBuilder
-            ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer', 'deleted')
+            ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer')
             ->from('sys_refindex')
             ->where(
                 $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
@@ -387,7 +387,6 @@ If you want to get more detailed information, use the --verbose option.')
             . ':' . $record['recuid']
             . ':' . $record['field']
             . ($record['flexpointer'] ? ':' . $record['flexpointer'] : '')
-            . ($record['softref_key'] ? ':' . $record['softref_key'] . ' (Soft Reference) ' : '')
-            . ($record['deleted'] ? ' (DELETED)' : '');
+            . ($record['softref_key'] ? ':' . $record['softref_key'] . ' (Soft Reference) ' : '');
     }
 }

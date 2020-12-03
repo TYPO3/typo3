@@ -28,10 +28,10 @@
 ,307,91,16,0,1,306,306,301,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,308,91,8,0,2,306,307,302,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
 "sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","deleted","workspace","ref_table","ref_uid","ref_string"
-,"acac9935bf9b184ae25ee925d8457c25","tt_content",300,"l18n_parent",,,,0,0,0,"tt_content",299,
-,"eb360eb09940bbb656509c7f6fda9b05","tt_content",301,"l18n_parent",,,,0,0,0,"tt_content",297,
-,"b6e55a3d99888c9a7007226ad685306c","tt_content",302,"l18n_parent",,,,0,0,0,"tt_content",297,
-,"82d0cf88b8fd9ff00793b2fa533ddbc7","tt_content",304,"l18n_parent",,,,0,0,0,"tt_content",303,
-,"6533fcc65c25ba66af53b6dbc7b2e716","tt_content",307,"l18n_parent",,,,0,0,0,"tt_content",306,
-,"70d62e692670e641acf36bbae846ce00","tt_content",308,"l18n_parent",,,,0,0,0,"tt_content",306,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
+,"1130084e4038e95f2d5806b731cd416a","tt_content",300,"l18n_parent",,,,0,0,"tt_content",299,,
+,"4a1e04a83a4a17882682d86f6cd61f3d","tt_content",301,"l18n_parent",,,,0,0,"tt_content",297,,
+,"25f3b71b67f29fa33fbfd4fa2d930b70","tt_content",302,"l18n_parent",,,,0,0,"tt_content",297,,
+,"6000cbc7fbee0d718f956c85c0d4b5f8","tt_content",304,"l18n_parent",,,,0,0,"tt_content",303,,
+,"e87069b61fe0470841bc2d196edb0624","tt_content",307,"l18n_parent",,,,0,0,"tt_content",306,,
+,"ca4707efbf5a7def7e5b0fb26964f4cd","tt_content",308,"l18n_parent",,,,0,0,"tt_content",306,,

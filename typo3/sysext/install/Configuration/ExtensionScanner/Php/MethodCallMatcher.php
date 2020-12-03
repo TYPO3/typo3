@@ -4536,4 +4536,53 @@ return [
             'Deprecation-92815-ActionControllerforwardIsDeprecated.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->generateRefIndexData' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->createEntryData' => [
+        'numberOfMandatoryArguments' => 7,
+        'maximumNumberOfArguments' => 11,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->createEntryData_dbRels' => [
+        'numberOfMandatoryArguments' => 6,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->createEntryData_softreferences' => [
+        'numberOfMandatoryArguments' => 6,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->getRelations_procDB' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->setReferenceValue_dbRels' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->setReferenceValue_softreferences' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
 ];

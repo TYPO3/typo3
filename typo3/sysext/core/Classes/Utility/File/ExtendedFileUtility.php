@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -383,7 +382,6 @@ class ExtendedFileUtility extends BasicFileUtility
             // check if the file still has references
             // Exclude sys_file_metadata records as these are no use references
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $refIndexRecords = $queryBuilder
                 ->select('tablename', 'recuid', 'ref_uid')
                 ->from('sys_refindex')
@@ -399,10 +397,6 @@ class ExtendedFileUtility extends BasicFileUtility
                     $queryBuilder->expr()->neq(
                         'tablename',
                         $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'deleted',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     )
                 )
                 ->execute()
@@ -537,7 +531,6 @@ class ExtendedFileUtility extends BasicFileUtility
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $numberOfReferences = $queryBuilder
             ->count('hash')
             ->from('sys_refindex')
@@ -553,10 +546,6 @@ class ExtendedFileUtility extends BasicFileUtility
                 $queryBuilder->expr()->neq(
                     'tablename',
                     $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'deleted',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )->execute()->fetchColumn(0);
 

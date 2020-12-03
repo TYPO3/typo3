@@ -101,16 +101,14 @@ class ReferenceIndex implements LoggerAwareInterface
      * @see FlexFormTools::traverseFlexFormXMLData()
      * @see getRelations_flexFormCallBack()
      */
-    public $temp_flexRelations = [];
+    protected $temp_flexRelations = [];
 
     /**
-     * An index of all found references of a single record created in createEntryData() and accumulated in generateRefIndexData()
+     * An index of all found references of a single record
      *
      * @var array
-     * @see createEntryData()
-     * @see generateRefIndexData()
      */
-    public $relations = [];
+    protected $relations = [];
 
     /**
      * A cache to avoid that identical rows are refetched from the database
@@ -126,7 +124,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @var int
      * @see updateRefIndexTable()
      */
-    public $hashVersion = 1;
+    protected $hashVersion = 1;
 
     /**
      * Current workspace id
@@ -178,9 +176,8 @@ class ReferenceIndex implements LoggerAwareInterface
      *
      * @return int
      * @see updateRefIndexTable()
-     * @see createEntryData()
      */
-    public function getWorkspaceId()
+    protected function getWorkspaceId()
     {
         return $this->workspaceId;
     }
@@ -245,7 +242,7 @@ class ReferenceIndex implements LoggerAwareInterface
             $currentRelationHashes[$relation['hash']] = true;
         }
 
-        // If the table has fields which could contain relations and the record does exist (including deleted-flagged)
+        // If the table has fields which could contain relations and the record does exist
         if ($tableRelationFields !== '') {
             $existingRecord = $this->getRecordRawCached($tableName, $uid);
             if ($existingRecord) {
@@ -314,36 +311,6 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
-     * Returns array of arrays with an index of all references found in record from table/uid
-     * If the result is used to update the sys_refindex table then no workspaces must be applied (no workspace overlay anywhere!)
-     *
-     * @param string $tableName Table name from $GLOBALS['TCA']
-     * @param int $uid Record UID
-     * @return array|null Index Rows
-     */
-    public function generateRefIndexData($tableName, $uid)
-    {
-        if (!isset($GLOBALS['TCA'][$tableName])) {
-            return null;
-        }
-
-        $this->relations = [];
-
-        $record = null;
-        $uid = $uid ? (int)$uid : 0;
-        if ($uid) {
-            // Get raw record from DB
-            $record = $this->getRecordRawCached($tableName, $uid);
-        }
-
-        if (!is_array($record)) {
-            return null;
-        }
-
-        return $this->generateDataUsingRecord($tableName, $record);
-    }
-
-    /**
      * Returns the amount of references for the given record
      *
      * @param string $tableName
@@ -363,10 +330,6 @@ class ReferenceIndex implements LoggerAwareInterface
                 $queryBuilder->expr()->eq(
                     'ref_uid',
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'deleted',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )->execute()->fetchColumn(0);
     }
@@ -381,11 +344,6 @@ class ReferenceIndex implements LoggerAwareInterface
     protected function generateDataUsingRecord(string $tableName, array $record): array
     {
         $this->relations = [];
-
-        // Is the record deleted?
-        $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
-        $deleted = $deleteField && $record[$deleteField] ? 1 : 0;
-
         // Get all relations from record:
         $recordRelations = $this->getRelations($tableName, $record);
         // Traverse those relations, compile records to insert in table:
@@ -393,69 +351,31 @@ class ReferenceIndex implements LoggerAwareInterface
             // Based on type
             switch ((string)$fieldRelations['type']) {
                 case 'db':
-                    $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['itemArray']);
+                    $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, '', $fieldRelations['itemArray']);
                     break;
                 case 'flex':
                     // DB references in FlexForms
                     if (is_array($fieldRelations['flexFormRels']['db'])) {
                         foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
-                            $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList);
+                            $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $subList);
                         }
                     }
                     // Soft references in FlexForms
                     // @todo #65464 Test correct handling of soft references in FlexForms
                     if (is_array($fieldRelations['flexFormRels']['softrefs'])) {
                         foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
-                            $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $subList['keys']);
+                            $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, $flexPointer, $subList['keys']);
                         }
                     }
                     break;
             }
             // Soft references in the field
             if (is_array($fieldRelations['softrefs'])) {
-                $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, '', $deleted, $fieldRelations['softrefs']['keys']);
+                $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, '', $fieldRelations['softrefs']['keys']);
             }
         }
 
         return array_filter($this->relations);
-    }
-
-    /**
-     * Create array with field/value pairs ready to insert in database.
-     * The "hash" field is a fingerprint value across this table.
-     *
-     * @param string $table Tablename of source record (where reference is located)
-     * @param int $uid UID of source record (where reference is located)
-     * @param string $field Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
-     * @param int $deleted Whether record is deleted-flagged or not
-     * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
-     * @param int $ref_uid For database references; The UID of the record (zero "ref_table" is "_STRING")
-     * @param string $ref_string For "_STRING" references: The string.
-     * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
-     * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
-     * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
-     * @return array|null Array record to insert into table.
-     */
-    public function createEntryData($table, $uid, $field, $flexPointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '')
-    {
-        $uid = $uid ? (int)$uid : 0;
-        if (!$uid) {
-            return null;
-        }
-        return $this->createEntryDataUsingRecord(
-            (string)$table,
-            $this->getRecordRawCached($table, $uid) ?: [],
-            (string)$field,
-            (string)$flexPointer,
-            $deleted ? (int)$deleted : 0,
-            (string)$ref_table,
-            $ref_uid ? (int)$ref_uid : 0,
-            (string)$ref_string,
-            $sort ? (int)$sort : 0,
-            (string)$softref_key,
-            (string)$softref_id
-        );
     }
 
     /**
@@ -465,7 +385,6 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $record Record from $table
      * @param string $fieldName Fieldname of source record (where reference is located)
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [$field]
-     * @param int $deleted Whether record is deleted-flagged or not
      * @param string $referencedTable In database references the tablename the reference points to. Keyword "_STRING" indicates special usage (typ. SoftReference) in $referenceString
      * @param int $referencedUid In database references the UID of the record (zero $referencedTable is "_STRING")
      * @param string $referenceString For "_STRING" references: The string.
@@ -474,7 +393,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $softReferenceId Soft reference ID for key. Might be useful for replace operations.
      * @return array|bool Array to insert in DB or false if record should not be processed
      */
-    protected function createEntryDataUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, string $referencedTable, int $referencedUid, string $referenceString = '', int $sort = -1, string $softReferenceKey = '', string $softReferenceId = '')
+    protected function createEntryDataUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, string $referencedTable, int $referencedUid, string $referenceString = '', int $sort = -1, string $softReferenceKey = '', string $softReferenceId = '')
     {
         $workspaceId = 0;
         if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
@@ -492,38 +411,11 @@ class ReferenceIndex implements LoggerAwareInterface
             'softref_key' => $softReferenceKey,
             'softref_id' => $softReferenceId,
             'sorting' => $sort,
-            'deleted' => (int)$deleted,
             'workspace' => $workspaceId,
             'ref_table' => $referencedTable,
             'ref_uid' => $referencedUid,
             'ref_string' => mb_substr($referenceString, 0, 1024)
         ];
-    }
-
-    /**
-     * Enter database references to ->relations array
-     *
-     * @param string $table Tablename of source record (where reference is located)
-     * @param int $uid UID of source record (where reference is located)
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
-     * @param int $deleted Whether record is deleted-flagged or not
-     * @param array $items Data array with database relations (table/id)
-     */
-    public function createEntryData_dbRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
-    {
-        $uid = $uid ? (int)$uid : 0;
-        if (!$uid) {
-            return;
-        }
-        $this->createEntryDataForDatabaseRelationsUsingRecord(
-            (string)$table,
-            $this->getRecordRawCached($table, $uid) ?: [],
-            (string)$fieldName,
-            (string)$flexPointer,
-            $deleted ? (int)$deleted : 0,
-            (array)$items
-        );
     }
 
     /**
@@ -533,40 +425,13 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $record Record from $tableName
      * @param string $fieldName Fieldname of source record (where reference is located)
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
-     * @param int $deleted Whether record is deleted-flagged or not
      * @param array $items Data array with database relations (table/id)
      */
-    protected function createEntryDataForDatabaseRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $items)
+    protected function createEntryDataForDatabaseRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, array $items)
     {
         foreach ($items as $sort => $i) {
-            $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $i['table'], (int)$i['id'], '', $sort);
+            $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $i['table'], (int)$i['id'], '', $sort);
         }
-    }
-
-    /**
-     * Enter softref references to ->relations array
-     *
-     * @param string $table Tablename of source record (where reference is located)
-     * @param int $uid UID of source record (where reference is located)
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure
-     * @param int $deleted
-     * @param array $keys Data array with soft reference keys
-     */
-    public function createEntryData_softreferences($table, $uid, $fieldName, $flexPointer, $deleted, $keys)
-    {
-        $uid = $uid ? (int)$uid : 0;
-        if (!$uid || !is_array($keys)) {
-            return;
-        }
-        $this->createEntryDataForSoftReferencesUsingRecord(
-            (string)$table,
-            $this->getRecordRawCached($table, $uid) ?: [],
-            (string)$fieldName,
-            (string)$flexPointer,
-            $deleted ? (int)$deleted : 0,
-            (array)$keys
-        );
     }
 
     /**
@@ -576,10 +441,9 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $record Record from $tableName
      * @param string $fieldName Fieldname of source record (where reference is located)
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
-     * @param int $deleted Whether record is deleted-flagged or not
      * @param array $keys Data array with soft reference keys
      */
-    protected function createEntryDataForSoftReferencesUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, int $deleted, array $keys)
+    protected function createEntryDataForSoftReferencesUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, array $keys)
     {
         foreach ($keys as $spKey => $elements) {
             if (is_array($elements)) {
@@ -588,10 +452,10 @@ class ReferenceIndex implements LoggerAwareInterface
                         switch ((string)$el['subst']['type']) {
                             case 'db':
                                 [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $referencedTable, (int)$referencedUid, '', -1, $spKey, $subKey);
+                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $referencedTable, (int)$referencedUid, '', -1, $spKey, $subKey);
                                 break;
                             case 'string':
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
+                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
                                 break;
                         }
                     }
@@ -751,7 +615,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $table Table name
      * @return array|bool If field type is OK it will return an array with the database relations. Else FALSE
      */
-    public function getRelations_procDB($value, $conf, $uid, $table = '')
+    protected function getRelations_procDB($value, $conf, $uid, $table = '')
     {
         // Get IRRE relations
         if (empty($conf)) {
@@ -892,7 +756,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                     $dataHandler->dontProcessTransformations = true;
                     $dataHandler->bypassWorkspaceRestrictions = true;
-                    // Otherwise this cannot update things in deleted records...
+                    // Otherwise this may lead to permission issues if user is not admin
                     $dataHandler->bypassAccessCheckForRecords = true;
                     // Check has been done previously that there is a backend user which is Admin and also in live workspace
                     $dataHandler->start($dataArray, []);
@@ -920,7 +784,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $flexPointer Flexform pointer, if in a flex form field.
      * @return string Error message if any, otherwise FALSE = OK
      */
-    public function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '')
+    protected function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '')
     {
         if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
             // Setting or removing value:
@@ -960,7 +824,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $flexPointer Flexform pointer, if in a flex form field.
      * @return string Error message if any, otherwise FALSE = OK
      */
-    public function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexPointer = '')
+    protected function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexPointer = '')
     {
         if (!is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
             return 'ERROR: Soft reference parser key "' . $refRec['softref_key'] . '" or the index "' . $refRec['softref_id'] . '" was not found.';
@@ -1019,7 +883,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $configuration Config array for TCA/columns field
      * @return bool TRUE if reference field
      */
-    public function isReferenceField(array $configuration)
+    protected function isReferenceField(array $configuration)
     {
         return
             $this->isDbReferenceField($configuration)
@@ -1300,10 +1164,6 @@ class ReferenceIndex implements LoggerAwareInterface
             } else {
                 // otherwise only fields that might contain relations are fetched
                 $selectFields = 'uid,' . $tableRelationFields;
-                $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
-                if ($deleteField) {
-                    $selectFields .= ',' . $deleteField;
-                }
                 if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
                     $selectFields .= ',t3ver_wsid,t3ver_state';
                 }
@@ -1312,7 +1172,7 @@ class ReferenceIndex implements LoggerAwareInterface
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
-            $row = $queryBuilder
+            $queryBuilder
                 ->select(...GeneralUtility::trimExplode(',', $selectFields, true))
                 ->from($tableName)
                 ->where(
@@ -1320,9 +1180,18 @@ class ReferenceIndex implements LoggerAwareInterface
                         'uid',
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                     )
-                )
-                ->execute()
-                ->fetch();
+                );
+            // Do not fetch soft deleted records
+            $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false;
+            if ($deleteField) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        $deleteField,
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                );
+            }
+            $row = $queryBuilder->execute()->fetch();
 
             $this->recordCache[$recordCacheId] = $row;
         }

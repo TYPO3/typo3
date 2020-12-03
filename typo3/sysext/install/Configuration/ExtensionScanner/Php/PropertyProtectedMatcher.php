@@ -1266,4 +1266,14 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->temp_flexRelations' => [
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->hashVersion' => [
+        'restFiles' => [
+            'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
+        ],
+    ]
 ];

@@ -267,7 +267,6 @@ If you want to get more detailed information, use the --verbose option.')
             . ':' . $record['recuid']
             . ':' . $record['field']
             . ($record['flexpointer'] ? ':' . $record['flexpointer'] : '')
-            . ($record['softref_key'] ? ':' . $record['softref_key'] . ' (Soft Reference) ' : '')
-            . ($record['deleted'] ? ' (DELETED)' : '');
+            . ($record['softref_key'] ? ':' . $record['softref_key'] . ' (Soft Reference) ' : '');
     }
 }

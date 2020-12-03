@@ -351,7 +351,6 @@ CREATE TABLE sys_refindex (
 	softref_key varchar(30) DEFAULT '' NOT NULL,
 	softref_id varchar(40) DEFAULT '' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(1) DEFAULT '0' NOT NULL,
 	workspace int(11) DEFAULT '0' NOT NULL,
 	ref_table varchar(255) DEFAULT '' NOT NULL,
 	ref_uid int(11) DEFAULT '0' NOT NULL,

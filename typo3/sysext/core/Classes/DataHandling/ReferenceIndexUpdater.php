@@ -155,7 +155,6 @@ class ReferenceIndexUpdater
                         ->where(
                             $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
                             $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($item['uid'], \PDO::PARAM_INT)),
-                            $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                             $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT))
                         )
                         ->execute();

@@ -295,10 +295,6 @@ class ElementEntity
                 ->from('sys_refindex')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'deleted',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
                         'ref_table',
                         $queryBuilder->createNamedParameter($this->table, \PDO::PARAM_STR)
                     ),

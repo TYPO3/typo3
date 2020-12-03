@@ -274,6 +274,6 @@ If you want to get more detailed information, use the --verbose option.')
      */
     protected function formatReferenceIndexEntryToString(array $record): string
     {
-        return $record['tablename'] . ':' . $record['recuid'] . ':' . $record['field'] . ':' . $record['flexpointer'] . ':' . $record['softref_key'] . ($record['deleted'] ? ' (DELETED)' : '');
+        return $record['tablename'] . ':' . $record['recuid'] . ':' . $record['field'] . ':' . $record['flexpointer'] . ':' . $record['softref_key'];
     }
 }

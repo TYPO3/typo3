@@ -1153,7 +1153,6 @@ class FileList
         $referenceCount = $queryBuilder->count('*')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq(
                     'ref_table',
                     $queryBuilder->createNamedParameter('sys_file', \PDO::PARAM_STR)

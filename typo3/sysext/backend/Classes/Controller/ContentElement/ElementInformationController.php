@@ -660,10 +660,6 @@ class ElementInformationController
             $queryBuilder->expr()->eq(
                 'ref_uid',
                 $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
-            ),
-            $queryBuilder->expr()->eq(
-                'deleted',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             )
         ];
 
