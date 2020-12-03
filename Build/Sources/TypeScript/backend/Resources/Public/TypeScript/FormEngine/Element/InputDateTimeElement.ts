@@ -21,23 +21,23 @@ class InputDateTimeElement {
   constructor(elementId: string) {
     DocumentService.ready().then((): void => {
       this.element = document.getElementById(elementId) as HTMLInputElement;
-      this.registerEventHandler();
+      this.registerEventHandler(this.element);
       require(['../../DateTimePicker'], (DateTimePicker: any): void => {
         DateTimePicker.initialize(this.element)
       });
     });
   }
 
-  private registerEventHandler(): void {
+  private registerEventHandler(element: HTMLInputElement): void {
     new RegularEvent('formengine.dp.change', (e: CustomEvent): void => {
       FormEngine.Validation.validate();
-      FormEngine.Validation.markFieldAsChanged(e.detail.element);
+      FormEngine.Validation.markFieldAsChanged(e.target as HTMLInputElement);
 
       document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
         btn.classList.remove('disabled');
         btn.disabled = false;
       });
-    }).bindTo(document);
+    }).bindTo(element);
   }
 }
 

@@ -544,11 +544,14 @@ define([
   /**
    * Helper function to mark a field as changed.
    *
-   * @param {Object} $field
+   * @param {HTMLInputElement|HTMLTextAreaElement|jQuery} field
    */
-  FormEngineValidation.markFieldAsChanged = function($field) {
-    var $paletteField = $field.closest('.t3js-formengine-palette-field');
-    $paletteField.addClass('has-change');
+  FormEngineValidation.markFieldAsChanged = function(field) {
+    if (field instanceof $) {
+      field = field.get(0);
+    }
+    const paletteField = field.closest('.t3js-formengine-palette-field');
+    paletteField.classList.add('has-change');
   };
 
   /**
