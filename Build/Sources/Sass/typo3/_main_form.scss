@@ -210,7 +210,7 @@ select {
             }
 
             &:not(.form-select-no-siblings) {
-                background-image: url('#{$path-sysext}/core/Resources/Public/Icons/T3Icons/actions/actions-view-list-expand.svg');
+                background-image: url('#{$path-sysext}/core/Resources/Public/Icons/T3Icons/svgs/actions/actions-chevron-down.svg');
                 background-position: right 4px center;
                 background-repeat: no-repeat;
                 background-size: 16px 16px;
