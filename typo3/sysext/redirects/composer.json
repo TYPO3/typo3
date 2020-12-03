@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"doctrine/dbal": "^2.10",
+		"doctrine/dbal": "^2.12",
 		"psr/http-message": "^1.0",
 		"psr/log": "^1.0",
 		"symfony/console": "^4.4 || ^5.0",
