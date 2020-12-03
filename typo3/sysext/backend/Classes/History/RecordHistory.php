@@ -39,9 +39,9 @@ class RecordHistory
     /**
      * On a pages table - show sub elements as well.
      *
-     * @var int
+     * @var bool
      */
-    protected $showSubElements = 1;
+    protected $showSubElements = true;
 
     /**
      * Element reference, syntax [tablename]:[uid]
@@ -126,7 +126,7 @@ class RecordHistory
     {
         if (!empty($this->element)) {
             [$table, $recordUid] = explode(':', $this->element);
-            return $this->getHistoryData($table, (int)$recordUid, $this->showSubElements === 1, $this->lastHistoryEntry);
+            return $this->getHistoryData($table, (int)$recordUid, $this->showSubElements, $this->lastHistoryEntry);
         }
         return [];
     }
