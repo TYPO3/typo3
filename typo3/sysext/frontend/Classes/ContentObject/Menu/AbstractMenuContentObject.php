@@ -621,11 +621,7 @@ abstract class AbstractMenuContentObject
             }
             $getVars = '';
             if ($this->conf['addQueryString']) {
-                $getVars = $this->parent_cObj->getQueryArguments(
-                    $this->conf['addQueryString.'],
-                    [],
-                    true
-                );
+                $getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.']);
             }
             // Adding menu item:
             $menuItems[] = array_merge(

@@ -45,7 +45,6 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $uriBuilderMock->expects(self::any())->method('setTargetPageUid')->willReturn($uriBuilderMock);
         $uriBuilderMock->expects(self::any())->method('setTargetPageType')->willReturn($uriBuilderMock);
         $uriBuilderMock->expects(self::any())->method('setNoCache')->willReturn($uriBuilderMock);
-        $uriBuilderMock->expects(self::any())->method('setAddQueryStringMethod')->willReturn($uriBuilderMock);
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
             ->setMethods(['getUriBuilder'])
             ->disableOriginalConstructor()

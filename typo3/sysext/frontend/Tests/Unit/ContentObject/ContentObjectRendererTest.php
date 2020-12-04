@@ -397,9 +397,17 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsExcludesParameters(): void
     {
-        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->willReturn(
-            'key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322'
-        );
+        $_GET = [
+            'key1' => 'value1',
+            'key2' => 'value2',
+            'key3' => [
+                'key31' => 'value31',
+                'key32' => [
+                    'key321' => 'value321',
+                    'key322' => 'value322'
+                ]
+            ]
+        ];
         $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
@@ -408,143 +416,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getQueryArgumentsExcludesGetParameters(): void
-    {
-        $_GET = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => [
-                'key31' => 'value31',
-                'key32' => [
-                    'key321' => 'value321',
-                    'key322' => 'value322'
-                ]
-            ]
-        ];
-        $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['method'] = 'GET';
-        $getQueryArgumentsConfiguration['exclude'] = [];
-        $getQueryArgumentsConfiguration['exclude'][] = 'key1';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
-        $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getQueryArgumentsOverrulesSingleParameter(): void
-    {
-        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->willReturn(
-            'key1=value1'
-        );
-        $getQueryArgumentsConfiguration = [];
-        $overruleArguments = [
-            // Should be overridden
-            'key1' => 'value1Overruled',
-            // Shouldn't be set: Parameter doesn't exist in source array and is not forced
-            'key2' => 'value2Overruled'
-        ];
-        $expectedResult = '&key1=value1Overruled';
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getQueryArgumentsOverrulesMultiDimensionalParameters(): void
-    {
-        $_GET = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => [
-                'key31' => 'value31',
-                'key32' => [
-                    'key321' => 'value321',
-                    'key322' => 'value322'
-                ]
-            ]
-        ];
-        $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['method'] = 'GET';
-        $getQueryArgumentsConfiguration['exclude'] = [];
-        $getQueryArgumentsConfiguration['exclude'][] = 'key1';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
-        $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
-        $overruleArguments = [
-            // Should be overridden
-            'key2' => 'value2Overruled',
-            'key3' => [
-                'key32' => [
-                    // Shouldn't be set: Parameter is excluded and not forced
-                    'key321' => 'value321Overruled',
-                    // Should be overridden: Parameter is not excluded
-                    'key322' => 'value322Overruled',
-                    // Shouldn't be set: Parameter doesn't exist in source array and is not forced
-                    'key323' => 'value323Overruled'
-                ]
-            ]
-        ];
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key322]=value322Overruled');
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters(): void
-    {
-        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->willReturn(
-            'key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322'
-        );
-        $_GET = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => [
-                'key31' => 'value31',
-                'key32' => [
-                    'key321' => 'value321',
-                    'key322' => 'value322'
-                ]
-            ]
-        ];
-        $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['exclude'] = [];
-        $getQueryArgumentsConfiguration['exclude'][] = 'key1';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
-        $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key322]';
-        $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
-        $overruleArguments = [
-            // Should be overridden
-            'key2' => 'value2Overruled',
-            'key3' => [
-                'key32' => [
-                    // Should be set: Parameter is excluded but forced
-                    'key321' => 'value321Overruled',
-                    // Should be set: Parameter doesn't exist in source array but is forced
-                    'key323' => 'value323Overruled'
-                ]
-            ]
-        ];
-        // implicitly using default 'QUERY_STRING' as 'method'
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled');
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
-        self::assertEquals($expectedResult, $actualResult);
-        $getQueryArgumentsConfiguration['method'] = 'GET';
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
         self::assertEquals($expectedResult, $actualResult);
     }
 

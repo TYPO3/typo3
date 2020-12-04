@@ -91,11 +91,6 @@ class UriBuilder
     protected $addQueryString = false;
 
     /**
-     * @var string
-     */
-    protected $addQueryStringMethod = '';
-
-    /**
      * @var array
      */
     protected $argumentsToBeExcludedFromQueryString = [];
@@ -359,17 +354,8 @@ class UriBuilder
      */
     public function setAddQueryStringMethod(string $addQueryStringMethod): UriBuilder
     {
-        $this->addQueryStringMethod = $addQueryStringMethod;
+        trigger_error('Calling UriBuilder->setAddQueryStringMethod() has no effect anymore and will be removed in TYPO3 v12.  Remove any call in your custom code, as it will result in a fatal error.', E_USER_DEPRECATED);
         return $this;
-    }
-
-    /**
-     * @return string
-     * @internal
-     */
-    public function getAddQueryStringMethod(): string
-    {
-        return $this->addQueryStringMethod;
     }
 
     /**
@@ -528,7 +514,6 @@ class UriBuilder
         $this->language = null;
         $this->createAbsoluteUri = false;
         $this->addQueryString = false;
-        $this->addQueryStringMethod = '';
         $this->argumentsToBeExcludedFromQueryString = [];
         $this->linkAccessRestrictedPages = false;
         $this->targetPageUid = null;
@@ -657,12 +642,7 @@ class UriBuilder
     {
         $arguments = [];
         if ($this->addQueryString === true) {
-            if ($this->addQueryStringMethod === '' || $this->addQueryStringMethod === '0' || $this->addQueryStringMethod === 'GET') {
-                $arguments = GeneralUtility::_GET();
-            } else {
-                // Explode GET vars recursively
-                parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $arguments);
-            }
+            $arguments = GeneralUtility::_GET();
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
                 parse_str($argumentToBeExcluded, $argumentArrayToBeExcluded);
@@ -756,9 +736,6 @@ class UriBuilder
                 $typolinkConfiguration['addQueryString.'] = [
                     'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
                 ];
-            }
-            if ($this->addQueryStringMethod !== '') {
-                $typolinkConfiguration['addQueryString.']['method'] = $this->addQueryStringMethod;
             }
         }
         if ($this->language !== null) {

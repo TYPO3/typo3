@@ -255,4 +255,10 @@ return [
             'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst'
+        ],
+    ],
 ];

@@ -96,7 +96,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('additionalParams', 'string', 'Additional query parameters to be attached to the resulting URL', false, '');
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes to be added directly to the resulting HTML tag', false, []);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
-        $this->registerArgument('addQueryStringMethod', 'string', 'Method to use when keeping query parameters (only active if addQueryString is set)', false, 'GET');
+        $this->registerArgument('addQueryStringMethod', 'string', 'This argument is not evaluated anymore and will be removed in TYPO3 v12.');
         $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
         $this->registerArgument('parts-as', 'string', 'Variable name containing typoLink parts (if any)', false, 'typoLinkParts');
@@ -139,8 +139,10 @@ class TypolinkViewHelper extends AbstractViewHelper
 
     protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, string $content): string
     {
+        if (isset($arguments['addQueryStringMethod'])) {
+            trigger_error('Using the argument "addQueryStringMethod" in <f:link.typolink> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
+        }
         $addQueryString = $arguments['addQueryString'] ?? false;
-        $addQueryStringMethod = $arguments['addQueryStringMethod'] ?? 'GET';
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
         $absolute = $arguments['absolute'] ?? false;
         $aTagParams = static::serializeTagParameters($arguments);
@@ -156,7 +158,6 @@ class TypolinkViewHelper extends AbstractViewHelper
         if ($addQueryString) {
             $instructions['addQueryString'] = $addQueryString;
             $instructions['addQueryString.'] = [
-                'method' => $addQueryStringMethod,
                 'exclude' => $addQueryStringExclude,
             ];
         }

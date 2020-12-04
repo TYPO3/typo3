@@ -4919,7 +4919,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $conf['addQueryString'] = '1';
             $linkVars = implode(',', array_keys(GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars)));
             $conf['addQueryString.'] = [
-                'method' => 'GET',
                 'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : '')
             ];
         }
@@ -5092,31 +5091,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Arguments may be removed or set, depending on configuration.
      *
      * @param array $conf Configuration
-     * @param array $overruleQueryArguments Multidimensional key/value pairs that overrule incoming query arguments
-     * @param bool $forceOverruleArguments If set, key/value pairs not in the query but the overrule array will be set
      * @return string The URL query part (starting with a &)
      */
-    public function getQueryArguments($conf, $overruleQueryArguments = [], $forceOverruleArguments = false)
+    public function getQueryArguments($conf)
     {
-        $exclude = [];
-        $method = (string)($conf['method'] ?? '');
-        if ($method === 'GET') {
-            $currentQueryArray = GeneralUtility::_GET();
-        } else {
-            $currentQueryArray = [];
-            parse_str($this->getEnvironmentVariable('QUERY_STRING'), $currentQueryArray);
-        }
+        $currentQueryArray = GeneralUtility::_GET();
         if ($conf['exclude'] ?? false) {
             $excludeString = str_replace(',', '&', $conf['exclude']);
             $excludedQueryParts = [];
             parse_str($excludeString, $excludedQueryParts);
-            // never repeat id
-            $exclude['id'] = 0;
             $newQueryArray = ArrayUtility::arrayDiffAssocRecursive($currentQueryArray, $excludedQueryParts);
         } else {
             $newQueryArray = $currentQueryArray;
         }
-        ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, $forceOverruleArguments);
         return HttpUtility::buildQueryString($newQueryArray, '&');
     }
 

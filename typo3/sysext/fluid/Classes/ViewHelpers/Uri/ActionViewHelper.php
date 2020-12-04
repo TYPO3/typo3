@@ -57,7 +57,7 @@ class ActionViewHelper extends AbstractViewHelper
         $this->registerArgument('absolute', 'bool', 'If set, an absolute URI is rendered', false, false);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'arguments to be removed from the URI. Only active if $addQueryString = TRUE', false, []);
-        $this->registerArgument('addQueryStringMethod', 'string', 'Set which parameters will be kept. Only active if $addQueryString = TRUE');
+        $this->registerArgument('addQueryStringMethod', 'string', 'This argument is not evaluated anymore and will be removed in TYPO3 v12.');
     }
 
     /**
@@ -68,6 +68,9 @@ class ActionViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        if (isset($arguments['addQueryStringMethod'])) {
+            trigger_error('Using the argument "addQueryStringMethod" in <f:uri.action> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
+        }
         /** @var int $pageUid */
         $pageUid = $arguments['pageUid'] ?? 0;
         /** @var int $pageType */
@@ -88,8 +91,6 @@ class ActionViewHelper extends AbstractViewHelper
         $addQueryString = $arguments['addQueryString'] ?? false;
         /** @var array|null $argumentsToBeExcludedFromQueryString */
         $argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'] ?? null;
-        /** @var string $addQueryStringMethod */
-        $addQueryStringMethod = $arguments['addQueryStringMethod'] ?? '';
         /** @var string|null $action */
         $action = $arguments['action'] ?? null;
         /** @var string|null $controller */
@@ -138,10 +139,6 @@ class ActionViewHelper extends AbstractViewHelper
 
         if (is_array($argumentsToBeExcludedFromQueryString)) {
             $uriBuilder->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
-        }
-
-        if ($addQueryStringMethod !== '') {
-            $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
         }
 
         if ($linkAccessRestrictedPages === true) {

@@ -96,9 +96,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
     protected $menuConfig = [
         'special' => 'language',
         'addQueryString' => 1,
-        'addQueryString.' => [
-            'method' => 'GET'
-        ],
         'wrap' => '[|]'
     ];
 

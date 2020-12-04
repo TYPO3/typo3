@@ -108,7 +108,6 @@ class UriBuilderTest extends UnitTestCase
             ->setAbsoluteUriScheme('https')
             ->setAddQueryString(true)
             ->setArgumentsToBeExcludedFromQueryString(['test' => 'addQueryStringExcludeArguments'])
-            ->setAddQueryStringMethod('GET')
             ->setArgumentPrefix('testArgumentPrefix')
             ->setLinkAccessRestrictedPages(true)
             ->setTargetPageUid(123)
@@ -121,7 +120,6 @@ class UriBuilderTest extends UnitTestCase
         self::assertEquals('https', $this->uriBuilder->getAbsoluteUriScheme());
         self::assertTrue($this->uriBuilder->getAddQueryString());
         self::assertEquals(['test' => 'addQueryStringExcludeArguments'], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
-        self::assertEquals('GET', $this->uriBuilder->getAddQueryStringMethod());
         self::assertEquals('testArgumentPrefix', $this->uriBuilder->getArgumentPrefix());
         self::assertTrue($this->uriBuilder->getLinkAccessRestrictedPages());
         self::assertEquals(123, $this->uriBuilder->getTargetPageUid());
@@ -212,23 +210,6 @@ class UriBuilderTest extends UnitTestCase
         $_GET['foo'] = 'bar';
         $_POST = [];
         $this->uriBuilder->setAddQueryString(true);
-        $this->uriBuilder->setAddQueryStringMethod('GET');
-        $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&id=pageId&foo=bar';
-        $actualResult = $this->uriBuilder->buildBackendUri();
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function buildBackendUriKeepsQueryParametersIfAddQueryStringMethodIsNotSet()
-    {
-        $_GET['route'] = '/test/Path';
-        $_GET['id'] = 'pageId';
-        $_GET['foo'] = 'bar';
-        $_POST = [];
-        $_POST['foo2'] = 'bar2';
-        $this->uriBuilder->setAddQueryString(true);
         $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&id=pageId&foo=bar';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
@@ -310,7 +291,6 @@ class UriBuilderTest extends UnitTestCase
     {
         $_GET = array_replace_recursive($_GET, $parameters);
         $this->uriBuilder->setAddQueryString(true);
-        $this->uriBuilder->setAddQueryStringMethod('GET');
         $this->uriBuilder->setArgumentsToBeExcludedFromQueryString($excluded);
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expected, $actualResult);
@@ -478,7 +458,6 @@ class UriBuilderTest extends UnitTestCase
             ->setFormat('someFormat')
             ->setCreateAbsoluteUri(true)
             ->setAddQueryString(true)
-            ->setAddQueryStringMethod('test')
             ->setArgumentsToBeExcludedFromQueryString(['test' => 'addQueryStringExcludeArguments'])
             ->setLinkAccessRestrictedPages(true)
             ->setTargetPageUid(123)
@@ -495,7 +474,6 @@ class UriBuilderTest extends UnitTestCase
         self::assertFalse($this->uriBuilder->getCreateAbsoluteUri());
         self::assertFalse($this->uriBuilder->getAddQueryString());
         self::assertEquals([], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
-        self::assertEquals('', $this->uriBuilder->getAddQueryStringMethod());
         self::assertEquals('', $this->uriBuilder->getArgumentPrefix());
         self::assertFalse($this->uriBuilder->getLinkAccessRestrictedPages());
         self::assertNull($this->uriBuilder->getTargetPageUid());
@@ -548,19 +526,6 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setAddQueryString(true);
         $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
-        self::assertEquals($expectedConfiguration, $actualConfiguration);
-    }
-
-    /**
-     * @test
-     */
-    public function buildTypolinkConfigurationProperlySetsAddQueryStringMethod()
-    {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setAddQueryString(true);
-        $this->uriBuilder->setAddQueryStringMethod('GET');
-        $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1, 'addQueryString.' => ['method' => 'GET']];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         self::assertEquals($expectedConfiguration, $actualConfiguration);
     }

@@ -81,7 +81,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     public function renderCallsStdWrapWithRightParameters()
     {
         $addQueryString = true;
-        $addQueryStringMethod = 'GET';
         $addQueryStringExclude = 'cHash';
 
         $this->subject->expects(self::any())->method('renderChildren')->willReturn('innerContent');
@@ -93,7 +92,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
             'additionalParams' => '',
             'additionalAttributes' => [],
             'addQueryString' => $addQueryString,
-            'addQueryStringMethod' => $addQueryStringMethod,
             'addQueryStringExclude' => $addQueryStringExclude,
             'absolute' => false
         ]);
@@ -108,7 +106,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                         'ATagParams' => '',
                         'addQueryString' => $addQueryString,
                         'addQueryString.' => [
-                            'method' => $addQueryStringMethod,
                             'exclude' => $addQueryStringExclude,
                         ],
                         'forceAbsoluteUrl' => false,

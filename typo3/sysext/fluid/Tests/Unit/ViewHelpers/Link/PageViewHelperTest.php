@@ -57,7 +57,6 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         $this->uriBuilder->expects(self::any())->method('setTargetPageUid')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setTargetPageType')->willReturn($this->uriBuilder);
         $this->uriBuilder->expects(self::any())->method('setNoCache')->willReturn($this->uriBuilder);
-        $this->uriBuilder->expects(self::any())->method('setAddQueryStringMethod')->willReturn($this->uriBuilder);
 
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
             ->onlyMethods(['getUriBuilder'])

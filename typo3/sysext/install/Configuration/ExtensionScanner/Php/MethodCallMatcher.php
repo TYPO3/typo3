@@ -4599,4 +4599,11 @@ return [
             'Deprecation-93038-ReferenceIndexRuntimeCache.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setAddQueryStringMethod' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst'
+        ],
+    ],
 ];

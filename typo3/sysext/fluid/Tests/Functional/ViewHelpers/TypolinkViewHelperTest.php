@@ -78,7 +78,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
     /**
      * @param mixed $parameter
      * @param bool $addQueryString
-     * @param string $addQueryStringMethod
      * @param string $addQueryStringExclude
      * @param string $expected
      * @param string $template
@@ -89,7 +88,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
     public function renderCreatesCorrectLink(
         $parameter,
         bool $addQueryString,
-        string $addQueryStringMethod,
         string $addQueryStringExclude,
         string $expected,
         string $template
@@ -100,7 +98,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'parameter' => $parameter,
             'uid' => 1,
             'addQueryString' => $addQueryString,
-            'addQueryStringMethod' => $addQueryStringMethod,
             'addQueryStringExclude' => $addQueryStringExclude,
         ]);
         self::assertEquals($expected, trim(preg_replace('/\s+/', ' ', $view->render())));
@@ -115,7 +112,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'link: default' => [
                 'parameter' => 1,
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="/en/">This is a testlink</a> <a href="/en/">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -123,7 +119,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'link: with add query string' => [
                 'parameter' => 1,
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="/en/?foo=bar&amp;temp=test&amp;cHash=286759dfcd3f566fa21091a0d77e9831">This is a testlink</a> <a href="/en/">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -131,7 +126,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'link: with add query string and exclude' => [
                 'parameter' => 1,
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => '<a href="/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d">This is a testlink</a> <a href="/en/">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -139,7 +133,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'uri: default' => [
                 'parameter' => 1,
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '/en/ /en/',
                 'template' => 'uri_typolink_viewhelper',
@@ -147,7 +140,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'uri: with add query string' => [
                 'parameter' => 1,
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '/en/?foo=bar&amp;temp=test&amp;cHash=286759dfcd3f566fa21091a0d77e9831 /en/',
                 'template' => 'uri_typolink_viewhelper',
@@ -155,7 +147,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'uri: with add query string and exclude' => [
                 'parameter' => 1,
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => '/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d /en/',
                 'template' => 'uri_typolink_viewhelper',
@@ -163,7 +154,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3://url link: default' => [
                 'parameter' => 't3://url?url=https://example.org?param=1&other=dude',
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="https://example.org?param=1">This is a testlink</a> <a href="https://example.org?param=1">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -171,7 +161,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3://url link: with add query string' => [
                 'parameter' => 't3://url?url=https://example.org?param=1&other=dude',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="https://example.org?param=1">This is a testlink</a> <a href="https://example.org?param=1">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -179,7 +168,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3://url link: with add query string and exclude' => [
                 'parameter' => 't3://url?url=https://example.org?param=1&other=dude',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => '<a href="https://example.org?param=1">This is a testlink</a> <a href="https://example.org?param=1">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -187,7 +175,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3://url uri: default' => [
                 'parameter' => 't3://url?url=https://example.org?param=1&other=dude',
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => 'https://example.org?param=1 https://example.org?param=1',
                 'template' => 'uri_typolink_viewhelper',
@@ -195,7 +182,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3://url uri: with add query string' => [
                 'parameter' => 't3://url?url=https://example.org?param=1&other=dude',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => 'https://example.org?param=1 https://example.org?param=1',
                 'template' => 'uri_typolink_viewhelper',
@@ -203,7 +189,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3://url uri: with add query string and exclude' => [
                 'parameter' => 't3://url?url=https://example.org?param=1&other=dude',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => 'https://example.org?param=1 https://example.org?param=1',
                 'template' => 'uri_typolink_viewhelper',
@@ -211,7 +196,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'mailto: link: default' => [
                 'parameter' => 'mailto:foo@typo3.org',
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="mailto:foo@typo3.org">This is a testlink</a> <a href="mailto:foo@typo3.org">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -219,7 +203,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'mailto: link: with add query string' => [
                 'parameter' => 'mailto:foo@typo3.org',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="mailto:foo@typo3.org">This is a testlink</a> <a href="mailto:foo@typo3.org">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -227,7 +210,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'mailto: link: with add query string and exclude' => [
                 'parameter' => 'mailto:foo@typo3.org',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => '<a href="mailto:foo@typo3.org">This is a testlink</a> <a href="mailto:foo@typo3.org">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -235,7 +217,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'mailto: uri: default' => [
                 'parameter' => 'mailto:foo@typo3.org',
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => 'mailto:foo@typo3.org mailto:foo@typo3.org',
                 'template' => 'uri_typolink_viewhelper',
@@ -243,7 +224,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'mailto: uri: with add query string' => [
                 'parameter' => 'mailto:foo@typo3.org',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => 'mailto:foo@typo3.org mailto:foo@typo3.org',
                 'template' => 'uri_typolink_viewhelper',
@@ -251,7 +231,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'mailto: uri: with add query string and exclude' => [
                 'parameter' => 'mailto:foo@typo3.org',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => 'mailto:foo@typo3.org mailto:foo@typo3.org',
                 'template' => 'uri_typolink_viewhelper',
@@ -259,7 +238,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: link: default' => [
                 'parameter' => 'http://typo3.org/foo/?foo=bar',
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="http://typo3.org/foo/?foo=bar">This is a testlink</a> <a href="http://typo3.org/foo/?foo=bar">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -267,7 +245,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: link: with add query string' => [
                 'parameter' => 'http://typo3.org/foo/?foo=bar',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="http://typo3.org/foo/?foo=bar">This is a testlink</a> <a href="http://typo3.org/foo/?foo=bar">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -275,7 +252,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: link: with add query string and exclude' => [
                 'parameter' => 'http://typo3.org/foo/?foo=bar',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => '<a href="http://typo3.org/foo/?foo=bar">This is a testlink</a> <a href="http://typo3.org/foo/?foo=bar">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -283,7 +259,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: uri: default' => [
                 'parameter' => 'http://typo3.org/foo/?foo=bar',
                 'addQueryString' => false,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => 'http://typo3.org/foo/?foo=bar http://typo3.org/foo/?foo=bar',
                 'template' => 'uri_typolink_viewhelper',
@@ -291,7 +266,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: uri: with add query string' => [
                 'parameter' => 'http://typo3.org/foo/?foo=bar',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => '',
                 'expected' => 'http://typo3.org/foo/?foo=bar http://typo3.org/foo/?foo=bar',
                 'template' => 'uri_typolink_viewhelper',
@@ -299,7 +273,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: uri: with add query string and exclude' => [
                 'parameter' => 'http://typo3.org/foo/?foo=bar',
                 'addQueryString' => true,
-                'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => 'http://typo3.org/foo/?foo=bar http://typo3.org/foo/?foo=bar',
                 'template' => 'uri_typolink_viewhelper',
@@ -308,7 +281,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'page with complex title and extended parameters' => [
                 'parameter' => '1 - - "a \\"link\\" title with \\\\" &x=y',
                 'addQueryString' => false,
-                'addQueryStringMethod' => '',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="/en/?x=y&amp;cHash=fcdb7fbded8dc9d683ea83aee9909d99" title="a &quot;link&quot; title with \">This is a testlink</a> <a href="/en/?x=y&amp;cHash=fcdb7fbded8dc9d683ea83aee9909d99" title="a &quot;link&quot; title with \">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -316,7 +288,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'full parameter usage' => [
                 '1 _blank css-class "testtitle with whitespace" &X=y',
                 'addQueryString' => false,
-                'addQueryStringMethod' => '',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="/en/?X=y&amp;cHash=b8582914879e1ee43c72a4d26e4a4d98" title="testtitle with whitespace" target="_blank" class="css-class">This is a testlink</a> <a href="/en/?X=y&amp;cHash=b8582914879e1ee43c72a4d26e4a4d98" title="testtitle with whitespace" target="_blank" class="css-class">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -324,7 +295,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3:// with extended class' => [
                 't3://url?url=https://example.org?param=1&other=dude - css-class',
                 'addQueryString' => false,
-                'addQueryStringMethod' => '',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="https://example.org?param=1" class="css-class">This is a testlink</a> <a href="https://example.org?param=1" class="css-class">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -332,7 +302,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3:// with complex title and extended parameters' => [
                 't3://url?url=https://example.org?param=1&other=dude - - "a \\"link\\" title with \\\\" &x=y',
                 'addQueryString' => false,
-                'addQueryStringMethod' => '',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="https://example.org?param=1" title="a &quot;link&quot; title with \">This is a testlink</a> <a href="https://example.org?param=1" title="a &quot;link&quot; title with \">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
@@ -340,7 +309,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             't3:// with complex title and extended parameters & correctly encoded other parameter' => [
                 't3://url?url=https://example.org?param=1%26other=dude - - "a \\"link\\" title with \\\\" &x=y',
                 'addQueryString' => false,
-                'addQueryStringMethod' => '',
                 'addQueryStringExclude' => '',
                 'expected' => '<a href="https://example.org?param=1&amp;other=dude" title="a &quot;link&quot; title with \">This is a testlink</a> <a href="https://example.org?param=1&amp;other=dude" title="a &quot;link&quot; title with \">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
