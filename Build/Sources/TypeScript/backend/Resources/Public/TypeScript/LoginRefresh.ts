@@ -13,20 +13,14 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Typo3Notification = require('TYPO3/CMS/Backend/Notification');
-import Severity = require('TYPO3/CMS/Backend/Severity');
-import Client = require('TYPO3/CMS/Backend/Storage/Client');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Notification = require('TYPO3/CMS/Backend/Notification');
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
   lockedModal = 't3js-modal-backendlocked',
   loginFormModal = 't3js-modal-backendloginform',
 }
-
-// hack is required, because the Notification definition is wrong
-declare let Notification: any;
 
 /**
  * Module: TYPO3/CMS/Backend/LoginRefresh
@@ -38,7 +32,6 @@ class LoginRefresh {
       backdrop: 'static',
     },
   };
-  private webNotification: Notification = null;
   private intervalTime: number = 60;
   private intervalId: number = null;
   private backendIsLocked: boolean = false;
@@ -56,38 +49,7 @@ class LoginRefresh {
     this.initializeTimeoutModal();
     this.initializeBackendLockedModal();
     this.initializeLoginForm();
-
     this.startTask();
-
-    const askForNotifications = !(Client.isset('notifications.asked') && Client.get('notifications.asked') === 'yes');
-    const isDefaultNotificationLevel = typeof Notification !== 'undefined' && Notification.permission === 'default';
-    if (askForNotifications
-      && document.location.protocol === 'https:'
-      && isDefaultNotificationLevel
-    ) {
-      Modal.confirm(
-        TYPO3.lang['notification.request.title'],
-        TYPO3.lang['notification.request.description'],
-        Severity.info,
-        [{
-          text: TYPO3.lang['button.yes'] || 'Yes',
-          btnClass: 'btn-' + Severity.getCssClass(Severity.info),
-          name: 'ok',
-          active: true,
-        }, {
-          text: TYPO3.lang['button.no'] || 'No',
-          btnClass: 'btn-' + Severity.getCssClass(Severity.notice),
-          name: 'cancel'
-        }],
-      ).on('confirm.button.ok', (): void => {
-        Notification.requestPermission();
-        Modal.dismiss();
-      }).on('confirm.button.cancel', (): void => {
-        Modal.dismiss();
-      }).on('hide.bs.modal', (): void => {
-        Client.set('notifications.asked', 'yes');
-      });
-    }
   }
 
   /**
@@ -144,17 +106,6 @@ class LoginRefresh {
     this.isTimingOut = true;
     this.$timeoutModal.modal(this.options.modalConfig);
     this.fillProgressbar(this.$timeoutModal);
-
-    if (document.location.protocol === 'https:' && typeof Notification !== 'undefined'
-      && Notification.permission === 'granted' && document.hidden) {
-      this.webNotification = new Notification(TYPO3.lang['mess.login_about_to_expire_title'], {
-        body: TYPO3.lang['mess.login_about_to_expire'],
-        icon: '/typo3/sysext/backend/Resources/Public/Images/Logo.png',
-      });
-      this.webNotification.onclick = () => {
-        window.focus();
-      };
-    }
   }
 
   /**
@@ -163,10 +114,6 @@ class LoginRefresh {
   public hideTimeoutModal(): void {
     this.isTimingOut = false;
     this.$timeoutModal.modal('hide');
-
-    if (typeof Notification !== 'undefined' && this.webNotification !== null) {
-      this.webNotification.close();
-    }
   }
 
   /**
@@ -399,7 +346,7 @@ class LoginRefresh {
     const passwordFieldValue = $passwordField.val();
 
     if (passwordFieldValue === '' && $useridentField.val() === '') {
-      Typo3Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_emptyPassword']);
+      Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_emptyPassword']);
       $passwordField.focus();
       return;
     }
@@ -421,7 +368,7 @@ class LoginRefresh {
         // User is logged in
         this.hideLoginForm();
       } else {
-        Typo3Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
+        Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
         $passwordField.focus();
       }
     });
