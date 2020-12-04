@@ -257,12 +257,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $loginType = '';
 
     /**
-     * "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
-     * @var array
-     */
-    public $svConfig = [];
-
-    /**
      * @var array
      */
     public $uc;
@@ -292,7 +286,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function __construct()
     {
-        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
         // If there is a custom session timeout, use this instead of the 1d default gc time.
         if ($this->sessionTimeout > 0) {
             $this->gc_time = $this->sessionTimeout;
@@ -496,6 +489,18 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
+     * "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
+     * @return array
+     */
+    protected function getAuthServiceConfiguration(): array
+    {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'] ?? null)) {
+            return $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'];
+        }
+        return [];
+    }
+
+    /**
      * Checks if a submission of username and password is present or use other authentication by auth services
      *
      * @throws \RuntimeException
@@ -503,6 +508,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function checkAuthentication()
     {
+        $authConfiguration = $this->getAuthServiceConfiguration();
+        if (!empty($authConfiguration)) {
+            $this->logger->debug('Authentication Service Configuration found.', $authConfiguration);
+        }
         // No user for now - will be searched by service below
         $tempuserArr = [];
         $tempuser = false;
@@ -568,14 +577,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         } else {
             $this->logger->debug('No user session found');
         }
-        if (is_array($this->svConfig['setup'] ?? false)) {
-            $this->logger->debug('SV setup', $this->svConfig['setup']);
-        }
 
         // Fetch user if ...
         if (
-            $activeLogin || !empty($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser'])
-            || !$haveSession && !empty($this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession'])
+            $activeLogin || !empty($authConfiguration[$this->loginType . '_alwaysFetchUser'])
+            || !$haveSession && !empty($authConfiguration[$this->loginType . '_fetchUserIfNoSession'])
         ) {
             // Use 'auth' service to find the user
             // First found user will be used
@@ -589,13 +595,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                         $this->username_column => $row[$this->username_column],
                     ]);
                     // User found, just stop to search for more if not configured to go on
-                    if (empty($this->svConfig['setup'][$this->loginType . '_fetchAllUsers'])) {
+                    if (empty($authConfiguration[$this->loginType . '_fetchAllUsers'])) {
                         break;
                     }
                 }
             }
 
-            if (!empty($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser'])) {
+            if (!empty($authConfiguration[$this->loginType . '_alwaysFetchUser'])) {
                 $this->logger->debug($this->loginType . '_alwaysFetchUser option is enabled');
             }
             if (empty($tempuserArr)) {
@@ -617,7 +623,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ]);
         }
         // Re-auth user when 'auth'-service option is set
-        if (!empty($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser'])) {
+        if (!empty($authConfiguration[$this->loginType . '_alwaysAuthUser'])) {
             $authenticated = false;
             $this->logger->debug('alwaysAuthUser option is enabled');
         }

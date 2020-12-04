@@ -725,4 +725,9 @@ return [
             'Breaking-92989-AbstractUserAuthentication-loginFailureRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->svConfig' => [
+        'restFiles' => [
+            'Breaking-92990-AbstractUserAuthentication-svConfigRemoved.rst',
+        ],
+    ],
 ];
