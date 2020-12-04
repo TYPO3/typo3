@@ -720,4 +720,9 @@ return [
             'Breaking-92801-RemovedFailedLoginFunctionalityFromUserAuthenticationObject.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->loginFailure' => [
+        'restFiles' => [
+            'Breaking-92989-AbstractUserAuthentication-loginFailureRemoved.rst',
+        ],
+    ],
 ];

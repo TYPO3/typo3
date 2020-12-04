@@ -216,12 +216,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $id;
 
     /**
-     * Indicates if an authentication was started but failed
-     * @var bool
-     */
-    public $loginFailure = false;
-
-    /**
      * Will be set to TRUE if the login session is actually written during auth-check.
      * @var bool
      */
@@ -516,8 +510,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $authenticated = false;
         // User want to login with passed login data (name/password)
         $activeLogin = false;
-        // Indicates if an active authentication failed (not auto login)
-        $this->loginFailure = false;
         $this->logger->debug('Login type: ' . $this->loginType);
         // The info array provide additional information for auth services
         $authInfo = $this->getAuthInfoArray();
@@ -665,8 +657,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         // If user is authenticated a valid user is in $tempuser
         if ($authenticated) {
-            // Reset failure flag
-            $this->loginFailure = false;
             // Insert session record if needed:
             if (!$haveSession || $anonymousSession || $tempuser['ses_id'] != $this->id && $tempuser['uid'] != $authInfo['userSession']['ses_userid']) {
                 $sessionData = $this->createUserSession($tempuser);
@@ -711,14 +701,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->regenerateSessionId();
             }
 
-            // User logged in - write that to the log!
-            if ($this->writeStdLog && $activeLogin) {
-                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGIN, SystemLogErrorClassification::MESSAGE, 1, 'User %s logged in from ###IP###', [$tempuser[$this->username_column]], '', '', '');
-            }
             if ($activeLogin) {
+                // User logged in - write that to the log!
+                if ($this->writeStdLog) {
+                    $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGIN, SystemLogErrorClassification::MESSAGE, 1, 'User %s logged in from ###IP###', [$tempuser[$this->username_column]], '', '', '');
+                }
                 $this->logger->info('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR'));
-            }
-            if (!$activeLogin) {
+            } else {
                 $this->logger->debug('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR'));
             }
         } else {
@@ -728,40 +717,41 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
 
             // Mark the current login attempt as failed
-            if ($activeLogin || !empty($tempuserArr)) {
-                $this->loginFailure = true;
-                if (empty($tempuserArr) && $activeLogin) {
-                    $logData = [
-                        'loginData' => $loginData
-                    ];
-                    $this->logger->debug('Login failed', $logData);
-                }
-                if (!empty($tempuserArr)) {
-                    $logData = [
-                        $this->userid_column => $tempuser[$this->userid_column],
-                        $this->username_column => $tempuser[$this->username_column],
-                    ];
-                    $this->logger->debug('Login failed', $logData);
-                }
+            if (empty($tempuserArr) && $activeLogin) {
+                $this->logger->debug('Login failed', [
+                    'loginData' => $loginData
+                ]);
+            } elseif (!empty($tempuserArr)) {
+                $this->logger->debug('Login failed', [
+                    $this->userid_column => $tempuser[$this->userid_column],
+                    $this->username_column => $tempuser[$this->username_column],
+                ]);
+            }
+
+            // If there were a login failure, check to see if a warning email should be sent
+            if ($activeLogin) {
+                $this->handleLoginFailure();
             }
         }
+    }
 
-        // If there were a login failure, check to see if a warning email should be sent
-        if ($this->loginFailure && $activeLogin) {
-            // Hook to implement login failure tracking methods
-            $_params = [];
-            $sleep = true;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $hookIdentifier => $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                // This hack will be removed once this is migrated into PSR-14 Events
-                if ($hookIdentifier !== 'sendEmailOnFailedLoginAttempt') {
-                    $sleep = false;
-                }
+    /**
+     * Implement functionality when there was a failed login
+     */
+    protected function handleLoginFailure(): void
+    {
+        $_params = [];
+        $sleep = true;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $hookIdentifier => $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            // This hack will be removed once this is migrated into PSR-14 Events
+            if ($hookIdentifier !== 'sendEmailOnFailedLoginAttempt') {
+                $sleep = false;
             }
-            if ($sleep) {
-                // No hooks were triggered - default login failure behavior is to sleep 5 seconds
-                sleep(5);
-            }
+        }
+        if ($sleep) {
+            // No hooks were triggered - default login failure behavior is to sleep 5 seconds
+            sleep(5);
         }
     }
 

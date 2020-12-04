@@ -394,7 +394,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->method('getCookie')->willReturn(null);
 
         $subject->start();
-        self::assertFalse($subject->loginFailure);
         self::assertEquals('existingUserName', $subject->user['username']);
     }
 
