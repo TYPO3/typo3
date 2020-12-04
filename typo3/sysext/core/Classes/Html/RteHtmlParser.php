@@ -178,6 +178,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         foreach ($modes as $cmd) {
             // Checking for user defined transformation:
             if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
+                trigger_error(
+                    'The hook "t3lib/class.t3lib_parsehtml_proc.php->transformation"' .
+                    ' will be removed in TYPO3 v12. ',
+                    E_USER_DEPRECATED
+                );
                 $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
                 $_procObj->pObj = $this;
                 $value = $_procObj->transform_rte($value, $this);
@@ -220,6 +225,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         foreach ($modes as $cmd) {
             // Checking for user defined transformation:
             if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
+                trigger_error(
+                    'The hook "t3lib/class.t3lib_parsehtml_proc.php->transformation"' .
+                    ' will be removed in TYPO3 v12. ',
+                    E_USER_DEPRECATED
+                );
                 $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
                 $_procObj->pObj = $this;
                 $_procObj->transformationKey = $cmd;
