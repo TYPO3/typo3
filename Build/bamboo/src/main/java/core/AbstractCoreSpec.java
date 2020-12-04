@@ -48,6 +48,8 @@ abstract class AbstractCoreSpec {
 
     private String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
+    private static final String IMAGE_JS_VERSION = "3.0";
+
     // will only execute `composer install`
     public static final int COMPOSER_DEFAULT = 0;
     // will execute `composer update --with-dependencies`
@@ -1327,7 +1329,7 @@ abstract class AbstractCoreSpec {
                             "        -e HOME=${HOME} \\\n" +
                             "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                             "        --rm \\\n" +
-                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":" + IMAGE_JS_VERSION + " \\\n" +
                             "        bin/bash -c \"cd ${PWD}/Build; yarn $*\"\n" +
                             "}\n" +
                             "\n" +
@@ -1346,7 +1348,7 @@ abstract class AbstractCoreSpec {
                             "        -e HOME=${HOME} \\\n" +
                             "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                             "        --rm \\\n" +
-                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":" + IMAGE_JS_VERSION + " \\\n" +
                             "        bin/bash -c \"cd ${PWD}; ./Build/node_modules/karma/bin/karma $*\"\n" +
                             "}\n" +
                             "\n" +
@@ -1424,7 +1426,7 @@ abstract class AbstractCoreSpec {
                             "        -e HOME=${HOME} \\\n" +
                             "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                             "        --rm \\\n" +
-                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":" + IMAGE_JS_VERSION + " \\\n" +
                             "        bin/bash -c \"cd ${PWD}/Build; yarn $*\"\n" +
                             "}\n" +
                             "\n" +
@@ -1443,7 +1445,7 @@ abstract class AbstractCoreSpec {
                             "        -e HOME=${HOME} \\\n" +
                             "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                             "        --rm \\\n" +
-                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":" + IMAGE_JS_VERSION + " \\\n" +
                             "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
                             "}\n" +
                             "\n" +
@@ -1462,7 +1464,7 @@ abstract class AbstractCoreSpec {
                             "        -e HOME=${HOME} \\\n" +
                             "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
                             "        --rm \\\n" +
-                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":" + IMAGE_JS_VERSION + " \\\n" +
                             "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
                             "}\n" +
                             "\n" +
