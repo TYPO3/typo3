@@ -5,11 +5,11 @@
   "readme": "../README.md",
   "homepage": "https://typo3.org",
   "author": "TYPO3 CMS Core Team",
-  "version": "10.0.0-dev",
+  "version": "11.0.0-dev",
   "license": "GPL-2.0+",
   "engines": {
-    "node": ">=12.0.0 <13.0.0",
-    "yarn": "^1.10.0"
+    "node": ">=14.15.0 <15.0.0",
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@types/bootstrap": "^3.4.0",
