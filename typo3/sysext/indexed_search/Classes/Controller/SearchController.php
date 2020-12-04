@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -283,20 +282,17 @@ class SearchController extends ActionController
         $resultsets = [];
         foreach ($indexCfgs as $freeIndexUid) {
             // Get result rows
-            $tstamp1 = IndexedSearchUtility::milliseconds();
             if ($hookObj = $this->hookRequest('getResultRows')) {
                 $resultData = $hookObj->getResultRows($this->searchWords, $freeIndexUid);
             } else {
                 $resultData = $this->searchRepository->doSearch($this->searchWords, $freeIndexUid);
             }
             // Display search results
-            $tstamp2 = IndexedSearchUtility::milliseconds();
             if ($hookObj = $this->hookRequest('getDisplayResults')) {
                 $resultsets[$freeIndexUid] = $hookObj->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
             } else {
                 $resultsets[$freeIndexUid] = $this->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
             }
-            $tstamp3 = IndexedSearchUtility::milliseconds();
             // Create header if we are searching more than one indexing configuration
             if (count($indexCfgs) > 1) {
                 if ($freeIndexUid > 0) {
@@ -322,7 +318,7 @@ class SearchController extends ActionController
                 $resultsets[$freeIndexUid]['categoryTitle'] = $categoryTitle;
             }
             // Write search statistics
-            $this->writeSearchStat($searchData, $this->searchWords, $resultData['count'], [$tstamp1, $tstamp2, $tstamp3]);
+            $this->writeSearchStat($this->searchWords ?: []);
         }
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
@@ -854,58 +850,25 @@ class SearchController extends ActionController
     /**
      * Write statistics information to database for the search operation if there was at least one search word.
      *
-     * @param array $searchParams search params
      * @param array $searchWords Search Word array
-     * @param int $count Number of hits
-     * @param array $pt Milliseconds the search took (start time DB query + end time DB query + end time to compile results)
      */
-    protected function writeSearchStat($searchParams, $searchWords, $count, $pt)
+    protected function writeSearchStat(array $searchWords): void
     {
-        $searchWord = $this->getSword();
-        if (empty($searchWord) && empty($searchWords)) {
+        if (empty($this->getSword()) && empty($searchWords)) {
             return;
         }
-
-        $ipAddress = '';
-        try {
-            $ipMask = isset($this->indexerConfig['trackIpInStatistic']) ? (int)$this->indexerConfig['trackIpInStatistic'] : 2;
-            $ipAddress = IpAnonymizationUtility::anonymizeIp(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $ipMask);
-        } catch (\Exception $e) {
+        $entries = [];
+        foreach ($searchWords as $val) {
+            $entries[] = [
+                'word' => $val['sword'],
+                // Time stamp
+                'tstamp' => $GLOBALS['EXEC_TIME'],
+                // search page id for indexed search stats
+                'pageid' => $GLOBALS['TSFE']->id
+            ];
         }
-        $insertFields = [
-            'searchstring' => $searchWord,
-            'searchoptions' => serialize([$searchParams, $searchWords, $pt]),
-            'feuser_id' => (int)$GLOBALS['TSFE']->fe_user->user['uid'],
-            // cookie as set or retrieved. If people has cookies disabled this will vary all the time
-            'cookie' => $GLOBALS['TSFE']->fe_user->id,
-            // Remote IP address
-            'IP' => $ipAddress,
-            // Number of hits on the search
-            'hits' => (int)$count,
-            // Time stamp
-            'tstamp' => $GLOBALS['EXEC_TIME']
-        ];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_search_stat');
-        $connection->insert(
-            'index_stat_search',
-            $insertFields,
-            ['searchoptions' => Connection::PARAM_LOB]
-        );
-        $newId = $connection->lastInsertId('index_stat_search');
-        if ($newId) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');
-            foreach ($searchWords as $val) {
-                $insertFields = [
-                    'word' => $val['sword'],
-                    'index_stat_search_id' => $newId,
-                    // Time stamp
-                    'tstamp' => $GLOBALS['EXEC_TIME'],
-                    // search page id for indexed search stats
-                    'pageid' => $GLOBALS['TSFE']->id
-                ];
-                $connection->insert('index_stat_word', $insertFields);
-            }
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');
+        $connection->bulkInsert('index_stat_word', $entries);
     }
 
     /**

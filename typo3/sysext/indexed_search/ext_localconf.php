@@ -60,10 +60,10 @@ $extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 if (isset($extConf['useMysqlFulltext']) && (bool)$extConf['useMysqlFulltext']) {
     // Use all index_* tables except "index_rel" and "index_words"
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
-        'index_phash,index_fulltext,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
+        'index_phash,index_fulltext,index_section,index_grlist,index_stat_word,index_debug,index_config';
 } else {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
-        'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
+        'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_word,index_debug,index_config';
 }
 
 // Add search to new content element wizard
@@ -87,17 +87,3 @@ if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSe
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] = \TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility::class;
 }
 unset($extConf);
-
-if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'])) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['index_stat_search'] = [
-        'dateField' => 'tstamp',
-        'expirePeriod' => 90
-    ];
-}
-
-if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables'])) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables']['index_stat_search'] = [
-        'dateField' => 'tstamp',
-        'ipField' => 'IP'
-    ];
-}

@@ -101,21 +101,6 @@ CREATE TABLE index_grlist (
 ) ENGINE=InnoDB;
 
 #
-# Table structure for table 'index_stat_search'
-#
-CREATE TABLE index_stat_search (
-  uid int(11) NOT NULL auto_increment,
-  searchstring varchar(255) DEFAULT '' NOT NULL,
-  searchoptions blob,
-  tstamp int(11) DEFAULT '0' NOT NULL,
-  feuser_id int(11) unsigned DEFAULT '0' NOT NULL,
-  cookie varchar(32) DEFAULT '' NOT NULL,
-  IP varchar(255) DEFAULT '' NOT NULL,
-  hits int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (uid)
-) ENGINE=InnoDB;
-
-#
 # Table structure for table 'index_debug'
 #
 CREATE TABLE index_debug (

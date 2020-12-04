@@ -60,9 +60,6 @@
 			<trans-unit id="indexedsearch.config.useMysqlFulltext" resname="indexedsearch.config.useMysqlFulltext">
 				<source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
 			</trans-unit>
-			<trans-unit id="indexedsearch.config.trackIpInStatistic" resname="indexedsearch.config.trackIpInStatistic">
-				<source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
