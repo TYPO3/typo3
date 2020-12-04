@@ -326,8 +326,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $this->newSessionID = true;
         }
 
-        // Set all possible headers that could ensure that the script is not cached on the client-side
-        $this->sendHttpHeaders();
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
         // the user with the session. $this->user[uid] may be used to write log...
         $this->checkAuthentication();
@@ -346,40 +344,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (random_int(0, mt_getrandmax()) % 100 <= $this->gc_probability) {
             $this->gc();
         }
-    }
-
-    /**
-     * Set all possible headers that could ensure that the script
-     * is not cached on the client-side.
-     *
-     * Only do this if $this->sendNoCacheHeaders is set.
-     */
-    protected function sendHttpHeaders()
-    {
-        // skip sending the "no-cache" headers if it's a CLI request or the no-cache headers should not be sent.
-        if (!$this->sendNoCacheHeaders || Environment::isCli()) {
-            return;
-        }
-        $httpHeaders = $this->getHttpHeaders();
-        foreach ($httpHeaders as $httpHeaderName => $value) {
-            header($httpHeaderName . ': ' . $value);
-        }
-    }
-
-    /**
-     * Get the http headers to be sent if an authenticated user is available, in order to disallow
-     * browsers to store the response on the client side.
-     *
-     * @return array
-     */
-    protected function getHttpHeaders(): array
-    {
-        return [
-            'Expires' => 0,
-            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-            'Cache-Control' => 'no-cache, must-revalidate',
-            'Pragma' => 'no-cache'
-        ];
     }
 
     /**

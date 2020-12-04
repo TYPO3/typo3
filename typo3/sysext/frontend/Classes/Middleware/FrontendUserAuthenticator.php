@@ -81,6 +81,9 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         // Store session data for fe_users if it still exists
         if ($frontendUser instanceof FrontendUserAuthentication) {
             $frontendUser->storeSessionData();
+            if ($frontendUser->sendNoCacheHeaders) {
+                $response = $this->applyHeadersToResponse($response);
+            }
         }
 
         return $response;
@@ -121,5 +124,28 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             $frontendUser->dontSetCookie = false;
         }
         return $request;
+    }
+
+    /**
+     * Adding headers to the response to avoid caching on the client side.
+     * These headers will override any previous headers of these names sent.
+     * Get the http headers to be sent if an authenticated user is available,
+     * in order to disallow browsers to store the response on the client side.
+     *
+     * @param ResponseInterface $response
+     * @return ResponseInterface the modified response object.
+     */
+    protected function applyHeadersToResponse(ResponseInterface $response): ResponseInterface
+    {
+        $headers = [
+            'Expires' => 0,
+            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache'
+        ];
+        foreach ($headers as $headerName => $headerValue) {
+            $response = $response->withHeader($headerName, (string)$headerValue);
+        }
+        return $response;
     }
 }
