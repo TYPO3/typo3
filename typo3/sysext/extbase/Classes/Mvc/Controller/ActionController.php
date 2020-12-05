@@ -68,21 +68,25 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $reflectionService;
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\CacheService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $cacheService;
 
     /**
      * @var HashService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $hashService;
 
     /**
      * @var ViewResolverInterface
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     private $viewResolver;
 
@@ -105,6 +109,7 @@ abstract class ActionController implements ControllerInterface
      * Name of the action method
      *
      * @var string
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $actionMethodName = 'indexAction';
 
@@ -134,11 +139,13 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $signalSlotDispatcher;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $objectManager;
 
@@ -156,6 +163,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $validatorResolver;
 
@@ -166,16 +174,19 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $controllerContext;
 
     /**
      * @var ConfigurationManagerInterface
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $configurationManager;
 
     /**
      * @var PropertyMapper
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     private $propertyMapper;
 
@@ -186,6 +197,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -197,6 +209,7 @@ abstract class ActionController implements ControllerInterface
      * Injects the object manager
      *
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
@@ -206,6 +219,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
     {
@@ -214,6 +228,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectValidatorResolver(ValidatorResolver $validatorResolver)
     {
@@ -222,7 +237,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param ViewResolverInterface $viewResolver
-     * @internal
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectViewResolver(ViewResolverInterface $viewResolver)
     {
@@ -231,6 +246,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectReflectionService(ReflectionService $reflectionService)
     {
@@ -239,6 +255,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectCacheService(CacheService $cacheService)
     {
@@ -247,6 +264,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param HashService $hashService
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectHashService(HashService $hashService)
     {
@@ -266,6 +284,10 @@ abstract class ActionController implements ControllerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param PropertyMapper $propertyMapper
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
     public function injectPropertyMapper(PropertyMapper $propertyMapper): void
     {
         $this->propertyMapper = $propertyMapper;
@@ -301,6 +323,8 @@ abstract class ActionController implements ControllerInterface
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
      * @see initializeArguments()
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function initializeActionMethodArguments()
     {
@@ -330,6 +354,8 @@ abstract class ActionController implements ControllerInterface
      * - Custom validators specified with validate annotations.
      * - Model-based validators (validate annotations in the model)
      * - Custom model validator classes
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function initializeActionMethodValidators()
     {
@@ -381,6 +407,8 @@ abstract class ActionController implements ControllerInterface
     /**
      * Collects the base validators which were defined for the data type of each
      * controller argument and adds them to the argument's validator chain.
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function initializeControllerArgumentsBaseValidators()
     {
@@ -398,6 +426,8 @@ abstract class ActionController implements ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @return ResponseInterface
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
@@ -444,6 +474,8 @@ abstract class ActionController implements ControllerInterface
      * for example you do this in a plugin that gets used multiple time on a page.
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function renderAssetsForRequest($request)
     {
@@ -471,6 +503,8 @@ abstract class ActionController implements ControllerInterface
      *
      * @return string Method name of the current action
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException if the action specified in the request object does not exist (and if there's no default action either).
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function resolveActionMethodName()
     {
@@ -487,6 +521,8 @@ abstract class ActionController implements ControllerInterface
      * If the action returns a string, it is appended to the content in the
      * response object. If the action doesn't return anything and a valid
      * view exists, the view is rendered automatically.
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function callActionMethod(RequestInterface $request): ResponseInterface
     {
@@ -560,6 +596,8 @@ abstract class ActionController implements ControllerInterface
      * By default, this method tries to locate a view with a name matching the current action.
      *
      * @return ViewInterface
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function resolveView()
     {
@@ -602,6 +640,8 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @param ViewInterface $view
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function setViewConfiguration(ViewInterface $view)
     {
@@ -653,6 +693,8 @@ abstract class ActionController implements ControllerInterface
      * @param string $setting parameter name from TypoScript
      *
      * @return array
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function getViewProperty($extbaseFrameworkConfiguration, $setting)
     {
@@ -693,6 +735,8 @@ abstract class ActionController implements ControllerInterface
     /**
      * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
      * Better would be just do delete the cache for the error action, but that is not possible right now.
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function clearCacheOnError()
     {
@@ -708,6 +752,8 @@ abstract class ActionController implements ControllerInterface
     /**
      * If an error occurred during this request, this adds a flash message describing the error to the flash
      * message container.
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function addErrorFlashMessage()
     {
@@ -723,6 +769,8 @@ abstract class ActionController implements ControllerInterface
      * the flash message in your action controller.
      *
      * @return string The flash message or FALSE if no flash message should be set
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function getErrorFlashMessage()
     {
@@ -735,6 +783,8 @@ abstract class ActionController implements ControllerInterface
      * call this method before you have finished the necessary business logic!
      *
      * @return ResponseInterface|null
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function forwardToReferringRequest(): ?ResponseInterface
     {
@@ -776,6 +826,8 @@ abstract class ActionController implements ControllerInterface
      * but for security reasons (@see #54074) we do not return these here.
      *
      * @return string
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function getFlattenedValidationErrorMessage()
     {
@@ -821,6 +873,8 @@ abstract class ActionController implements ControllerInterface
      * Initialize the controller context
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext ControllerContext to be passed to the view
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function buildControllerContext()
     {
@@ -947,6 +1001,8 @@ abstract class ActionController implements ControllerInterface
      *
      * @param string $uri The URI
      * @return string
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function addBaseUriIfNecessary($uri)
     {
@@ -978,6 +1034,8 @@ abstract class ActionController implements ControllerInterface
      * Maps arguments delivered by the request object to the local controller arguments.
      *
      * @throws Exception\RequiredArgumentMissingException
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function mapRequestArgumentsToControllerArguments()
     {
