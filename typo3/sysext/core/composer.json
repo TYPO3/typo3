@@ -32,7 +32,7 @@
 		"doctrine/instantiator": "^1.4",
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^2.1",
-		"guzzlehttp/guzzle": "^6.3.0",
+		"guzzlehttp/guzzle": "^7.2",
 		"nikic/php-parser": "^4.3",
 		"psr/container": "^1.0",
 		"psr/event-dispatcher": "^1.0",
@@ -85,7 +85,6 @@
 	},
 	"conflict": {
 		"hoa/core": "*",
-		"guzzlehttp/guzzle": "6.5.0",
 		"typo3/cms": "*"
 	},
 	"replace": {

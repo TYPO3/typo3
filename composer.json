@@ -44,7 +44,7 @@
 		"doctrine/instantiator": "^1.4",
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^2.1",
-		"guzzlehttp/guzzle": "^6.3.0",
+		"guzzlehttp/guzzle": "^7.2",
 		"nikic/php-parser": "^4.3",
 		"phpdocumentor/reflection-docblock": "^5.1.0",
 		"phpdocumentor/type-resolver": "^1.1.0",
@@ -106,8 +106,7 @@
 		"ext-mysqli": ""
 	},
 	"conflict": {
-		"hoa/core": "*",
-		"guzzlehttp/guzzle": "6.5.0"
+		"hoa/core": "*"
 	},
 	"provide": {
 		"psr/http-client-implementation": "1.0",
