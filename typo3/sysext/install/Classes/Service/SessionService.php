@@ -72,9 +72,7 @@ class SessionService implements SingletonInterface
         session_set_save_handler($sessionHandler);
         session_name($this->cookieName);
         ini_set('session.cookie_httponly', 'On');
-        if ($this->hasSameSiteCookieSupport()) {
-            ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
-        }
+        ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
         ini_set('session.cookie_path', (string)GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
         // Always call the garbage collector to clean up stale session files
         ini_set('session.gc_probability', (string)100);
@@ -99,9 +97,6 @@ class SessionService implements SingletonInterface
             return;
         }
         session_start();
-        if (!$this->hasSameSiteCookieSupport()) {
-            $this->resendCookieHeader();
-        }
     }
 
     /**
@@ -162,9 +157,6 @@ class SessionService implements SingletonInterface
     {
         // we do not have parallel ajax requests so we can safely remove the old session data
         session_regenerate_id(true);
-        if (!$this->hasSameSiteCookieSupport()) {
-            $this->resendCookieHeader([$this->cookieName]);
-        }
         return session_id();
     }
 
