@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -44,7 +46,6 @@ use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Install\Service\SessionService;
@@ -2342,7 +2343,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         if (empty($this->user['uid'])) {
             if ($proceedIfNoUserIsLoggedIn === false) {
                 $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
-                HttpUtility::redirect($url);
+                throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
             }
         } else {
             // ...and if that's the case, call these functions

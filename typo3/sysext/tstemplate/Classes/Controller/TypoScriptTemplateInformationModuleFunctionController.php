@@ -17,10 +17,11 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -154,8 +155,8 @@ class TypoScriptTemplateInformationModuleFunctionController
                 'id' => $this->id,
                 'SET[templatesOnPage]' => $newId
             ];
-            $url = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-            HttpUtility::redirect($url);
+            $url = $uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271781);
         }
         if ($existTemplate) {
             $lang = $this->getLanguageService();
