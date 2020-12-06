@@ -43,9 +43,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class PageRenderer implements SingletonInterface
 {
     // Constants for the part to be rendered
-    const PART_COMPLETE = 0;
-    const PART_HEADER = 1;
-    const PART_FOOTER = 2;
+    protected const PART_COMPLETE = 0;
+    protected const PART_HEADER = 1;
+    protected const PART_FOOTER = 2;
 
     const REQUIREJS_SCOPE_CONFIG = 'config';
     const REQUIREJS_SCOPE_RESOLVE = 'resolve';
@@ -1699,22 +1699,19 @@ class PageRenderer implements SingletonInterface
     /*                                                   */
     /*****************************************************/
     /**
-     * Render the section (Header or Footer)
+     * Render the page
      *
-     * @param int $part Section which should be rendered: self::PART_COMPLETE, self::PART_HEADER or self::PART_FOOTER
-     * @return string Content of rendered section
+     * @return string Content of rendered page
      */
-    public function render($part = self::PART_COMPLETE)
+    public function render()
     {
         $this->prepareRendering();
         [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss();
         $metaTags = implode(LF, array_merge($this->metaTags, $this->renderMetaTagsFromAPI()));
         $markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
-        $template = $this->getTemplateForPart($part);
+        $template = $this->getTemplate();
 
-        // The page renderer needs a full reset, even when only rendering one part of the page
-        // This means that you can only register footer files *after* the header has been already rendered.
-        // In case you render the footer part first, header files can only be added *after* the footer has been rendered
+        // The page renderer needs a full reset when the page was rendered
         $this->reset();
         $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
@@ -1744,13 +1741,13 @@ class PageRenderer implements SingletonInterface
      *
      * @param string $substituteHash The hash that is used for the placeholder markers
      * @internal
-     * @return string Content of rendered section
+     * @return string Content of rendered page
      */
     public function renderPageWithUncachedObjects($substituteHash)
     {
         $this->prepareRendering();
         $markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
-        $template = $this->getTemplateForPart(self::PART_COMPLETE);
+        $template = $this->getTemplate();
         $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
     }
@@ -1939,20 +1936,15 @@ class PageRenderer implements SingletonInterface
     /**
      * Reads the template file and returns the requested part as string
      *
-     * @param int $part
      * @return string
      */
-    protected function getTemplateForPart($part)
+    protected function getTemplate()
     {
         $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
         if (is_file($templateFile)) {
             $template = (string)file_get_contents($templateFile);
             if ($this->removeLineBreaksFromTemplate) {
                 $template = strtr($template, [LF => '', CR => '']);
-            }
-            if ($part !== self::PART_COMPLETE) {
-                $templatePart = explode('###BODY###', $template);
-                $template = $templatePart[$part - 1];
             }
         } else {
             $template = '';

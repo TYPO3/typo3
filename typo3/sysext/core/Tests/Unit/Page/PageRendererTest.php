@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -33,15 +34,16 @@ class PageRendererTest extends UnitTestCase
         $this->resetSingletonInstances = true;
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
 
+        /** @var PageRenderer|AccessibleObjectInterface $pageRenderer */
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
             ->setMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart', 'getTypoScriptFrontendController'])
             ->getMock();
         $pageRenderer->expects(self::any())->method('getTypoScriptFrontendController')->willReturn($tsfe->reveal());
         $pageRenderer->expects(self::exactly(3))->method('reset');
 
-        $pageRenderer->render(PageRenderer::PART_COMPLETE);
-        $pageRenderer->render(PageRenderer::PART_HEADER);
-        $pageRenderer->render(PageRenderer::PART_FOOTER);
+        $pageRenderer->render();
+        $pageRenderer->render();
+        $pageRenderer->render();
     }
 
     /**

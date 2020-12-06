@@ -206,7 +206,7 @@ class PageRendererTest extends FunctionalTestCase
         ]);
         $expectedInlineSettingsReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}';
 
-        $renderedString = $subject->render(PageRenderer::PART_FOOTER);
+        $renderedString = $subject->render();
 
         self::assertStringContainsString($expectedFooterData, $renderedString);
         self::assertRegExp($expectedJsFooterLibraryRegExp, $renderedString);

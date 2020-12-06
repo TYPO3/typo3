@@ -426,5 +426,20 @@ return [
         'restFiles' => [
             'Breaking-92497-WorkspacesMovePlaceholdersRemoved.rst'
         ],
-    ]
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer::PART_COMPLETE' => [
+        'restFiles' => [
+            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER' => [
+        'restFiles' => [
+            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER' => [
+        'restFiles' => [
+            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst'
+        ],
+    ],
 ];
