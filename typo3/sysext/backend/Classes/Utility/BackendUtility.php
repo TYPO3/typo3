@@ -819,71 +819,6 @@ class BackendUtility
         return ArrayUtility::sortArraysByKey($result, $titleField);
     }
 
-    /**
-     * Returns the array $usernames with the names of all users NOT IN $groupArray changed to the uid (hides the usernames!).
-     * If $excludeBlindedFlag is set, then these records are unset from the array $usernames
-     * Takes $usernames (array made by \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames()) and a $groupArray (array with the groups a certain user is member of) as input
-     *
-     * @param array $usernames User names
-     * @param array $groupArray Group names
-     * @param bool $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
-     * @return array User names, blinded
-     * @internal
-     */
-    public static function blindUserNames($usernames, $groupArray, $excludeBlindedFlag = false)
-    {
-        if (is_array($usernames) && is_array($groupArray)) {
-            foreach ($usernames as $uid => $row) {
-                $userN = $uid;
-                $set = 0;
-                if ($row['uid'] != static::getBackendUserAuthentication()->user['uid']) {
-                    foreach ($groupArray as $v) {
-                        if ($v && GeneralUtility::inList($row['usergroup_cached_list'], $v)) {
-                            $userN = $row['username'];
-                            $set = 1;
-                        }
-                    }
-                } else {
-                    $userN = $row['username'];
-                    $set = 1;
-                }
-                $usernames[$uid]['username'] = $userN;
-                if ($excludeBlindedFlag && !$set) {
-                    unset($usernames[$uid]);
-                }
-            }
-        }
-        return $usernames;
-    }
-
-    /**
-     * Corresponds to blindUserNames but works for groups instead
-     *
-     * @param array $groups Group names
-     * @param array $groupArray Group names (reference)
-     * @param bool $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
-     * @return array
-     * @internal
-     */
-    public static function blindGroupNames($groups, $groupArray, $excludeBlindedFlag = false)
-    {
-        if (is_array($groups) && is_array($groupArray)) {
-            foreach ($groups as $uid => $row) {
-                $groupN = $uid;
-                $set = 0;
-                if (in_array($uid, $groupArray, false)) {
-                    $groupN = $row['title'];
-                    $set = 1;
-                }
-                $groups[$uid]['title'] = $groupN;
-                if ($excludeBlindedFlag && !$set) {
-                    unset($groups[$uid]);
-                }
-            }
-        }
-        return $groups;
-    }
-
     /*******************************************
      *
      * Output related
@@ -3686,29 +3621,6 @@ class BackendUtility
             $simTime = '&ADMCMD_simTime=' . ($endTime - 1);
         }
         return $simUser . $simTime;
-    }
-
-    /**
-     * Returns the name of the backend script relative to the TYPO3 main directory.
-     *
-     * @param string $interface Name of the backend interface  (backend, frontend) to look up the script name for. If no interface is given, the interface for the current backend user is used.
-     * @return string The name of the backend script relative to the TYPO3 main directory.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function getBackendScript($interface = '')
-    {
-        if (!$interface) {
-            $interface = static::getBackendUserAuthentication()->uc['interfaceSetup'];
-        }
-        switch ($interface) {
-            case 'frontend':
-                $script = '../.';
-                break;
-            case 'backend':
-            default:
-                $script = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('main');
-        }
-        return $script;
     }
 
     /**

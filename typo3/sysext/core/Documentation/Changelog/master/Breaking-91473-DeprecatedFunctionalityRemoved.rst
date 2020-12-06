@@ -101,7 +101,6 @@ The following PHP static class methods that have been previously deprecated for 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain`
-- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice`
 - :php:`\TYPO3\CMS\Core\Localization\Locales::initialize`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6`
