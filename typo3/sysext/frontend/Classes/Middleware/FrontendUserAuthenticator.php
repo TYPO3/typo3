@@ -75,6 +75,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         // Store session data for fe_users if it still exists
         if ($frontendUser instanceof FrontendUserAuthentication) {
             $frontendUser->storeSessionData();
+            $response = $frontendUser->appendCookieToResponse($response);
             if ($frontendUser->sendNoCacheHeaders) {
                 $response = $this->applyHeadersToResponse($response);
             }

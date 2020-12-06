@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -246,11 +247,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $dontSetCookie = false;
 
     /**
-     * @var bool
-     */
-    protected $cookieWasSetOnCurrentRequest = false;
-
-    /**
      * Login type, used for services.
      * @var string
      */
@@ -278,6 +274,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @var array
      */
     protected $sessionData = [];
+
+    /**
+     * If set, this cookie will be set to the response.
+     *
+     * @var Cookie|null
+     */
+    protected ?Cookie $setCookie;
 
     /**
      * Initialize some important variables
@@ -347,15 +350,26 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Sets the session cookie for the current disposal.
+     * Used to apply a cookie to a PSR-7 Response.
      *
-     * @throws Exception
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function appendCookieToResponse(ResponseInterface $response): ResponseInterface
+    {
+        if (isset($this->setCookie)) {
+            $response = $response->withAddedHeader('Set-Cookie', $this->setCookie->__toString());
+        }
+        return $response;
+    }
+
+    /**
+     * Sets the session cookie for the current disposal.
      */
     protected function setSessionCookie()
     {
-        $isSetSessionCookie = $this->isSetSessionCookie();
         $isRefreshTimeBasedCookie = $this->isRefreshTimeBasedCookie();
-        if ($isSetSessionCookie || $isRefreshTimeBasedCookie) {
+        if ($this->isSetSessionCookie() || $isRefreshTimeBasedCookie) {
             // Get the domain to be used for the cookie (if any):
             $cookieDomain = $this->getCookieDomain();
             // If no cookie domain is set, use the base path:
@@ -369,7 +383,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Use the secure option when the current request is served by a secure connection:
             // SameSite "none" needs the secure option (only allowed on HTTPS)
             $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || GeneralUtility::getIndpEnv('TYPO3_SSL');
-            $cookie = new Cookie(
+            $this->setCookie = new Cookie(
                 $this->name,
                 $this->id,
                 $cookieExpire,
@@ -380,8 +394,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 false,
                 $cookieSameSite
             );
-            header('Set-Cookie: ' . $cookie->__toString(), false);
-            $this->cookieWasSetOnCurrentRequest = true;
             $this->logger->debug(
                 ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ')
                 . $this->id . ($cookieDomain ? ', ' . $cookieDomain : '')
@@ -946,14 +958,21 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Empty / unset the cookie
      *
-     * @param string $cookieName usually, this is $this->name
+     * @param string|null $cookieName usually, this is $this->name
      */
-    public function removeCookie($cookieName)
+    public function removeCookie($cookieName = null)
     {
+        $cookieName = $cookieName ?? $this->name;
         $cookieDomain = $this->getCookieDomain();
         // If no cookie domain is set, use the base path
         $cookiePath = $cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        setcookie($cookieName, '', -1, $cookiePath, $cookieDomain);
+        $this->setCookie = new Cookie(
+            $cookieName,
+            '',
+            -1,
+            $cookiePath,
+            $cookieDomain
+        );
     }
 
     /**
@@ -989,7 +1008,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function isCookieSet()
     {
-        return $this->cookieWasSetOnCurrentRequest || $this->getCookie($this->name);
+        return isset($this->setCookie) || $this->getCookie($this->name);
     }
 
     /*************************

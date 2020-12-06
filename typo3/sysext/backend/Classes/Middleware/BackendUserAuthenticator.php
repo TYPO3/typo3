@@ -23,7 +23,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,24 +74,52 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)$GLOBALS['BE_USER']->user['workspace_id']);
         if (!$this->isLoggedInBackendUserRequired($route) && !$this->context->getAspect('backend.user')->isLoggedIn()) {
             $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
-            return new RedirectResponse($uri);
+            $response = new RedirectResponse($uri);
+            return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
         }
-        // @todo: Ensure that the runtime exceptions are caught
-        $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($route));
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
-        // Re-setting the user and take the workspace from the user object now
-        $this->setBackendUserAspect($GLOBALS['BE_USER']);
-
-        $response = $handler->handle($request);
-
-        // If no backend user is logged-in, the cookie should be removed
-        if (!GeneralUtility::makeInstance(Context::class)->getAspect('backend.user')->isLoggedIn()) {
-            $GLOBALS['BE_USER']->removeCookie($GLOBALS['BE_USER']->name);
+        try {
+            // @todo: Ensure that the runtime exceptions are caught
+            $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($route));
+            $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
+            // Re-setting the user and take the workspace from the user object now
+            $this->setBackendUserAspect($GLOBALS['BE_USER']);
+            $response = $handler->handle($request);
+        } catch (ImmediateResponseException $e) {
+            $response = $this->enrichResponseWithHeadersAndCookieInformation(
+                $e->getResponse(),
+                $GLOBALS['BE_USER']
+            );
+            // Re-throw this exception
+            throw new ImmediateResponseException($response, $e->getCode());
         }
+        return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+    }
 
+    /**
+     * Backend requests should always apply Set-Cookie information and never be cacheable.
+     * This is also needed if there is a redirect from somewhere in the code.
+     *
+     * @param ResponseInterface $response
+     * @param BackendUserAuthentication|null $userAuthentication
+     * @return ResponseInterface
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     */
+    protected function enrichResponseWithHeadersAndCookieInformation(
+        ResponseInterface $response,
+        ?BackendUserAuthentication $userAuthentication
+    ): ResponseInterface {
+        if ($userAuthentication) {
+            // If no backend user is logged-in, the cookie should be removed
+            if (!$this->context->getAspect('backend.user')->isLoggedIn()) {
+                $userAuthentication->removeCookie();
+            }
+            // Ensure to always apply a cookie
+            $response = $userAuthentication->appendCookieToResponse($response);
+        }
         // Additional headers to never cache any PHP request should be sent at any time when
         // accessing the TYPO3 Backend
-        return $this->applyHeadersToResponse($response);
+        $response = $this->applyHeadersToResponse($response);
+        return $response;
     }
 
     /**

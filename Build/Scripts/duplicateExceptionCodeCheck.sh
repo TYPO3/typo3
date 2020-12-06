@@ -21,6 +21,7 @@ ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOStatement.php"
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOConnection.php"
 ignoreFiles+="sysext/frontend/Classes/Typolink/PageLinkBuilder.php"
+ignoreFiles+="sysext/backend/Classes/Middleware/BackendUserAuthenticator.php"
 
 foundNewFile=0
 oldFilename=""
