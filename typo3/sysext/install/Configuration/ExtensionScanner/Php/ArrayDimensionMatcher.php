@@ -465,4 +465,16 @@ return [
             'Breaking-92941-LockToIPUserTsConfigOptionRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'fetchGroupQuery\']' => [
+        'restFiles' => [
+            'Breaking-93056-RemovedHooksWhenRetrievingBackendUserGroups.rst',
+            'Feature-93056-NewEventAfterRetrievingUserGroupsRecursively.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'fetchGroups_postProcessing\']' => [
+        'restFiles' => [
+            'Breaking-93056-RemovedHooksWhenRetrievingBackendUserGroups.rst',
+            'Feature-93056-NewEventAfterRetrievingUserGroupsRecursively.rst',
+        ],
+    ],
 ];

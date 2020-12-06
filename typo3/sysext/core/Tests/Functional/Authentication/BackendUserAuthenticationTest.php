@@ -136,7 +136,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $subject = $this->setUpBackendUser(3);
         $subject->fetchGroupData();
         self::assertEquals('web_info,web_layout,web_list,file_filelist', $subject->groupData['modules']);
-        self::assertEquals(['1', '4', '5', '3', '2', '6'], $subject->userGroupsUID);
+        self::assertEquals([1, 4, 5, 3, 2, 6], $subject->userGroupsUID);
         self::assertEquals(['groupValue' => 'from_group_6', 'userValue' => 'from_user_3'], $subject->getTSConfig()['test.']['default.']);
     }
 }

@@ -1239,13 +1239,40 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Fileoperation permissions
             $this->groupData['file_permissions'] = $this->user['file_permissions'];
 
-            // BE_GROUPS:
-            // Get the groups...
-            if (!empty($this->user[$this->usergroup_column])) {
-                // Fetch groups will add a lot of information to the internal arrays: modules, accesslists, TSconfig etc.
-                // Refer to fetchGroups() function.
-                $this->fetchGroups($this->user[$this->usergroup_column]);
+            // Get the groups and accumulate their permission settings
+            $mountOptions = new BackendGroupMountOption($this->user['options']);
+            $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
+            $resolvedGroups = $groupResolver->resolveGroupsForUser($this->user, $this->usergroup_table);
+            foreach ($resolvedGroups as $groupInfo) {
+                // Add the group uid to internal arrays.
+                $this->userGroupsUID[] = (int)$groupInfo['uid'];
+                $this->userGroups[(int)$groupInfo['uid']] = $groupInfo;
+                // Mount group database-mounts
+                if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
+                    $this->groupData['webmounts'] .= ',' . $groupInfo['db_mountpoints'];
+                }
+                // Mount group file-mounts
+                if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
+                    $this->groupData['filemounts'] .= ',' . $groupInfo['file_mountpoints'];
+                }
+                // Gather permission detail fields
+                $this->groupData['modules'] .= ',' . $groupInfo['groupMods'];
+                $this->groupData['available_widgets'] .= ',' . $groupInfo['availableWidgets'];
+                $this->groupData['tables_select'] .= ',' . $groupInfo['tables_select'];
+                $this->groupData['tables_modify'] .= ',' . $groupInfo['tables_modify'];
+                $this->groupData['pagetypes_select'] .= ',' . $groupInfo['pagetypes_select'];
+                $this->groupData['non_exclude_fields'] .= ',' . $groupInfo['non_exclude_fields'];
+                $this->groupData['explicit_allowdeny'] .= ',' . $groupInfo['explicit_allowdeny'];
+                $this->groupData['allowed_languages'] .= ',' . $groupInfo['allowed_languages'];
+                $this->groupData['custom_options'] .= ',' . $groupInfo['custom_options'];
+                $this->groupData['file_permissions'] .= ',' . $groupInfo['file_permissions'];
+                // Setting workspace permissions:
+                $this->groupData['workspace_perms'] |= $groupInfo['workspace_perms'];
+                if (!$this->firstMainGroup) {
+                    $this->firstMainGroup = (int)$groupInfo['uid'];
+                }
             }
+
             // Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
             $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
             // Finally this is the list of group_uid's in the order they are parsed (including subgroups!)
@@ -1365,99 +1392,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $cache->set($hash, $this->userTS, ['UserTSconfig'], 0);
             // Ensure to update UC later
             $this->userTSUpdated = true;
-        }
-    }
-
-    /**
-     * Fetches the group records, subgroups and fills internal arrays.
-     * Function is called recursively to fetch subgroups
-     *
-     * @param string $grList Commalist of be_groups uid numbers
-     * @param string $idList List of already processed be_groups-uids so the function will not fall into an eternal recursion.
-     * @internal
-     */
-    public function fetchGroups($grList, $idList = '')
-    {
-        // Fetching records of the groups in $grList:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->usergroup_table);
-        $expressionBuilder = $queryBuilder->expr();
-        $constraints = $expressionBuilder->andX(
-            $expressionBuilder->eq(
-                'pid',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            ),
-            $expressionBuilder->in(
-                'uid',
-                $queryBuilder->createNamedParameter(
-                    GeneralUtility::intExplode(',', $grList),
-                    Connection::PARAM_INT_ARRAY
-                )
-            )
-        );
-        // Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'fetchGroupQuery_processQuery')) {
-                $constraints = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, (string)$constraints);
-            }
-        }
-        $res = $queryBuilder->select('*')
-            ->from($this->usergroup_table)
-            ->where($constraints)
-            ->execute();
-        // The userGroups array is filled
-        while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
-            $this->userGroups[$row['uid']] = $row;
-        }
-
-        $mountOptions = new BackendGroupMountOption((int)$this->user['options']);
-        // Traversing records in the correct order
-        foreach (explode(',', $grList) as $uid) {
-            // Get row:
-            $row = $this->userGroups[$uid];
-            // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-            if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
-                // Include sub groups
-                if (trim($row['subgroup'])) {
-                    // Make integer list
-                    $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
-                    // Call recursively, pass along list of already processed groups so they are not recursed again.
-                    $this->fetchGroups($theList, $idList . ',' . $uid);
-                }
-                // Add the group uid, current list to the internal arrays.
-                $this->userGroupsUID[] = (int)$uid;
-                // Mount group database-mounts
-                if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
-                    $this->groupData['webmounts'] .= ',' . $row['db_mountpoints'];
-                }
-                // Mount group file-mounts
-                if ($mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
-                    $this->groupData['filemounts'] .= ',' . $row['file_mountpoints'];
-                }
-                // The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
-                $this->groupData['modules'] .= ',' . $row['groupMods'];
-                $this->groupData['available_widgets'] .= ',' . $row['availableWidgets'];
-                $this->groupData['tables_select'] .= ',' . $row['tables_select'];
-                $this->groupData['tables_modify'] .= ',' . $row['tables_modify'];
-                $this->groupData['pagetypes_select'] .= ',' . $row['pagetypes_select'];
-                $this->groupData['non_exclude_fields'] .= ',' . $row['non_exclude_fields'];
-                $this->groupData['explicit_allowdeny'] .= ',' . $row['explicit_allowdeny'];
-                $this->groupData['allowed_languages'] .= ',' . $row['allowed_languages'];
-                $this->groupData['custom_options'] .= ',' . $row['custom_options'];
-                $this->groupData['file_permissions'] .= ',' . $row['file_permissions'];
-                // Setting workspace permissions:
-                $this->groupData['workspace_perms'] |= $row['workspace_perms'];
-                // If this function is processing the users OWN group-list (not subgroups) AND
-                // if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
-                if ($idList === '' && !$this->firstMainGroup) {
-                    $this->firstMainGroup = $uid;
-                }
-            }
-        }
-        // HOOK: fetchGroups_postProcessing
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] ?? [] as $_funcRef) {
-            $_params = [];
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
