@@ -58,12 +58,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             $frontendUser->checkPid_value = implode(',', GeneralUtility::intExplode(',', $pid));
         }
 
-        // Check if a session is transferred, and update the cookie parameters
-        $frontendSessionKey = $request->getParsedBody()['FE_SESSION_KEY'] ?? $request->getQueryParams()['FE_SESSION_KEY'] ?? '';
-        if ($frontendSessionKey) {
-            $request = $this->transferFrontendUserSession($frontendUser, $request, $frontendSessionKey);
-        }
-
         // Authenticate now
         $frontendUser->start();
         $frontendUser->unpack_uc();
@@ -87,43 +81,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         }
 
         return $response;
-    }
-
-    /**
-     * It's possible to transfer a frontend user session via a GET/POST parameter 'FE_SESSION_KEY'.
-     * In the future, this logic should be moved into the FrontendUserAuthentication object directly,
-     * but only if FrontendUserAuthentication does not request superglobals (like $_COOKIE) anymore.
-     *
-     * @param FrontendUserAuthentication $frontendUser
-     * @param ServerRequestInterface $request
-     * @param string $frontendSessionKey
-     * @return ServerRequestInterface
-     */
-    protected function transferFrontendUserSession(
-        FrontendUserAuthentication $frontendUser,
-        ServerRequestInterface $request,
-        string $frontendSessionKey
-    ): ServerRequestInterface {
-        [$sessionId, $hash] = explode('-', $frontendSessionKey);
-        // If the session key hash check is OK, set the cookie
-        if (hash_equals(md5($sessionId . '/' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), (string)$hash)) {
-            $cookieName = FrontendUserAuthentication::getCookieName();
-
-            // keep the global cookie overwriting for now, as long as FrontendUserAuthentication does not
-            // use the request object for fetching the cookie information.
-            $_COOKIE[$cookieName] = $sessionId;
-            if (isset($_SERVER['HTTP_COOKIE'])) {
-                // See https://forge.typo3.org/issues/27740
-                $_SERVER['HTTP_COOKIE'] .= ';' . $cookieName . '=' . $sessionId;
-            }
-            // Add the cookie to the Server Request object
-            $cookieParams = $request->getCookieParams();
-            $cookieParams[$cookieName] = $sessionId;
-            $request = $request->withCookieParams($cookieParams);
-            $frontendUser->forceSetCookie = true;
-            $frontendUser->dontSetCookie = false;
-        }
-        return $request;
     }
 
     /**
