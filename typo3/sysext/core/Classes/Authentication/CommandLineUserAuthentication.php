@@ -122,8 +122,9 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      * Only when adminOnly is off (=0), and only allowed for admins and CLI users (=2)
      *
      * @return bool Whether the CLI user is allowed to access TYPO3
+     * @internal
      */
-    protected function isUserAllowedToLogin()
+    public function isUserAllowedToLogin()
     {
         return in_array((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'], [0, 2], true);
     }

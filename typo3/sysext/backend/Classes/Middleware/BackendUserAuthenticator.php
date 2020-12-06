@@ -23,9 +23,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Controller\ErrorPageController;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -73,29 +75,31 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $GLOBALS['BE_USER']->start();
         // Register the backend user as aspect and initializing workspace once for TSconfig conditions
         $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)$GLOBALS['BE_USER']->user['workspace_id']);
-        if ($this->isLoggedInBackendUserRequired($route) && !$this->context->getAspect('backend.user')->isLoggedIn()) {
-            $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
-            $response = new RedirectResponse($uri);
-            return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+        if ($this->isLoggedInBackendUserRequired($route)) {
+            if (!$this->context->getAspect('backend.user')->isLoggedIn()) {
+                $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
+                $response = new RedirectResponse($uri);
+                return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+            }
+            if (!$GLOBALS['BE_USER']->isUserAllowedToLogin()) {
+                $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+                    'Login Error',
+                    'TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',
+                    AbstractMessage::ERROR,
+                    1294585860
+                );
+                $response = new HtmlResponse($content, 503);
+                return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+            }
         }
-        try {
-            $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($route) === false;
-            // @todo: Ensure that the runtime exceptions are caught
-            $GLOBALS['BE_USER']->backendCheckLogin($proceedIfNoUserIsLoggedIn);
-            $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
-            // Re-setting the user and take the workspace from the user object now
-            $this->setBackendUserAspect($GLOBALS['BE_USER']);
-            $response = $handler->handle($request);
-
-            $this->sessionGarbageCollection();
-        } catch (ImmediateResponseException $e) {
-            $response = $this->enrichResponseWithHeadersAndCookieInformation(
-                $e->getResponse(),
-                $GLOBALS['BE_USER']
-            );
-            // Re-throw this exception
-            throw new ImmediateResponseException($response, $e->getCode());
+        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
+            $GLOBALS['BE_USER']->initializeBackendLogin();
         }
+        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
+        // Re-setting the user and take the workspace from the user object now
+        $this->setBackendUserAspect($GLOBALS['BE_USER']);
+        $response = $handler->handle($request);
+        $this->sessionGarbageCollection();
         return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
     }
 

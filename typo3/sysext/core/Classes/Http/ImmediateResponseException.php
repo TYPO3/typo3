@@ -20,9 +20,14 @@ namespace TYPO3\CMS\Core\Http;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Exception that has to be handled immediately in order to have
- * stop current execution and provide the current response. This
+ * Exception that has to be handled immediately in order to stop
+ * current execution and provide the current response. This
  * exception is used as alternative to previous die() or exit().
+ *
+ * Note this exception is only caught by Application classes, throwing
+ * it will bypass all outer middlewares. It should *not* be thrown by
+ * controllers, those should usually throw a PropagateResponseException
+ * instead, allowing outer middlewares to further process the response.
  *
  * @internal
  */

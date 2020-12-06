@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Exception;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -41,6 +42,21 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $this->subject = new ProductionExceptionHandler();
         $this->subject->setLogger(new NullLogger());
     }
+
+    /**
+     * @test
+     */
+    public function relayPropagateResponseException()
+    {
+        $response = $this->getMockBuilder(HtmlResponse::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $exception = new PropagateResponseException($response, 1607328584);
+
+        $this->expectException(PropagateResponseException::class);
+        $this->subject->handle($exception);
+    }
+
     /**
      * @test
      */

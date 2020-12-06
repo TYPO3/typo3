@@ -58,6 +58,7 @@ class ServiceProvider extends AbstractServiceProvider
             Localization\LocalizationFactory::class => [ static::class, 'getLocalizationFactory' ],
             Mail\TransportFactory::class => [ static::class, 'getMailTransportFactory' ],
             Messaging\FlashMessageService::class => [ static::class, 'getFlashMessageService' ],
+            Middleware\ResponsePropagation::class => [ static::class, 'getResponsePropagationMiddleware' ],
             Package\FailsafePackageManager::class => [ static::class, 'getFailsafePackageManager' ],
             Registry::class => [ static::class, 'getRegistry' ],
             Resource\Index\FileIndexRepository::class => [ static::class, 'getFileIndexRepository' ],
@@ -222,6 +223,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getFlashMessageService(ContainerInterface $container): Messaging\FlashMessageService
     {
         return self::new($container, Messaging\FlashMessageService::class);
+    }
+
+    public static function getResponsePropagationMiddleware(ContainerInterface $container): Middleware\ResponsePropagation
+    {
+        return self::new($container, Middleware\ResponsePropagation::class);
     }
 
     public static function getFailsafePackageManager(ContainerInterface $container): Package\FailsafePackageManager

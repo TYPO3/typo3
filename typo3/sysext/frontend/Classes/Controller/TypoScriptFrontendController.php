@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
@@ -993,7 +993,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $this->getPageAccessFailureReasons()
                     );
             }
-            throw new ImmediateResponseException($response, 1533931329);
+            throw new PropagateResponseException($response, 1533931329);
         }
 
         $this->setRegisterValueForSysLastChanged($this->page);
@@ -1098,7 +1098,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
                     );
-                    throw new ImmediateResponseException($response, 1533931330);
+                    throw new PropagateResponseException($response, 1533931330);
                 } catch (PageNotFoundException $e) {
                     throw new PageNotFoundException($message, 1301648780);
                 }
@@ -1114,7 +1114,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_INVALID_PAGETYPE)
                 );
-                throw new ImmediateResponseException($response, 1533931343);
+                throw new PropagateResponseException($response, 1533931343);
             } catch (PageNotFoundException $e) {
                 throw new PageNotFoundException($message, 1301648781);
             }
@@ -1166,7 +1166,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ROOTLINE_BROKEN)
                 );
-                throw new ImmediateResponseException($response, 1533931350);
+                throw new PropagateResponseException($response, 1533931350);
             } catch (AbstractServerErrorException $e) {
                 $this->logger->error($message);
                 $exceptionClass = get_class($e);
@@ -1183,7 +1183,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_GENERAL)
                     );
-                    throw new ImmediateResponseException($response, 1533931351);
+                    throw new PropagateResponseException($response, 1533931351);
                 } catch (AbstractServerErrorException $e) {
                     $this->logger->warning($message);
                     $exceptionClass = get_class($e);
@@ -1780,7 +1780,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             $message,
                             ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
                         );
-                        throw new ImmediateResponseException($response, 1533931374);
+                        throw new PropagateResponseException($response, 1533931374);
                     } catch (AbstractServerErrorException $e) {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
                         $exceptionClass = get_class($e);
@@ -1842,7 +1842,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $message,
                         ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
                     );
-                    throw new ImmediateResponseException($response, 1533931380);
+                    throw new PropagateResponseException($response, 1533931380);
                 } catch (AbstractServerErrorException $e) {
                     $exceptionClass = get_class($e);
                     throw new $exceptionClass($message, 1294587218);
@@ -1910,7 +1910,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         'Page is not available in the requested language.',
                         ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
                     );
-                    throw new ImmediateResponseException($response, 1533931388);
+                    throw new PropagateResponseException($response, 1533931388);
                 }
                 switch ((string)$languageAspect->getLegacyLanguageMode()) {
                     case 'strict':
@@ -1919,7 +1919,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             'Page is not available in the requested language (strict).',
                             ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
                         );
-                        throw new ImmediateResponseException($response, 1533931395);
+                        throw new PropagateResponseException($response, 1533931395);
                     case 'fallback':
                     case 'content_fallback':
                         // Setting content uid (but leaving the sys_language_uid) when a content_fallback
@@ -1942,7 +1942,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                     'Page is not available in the requested language (fallbacks did not apply).',
                                     ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
                                 );
-                                throw new ImmediateResponseException($response, 1533931402);
+                                throw new PropagateResponseException($response, 1533931402);
                             }
                         }
                         break;
@@ -1989,7 +1989,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $message,
                 ['code' => PageAccessFailureReasons::LANGUAGE_DEFAULT_NOT_AVAILABLE]
             );
-            throw new ImmediateResponseException($response, 1533931423);
+            throw new PropagateResponseException($response, 1533931423);
         }
 
         if ($languageAspect->getId() > 0) {

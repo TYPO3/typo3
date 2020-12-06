@@ -60,5 +60,12 @@ return [
                 'typo3/cms-backend/output-compression'
             ]
         ],
+        /** internal: do not use or reference this middleware in your own code */
+        'typo3/cms-core/response-propagation' => [
+            'target' => \TYPO3\CMS\Core\Middleware\ResponsePropagation::class,
+            'after' => [
+                'typo3/cms-backend/response-headers'
+            ]
+        ],
     ]
 ];

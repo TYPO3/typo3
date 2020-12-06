@@ -29,7 +29,7 @@ use TYPO3\CMS\Beuser\Service\ModuleDataStorageService;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -377,7 +377,7 @@ class BackendUserController extends ActionController
                 'main',
                 $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? [] : ['commandLI' => '1']
             );
-            throw new ImmediateResponseException(new RedirectResponse($redirectUri, 303), 1607271592);
+            throw new PropagateResponseException(new RedirectResponse($redirectUri, 303), 1607271592);
         }
     }
 

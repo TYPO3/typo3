@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\ImmediateResponseException;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -45,7 +45,7 @@ class SwitchBackUserHook
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $redirectUrl = $uriBuilder->buildUriFromRoute('main');
-            throw new ImmediateResponseException(new RedirectResponse($redirectUrl, 303), 1607271637);
+            throw new PropagateResponseException(new RedirectResponse($redirectUrl, 303), 1607271637);
         }
     }
 

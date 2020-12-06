@@ -56,7 +56,8 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
      */
     public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = [])
     {
-        // ImmediateResponseException should work similar to exit / die and must therefore not be handled by this ExceptionHandler.
+        // ImmediateResponseException (and the derived PropagateResponseException) should work similar to
+        // exit / die and must therefore not be handled by this ExceptionHandler.
         if ($exception instanceof ImmediateResponseException) {
             throw $exception;
         }

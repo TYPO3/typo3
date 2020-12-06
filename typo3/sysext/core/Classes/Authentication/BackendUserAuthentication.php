@@ -2192,6 +2192,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      *
      * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
      * @throws \RuntimeException
+     * @todo deprecate
      */
     public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
     {
@@ -2201,31 +2202,38 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
             }
         } else {
-            // ...and if that's the case, call these functions
-            $this->fetchGroupData();
-            // The groups are fetched and ready for permission checking in this initialization.
-            // Tables.php must be read before this because stuff like the modules has impact in this
             if ($this->isUserAllowedToLogin()) {
-                // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
-                $this->backendSetUC();
-                if ($this->loginSessionStarted) {
-                    // Also, if there is a recovery link set, unset it now
-                    // this will be moved into its own Event at a later stage.
-                    // If a token was set previously, this is now unset, as it was now possible to log-in
-                    if ($this->user['password_reset_token'] ?? '') {
-                        GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getConnectionForTable($this->user_table)
-                            ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
-                    }
-                    // Process hooks
-                    $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
-                    foreach ($hooks ?? [] as $_funcRef) {
-                        $_params = ['user' => $this->user];
-                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                    }
-                }
+                $this->initializeBackendLogin();
             } else {
                 throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
+            }
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public function initializeBackendLogin(): void
+    {
+        // The groups are fetched and ready for permission checking in this initialization.
+        // Tables.php must be read before this because stuff like the modules has impact in this
+        $this->fetchGroupData();
+        // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
+        $this->backendSetUC();
+        if ($this->loginSessionStarted) {
+            // Also, if there is a recovery link set, unset it now
+            // this will be moved into its own Event at a later stage.
+            // If a token was set previously, this is now unset, as it was now possible to log-in
+            if ($this->user['password_reset_token'] ?? '') {
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable($this->user_table)
+                    ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
+            }
+            // Process hooks
+            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
+            foreach ($hooks ?? [] as $_funcRef) {
+                $_params = ['user' => $this->user];
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
     }
@@ -2312,8 +2320,9 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * + backend user is being controlled by an admin user
      *
      * @return bool Whether a backend user is allowed to access the backend
+     * @internal
      */
-    protected function isUserAllowedToLogin()
+    public function isUserAllowedToLogin()
     {
         $isUserAllowedToLogin = false;
         $adminOnlyMode = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'];

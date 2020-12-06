@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
+use TYPO3\CMS\Core\Middleware\ResponsePropagation as ResponsePropagationMiddleware;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -100,6 +101,7 @@ class ServiceProvider extends AbstractServiceProvider
         $dispatcher = new MiddlewareDispatcher($requestHandler, [], $container);
 
         // Stack of middlewares, executed LIFO
+        $dispatcher->lazy(ResponsePropagationMiddleware::class);
         $dispatcher->lazy(Middleware\Installer::class);
         $dispatcher->add($container->get(Middleware\Maintenance::class));
         $dispatcher->lazy(NormalizedParamsMiddleware::class);
