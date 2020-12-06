@@ -233,7 +233,7 @@ class InternalLinktype extends AbstractLinktype
         $errorContent = null;
         $lang = $this->getLanguageService();
         $errorType = $errorParams['errorType'];
-        if (is_array($errorParams['page'])) {
+        if (is_array($errorParams['page'] ?? false)) {
             switch ($errorType['page']) {
                 case self::DELETED:
                     $errorPage = str_replace(

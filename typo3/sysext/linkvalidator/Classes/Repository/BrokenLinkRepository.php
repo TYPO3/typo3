@@ -37,17 +37,23 @@ class BrokenLinkRepository
      *   a page uid (for db links), a file reference (for file links), etc.
      * @return bool is the link target a broken link
      */
-    public function isLinkTargetBrokenLink(string $linkTarget): bool
+    public function isLinkTargetBrokenLink(string $linkTarget, string $linkType = ''): bool
     {
         try {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable(static::TABLE);
+            $constraints = [
+                $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($linkTarget)),
+            ];
+            if ($linkType !== '') {
+                $constraints[] = $queryBuilder->expr()->eq('link_type', $queryBuilder->createNamedParameter($linkType));
+            }
+
             $queryBuilder
                 ->count('uid')
                 ->from(static::TABLE)
-                ->where(
-                    $queryBuilder->expr()->eq('url', $queryBuilder->createNamedParameter($linkTarget))
-                );
+                ->where(...$constraints);
+
             return (bool)$queryBuilder
                     ->execute()
                     ->fetchOne();

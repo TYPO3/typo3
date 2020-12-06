@@ -47,7 +47,7 @@ final class CheckBrokenRteLinkEventListener
         }
         $url = (string)($event->getLinkData()['url'] ?? '');
         if (!empty($url)) {
-            if ($this->brokenLinkRepository->isLinkTargetBrokenLink($url)) {
+            if ($this->brokenLinkRepository->isLinkTargetBrokenLink($url, 'external')) {
                 $event->markAsBrokenLink('External link is broken');
             }
         }
@@ -65,10 +65,25 @@ final class CheckBrokenRteLinkEventListener
         if ($pageUid === '' || $pageUid === 'current') {
             return;
         }
-        $pageRecord = BackendUtility::getRecord('pages', $hrefInformation['pageuid']);
+        // pageUid should be int at this point
+        $pageUid = (int)$pageUid;
+        $pageRecord = BackendUtility::getRecord('pages', $pageUid);
         // Page does not exist
         if (!is_array($pageRecord)) {
-            $event->markAsBrokenLink('Page with ID ' . htmlspecialchars($hrefInformation['pageuid']) . ' not found');
+            $event->markAsBrokenLink('Page with ID ' . $pageUid . ' not found');
+            return;
+        }
+        if (($pageRecord['hidden'] ?? 0) === 1) {
+            $event->markAsBrokenLink('Page with ID ' . $pageUid . ' is hidden');
+        } else {
+            $fragment = $hrefInformation['fragment'] ?? '';
+            if ($fragment !== '') {
+                $url = $hrefInformation['pageuid'] . '#c' . $fragment;
+                if ($this->brokenLinkRepository->isLinkTargetBrokenLink($url, 'db')) {
+                    $event->markAsBrokenLink('Page with ID ' . $pageUid
+                        . ' exists, but fragment ' . htmlspecialchars($fragment) . ' does not');
+                }
+            }
         }
     }
 
@@ -91,7 +106,7 @@ final class CheckBrokenRteLinkEventListener
             return;
         }
 
-        if ($this->brokenLinkRepository->isLinkTargetBrokenLink('file:' . $file->getProperty('uid'))) {
+        if ($this->brokenLinkRepository->isLinkTargetBrokenLink('file:' . $file->getProperty('uid'), 'file')) {
             $event->markAsBrokenLink('File with ID ' . $file->getProperty('uid') . ' not found');
         }
     }
