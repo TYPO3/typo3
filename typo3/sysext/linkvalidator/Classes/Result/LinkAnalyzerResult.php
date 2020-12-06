@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Linkvalidator\Result;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
+use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 
 /**
  * Used to work with LinkAnalyzer results
@@ -42,6 +42,11 @@ class LinkAnalyzerResult
      * @var BrokenLinkRepository
      */
     protected $brokenLinkRepository;
+
+    /**
+     * @var PagesRepository
+     */
+    protected $pagesRepository;
 
     /**
      * @var ConnectionPool
@@ -85,11 +90,13 @@ class LinkAnalyzerResult
     public function __construct(
         LinkAnalyzer $linkAnalyzer,
         BrokenLinkRepository $brokenLinkRepository,
-        ConnectionPool $connectionPool
+        ConnectionPool $connectionPool,
+        PagesRepository $pagesRepository
     ) {
         $this->linkAnalyzer = $linkAnalyzer;
         $this->brokenLinkRepository = $brokenLinkRepository;
         $this->connectionPool = $connectionPool;
+        $this->pagesRepository = $pagesRepository;
     }
 
     /**
@@ -114,41 +121,49 @@ class LinkAnalyzerResult
         array $linkTypes = [],
         string $languages = ''
     ): self {
-        $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($pageRow);
+        $rootLineHidden = $this->pagesRepository->doesRootLineContainHiddenPages($pageRow);
         $checkHidden = $modTSconfig['checkhidden'] === 1;
 
         if ($rootLineHidden && !$checkHidden) {
             return $this;
         }
 
-        $treeList = $this->linkAnalyzer->extGetTreeList($page, $depth, 0, '1=1', $modTSconfig['checkhidden']);
+        $pageIds = $this->pagesRepository->getAllSubpagesForPage(
+            $page,
+            $depth,
+            '',
+            $checkHidden
+        );
 
         if ($pageRow['hidden'] === 0 || $checkHidden) {
-            $treeList .= $page;
+            $pageIds[] = $page;
         }
 
-        if ($treeList === '') {
+        if (empty($pageIds)) {
             return $this;
         }
 
-        $pageList = $this->addPageTranslationsToPageList(
-            $treeList,
+        $languageIds = GeneralUtility::intExplode(',', $languages, true);
+        $pageTranslations = $this->pagesRepository->getTranslationForPage(
             $page,
-            (bool)$modTSconfig['checkhidden'],
-            $languages
+            '',
+            $checkHidden,
+            $languageIds
         );
 
-        $this->linkAnalyzer->init($searchFields, $pageList, $modTSconfig);
+        $pageIds = array_merge($pageIds, $pageTranslations);
+
+        $this->linkAnalyzer->init($searchFields, implode(',', $pageIds), $modTSconfig);
         $this->oldBrokenLinkCounts = $this->linkAnalyzer->getLinkCounts();
 
-        $this->linkAnalyzer->getLinkStatistics($linkTypes, $modTSconfig['checkhidden']);
+        $this->linkAnalyzer->getLinkStatistics($linkTypes, $checkHidden);
         $this->newBrokenLinkCounts = $this->linkAnalyzer->getLinkCounts();
 
         $this->brokenLinks = $this->brokenLinkRepository->getAllBrokenLinksForPages(
-            GeneralUtility::intExplode(',', $pageList, true),
+            $pageIds,
             array_keys($linkTypes),
             $searchFields,
-            GeneralUtility::intExplode(',', $languages, true)
+            $languageIds
         );
 
         $this
@@ -253,54 +268,6 @@ class LinkAnalyzerResult
         }
 
         return $this;
-    }
-
-    /**
-     * Add localized page ids to the list of pages to get broken links from
-     *
-     * @param string $pageList
-     * @param int $page
-     * @param bool $checkHidden
-     * @param string $languages
-     * @return string
-     */
-    protected function addPageTranslationsToPageList(
-        string $pageList,
-        int $page,
-        bool $checkHidden,
-        string $languages = ''
-    ): string {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $constraints[] = $queryBuilder->expr()->eq(
-            'l10n_parent',
-            $queryBuilder->createNamedParameter($page, Connection::PARAM_INT)
-        );
-
-        if ($languages !== '') {
-            $constraints[] = $queryBuilder->expr()->in(
-                'sys_language_uid',
-                $queryBuilder->createNamedParameter(
-                    GeneralUtility::intExplode(',', $languages, true),
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
-
-        $result = $queryBuilder
-            ->select('uid', 'hidden')
-            ->from('pages')
-            ->where(...$constraints)
-            ->execute();
-
-        while ($row = $result->fetch()) {
-            if ($row['hidden'] === 0 || $checkHidden) {
-                $pageList .= ',' . $row['uid'];
-            }
-        }
-
-        return $pageList;
     }
 
     /**

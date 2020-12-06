@@ -19,9 +19,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -34,6 +31,7 @@ use TYPO3\CMS\Info\Controller\InfoModuleController;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
+use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 
 /**
  * Module 'Link validator' as sub module of Web -> Info
@@ -135,6 +133,11 @@ class LinkValidatorReport
     protected $brokenLinkRepository;
 
     /**
+     * @var PagesRepository
+     */
+    protected $pagesRepository;
+
+    /**
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
@@ -144,9 +147,11 @@ class LinkValidatorReport
      */
     protected $view;
 
-    public function __construct()
+    public function __construct(PagesRepository $pagesRepository = null, BrokenLinkRepository $brokenLinkRepository = null)
     {
-        $this->brokenLinkRepository = GeneralUtility::makeInstance(BrokenLinkRepository::class);
+        $this->pagesRepository = $pagesRepository ?? GeneralUtility::makeInstance(PagesRepository::class);
+        $this->brokenLinkRepository = $brokenLinkRepository ??
+            GeneralUtility::makeInstance(BrokenLinkRepository::class);
     }
 
     /**
@@ -366,7 +371,7 @@ class LinkValidatorReport
             }
         }
 
-        $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
+        $rootLineHidden = $this->pagesRepository->doesRootLineContainHiddenPages($this->pObj->pageinfo);
         if (!$rootLineHidden || $this->modTS['checkhidden'] == 1) {
             $this->linkAnalyzer->init(
                 $this->searchFields,
@@ -406,7 +411,7 @@ class LinkValidatorReport
             $linkTypes = array_keys($this->checkOpt['report'], '1');
         }
         $items = [];
-        $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
+        $rootLineHidden = $this->pagesRepository->doesRootLineContainHiddenPages($this->pObj->pageinfo);
         if (!$rootLineHidden || (bool)$this->modTS['checkhidden'] && !empty($linkTypes)) {
             $brokenLinks = $this->brokenLinkRepository->getAllBrokenLinksForPages(
                 $this->getPageList(),
@@ -432,18 +437,22 @@ class LinkValidatorReport
      */
     protected function getPageList(): array
     {
-        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $pageList = $this->linkAnalyzer->extGetTreeList(
+        $checkForHiddenPages = (bool)$this->modTS['checkhidden'];
+        $permsClause = (string)$this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $pageList = $this->pagesRepository->getAllSubpagesForPage(
             $this->id,
-            $this->searchLevel['report'],
-            0,
+            (int)$this->searchLevel['report'],
             $permsClause,
-            $this->modTS['checkhidden']
+            $checkForHiddenPages
         );
         // Always add the current page, because we are just displaying the results
-        $pageList .= $this->id;
-        $pageList = $this->addPageTranslationsToPageList($pageList, $permsClause);
-        return GeneralUtility::intExplode(',', $pageList, true);
+        $pageList[] = $this->id;
+        $pageTranslations = $this->pagesRepository->getTranslationForPage(
+            $this->id,
+            $permsClause,
+            $checkForHiddenPages
+        );
+        return array_merge($pageList, $pageTranslations);
     }
 
     /**
@@ -615,33 +624,5 @@ class LinkValidatorReport
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    protected function addPageTranslationsToPageList(string $theList, string $permsClause): string
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $result = $queryBuilder
-            ->select('uid', 'title', 'hidden')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'l10n_parent',
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                ),
-                QueryHelper::stripLogicalOperatorPrefix($permsClause)
-            )
-            ->execute();
-
-        while ($row = $result->fetch()) {
-            if ($row['hidden'] === 0 || $this->modTS['checkhidden']) {
-                $theList .= ',' . $row['uid'];
-            }
-        }
-
-        return $theList;
     }
 }

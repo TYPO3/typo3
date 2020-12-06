@@ -19,7 +19,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -460,102 +459,6 @@ class LinkAnalyzer
     public function getLinkCounts()
     {
         return $this->brokenLinkRepository->getNumberOfBrokenLinksForRecordsOnPages($this->pids, $this->searchFields);
-    }
-
-    /**
-     * Calls TYPO3\CMS\Backend\FrontendBackendUserAuthentication::extGetTreeList.
-     * Although this duplicates the function TYPO3\CMS\Backend\FrontendBackendUserAuthentication::extGetTreeList
-     * this is necessary to create the object that is used recursively by the original function.
-     *
-     * Generates a list of page uids from $id. List does not include $id itself.
-     * The only pages excluded from the list are deleted pages.
-     *
-     * @param int $id Start page id
-     * @param int $depth Depth to traverse down the page tree.
-     * @param int $begin is an optional integer that determines at which level to start. use "0" from outside usage
-     * @param string $permsClause Perms clause
-     * @param bool $considerHidden Whether to consider hidden pages or not
-     * @return string Returns the list with a comma in the end (if any pages selected!)
-     */
-    public function extGetTreeList($id, $depth, $begin, $permsClause, $considerHidden = false)
-    {
-        $depth = (int)$depth;
-        $begin = (int)$begin;
-        $id = (int)$id;
-        $theList = '';
-        if ($depth === 0) {
-            return $theList;
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $result = $queryBuilder
-            ->select('uid', 'title', 'hidden', 'extendToSubpages')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                ),
-                QueryHelper::stripLogicalOperatorPrefix($permsClause)
-            )
-            ->execute();
-
-        while ($row = $result->fetch()) {
-            if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden)) {
-                $theList .= $row['uid'] . ',';
-            }
-            if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden)) {
-                $theList .= $this->extGetTreeList(
-                    $row['uid'],
-                    $depth - 1,
-                    $begin - 1,
-                    $permsClause,
-                    $considerHidden
-                );
-            }
-        }
-        return $theList;
-    }
-
-    /**
-     * Check if rootline contains a hidden page
-     *
-     * @param array $pageInfo Array with uid, title, hidden, extendToSubpages from pages table
-     * @return bool TRUE if rootline contains a hidden page, FALSE if not
-     */
-    public function getRootLineIsHidden(array $pageInfo)
-    {
-        if ($pageInfo['pid'] === 0) {
-            return false;
-        }
-
-        if ($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1) {
-            return true;
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $row = $queryBuilder
-            ->select('uid', 'title', 'hidden', 'extendToSubpages')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($pageInfo['pid'], \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetch();
-
-        if ($row !== false) {
-            return $this->getRootLineIsHidden($row);
-        }
-        return false;
     }
 
     /**
