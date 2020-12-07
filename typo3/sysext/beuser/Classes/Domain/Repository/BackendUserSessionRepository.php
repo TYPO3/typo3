@@ -17,26 +17,31 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
 
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUser
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class BackendUserSessionRepository extends Repository
+class BackendUserSessionRepository
 {
+    protected SessionBackendInterface $sessionBackend;
+
+    public function __construct()
+    {
+        $this->sessionBackend = GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
+    }
+
     /**
      * Find all active sessions for all backend users
      *
      * @return array
      */
-    public function findAllActive()
+    public function findAllActive(): array
     {
-        $sessionBackend = $this->getSessionBackend();
-        $allSessions = $sessionBackend->getAll();
+        $allSessions = $this->sessionBackend->getAll();
 
         // Map array to correct keys
         $allSessions = array_map(
@@ -80,34 +85,49 @@ class BackendUserSessionRepository extends Repository
     /**
      * Update current session to move back to the original user.
      *
-     * @param AbstractUserAuthentication $authentication
+     * @param AbstractUserAuthentication $userObject
      */
-    public function switchBackToOriginalUser(AbstractUserAuthentication $authentication)
+    public function switchBackToOriginalUser(AbstractUserAuthentication $userObject): void
     {
-        $sessionBackend = $this->getSessionBackend();
-        $sessionId = $this->getBackendSessionId();
-        $sessionBackend->update(
-            $sessionId,
+        $this->sessionBackend->update(
+            $userObject->getSessionId(),
             [
-                'ses_userid' => $authentication->user['ses_backuserid'],
+                'ses_userid' => $userObject->user['ses_backuserid'],
                 'ses_backuserid' => 0
             ]
         );
     }
 
     /**
-     * @return string
+     * Update current session to move to the target user. This is done
+     * by setting the target user id as ses_userid and storing the current
+     * user in ses_backuserid to restore the session record later on.
+     *
+     * @param AbstractUserAuthentication $userObject
+     * @param int $targetUserId
      */
-    protected function getBackendSessionId(): string
+    public function switchToUser(AbstractUserAuthentication $userObject, int $targetUserId): void
     {
-        return $GLOBALS['BE_USER']->id;
+        $this->sessionBackend->update(
+            $userObject->getSessionId(),
+            [
+                'ses_userid' => (int)$targetUserId,
+                'ses_backuserid' => (int)$userObject->user['uid']
+            ]
+        );
     }
 
-    /**
-     * @return SessionBackendInterface
-     */
-    protected function getSessionBackend(): SessionBackendInterface
+    public function getPersistedSessionIdentifier(AbstractUserAuthentication $userObject): string
     {
-        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
+        $currentSessionId = $userObject->getSessionId();
+        if ($this->sessionBackend instanceof HashableSessionBackendInterface) {
+            $currentSessionId = $this->sessionBackend->hash($currentSessionId);
+        }
+        return $currentSessionId;
+    }
+
+    public function terminateSessionByIdentifier(string $sessionIdentifier): string
+    {
+        return $this->sessionBackend->remove($sessionIdentifier);
     }
 }

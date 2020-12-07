@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Backend user switchback, for logoff_pre_processing hook within
@@ -41,8 +40,7 @@ class SwitchBackUserHook
     public function switchBack($params, AbstractUserAuthentication $authentication)
     {
         if ($this->isAHandledBackendSession($authentication)) {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $backendUserSessionRepository = $objectManager->get(BackendUserSessionRepository::class);
+            $backendUserSessionRepository = GeneralUtility::makeInstance(BackendUserSessionRepository::class);
             $backendUserSessionRepository->switchBackToOriginalUser($authentication);
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

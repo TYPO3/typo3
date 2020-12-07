@@ -32,9 +32,6 @@ use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
-use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
-use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
-use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -190,11 +187,8 @@ class BackendUserController extends ActionController
             ];
         }
 
-        $currentSessionId = $this->getBackendUserAuthentication()->getSessionId();
-        $sessionBackend = $this->getSessionBackend();
-        if ($sessionBackend instanceof HashableSessionBackendInterface) {
-            $currentSessionId = $sessionBackend->hash($currentSessionId);
-        }
+        $currentSessionId = $this->backendUserSessionRepository->getPersistedSessionIdentifier($this->getBackendUserAuthentication());
+
         $this->view->assignMultiple([
             'shortcutLabel' => 'onlineUsers',
             'onlineUsersAndSessions' => $onlineUsersAndSessions,
@@ -327,8 +321,7 @@ class BackendUserController extends ActionController
     protected function terminateBackendUserSessionAction(BackendUser $backendUser, $sessionId)
     {
         // terminating value of persisted session ID (probably hashed value)
-        $sessionBackend = $this->getSessionBackend();
-        $success = $sessionBackend->remove($sessionId);
+        $success = $this->backendUserSessionRepository->terminateSessionByIdentifier($sessionId);
 
         if ($success) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
@@ -364,13 +357,7 @@ class BackendUserController extends ActionController
                 ]
             );
 
-            $this->getSessionBackend()->update(
-                $this->getBackendUserAuthentication()->getSessionId(),
-                [
-                    'ses_userid' => (int)$targetUser['uid'],
-                    'ses_backuserid' => (int)$this->getBackendUserAuthentication()->user['uid']
-                ]
-            );
+            $this->backendUserSessionRepository->switchToUser($this->getBackendUserAuthentication(), (int)$targetUser['uid']);
 
             $event = new SwitchUserEvent(
                 $this->getBackendUserAuthentication()->getSessionId(),
@@ -420,15 +407,6 @@ class BackendUserController extends ActionController
     }
 
     /**
-     * @return SessionBackendInterface
-     */
-    protected function getSessionBackend()
-    {
-        $loginType = $this->getBackendUserAuthentication()->getLoginType();
-        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($loginType);
-    }
-
-    /**
      * Create an array with the uids of online users as the keys
      * [
      *   1 => true,
@@ -440,10 +418,8 @@ class BackendUserController extends ActionController
     {
         $onlineUsers = $this->backendUserSessionRepository->findAllActive();
         $onlineBackendUsers = [];
-        if (is_array($onlineUsers)) {
-            foreach ($onlineUsers as $onlineUser) {
-                $onlineBackendUsers[$onlineUser['ses_userid']] = true;
-            }
+        foreach ($onlineUsers as $onlineUser) {
+            $onlineBackendUsers[$onlineUser['ses_userid']] = true;
         }
         return $onlineBackendUsers;
     }
