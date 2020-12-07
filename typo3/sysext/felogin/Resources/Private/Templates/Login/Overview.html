@@ -4,12 +4,10 @@
     <f:render partial="CookieWarning"/>
 </f:if>
 
-<f:if condition="{loginMessage}">
-    <f:then>
-        <h3>
-            <f:render partial="RenderLabelOrMessage" arguments="{key: 'success_header'}"/>
-        </h3>
-    </f:then>
+<f:if condition="{showLoginMessage}">
+    <h3>
+        <f:render partial="RenderLabelOrMessage" arguments="{key: 'success_header'}"/>
+    </h3>
 </f:if>
 
 <f:translate key="login_user_info" arguments="{0: '{user.username}'}"/>
