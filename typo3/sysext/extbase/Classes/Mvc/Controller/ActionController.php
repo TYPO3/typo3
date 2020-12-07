@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Http\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -48,6 +50,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\CacheService;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
@@ -190,6 +193,16 @@ abstract class ActionController implements ControllerInterface
      */
     private $propertyMapper;
 
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    private FlashMessageService $internalFlashMessageService;
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    private ExtensionService $internalExtensionService;
+
     final public function injectResponseFactory(ResponseFactoryInterface $responseFactory)
     {
         $this->responseFactory = $responseFactory;
@@ -291,6 +304,22 @@ abstract class ActionController implements ControllerInterface
     public function injectPropertyMapper(PropertyMapper $propertyMapper): void
     {
         $this->propertyMapper = $propertyMapper;
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    final public function injectInternalFlashMessageService(FlashMessageService $flashMessageService): void
+    {
+        $this->internalFlashMessageService = $flashMessageService;
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    final public function injectInternalExtensionService(ExtensionService $extensionService): void
+    {
+        $this->internalExtensionService = $extensionService;
     }
 
     /**
@@ -866,7 +895,28 @@ abstract class ActionController implements ControllerInterface
             $severity,
             $storeInSession
         );
-        $this->controllerContext->getFlashMessageQueue()->enqueue($flashMessage);
+
+        $this->getFlashMessageQueue()->enqueue($flashMessage);
+    }
+
+    /**
+     * todo: As soon as the incoming request contains the compiled plugin namespace, extbase will offer a trait to
+     *       create a flash message identifier from the current request. Users then should inject the flash message
+     *       service themselves if needed.
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    {
+        if ($identifier === null) {
+            $pluginNamespace = $this->internalExtensionService->getPluginNamespace(
+                $this->request->getControllerExtensionName(),
+                $this->request->getPluginName()
+            );
+            $identifier = 'extbase.flashmessages.' . $pluginNamespace;
+        }
+
+        return $this->internalFlashMessageService->getMessageQueueByIdentifier($identifier);
     }
 
     /**

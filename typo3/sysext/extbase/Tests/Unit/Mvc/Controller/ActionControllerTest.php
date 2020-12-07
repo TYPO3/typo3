@@ -20,13 +20,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
@@ -657,11 +658,6 @@ class ActionControllerTest extends UnitTestCase
 
         $flashMessageQueue->expects(self::once())->method('enqueue')->with(self::equalTo($expectedMessage));
 
-        $controllerContext = $this->getMockBuilder(ControllerContext::class)
-            ->setMethods(['getFlashMessageQueue'])
-            ->getMock();
-        $controllerContext->expects(self::once())->method('getFlashMessageQueue')->willReturn($flashMessageQueue);
-
         $controller = $this->getAccessibleMockForAbstractClass(
             ActionController::class,
             [],
@@ -671,7 +667,16 @@ class ActionControllerTest extends UnitTestCase
             true,
             ['dummy']
         );
-        $controller->_set('controllerContext', $controllerContext);
+
+        $flashMessageService = $this->prophesize(FlashMessageService::class);
+        $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue);
+        $controller->injectInternalFlashMessageService($flashMessageService->reveal());
+
+        $extensionService = $this->prophesize(ExtensionService::class);
+        $extensionService->getPluginNamespace(Argument::cetera(), Argument::cetera())->willReturn('');
+        $controller->injectInternalExtensionService($extensionService->reveal());
+
+        $controller->_set('request', new Request());
 
         $controller->addFlashMessage($messageBody, $messageTitle, $severity, $storeInSession);
     }

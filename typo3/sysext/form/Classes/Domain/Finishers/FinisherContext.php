@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
@@ -64,15 +65,19 @@ class FinisherContext
      */
     protected $finisherVariableProvider;
 
+    private Request $request;
+
     /**
      * @param FormRuntime $formRuntime
      * @param ControllerContext $controllerContext
+     * @param Request $request
      * @internal
      */
-    public function __construct(FormRuntime $formRuntime, ControllerContext $controllerContext)
+    public function __construct(FormRuntime $formRuntime, ControllerContext $controllerContext, Request $request)
     {
         $this->formRuntime = $formRuntime;
         $this->controllerContext = $controllerContext;
+        $this->request = $request;
     }
 
     /**
@@ -124,6 +129,7 @@ class FinisherContext
 
     /**
      * @return ControllerContext
+     * @deprecated since v11, will be removed in v12
      */
     public function getControllerContext(): ControllerContext
     {
@@ -136,5 +142,10 @@ class FinisherContext
     public function getFinisherVariableProvider(): FinisherVariableProvider
     {
         return $this->finisherVariableProvider;
+    }
+
+    public function getRequest(): Request
+    {
+        return $this->request;
     }
 }

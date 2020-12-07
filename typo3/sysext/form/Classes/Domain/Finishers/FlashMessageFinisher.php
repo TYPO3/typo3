@@ -23,10 +23,12 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Message;
 use TYPO3\CMS\Extbase\Error\Notice;
 use TYPO3\CMS\Extbase\Error\Warning;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 
 /**
@@ -61,6 +63,19 @@ class FlashMessageFinisher extends AbstractFinisher
         'messageCode' => null,
         'severity' => AbstractMessage::OK,
     ];
+
+    private ExtensionService $extensionService;
+    private FlashMessageService $flashMessageService;
+
+    public function injectFlashMessageService(FlashMessageService $flashMessageService): void
+    {
+        $this->flashMessageService = $flashMessageService;
+    }
+
+    public function injectExtensionService(ExtensionService $extensionService): void
+    {
+        $this->extensionService = $extensionService;
+    }
 
     /**
      * Executes this finisher
@@ -101,6 +116,12 @@ class FlashMessageFinisher extends AbstractFinisher
             true
         );
 
-        $this->finisherContext->getControllerContext()->getFlashMessageQueue()->addMessage($flashMessage);
+        // todo: this value has to be taken from the request directly in the future
+        $pluginNamespace = $this->extensionService->getPluginNamespace(
+            $this->finisherContext->getRequest()->getControllerExtensionName(),
+            $this->finisherContext->getRequest()->getPluginName()
+        );
+
+        $this->flashMessageService->getMessageQueueByIdentifier('extbase.flashmessages.' . $pluginNamespace)->addMessage($flashMessage);
     }
 }

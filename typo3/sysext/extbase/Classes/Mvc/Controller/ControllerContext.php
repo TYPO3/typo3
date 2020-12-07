@@ -141,9 +141,12 @@ class ControllerContext
     /**
      * @param string $identifier Queue-identifier
      * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     * @deprecated since v11, will be removed in v12
      */
     public function getFlashMessageQueue($identifier = null)
     {
+        // todo: trigger an error as soon as this whole object can be deprecated
+
         if ($identifier === null) {
             if ($this->flashMessageQueueDefaultIdentifier === null) {
                 // cache the default-identifier for performance-reasons

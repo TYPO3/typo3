@@ -128,7 +128,7 @@ class PermissionController extends ActionController
 
             $this->registerDocHeaderButtons();
             $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-            $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+            $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
         }
     }
 

@@ -644,7 +644,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $finisherContext = $this->objectManager->get(
             FinisherContext::class,
             $this,
-            $this->getControllerContext()
+            $this->getControllerContext(),
+            $this->request
         );
 
         $output = '';

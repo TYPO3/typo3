@@ -513,7 +513,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     {
         if ($this->errorMessage) {
             $this->errorMessage->setSeverity(FlashMessage::ERROR);
-            $this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage($this->errorMessage);
+            $this->getFlashMessageQueue('core.template.flashMessages')->addMessage($this->errorMessage);
         }
 
         return $this->htmlResponse($this->view->render());
@@ -534,7 +534,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         $fileFacades = [];
         if (count($files) === 0) {
-            $this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage(
+            $this->getFlashMessageQueue('core.template.flashMessages')->addMessage(
                 new FlashMessage(
                     LocalizationUtility::translate('flashmessage.no_results', 'filelist') ?? '',
                     '',

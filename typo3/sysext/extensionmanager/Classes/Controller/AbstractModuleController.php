@@ -110,7 +110,7 @@ class AbstractModuleController extends AbstractController
         }
 
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
     }
 
     /**

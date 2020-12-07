@@ -73,7 +73,7 @@ class FormEditorController extends AbstractBackendController
     {
         $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->setModuleName($this->request->getPluginName() . '_' . $this->request->getControllerName());
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
         if (
             strpos($formPersistenceIdentifier, 'EXT:') === 0

@@ -76,7 +76,7 @@ class FormManagerController extends AbstractBackendController
     {
         $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->setModuleName($this->request->getPluginName() . '_' . $this->request->getControllerName());
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
         $this->view->assign('forms', $this->getAvailableFormDefinitions());
         $this->view->assign('stylesheets', $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']));
