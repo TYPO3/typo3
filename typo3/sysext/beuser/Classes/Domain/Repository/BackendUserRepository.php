@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Beuser\Domain\Repository;
 
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -152,17 +151,8 @@ class BackendUserRepository extends BackendUserGroupRepository
     /**
      * @return SessionBackendInterface
      */
-    protected function getSessionBackend()
+    protected function getSessionBackend(): SessionBackendInterface
     {
-        $loginType = $this->getBackendUserAuthentication()->getLoginType();
-        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($loginType);
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
+        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
     }
 }
