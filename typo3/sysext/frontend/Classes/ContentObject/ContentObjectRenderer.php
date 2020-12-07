@@ -5501,10 +5501,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 /** @var VersionState $versionState */
                 $versionState = VersionState::cast($row['t3ver_state']);
                 $tsfe->sys_page->versionOL('pages', $row);
-                if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
+                if ($row === false
+                    || (int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
                     || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
                     || $versionState->indicatesPlaceholder()
                 ) {
+                    // falsy row means Overlay prevents access to this page.
                     // Doing this after the overlay to make sure changes
                     // in the overlay are respected.
                     // However, we do not process pages below of and
