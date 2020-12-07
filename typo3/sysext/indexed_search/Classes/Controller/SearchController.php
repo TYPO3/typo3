@@ -1591,7 +1591,7 @@ class SearchController extends ActionController
     protected function preparePageLink(int $pageUid, array $row, array $urlParameters): array
     {
         $target = '';
-        $uri = $this->controllerContext->getUriBuilder()
+        $uri = $this->uriBuilder
                 ->setTargetPageUid($pageUid)
                 ->setTargetPageType($row['data_page_type'])
                 ->setArguments($urlParameters)

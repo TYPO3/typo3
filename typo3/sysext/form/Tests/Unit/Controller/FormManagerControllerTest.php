@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormManagerController;
@@ -125,13 +124,8 @@ class FormManagerControllerTest extends UnitTestCase
         ], [], '', false);
 
         $mockUriBuilder = $this->createMock(UriBuilder::class);
-        $mockControllerContext = $this->createMock(ControllerContext::class);
-        $mockControllerContext
-            ->expects(self::any())
-            ->method('getUriBuilder')
-            ->willReturn($mockUriBuilder);
 
-        $mockController->_set('controllerContext', $mockControllerContext);
+        $mockController->_set('uriBuilder', $mockUriBuilder);
 
         $mockController->_set('formSettings', [
             'formManager' => [

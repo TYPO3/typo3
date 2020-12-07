@@ -81,9 +81,7 @@ class DistributionController extends AbstractModuleController
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
-
-        $uri = $uriBuilder->reset()->uriFor('distributions', [], 'List');
+        $uri = $this->uriBuilder->reset()->uriFor('distributions', [], 'List');
         $title = $this->translate('extConfTemplate.backToList');
         $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
         $button = $buttonBar->makeLinkButton()

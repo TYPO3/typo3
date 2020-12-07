@@ -295,15 +295,14 @@ class ListController extends AbstractModuleController
 
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $uriBuilder = $this->controllerContext->getUriBuilder();
 
         if ($this->actionMethodName === 'showAllVersionsAction') {
-            $uri = $uriBuilder->reset()->uriFor('ter', [], 'List');
+            $uri = $this->uriBuilder->reset()->uriFor('ter', [], 'List');
             $title = $this->translate('extConfTemplate.backToList');
             $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
             $classes = '';
         } else {
-            $uri = $uriBuilder->reset()->uriFor('form', [], 'UploadExtensionFile');
+            $uri = $this->uriBuilder->reset()->uriFor('form', [], 'UploadExtensionFile');
             $title = $this->translate('extensionList.uploadExtension');
             $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-upload', Icon::SIZE_SMALL);
             $classes = 't3js-upload';

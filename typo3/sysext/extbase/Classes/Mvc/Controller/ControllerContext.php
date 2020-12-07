@@ -123,9 +123,12 @@ class ControllerContext
 
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     * @deprecated since v11, will be removed in v12
      */
     public function getUriBuilder()
     {
+        // todo: trigger an error as soon as this whole object can be deprecated
+
         if (!$this->uriBuilder) {
             $this->uriBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(UriBuilder::class);
             if ($this->request) {

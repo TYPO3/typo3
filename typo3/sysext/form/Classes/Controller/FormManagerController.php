@@ -137,7 +137,7 @@ class FormManagerController extends AbstractBackendController
 
         $response = [
             'status' => 'success',
-            'url' => $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
+            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
         ];
 
         try {
@@ -197,7 +197,7 @@ class FormManagerController extends AbstractBackendController
 
         $response = [
             'status' => 'success',
-            'url' => $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
+            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
         ];
 
         try {
@@ -326,10 +326,10 @@ class FormManagerController extends AbstractBackendController
             'selectablePrototypesConfiguration' => $this->formSettings['formManager']['selectablePrototypesConfiguration'],
             'accessibleFormStorageFolders' => $this->getAccessibleFormStorageFolders(),
             'endpoints' => [
-                'create' => $this->controllerContext->getUriBuilder()->uriFor('create'),
-                'duplicate' => $this->controllerContext->getUriBuilder()->uriFor('duplicate'),
-                'delete' => $this->controllerContext->getUriBuilder()->uriFor('delete'),
-                'references' => $this->controllerContext->getUriBuilder()->uriFor('references')
+                'create' => $this->uriBuilder->uriFor('create'),
+                'duplicate' => $this->uriBuilder->uriFor('duplicate'),
+                'delete' => $this->uriBuilder->uriFor('delete'),
+                'references' => $this->uriBuilder->uriFor('references')
             ],
         ];
 
