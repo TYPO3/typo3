@@ -72,14 +72,15 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $GLOBALS['BE_USER']->start();
         // Register the backend user as aspect and initializing workspace once for TSconfig conditions
         $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)$GLOBALS['BE_USER']->user['workspace_id']);
-        if (!$this->isLoggedInBackendUserRequired($route) && !$this->context->getAspect('backend.user')->isLoggedIn()) {
+        if ($this->isLoggedInBackendUserRequired($route) && !$this->context->getAspect('backend.user')->isLoggedIn()) {
             $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
             $response = new RedirectResponse($uri);
             return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
         }
         try {
+            $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($route) === false;
             // @todo: Ensure that the runtime exceptions are caught
-            $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($route));
+            $GLOBALS['BE_USER']->backendCheckLogin($proceedIfNoUserIsLoggedIn);
             $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
             // Re-setting the user and take the workspace from the user object now
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
@@ -127,10 +128,10 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
      * If we're trying to do a login or an ajax login, don't require a user.
      *
      * @param Route $route the Route path to check against, something like '
-     * @return bool whether the request can proceed without a login required
+     * @return bool true when the Route requires an authenticated backend user
      */
     protected function isLoggedInBackendUserRequired(Route $route): bool
     {
-        return in_array($route->getPath(), $this->publicRoutes, true);
+        return in_array($route->getPath(), $this->publicRoutes, true) === false;
     }
 }
