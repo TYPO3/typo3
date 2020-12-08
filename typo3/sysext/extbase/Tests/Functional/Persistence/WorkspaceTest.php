@@ -102,6 +102,56 @@ class WorkspaceTest extends FunctionalTestCase
      * @dataProvider contextDataProvider
      * @param string $context
      */
+    public function fetchingHiddenBlogInWorkspace(string $context): void
+    {
+        // Set up Context for Workspace=1
+        if ($context === 'FE') {
+            $this->setupSubjectInFrontend();
+        } else {
+            $this->setupSubjectInBackend();
+        }
+
+        $query = $this->blogRepository->createQuery();
+
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds([0]);
+        $query->matching(
+            $query->logicalOr(
+                $query->like('title', '%Blog2%'),
+                $query->like('title', '%Blog4%'),
+                $query->like('title', '%Blog6%')
+            )
+        );
+        $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
+
+        // Respect hidden flags, only show the item that was hidden in live, but is now visible in workspace
+        $querySettings->setIgnoreEnableFields(false);
+        $items = $query->execute();
+        $foundItems = [];
+        foreach ($items as $item) {
+            $foundItems[] = $item->getTitle();
+        }
+        self::assertEquals(['WorkspaceOverlay Blog6Enabled'], $foundItems);
+
+        // Allow hidden records to show up (resulting in 3 blog items)
+        $querySettings->setIgnoreEnableFields(true);
+        $items = $query->execute();
+        $foundItems = [];
+        foreach ($items as $item) {
+            $foundItems[] = $item->getTitle();
+        }
+        self::assertEquals([
+            'WorkspaceOverlay Blog2HiddenInWorkspace',
+            'WorkspaceOverlay Blog4HiddenInLiveAndWorkspace',
+            'WorkspaceOverlay Blog6Enabled',
+        ], $foundItems);
+    }
+
+    /**
+     * @test
+     * @dataProvider contextDataProvider
+     * @param string $context
+     */
     public function fetchingAllBlogsReturnsCorrectNumberOfBlogs(string $context): void
     {
         if ($context === 'FE') {
@@ -119,7 +169,7 @@ class WorkspaceTest extends FunctionalTestCase
 
         $blogs = $query->execute()->toArray();
 
-        self::assertCount(4, $blogs);
+        self::assertCount(3, $blogs);
 
         // Check first blog was overlaid with workspace preview
         $firstBlog = array_shift($blogs);
