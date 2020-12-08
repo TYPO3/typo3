@@ -96,4 +96,32 @@
 		<t3ver_state>0</t3ver_state>
 		<t3ver_wsid>1</t3ver_wsid>
 	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>103</uid>
+		<pid>0</pid>
+		<title>WorkspaceOverlay Blog2HiddenInWorkspace</title>
+		<description>WorkspaceOverlay Blog2HiddenInWorkspace Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
+		<hidden>1</hidden>
+		<deleted>0</deleted>
+		<posts>1</posts>
+		<t3ver_oid>2</t3ver_oid>
+		<t3ver_state>0</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>104</uid>
+		<pid>0</pid>
+		<title>WorkspaceOverlay Blog4HiddenInLiveAndWorkspace</title>
+		<description>WorkspaceOverlay Blog4HiddenInLiveAndWorkspace Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
+		<hidden>1</hidden>
+		<deleted>0</deleted>
+		<posts>1</posts>
+		<t3ver_oid>4</t3ver_oid>
+		<t3ver_state>0</t3ver_state>
+		<t3ver_wsid>1</t3ver_wsid>
+	</tx_blogexample_domain_model_blog>
 </dataset>

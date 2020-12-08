@@ -523,7 +523,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             );
         }
         // Handle workspace overlays
-        $pageRepository->versionOL($tableName, $row, true);
+        $pageRepository->versionOL($tableName, $row, true, $querySettings->getIgnoreEnableFields());
         if (is_array($row) && $querySettings->getLanguageOverlayMode()) {
             if ($tableName === 'pages') {
                 $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
