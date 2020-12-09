@@ -60,7 +60,8 @@ class RemoveExtensionViewHelper extends ActionViewHelper
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest($this->renderingContext->getRequest());
         $action = 'removeExtension';
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');

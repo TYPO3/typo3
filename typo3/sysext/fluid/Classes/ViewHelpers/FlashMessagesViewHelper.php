@@ -16,7 +16,9 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -127,8 +129,20 @@ class FlashMessagesViewHelper extends AbstractViewHelper
     {
         $as = $arguments['as'];
         $queueIdentifier = $arguments['queueIdentifier'] ?? null;
-        $flashMessages = $renderingContext->getControllerContext()
-            ->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
+
+        if ($queueIdentifier === null) {
+            $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
+            $pluginNamespace = $extensionService->getPluginNamespace(
+                $renderingContext->getRequest()->getControllerExtensionName(),
+                $renderingContext->getRequest()->getPluginName()
+            );
+            $queueIdentifier = 'extbase.flashmessages.' . $pluginNamespace;
+        }
+
+        $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)
+            ->getMessageQueueByIdentifier($queueIdentifier);
+
+        $flashMessages = $flashMessageQueue->getAllMessagesAndFlush();
         if ($flashMessages === null || count($flashMessages) === 0) {
             return '';
         }

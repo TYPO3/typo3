@@ -42,7 +42,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     /**
      * Controller context being passed to the ViewHelper
      *
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext|null
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
      */
     protected $controllerContext;
 
@@ -152,9 +152,12 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * Get the controller context which will be passed to the ViewHelper
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext The controller context to set
+     * @deprecated since v11, will be removed in v12
      */
     public function getControllerContext()
     {
+        // todo: trigger an error as soon as ControllerContext is deprecated
+
         if ($this->controllerContext) {
             return $this->controllerContext;
         }

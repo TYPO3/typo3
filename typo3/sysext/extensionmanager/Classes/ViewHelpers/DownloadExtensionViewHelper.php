@@ -85,7 +85,8 @@ class DownloadExtensionViewHelper extends AbstractFormViewHelper
         }
         $pathSelector .= '</ul>';
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest($this->renderingContext->getRequest());
         $action = 'checkDependencies';
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');

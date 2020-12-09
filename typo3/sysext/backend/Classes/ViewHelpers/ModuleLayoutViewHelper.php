@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\ViewHelpers;
 
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -63,8 +65,17 @@ class ModuleLayoutViewHelper extends AbstractViewHelper
             throw new Exception('ModuleLayoutViewHelper can only be used once per module.', 1483292643);
         }
 
+        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
+        $pluginNamespace = $extensionService->getPluginNamespace(
+            $renderingContext->getRequest()->getControllerExtensionName(),
+            $renderingContext->getRequest()->getPluginName()
+        );
+
+        $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)
+            ->getMessageQueueByIdentifier('extbase.flashmessages.' . $pluginNamespace);
+
         $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $moduleTemplate->setFlashMessageQueue($renderingContext->getControllerContext()->getFlashMessageQueue());
+        $moduleTemplate->setFlashMessageQueue($flashMessageQueue);
 
         $viewHelperVariableContainer->add(self::class, ModuleTemplate::class, $moduleTemplate);
         $moduleTemplate->setContent($renderChildrenClosure());

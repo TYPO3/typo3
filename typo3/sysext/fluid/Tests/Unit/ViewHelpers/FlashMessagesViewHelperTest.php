@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
@@ -25,6 +28,8 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
  */
 class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper
      */
@@ -41,8 +46,16 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $extensionService = $this->prophesize(ExtensionService::class);
+        $extensionService->getPluginNamespace(\Prophecy\Argument::cetera(), \Prophecy\Argument::cetera())->willReturn('foo');
+        GeneralUtility::setSingletonInstance(ExtensionService::class, $extensionService->reveal());
+
         $this->flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $this->controllerContext->expects(self::any())->method('getFlashMessageQueue')->willReturn($this->flashMessageQueue->reveal());
+
+        $flashMessageService = $this->prophesize(FlashMessageService::class);
+        $flashMessageService->getMessageQueueByIdentifier(\Prophecy\Argument::cetera())->willReturn($this->flashMessageQueue->reveal());
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
 
         $this->viewHelper = new FlashMessagesViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -71,7 +84,6 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
         $queueIdentifier = 'myQueue';
 
         $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
-        $this->controllerContext->expects(self::once())->method('getFlashMessageQueue')->with($queueIdentifier)->willReturn($this->flashMessageQueue->reveal());
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,

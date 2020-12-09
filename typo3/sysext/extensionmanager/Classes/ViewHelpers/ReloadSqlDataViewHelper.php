@@ -76,7 +76,8 @@ class ReloadSqlDataViewHelper extends ActionViewHelper
         }
 
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest($this->renderingContext->getRequest());
         $uriBuilder->reset();
         $uri = $uriBuilder->uriFor('reloadExtensionData', ['extension' => $extension['key']], 'Action');
         $this->tag->addAttribute('href', $uri);
