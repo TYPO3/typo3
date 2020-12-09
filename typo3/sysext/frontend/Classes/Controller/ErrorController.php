@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ErrorController
 {
     /**
-     * Used for creating a 500 response ("Page unavailable"), usually due some misconfiguration
+     * Used for creating a 503 response ("Page unavailable"), usually due some misconfiguration
      * but if configured, a RedirectResponse could be returned as well.
      *
      * @param ServerRequestInterface $request
@@ -50,11 +50,11 @@ class ErrorController
         if (!$this->isPageUnavailableHandlerConfigured()) {
             throw new ServiceUnavailableException($message, 1518472181);
         }
-        $errorHandler = $this->getErrorHandlerFromSite($request, 500);
+        $errorHandler = $this->getErrorHandlerFromSite($request, 503);
         if ($errorHandler instanceof PageErrorHandlerInterface) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
-        return $this->handleDefaultError($request, 500, $message ?: 'Page is unavailable');
+        return $this->handleDefaultError($request, 503, $message ?: 'Page is unavailable');
     }
 
     /**

@@ -110,7 +110,7 @@ class ErrorControllerTest extends UnitTestCase
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $subject = new ErrorController();
         $response = $subject->unavailableAction(new ServerRequest(), 'Error handler is not configured.');
-        self::assertSame(500, $response->getStatusCode());
+        self::assertSame(503, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
     }
@@ -123,7 +123,7 @@ class ErrorControllerTest extends UnitTestCase
         $subject = new ErrorController();
         $response = $subject->unavailableAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
-        self::assertSame(500, $response->getStatusCode());
+        self::assertSame(503, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
     }
