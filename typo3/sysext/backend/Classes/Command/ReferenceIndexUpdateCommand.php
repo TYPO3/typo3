@@ -61,7 +61,6 @@ class ReferenceIndexUpdateCommand extends Command
         $progressListener = GeneralUtility::makeInstance(ReferenceIndexProgressListener::class);
         $progressListener->initialize($io);
         $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
-        $referenceIndex->enableRuntimeCache();
         if ($isTestOnly) {
             $io->section('Reference Index being TESTED (nothing written, remove the "--check" argument)');
         } else {

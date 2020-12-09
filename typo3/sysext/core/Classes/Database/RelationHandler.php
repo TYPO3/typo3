@@ -1314,7 +1314,6 @@ class RelationHandler
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $referenceIndex->setWorkspaceId($this->getWorkspaceId());
             }
-            $referenceIndex->enableRuntimeCache();
             $statisticsArray = $referenceIndex->updateRefIndexTable($table, $uid);
         }
         return $statisticsArray;

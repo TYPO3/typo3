@@ -68,7 +68,6 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
         $this->output->writeln('Reference Index is being updated');
         $progressListener = GeneralUtility::makeInstance(ReferenceIndexProgressListener::class);
         $progressListener->initialize(new SymfonyStyle(new ArrayInput([]), $this->output));
-        $this->referenceIndex->enableRuntimeCache();
         $result = $this->referenceIndex->updateIndex(false, $progressListener);
         return empty($result['errors']);
     }
@@ -80,7 +79,6 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
      */
     public function isFulfilled(): bool
     {
-        $this->referenceIndex->enableRuntimeCache();
         $result = $this->referenceIndex->updateIndex(true);
         return empty($result['errors']);
     }

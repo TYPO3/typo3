@@ -22,7 +22,6 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ProgressListenerInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -60,7 +59,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @see updateRefIndexTable()
      * @see shouldExcludeTableFromReferenceIndex()
      */
-    protected static $excludedTables = [
+    protected array $excludedTables = [
         'sys_log' => true,
         'tx_extensionmanager_domain_model_extension' => true
     ];
@@ -75,7 +74,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @see fetchTableRelationFields()
      * @see shouldExcludeTableColumnFromReferenceIndex()
      */
-    protected static $excludedColumns = [
+    protected array $excludedColumns = [
         'uid' => true,
         'perms_userid' => true,
         'perms_groupid' => true,
@@ -84,14 +83,6 @@ class ReferenceIndex implements LoggerAwareInterface
         'perms_everybody' => true,
         'pid' => true
     ];
-
-    /**
-     * Fields of tables that could contain relations are cached per table. This is the prefix for the cache entries since
-     * the runtimeCache has a global scope.
-     *
-     * @var string
-     */
-    protected static $cachePrefixTableRelationFields = 'core-refidx-tblRelFields-';
 
     /**
      * This array holds the FlexForm references of a record
@@ -111,14 +102,6 @@ class ReferenceIndex implements LoggerAwareInterface
     protected $relations = [];
 
     /**
-     * A cache to avoid that identical rows are refetched from the database
-     *
-     * @var array
-     * @see getRecordRawCached()
-     */
-    protected $recordCache = [];
-
-    /**
      * Number which we can increase if a change in the code means we will have to force a re-generation of the index.
      *
      * @var int
@@ -128,36 +111,21 @@ class ReferenceIndex implements LoggerAwareInterface
 
     /**
      * Current workspace id
-     *
-     * @var int
      */
-    protected $workspaceId = 0;
+    protected int $workspaceId = 0;
 
     /**
-     * Runtime Cache to store and retrieve data computed for a single request
-     *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * A list of fields that may contain relations per TCA table.
+     * This is either ['*'] or an array of single field names. The list
+     * depends on TCA and is built when a first table row is handled.
      */
-    protected $runtimeCache;
+    protected array $tableRelationFieldCache = [];
 
-    /**
-     * Enables $runtimeCache and $recordCache
-     * @var bool
-     */
-    protected $useRuntimeCache = false;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
-        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
     /**
@@ -212,15 +180,7 @@ class ReferenceIndex implements LoggerAwareInterface
             return $result;
         }
 
-        // Fetch tableRelationFields and save them in cache if not there yet
-        $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-        $tableRelationFields = $this->useRuntimeCache ? $this->runtimeCache->get($cacheId) : false;
-        if ($tableRelationFields === false) {
-            $tableRelationFields = $this->fetchTableRelationFields($tableName);
-            if ($this->useRuntimeCache) {
-                $this->runtimeCache->set($cacheId, $tableRelationFields);
-            }
-        }
+        $tableRelationFields = $this->fetchTableRelationFields($tableName);
 
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('sys_refindex');
@@ -243,8 +203,8 @@ class ReferenceIndex implements LoggerAwareInterface
         }
 
         // If the table has fields which could contain relations and the record does exist
-        if ($tableRelationFields !== '') {
-            $existingRecord = $this->getRecordRawCached($tableName, $uid);
+        if ($tableRelationFields !== []) {
+            $existingRecord = $this->getRecord($tableName, $uid);
             if ($existingRecord) {
                 // Table has relation fields and record exists - get relations
                 $this->relations = [];
@@ -866,7 +826,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $configuration Config array for TCA/columns field
      * @return bool TRUE if DB reference field (group/db or select with foreign-table)
      */
-    protected function isDbReferenceField(array $configuration)
+    protected function isDbReferenceField(array $configuration): bool
     {
         return
             ($configuration['type'] === 'group' && $configuration['internal_type'] === 'db')
@@ -883,7 +843,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $configuration Config array for TCA/columns field
      * @return bool TRUE if reference field
      */
-    protected function isReferenceField(array $configuration)
+    protected function isReferenceField(array $configuration): bool
     {
         return
             $this->isDbReferenceField($configuration)
@@ -900,23 +860,25 @@ class ReferenceIndex implements LoggerAwareInterface
      * Returns all fields of a table which could contain a relation
      *
      * @param string $tableName Name of the table
-     * @return string Fields which could contain a relation
+     * @return array Fields which may contain relations
      */
-    protected function fetchTableRelationFields($tableName)
+    protected function fetchTableRelationFields(string $tableName): array
     {
-        if (!isset($GLOBALS['TCA'][$tableName]['columns'])) {
-            return '';
+        if (!empty($this->tableRelationFieldCache[$tableName])) {
+            return $this->tableRelationFieldCache[$tableName];
         }
-
+        if (!isset($GLOBALS['TCA'][$tableName]['columns'])) {
+            return [];
+        }
         $fields = [];
-
         foreach ($GLOBALS['TCA'][$tableName]['columns'] as $field => $fieldDefinition) {
             if (is_array($fieldDefinition['config'])) {
                 // Check for flex field
                 if (isset($fieldDefinition['config']['type']) && $fieldDefinition['config']['type'] === 'flex') {
                     // Fetch all fields if the is a field of type flex in the table definition because the complete row is passed to
                     // FlexFormTools->getDataStructureIdentifier() in the end and might be needed in ds_pointerField or a hook
-                    return '*';
+                    $this->tableRelationFieldCache[$tableName] = ['*'];
+                    return ['*'];
                 }
                 // Only fetch this field if it can contain a reference
                 if ($this->isReferenceField($fieldDefinition['config'])) {
@@ -924,8 +886,8 @@ class ReferenceIndex implements LoggerAwareInterface
                 }
             }
         }
-
-        return implode(',', $fields);
+        $this->tableRelationFieldCache[$tableName] = $fields;
+        return $fields;
     }
 
     /**
@@ -1119,83 +1081,52 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
-     * Gets one record from database and stores it in an internal cache (which expires along with object lifecycle) for faster retrieval
-     *
-     * Assumption:
-     *
-     * - This method is only used from within delegate methods and so only caches queries generated based on the record being indexed; the query
-     *   to select origin side record is uncached
-     * - Origin side records do not change in database while updating the reference index
-     * - Origin record does not get removed while updating index
-     * - Relations may change during indexing, which is why only the origin record is cached and all relations are re-process even when repeating
-     *   indexing of the same origin record
-     *
-     * Please note that the cache is disabled by default but can be enabled using $this->enableRuntimeCaches()
-     * due to possible side-effects while handling references that were changed during one single
-     * request.
+     * Get one record from database.
      *
      * @param string $tableName
      * @param int $uid
      * @return array|false
      */
-    protected function getRecordRawCached(string $tableName, int $uid)
+    protected function getRecord(string $tableName, int $uid)
     {
-        $recordCacheId = $tableName . ':' . $uid;
-        if (!$this->useRuntimeCache || !isset($this->recordCache[$recordCacheId])) {
+        // Fetch fields of the table which might contain relations
+        $tableRelationFields = $this->fetchTableRelationFields($tableName);
 
-            // Fetch fields of the table which might contain relations
-            $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-            $tableRelationFields = $this->useRuntimeCache ? $this->runtimeCache->get($cacheId) : false;
-            if ($tableRelationFields === false) {
-                $tableRelationFields = $this->fetchTableRelationFields($tableName);
-                if ($this->useRuntimeCache) {
-                    $this->runtimeCache->set($cacheId, $tableRelationFields);
-                }
-            }
-
+        if ($tableRelationFields === []) {
             // Return if there are no fields which could contain relations
-            if ($tableRelationFields === '') {
-                return $this->relations;
-            }
-
-            if ($tableRelationFields === '*') {
-                // If one field of a record is of type flex, all fields have to be fetched to be passed to FlexFormTools->getDataStructureIdentifier()
-                $selectFields = '*';
-            } else {
-                // otherwise only fields that might contain relations are fetched
-                $selectFields = 'uid,' . $tableRelationFields;
-                if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                    $selectFields .= ',t3ver_wsid,t3ver_state';
-                }
-            }
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-            $queryBuilder
-                ->select(...GeneralUtility::trimExplode(',', $selectFields, true))
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    )
-                );
-            // Do not fetch soft deleted records
-            $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false;
-            if ($deleteField) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        $deleteField,
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
-                );
-            }
-            $row = $queryBuilder->execute()->fetch();
-
-            $this->recordCache[$recordCacheId] = $row;
+            return $this->relations;
         }
-        return $this->recordCache[$recordCacheId];
+        if ($tableRelationFields !== ['*']) {
+            // Only fields that might contain relations are fetched
+            $tableRelationFields[] = 'uid';
+            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+                $tableRelationFields = array_merge($tableRelationFields, ['t3ver_wsid', 't3ver_state']);
+            }
+        }
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder
+            ->select(...array_unique($tableRelationFields))
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            );
+        // Do not fetch soft deleted records
+        $deleteField = (string)($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? '');
+        if ($deleteField !== '') {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $deleteField,
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            );
+        }
+        return $queryBuilder->execute()->fetch();
     }
 
     /**
@@ -1204,19 +1135,17 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $tableName Name of the table
      * @return bool true if it should be excluded
      */
-    protected function shouldExcludeTableFromReferenceIndex($tableName)
+    protected function shouldExcludeTableFromReferenceIndex(string $tableName): bool
     {
-        if (isset(static::$excludedTables[$tableName])) {
-            return static::$excludedTables[$tableName];
+        if (isset($this->excludedTables[$tableName])) {
+            return $this->excludedTables[$tableName];
         }
-
         // Only exclude tables from ReferenceIndex which do not contain any relations and never
         // did since existing references won't be deleted!
         $event = new IsTableExcludedFromReferenceIndexEvent($tableName);
         $event = $this->eventDispatcher->dispatch($event);
-        static::$excludedTables[$tableName] = $event->isTableExcluded();
-
-        return static::$excludedTables[$tableName];
+        $this->excludedTables[$tableName] = $event->isTableExcluded();
+        return $this->excludedTables[$tableName];
     }
 
     /**
@@ -1227,16 +1156,17 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $onlyColumn Name of a specific column to fetch
      * @return bool true if it should be excluded
      */
-    protected function shouldExcludeTableColumnFromReferenceIndex($tableName, $column, $onlyColumn)
-    {
-        if (isset(static::$excludedColumns[$column])) {
+    protected function shouldExcludeTableColumnFromReferenceIndex(
+        string $tableName,
+        string $column,
+        string $onlyColumn
+    ): bool {
+        if (isset($this->excludedColumns[$column])) {
             return true;
         }
-
         if (is_array($GLOBALS['TCA'][$tableName]['columns'][$column]) && (!$onlyColumn || $onlyColumn === $column)) {
             return false;
         }
-
         return true;
     }
 
@@ -1244,18 +1174,22 @@ class ReferenceIndex implements LoggerAwareInterface
      * Enables the runtime-based caches
      * Could lead to side effects, depending if the reference index instance is run multiple times
      * while records would be changed.
+     *
+     * @deprecated since v11, will be removed in v12.
      */
     public function enableRuntimeCache()
     {
-        $this->useRuntimeCache = true;
+        trigger_error('Calling ReferenceIndex->enableRuntimeCache() is obsolete and should be dropped.', E_USER_DEPRECATED);
     }
 
     /**
      * Disables the runtime-based cache
+     *
+     * @deprecated since v11, will be removed in v12.
      */
     public function disableRuntimeCache()
     {
-        $this->useRuntimeCache = false;
+        trigger_error('Calling ReferenceIndex->disableRuntimeCache() is obsolete and should be dropped.', E_USER_DEPRECATED);
     }
 
     /**

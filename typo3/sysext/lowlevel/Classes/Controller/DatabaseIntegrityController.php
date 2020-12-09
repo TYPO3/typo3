@@ -309,7 +309,6 @@ class DatabaseIntegrityController
         if (GeneralUtility::_GP('_update') || GeneralUtility::_GP('_check')) {
             $testOnly = (bool)GeneralUtility::_GP('_check');
             $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-            $refIndexObj->enableRuntimeCache();
             $result = $refIndexObj->updateIndex($testOnly);
             $recordsCheckedString = $result['resultText'];
             $errors = $result['errors'];

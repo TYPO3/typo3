@@ -4585,4 +4585,18 @@ return [
             'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->enableRuntimeCache' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-93038-ReferenceIndexRuntimeCache.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\ReferenceIndex->disableRuntimeCache' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-93038-ReferenceIndexRuntimeCache.rst',
+        ],
+    ],
 ];

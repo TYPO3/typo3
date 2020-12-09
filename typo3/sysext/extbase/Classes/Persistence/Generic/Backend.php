@@ -150,7 +150,6 @@ class Backend implements BackendInterface, SingletonInterface
         $this->eventDispatcher = $eventDispatcher;
 
         $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
-        $this->referenceIndex->enableRuntimeCache();
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
         $this->changedEntities = new ObjectStorage();
