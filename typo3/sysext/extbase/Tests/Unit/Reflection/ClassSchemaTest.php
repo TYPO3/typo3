@@ -72,6 +72,8 @@ class ClassSchemaTest extends UnitTestCase
                 'privateStaticProperty',
                 'publicPropertyWithDefaultValue',
                 'publicStaticPropertyWithDefaultValue',
+                'stringTypedProperty',
+                'nullableStringTypedProperty',
                 'propertyWithIgnoredTags',
                 'propertyWithInjectAnnotation',
                 'propertyWithTransientAnnotation',

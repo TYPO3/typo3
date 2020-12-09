@@ -180,4 +180,26 @@ class PropertyTest extends UnitTestCase
             $property->getValidators()
         );
     }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsTypeFromPropertyWithStringTypeHint(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('stringTypedProperty');
+
+        self::assertSame('string', $property->getType());
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsTypeFromPropertyWithNullableStringTypeHint(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('nullableStringTypedProperty');
+
+        self::assertSame('string', $property->getType());
+    }
 }
