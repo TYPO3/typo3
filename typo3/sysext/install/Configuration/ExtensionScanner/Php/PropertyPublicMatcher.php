@@ -795,4 +795,9 @@ return [
             'Breaking-93062-VariousGroup-relatedPublicPropertiesInBE_USERRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->forceSetCookie' => [
+        'restFiles' => [
+            'Breaking-93073-AbstractUserAuthentication-forceSetCookieRemoved.rst',
+        ],
+    ],
 ];

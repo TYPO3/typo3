@@ -152,6 +152,12 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     protected $loginHidden = false;
 
     /**
+     * Will force the session cookie to be set every time (lifetime must be 0).
+     * @var bool
+     */
+    protected $forceSetCookie = false;
+
+    /**
      * Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
      * Disable cookie by default, will be activated if saveSessionData() is called,
      * a user is logging-in or an existing session is found

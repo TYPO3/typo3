@@ -181,13 +181,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $user;
 
     /**
-     * Will force the session cookie to be set every time (lifetime must be 0)
-     * @var bool
-     */
-    public $forceSetCookie = false;
-
-    /**
-     * Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
+     * Will prevent the setting of the session cookie
      * @var bool
      */
     public $dontSetCookie = false;
@@ -379,7 +373,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function isSetSessionCookie()
     {
-        return ($this->userSession->isNew() || $this->forceSetCookie) && $this->lifetime === 0;
+        return $this->userSession->isNew() && $this->lifetime === 0;
     }
 
     /**
