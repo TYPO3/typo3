@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Service\SessionService;
 
@@ -201,7 +202,7 @@ class BackendModuleController
     protected function setAuthorizedAndRedirect(string $controller): ResponseInterface
     {
         $this->getSessionService()->setAuthorizedBackendSession();
-        $redirectLocation = 'install.php?install[controller]=' . $controller . '&install[context]=backend';
+        $redirectLocation = PathUtility::getAbsoluteWebPath('install.php?install[controller]=' . $controller . '&install[context]=backend');
         return new RedirectResponse($redirectLocation, 303);
     }
 

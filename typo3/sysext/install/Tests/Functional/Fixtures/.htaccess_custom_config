@@ -1,0 +1,7 @@
+# Stop rewrite processing, if we are in the custom_typo3_directory/ directory or any other known directory
+RewriteRule ^(?:custom_typo3_directory/|fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^root/.*$ %{ENV:CWD}index.php [QSA,L]

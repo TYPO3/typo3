@@ -1,0 +1,21 @@
+<rule name="TYPO3 - Static File Directories" stopProcessing="true">
+    <match url="^/(typo3temp|typo3conf|t3lib|tslib|fileadmin|uploads|showpic\.php|favicon\.ico)$" />
+    <action type="None" />
+</rule>
+<rule name="TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point." stopProcessing="true">
+    <match url="^typo3/(.*)$" ignoreCase="false" />
+    <conditions logicalGrouping="MatchAll">
+        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+        <add input="{REQUEST_URI}" matchType="Pattern" pattern="^/typo3/.*$" />
+    </conditions>
+    <action type="Rewrite" url="typo3/index.php" appendQueryString="true" />
+</rule>
+<rule name="TYPO3 - If the file/directory does not exist => Redirect to index.php." stopProcessing="true">
+    <match url="^.*$" ignoreCase="false" />
+    <conditions logicalGrouping="MatchAll">
+        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+    </conditions>
+    <action type="Rewrite" url="index.php" appendQueryString="true" />
+</rule>

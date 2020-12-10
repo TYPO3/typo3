@@ -108,20 +108,28 @@ class Router implements SingletonInterface
      */
     public function matchRequest(ServerRequestInterface $request)
     {
-        // Allow the login page to be displayed if routing is not used and on index.php
-        // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
-        $path = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
-
+        $path = $request->getUri()->getPath();
+        if (($normalizedParams = $request->getAttribute('normalizedParams')) !== null) {
+            // Remove the directory name of the script from the path. This will usually be `/typo3` in this context.
+            $path = substr($path, strlen(dirname($normalizedParams->getScriptName())));
+        }
+        if ($path === '' || $path === '/' || $path === '/index.php') {
+            // Allow the login page to be displayed if routing is not used and on index.php
+            // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
+            $path = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
+        }
         $context = new RequestContext(
-            '',
+            $path,
             $request->getMethod(),
             (string)HttpUtility::idn_to_ascii($request->getUri()->getHost()),
             $request->getUri()->getScheme()
         );
         $result = (new UrlMatcher($this->routeCollection, $context))->match($path);
         $matchedSymfonyRoute = $this->routeCollection->get($result['_route']);
-        $route = new Route($matchedSymfonyRoute->getPath(), $matchedSymfonyRoute->getOptions());
-        $route->setOption('_identifier', $result['_route']);
-        return $route;
+        if ($matchedSymfonyRoute === null) {
+            throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1607596900);
+        }
+        return (new Route($matchedSymfonyRoute->getPath(), $matchedSymfonyRoute->getOptions()))
+            ->setOption('_identifier', $result['_route']);
     }
 }

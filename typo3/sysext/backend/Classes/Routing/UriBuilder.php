@@ -119,36 +119,30 @@ class UriBuilder implements SingletonInterface
             ] + $parameters;
         }
 
-        // Add the Route path as &route=XYZ
-        $parameters = [
-            'route' => $route->getPath()
-        ] + $parameters;
-
-        $this->generated[$cacheIdentifier] = $this->buildUri($parameters, $referenceType);
+        $this->generated[$cacheIdentifier] = $this->buildUri($route->getPath(), $parameters, (string)$referenceType);
         return $this->generated[$cacheIdentifier];
     }
 
     /**
      * Internal method building a Uri object, merging the GET parameters array into a flat queryString
      *
+     * @param string $route The route path to prepend
      * @param array $parameters An array of GET parameters
      * @param string $referenceType The type of reference to be generated (one of the constants)
      *
      * @return Uri
      */
-    protected function buildUri($parameters, $referenceType)
+    protected function buildUri(string $route, array $parameters, string $referenceType): Uri
     {
-        $uri = 'index.php' . HttpUtility::buildQueryString($parameters, '?');
+        $path = ltrim($route . HttpUtility::buildQueryString($parameters, '?'), '/');
         if ($referenceType === self::ABSOLUTE_PATH) {
-            $uri = PathUtility::getAbsoluteWebPath(Environment::getBackendPath() . '/' . $uri);
+            $uri = PathUtility::getAbsoluteWebPath(Environment::getBackendPath() . '/' . $path);
+        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams') instanceof NormalizedParams
+        ) {
+            $uri = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestDir() . $path;
         } else {
-            if (isset($GLOBALS['TYPO3_REQUEST'])
-                && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
-                && $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams') instanceof NormalizedParams) {
-                $uri = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestDir() . $uri;
-            } else {
-                $uri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $uri;
-            }
+            $uri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
         }
         return GeneralUtility::makeInstance(Uri::class, $uri);
     }

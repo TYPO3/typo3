@@ -210,7 +210,7 @@ class UriBuilderTest extends UnitTestCase
         $_GET['foo'] = 'bar';
         $_POST = [];
         $this->uriBuilder->setAddQueryString(true);
-        $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&id=pageId&foo=bar';
+        $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId&foo=bar';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -232,7 +232,7 @@ class UriBuilderTest extends UnitTestCase
                     'myparam',
                     'id'
                 ],
-                '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&foo=bar'
+                '/typo3/test/Path?token=dummyToken&foo=bar'
             ],
             'Arguments to be excluded in the end' => [
                 [
@@ -245,7 +245,7 @@ class UriBuilderTest extends UnitTestCase
                     'id',
                     'myparam'
                 ],
-                '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&foo=bar'
+                '/typo3/test/Path?token=dummyToken&foo=bar'
             ],
             'Arguments in nested array to be excluded' => [
                 [
@@ -259,7 +259,7 @@ class UriBuilderTest extends UnitTestCase
                     'id',
                     'tx_foo[bar]'
                 ],
-                '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken'
+                '/typo3/test/Path?token=dummyToken'
             ],
             'Arguments in multidimensional array to be excluded' => [
                 [
@@ -275,7 +275,7 @@ class UriBuilderTest extends UnitTestCase
                     'id',
                     'tx_foo[bar][baz]'
                 ],
-                '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken'
+                '/typo3/test/Path?token=dummyToken'
             ],
         ];
     }
@@ -302,7 +302,7 @@ class UriBuilderTest extends UnitTestCase
     public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet()
     {
         $_GET = (['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar']);
-        $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&id=pageId';
+        $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -314,7 +314,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $_GET = ['route' => '/test/Path', 'id' => 'pageId', 'foo' => 'bar'];
         $this->uriBuilder->setArguments(['route' => '/test/Path2', 'somePrefix' => ['bar' => 'baz']]);
-        $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath2&token=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
+        $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -328,7 +328,7 @@ class UriBuilderTest extends UnitTestCase
         $mockDomainObject = $this->getAccessibleMock(AbstractEntity::class, ['dummy']);
         $mockDomainObject->_set('uid', '123');
         $this->uriBuilder->setArguments(['somePrefix' => ['someDomainObject' => $mockDomainObject]]);
-        $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
+        $expectedResult = '/typo3/test/Path?token=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -340,7 +340,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $_GET['route'] = '/test/Path';
         $this->uriBuilder->setSection('someSection');
-        $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken#someSection';
+        $expectedResult = '/typo3/test/Path?token=dummyToken#someSection';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -357,7 +357,7 @@ class UriBuilderTest extends UnitTestCase
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $this->mockRequest->expects(self::any())->method('getBaseUri')->willReturn('http://baseuri');
         $this->uriBuilder->setCreateAbsoluteUri(true);
-        $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'index.php?route=%2Ftest%2FPath&token=dummyToken';
+        $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'test/Path?token=dummyToken';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertSame($expectedResult, $actualResult);
     }

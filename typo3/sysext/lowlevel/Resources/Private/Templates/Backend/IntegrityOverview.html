@@ -3,8 +3,9 @@
     <f:for each="{availableFunctions}" as="url" key="name">
         <dt>
             <a href="{url}">
-                <img src="sysext/lowlevel/Resources/Public/Icons/module-dbint.svg" width="16" height="16" title="{f:translate(key: name)}" alt="{f:translate(key: name)}" /> {f:translate(key: name)}
-            </a></dt>
+                <core:icon identifier="module-dbint" size="small" /> {f:translate(key: name)}
+            </a>
+        </dt>
         <dd>{f:translate(key:'{name}_description')}</dd>
     </f:for>
 </dl>

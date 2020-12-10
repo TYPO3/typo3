@@ -37,37 +37,37 @@ class UriBuilderTest extends UnitTestCase
                 [ 'route' => new Route('/test/route', []) ],
                 'route',
                 [],
-                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken',
+                '/typo3/test/route?token=dummyToken',
             ],
             'AJAX route' => [
                 [ 'route' => new Route('/test/route', [ 'ajax' => true ]) ],
                 'route',
                 [],
-                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken',
+                '/typo3/test/route?token=dummyToken',
             ],
             'plain route with default parameters' => [
                 [ 'route' => new Route('/test/route', [ 'parameters' => [ 'key' => 'value' ] ]) ],
                 'route',
                 [],
-                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken&key=value',
+                '/typo3/test/route?token=dummyToken&key=value',
             ],
             'AJAX route with default parameters' => [
                 [ 'route' => new Route('/test/route', [ 'ajax' => true, 'parameters' => [ 'key' => 'value' ] ]) ],
                 'route',
                 [],
-                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken&key=value',
+                '/typo3/test/route?token=dummyToken&key=value',
             ],
             'plain route with overridden parameters' => [
                 [ 'route' => new Route('/test/route', [ 'parameters' => [ 'key' => 'value' ] ]) ],
                 'route',
                 ['key' => 'overridden'],
-                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken&key=overridden',
+                '/typo3/test/route?token=dummyToken&key=overridden',
             ],
             'AJAX route with overridden parameters' => [
                 [ 'route' => new Route('/test/route', [ 'ajax' => true, 'parameters' => [ 'key' => 'value' ] ]) ],
                 'route',
                 ['key' => 'overridden'],
-                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken&key=overridden',
+                '/typo3/test/route?token=dummyToken&key=overridden',
             ],
         ];
     }

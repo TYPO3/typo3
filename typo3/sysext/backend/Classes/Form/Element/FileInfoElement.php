@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This renderType is used with type=user in FAL for table sys_file and
@@ -76,9 +77,9 @@ class FileInfoElement extends AbstractFormElement
             }
             if ($file->isImage()) {
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
-                $previewImage = $processedFile->getPublicUrl(true);
+                $previewImage = $processedFile->getPublicUrl();
                 if ($previewImage) {
-                    $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
+                    $content .= '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($previewImage)) . '" ' .
                         'width="' . $processedFile->getProperty('width') . '" ' .
                         'height="' . $processedFile->getProperty('height') . '" ' .
                         'alt="" class="t3-tceforms-sysfile-imagepreview" />';

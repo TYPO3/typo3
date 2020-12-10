@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
+use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
 
 /**
  * @internal
@@ -64,6 +65,8 @@ class ServiceProvider extends AbstractServiceProvider
             Service\LateBootService::class => [ static::class, 'getLateBootService' ],
             Service\LoadTcaService::class => [ static::class, 'getLoadTcaService' ],
             Service\SilentConfigurationUpgradeService::class => [ static::class, 'getSilentConfigurationUpgradeService' ],
+            Service\SilentTemplateFileUpgradeService::class => [ static::class, 'getSilentTemplateFileUpgradeService' ],
+            Service\WebServerConfigurationFileService::class => [ static::class, 'getWebServerConfigurationFileService' ],
             Service\Typo3tempFileService::class => [ static::class, 'getTypo3tempFileService' ],
             Service\UpgradeWizardsService::class => [ static::class, 'getUpgradeWizardsService' ],
             Middleware\Installer::class => [ static::class, 'getInstallerMiddleware' ],
@@ -166,6 +169,19 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class)
         );
     }
+
+    public static function getSilentTemplateFileUpgradeService(ContainerInterface $container): Service\SilentTemplateFileUpgradeService
+    {
+        return new Service\SilentTemplateFileUpgradeService(
+            $container->get(WebServerConfigurationFileService::class)
+        );
+    }
+
+    public static function getWebServerConfigurationFileService(ContainerInterface $container): Service\WebServerConfigurationFileService
+    {
+        return self::new($container, Service\WebServerConfigurationFileService::class);
+    }
+
     public static function getTypo3tempFileService(ContainerInterface $container): Service\Typo3tempFileService
     {
         return new Service\Typo3tempFileService(
@@ -214,6 +230,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\InstallerController(
             $container->get(Service\LateBootService::class),
             $container->get(Service\SilentConfigurationUpgradeService::class),
+            $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(ConfigurationManager::class),
             $container->get(SiteConfiguration::class),
             $container->get(Registry::class),
@@ -225,7 +242,8 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getLayoutController(ContainerInterface $container): Controller\LayoutController
     {
         return new Controller\LayoutController(
-            $container->get(Service\SilentConfigurationUpgradeService::class)
+            $container->get(Service\SilentConfigurationUpgradeService::class),
+            $container->get(Service\SilentTemplateFileUpgradeService::class)
         );
     }
 

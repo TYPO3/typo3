@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -310,7 +311,7 @@ class ElementInformationController
         } else {
             $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
-            $preview['url'] = $this->fileObject->getPublicUrl(true);
+            $preview['url'] = PathUtility::getAbsoluteWebPath($this->fileObject->getPublicUrl());
 
             $width = '590m';
             $height = '400m';

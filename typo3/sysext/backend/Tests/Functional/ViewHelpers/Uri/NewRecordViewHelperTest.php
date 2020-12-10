@@ -35,7 +35,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidAndTable.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][17]=new', $result);
     }
 
@@ -48,7 +48,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithTable.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][0]=new', $result);
     }
 
@@ -61,7 +61,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/InlineWithPidAndTable.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[b_table][17]=new', $result);
     }
 
@@ -74,7 +74,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndReturnUrl.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
         self::assertStringContainsString('returnUrl=foo/bar', $result);
     }
@@ -88,7 +88,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithNegativeUid.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][-11]=new', $result);
     }
 
@@ -101,7 +101,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValue.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
         self::assertStringContainsString('defVals[c_table][c_field]=c_value', $result);
     }
@@ -115,7 +115,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValues.html');
         $result = urldecode($view->render());
 
-        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
         self::assertStringContainsString('defVals[c_table][c_field]=c_value&defVals[c_table][c_field2]=c_value2', $result);
     }

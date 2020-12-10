@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
@@ -271,13 +272,13 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
                     $this->thumbnailConfiguration
                 );
-                $imageUrl = $processedFile->getPublicUrl(true);
+                $imageUrl = $processedFile->getPublicUrl();
                 $imgInfo = [
                     $fileObject->getProperty('width'),
                     $fileObject->getProperty('height')
                 ];
                 $pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
-                $clickIcon = '<img src="' . $imageUrl . '"'
+                $clickIcon = '<img src="' . PathUtility::getAbsoluteWebPath($imageUrl) . '"'
                     . ' width="' . $processedFile->getProperty('width') . '"'
                     . ' height="' . $processedFile->getProperty('height') . '"'
                     . ' hspace="5" vspace="5" border="1" />';

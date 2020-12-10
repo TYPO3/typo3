@@ -84,6 +84,7 @@ class NormalizedParams
      *
      * [path_script]
      *
+     * - /index.php
      * - /typo3/index.php
      *
      * @var string
@@ -95,8 +96,8 @@ class NormalizedParams
      *
      * [path][?[query]]
      *
-     * - /index.php
-     * - /typo3/index.php/arg1/arg2/?arg1,arg2&p1=parameter1&p2[key]=value
+     * - /some/path?p1=parameter1&p2[key]=value
+     * - /typo3/some/path?p1=parameter1&p2[key]=value
      *
      * @var string
      */
@@ -107,7 +108,8 @@ class NormalizedParams
      *
      * scheme://host[:[port]][path][?[query]]
      *
-     * - http://www.domain.com/typo3/index.php?route=foo/bar&id=42
+     * - http://www.domain.com/some/path?p1=parameter1&p2[key]=value
+     * - http://www.domain.com/typo3/some/path?id=42
      *
      * @var string
      */
@@ -118,6 +120,7 @@ class NormalizedParams
      *
      * scheme://host[:[port]][path_script]
      *
+     * - http://www.domain.com/index.php
      * - http://www.domain.com/typo3/index.php
      *
      * @var string
@@ -129,6 +132,7 @@ class NormalizedParams
      *
      * scheme://host[:[port]][path_dir]
      *
+     * - http://www.domain.com/
      * - http://www.domain.com/typo3/
      *
      * @var string
@@ -152,6 +156,7 @@ class NormalizedParams
     /**
      * Absolute server path to entry script on server filesystem
      *
+     * - /var/www/index.php
      * - /var/www/typo3/index.php
      *
      * @var string
@@ -161,7 +166,7 @@ class NormalizedParams
     /**
      * Absolute server path to web document root without trailing slash
      *
-     * - /var/www/typo3
+     * - /var/www
      *
      * @var string
      */
@@ -194,8 +199,9 @@ class NormalizedParams
     /**
      * Path to script, without sub path if TYPO3 is running in sub directory, without trailing slash
      *
-     * - typo/index.php?id=42
      * - index.php?id=42
+     * - /some/path?id=42
+     * - typo3/some/path?id=411
      *
      * @var string
      */
@@ -208,8 +214,6 @@ class NormalizedParams
      *
      * [path_script]
      *
-     * - /typo3/index.php
-     *
      * @var string
      */
     protected $pathInfo = '';
@@ -220,7 +224,7 @@ class NormalizedParams
      *
      * scheme://host[:[port]][path]
      *
-     * - https://www.domain.com/typo3/index.php?id=42
+     * - https://www.domain.com/typo3/module/web/layout?id=42
      *
      * @var string
      */
@@ -378,7 +382,7 @@ class NormalizedParams
     }
 
     /**
-     * @return string Script path part of URI, eg. 'typo3/index.php'
+     * @return string Script path part of URI, eg. '/typo3/index.php'
      */
     public function getScriptName(): string
     {
@@ -394,7 +398,7 @@ class NormalizedParams
     }
 
     /**
-     * @return string Full REQUEST_URI, eg. http://www.domain.com/typo3/index.php?route=foo/bar&id=42
+     * @return string Full REQUEST_URI, eg. http://www.domain.com/typo3/foo/bar?id=42
      */
     public function getRequestUrl(): string
     {

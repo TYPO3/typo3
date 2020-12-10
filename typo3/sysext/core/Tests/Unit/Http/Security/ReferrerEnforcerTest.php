@@ -32,41 +32,76 @@ class ReferrerEnforcerTest extends UnitTestCase
     {
         return sprintf(
             '#.+href="%s\d+" id="referrer-refresh".+#',
-            preg_quote(htmlspecialchars($uri . '&referrer-refresh='), '#')
+            preg_quote(
+                htmlspecialchars($uri . (strpos($uri, '?') !== false ? '&' : '?') . 'referrer-refresh='),
+                '#'
+            )
         );
     }
 
     public function validReferrerIsHandledDataProvider(): array
     {
         return [
+            // Without query parameters
             [
-                'https://example.org/typo3/index.php?route=%2Flogin', // requestUri
+                'https://example.org/typo3/login', // requestUri
                 'https://example.org/typo3/index.php', // referrer
                 null, // options
                 null, // response
             ],
             [
-                'https://example.org/typo3/index.php?route=%2Flogin',
+                'https://example.org/typo3/login',
                 '',
                 ['flags' => ['refresh-empty']],
                 self::buildRefreshContentPattern(
-                    'https://example.org/typo3/index.php?route=%2Flogin'
+                    'https://example.org/typo3/login'
                 ),
             ],
             [
-                'https://example.org/typo3/index.php?route=%2Flogin',
+                'https://example.org/typo3/login',
                 'https://example.org/?eID=handler',
                 ['flags' => ['refresh-same-site']],
                 self::buildRefreshContentPattern(
-                    'https://example.org/typo3/index.php?route=%2Flogin'
+                    'https://example.org/typo3/login'
                 ),
             ],
             [
-                'https://example.org/typo3/index.php?route=%2Flogin',
+                'https://example.org/typo3/login',
                 'https://other-example.site/security/',
                 ['flags' => ['refresh-always']],
                 self::buildRefreshContentPattern(
-                    'https://example.org/typo3/index.php?route=%2Flogin'
+                    'https://example.org/typo3/login'
+                ),
+            ],
+            // With query parameters
+            [
+                'https://example.org/typo3/login?query=parameter',
+                'https://example.org/typo3/index.php',
+                null,
+                null,
+            ],
+            [
+                'https://example.org/typo3/login?query=parameter',
+                '',
+                ['flags' => ['refresh-empty']],
+                self::buildRefreshContentPattern(
+                    'https://example.org/typo3/login?query=parameter'
+                ),
+            ],
+            [
+                'https://example.org/typo3/login?query=parameter',
+                'https://example.org/?eID=handler',
+                ['flags' => ['refresh-same-site']],
+                self::buildRefreshContentPattern(
+                    'https://example.org/typo3/login?query=parameter'
+                ),
+            ],
+            [
+                'https://example.org/typo3/login?query=parameter',
+                'https://other-example.site/security/',
+                ['flags' => ['refresh-always']],
+                self::buildRefreshContentPattern(
+                    'https://example.org/typo3/login?query=parameter'
                 ),
             ],
         ];
@@ -103,22 +138,22 @@ class ReferrerEnforcerTest extends UnitTestCase
     {
         return [
             [
-                'https://example.org/typo3/index.php?route=%2Flogin', // requestUri
+                'https://example.org/typo3/login', // requestUri
                 'https://example.org/?eID=handler', // referrer
                 null, // options
             ],
             [
-                'https://example.org/typo3/index.php?route=%2Flogin',
+                'https://example.org/typo3/login',
                 'https://example.org/?eID=handler',
                 ['flags' => ['refresh-empty']],
             ],
             [
-                'https://example.org/typo3/index.php?route=%2Flogin',
+                'https://example.org/typo3/login',
                 'https://example.org.security/?eID=handler',
                 ['flags' => ['refresh-same-site']],
             ],
             [
-                'https://example.org/typo3/index.php?route=%2Flogin',
+                'https://example.org/typo3/login',
                 'https://other-example.site/security/',
                 null,
             ],
@@ -149,7 +184,7 @@ class ReferrerEnforcerTest extends UnitTestCase
         $this->expectException(MissingReferrerException::class);
         $this->expectExceptionCode(1588095935);
         $subject = $this->buildSubject(
-            'https://example.org/typo3/index.php?route=%2Flogin',
+            'https://example.org/typo3/login',
             ''
         );
         $subject->handle();

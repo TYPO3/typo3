@@ -37,14 +37,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <be:uri.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
  *
- * ``/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar``
+ * ``/typo3/record/edit?edit[a_table][42]=edit&returnUrl=foo/bar``
  *
  * URI to the edit record action: edit only the fields title and subtitle of
  * page uid=42 and return to foo/bar::
  *
  *    <be:uri.editRecord uid="42" table="pages" fields="title,subtitle" returnUrl="foo/bar" />
  *
- * ``<a href="/typo3/index.php?route=/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">``
+ * ``<a href="/typo3/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">``
  */
 class EditRecordViewHelper extends AbstractViewHelper
 {

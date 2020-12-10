@@ -51,6 +51,10 @@ class PathUtility
             }
         } elseif (strpos($targetPath, '://') !== false) {
             return $targetPath;
+        } elseif (file_exists(Environment::getPublicPath() . '/' . $targetPath)) {
+            if (!Environment::isCli()) {
+                $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+            }
         } else {
             // Make an absolute path out of it
             $targetPath = GeneralUtility::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $targetPath);

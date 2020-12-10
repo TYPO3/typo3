@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  *    <f:be.link route="web_ts" parameters="{id: 92}">Go to web_ts</f:be.link>
  *
- * ``<a href="/typo3/index.php?route=%2module%2web_ts%2&moduleToken=b6e9c9f?id=92">Go to web_ts</a>``
+ * ``<a href="/typo3/module/web/ts?token=b6e9c9f&id=92">Go to web_ts</a>``
  */
 class LinkViewHelper extends AbstractTagBasedViewHelper
 {

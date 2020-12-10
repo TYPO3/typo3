@@ -126,9 +126,28 @@ class Router {
         async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true) {
-            this.executeSilentExtensionConfigurationSynchronization();
+            this.executeSilentTemplateFileUpdate();
           } else {
             this.executeSilentConfigurationUpdate();
+          }
+        },
+        (error: AjaxResponse): void => {
+          this.handleAjaxError(error)
+        }
+      );
+  }
+
+  public executeSilentTemplateFileUpdate(): void {
+    this.updateLoadingInfo('Checking session and executing silent template file update');
+    (new AjaxRequest(this.getUrl('executeSilentTemplateFileUpdate', 'layout')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.executeSilentExtensionConfigurationSynchronization();
+          } else {
+            this.executeSilentTemplateFileUpdate();
           }
         },
         (error: AjaxResponse): void => {

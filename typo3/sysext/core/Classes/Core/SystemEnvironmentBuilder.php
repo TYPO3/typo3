@@ -62,7 +62,7 @@ class SystemEnvironmentBuilder
     {
         self::defineBaseConstants();
         self::defineTypo3RequestTypes();
-        self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && strpos($_REQUEST['route'] ?? '', '/ajax/') === 0 ? TYPO3_REQUESTTYPE_AJAX : 0));
+        self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && (strpos($_SERVER['REQUEST_URI'] ?? '', '/typo3/ajax/') !== false || strpos($_REQUEST['route'] ?? '', '/ajax/') === 0) ? TYPO3_REQUESTTYPE_AJAX : 0));
         self::defineLegacyConstants($requestType === self::REQUESTTYPE_FE ? 'FE' : 'BE');
         $scriptPath = self::calculateScriptPath($entryPointLevel, $requestType);
         $rootPath = self::calculateRootPath($entryPointLevel, $requestType);

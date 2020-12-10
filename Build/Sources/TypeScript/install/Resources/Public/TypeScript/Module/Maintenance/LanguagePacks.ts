@@ -445,7 +445,7 @@ class LanguagePacks extends AbstractInteractableModule {
         extensionTitle = $('<span>').append(
           $('<img>', {
             'style': 'max-height: 16px; max-width: 16px;',
-            'src': '../' + extension.icon,
+            'src': extension.icon,
             'alt': extension.title,
           }),
           $('<span>').text(' ' + extension.title),

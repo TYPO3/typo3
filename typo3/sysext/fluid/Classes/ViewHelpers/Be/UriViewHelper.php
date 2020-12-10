@@ -28,13 +28,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *    <f:be.uri route="web_ts" parameters="{id: 92}"/>
  *
- * ``/typo3/index.php?M=web_ts&moduleToken=b6e9c9f?id=92``
+ * ``/typo3/module/web/ts?token=b6e9c9f&id=92``
  *
  * Inline notation::
  *
  *    {f:be.uri(route: 'web_ts', parameters: '{id: 92}')}
  *
- * ``/typo3/index.php?route=%2module%2web_ts%2&moduleToken=b6e9c9f?id=92``
+ * ``/typo3/module/web/ts?token=b6e9c9f&id=92``
  */
 class UriViewHelper extends AbstractBackendViewHelper
 {

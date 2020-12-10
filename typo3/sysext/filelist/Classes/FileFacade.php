@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class FileFacade
@@ -133,7 +134,7 @@ class FileFacade
      */
     public function getPublicUrl()
     {
-        return $this->resource->getPublicUrl(true);
+        return PathUtility::getAbsoluteWebPath($this->resource->getPublicUrl());
     }
 
     /**

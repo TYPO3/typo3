@@ -37,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar">
+ *    <a href="/typo3/record/edit?edit[a_table][42]=edit&returnUrl=foo/bar">
  *        Edit record
  *    </a>
  *
@@ -53,7 +53,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">
+ *    <a href="/typo3/record/edit?edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">
  *        Edit record
  *    </a>
  */

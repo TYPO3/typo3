@@ -58,8 +58,10 @@ use TYPO3\CMS\Install\Exception;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
+use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
@@ -81,6 +83,11 @@ class InstallerController
      * @var SilentConfigurationUpgradeService
      */
     private $silentConfigurationUpgradeService;
+
+    /**
+     * @var SilentTemplateFileUpgradeService
+     */
+    private $silentTemplateFileUpgradeService;
 
     /**
      * @var ConfigurationManager
@@ -110,6 +117,7 @@ class InstallerController
     public function __construct(
         LateBootService $lateBootService,
         SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
+        SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService,
         ConfigurationManager $configurationManager,
         SiteConfiguration $siteConfiguration,
         Registry $registry,
@@ -118,6 +126,7 @@ class InstallerController
     ) {
         $this->lateBootService = $lateBootService;
         $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
+        $this->silentTemplateFileUpgradeService = $silentTemplateFileUpgradeService;
         $this->configurationManager = $configurationManager;
         $this->siteConfiguration = $siteConfiguration;
         $this->registry = $registry;
@@ -295,6 +304,24 @@ class InstallerController
         try {
             $this->silentConfigurationUpgradeService->execute();
         } catch (ConfigurationChangedException $e) {
+            $success = false;
+        }
+        return new JsonResponse([
+            'success' => $success,
+        ]);
+    }
+
+    /**
+     * Execute silent template files update. May be called multiple times until success = true is returned.
+     *
+     * @return ResponseInterface success = true if no change has been done
+     */
+    public function executeSilentTemplateFileUpdateAction(): ResponseInterface
+    {
+        $success = true;
+        try {
+            $this->silentTemplateFileUpgradeService->execute();
+        } catch (TemplateFileChangedException $e) {
             $success = false;
         }
         return new JsonResponse([

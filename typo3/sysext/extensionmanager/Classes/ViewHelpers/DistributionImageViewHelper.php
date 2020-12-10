@@ -109,7 +109,7 @@ class DistributionImageViewHelper extends AbstractTagBasedViewHelper
             $uri = '';
         }
         if ($uri !== '') {
-            $uri = '../' . PathUtility::stripPathSitePrefix($uri);
+            $uri = PathUtility::getAbsoluteWebPath($uri);
         }
         return $uri;
     }

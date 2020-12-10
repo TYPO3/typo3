@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
@@ -283,7 +284,7 @@ class FileController
             if ($result->isImage()) {
                 $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
                 if ($processedFile) {
-                    $thumbUrl = $processedFile->getPublicUrl(true);
+                    $thumbUrl = PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl());
                 }
             }
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

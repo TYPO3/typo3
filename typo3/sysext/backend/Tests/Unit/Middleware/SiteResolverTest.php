@@ -34,7 +34,7 @@ class SiteResolverTest extends UnitTestCase
      */
     public function RequestIsNotModifiedIfPageIdParameterIsNoInteger()
     {
-        $incomingUrl = 'http://localhost:8080/typo3/index.php?route=/file/FilelistList/&token=d7d864db2b26c1d0f0537718b16890f336f4af2b&id=9831:/styleguide/';
+        $incomingUrl = 'http://localhost:8080/typo3/module/file/FilelistList?token=d7d864db2b26c1d0f0537718b16890f336f4af2b&id=9831:/styleguide/';
 
         $siteMatcherProphecy = $this->prophesize(SiteMatcher::class);
         $subject = new SiteResolver($siteMatcherProphecy->reveal());

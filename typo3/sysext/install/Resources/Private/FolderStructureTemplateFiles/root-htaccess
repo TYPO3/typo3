@@ -305,9 +305,16 @@ AddDefaultCharset utf-8
 	RewriteCond %{SCRIPT_FILENAME} -f
 	RewriteRule (?:^|/)\. - [F]
 
-	# Stop rewrite processing, if we are in the typo3/ directory or any other known directory
+	# Stop rewrite processing, if we are in any other known directory
 	# NOTE: Add your additional local storages here
-	RewriteRule ^(?:typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
+	RewriteRule ^(?:fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
+
+	# If the file/symlink/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point.
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-l
+	RewriteCond %{REQUEST_URI} ^/typo3/.*$
+	RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]
 
 	# If the file/symlink/directory does not exist => Redirect to index.php.
 	# For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.

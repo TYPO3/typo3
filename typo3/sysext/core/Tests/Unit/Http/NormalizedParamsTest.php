@@ -496,69 +496,69 @@ class NormalizedParamsTest extends UnitTestCase
             'use REQUEST_URI' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
-                    'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
+                    'REQUEST_URI' => 'typo3/bar?id=42',
                 ],
                 [],
-                '/typo3/index.php?route=foo/bar&id=42',
+                '/typo3/bar?id=42',
             ],
             'use query string and script name if REQUEST_URI is not set' => [
                 [
-                    'QUERY_STRING' => 'route=foo/bar&id=42',
+                    'QUERY_STRING' => 'parameter=foo/bar&id=42',
                     'SCRIPT_NAME' => '/typo3/index.php',
                 ],
                 [],
-                '/typo3/index.php?route=foo/bar&id=42',
+                '/typo3/index.php?parameter=foo/bar&id=42',
             ],
             'prefix with proxy prefix with ssl if using REQUEST_URI' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
                     'HTTPS' => 'on',
-                    'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
+                    'REQUEST_URI' => 'typo3/foo/bar?id=42',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
                     'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
                 ],
-                '/proxyPrefixSSL/typo3/index.php?route=foo/bar&id=42',
+                '/proxyPrefixSSL/typo3/foo/bar?id=42',
             ],
             'prefix with proxy prefix if using REQUEST_URI' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
+                    'REQUEST_URI' => 'typo3/foo/bar?id=42',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
                     'reverseProxyPrefix' => '/proxyPrefix',
                 ],
-                '/proxyPrefix/typo3/index.php?route=foo/bar&id=42',
+                '/proxyPrefix/typo3/foo/bar?id=42',
             ],
             'prefix with proxy prefix with ssl if using query string and script name' => [
                 [
                     'REMOTE_ADDR' => '123.123.123.123',
                     'HTTPS' => 'on',
-                    'QUERY_STRING' => 'route=foo/bar&id=42',
+                    'QUERY_STRING' => 'parameter=foo/bar&id=42',
                     'SCRIPT_NAME' => '/typo3/index.php',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
                     'reverseProxyPrefixSSL' => '/proxyPrefixSSL',
                 ],
-                '/proxyPrefixSSL/typo3/index.php?route=foo/bar&id=42',
+                '/proxyPrefixSSL/typo3/index.php?parameter=foo/bar&id=42',
             ],
             'prefix with proxy prefix if using query string and script name' => [
                 [
                     'REMOTE_ADDR' => '123.123.123.123',
                     'HTTPS' => 'on',
-                    'QUERY_STRING' => 'route=foo/bar&id=42',
+                    'QUERY_STRING' => 'parameter=foo/bar&id=42',
                     'SCRIPT_NAME' => '/typo3/index.php',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
                     'reverseProxyPrefix' => '/proxyPrefix',
                 ],
-                '/proxyPrefix/typo3/index.php?route=foo/bar&id=42',
+                '/proxyPrefix/typo3/index.php?parameter=foo/bar&id=42',
             ],
         ];
     }
@@ -600,9 +600,9 @@ class NormalizedParamsTest extends UnitTestCase
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
-            'REQUEST_URI' => 'typo3/index.php?route=foo/bar&id=42',
+            'REQUEST_URI' => 'typo3/foo/bar?id=42',
         ];
-        $expected = 'http://www.domain.com/typo3/index.php?route=foo/bar&id=42';
+        $expected = 'http://www.domain.com/typo3/foo/bar?id=42';
         $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         self::assertSame($expected, $serverRequestParameters->getRequestUrl());
     }

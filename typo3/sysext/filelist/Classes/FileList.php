@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
 
 /**
@@ -805,7 +806,7 @@ class FileList
                                     'height' => $this->thumbnailConfiguration->getHeight(),
                                 ]
                             );
-                            $theData[$field] .= '<br /><img src="' . htmlspecialchars($processedFile->getPublicUrl(true)) . '" ' .
+                            $theData[$field] .= '<br /><img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl())) . '" ' .
                                 'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
                                 'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
                                 'title="' . htmlspecialchars($fileName) . '" alt="" />';
@@ -1032,9 +1033,9 @@ class FileList
 
         // document view
         if ($fileOrFolderObject instanceof File) {
-            $fileUrl = $fileOrFolderObject->getPublicUrl(true);
+            $fileUrl = $fileOrFolderObject->getPublicUrl();
             if ($fileUrl) {
-                $cells['view'] = '<a href="' . htmlspecialchars($fileUrl) . '" target="_blank" class="btn btn-default" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                $cells['view'] = '<a href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($fileUrl)) . '" target="_blank" class="btn btn-default" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
             } else {
                 $cells['view'] = $this->spaceIcon;
             }

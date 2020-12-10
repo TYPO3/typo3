@@ -49,7 +49,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
+ *    <a href="/typo3/record/edit?edit[a_table][-17]=new&returnUrl=foo/bar">
  *        Edit record
  *    </a>
  *
@@ -59,7 +59,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar">
+ *    <a href="/typo3/record/edit?edit[a_table][]=new&returnUrl=foo/bar">
  *        Edit record
  *    </a>
  *
@@ -69,7 +69,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=foo/bar">
+ *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=foo/bar">
  *        Edit record
  *    </a>
  *
@@ -79,7 +79,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=/typo3/index.php?route=/module/web/MyextensionList">
+ *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=/typo3/module/web/MyextensionList">
  *        Edit record
  *    </a>
  *
@@ -89,7 +89,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value">
+ *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value">
  *        Edit record
  *    </a>
  */

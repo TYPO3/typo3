@@ -26,7 +26,9 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
+use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
 
 /**
  * Layout controller
@@ -37,15 +39,15 @@ use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
  */
 class LayoutController extends AbstractController
 {
-    /**
-     * @var SilentConfigurationUpgradeService
-     */
-    private $silentConfigurationUpgradeService;
+    private SilentConfigurationUpgradeService $silentConfigurationUpgradeService;
+    private SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService;
 
     public function __construct(
-        SilentConfigurationUpgradeService $silentConfigurationUpgradeService
+        SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
+        SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService
     ) {
         $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
+        $this->silentTemplateFileUpgradeService = $silentTemplateFileUpgradeService;
     }
 
     /**
@@ -105,6 +107,24 @@ class LayoutController extends AbstractController
         try {
             $this->silentConfigurationUpgradeService->execute();
         } catch (ConfigurationChangedException $e) {
+            $success = false;
+        }
+        return new JsonResponse([
+            'success' => $success,
+        ]);
+    }
+
+    /**
+     * Execute silent template files update. May be called multiple times until success = true is returned.
+     *
+     * @return ResponseInterface success = true if no change has been done
+     */
+    public function executeSilentTemplateFileUpdateAction(): ResponseInterface
+    {
+        $success = true;
+        try {
+            $this->silentTemplateFileUpgradeService->execute();
+        } catch (TemplateFileChangedException $e) {
             $success = false;
         }
         return new JsonResponse([
