@@ -121,7 +121,7 @@ class UserInformationService
         }
 
         // languages
-        $languages = GeneralUtility::trimExplode(',', $user->dataLists['allowed_languages'], true);
+        $languages = GeneralUtility::trimExplode(',', $user->groupData['allowed_languages'], true);
         asort($languages);
         foreach ($languages as $language) {
             $record = BackendUtility::getRecord('sys_language', (int)$language);
@@ -134,7 +134,7 @@ class UserInformationService
         $data['tables']['tables_select'] = [];
         $data['tables']['tables_modify'] = [];
         foreach (['tables_select', 'tables_modify'] as $tableField) {
-            $temp = GeneralUtility::trimExplode(',', $user->dataLists[$tableField], true);
+            $temp = GeneralUtility::trimExplode(',', $user->groupData[$tableField], true);
             foreach ($temp as $tableName) {
                 $data['tables'][$tableField][$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['title'];
             }
@@ -142,7 +142,7 @@ class UserInformationService
         $data['tables']['all'] = array_replace($data['tables']['tables_select'] ?? [], $data['tables']['tables_modify'] ?? []);
 
         // DB mounts
-        $dbMounts = GeneralUtility::trimExplode(',', $user->dataLists['webmount_list'], true);
+        $dbMounts = GeneralUtility::trimExplode(',', $user->groupData['webmounts'], true);
         asort($dbMounts);
         foreach ($dbMounts as $mount) {
             $record = BackendUtility::getRecord('pages', (int)$mount);
@@ -152,7 +152,7 @@ class UserInformationService
         }
 
         // File mounts
-        $fileMounts = GeneralUtility::trimExplode(',', $user->dataLists['filemount_list'], true);
+        $fileMounts = GeneralUtility::trimExplode(',', $user->groupData['filemounts'], true);
         asort($fileMounts);
         foreach ($fileMounts as $mount) {
             $record = BackendUtility::getRecord('sys_filemounts', (int)$mount);
@@ -162,7 +162,7 @@ class UserInformationService
         }
 
         // Modules
-        $modules = GeneralUtility::trimExplode(',', $user->dataLists['modList'], true);
+        $modules = GeneralUtility::trimExplode(',', $user->groupData['modules'], true);
         foreach ($modules as $module) {
             $data['modules'][$module] = $GLOBALS['TBE_MODULES']['_configuration'][$module];
         }
@@ -186,7 +186,7 @@ class UserInformationService
         }
 
         // file & folder permissions
-        if ($filePermissions = $user->dataLists['file_permissions']) {
+        if ($filePermissions = $user->groupData['file_permissions']) {
             $items = GeneralUtility::trimExplode(',', $filePermissions, true);
             foreach ($GLOBALS['TCA']['be_groups']['columns']['file_permissions']['config']['items'] as $availableItem) {
                 if (in_array($availableItem[1], $items, true)) {
@@ -199,7 +199,7 @@ class UserInformationService
         $data['tsconfig'] = $user->getTSConfig();
 
         // non_exclude_fields
-        $fieldListTmp = GeneralUtility::trimExplode(',', $user->dataLists['non_exclude_fields'], true);
+        $fieldListTmp = GeneralUtility::trimExplode(',', $user->groupData['non_exclude_fields'], true);
         $fieldList = [];
         foreach ($fieldListTmp as $item) {
             $split = explode(':', $item);
@@ -216,7 +216,7 @@ class UserInformationService
         $specialItems = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         foreach ($specialItems as $specialItem) {
             $value = $specialItem[1];
-            if (!GeneralUtility::inList($user->dataLists['pagetypes_select'], $value)) {
+            if (!GeneralUtility::inList($user->groupData['pagetypes_select'], $value)) {
                 continue;
             }
             $label = $specialItem[0];

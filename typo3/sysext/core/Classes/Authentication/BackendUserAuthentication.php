@@ -116,29 +116,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $workspaceRec = [];
 
     /**
-     * Used to accumulate data for the user-group.
-     * DON NOT USE THIS EXTERNALLY!
-     * Use $this->groupData instead
-     * @var array
-     * @internal
-     */
-    public $dataLists = [
-        'webmount_list' => '',
-        'filemount_list' => '',
-        'file_permissions' => '',
-        'modList' => '',
-        'tables_select' => '',
-        'tables_modify' => '',
-        'pagetypes_select' => '',
-        'non_exclude_fields' => '',
-        'explicit_allowdeny' => '',
-        'allowed_languages' => '',
-        'workspace_perms' => '',
-        'available_widgets' => '',
-        'custom_options' => ''
-    ];
-
-    /**
      * List of group_id's in the order they are processed.
      * @var array
      * @internal should only be used from within TYPO3 Core
@@ -1261,19 +1238,19 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->user['uid']) {
             // Get lists for the be_user record and set them as default/primary values.
             // Enabled Backend Modules
-            $this->dataLists['modList'] = $this->user['userMods'];
+            $this->groupData['modules'] = $this->user['userMods'];
             // Add available widgets
-            $this->dataLists['available_widgets'] = $this->user['available_widgets'];
+            $this->groupData['available_widgets'] = $this->user['available_widgets'];
             // Add Allowed Languages
-            $this->dataLists['allowed_languages'] = $this->user['allowed_languages'];
+            $this->groupData['allowed_languages'] = $this->user['allowed_languages'];
             // Set user value for workspace permissions.
-            $this->dataLists['workspace_perms'] = $this->user['workspace_perms'];
+            $this->groupData['workspace_perms'] = $this->user['workspace_perms'];
             // Database mountpoints
-            $this->dataLists['webmount_list'] = $this->user['db_mountpoints'];
+            $this->groupData['webmounts'] = $this->user['db_mountpoints'];
             // File mountpoints
-            $this->dataLists['filemount_list'] = $this->user['file_mountpoints'];
+            $this->groupData['filemounts'] = $this->user['file_mountpoints'];
             // Fileoperation permissions
-            $this->dataLists['file_permissions'] = $this->user['file_permissions'];
+            $this->groupData['file_permissions'] = $this->user['file_permissions'];
 
             // BE_GROUPS:
             // Get the groups...
@@ -1295,21 +1272,20 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Processing webmounts
             // Admin's always have the root mounted
             if ($this->isAdmin() && !($this->getTSConfig()['options.']['dontMountAdminMounts'] ?? false)) {
-                $this->dataLists['webmount_list'] = '0,' . $this->dataLists['webmount_list'];
+                $this->groupData['webmounts'] = '0,' . $this->groupData['webmounts'];
             }
             // The lists are cleaned for duplicates
-            $this->groupData['webmounts'] = StringUtility::uniqueList($this->dataLists['webmount_list'] ?? '');
-            $this->groupData['pagetypes_select'] = StringUtility::uniqueList($this->dataLists['pagetypes_select'] ?? '');
-            $this->groupData['tables_select'] = StringUtility::uniqueList(($this->dataLists['tables_modify'] ?? '') . ',' . ($this->dataLists['tables_select'] ?? ''));
-            $this->groupData['tables_modify'] = StringUtility::uniqueList($this->dataLists['tables_modify'] ?? '');
-            $this->groupData['non_exclude_fields'] = StringUtility::uniqueList($this->dataLists['non_exclude_fields'] ?? '');
-            $this->groupData['explicit_allowdeny'] = StringUtility::uniqueList($this->dataLists['explicit_allowdeny'] ?? '');
-            $this->groupData['allowed_languages'] = StringUtility::uniqueList($this->dataLists['allowed_languages'] ?? '');
-            $this->groupData['custom_options'] = StringUtility::uniqueList($this->dataLists['custom_options'] ?? '');
-            $this->groupData['modules'] = StringUtility::uniqueList($this->dataLists['modList'] ?? '');
-            $this->groupData['available_widgets'] = StringUtility::uniqueList($this->dataLists['available_widgets'] ?? '');
-            $this->groupData['file_permissions'] = StringUtility::uniqueList($this->dataLists['file_permissions'] ?? '');
-            $this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
+            $this->groupData['webmounts'] = StringUtility::uniqueList($this->groupData['webmounts'] ?? '');
+            $this->groupData['pagetypes_select'] = StringUtility::uniqueList($this->groupData['pagetypes_select'] ?? '');
+            $this->groupData['tables_select'] = StringUtility::uniqueList(($this->groupData['tables_modify'] ?? '') . ',' . ($this->groupData['tables_select'] ?? ''));
+            $this->groupData['tables_modify'] = StringUtility::uniqueList($this->groupData['tables_modify'] ?? '');
+            $this->groupData['non_exclude_fields'] = StringUtility::uniqueList($this->groupData['non_exclude_fields'] ?? '');
+            $this->groupData['explicit_allowdeny'] = StringUtility::uniqueList($this->groupData['explicit_allowdeny'] ?? '');
+            $this->groupData['allowed_languages'] = StringUtility::uniqueList($this->groupData['allowed_languages'] ?? '');
+            $this->groupData['custom_options'] = StringUtility::uniqueList($this->groupData['custom_options'] ?? '');
+            $this->groupData['modules'] = StringUtility::uniqueList($this->groupData['modules'] ?? '');
+            $this->groupData['available_widgets'] = StringUtility::uniqueList($this->groupData['available_widgets'] ?? '');
+            $this->groupData['file_permissions'] = StringUtility::uniqueList($this->groupData['file_permissions'] ?? '');
 
             // Check if the user access to all web mounts set
             if (!empty(trim($this->groupData['webmounts']))) {
@@ -1466,25 +1442,25 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 $this->includeGroupArray[] = $uid;
                 // Mount group database-mounts
                 if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
-                    $this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
+                    $this->groupData['webmounts'] .= ',' . $row['db_mountpoints'];
                 }
                 // Mount group file-mounts
                 if ($mountOptions->shouldUserIncludeFileMountsFromAssociatedGroups()) {
-                    $this->dataLists['filemount_list'] .= ',' . $row['file_mountpoints'];
+                    $this->groupData['filemounts'] .= ',' . $row['file_mountpoints'];
                 }
                 // The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
-                $this->dataLists['modList'] .= ',' . $row['groupMods'];
-                $this->dataLists['available_widgets'] .= ',' . $row['availableWidgets'];
-                $this->dataLists['tables_select'] .= ',' . $row['tables_select'];
-                $this->dataLists['tables_modify'] .= ',' . $row['tables_modify'];
-                $this->dataLists['pagetypes_select'] .= ',' . $row['pagetypes_select'];
-                $this->dataLists['non_exclude_fields'] .= ',' . $row['non_exclude_fields'];
-                $this->dataLists['explicit_allowdeny'] .= ',' . $row['explicit_allowdeny'];
-                $this->dataLists['allowed_languages'] .= ',' . $row['allowed_languages'];
-                $this->dataLists['custom_options'] .= ',' . $row['custom_options'];
-                $this->dataLists['file_permissions'] .= ',' . $row['file_permissions'];
+                $this->groupData['modules'] .= ',' . $row['groupMods'];
+                $this->groupData['available_widgets'] .= ',' . $row['availableWidgets'];
+                $this->groupData['tables_select'] .= ',' . $row['tables_select'];
+                $this->groupData['tables_modify'] .= ',' . $row['tables_modify'];
+                $this->groupData['pagetypes_select'] .= ',' . $row['pagetypes_select'];
+                $this->groupData['non_exclude_fields'] .= ',' . $row['non_exclude_fields'];
+                $this->groupData['explicit_allowdeny'] .= ',' . $row['explicit_allowdeny'];
+                $this->groupData['allowed_languages'] .= ',' . $row['allowed_languages'];
+                $this->groupData['custom_options'] .= ',' . $row['custom_options'];
+                $this->groupData['file_permissions'] .= ',' . $row['file_permissions'];
                 // Setting workspace permissions:
-                $this->dataLists['workspace_perms'] |= $row['workspace_perms'];
+                $this->groupData['workspace_perms'] |= $row['workspace_perms'];
                 // If this function is processing the users OWN group-list (not subgroups) AND
                 // if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
                 if ($idList === '' && !$this->firstMainGroup) {
@@ -1603,7 +1579,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // Processing file mounts (both from the user and the groups)
-        $fileMounts = array_unique(GeneralUtility::intExplode(',', $this->dataLists['filemount_list'], true));
+        $fileMounts = array_unique(GeneralUtility::intExplode(',', $this->groupData['filemounts'], true));
 
         // Limit file mounts if set in workspace record
         if ($this->workspace > 0 && !empty($this->workspaceRec['file_mountpoints'])) {
@@ -2016,7 +1992,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             // but make sure they match against the users' DB mounts
 
             $workspaceWebMounts = GeneralUtility::intExplode(',', $dbMountpoints);
-            $webMountsOfUser = GeneralUtility::intExplode(',', $this->dataLists['webmount_list']);
+            $webMountsOfUser = GeneralUtility::intExplode(',', $this->groupData['webmounts']);
             $webMountsOfUser = array_combine($webMountsOfUser, $webMountsOfUser);
 
             $entryPointRootLineUids = [];
