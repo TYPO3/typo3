@@ -157,12 +157,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $writeAttemptLog = false;
 
     /**
-     * Send no-cache headers
-     * @var bool
-     */
-    public $sendNoCacheHeaders = true;
-
-    /**
      * If set, the user-record must be stored at the page defined by $checkPid_value
      * @var bool
      */

@@ -770,4 +770,19 @@ return [
             'Breaking-93023-ReworkedSessionHandling.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->sendNoCacheHeaders' => [
+        'restFiles' => [
+            'Breaking-93047-RemovedPropertySendNoCacheHeadersInAbstractUserAuthentication.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->sendNoCacheHeaders' => [
+        'restFiles' => [
+            'Breaking-93047-RemovedPropertySendNoCacheHeadersInAbstractUserAuthentication.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->sendNoCacheHeaders' => [
+        'restFiles' => [
+            'Breaking-93047-RemovedPropertySendNoCacheHeadersInAbstractUserAuthentication.rst',
+        ],
+    ],
 ];

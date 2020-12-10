@@ -77,9 +77,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         if ($frontendUser instanceof FrontendUserAuthentication) {
             $frontendUser->storeSessionData();
             $response = $frontendUser->appendCookieToResponse($response);
-            if ($frontendUser->sendNoCacheHeaders) {
-                $response = $this->applyHeadersToResponse($response);
-            }
             // Collect garbage in Frontend requests, which aren't fully cacheable (e.g. with cookies)
             if ($response->hasHeader('Set-Cookie')) {
                 $this->sessionGarbageCollection();
@@ -95,28 +92,5 @@ class FrontendUserAuthenticator implements MiddlewareInterface
     protected function sessionGarbageCollection(): void
     {
         UserSessionManager::create('FE')->collectGarbage();
-    }
-
-    /**
-     * Adding headers to the response to avoid caching on the client side.
-     * These headers will override any previous headers of these names sent.
-     * Get the http headers to be sent if an authenticated user is available,
-     * in order to disallow browsers to store the response on the client side.
-     *
-     * @param ResponseInterface $response
-     * @return ResponseInterface the modified response object.
-     */
-    protected function applyHeadersToResponse(ResponseInterface $response): ResponseInterface
-    {
-        $headers = [
-            'Expires' => 0,
-            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-            'Cache-Control' => 'no-cache, must-revalidate',
-            'Pragma' => 'no-cache'
-        ];
-        foreach ($headers as $headerName => $headerValue) {
-            $response = $response->withHeader($headerName, (string)$headerValue);
-        }
-        return $response;
     }
 }

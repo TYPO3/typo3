@@ -159,12 +159,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public $dontSetCookie = true;
 
-    /**
-     * Send no-cache headers (disabled by default, if no fixed session is there)
-     * @var bool
-     */
-    public $sendNoCacheHeaders = false;
-
     public function __construct()
     {
         $this->name = self::getCookieName();
