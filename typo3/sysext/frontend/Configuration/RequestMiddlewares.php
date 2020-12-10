@@ -33,6 +33,7 @@ return [
             'target' => \TYPO3\CMS\Frontend\Middleware\MaintenanceMode::class,
             'after' => [
                 'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-frontend/site',
                 'typo3/cms-frontend/eid'
             ]
         ],

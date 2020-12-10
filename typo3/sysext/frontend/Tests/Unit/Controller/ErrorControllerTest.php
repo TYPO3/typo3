@@ -33,7 +33,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function pageNotFoundHandlingThrowsExceptionIfNotConfigured()
+    public function pageNotFoundHandlingReturns404ResponseIfNotConfigured()
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -48,14 +48,16 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function unavailableHandlingThrowsExceptionIfNotConfigured()
+    public function unavailableHandlingReturns503ResponseIfNotConfigured()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
-        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $this->expectExceptionMessage('All your system are belong to us!');
-        $this->expectExceptionCode(1518472181);
+        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $GLOBALS['TYPO3_REQUEST'] = [];
         $subject = new ErrorController();
-        $subject->unavailableAction(new ServerRequest(), 'All your system are belong to us!');
+        $response = $subject->unavailableAction(new ServerRequest(), 'This page is temporarily unavailable.');
+        self::assertSame(503, $response->getStatusCode());
+        self::assertStringContainsString('This page is temporarily unavailable.', $response->getBody()->getContents());
     }
 
     /**
@@ -70,6 +72,34 @@ class ErrorControllerTest extends UnitTestCase
         $this->expectExceptionCode(1518472181);
         $subject = new ErrorController();
         $subject->unavailableAction(new ServerRequest(), 'All your system are belong to us!');
+    }
+
+    /**
+     * @test
+     */
+    public function internalErrorHandlingReturns500ResponseIfNotConfigured()
+    {
+        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $subject = new ErrorController();
+        $response = $subject->internalErrorAction(new ServerRequest(), 'All your system are belong to us!');
+        self::assertSame(500, $response->getStatusCode());
+        self::assertStringContainsString('All your system are belong to us!', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function internalErrorHandlingDoesNotTriggerDueToDevIpMask()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
+        $this->expectExceptionMessage('All your system are belong to us!');
+        $this->expectExceptionCode(1607585445);
+        $subject = new ErrorController();
+        $subject->internalErrorAction(new ServerRequest(), 'All your system are belong to us!');
     }
 
     /**
@@ -124,6 +154,34 @@ class ErrorControllerTest extends UnitTestCase
         $response = $subject->unavailableAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(503, $response->getStatusCode());
+        self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
+        self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
+    }
+
+    /**
+     * @test
+     */
+    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction()
+    {
+        $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
+        $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
+        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
+        $subject = new ErrorController();
+        $response = $subject->internalErrorAction(new ServerRequest(), 'Error handler is not configured.');
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
+        self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction()
+    {
+        $subject = new ErrorController();
+        $response = $subject->internalErrorAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
+        $responseContent = \json_decode($response->getBody()->getContents(), true);
+        self::assertSame(500, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
     }
