@@ -217,7 +217,7 @@ class InlineRecordContainer extends AbstractContainer
 
             $ariaExpanded = $data['isInlineChildExpanded'] ? 'true' : 'false';
             $ariaControls = htmlspecialchars($objectId . '_fields', ENT_QUOTES | ENT_HTML5);
-            $ariaAttributesString = 'aria-expanded="' . $ariaExpanded . '" aria-controls="' . $ariaControls . '"';
+            $data['ariaAttributesString'] = 'aria-expanded="' . $ariaExpanded . '" aria-controls="' . $ariaControls . '"';
             $html = '
 				<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
 					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
@@ -225,7 +225,7 @@ class InlineRecordContainer extends AbstractContainer
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
 							</div>
-							' . $this->renderForeignRecordHeader($data, $ariaAttributesString) . '
+							' . $this->renderForeignRecordHeader($data) . '
 						</div>
 					</div>
 					<div class="panel-collapse" id="' . $ariaControls . '">' . $html . $hiddenFieldHtml . $combinationHtml . '</div>
@@ -328,10 +328,9 @@ class InlineRecordContainer extends AbstractContainer
      * Later on the command-icons are inserted here.
      *
      * @param array $data Current data
-     * @param string $ariaAttributesString HTML aria attributes for the collapse button
      * @return string The HTML code of the header
      */
-    protected function renderForeignRecordHeader(array $data, string $ariaAttributesString)
+    protected function renderForeignRecordHeader(array $data)
     {
         $languageService = $this->getLanguageService();
         $inlineConfig = $data['inlineParentConfig'];
@@ -405,7 +404,7 @@ class InlineRecordContainer extends AbstractContainer
         } else {
             $mediaContainer = '<div class="form-irre-header-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</div>';
         }
-        $header = '<button class="form-irre-header-cell form-irre-header-button" ' . $ariaAttributesString . '>' .
+        $header = '<button class="form-irre-header-cell form-irre-header-button" ' . $data['ariaAttributesString'] . '>' .
             $mediaContainer .
             '<div class="form-irre-header-body">' . $label . '</div>' .
             '</button>' .
