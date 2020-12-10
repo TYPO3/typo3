@@ -3,11 +3,31 @@
 # /fileadmin/ or /uploads/
 
 <IfModule mod_headers.c>
-    Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';"
+    # matching requested *.pdf files only (strict rules block Safari showing PDF documents)
+    <FilesMatch "\.pdf$">
+        Header set Content-Security-Policy "default-src 'self' 'unsafe-inline'; script-src 'none'; object-src 'self'; plugin-types application/pdf;"
+    </FilesMatch>
+    # matching anything else, using negative lookbehind pattern
+    <FilesMatch "(?<!\.pdf)$">
+        Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';"
+    </FilesMatch>
 
-    # // comment previous line and use the following two lines instead
-    # // in order to only set the header when it has not be set before
-    # // (known as `setifempty` in Apache v2.4.7 - v2.2 fallback below)
-    # Header append Content-Security-Policy ""
-    # Header edit Content-Security-Policy "^$" "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';"
+    # =================================================================
+    # Variations to send CSP header only when it has not be set before.
+    # Adjust all `Header set` instructions above
+    #     Header set Content-Security-Policy "<directives>"
+    # with substitutes shown below
+    #
+    # -----------------------------------------------------------------
+    # a) for Apache 2.4 (having `setifempty`)
+    # -----------------------------------------------------------------
+    #     Header setifempty Content-Security-Policy "<directives>"
+    #
+    # -----------------------------------------------------------------
+    # b) for Apache 2.2 (using fallbacks)
+    # -----------------------------------------------------------------
+    #     Header append Content-Security-Policy ""
+    #     Header edit Content-Security-Policy "^$" "<directives>"
+    #
+    # =================================================================
 </IfModule>
