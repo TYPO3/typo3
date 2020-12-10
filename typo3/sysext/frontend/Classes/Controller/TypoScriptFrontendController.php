@@ -39,8 +39,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -1045,7 +1045,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see TypoScriptFrontendController::$originalMountPointPage
      * @see TypoScriptFrontendController::$originalShortcutPage
      *
-     * @throws ServiceUnavailableException
+     * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
      * @throws PageNotFoundException
      */
     protected function getPageAndRootline(ServerRequestInterface $request)
@@ -1161,14 +1161,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $message = 'The requested page didn\'t have a proper connection to the tree-root!';
             $this->logger->error($message);
             try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                     $request,
                     $message,
                     $this->getPageAccessFailureReasons(PageAccessFailureReasons::ROOTLINE_BROKEN)
                 );
                 throw new ImmediateResponseException($response, 1533931350);
-            } catch (ServiceUnavailableException $e) {
-                throw new ServiceUnavailableException($message, 1301648167);
+            } catch (AbstractServerErrorException $e) {
+                $this->logger->error($message);
+                $exceptionClass = get_class($e);
+                throw new $exceptionClass($message, 1301648167);
             }
         }
         // Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
@@ -1176,15 +1178,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (empty($this->rootLine)) {
                 $message = 'The requested page was not accessible!';
                 try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                         $request,
                         $message,
                         $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_GENERAL)
                     );
                     throw new ImmediateResponseException($response, 1533931351);
-                } catch (ServiceUnavailableException $e) {
+                } catch (AbstractServerErrorException $e) {
                     $this->logger->warning($message);
-                    throw new ServiceUnavailableException($message, 1301648234);
+                    $exceptionClass = get_class($e);
+                    throw new $exceptionClass($message, 1301648234);
                 }
             } else {
                 $el = reset($this->rootLine);
@@ -1742,7 +1745,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Checks if config-array exists already but if not, gets it
      *
      * @param ServerRequestInterface|null $request
-     * @throws ServiceUnavailableException
+     * @throws \TYPO3\CMS\Core\Error\Http\InternalServerErrorException
+     * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
      */
     public function getConfigArray(ServerRequestInterface $request = null)
     {
@@ -1771,15 +1775,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
                     $this->logger->alert($message);
                     try {
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                             $request,
                             $message,
                             ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
                         );
                         throw new ImmediateResponseException($response, 1533931374);
-                    } catch (PageNotFoundException $e) {
+                    } catch (AbstractServerErrorException $e) {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
-                        throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
+                        $exceptionClass = get_class($e);
+                        throw new $exceptionClass($message . ' ' . $explanation, 1294587217);
                     }
                 } else {
                     if (!isset($this->config['config'])) {
@@ -1832,14 +1837,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $message = 'No TypoScript template found!';
                 $this->logger->alert($message);
                 try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                         $request,
                         $message,
                         ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
                     );
                     throw new ImmediateResponseException($response, 1533931380);
-                } catch (ServiceUnavailableException $e) {
-                    throw new ServiceUnavailableException($message, 1294587218);
+                } catch (AbstractServerErrorException $e) {
+                    $exceptionClass = get_class($e);
+                    throw new $exceptionClass($message, 1294587218);
                 }
             }
         }

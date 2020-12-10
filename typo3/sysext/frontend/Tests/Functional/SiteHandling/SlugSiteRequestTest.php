@@ -299,7 +299,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function unconfiguredTypeNumResultsIn404Error()
+    public function unconfiguredTypeNumResultsIn500Error()
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -307,7 +307,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en-en/')
             ],
-            $this->buildErrorHandlingConfiguration('Fluid', [404])
+            $this->buildErrorHandlingConfiguration('Fluid', [500])
         );
 
         $uri = 'https://website.local/en-en/?type=13';
@@ -317,7 +317,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         self::assertSame(
-            404,
+            500,
             $response->getStatusCode()
         );
         self::assertStringContainsString(
