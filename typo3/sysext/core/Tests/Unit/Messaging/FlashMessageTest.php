@@ -35,6 +35,7 @@ class FlashMessageTest extends UnitTestCase
             'severity' => FlashMessage::INFO,
             'title' => 'aTitle',
             'message' => 'aMessage',
+            'storeInSession' => false,
         ];
         self::assertEquals($expected, $message->jsonSerialize());
     }

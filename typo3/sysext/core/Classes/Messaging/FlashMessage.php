@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Messaging;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A class representing flash messages.
  */
@@ -46,6 +48,23 @@ class FlashMessage extends AbstractMessage
     }
 
     /**
+     * Factory method. Useful when creating flash messages from a jsonSerialize json_decode() call.
+     *
+     * @param array<string, string|int|bool> $data
+     * @return static
+     */
+    public static function createFromArray(array $data): self
+    {
+        return GeneralUtility::makeInstance(
+            static::class,
+            (string)$data['message'],
+            (string)($data['title'] ?? ''),
+            (int)($data['severity'] ?? AbstractMessage::OK),
+            (bool)($data['storeInSession'] ?? false)
+        );
+    }
+
+    /**
      * Gets the message's storeInSession flag.
      *
      * @return bool TRUE if message should be stored in the session, otherwise FALSE.
@@ -63,5 +82,15 @@ class FlashMessage extends AbstractMessage
     public function setStoreInSession($storeInSession)
     {
         $this->storeInSession = (bool)$storeInSession;
+    }
+
+    /**
+     * @return array Data which can be serialized by json_encode()
+     */
+    public function jsonSerialize(): array
+    {
+        $data = parent::jsonSerialize();
+        $data['storeInSession'] = $this->storeInSession;
+        return $data;
     }
 }
