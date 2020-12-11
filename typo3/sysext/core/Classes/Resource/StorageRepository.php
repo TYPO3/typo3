@@ -171,14 +171,26 @@ class StorageRepository implements LoggerAwareInterface
                         'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.',
                         true
                     ) > 0) {
-                        // reset to null to force reloading of storages
-                        $this->storageRowCache = null;
+                        // clear Cache to force reloading of storages
+                        $this->flush();
                         // call self for initialize Cache
                         $this->initializeLocalCache();
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Flush the internal storage caches to force reloading of storages with the next fetch.
+     *
+     * @internal
+     */
+    public function flush(): void
+    {
+        $this->storageRowCache = null;
+        $this->storageInstances = null;
+        $this->localDriverStorageCache = null;
     }
 
     /**
@@ -281,7 +293,7 @@ class StorageRepository implements LoggerAwareInterface
         $dbConnection->insert($this->table, $field_values);
 
         // Flush local resourceStorage cache so the storage can be accessed during the same request right away
-        $this->storageRowCache = null;
+        $this->flush();
 
         return (int)$dbConnection->lastInsertId($this->table);
     }
