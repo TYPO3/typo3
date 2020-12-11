@@ -5622,17 +5622,52 @@ class DataHandler implements LoggerAwareInterface
                         $this->discard($relationRecord['table'], (int)$relationRecord['id']);
                     }
                 }
-            } elseif ($this->isReferenceField($fieldConfig)) {
-                $allowedTables = $fieldConfig['type'] === 'group' ? $fieldConfig['allowed'] : $fieldConfig['foreign_table'];
-                $dbAnalysis = $this->createRelationHandlerInstance();
-                $dbAnalysis->start($value, $allowedTables, $fieldConfig['MM'], (int)$record['uid'], $table, $fieldConfig);
-                foreach ($dbAnalysis->itemArray as $relationRecord) {
-                    // @todo: Something should happen with these relations here ...
-                    // @todo: Can't use dropReferenceIndexRowsForRecord() here, this would drop sys_refindex entries we want to keep
-                    $this->updateRefIndex($relationRecord['table'], (int)$relationRecord['id']);
-                }
+            } elseif ($this->isReferenceField($fieldConfig) && !empty($fieldConfig['MM'])) {
+                $this->discardMmRelations($table, $fieldConfig, $record);
             }
+            // @todo not inline and not mm - probably not handled correctly and has no proper test coverage yet
         }
+    }
+
+    /**
+     * When a workspace record row is discarded that has mm relations, existing mm table rows need
+     * to be deleted. The method performs the delete operation depending on TCA field configuration.
+     *
+     * @param string $table Handled table name
+     * @param array $fieldConfig TCA configuration of this field
+     * @param array $record The full record of a left- or ride-side relation
+     */
+    protected function discardMmRelations(string $table, array $fieldConfig, array $record): void
+    {
+        $recordUid = (int)$record['uid'];
+        $mmTableName = $fieldConfig['MM'];
+        // left - non foreign - uid_local vs. right - foreign - uid_foreign decision
+        $relationUidFieldName = isset($fieldConfig['MM_opposite_field']) ? 'uid_foreign' : 'uid_local';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTableName);
+        $queryBuilder->delete($mmTableName)->where(
+            // uid_local = given uid OR uid_foreign = given uid
+            $queryBuilder->expr()->eq($relationUidFieldName, $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT))
+        );
+        if ($relationUidFieldName === 'uid_foreign') {
+            // When discarding a local-side record - eg. sys_category - it does not matter who points to it,
+            // all relations can be dropped. If on foreign side - eg. tt_content to sys_category - "tablenames"
+            // field has to be taken into account to not delete rows with same uid from other tables.
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR))
+            );
+        }
+        if (!empty($fieldConfig['MM_table_where']) && is_string($fieldConfig['MM_table_where'])) {
+            $queryBuilder->andWhere(
+                QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$recordUid, $fieldConfig['MM_table_where']))
+            );
+        }
+        $mmMatchFields = $fieldConfig['MM_match_fields'] ?? [];
+        foreach ($mmMatchFields as $fieldName => $fieldValue) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($fieldValue, \PDO::PARAM_STR))
+            );
+        }
+        $queryBuilder->execute();
     }
 
     /**
