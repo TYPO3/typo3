@@ -154,7 +154,7 @@ define(['d3', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
       // Initialise "value" attribute of input field after load and revalidate form engine fields
       this.saveCheckboxes(this.nodes);
       if (typeof TYPO3.FormEngine.Validation !== 'undefined' && typeof TYPO3.FormEngine.Validation.validate === 'function') {
-        TYPO3.FormEngine.Validation.validate();
+        TYPO3.FormEngine.Validation.validateField(this.settings.input);
       }
     };
 

@@ -12,7 +12,7 @@
  */
 
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class InputDateTimeElement {
@@ -30,8 +30,8 @@ class InputDateTimeElement {
 
   private registerEventHandler(element: HTMLInputElement): void {
     new RegularEvent('formengine.dp.change', (e: CustomEvent): void => {
-      FormEngine.Validation.validate();
-      FormEngine.Validation.markFieldAsChanged(e.target as HTMLInputElement);
+      FormEngineValidation.validateField(e.target as HTMLInputElement);
+      FormEngineValidation.markFieldAsChanged(e.target as HTMLInputElement);
 
       document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
         btn.classList.remove('disabled');

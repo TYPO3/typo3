@@ -72,7 +72,12 @@ var TBE_EDITOR = {
 
     if (TYPO3.FormEngine && TYPO3.FormEngine.Validation) {
       TYPO3.FormEngine.Validation.updateInputField(theField);
-      TYPO3.FormEngine.Validation.validate();
+      if ($formField.length > 0) {
+        TYPO3.FormEngine.Validation.validateField($formField.get(0));
+        if ($humanReadableField.length > 0 && !$formField.is($humanReadableField)) {
+          TYPO3.FormEngine.Validation.validateField($humanReadableField.get(0));
+        }
+      }
     }
   },
   isFormChanged: function(noAlert) {

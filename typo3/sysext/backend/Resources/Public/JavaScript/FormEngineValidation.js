@@ -55,8 +55,8 @@ define([
     FormEngineValidation.initializeInputFields().promise().done(function() {
       // Bind to field changes
       $(document).on('change', FormEngineValidation.rulesSelector, function() {
-        FormEngineValidation.validate();
-        FormEngineValidation.markFieldAsChanged($(this));
+        FormEngineValidation.validateField(this);
+        FormEngineValidation.markFieldAsChanged(this);
       });
 
       FormEngineValidation.registerSubmitCallback();
@@ -129,7 +129,6 @@ define([
     $humanReadableField.on('change', function() {
       FormEngineValidation.updateInputField($(this).attr('data-formengine-input-name'));
     });
-    $humanReadableField.on('keyup', FormEngineValidation.validate);
 
     // add the attribute so that acceptance tests can know when the field initialization has completed
     $humanReadableField.attr('data-formengine-input-initialized', 'true');
@@ -241,14 +240,22 @@ define([
   /**
    * Run validation for field
    *
-   * @param {Object} $field
+   * @param {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|jQuery} field
    * @param {String} [value=$field.val()]
    * @returns {String}
    */
-  FormEngineValidation.validateField = function($field, value) {
-    value = value || $field.val() || '';
+  FormEngineValidation.validateField = function(field, value) {
+    if (field instanceof $) {
+      field = field.get(0);
+    }
 
-    var rules = $field.data('formengine-validation-rules');
+    value = value || field.value || '';
+
+    if (typeof field.dataset.formengineValidationRules === 'undefined') {
+      return value;
+    }
+
+    var rules = JSON.parse(field.dataset.formengineValidationRules);
     var markParent = false;
     var selected = 0;
     // keep the original value, validateField should not alter it
@@ -270,17 +277,17 @@ define([
         case 'required':
           if (value === '') {
             markParent = true;
-            $field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
+            field.closest(FormEngineValidation.markerSelector).classList.add(FormEngineValidation.errorClass);
           }
           break;
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              $relatedField = $(document).find('[name="' + $field.data('relatedfieldname') + '"]');
+              $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
               if ($relatedField.length) {
                 selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
               } else {
-                selected = $field.val();
+                selected = field.value;
               }
               if (typeof rule.minItems !== 'undefined') {
                 minItems = rule.minItems * 1;
@@ -311,11 +318,11 @@ define([
           break;
         case 'select':
           if (rule.minItems || rule.maxItems) {
-            $relatedField = $(document).find('[name="' + $field.data('relatedfieldname') + '"]');
+            $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
             if ($relatedField.length) {
               selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
             } else {
-              selected = $field.find('option:selected').length;
+              selected = field.querySelectorAll('option:checked').length;
             }
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
@@ -333,7 +340,7 @@ define([
           break;
         case 'group':
           if (rule.minItems || rule.maxItems) {
-            selected = $field.find('option').length;
+            selected = field.querySelectorAll('option').length;
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
@@ -350,7 +357,7 @@ define([
           break;
         case 'inline':
           if (rule.minItems || rule.maxItems) {
-            selected = FormEngineValidation.trimExplode(',', $field.val()).length;
+            selected = FormEngineValidation.trimExplode(',', field.value).length;
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
@@ -370,13 +377,13 @@ define([
           break;
       }
     });
-    if (markParent) {
-      // mark field
-      $field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
 
-      // check tabs
-      FormEngineValidation.markParentTab($field);
-    }
+    const isValid = !markParent;
+    field.closest(FormEngineValidation.markerSelector).classList.toggle(FormEngineValidation.errorClass, !isValid);
+    FormEngineValidation.markParentTab($(field), isValid);
+
+    $(document).trigger('t3-formengine-postfieldvalidation');
+
     return returnValue;
   };
 
@@ -507,13 +514,15 @@ define([
   /**
    * Validate the complete form
    */
-  FormEngineValidation.validate = function() {
+  FormEngineValidation.validate = function(section) {
     $(document).find(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item')
       .removeClass(FormEngineValidation.errorClass)
       .removeClass('has-validation-error');
 
-    $(FormEngineValidation.rulesSelector).each(function() {
+    const sectionElement = section || document;
+    $(sectionElement).find(FormEngineValidation.rulesSelector).each(function() {
       var $field = $(this);
+
       if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted').length) {
         var modified = false;
         var currentValue = $field.val();
@@ -538,7 +547,6 @@ define([
         }
       }
     });
-    $(document).trigger('t3-formengine-postfieldvalidation');
   };
 
   /**
@@ -833,16 +841,21 @@ define([
    * Find tab by field and mark it as has-validation-error
    *
    * @param {Object} $element
+   * @param {Boolean} isValid
    */
-  FormEngineValidation.markParentTab = function($element) {
+  FormEngineValidation.markParentTab = function($element, isValid) {
     var $panes = $element.parents('.tab-pane');
     $panes.each(function() {
       var $pane = $(this);
+      if (isValid) {
+        // If incoming element is valid, check for errors in the same sheet
+        isValid = $pane.find('.has-error').length === 0;
+      }
       var id = $pane.attr('id');
       $(document)
         .find('a[href="#' + id + '"]')
         .closest('.t3js-tabmenu-item')
-        .addClass('has-validation-error');
+        .toggleClass('has-validation-error', !isValid);
     });
   };
 

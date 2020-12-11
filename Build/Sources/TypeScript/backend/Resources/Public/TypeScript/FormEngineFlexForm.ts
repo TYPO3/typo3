@@ -130,7 +130,7 @@ class FlexFormElement {
             $section.remove();
           });
 
-          FormEngine.Validation.validate();
+          FormEngine.Validation.validate(this.$el.get(0));
           Modal.currentModal.trigger('modal-dismiss');
         });
       });
@@ -253,8 +253,9 @@ $(function (): void {
       flexFormContainerName: me.data('flexformcontainername'),
     }).then(async (response: AjaxResponse): Promise<any> => {
       const data = await response.resolve();
-      me.closest('.t3-form-field-container').find('.t3-flex-container').append(data.html);
-      $('.t3-flex-container').t3FormEngineFlexFormElement();
+      const flexContainer = me.closest('.t3-form-field-container').find('.t3-flex-container');
+      flexContainer.append(data.html);
+      flexContainer.t3FormEngineFlexFormElement();
       if (data.scriptCall && data.scriptCall.length > 0) {
         $.each(data.scriptCall, function (index: number, value: string): void {
           // eslint-disable-next-line no-eval
@@ -272,7 +273,7 @@ $(function (): void {
       }
       FormEngine.reinitialize();
       FormEngine.Validation.initializeInputFields();
-      FormEngine.Validation.validate();
+      FormEngine.Validation.validate(flexContainer.get(0));
     });
   });
 

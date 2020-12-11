@@ -32,9 +32,10 @@ declare namespace TYPO3 {
     export namespace Backend {
       export class FormEngineValidation {
         public readonly errorClass: string;
-        public markFieldAsChanged(field: HTMLInputElement|HTMLTextAreaElement|JQuery): void;
+        public markFieldAsChanged(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery): void;
         public initializeInputFields(): void;
-        public validate(): void;
+        public validate(section?: Element): void;
+        public validateField(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): void;
       }
 
       export namespace FormEngine {

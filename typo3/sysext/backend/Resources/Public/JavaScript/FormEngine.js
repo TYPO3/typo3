@@ -218,7 +218,7 @@ define(['jquery',
       $fieldEl.val(value);
     }
     if (typeof FormEngine.Validation !== 'undefined' && typeof FormEngine.Validation.validate === 'function') {
-      FormEngine.Validation.validate();
+      FormEngine.Validation.validateField($fieldEl);
     }
   };
 

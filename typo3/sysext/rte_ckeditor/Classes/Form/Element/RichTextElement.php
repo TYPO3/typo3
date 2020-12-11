@@ -245,7 +245,7 @@ class RichTextElement extends AbstractFormElement
                         CKEDITOR.instances["' . $fieldId . '"].on(\'change\', function(e) {
                             var commands = e.sender.commands;
                             CKEDITOR.instances["' . $fieldId . '"].updateElement();
-                            FormEngine.Validation.validate();
+                            FormEngine.Validation.validateField($(escapedFieldSelector));
                             FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
 
                             // remember changes done in maximized state and mark field as changed, once minimized again
