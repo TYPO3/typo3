@@ -36,4 +36,8 @@ describe('TYPO3/CMS/Core/SecurityUtility', (): void => {
       expect(() => (new SecurityUtility()).getRandomHexValue(invalidLength)).toThrowError(SyntaxError);
     }
   });
+
+  it('encodes HTML', (): void => {
+    expect((new SecurityUtility).encodeHtml('<>"\'&')).toBe('&lt;&gt;&quot;&apos;&amp;');
+  });
 });
