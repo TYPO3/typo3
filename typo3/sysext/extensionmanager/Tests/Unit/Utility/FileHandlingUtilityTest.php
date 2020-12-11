@@ -99,7 +99,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1337280417);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-        $fileHandlerMock->_set('languageService', $languageServiceMock);
+        $fileHandlerMock->injectLanguageService($languageServiceMock);
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
 
@@ -169,22 +169,18 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory()
     {
-        $extensionData = [
-            'extKey' => 'test'
-        ];
+        $extensionKey = 'test';
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
             'makeAndClearExtensionDir',
             'writeEmConfToFile',
-            'extractFilesArrayFromExtensionData',
             'extractDirectoriesFromExtensionData',
             'createDirectoriesForExtensionFiles',
             'writeExtensionFiles',
             'reloadPackageInformation',
         ]);
-        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->willReturn([]);
         $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
-        $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey']);
-        $fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
+        $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionKey)->willReturn('my_path');
+        $fileHandlerMock->unpackExtensionFromExtensionDataArray($extensionKey, []);
     }
 
     /**
@@ -193,30 +189,30 @@ class FileHandlingUtilityTest extends UnitTestCase
     public function unpackExtensionFromExtensionDataArrayStripsDirectoriesFromFilesArray()
     {
         $extensionData = [
-            'extKey' => 'test'
-        ];
-        $files = [
-            'ChangeLog' => [
-                'name' => 'ChangeLog',
-                'size' => 4559,
-                'mtime' => 1219448527,
-                'is_executable' => false,
-                'content' => 'some content to write'
-            ],
-            'doc/' => [
-                'name' => 'doc/',
-                'size' => 0,
-                'mtime' => 1219448527,
-                'is_executable' => false,
-                'content' => ''
-            ],
-            'doc/ChangeLog' => [
-                'name' => 'ChangeLog',
-                'size' => 4559,
-                'mtime' => 1219448527,
-                'is_executable' => false,
-                'content' => 'some content to write'
-            ],
+            'extKey' => 'test',
+            'FILES' => [
+                'ChangeLog' => [
+                    'name' => 'ChangeLog',
+                    'size' => 4559,
+                    'mtime' => 1219448527,
+                    'is_executable' => false,
+                    'content' => 'some content to write'
+                ],
+                'doc/' => [
+                    'name' => 'doc/',
+                    'size' => 0,
+                    'mtime' => 1219448527,
+                    'is_executable' => false,
+                    'content' => ''
+                ],
+                'doc/ChangeLog' => [
+                    'name' => 'ChangeLog',
+                    'size' => 4559,
+                    'mtime' => 1219448527,
+                    'is_executable' => false,
+                    'content' => 'some content to write'
+                ],
+            ]
         ];
         $cleanedFiles = [
             'ChangeLog' => [
@@ -242,36 +238,17 @@ class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
             'makeAndClearExtensionDir',
             'writeEmConfToFile',
-            'extractFilesArrayFromExtensionData',
             'extractDirectoriesFromExtensionData',
             'createDirectoriesForExtensionFiles',
             'writeExtensionFiles',
             'reloadPackageInformation',
         ]);
-        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->willReturn($files);
         $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn($directories);
         $fileHandlerMock->expects(self::once())->method('createDirectoriesForExtensionFiles')->with($directories);
+        $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey'])->willReturn('my_path');
         $fileHandlerMock->expects(self::once())->method('writeExtensionFiles')->with($cleanedFiles);
         $fileHandlerMock->expects(self::once())->method('reloadPackageInformation')->with('test');
-        $fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
-    }
-
-    /**
-     * @test
-     */
-    public function extractFilesArrayFromExtensionDataReturnsFileArray()
-    {
-        $extensionData = [
-            'key' => 'test',
-            'FILES' => [
-                'filename1' => 'dummycontent',
-                'filename2' => 'dummycontent2'
-            ]
-        ];
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        $extractedFiles = $fileHandlerMock->_call('extractFilesArrayFromExtensionData', $extensionData);
-        self::assertArrayHasKey('filename1', $extractedFiles);
-        self::assertArrayHasKey('filename2', $extractedFiles);
+        $fileHandlerMock->unpackExtensionFromExtensionDataArray('test', $extensionData);
     }
 
     /**
@@ -376,20 +353,16 @@ class FileHandlingUtilityTest extends UnitTestCase
     public function writeEmConfWritesEmConfFile()
     {
         $extKey = $this->createFakeExtension();
-        $extensionData = [
-            'extKey' => $extKey,
-            'EM_CONF' => [
-                'title' => 'Plugin cache engine',
-                'description' => 'Provides an interface to cache plugin content elements based on 4.3 caching framework',
-                'category' => 'Frontend',
-            ]
+        $emConfData = [
+            'title' => 'Plugin cache engine',
+            'description' => 'Provides an interface to cache plugin content elements based on 4.3 caching framework',
+            'category' => 'Frontend',
         ];
         $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
-        $emConfUtilityMock = $this->getAccessibleMock(EmConfUtility::class, ['constructEmConf']);
-        $emConfUtilityMock->expects(self::once())->method('constructEmConf')->with($extensionData)->willReturn(var_export($extensionData['EM_CONF'], true));
+        /** @var FileHandlingUtility $fileHandlerMock */
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        $fileHandlerMock->_set('emConfUtility', $emConfUtilityMock);
-        $fileHandlerMock->_call('writeEmConfToFile', $extensionData, $rootPath);
+        $fileHandlerMock->injectEmConfUtility(new EmConfUtility());
+        $fileHandlerMock->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);
         self::assertTrue(file_exists($rootPath . 'ext_emconf.php'));
     }
 }

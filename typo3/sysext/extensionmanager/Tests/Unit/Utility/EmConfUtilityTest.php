@@ -29,12 +29,8 @@ class EmConfUtilityTest extends UnitTestCase
      */
     public function constructEmConfAddsCommentBlock()
     {
-        $extensionData = [
-            'extKey' => 'key',
-            'EM_CONF' => [],
-        ];
         $subject = new EmConfUtility();
-        $emConf = $subject->constructEmConf($extensionData);
+        $emConf = $subject->constructEmConf('key', []);
         self::assertStringContainsString('Extension Manager/Repository config file for ext', $emConf);
     }
 
@@ -59,7 +55,7 @@ class EmConfUtilityTest extends UnitTestCase
         ];
         $subject = new EmConfUtility();
         $_EXTKEY = 'seminars';
-        $result = $subject->constructEmConf(['EM_CONF' => $input, 'extKey' => $_EXTKEY]);
+        $result = $subject->constructEmConf($_EXTKEY, $input);
         eval(substr($result, 7));
         $result = $EM_CONF[$_EXTKEY];
         self::assertEquals($expected, $result);
@@ -88,7 +84,7 @@ class EmConfUtilityTest extends UnitTestCase
         $subject = new EmConfUtility();
 
         $_EXTKEY = 'seminars';
-        $result = $subject->constructEmConf(['EM_CONF' => $input, 'extKey' => $_EXTKEY]);
+        $result = $subject->constructEmConf($_EXTKEY, $input);
         eval(substr($result, 7));
         $result = $EM_CONF[$_EXTKEY];
         self::assertEquals($expected, $result);

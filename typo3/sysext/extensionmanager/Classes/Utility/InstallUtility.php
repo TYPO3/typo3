@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
@@ -422,7 +423,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     public function removeExtension($extension)
     {
         $absolutePath = $this->enrichExtensionWithDetails($extension)['packagePath'];
-        if ($this->fileHandlingUtility->isValidExtensionPath($absolutePath)) {
+        if ($this->isValidExtensionPath($absolutePath)) {
             if ($this->packageManager->isPackageAvailable($extension)) {
                 // Package manager deletes the extension and removes the entry from PackageStates.php
                 $this->packageManager->deletePackage($extension);
@@ -592,5 +593,22 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             $configuration['rootPageId'] = $importedPageId;
             $siteConfiguration->write($newSite->getIdentifier(), $configuration);
         }
+    }
+
+    /**
+     * Is the given path a valid path for extension installation
+     *
+     * @param string $path the absolute (!) path in question
+     * @return bool
+     */
+    protected function isValidExtensionPath($path): bool
+    {
+        $allowedPaths = Extension::returnAllowedInstallPaths();
+        foreach ($allowedPaths as $allowedPath) {
+            if (GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

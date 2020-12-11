@@ -85,20 +85,21 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Unpack an extension in t3x data format and write files
      *
+     * @param string $extensionKey
      * @param array $extensionData
-     * @param Extension|null $extension
      * @param string $pathType
      */
-    public function unpackExtensionFromExtensionDataArray(array $extensionData, Extension $extension = null, $pathType = 'Local')
+    public function unpackExtensionFromExtensionDataArray(string $extensionKey, array $extensionData, $pathType = 'Local')
     {
-        $extensionDir = $this->makeAndClearExtensionDir($extensionData['extKey'], $pathType);
-        $files = $this->extractFilesArrayFromExtensionData($extensionData);
+        $files = $extensionData['FILES'] ?? [];
+        $emConfData = $extensionData['EM_CONF'] ?? [];
+        $extensionDir = $this->makeAndClearExtensionDir($extensionKey, $pathType);
         $directories = $this->extractDirectoriesFromExtensionData($files);
         $files = array_diff_key($files, array_flip($directories));
         $this->createDirectoriesForExtensionFiles($directories, $extensionDir);
         $this->writeExtensionFiles($files, $extensionDir);
-        $this->writeEmConfToFile($extensionData, $extensionDir, $extension);
-        $this->reloadPackageInformation($extensionData['extKey']);
+        $this->writeEmConfToFile($extensionKey, $emConfData, $extensionDir);
+        $this->reloadPackageInformation($extensionKey);
     }
 
     /**
@@ -120,24 +121,13 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Returns the "FILES" part from the data array
-     *
-     * @param array $extensionData
-     * @return mixed
-     */
-    protected function extractFilesArrayFromExtensionData(array $extensionData)
-    {
-        return $extensionData['FILES'];
-    }
-
-    /**
      * Loops over an array of directories and creates them in the given root path
      * It also creates nested directory structures
      *
      * @param array $directories
      * @param string $rootPath
      */
-    protected function createDirectoriesForExtensionFiles(array $directories, $rootPath)
+    protected function createDirectoriesForExtensionFiles(array $directories, string $rootPath)
     {
         foreach ($directories as $directory) {
             $this->createNestedDirectory($rootPath . $directory);
@@ -191,7 +181,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
             $this->removeDirectory($extDirPath);
         }
         $this->addDirectory($extDirPath);
-
         return $extDirPath;
     }
 
@@ -259,42 +248,15 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
 
     /**
      * Constructs emConf and writes it to corresponding file
-     * In case the file has been extracted already, the properties of the meta data take precedence but are merged with the present ext_emconf.php
      *
-     * @param array $extensionData
+     * @param string $extensionKey
+     * @param array $emConfData
      * @param string $rootPath
-     * @param Extension|null $extension
      */
-    protected function writeEmConfToFile(array $extensionData, $rootPath, Extension $extension = null)
+    protected function writeEmConfToFile(string $extensionKey, array $emConfData, string $rootPath)
     {
-        $emConfFileData = [];
-        if (file_exists($rootPath . 'ext_emconf.php')) {
-            $emConfFileData = $this->emConfUtility->includeEmConf(
-                $extensionData['extKey'],
-                $rootPath
-            );
-            $emConfFileData = is_array($emConfFileData) ? $emConfFileData : [];
-        }
-        $extensionData['EM_CONF'] = array_replace_recursive($emConfFileData, $extensionData['EM_CONF']);
-        $emConfContent = $this->emConfUtility->constructEmConf($extensionData, $extension);
+        $emConfContent = $this->emConfUtility->constructEmConf($extensionKey, $emConfData);
         GeneralUtility::writeFile($rootPath . 'ext_emconf.php', $emConfContent);
-    }
-
-    /**
-     * Is the given path a valid path for extension installation
-     *
-     * @param string $path the absolute (!) path in question
-     * @return bool
-     */
-    public function isValidExtensionPath($path)
-    {
-        $allowedPaths = Extension::returnAllowedInstallPaths();
-        foreach ($allowedPaths as $allowedPath) {
-            if (GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

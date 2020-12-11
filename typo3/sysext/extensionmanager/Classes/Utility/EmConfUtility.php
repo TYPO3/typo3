@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * Utility for dealing with ext_emconf
@@ -47,24 +46,19 @@ class EmConfUtility implements SingletonInterface
 
     /**
      * Generates the content for the ext_emconf.php file
-     * Sets dependencies from TER data if any
      *
-     * @param array $extensionData
-     * @param Extension $extension Extension object from TER data
+     * @param string $extensionKey
+     * @param array $emConf
      * @return string
-     * @internal
      */
-    public function constructEmConf(array $extensionData, Extension $extension = null)
+    public function constructEmConf(string $extensionKey, array $emConf)
     {
-        if (is_object($extension) && empty($extensionData['EM_CONF']['constraints'])) {
-            $extensionData['EM_CONF']['constraints'] = unserialize($extension->getSerializedDependencies(), ['allowed_classes' => false]);
-        }
-        $emConf = $this->fixEmConf($extensionData['EM_CONF']);
+        $emConf = $this->fixEmConf($emConf);
         $emConf = var_export($emConf, true);
-        $code = '<?php
+        return '<?php
 
 /***************************************************************
- * Extension Manager/Repository config file for ext "' . $extensionData['extKey'] . '".
+ * Extension Manager/Repository config file for ext "' . $extensionKey . '".
  *
  * Auto generated ' . date('d-m-Y H:i') . '
  *
@@ -76,7 +70,6 @@ class EmConfUtility implements SingletonInterface
 $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 
 ';
-        return $code;
     }
 
     /**
