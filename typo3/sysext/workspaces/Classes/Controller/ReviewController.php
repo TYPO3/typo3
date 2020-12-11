@@ -134,17 +134,19 @@ class ReviewController
 
         $backendUser = $this->getBackendUser();
         $moduleTemplate = $this->moduleTemplate;
+        $pageTitle = '';
 
         if ($this->pageId) {
             $pageRecord = BackendUtility::getRecord('pages', $this->pageId);
             if ($pageRecord) {
                 $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
-                $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
+                $pageTitle = BackendUtility::getRecordTitle('pages', $pageRecord);
             }
         }
         $wsList = GeneralUtility::makeInstance(WorkspaceService::class)->getAvailableWorkspaces();
         $customWorkspaceExists = $this->customWorkspaceExists($wsList);
         $activeWorkspace = (int)$backendUser->workspace;
+        $activeWorkspaceTitle = WorkspaceService::getWorkspaceTitle($activeWorkspace);
         $performWorkspaceSwitch = false;
         if ((int)($queryParams['workspace'] ?? 0) > 0) {
             $switchWs = (int)$queryParams['workspace'];
@@ -165,10 +167,11 @@ class ReviewController
             'showGrid' => $workspaceIsAccessible,
             'showLegend' => $workspaceIsAccessible,
             'pageUid' => $this->pageId,
+            'pageTitle' => $pageTitle,
             'performWorkspaceSwitch' => $performWorkspaceSwitch,
             'workspaceList' => $this->prepareWorkspaceTabs($wsList, $activeWorkspace),
             'activeWorkspaceUid' => $activeWorkspace,
-            'activeWorkspaceTitle' => WorkspaceService::getWorkspaceTitle($activeWorkspace),
+            'activeWorkspaceTitle' => $activeWorkspaceTitle,
         ]);
 
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -184,6 +187,7 @@ class ReviewController
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('web_WorkspacesWorkspaces')
+            ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $this->pageId))
             ->setArguments([
                 'route' => (string)GeneralUtility::_GP('route'),
                 'id' => (int)$this->pageId,

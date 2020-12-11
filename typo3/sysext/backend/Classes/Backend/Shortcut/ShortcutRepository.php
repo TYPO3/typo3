@@ -193,6 +193,8 @@ class ShortcutRepository
      */
     public function addShortcut(string $url, string $module, string $parentModule = '', string $title = ''): bool
     {
+        // @todo $parentModule can not longer be set using public API.
+
         if (empty($url) || empty($module)) {
             return false;
         }
@@ -206,7 +208,6 @@ class ShortcutRepository
         }
 
         $languageService = $this->getLanguageService();
-        $title = $title ?: 'Shortcut';
         $titlePrefix = '';
         $type = 'other';
         $table = '';
@@ -232,49 +233,55 @@ class ShortcutRepository
             }
         }
 
-        // Check if given id is a combined identifier
-        if (!empty($queryParameters['id']) && preg_match('/^[\d]+:/', $queryParameters['id'])) {
-            try {
-                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-                $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
-                $title = trim(sprintf(
-                    '%s (%s)',
-                    $titlePrefix,
-                    $resource->getName()
-                ));
-            } catch (ResourceDoesNotExistException $e) {
-            }
-        } else {
-            // Lookup the title of this page and use it as default description
-            $pageId = $pageId ?: $recordId ?: $this->extractPageIdFromShortcutUrl($url);
-            $page = $pageId ? BackendUtility::getRecord('pages', $pageId) : null;
-
-            if (!empty($page)) {
-                // Set the name to the title of the page
-                if ($type === 'other') {
-                    $title = sprintf(
+        // Only apply "magic" if title is not set
+        // @todo This is deprecated and can be removed in v12
+        if ($title === '') {
+            // Check if given id is a combined identifier
+            if (!empty($queryParameters['id']) && preg_match('/^[\d]+:/', $queryParameters['id'])) {
+                try {
+                    $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                    $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
+                    $title = trim(sprintf(
                         '%s (%s)',
-                        $title,
-                        $page['title']
-                    );
-                } else {
-                    $title = sprintf(
-                        '%s %s (%s)',
                         $titlePrefix,
-                        $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
-                        $page['title']
-                    );
+                        $resource->getName()
+                    ));
+                } catch (ResourceDoesNotExistException $e) {
                 }
-            } elseif (!empty($table)) {
-                $title = trim(sprintf(
-                    '%s %s',
-                    $titlePrefix,
-                    $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
-                ));
+            } else {
+                // Lookup the title of this page and use it as default description
+                $pageId = $pageId ?: $recordId ?: $this->extractPageIdFromShortcutUrl($url);
+                $page = $pageId ? BackendUtility::getRecord('pages', $pageId) : null;
+
+                if (!empty($page)) {
+                    // Set the name to the title of the page
+                    if ($type === 'other') {
+                        $title = sprintf(
+                            '%s (%s)',
+                            $title,
+                            $page['title']
+                        );
+                    } else {
+                        $title = sprintf(
+                            '%s %s (%s)',
+                            $titlePrefix,
+                            $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+                            $page['title']
+                        );
+                    }
+                } elseif (!empty($table)) {
+                    $title = trim(sprintf(
+                        '%s %s',
+                        $titlePrefix,
+                        $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
+                    ));
+                }
             }
         }
 
-        if ($title === 'Shortcut') {
+        // In case title is still empty try to set the modules short description label
+        // @todo This is deprecated and can be removed in v12
+        if ($title === '') {
             $moduleLabels = $this->moduleLoader->getLabelsForModule($module);
 
             if (!empty($moduleLabels['shortdescription'])) {
@@ -290,7 +297,7 @@ class ShortcutRepository
                 'userid' => $this->getBackendUser()->user['uid'],
                 'module_name' => $module . '|' . $parentModule,
                 'url' => $url,
-                'description' => $title,
+                'description' => $title ?: 'Shortcut',
                 'sorting' => $GLOBALS['EXEC_TIME'],
             ])
             ->execute();

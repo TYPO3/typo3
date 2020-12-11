@@ -626,6 +626,7 @@ class DatabaseRecordList
                 $arguments['GET'][$moduleSettingKey] = $moduleSettingValue;
             }
             $shortCutButton->setArguments($arguments);
+            $shortCutButton->setDisplayName($this->getShortcutTitle($arguments));
             $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
             // Back
@@ -3671,5 +3672,34 @@ class DatabaseRecordList
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
 
         return ($row[$languageField] ?? false) && ($row[$transOrigPointerField] ?? false);
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @param array $arguments
+     * @return string
+     */
+    protected function getShortcutTitle(array $arguments): string
+    {
+        $pageTitle = '';
+        $tableTitle = '';
+        $languageService = $this->getLanguageService();
+
+        if (isset($arguments['table'])) {
+            $tableTitle = ': ' . $languageService->sL($GLOBALS['TCA'][$arguments['table']]['ctrl']['title'] ?? '') ?: $arguments['table'];
+        }
+
+        if ($this->pageRow !== []) {
+            $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageRow);
+        }
+
+        return trim(sprintf(
+            $languageService->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:shortcut.title'),
+            $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'),
+            $tableTitle,
+            $pageTitle,
+            $this->id
+        ));
     }
 }

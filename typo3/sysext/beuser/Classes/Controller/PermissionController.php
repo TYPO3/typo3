@@ -175,6 +175,7 @@ class PermissionController extends ActionController
 
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
+            ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => GeneralUtility::_GP('route'),
                 'id' => (int)$this->id,
@@ -401,5 +402,20 @@ class PermissionController extends ActionController
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @return string
+     */
+    protected function getShortcutTitle(): string
+    {
+        return sprintf(
+            '%s: %s [%d]',
+            $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            BackendUtility::getRecordTitle('pages', $this->pageInfo),
+            $this->id
+        );
     }
 }

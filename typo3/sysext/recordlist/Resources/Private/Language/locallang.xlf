@@ -24,6 +24,9 @@
 			<trans-unit id="row.deletePlaceholder.title" resname="row.deletePlaceholder.title">
 				<source>The live pendant of this record will be deleted when this workspace record is published.</source>
 			</trans-unit>
+			<trans-unit id="shortcut.title" resname="shortcut.title">
+				<source>%s%s on page "%s" [%d]</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

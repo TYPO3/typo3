@@ -158,6 +158,7 @@ class RecyclerModuleController
 
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('web_RecyclerRecycler')
+            ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => $route,
                 'id' => (int)$this->id
@@ -208,6 +209,21 @@ class RecyclerModuleController
             $data = $default;
         }
         return $data;
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @return string
+     */
+    protected function getShortcutTitle(): string
+    {
+        return sprintf(
+            '%s: %s [%d]',
+            $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            BackendUtility::getRecordTitle('pages', $this->pageRecord),
+            $this->id
+        );
     }
 
     /**

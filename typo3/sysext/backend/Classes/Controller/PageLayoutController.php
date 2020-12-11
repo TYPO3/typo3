@@ -767,6 +767,7 @@ class PageLayoutController
         // Shortcut
         $shortcutButton = $this->buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
+            ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => $request->getQueryParams()['route'],
                 'id' => (int)$this->id,
@@ -1106,5 +1107,20 @@ class PageLayoutController
                 </div>
             </form>
         </div>';
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @return string
+     */
+    protected function getShortcutTitle(): string
+    {
+        return sprintf(
+            '%s: %s [%d]',
+            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
+            BackendUtility::getRecordTitle('pages', $this->pageinfo),
+            $this->id
+        );
     }
 }

@@ -374,6 +374,7 @@ class TypoScriptTemplateModuleController
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('web_ts')
+            ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => $this->request->getQueryParams()['route'],
                 'id' => (int)$this->id
@@ -738,6 +739,21 @@ page.10.value = HELLO WORLD!
         }
 
         return null;
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @return string
+     */
+    protected function getShortcutTitle(): string
+    {
+        return sprintf(
+            '%s: %s [%d]',
+            $this->getLanguageService()->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
+            BackendUtility::getRecordTitle('pages', $this->pageinfo),
+            $this->id
+        );
     }
 
     /**

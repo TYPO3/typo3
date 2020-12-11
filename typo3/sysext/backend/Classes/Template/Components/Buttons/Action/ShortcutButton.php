@@ -234,6 +234,9 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     public function render()
     {
         if ($this->getBackendUser()->mayMakeShortcut()) {
+            if ($this->displayName === '') {
+                trigger_error('Creating a shortcut button without a display name is deprecated and fallbacks will be removed in v12. Please use ShortcutButton->setDisplayName() to set a display name.', E_USER_DEPRECATED);
+            }
             if (!empty($this->arguments)) {
                 $shortcutMarkup = $this->createShortcutMarkup();
             } else {

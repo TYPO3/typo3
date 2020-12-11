@@ -1805,7 +1805,10 @@ class EditDocumentController
                 }
             }
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
-            $shortCutButton->setModuleName('xMOD_alt_doc.php')->setArguments($arguments);
+            $shortCutButton
+                ->setModuleName('xMOD_alt_doc.php')
+                ->setDisplayName($this->getShortcutTitle($request))
+                ->setArguments($arguments);
             $buttonBar->addButton($shortCutButton, $position, $group);
         }
     }
@@ -2443,6 +2446,57 @@ class EditDocumentController
             }
         }
         return new RedirectResponse($retUrl, 303);
+    }
+
+    /**
+     * Returns the shortcut title for the current element
+     *
+     * @param ServerRequestInterface $request
+     * @return string
+     */
+    protected function getShortcutTitle(ServerRequestInterface $request): string
+    {
+        $queryParameters = $request->getQueryParams();
+        $languageService = $this->getLanguageService();
+
+        if (!is_array($queryParameters['edit'] ?? false)) {
+            return '';
+        }
+
+        // @todo There may be a more efficient way in using FormEngine FormData.
+        // @todo Therefore, the button initialization however has to take place at a later stage.
+
+        $table = (string)key($queryParameters['edit']);
+        $tableTitle = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table;
+        $recordId = (int)key($queryParameters['edit'][$table]);
+        $action = (string)$queryParameters['edit'][$table][$recordId];
+
+        if ($action === 'new') {
+            return $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNew') . ' ' . $tableTitle;
+        }
+
+        if ($action === 'edit') {
+            $record = BackendUtility::getRecord($table, $recordId);
+            $recordTitle = BackendUtility::getRecordTitle($table, $record) ?? '';
+            if ($table === 'pages') {
+                return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editPage'), $tableTitle, $recordTitle);
+            }
+            if (!isset($record['pid'])) {
+                return $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit');
+            }
+            $pageId = (int)$record['pid'];
+            if ($pageId === 0) {
+                return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordRootLevel'), $tableTitle, $recordTitle);
+            }
+            $pageRow = BackendUtility::getRecord('pages', $pageId);
+            $pageTitle = BackendUtility::getRecordTitle('pages', $pageRow);
+            if ($recordTitle !== '') {
+                return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecord'), $tableTitle, $recordTitle, $pageTitle);
+            }
+            return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordNoTitle'), $tableTitle, $pageTitle);
+        }
+
+        return '';
     }
 
     /**

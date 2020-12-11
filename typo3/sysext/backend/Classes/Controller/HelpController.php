@@ -155,15 +155,11 @@ class HelpController
         $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
 
-        $mainKey = $table;
-
         $this->view->assignMultiple([
             'table' => $table,
-            'key' => $mainKey,
+            'key' => $table,
             'field' => $field,
-            'manuals' => $field === '*'
-                ? $this->tableManualRepository->getTableManual($mainKey)
-                : [$this->tableManualRepository->getSingleManual($mainKey, $field)],
+            'manuals' => $this->getManuals($request)
         ]);
     }
 
@@ -179,6 +175,7 @@ class HelpController
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('help_cshmanual')
+            ->setDisplayName($this->getShortcutTitle($request))
             ->setArguments([
                 'route' => $request->getQueryParams()['route'],
                 'action' => $action,
@@ -195,6 +192,34 @@ class HelpController
                 ->setHref((string)$uriBuilder->buildUriFromRoute('help_cshmanual'));
             $buttonBar->addButton($backButton);
         }
+    }
+
+    protected function getManuals(ServerRequestInterface $request): array
+    {
+        $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
+        $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
+
+        return $field === '*'
+            ? $this->tableManualRepository->getTableManual($table)
+            : [$this->tableManualRepository->getSingleManual($table, $field)];
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @param ServerRequestInterface $request
+     * @return string
+     */
+    protected function getShortcutTitle(ServerRequestInterface $request): string
+    {
+        $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod_help_cshmanual.xlf:mlang_labels_tablabel');
+        if (($manuals = $this->getManuals($request)) !== []) {
+            $manualTitle = array_shift($manuals)['headerLine'] ?? '';
+            if ($manualTitle !== '') {
+                $title .= ': ' . $manualTitle;
+            }
+        }
+        return $title;
     }
 
     /**

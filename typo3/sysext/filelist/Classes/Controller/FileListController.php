@@ -664,6 +664,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('file_FilelistList')
+            ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => GeneralUtility::_GP('route'),
                 'id' => $this->id,
@@ -850,5 +851,19 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         $this->view->assign('showClipBoard', (bool)$this->MOD_SETTINGS['clipBoard']);
         $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
+    }
+
+    /**
+     * Returns the shortcut title for the current folder object
+     *
+     * @return string
+     */
+    protected function getShortcutTitle(): string
+    {
+        return sprintf(
+            '%s: %s',
+            $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'),
+            $this->folderObject->getName() ?: $this->folderObject->getIdentifier()
+        );
     }
 }

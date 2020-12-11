@@ -137,6 +137,7 @@ class ViewModuleController
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName('web_ViewpageView')
+            ->setDisplayName($this->getShortcutTitle($pageId))
             ->setArguments([
                 'route' => $route,
                 'id' => $pageId,
@@ -369,6 +370,27 @@ class ViewModuleController
                 PageRepository::DOKTYPE_SYSFOLDER,
                 PageRepository::DOKTYPE_RECYCLER
             ], true);
+    }
+
+    /**
+     * Returns the shortcut title for the current page
+     *
+     * @param int $pageId
+     * @return string
+     */
+    protected function getShortcutTitle(int $pageId): string
+    {
+        $pageTitle = '';
+        $pageRow = BackendUtility::getRecord('pages', $pageId);
+        if ($pageRow !== []) {
+            $pageTitle = BackendUtility::getRecordTitle('pages', $pageRow);
+        }
+        return sprintf(
+            '%s: %s [%d]',
+            $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
+            $pageTitle,
+            $pageId
+        );
     }
 
     /**
