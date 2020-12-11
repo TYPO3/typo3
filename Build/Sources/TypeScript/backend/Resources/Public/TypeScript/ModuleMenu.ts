@@ -250,7 +250,7 @@ class ModuleMenu {
           Viewport.doLayout();
         }
       });
-    }).delegateTo(document.querySelector('.t3js-modulemenu'), '.t3js-modulemenu-collapsible');
+    }).delegateTo(document, '.t3js-modulemenu .t3js-modulemenu-collapsible');
 
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       if (typeof target.dataset.link !== 'undefined') {
