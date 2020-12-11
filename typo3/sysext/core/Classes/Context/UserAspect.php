@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Context;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
@@ -140,7 +139,7 @@ class UserAspect implements AspectInterface
             return $this->groups;
         }
         if ($this->user instanceof BackendUserAuthentication) {
-            return GeneralUtility::intExplode(',', $this->user->groupList, true);
+            return $this->user->userGroupsUID;
         }
         $groups = [];
         if ($this->user instanceof FrontendUserAuthentication) {

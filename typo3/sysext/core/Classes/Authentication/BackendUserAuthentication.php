@@ -95,12 +95,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $userGroupsUID = [];
 
     /**
-     * This is $this->userGroupsUID imploded to a comma list... Will correspond to the 'usergroup_cached_list'
-     * @var string
-     */
-    public $groupList = '';
-
-    /**
      * User workspace.
      * -99 is ERROR (none available)
      * 0 is online
@@ -114,13 +108,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @var array
      */
     public $workspaceRec = [];
-
-    /**
-     * List of group_id's in the order they are processed.
-     * @var array
-     * @internal should only be used from within TYPO3 Core
-     */
-    public $includeGroupArray = [];
 
     /**
      * @var array Parsed user TSconfig
@@ -287,18 +274,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Returns TRUE if the current user is a member of group $groupId
-     * $groupId must be set. $this->groupList must contain groups
+     * $groupId must be set. $this->userGroupsUID must contain groups
      * Will return TRUE also if the user is a member of a group through subgroups.
      *
-     * @param int $groupId Group ID to look for in $this->groupList
+     * @param int $groupId Group ID to look for in $this->userGroupsUID
      * @return bool
      * @internal should only be used from within TYPO3 Core, use Context API for quicker access
      */
     public function isMemberOfGroup($groupId)
     {
         $groupId = (int)$groupId;
-        if ($this->groupList && $groupId) {
-            return GeneralUtility::inList($this->groupList, (string)$groupId);
+        if (!empty($this->userGroupsUID) && $groupId) {
+            return in_array($groupId, $this->userGroupsUID, true);
         }
         return false;
     }
@@ -515,12 +502,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             );
 
             // Group (if any is set)
-            if ($this->groupList) {
+            if (!empty($this->userGroupsUID)) {
                 $constraint->add(
                     $expressionBuilder->andX(
                         $expressionBuilder->in(
                             'pages.perms_groupid',
-                            GeneralUtility::intExplode(',', $this->groupList)
+                            $this->userGroupsUID
                         ),
                         $expressionBuilder->comparison(
                             $expressionBuilder->bitAnd('pages.perms_group', $perms),
@@ -567,7 +554,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $out = Permission::NOTHING;
         if (
             isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid'])
-            && isset($row['perms_group']) && isset($row['perms_everybody']) && isset($this->groupList)
+            && isset($row['perms_group']) && isset($row['perms_everybody']) && !empty($this->userGroupsUID)
         ) {
             if ($this->user['uid'] == $row['perms_userid']) {
                 $out |= $row['perms_user'];
@@ -1260,12 +1247,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $this->fetchGroups($this->user[$this->usergroup_column]);
             }
             // Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
-            $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
+            $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
             // Finally this is the list of group_uid's in the order they are parsed (including subgroups!)
             // and without duplicates (duplicates are presented with their last entrance in the list,
             // which thus reflects the order of the TypoScript in TSconfig)
-            $this->groupList = implode(',', $this->userGroupsUID);
-            $this->setCachedList($this->groupList);
+            $this->setCachedList(implode(',', $this->userGroupsUID));
 
             $this->prepareUserTsConfig();
 
@@ -1359,7 +1345,7 @@ TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
 TCAdefaults.sys_note.email = ' . $this->user['email'];
 
         // Loop through all groups and add their 'TSconfig' fields
-        foreach ($this->includeGroupArray as $groupId) {
+        foreach ($this->userGroupsUID as $groupId) {
             $collectedUserTSconfig['group_' . $groupId] = $this->userGroups[$groupId]['TSconfig'] ?? '';
         }
 
@@ -1439,7 +1425,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     $this->fetchGroups($theList, $idList . ',' . $uid);
                 }
                 // Add the group uid, current list to the internal arrays.
-                $this->includeGroupArray[] = $uid;
+                $this->userGroupsUID[] = (int)$uid;
                 // Mount group database-mounts
                 if ($mountOptions->shouldUserIncludePageMountsFromAssociatedGroups()) {
                     $this->groupData['webmounts'] .= ',' . $row['db_mountpoints'];

@@ -712,26 +712,26 @@ class BackendUserAuthenticationTest extends UnitTestCase
             'for admin' => [
                 1,
                 true,
-                '',
+                [],
                 ' 1=1'
             ],
             'for admin with groups' => [
                 11,
                 true,
-                '1,2',
+                [1, 2],
                 ' 1=1'
             ],
             'for user' => [
                 2,
                 false,
-                '',
+                [],
                 ' ((`pages`.`perms_everybody` & 2 = 2) OR' .
                 ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))'
             ],
             'for user with groups' => [
                 8,
                 false,
-                '1,2',
+                [1, 2],
                 ' ((`pages`.`perms_everybody` & 8 = 8) OR' .
                 ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8))' .
                 ' OR ((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))'
@@ -744,10 +744,10 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @dataProvider getPagePermissionsClauseWithValidUserDataProvider
      * @param int $perms
      * @param bool $admin
-     * @param string $groups
+     * @param array $groups
      * @param string $expected
      */
-    public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, string $groups, string $expected): void
+    public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, array $groups, string $expected): void
     {
         // We only need to setup the mocking for the non-admin cases
         // If this setup is done for admin cases the FIFO behavior
@@ -785,7 +785,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->willReturn($admin);
 
         $subject->user = ['uid' => 123];
-        $subject->groupList = $groups;
+        $subject->userGroupsUID = $groups;
 
         self::assertEquals($expected, $subject->getPagePermsClause($perms));
     }

@@ -44,7 +44,7 @@ class ConditionMatcherTest extends FunctionalTestCase
         $backendUser = new BackendUserAuthentication();
         $backendUser->user['uid'] = 13;
         $backendUser->user['admin'] = true;
-        $backendUser->groupList = '13,14,15';
+        $backendUser->userGroupsUID = [13, 14, 15];
         GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
     }
 

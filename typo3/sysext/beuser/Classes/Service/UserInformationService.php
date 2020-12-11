@@ -105,7 +105,7 @@ class UserInformationService
         $data = [
             'user' => $user->user ?? [],
             'groups' => [
-                'inherit' => GeneralUtility::trimExplode(',', $user->groupList, true),
+                'inherit' => $user->userGroupsUID,
                 'direct' => GeneralUtility::trimExplode(',', $user->user['usergroup'], true),
             ],
         ];

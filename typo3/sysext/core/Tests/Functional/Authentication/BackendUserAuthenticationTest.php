@@ -83,7 +83,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = "custom.generic = installation-wide-configuration\ncustom.property = from configuration";
         $this->subject->user['realName'] = 'Test user';
         $this->subject->user['TSconfig'] = 'custom.property = from user';
-        $this->subject->includeGroupArray[] = 13;
+        $this->subject->userGroupsUID[] = 13;
         $this->subject->userGroups[13]['TSconfig'] = "custom.property = from group\ncustom.groupProperty = 13";
         $this->subject->fetchGroupData();
         $result = $this->subject->getTSConfig();
@@ -126,5 +126,17 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($fullPathToStorageBase);
         $folder = $this->subject->getDefaultUploadFolder();
         self::assertEquals('/' . $path . '/', $folder->getIdentifier());
+    }
+
+    /**
+     * @test
+     */
+    public function loadGroupsWithProperSettingsAndOrder(): void
+    {
+        $subject = $this->setUpBackendUser(3);
+        $subject->fetchGroupData();
+        self::assertEquals('web_info,web_layout,web_list,file_filelist', $subject->groupData['modules']);
+        self::assertEquals(['1', '4', '5', '3', '2', '6'], $subject->userGroupsUID);
+        self::assertEquals(['groupValue' => 'from_group_6', 'userValue' => 'from_user_3'], $subject->getTSConfig()['test.']['default.']);
     }
 }

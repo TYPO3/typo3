@@ -785,4 +785,14 @@ return [
             'Breaking-93047-RemovedPropertySendNoCacheHeadersInAbstractUserAuthentication.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->groupList' => [
+        'restFiles' => [
+            'Breaking-93062-VariousGroup-relatedPublicPropertiesInBE_USERRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->includeGroupArray' => [
+        'restFiles' => [
+            'Breaking-93062-VariousGroup-relatedPublicPropertiesInBE_USERRemoved.rst',
+        ],
+    ],
 ];
