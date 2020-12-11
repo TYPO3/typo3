@@ -13,6 +13,7 @@
 
 import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 
 class InputDateTimeElement {
   constructor(elementId: string) {
@@ -26,7 +27,7 @@ class InputDateTimeElement {
 
   private registerEventHandler(): void {
     $(document).on('formengine.dp.change', (event: JQueryEventObject, $field: JQuery): void => {
-      FormEngine.Validation.validate();
+      FormEngineValidation.validateField($field);
       FormEngine.Validation.markFieldAsChanged($field);
       $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     });

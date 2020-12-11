@@ -136,7 +136,7 @@ export abstract class AbstractSortableSelectItems {
       FormEngine.updateHiddenFieldValueFromSelect(fieldElement, FormEngine.getFieldElement(relatedFieldName).get(0));
       FormEngine.legacyFieldChangedCb();
       FormEngineValidation.markFieldAsChanged($(fieldElement));
-      FormEngineValidation.validate();
+      FormEngineValidation.validateField(fieldElement);
     });
   }
 }

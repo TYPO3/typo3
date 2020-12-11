@@ -409,8 +409,8 @@ class InlineControlContainer {
         );
 
         FormEngine.reinitialize();
-        FormEngine.Validation.initializeInputFields();
-        FormEngine.Validation.validate();
+        FormEngineValidation.initializeInputFields();
+        FormEngineValidation.validate(this.container);
       }
     });
   }
@@ -581,8 +581,8 @@ class InlineControlContainer {
           progress.done();
 
           FormEngine.reinitialize();
-          FormEngine.Validation.initializeInputFields();
-          FormEngine.Validation.validate();
+          FormEngineValidation.initializeInputFields();
+          FormEngineValidation.validate(this.container);
 
           if (this.hasObjectGroupDefinedUniqueConstraints()) {
             const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
@@ -777,7 +777,7 @@ class InlineControlContainer {
 
     new RegularEvent('transitionend', (): void => {
       recordContainer.parentElement.removeChild(recordContainer);
-      FormEngineValidation.validate();
+      FormEngineValidation.validate(this.container);
     }).bindTo(recordContainer);
 
     this.revertUnique(objectUid);
