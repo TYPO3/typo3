@@ -32,7 +32,8 @@ namespace TYPO3\CMS\Core\Session;
  *
  * The $data argument is to store any arbitrary data valid for the users' session.
  *
- * A permanent session means: XYZ?
+ * A permanent session means that the client is not issued a session-based cookie but a time-based cookie.
+ * So the server-session survives the session of the browser.
  */
 class UserSession
 {

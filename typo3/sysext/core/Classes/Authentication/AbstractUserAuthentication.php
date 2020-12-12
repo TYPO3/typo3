@@ -446,7 +446,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $anonymousSession = false;
         if (!$this->userSession->isNew()) {
             // Read user data if this is bound to a user
-            // However, if the user data is not valid, or the session has timeed out we'll recreate a new anonymous session
+            // However, if the user data is not valid, or the session has timed out we'll recreate a new anonymous session
             if ($this->userSession->getUserId() > 0) {
                 $authInfo['user'] = $this->fetchValidUserFromSessionOrDestroySession($skipSessionUpdate);
                 if (is_array($authInfo['user'])) {
@@ -482,9 +482,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
 
         if ($haveSession) {
-            $this->logger->debug('User session found', [
-                $this->userid_column => $authInfo['userSession'][$this->userid_column] ?? null,
-                $this->username_column => $authInfo['userSession'][$this->username_column] ?? null,
+            $this->logger->debug('User found in session', [
+                $this->userid_column => $authInfo['user'][$this->userid_column] ?? null,
+                $this->username_column => $authInfo['user'][$this->username_column] ?? null,
             ]);
         } else {
             $this->logger->debug('No user session found');
@@ -525,13 +525,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         // If no new user was set we use the already found user session
         if (empty($tempuserArr) && $haveSession && !$anonymousSession) {
-            $tempuserArr[] = $authInfo['userSession'];
-            $tempuser = $authInfo['userSession'];
+            $tempuserArr[] = $authInfo['user'];
+            $tempuser = $authInfo['user'];
             // User is authenticated because we found a user session
             $authenticated = true;
             $this->logger->debug('User session used', [
-                $this->userid_column => $authInfo['userSession'][$this->userid_column],
-                $this->username_column => $authInfo['userSession'][$this->username_column],
+                $this->userid_column => $authInfo['user'][$this->userid_column],
+                $this->username_column => $authInfo['user'][$this->username_column],
             ]);
         }
         // Re-auth user when 'auth'-service option is set
@@ -578,7 +578,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Insert session record if needed:
             if (!$haveSession
                 || $anonymousSession
-                || $tempuser['uid'] !== $this->userSession->getUserId()
+                || (int)$tempuser['uid'] !== $this->userSession->getUserId()
             ) {
                 $sessionData = $this->userSession->getData();
                 // Create a new session with a fixated user
@@ -589,7 +589,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     $this->userSession->overrideData($sessionData);
                 }
 
-                $this->user = array_merge($this->user ?? [], $tempuser);
+                $this->user = array_merge($tempuser, $this->user ?? []);
 
                 // The login session is started.
                 $this->loginSessionStarted = true;
@@ -599,9 +599,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                         $this->username_column => $this->user[$this->username_column],
                     ]);
                 }
-            } elseif ($haveSession) {
+            } else {
                 // if we come here the current session is for sure not anonymous as this is a pre-condition for $authenticated = true
-                $this->user = $authInfo['userSession'];
+                $this->user = $authInfo['user'];
             }
 
             if ($activeLogin && !$this->userSession->isNew()) {
