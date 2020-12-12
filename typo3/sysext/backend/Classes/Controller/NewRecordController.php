@@ -373,7 +373,7 @@ class NewRecordController
                 ];
             }
             if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
-                $previewDataAttributes = PreviewUriBuilder::create($this->pageinfo['uid'])
+                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
                     ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
                     ->buildDispatcherDataAttributes();
                 $viewButton = $buttonBar->makeLinkButton()

@@ -752,7 +752,7 @@ class PageLayoutController
             && !VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
             $languageParameter = $this->current_sys_language ? ('&L=' . $this->current_sys_language) : '';
-            $previewDataAttributes = PreviewUriBuilder::create($this->pageinfo['uid'])
+            $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
                 ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
                 ->withAdditionalQueryParameters($languageParameter)
                 ->buildDispatcherDataAttributes();
