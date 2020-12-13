@@ -212,7 +212,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      * @var Cookie|null
      */
-    protected ?Cookie $setCookie;
+    protected ?Cookie $setCookie = null;
 
     /**
      * Initialize some important variables
@@ -285,7 +285,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function appendCookieToResponse(ResponseInterface $response): ResponseInterface
     {
-        if (isset($this->setCookie)) {
+        if ($this->setCookie !== null) {
             $response = $response->withAddedHeader('Set-Cookie', $this->setCookie->__toString());
         }
         return $response;
