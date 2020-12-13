@@ -59,7 +59,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
     /**
      * @param ServerRequestInterface $request
      * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {

@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class MockPlatform extends AbstractPlatform
@@ -25,7 +25,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @param array $field
      * @return string|void
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getBlobTypeDeclarationSQL(array $field)
     {
@@ -161,7 +161,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      *
-     * @throws \Doctrine\DBAL\DBALException If not supported on this platform.
+     * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
@@ -172,7 +172,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      *
-     * @throws \Doctrine\DBAL\DBALException If not supported on this platform.
+     * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */
     protected function getReservedKeywordsClass()
     {

@@ -33,7 +33,7 @@ class SchemaAlterTableListener
      *
      * @param \Doctrine\DBAL\Event\SchemaAlterTableEventArgs $event
      * @return bool
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function onSchemaAlterTable(SchemaAlterTableEventArgs $event)
     {

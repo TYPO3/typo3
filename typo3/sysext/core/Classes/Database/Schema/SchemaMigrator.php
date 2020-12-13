@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
@@ -46,7 +46,7 @@ class SchemaMigrator
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $remove TRUE for RENAME/DROP table and column suggestions, FALSE for ADD/CHANGE suggestions
      * @return array[] SQL statements to migrate the database to the expected schema, indexed by performed operation
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -79,7 +79,7 @@ class SchemaMigrator
      *
      * @param array $statements
      * @return SchemaDiff[]
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -111,7 +111,7 @@ class SchemaMigrator
      * @param string[] $statements The CREATE TABLE statements
      * @param string[] $selectedStatements The hashes of the update suggestions to execute
      * @return array
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException
@@ -156,7 +156,7 @@ class SchemaMigrator
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $createOnly Only perform changes that add fields or create tables
      * @return array[] Error messages for statements that occurred during the installation procedure.
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException

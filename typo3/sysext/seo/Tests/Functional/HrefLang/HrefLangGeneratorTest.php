@@ -139,7 +139,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
 
     /**
      * @param string $pathToYamlFile
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     protected function setUpDatabaseWithYamlPayload(string $pathToYamlFile): void
     {

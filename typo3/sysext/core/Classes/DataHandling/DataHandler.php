@@ -15,10 +15,10 @@
 
 namespace TYPO3\CMS\Core\DataHandling;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -8875,7 +8875,7 @@ class DataHandler implements LoggerAwareInterface
      * @param \TYPO3\CMS\Core\Database\Connection $connection
      * @param string $tableName
      * @return int
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     protected function postProcessSqlServerInsert(Connection $connection, string $tableName): int
     {

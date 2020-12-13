@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver;
 
-use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Driver\PDOStatement as DoctrineDbalPDOStatement;
+use Doctrine\DBAL\Driver\PDO\Exception as PDOException;
+use Doctrine\DBAL\Driver\PDO\Statement as DoctrineDbalPDOStatement;
 use PDO;
 
 class PDOStatement extends DoctrineDbalPDOStatement

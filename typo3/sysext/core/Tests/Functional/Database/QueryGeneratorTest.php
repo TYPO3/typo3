@@ -388,7 +388,7 @@ class QueryGeneratorTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider arbitraryDataIsEscapedDataProvider
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function arbitraryDataIsEscaped(string $injector, array $settings)
     {

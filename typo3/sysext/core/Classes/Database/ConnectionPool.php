@@ -111,7 +111,7 @@ class ConnectionPool
      *
      * @param string $connectionName
      * @return Connection
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getConnectionByName(string $connectionName): Connection
     {

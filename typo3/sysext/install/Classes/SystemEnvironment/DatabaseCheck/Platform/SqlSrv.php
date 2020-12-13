@@ -66,7 +66,7 @@ class SqlSrv extends AbstractPlatform
      *
      * @return FlashMessageQueue
      * @throws \InvalidArgumentException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getStatus(): FlashMessageQueue
     {

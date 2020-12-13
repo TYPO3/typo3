@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
@@ -206,7 +206,7 @@ class ConnectionMigrator
      * for tables that are in the database but have no direct relation to the TYPO3 instance.
      *
      * @param bool $renameUnused
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
@@ -275,7 +275,7 @@ class ConnectionMigrator
      *
      * @param string $connectionName
      * @return \Doctrine\DBAL\Schema\Schema
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
     protected function buildExpectedSchemaDefinitions(string $connectionName): Schema

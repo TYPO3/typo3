@@ -33,7 +33,7 @@ class SchemaIndexDefinitionListener
      * part length into account when a MySQL platform has been detected.
      *
      * @param \Doctrine\DBAL\Event\SchemaIndexDefinitionEventArgs $event
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
     public function onSchemaIndexDefinition(SchemaIndexDefinitionEventArgs $event)

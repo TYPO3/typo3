@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlite;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\PDOSqlite\Driver as DoctrinePDOSqliteDriver;
+use Doctrine\DBAL\Exception as DBALException;
 use PDOException;
 use TYPO3\CMS\Core\Database\Driver\PDOConnection;
 

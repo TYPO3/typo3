@@ -46,7 +46,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
     protected $subject;
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \TYPO3\TestingFramework\Core\Exception
      */
     protected function setUp(): void

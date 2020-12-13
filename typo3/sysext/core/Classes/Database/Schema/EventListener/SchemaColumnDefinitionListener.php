@@ -33,7 +33,7 @@ class SchemaColumnDefinitionListener
      * for custom doctrine types and builds the appropriate Column Object.
      *
      * @param \Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs $event
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $event)
     {
@@ -60,7 +60,7 @@ class SchemaColumnDefinitionListener
      * @param array $tableColumn
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @return \Doctrine\DBAL\Schema\Column
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @todo: The $tableColumn source currently only support MySQL definition style.
      */
     protected function getEnumerationTableColumnDefinition(array $tableColumn, AbstractPlatform $platform): Column

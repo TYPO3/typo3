@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Workspaces\Hook;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;

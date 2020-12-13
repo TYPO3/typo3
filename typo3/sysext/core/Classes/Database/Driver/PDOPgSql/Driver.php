@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOPgSql;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDbalPDOPgSqlDriver;
+use Doctrine\DBAL\Exception as DBALException;
 use PDO;
 use PDOException;
 use TYPO3\CMS\Core\Database\Driver\PDOConnection;

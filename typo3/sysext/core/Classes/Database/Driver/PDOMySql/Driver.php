@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOMySql;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\PDOMySql\Driver as DoctrinePDOMySqlDriver;
+use Doctrine\DBAL\Exception as DBALException;
 use PDOException;
 use TYPO3\CMS\Core\Database\Driver\PDOConnection;
 

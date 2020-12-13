@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver;
 
+use Doctrine\DBAL\Driver\PDO\Exception as PDOException;
 use Doctrine\DBAL\Driver\PDOConnection as DoctrineDbalPDOConnection;
-use Doctrine\DBAL\Driver\PDOException;
 use PDO;
 
 /**

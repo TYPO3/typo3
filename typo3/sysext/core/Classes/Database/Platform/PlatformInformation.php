@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Platform;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 
 /**
  * Helper to handle platform specific details
@@ -108,7 +108,7 @@ class PlatformInformation
     /**
      * Return information about the maximum supported length for a SQL identifier.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param AbstractPlatform $platform
      * @return int
      * @internal
      */
@@ -122,7 +122,7 @@ class PlatformInformation
     /**
      * Return information about the maximum number of bound parameters supported on this platform
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param AbstractPlatform $platform
      * @return int
      * @internal
      */
@@ -136,7 +136,7 @@ class PlatformInformation
     /**
      * Return the platform shortname to use as a lookup key
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param AbstractPlatform $platform
      * @return string
      * @throws \RuntimeException
      * @internal

@@ -69,7 +69,7 @@ class PostgreSql extends AbstractPlatform
      * Get all status information as array with status objects
      *
      * @return FlashMessageQueue
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
     public function getStatus(): FlashMessageQueue
