@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOMySql;
 
-use Doctrine\DBAL\Driver\PDOMySql\Driver as DoctrinePDOMySqlDriver;
+use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Exception as DBALException;
 use PDOException;
 use TYPO3\CMS\Core\Database\Driver\PDOConnection;
@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Database\Driver\PDOConnection;
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
  * All private methods have to be checked on every release of doctrine/dbal.
  */
-class Driver extends DoctrinePDOMySqlDriver
+class Driver extends AbstractMySQLDriver
 {
     /**
      * {@inheritdoc}
@@ -50,5 +50,48 @@ class Driver extends DoctrinePDOMySqlDriver
         }
 
         return $conn;
+    }
+
+    /**
+     * Constructs the MySql PDO DSN.
+     *
+     * @param mixed[] $params
+     *
+     * @return string The DSN.
+     */
+    protected function constructPdoDsn(array $params)
+    {
+        $dsn = 'mysql:';
+        if (isset($params['host']) && $params['host'] !== '') {
+            $dsn .= 'host=' . $params['host'] . ';';
+        }
+
+        if (isset($params['port'])) {
+            $dsn .= 'port=' . $params['port'] . ';';
+        }
+
+        if (isset($params['dbname'])) {
+            $dsn .= 'dbname=' . $params['dbname'] . ';';
+        }
+
+        if (isset($params['unix_socket'])) {
+            $dsn .= 'unix_socket=' . $params['unix_socket'] . ';';
+        }
+
+        if (isset($params['charset'])) {
+            $dsn .= 'charset=' . $params['charset'] . ';';
+        }
+
+        return $dsn;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated
+     */
+    public function getName()
+    {
+        return 'pdo_mysql';
     }
 }

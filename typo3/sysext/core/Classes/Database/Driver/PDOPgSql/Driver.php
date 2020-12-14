@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOPgSql;
 
-use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDbalPDOPgSqlDriver;
+use Doctrine\DBAL\Driver\AbstractPostgreSQLDriver;
 use Doctrine\DBAL\Exception as DBALException;
 use PDO;
 use PDOException;
@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Database\Driver\PDOConnection;
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
  * All private methods have to be checked on every release of doctrine/dbal.
  */
-class Driver extends DoctrineDbalPDOPgSqlDriver
+class Driver extends AbstractPostgreSQLDriver
 {
     /**
      * {@inheritdoc}
@@ -66,7 +66,11 @@ class Driver extends DoctrineDbalPDOPgSqlDriver
     }
 
     /**
-     * {@inheritdoc}
+     * Constructs the Postgres PDO DSN.
+     *
+     * @param mixed[] $params
+     *
+     * @return string The DSN.
      */
     private function _constructPdoDsn(array $params)
     {
@@ -116,5 +120,15 @@ class Driver extends DoctrineDbalPDOPgSqlDriver
         }
 
         return $dsn;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated
+     */
+    public function getName()
+    {
+        return 'pdo_pgsql';
     }
 }

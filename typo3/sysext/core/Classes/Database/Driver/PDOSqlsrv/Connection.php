@@ -17,20 +17,42 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlsrv;
 
+use Doctrine\DBAL\Driver\Result;
 use PDO;
 
 /**
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
  * All private methods have to be checked on every release of doctrine/dbal.
  */
-class Connection extends \Doctrine\DBAL\Driver\PDOSqlsrv\Connection
+class Connection extends \Doctrine\DBAL\Driver\PDO\Connection
 {
     /**
+     * @internal The connection can be only instantiated by its driver.
+     *
      * {@inheritdoc}
      */
     public function __construct($dsn, $user = null, $password = null, ?array $options = null)
     {
         parent::__construct($dsn, $user, $password, $options);
         $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, [Statement::class, []]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function lastInsertId($name = null)
+    {
+        if ($name === null) {
+            return parent::lastInsertId($name);
+        }
+
+        $stmt = $this->prepare('SELECT CONVERT(VARCHAR(MAX), current_value) FROM sys.sequences WHERE name = ?');
+        $stmt->execute([$name]);
+
+        if ($stmt instanceof Result) {
+            return $stmt->fetchOne();
+        }
+
+        return $stmt->fetchColumn();
     }
 }

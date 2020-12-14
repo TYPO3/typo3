@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlite;
 
-use Doctrine\DBAL\Driver\PDOSqlite\Driver as DoctrinePDOSqliteDriver;
+use Doctrine\DBAL\Driver\AbstractSQLiteDriver;
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use PDOException;
 use TYPO3\CMS\Core\Database\Driver\PDOConnection;
 
@@ -26,8 +27,17 @@ use TYPO3\CMS\Core\Database\Driver\PDOConnection;
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
  * All private methods have to be checked on every release of doctrine/dbal.
  */
-class Driver extends DoctrinePDOSqliteDriver
+class Driver extends AbstractSQLiteDriver
 {
+    /**
+     * @var mixed[]
+     */
+    protected $_userDefinedFunctions = [
+        'sqrt' => ['callback' => [SqlitePlatform::class, 'udfSqrt'], 'numArgs' => 1],
+        'mod' => ['callback' => [SqlitePlatform::class, 'udfMod'], 'numArgs' => 2],
+        'locate' => ['callback' => [SqlitePlatform::class, 'udfLocate'], 'numArgs' => -1],
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -57,5 +67,34 @@ class Driver extends DoctrinePDOSqliteDriver
         }
 
         return $pdo;
+    }
+
+    /**
+     * Constructs the Sqlite PDO DSN.
+     *
+     * @param mixed[] $params
+     *
+     * @return string The DSN.
+     */
+    protected function _constructPdoDsn(array $params)
+    {
+        $dsn = 'sqlite:';
+        if (isset($params['path'])) {
+            $dsn .= $params['path'];
+        } elseif (isset($params['memory'])) {
+            $dsn .= ':memory:';
+        }
+
+        return $dsn;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated
+     */
+    public function getName()
+    {
+        return 'pdo_sqlite';
     }
 }

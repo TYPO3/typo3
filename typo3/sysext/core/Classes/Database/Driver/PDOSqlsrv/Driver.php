@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlsrv;
 
+use Doctrine\DBAL\Driver\AbstractSQLServerDriver;
+use Doctrine\DBAL\Driver\AbstractSQLServerDriver\Exception\PortWithoutHost;
+
 /**
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
  * All private methods have to be checked on every release of doctrine/dbal.
  */
-class Driver extends \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
+class Driver extends AbstractSQLServerDriver
 {
     /**
      * {@inheritdoc}
@@ -39,7 +42,12 @@ class Driver extends \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Constructs the Sqlsrv PDO DSN.
+     *
+     * @param mixed[]  $params
+     * @param string[] $connectionOptions
+     *
+     * @return string The DSN.
      */
     private function _constructPdoDsn(array $params, array $connectionOptions)
     {
@@ -47,10 +55,12 @@ class Driver extends \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
 
         if (isset($params['host'])) {
             $dsn .= $params['host'];
-        }
 
-        if (isset($params['port']) && ! empty($params['port'])) {
-            $dsn .= ',' . $params['port'];
+            if (isset($params['port'])) {
+                $dsn .= ',' . $params['port'];
+            }
+        } elseif (isset($params['port'])) {
+            throw PortWithoutHost::new();
         }
 
         if (isset($params['dbname'])) {
@@ -64,9 +74,6 @@ class Driver extends \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
         return $dsn . $this->getConnectionOptionsDsn($connectionOptions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function splitOptions(array $options): array
     {
         $driverOptions     = [];
@@ -84,7 +91,9 @@ class Driver extends \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Converts a connection options array to the DSN
+     *
+     * @param string[] $connectionOptions
      */
     private function getConnectionOptionsDsn(array $connectionOptions): string
     {
@@ -99,9 +108,11 @@ class Driver extends \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated
      */
     public function getName()
     {
-        return parent::getName();
+        return 'pdo_sqlsrv';
     }
 }
