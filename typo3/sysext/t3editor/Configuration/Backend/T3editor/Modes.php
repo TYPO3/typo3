@@ -5,20 +5,20 @@
  */
 return [
     'css' => [
-        'module' => 'cm/mode/css/css',
+        'module' => 'codemirror/mode/css/css',
         'extensions' => ['css'],
     ],
     'html' => [
-        'module' => 'cm/mode/htmlmixed/htmlmixed',
+        'module' => 'codemirror/mode/htmlmixed/htmlmixed',
         'extensions' => ['htm', 'html'],
         'default' => true,
     ],
     'javascript' => [
-        'module' => 'cm/mode/javascript/javascript',
+        'module' => 'codemirror/mode/javascript/javascript',
         'extensions' => ['javascript'],
     ],
     'php' => [
-        'module' => 'cm/mode/php/php',
+        'module' => 'codemirror/mode/php/php',
         'extensions' => ['php', 'php5', 'php7', 'phps'],
     ],
     'typoscript' => [
@@ -26,7 +26,7 @@ return [
         'extensions' => ['ts', 'typoscript', 'tsconfig'],
     ],
     'xml' => [
-        'module' => 'cm/mode/xml/xml',
+        'module' => 'codemirror/mode/xml/xml',
         'extensions' => ['xml']
     ]
 ];

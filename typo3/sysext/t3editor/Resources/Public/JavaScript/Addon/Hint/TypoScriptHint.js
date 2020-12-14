@@ -3,9 +3,9 @@
 
 (function(mod) {
   if (typeof exports === 'object' && typeof module === 'object') // CommonJS
-    mod(require('cm/lib/codemirror', 'TYPO3/CMS/T3editor/Addon/Hint/TsCodeCompletion'));
+    mod(require('codemirror', 'TYPO3/CMS/T3editor/Addon/Hint/TsCodeCompletion'));
   else if (typeof define === 'function' && define.amd) // AMD
-    define(['cm/lib/codemirror', 'TYPO3/CMS/T3editor/Addon/Hint/TsCodeCompletion'], mod);
+    define(['codemirror', 'TYPO3/CMS/T3editor/Addon/Hint/TsCodeCompletion'], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror, TsCodeCompletion) {

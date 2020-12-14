@@ -87,10 +87,10 @@ class T3editorElement extends AbstractFormElement
     public function render(): array
     {
         $this->resultArray = $this->initializeResultArray();
-        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/cm/lib/codemirror.css';
+        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css';
         $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
         $this->resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/T3editor/T3editor' => 'function(T3editor) {T3editor.observeEditorCandidates()}'
+            'TYPO3/CMS/T3editor/Element/CodeMirrorElement' => null
         ];
 
         // Compile and register t3editor configuration
@@ -111,15 +111,12 @@ class T3editorElement extends AbstractFormElement
         }
 
         $attributes['wrap'] = 'off';
-        $attributes['style'] = 'width:100%;';
-        $attributes['onchange'] = GeneralUtility::quoteJSvalue($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
 
-        $attributeString = GeneralUtility::implodeAttributes($attributes, true);
         $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],
             'text-monospace enable-tab',
             $parameterArray['itemFormElValue'],
-            $attributeString,
+            $attributes,
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
@@ -145,9 +142,7 @@ class T3editorElement extends AbstractFormElement
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';
-        $html[] =               '<div class="t3editor-wrapper">';
-        $html[] =                   $editorHtml;
-        $html[] =               '</div>';
+        $html[] =               $editorHtml;
         $html[] =           '</div>';
         if (!empty($fieldControlHtml)) {
             $html[] =           '<div class="form-wizards-items-aside">';
@@ -176,7 +171,7 @@ class T3editorElement extends AbstractFormElement
      * @param string $name Name attribute of HTML tag
      * @param string $class Class attribute of HTML tag
      * @param string $content Content of the editor
-     * @param string $additionalParams Any additional editor parameters
+     * @param array $attributes Any additional editor parameters
      * @param string $label Codemirror panel label
      * @param array $hiddenfields
      *
@@ -187,16 +182,15 @@ class T3editorElement extends AbstractFormElement
         string $name,
         string $class = '',
         string $content = '',
-        string $additionalParams = '',
+        array $attributes = [],
         string $label = '',
         array $hiddenfields = []
     ): string {
         $code = [];
-        $attributes = [];
         $mode = $this->getMode();
         $registeredAddons = AddonRegistry::getInstance()->getForMode($mode->getFormatCode());
 
-        $attributes['class'] = $class . ' t3editor';
+        $attributes['class'] = $class;
         $attributes['id'] = 't3editor_' . md5($name);
         $attributes['name'] = $name;
 
@@ -205,27 +199,23 @@ class T3editorElement extends AbstractFormElement
         foreach ($registeredAddons as $addon) {
             $addons[] = $addon->getIdentifier();
         }
-
-        $attributes['data-codemirror-config'] = json_encode([
+        $codeMirrorConfig = [
             'mode' => $mode->getIdentifier(),
             'label' => $label,
-            'addons' => json_encode($addons),
-            'options' => json_encode($settings)
-        ]);
+            'addons' => GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
+            'options' => GeneralUtility::jsonEncodeForHtmlAttribute($settings, false),
+        ];
 
-        $attributesString = '';
-        foreach ($attributes as $attribute => $value) {
-            $attributesString .= $attribute . '="' . htmlspecialchars((string)$value) . '" ';
-        }
-        $attributesString .= $additionalParams;
-
-        $code[] = '<textarea ' . $attributesString . '>' . htmlspecialchars($content) . '</textarea>';
+        $code[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
+        $code[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
 
         if (!empty($hiddenfields)) {
             foreach ($hiddenfields as $attributeName => $value) {
                 $code[] = '<input type="hidden" name="' . htmlspecialchars((string)$attributeName) . '" value="' . htmlspecialchars((string)$value) . '" />';
             }
         }
+        $code[] = '</typo3-t3editor-codemirror>';
+
         return implode(LF, $code);
     }
 

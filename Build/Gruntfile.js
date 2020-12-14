@@ -438,7 +438,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: '<%= paths.node_modules %>codemirror',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/cm',
+            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/codemirror',
             src: ['**/*', '!**/src/**', '!rollup.config.js']
           }
         ]
@@ -674,10 +674,10 @@ module.exports = function (grunt) {
           {
             expand: true,
             src: [
-              '<%= paths.t3editor %>Public/JavaScript/Contrib/cm/**/*.js',
-              '!<%= paths.t3editor %>Public/JavaScript/Contrib/cm/**/*.min.js'
+              '<%= paths.t3editor %>Public/JavaScript/Contrib/codemirror/**/*.js',
+              '!<%= paths.t3editor %>Public/JavaScript/Contrib/codemirror/**/*.min.js'
             ],
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/cm',
+            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/codemirror',
             cwd: '.',
             rename: function (dest, src) {
               return src;

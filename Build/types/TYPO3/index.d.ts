@@ -130,7 +130,7 @@ interface Window {
  * Needed type declarations for provided libs
  */
 declare module 'muuri';
-declare module 'cm/lib/codemirror';
+declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'moment';
 declare module 'Sortable';

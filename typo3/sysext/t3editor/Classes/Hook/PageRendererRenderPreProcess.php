@@ -38,13 +38,19 @@ final class PageRendererRenderPreProcess
             $pageRenderer->addRequireJsConfiguration([
                 'packages' => [
                     [
-                        'name' => 'cm',
+                        'name' => 'codemirror',
                         'location' => PathUtility::getAbsoluteWebPath(
-                            GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Public/JavaScript/Contrib/cm')
+                            GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror')
                         ),
                         'main' => 'lib/codemirror',
+                    ],
+                ],
+                // @deprecated since v11.1, will be removed in v12
+                'map' => [
+                    '*' => [
+                        'cm' => 'codemirror',
                     ]
-                ]
+                ],
             ]);
         }
     }

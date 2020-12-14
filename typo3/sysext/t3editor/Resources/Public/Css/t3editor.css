@@ -10,4 +10,4 @@
  * 
  * The TYPO3 project - inspiring people to share!
  */
-.t3editor-wrapper{border:1px solid transparent}.t3editor-wrapper .CodeMirror-fullscreen{top:64px!important}.t3editor-wrapper .CodeMirror-panel{background:#f7f7f7;padding:3px 6px;font-size:.85em}.t3editor-wrapper .CodeMirror-panel-bottom{border-top:1px solid #ddd}.t3editor-wrapper div.CodeMirror span.CodeMirror-matchingbracket{color:#6ca52b}.has-change .t3editor-wrapper{border-color:#6daadf}
+typo3-t3editor-codemirror{border:1px solid transparent}typo3-t3editor-codemirror textarea{width:100%}typo3-t3editor-codemirror *+textarea{display:none}typo3-t3editor-codemirror .CodeMirror-fullscreen{top:64px!important}typo3-t3editor-codemirror .CodeMirror-panel{background:#f7f7f7;padding:3px 6px;font-size:.85em}typo3-t3editor-codemirror .CodeMirror-panel-bottom{border-top:1px solid #ddd}typo3-t3editor-codemirror div.CodeMirror span.CodeMirror-matchingbracket{color:#6ca52b}.has-change typo3-t3editor-codemirror{border-color:#6daadf}

@@ -12,8 +12,16 @@ $panel-padding-vertical: 3px;
 $panel-padding-horizontal: 6px;
 $color-matching-bracket: #6ca52b;
 
-.t3editor-wrapper {
+typo3-t3editor-codemirror {
     border: 1px solid transparent;
+
+    textarea {
+        width: 100%;
+    }
+
+    * + textarea {
+        display: none;
+    }
 
     .CodeMirror-fullscreen {
         top: $fullscreen-top !important;
