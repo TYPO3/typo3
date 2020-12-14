@@ -693,17 +693,15 @@ class PageLayoutController
         }
         $content .= $tableOutput;
         // Making search form:
-        if (!$this->modTSconfig['properties']['disableSearchBox']) {
-            $this->searchContent = $this->getSearchBox();
-            if ($this->searchContent) {
-                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-                $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
-                    ->setClasses('t3js-toggle-search-toolbox')
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
-                    ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
-                    ->setHref('#');
-                $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
-            }
+        $this->searchContent = $this->getSearchBox();
+        if ($this->searchContent) {
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
+            $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
+                ->setClasses('t3js-toggle-search-toolbox')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
+                ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
+                ->setHref('#');
+            $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'] ?? [] as $hook) {
@@ -788,70 +786,68 @@ class PageLayoutController
             ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
         $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
-        if (empty($this->modTSconfig['properties']['disableIconToolbar'])) {
-            // Edit page properties and page language overlay icons
-            if ($this->isPageEditable(0)) {
-                /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
-                $normalizedParams = $request->getAttribute('normalizedParams');
-                // Edit localized pages only when one specific language is selected
-                if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
-                    $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
-                    $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('pages');
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                        ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
-                    $overlayRecord = $queryBuilder
-                        ->select('uid')
-                        ->from('pages')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                $localizationParentField,
-                                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                $languageField,
-                                $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
-                            )
+        // Edit page properties and page language overlay icons
+        if ($this->isPageEditable(0)) {
+            /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            // Edit localized pages only when one specific language is selected
+            if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
+                $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+                $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
+                $overlayRecord = $queryBuilder
+                    ->select('uid')
+                    ->from('pages')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            $localizationParentField,
+                            $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            $languageField,
+                            $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
                         )
-                        ->setMaxResults(1)
-                        ->execute()
-                        ->fetch();
-                    BackendUtility::workspaceOL('pages', $overlayRecord, (int)$this->getBackendUser()->workspace);
-                    // Edit button
-                    $urlParameters = [
-                        'edit' => [
-                            'pages' => [
-                                $overlayRecord['uid'] => 'edit'
-                            ]
-                        ],
-                        'returnUrl' => $normalizedParams->getRequestUri(),
-                    ];
-
-                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                    $editLanguageButton = $this->buttonBar->makeLinkButton()
-                        ->setHref($url)
-                        ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
-                        ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
-                    $this->buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
-                }
+                    )
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
+                BackendUtility::workspaceOL('pages', $overlayRecord, (int)$this->getBackendUser()->workspace);
+                // Edit button
                 $urlParameters = [
                     'edit' => [
                         'pages' => [
-                            $this->id => 'edit'
+                            $overlayRecord['uid'] => 'edit'
                         ]
                     ],
                     'returnUrl' => $normalizedParams->getRequestUri(),
                 ];
+
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                $editPageButton = $this->buttonBar->makeLinkButton()
+                $editLanguageButton = $this->buttonBar->makeLinkButton()
                     ->setHref($url)
-                    ->setTitle($lang->getLL('editPageProperties'))
-                    ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
-                $this->buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                    ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
+                    ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
+                $this->buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
             }
+            $urlParameters = [
+                'edit' => [
+                    'pages' => [
+                        $this->id => 'edit'
+                    ]
+                ],
+                'returnUrl' => $normalizedParams->getRequestUri(),
+            ];
+            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            $editPageButton = $this->buttonBar->makeLinkButton()
+                ->setHref($url)
+                ->setTitle($lang->getLL('editPageProperties'))
+                ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+            $this->buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
     }
 
