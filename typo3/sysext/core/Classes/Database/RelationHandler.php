@@ -593,6 +593,7 @@ class RelationHandler
             )
         );
         $queryBuilder->orderBy($sorting_field);
+        $queryBuilder->addOrderBy($uidForeign_field);
         $statement = $queryBuilder->execute();
         while ($row = $statement->fetch()) {
             // Default
