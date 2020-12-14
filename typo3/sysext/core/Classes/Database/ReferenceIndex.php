@@ -1125,6 +1125,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 $queryResult = $queryBuilder
                     ->select(...$fields)
                     ->from($tableName)
+                    ->orderBy('uid')
                     ->execute();
             } catch (DBALException $e) {
                 // Table exists in TCA but does not exist in the database
